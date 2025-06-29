@@ -8,10 +8,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="PLACEHOLDER" />
-                  <option name="mobileSdkAppId" value="" />
-                  <option name="projectId" value="" />
-                  <option name="projectNumber" value="" />
+                  <option name="appId" value="com.moscow.cineverse" />
+                  <option name="mobileSdkAppId" value="1:843710468188:android:a2ba354ffc2edbc2111699" />
+                  <option name="projectId" value="cineverse-c46f9" />
+                  <option name="projectNumber" value="843710468188" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />
