@@ -21,3 +21,5 @@ dependencyResolutionManagement {
 
 rootProject.name = "CineVerse"
 include(":app")
+include(":presentation")
+include(":design_system")
