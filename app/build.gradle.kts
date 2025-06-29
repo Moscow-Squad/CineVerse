@@ -2,10 +2,6 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
-    alias(libs.plugins.google.gms.google.services)
-    alias(libs.plugins.google.firebase.crashlytics)
-    alias(libs.plugins.google.firebase.firebase.perf)
-    alias(libs.plugins.google.firebase.appdistribution)
 }
 
 android {
@@ -53,9 +49,6 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
-    implementation(libs.firebase.crashlytics)
-    implementation(libs.firebase.analytics)
-    implementation(libs.firebase.perf)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
