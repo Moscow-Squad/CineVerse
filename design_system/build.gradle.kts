@@ -31,7 +31,9 @@ android {
     kotlinOptions {
         jvmTarget = "11"
     }
-
+    composeOptions {
+        kotlinCompilerExtensionVersion = libs.versions.composeCompiler.get()
+    }
 }
 
 dependencies {
