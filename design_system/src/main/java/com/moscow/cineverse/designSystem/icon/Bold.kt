@@ -1,4 +1,4 @@
-package designSystem.icon
+package com.moscow.cineverse.designSystem.icon
 
 import com.example.design_system.R
 

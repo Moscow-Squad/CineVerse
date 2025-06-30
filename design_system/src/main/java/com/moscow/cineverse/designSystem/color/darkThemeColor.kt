@@ -1,4 +1,4 @@
-package designSystem.color
+package com.moscow.cineverse.designSystem.color
 
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color

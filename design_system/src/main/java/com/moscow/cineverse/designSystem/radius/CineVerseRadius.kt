@@ -1,4 +1,4 @@
-package designSystem.radius
+package com.moscow.cineverse.designSystem.radius
 
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.unit.Dp

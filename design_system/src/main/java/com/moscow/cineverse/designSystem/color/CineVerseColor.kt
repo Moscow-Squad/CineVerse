@@ -1,4 +1,4 @@
-package designSystem.color
+package com.moscow.cineverse.designSystem.color
 
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Brush

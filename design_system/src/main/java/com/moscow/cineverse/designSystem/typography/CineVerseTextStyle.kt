@@ -1,4 +1,4 @@
-package designSystem.typography
+package com.moscow.cineverse.designSystem.typography
 
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.text.TextStyle

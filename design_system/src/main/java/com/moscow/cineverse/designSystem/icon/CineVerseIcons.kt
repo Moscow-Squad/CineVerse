@@ -1,4 +1,4 @@
-package designSystem.icon
+package com.moscow.cineverse.designSystem.icon
 
 import androidx.compose.runtime.staticCompositionLocalOf
 
