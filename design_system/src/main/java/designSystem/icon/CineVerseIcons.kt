@@ -1,4 +1,4 @@
-package icon
+package designSystem.icon
 
 import androidx.compose.runtime.staticCompositionLocalOf
 

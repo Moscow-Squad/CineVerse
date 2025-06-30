@@ -1,4 +1,4 @@
-package theme
+package designSystem.theme
 
 import androidx.compose.runtime.Stable
 

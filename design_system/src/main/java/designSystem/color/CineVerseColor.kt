@@ -1,4 +1,4 @@
-package color
+package designSystem.color
 
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Brush

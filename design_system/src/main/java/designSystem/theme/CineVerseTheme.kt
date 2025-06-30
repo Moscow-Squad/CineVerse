@@ -1,21 +1,21 @@
-package theme
+package designSystem.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.compositionLocalOf
-import color.CineVerseColor
-import color.LocalCineVerseColors
-import color.darkThemeColor
-import color.lightThemeColor
-import icon.CineVerseIcons
-import icon.LocalCineVerseIcons
-import radius.CineVerseRadius
-import radius.LocalCineVerseRadius
-import typography.CineVerseTextStyle
-import typography.DefaultTextStyle
-import typography.LocalCineVerseTextStyle
+import designSystem.color.CineVerseColor
+import designSystem.color.LocalCineVerseColors
+import designSystem.color.darkThemeColor
+import designSystem.color.lightThemeColor
+import designSystem.icon.CineVerseIcons
+import designSystem.icon.LocalCineVerseIcons
+import designSystem.radius.CineVerseRadius
+import designSystem.radius.LocalCineVerseRadius
+import designSystem.typography.CineVerseTextStyle
+import designSystem.typography.DefaultTextStyle
+import designSystem.typography.LocalCineVerseTextStyle
 
 @Composable
 fun CineVerseTheme(

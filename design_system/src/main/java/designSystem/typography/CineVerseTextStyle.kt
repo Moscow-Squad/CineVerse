@@ -1,4 +1,4 @@
-package typography
+package designSystem.typography
 
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.text.TextStyle

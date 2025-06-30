@@ -1,4 +1,4 @@
-package icon
+package designSystem.icon
 
 import com.example.design_system.R
 
