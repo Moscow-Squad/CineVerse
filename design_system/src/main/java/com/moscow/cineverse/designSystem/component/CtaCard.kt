@@ -36,14 +36,14 @@ fun CtaCard(
     Row(
         modifier = modifier
             .clip(RoundedCornerShape(Theme.radius.large))
-            .background(Theme.colors.background.card)
-            .padding(vertical = 16.dp),
+            .background(Theme.colors.background.card),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(12.dp)
     ) {
+
         Box(
             modifier = Modifier
-                .padding(start = 16.dp)
+                .padding(start = 16.dp, bottom = 16.dp, top = 16.dp)
                 .size(48.dp)
                 .clip(CircleShape)
                 .background(Theme.colors.shade.quinary),
@@ -84,8 +84,21 @@ fun CtaCard(
 
 @Preview(showBackground = true)
 @Composable
-fun CtaCardPreview() {
+fun CtaCardDarkMode() {
     CineVerseTheme(state = ThemeState(isDark = true, {})) {
+        CtaCard(
+            icon = painterResource(R.drawable.due_tone_magic_stick),
+            title = "Title",
+            caption = "Caption",
+            onClickArrow = {}
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun CtaCardLightMode() {
+    CineVerseTheme(state = ThemeState(isDark = false, {})) {
         CtaCard(
             icon = painterResource(R.drawable.due_tone_magic_stick),
             title = "Let Us Choose For You!",
