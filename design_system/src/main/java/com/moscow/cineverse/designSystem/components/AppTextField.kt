@@ -1,5 +1,6 @@
-package com.example.design_system.components
+package com.moscow.cineverse.designSystem.components
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -33,6 +34,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.moscow.cineverse.designSystem.theme.Theme
 
 @Composable
 fun AppTextField(
@@ -71,7 +73,8 @@ fun AppTextField(
             value = value,
             onValueChange = onValueChange,
             modifier = Modifier
-                .fillMaxWidth(),
+                .fillMaxWidth()
+                .background(Theme.colors.background.card),
             textStyle = textStyle,
             placeholder = placeholder?.let { { Text(it) } },
             singleLine = singleLine,
@@ -109,6 +112,8 @@ fun AppTextField(
             keyboardActions = keyboardActions,
             colors = OutlinedTextFieldDefaults.colors(
                 focusedContainerColor = Color.Transparent,
+                focusedBorderColor = MaterialTheme.colorScheme.primary,
+                unfocusedBorderColor = MaterialTheme.colorScheme.outline,
                 unfocusedContainerColor = Color.Transparent,
                 disabledContainerColor = Color.Transparent,
                 errorContainerColor = Color.Transparent,
