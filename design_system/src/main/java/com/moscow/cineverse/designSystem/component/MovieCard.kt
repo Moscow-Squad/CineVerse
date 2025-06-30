@@ -54,10 +54,10 @@ enum class ViewMode {
 
 @Composable
 fun MoviePosterCard(
+    modifier: Modifier = Modifier,
     movie: Movie = Movie(),
     viewMode: ViewMode = ViewMode.GRID,
-    onMovieClick: (Movie) -> Unit = {},
-    modifier: Modifier = Modifier
+    onMovieClick: (Movie) -> Unit = {}
 ) {
     when (viewMode) {
         ViewMode.GRID -> GridMovieCard(
