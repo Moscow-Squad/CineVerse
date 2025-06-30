@@ -22,6 +22,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -75,11 +76,7 @@ fun AppTextField(
             onValueChange = onValueChange,
             modifier = Modifier
                 .fillMaxWidth()
-                .background(
-                    Theme.colors.background.card,
-                    shape = RoundedCornerShape(Theme.radius.large)
-                )
-            ,
+                .background(Theme.colors.background.card, RoundedCornerShape(Theme.radius.large)),
             textStyle = Theme.textStyle.body.medium.medium,
             placeholder = placeholder?.let { { Text(it) } },
             singleLine = singleLine,
@@ -121,10 +118,11 @@ fun AppTextField(
                 focusedBorderColor = Theme.colors.brand.primary,
                 unfocusedBorderColor = Theme.colors.stroke.primary,
                 errorBorderColor = Theme.colors.additional.primary.red,
+                errorTextColor = Theme.colors.shade.primary,
                 cursorColor = Theme.colors.brand.primary,
+                errorCursorColor = Color.Transparent,
             )
         )
-
         if (isError && !errorMessage.isNullOrEmpty()) {
             Text(
                 text = errorMessage,
@@ -150,7 +148,6 @@ fun AppTextField(
                 )
             }
         }
-
     }
 }
 
@@ -190,7 +187,7 @@ private fun PreviewPasswordAppTextField() {
 @Composable
 private fun PreviewErrorAppTextField() {
     CineVerseTheme {
-        var email by remember { mutableStateOf("abc@") }
+        var email by remember { mutableStateOf("") }
         AppTextField(
             label = "label",
             value = email,
