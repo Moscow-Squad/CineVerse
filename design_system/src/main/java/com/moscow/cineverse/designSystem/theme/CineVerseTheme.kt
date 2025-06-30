@@ -1,21 +1,21 @@
-package designSystem.theme
+package com.moscow.cineverse.designSystem.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.compositionLocalOf
-import designSystem.color.CineVerseColor
-import designSystem.color.LocalCineVerseColors
-import designSystem.color.darkThemeColor
-import designSystem.color.lightThemeColor
-import designSystem.icon.CineVerseIcons
-import designSystem.icon.LocalCineVerseIcons
-import designSystem.radius.CineVerseRadius
-import designSystem.radius.LocalCineVerseRadius
-import designSystem.typography.CineVerseTextStyle
-import designSystem.typography.DefaultTextStyle
-import designSystem.typography.LocalCineVerseTextStyle
+import com.moscow.cineverse.designSystem.color.CineVerseColor
+import com.moscow.cineverse.designSystem.color.LocalCineVerseColors
+import com.moscow.cineverse.designSystem.color.darkThemeColor
+import com.moscow.cineverse.designSystem.color.lightThemeColor
+import com.moscow.cineverse.designSystem.icon.CineVerseIcons
+import com.moscow.cineverse.designSystem.icon.LocalCineVerseIcons
+import com.moscow.cineverse.designSystem.radius.CineVerseRadius
+import com.moscow.cineverse.designSystem.radius.LocalCineVerseRadius
+import com.moscow.cineverse.designSystem.typography.CineVerseTextStyle
+import com.moscow.cineverse.designSystem.typography.DefaultTextStyle
+import com.moscow.cineverse.designSystem.typography.LocalCineVerseTextStyle
 
 @Composable
 fun CineVerseTheme(

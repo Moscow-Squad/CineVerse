@@ -1,4 +1,4 @@
-package designSystem.typography
+package com.moscow.cineverse.designSystem.typography
 
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight

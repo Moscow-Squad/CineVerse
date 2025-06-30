@@ -1,4 +1,4 @@
-package designSystem.theme
+package com.moscow.cineverse.designSystem.theme
 
 import androidx.compose.runtime.Stable
 
