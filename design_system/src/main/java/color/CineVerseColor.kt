@@ -72,4 +72,4 @@ data class Secondary(
     val yellow: Color,
 )
 
-internal val localCineVerseColors = staticCompositionLocalOf { lightThemeColor }
+internal val LocalCineVerseColors = staticCompositionLocalOf { lightThemeColor }

@@ -19,4 +19,4 @@ data class CineVerseRadius(
     val full: Dp = 1000.dp
 )
 
-val LocalCineVerseRadius = staticCompositionLocalOf { CineVerseRadius() }
+internal val LocalCineVerseRadius = staticCompositionLocalOf { CineVerseRadius() }

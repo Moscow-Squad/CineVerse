@@ -1,5 +1,6 @@
 package typography
 
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.text.TextStyle
 
 data class CineVerseTextStyle(
@@ -27,3 +28,5 @@ data class FontWeightStyle(
     val medium: TextStyle,
     val semiBold: TextStyle
 )
+
+internal val LocalCineVerseTextStyle = staticCompositionLocalOf { DefaultTextStyle }

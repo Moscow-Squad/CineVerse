@@ -9,4 +9,4 @@ data class CineVerseIcons (
     val colored: Colored = coloredIcons,
 )
 
-internal val localCineVerseIcons = staticCompositionLocalOf { CineVerseIcons() }
+internal val LocalCineVerseIcons = staticCompositionLocalOf { CineVerseIcons() }

@@ -5,7 +5,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 
-val DefaultTextStyle = CineVerseTextStyle(
+internal val DefaultTextStyle = CineVerseTextStyle(
     display = TextStyle(
         fontFamily = Manrope,
         fontWeight = FontWeight.Bold,
@@ -143,5 +143,3 @@ val DefaultTextStyle = CineVerseTextStyle(
         )
     )
 )
-
-val LocalCineVerseTextStyle = staticCompositionLocalOf { DefaultTextStyle }
