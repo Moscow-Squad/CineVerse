@@ -15,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -29,6 +30,7 @@ fun CircleImage(
     isLoading: Boolean,
     hasImage: Boolean,
     modifier: Modifier = Modifier,
+    image: Painter = painterResource(R.drawable.profile_image),
 ) {
     Box(
         modifier = modifier
@@ -49,7 +51,7 @@ fun CircleImage(
 
             hasImage -> {
                 Image(
-                    painter = painterResource(R.drawable.profile_image),
+                    painter = image,
                     contentDescription = "Profile Image",
                     contentScale = ContentScale.Crop,
                     modifier = Modifier.fillMaxSize()
@@ -89,7 +91,7 @@ private fun CircleImageDarkMode() {
         state = ThemeState(isDark = true, {})
     ) {
         Column {
-            CircleImage(hasImage = true, isLoading = false)
+            CircleImage(hasImage = true, isLoading = false, image = painterResource(R.drawable.profile_image))
             Spacer(Modifier.height(10.dp))
             CircleImage(hasImage = false, isLoading = true)
             Spacer(Modifier.height(10.dp))
@@ -105,7 +107,7 @@ private fun CircleImageLightMode() {
         state = ThemeState(isDark = false, {})
     ) {
         Column {
-            CircleImage(hasImage = true, isLoading = false)
+            CircleImage(hasImage = true, isLoading = false, image = painterResource(R.drawable.profile_image))
             Spacer(Modifier.height(10.dp))
             CircleImage(hasImage = false, isLoading = true)
             Spacer(Modifier.height(10.dp))
