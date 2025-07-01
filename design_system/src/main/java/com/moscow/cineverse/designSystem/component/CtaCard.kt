@@ -84,7 +84,7 @@ fun CtaCard(
 
 @Preview(showBackground = true)
 @Composable
-fun CtaCardDarkMode() {
+private fun CtaCardDarkMode() {
     CineVerseTheme(state = ThemeState(isDark = true, {})) {
         CtaCard(
             icon = painterResource(R.drawable.due_tone_magic_stick),
@@ -97,7 +97,7 @@ fun CtaCardDarkMode() {
 
 @Preview(showBackground = true)
 @Composable
-fun CtaCardLightMode() {
+private fun CtaCardLightMode() {
     CineVerseTheme(state = ThemeState(isDark = false, {})) {
         CtaCard(
             icon = painterResource(R.drawable.due_tone_magic_stick),

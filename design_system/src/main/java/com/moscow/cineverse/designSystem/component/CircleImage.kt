@@ -1,10 +1,12 @@
+package com.moscow.cineverse.designSystem.component
+
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize // For filling the clipped circle
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -72,7 +74,7 @@ private fun Modifier.applyIf(noImage: () -> Boolean): Modifier {
 
 
 @Composable
-fun Modifier.circularBorder(): Modifier {
+private fun Modifier.circularBorder(): Modifier {
     return this.border(
         width = 1.dp,
         color = Theme.colors.stroke.primary,
@@ -82,7 +84,7 @@ fun Modifier.circularBorder(): Modifier {
 
 @Preview(showBackground = true, backgroundColor = 0x1B1C2A)
 @Composable
-fun CircleImageDarkMode() {
+private fun CircleImageDarkMode() {
     CineVerseTheme(
         state = ThemeState(isDark = true, {})
     ) {
@@ -98,7 +100,7 @@ fun CircleImageDarkMode() {
 
 @Preview(showBackground = true)
 @Composable
-fun CircleImageLightMode() {
+private fun CircleImageLightMode() {
     CineVerseTheme(
         state = ThemeState(isDark = false, {})
     ) {
