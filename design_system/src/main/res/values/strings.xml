@@ -2,4 +2,6 @@
 <resources>
     <string name="label">label</string>
     <string name="forgot_password">Forgot Password?</string>
+    <string name="caption">Caption</string>
+    <string name="title">Title</string>
 </resources>
