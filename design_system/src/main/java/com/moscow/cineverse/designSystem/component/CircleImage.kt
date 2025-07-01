@@ -2,7 +2,6 @@ package com.moscow.cineverse.designSystem.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -28,16 +27,14 @@ import com.moscow.cineverse.designSystem.theme.ThemeState
 @Composable
 fun CircleImage(
     isLoading: Boolean,
-    hasImage: Boolean,
+    image: Painter?,
     modifier: Modifier = Modifier,
-    image: Painter = painterResource(R.drawable.profile_image),
 ) {
     Box(
         modifier = modifier
             .size(56.dp)
             .clip(CircleShape)
-            .background(Theme.colors.background.card)
-            .applyIf { !hasImage },
+            .background(Theme.colors.background.card),
         contentAlignment = Alignment.Center
     ) {
         when {
@@ -49,7 +46,7 @@ fun CircleImage(
                 )
             }
 
-            hasImage -> {
+            image != null -> {
                 Image(
                     painter = image,
                     contentDescription = "Profile Image",
@@ -69,21 +66,6 @@ fun CircleImage(
     }
 }
 
-@Composable
-private fun Modifier.applyIf(noImage: () -> Boolean): Modifier {
-    return if (noImage()) this.circularBorder() else this
-}
-
-
-@Composable
-private fun Modifier.circularBorder(): Modifier {
-    return this.border(
-        width = 1.dp,
-        color = Theme.colors.stroke.primary,
-        shape = CircleShape
-    )
-}
-
 @Preview(showBackground = true, backgroundColor = 0x1B1C2A)
 @Composable
 private fun CircleImageDarkMode() {
@@ -91,11 +73,11 @@ private fun CircleImageDarkMode() {
         state = ThemeState(isDark = true, {})
     ) {
         Column {
-            CircleImage(hasImage = true, isLoading = false, image = painterResource(R.drawable.profile_image))
+            CircleImage(isLoading = false, image = painterResource(R.drawable.profile_image))
             Spacer(Modifier.height(10.dp))
-            CircleImage(hasImage = false, isLoading = true)
+            CircleImage(isLoading = true, image = null)
             Spacer(Modifier.height(10.dp))
-            CircleImage(hasImage = false, isLoading = false)
+            CircleImage(isLoading = false, image = null)
         }
     }
 }
@@ -107,11 +89,11 @@ private fun CircleImageLightMode() {
         state = ThemeState(isDark = false, {})
     ) {
         Column {
-            CircleImage(hasImage = true, isLoading = false, image = painterResource(R.drawable.profile_image))
+            CircleImage(isLoading = false, image = painterResource(R.drawable.profile_image))
             Spacer(Modifier.height(10.dp))
-            CircleImage(hasImage = false, isLoading = true)
+            CircleImage(isLoading = true, image = null)
             Spacer(Modifier.height(10.dp))
-            CircleImage(hasImage = false, isLoading = false)
+            CircleImage(isLoading = false, image = null)
         }
     }
 }

@@ -26,7 +26,7 @@ import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.designSystem.theme.ThemeState
 
 @Composable
-fun CtaCard(
+fun CTACard(
     icon: Painter,
     title: String,
     caption: String,
@@ -86,7 +86,7 @@ fun CtaCard(
 @Composable
 private fun CtaCardDarkMode() {
     CineVerseTheme(state = ThemeState(isDark = true, {})) {
-        CtaCard(
+        CTACard(
             icon = painterResource(R.drawable.due_tone_magic_stick),
             title = "Title",
             caption = "Caption",
@@ -99,7 +99,7 @@ private fun CtaCardDarkMode() {
 @Composable
 private fun CtaCardLightMode() {
     CineVerseTheme(state = ThemeState(isDark = false, {})) {
-        CtaCard(
+        CTACard(
             icon = painterResource(R.drawable.due_tone_magic_stick),
             title = "Let Us Choose For You!",
             caption = "We’ll help you skip the scroll and go straight to the good stuff.",
