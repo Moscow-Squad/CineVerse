@@ -40,6 +40,6 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-    implementation("androidx.navigation:navigation-compose:2.9.0")
-    implementation("io.insert-koin:koin-androidx-compose:4.0.4")
+    implementation(libs.androidx.navigation.compose)
+    implementation(libs.koin.androidx.compose)
 }
