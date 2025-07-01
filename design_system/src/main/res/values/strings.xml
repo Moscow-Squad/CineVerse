@@ -2,4 +2,5 @@
 <resources>
     <string name="label">label</string>
     <string name="forgot_password">Forgot Password?</string>
+    <string name="floating_button_icon">floating button icon</string>
 </resources>
