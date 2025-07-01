@@ -44,7 +44,9 @@ android {
 }
 
 dependencies {
-
+    implementation(project(":design_system"))
+    implementation(project(":presentation"))
+    implementation("io.insert-koin:koin-android:4.0.4")
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
