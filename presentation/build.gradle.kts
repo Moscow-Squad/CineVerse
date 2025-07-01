@@ -33,7 +33,6 @@ android {
 }
 
 dependencies {
-
     implementation (project(":design_system"))
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
@@ -41,4 +40,6 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+    implementation(libs.androidx.navigation.compose)
+    implementation(libs.koin.androidx.compose)
 }
