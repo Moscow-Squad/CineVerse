@@ -79,42 +79,28 @@ fun MoviePosterCard(
 private fun PlaceholderCard(
     modifier: Modifier = Modifier,
     cardColor: Color = Theme.colors.brand.tertiary,
-    iconSize : Dp = 24.dp
+    iconSize: Dp = 24.dp
 ) {
-    Card(
-        modifier = modifier,
-        shape = RoundedCornerShape(
-            topStart = 12.dp,
-            topEnd = 12.dp,
-            bottomEnd = 0.dp,
-            bottomStart = 12.dp
-        ),
-        colors = CardDefaults.cardColors(
-            containerColor = Theme.colors.background.card
-        ),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+    Box(
+        modifier = modifier
+            .fillMaxSize()
+            .background(
+                cardColor,
+                RoundedCornerShape(
+                    topStart = 12.dp,
+                    topEnd = 12.dp,
+                    bottomEnd = 0.dp,
+                    bottomStart = 12.dp
+                )
+            ),
+        contentAlignment = Alignment.Center
     ) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(
-                    cardColor,
-                    RoundedCornerShape(
-                        topStart = 12.dp,
-                        topEnd = 12.dp,
-                        bottomEnd = 0.dp,
-                        bottomStart = 12.dp
-                    )
-                ),
-            contentAlignment = Alignment.Center
-        ) {
-            Icon(
-                painter = painterResource(R.drawable.due_tone_image),
-                contentDescription = "Movie Poster",
-                tint = Theme.colors.shade.secondary,
-                modifier = Modifier.size(iconSize)
-            )
-        }
+        Icon(
+            painter = painterResource(R.drawable.due_tone_image),
+            contentDescription = "Movie Poster",
+            tint = Theme.colors.shade.secondary,
+            modifier = Modifier.size(iconSize)
+        )
     }
 }
 
