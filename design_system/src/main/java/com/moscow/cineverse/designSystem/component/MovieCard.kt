@@ -33,6 +33,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import com.example.design_system.R
@@ -76,11 +77,18 @@ fun MoviePosterCard(
 
 @Composable
 private fun PlaceholderCard(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    cardColor: Color = Theme.colors.brand.tertiary,
+    iconSize : Dp = 24.dp
 ) {
     Card(
         modifier = modifier,
-        shape = RoundedCornerShape(12.dp),
+        shape = RoundedCornerShape(
+            topStart = 12.dp,
+            topEnd = 12.dp,
+            bottomEnd = 0.dp,
+            bottomStart = 12.dp
+        ),
         colors = CardDefaults.cardColors(
             containerColor = Theme.colors.background.card
         ),
@@ -90,8 +98,13 @@ private fun PlaceholderCard(
             modifier = Modifier
                 .fillMaxSize()
                 .background(
-                    Color.Gray.copy(alpha = 0.1f),
-                    RoundedCornerShape(12.dp)
+                    cardColor,
+                    RoundedCornerShape(
+                        topStart = 12.dp,
+                        topEnd = 12.dp,
+                        bottomEnd = 0.dp,
+                        bottomStart = 12.dp
+                    )
                 ),
             contentAlignment = Alignment.Center
         ) {
@@ -99,7 +112,7 @@ private fun PlaceholderCard(
                 painter = painterResource(R.drawable.due_tone_image),
                 contentDescription = "Movie Poster",
                 tint = Theme.colors.shade.secondary,
-                modifier = Modifier.size(48.dp)
+                modifier = Modifier.size(iconSize)
             )
         }
     }
@@ -134,7 +147,9 @@ private fun GridMovieCard(
                     )
                 } else {
                     PlaceholderCard(
-                        modifier = Modifier.fillMaxSize()
+                        modifier = Modifier.fillMaxSize(),
+                        cardColor = Theme.colors.background.card,
+                        iconSize = 32.dp
                     )
                 }
 
@@ -190,7 +205,7 @@ private fun ListMovieCard(
             .height(88.dp)
             .clickable { onMovieClick(movie) },
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
-        shape = RoundedCornerShape(8.dp),
+        shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(containerColor = Theme.colors.background.card)
     ) {
         Box(modifier = Modifier.fillMaxSize()) {
@@ -213,7 +228,9 @@ private fun ListMovieCard(
                     PlaceholderCard(
                         modifier = Modifier
                             .width(64.dp)
-                            .fillMaxHeight()
+                            .fillMaxHeight(),
+                        cardColor = Theme.colors.brand.tertiary,
+                        iconSize = 24.dp
                     )
                 }
 

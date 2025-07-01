@@ -12,9 +12,9 @@ import com.moscow.cineverse.designSystem.theme.Theme
 
 @Composable
 fun SectionTitle(
-    modifier: Modifier = Modifier,
     title: String,
-    onClick: () -> Unit = {}
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit
 ) {
     Row(modifier = modifier.fillMaxWidth()) {
         if (title.isNotEmpty()) {
@@ -39,5 +39,5 @@ fun SectionTitle(
 @Preview(showBackground = true)
 @Composable
 private fun SectionTitlePreview() {
-    SectionTitle(modifier = Modifier, title = "Action")
+    SectionTitle(title = "Action",onClick = {})
 }

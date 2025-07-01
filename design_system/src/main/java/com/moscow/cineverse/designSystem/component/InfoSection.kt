@@ -8,9 +8,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.moscow.cineverse.designSystem.theme.CineVerseTheme
 import com.moscow.cineverse.designSystem.theme.Theme
 
 @Composable
@@ -30,6 +32,7 @@ fun InfoSection(
                 color = Theme.colors.shade.primary,
                 style = Theme.textStyle.body.medium.medium,
                 maxLines = 1,
+                overflow = TextOverflow.Ellipsis
             )
         }
 
@@ -40,6 +43,7 @@ fun InfoSection(
                 color = Theme.colors.shade.secondary,
                 modifier = Modifier.padding(top = paddingBetween),
                 maxLines = maxDescriptionLines,
+                overflow = TextOverflow.Ellipsis
             )
         } else if (showGenres && genres.isNotEmpty()) {
             Row(
@@ -51,6 +55,7 @@ fun InfoSection(
                         text = if (index < genres.lastIndex) "$genre," else genre,
                         style = Theme.textStyle.body.small.regular,
                         color = Theme.colors.shade.secondary,
+                        overflow = TextOverflow.Ellipsis
                     )
                 }
             }
@@ -61,7 +66,7 @@ fun InfoSection(
 @Preview(showBackground = true, name = "Movie Info - Full")
 @Composable
 fun MovieInfoPreview() {
-    MaterialTheme {
+    CineVerseTheme{
         Column(modifier = Modifier.padding(16.dp)) {
             InfoSection(
                 title = "The Dark Knight",
