@@ -2,7 +2,6 @@
 
 package com.moscow.cineverse.designSystem.component
 
-import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.annotation.DrawableRes
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.animateColorAsState
@@ -85,7 +84,7 @@ object MovieNavItems {
 }
 
 @Composable
-fun DramaticAnimatedMovieBottomNavigation(
+fun MovieBottomNavigation(
     navItems: List<MovieNavItem>,
     currentRoute: String,
     onItemClick: (String) -> Unit,
@@ -219,9 +218,9 @@ private fun AnimatedIcon(
     }
 }
 
-@Preview(showBackground = true, name = "Simple Bottom Navigation Preview")
+@Preview(showBackground = true, name = "Bottom Navigation Preview")
 @Composable
-fun SimpleMovieBottomNavigationPreview() {
+fun MovieBottomNavigationPreview() {
     var currentRoute by remember { mutableStateOf("match") }
 
     CineVerseTheme {
@@ -242,7 +241,7 @@ fun SimpleMovieBottomNavigationPreview() {
                     color = Theme.colors.brand.primary
                 )
             }
-            DramaticAnimatedMovieBottomNavigation(
+            MovieBottomNavigation(
                 navItems = MovieNavItems.getDefaultItems(),
                 currentRoute = currentRoute,
                 onItemClick = { selected ->
