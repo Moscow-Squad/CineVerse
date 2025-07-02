@@ -87,10 +87,9 @@ private fun PlaceholderCard(
             .background(
                 cardColor,
                 RoundedCornerShape(
-                    topStart = 12.dp,
-                    topEnd = 12.dp,
-                    bottomEnd = 0.dp,
-                    bottomStart = 12.dp
+                    topStart = Theme.radius.large,
+                    topEnd = Theme.radius.large,
+                    bottomStart = Theme.radius.large
                 )
             ),
         contentAlignment = Alignment.Center
@@ -116,8 +115,7 @@ private fun GridMovieCard(
                 .fillMaxWidth()
                 .height(182.dp)
                 .clickable { onMovieClick(movie) },
-            elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-            shape = RoundedCornerShape(12.dp)
+            shape = RoundedCornerShape(Theme.radius.large)
         ) {
             Box {
                 if (movie.posterUrl.isNotEmpty()) {
@@ -129,7 +127,7 @@ private fun GridMovieCard(
                         contentScale = ContentScale.Crop,
                         modifier = Modifier
                             .fillMaxSize()
-                            .clip(RoundedCornerShape(12.dp))
+                            .clip(RoundedCornerShape(Theme.radius.large))
                     )
                 } else {
                     PlaceholderCard(
@@ -191,7 +189,7 @@ private fun ListMovieCard(
             .height(88.dp)
             .clickable { onMovieClick(movie) },
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
-        shape = RoundedCornerShape(12.dp),
+        shape = RoundedCornerShape(Theme.radius.large),
         colors = CardDefaults.cardColors(containerColor = Theme.colors.background.card)
     ) {
         Box(modifier = Modifier.fillMaxSize()) {
@@ -208,7 +206,7 @@ private fun ListMovieCard(
                         modifier = Modifier
                             .width(64.dp)
                             .fillMaxHeight()
-                            .clip(RoundedCornerShape(8.dp))
+                            .clip(RoundedCornerShape(Theme.radius.small))
                     )
                 } else {
                     PlaceholderCard(
