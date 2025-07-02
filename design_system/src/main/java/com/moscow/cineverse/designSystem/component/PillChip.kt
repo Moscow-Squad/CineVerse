@@ -10,8 +10,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -28,23 +26,25 @@ fun PillLabel(
     text: String,
     onClick: () -> Unit,
     isActive: Boolean,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    prefixIcon: @Composable () -> Unit = {},
+    suffixIcon: @Composable () -> Unit = {}
 ) {
     Box(
         modifier = modifier
-            .clickable { onClick() }
             .height(32.dp)
             .clip(RoundedCornerShape(Theme.radius.full))
-            .background(Theme.colors.background.card)
+            .background(if (isActive) Theme.colors.brand.tertiary else Theme.colors.background.card)
             .then(
                 if (isActive) {
                     Modifier.border(
-                        width = 2.dp,
+                        width = 1.dp,
                         color = Theme.colors.brand.secondary,
                         shape = RoundedCornerShape(Theme.radius.full)
                     )
                 } else Modifier
             )
+            .clickable { onClick() }
             .padding(horizontal = 10.dp, vertical = 8.dp),
         contentAlignment = Alignment.Center
     ) {
@@ -52,28 +52,15 @@ fun PillLabel(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(6.dp)
         ) {
-            // Left dot
-            Box(
-                modifier = Modifier
-                    .size(10.dp)
-                    .clip(CircleShape)
-                    .background(Theme.colors.brand.primary)
-            )
+            prefixIcon()
 
-            // Label text
             Text(
                 text = text,
-                color = Theme.colors.brand.primary,
+                color = if (isActive) Theme.colors.brand.primary else Theme.colors.shade.primary,
                 style = Theme.textStyle.label.medium.medium
             )
 
-            // Right dot
-            Box(
-                modifier = Modifier
-                    .size(10.dp)
-                    .clip(RoundedCornerShape(Theme.radius.full))
-                    .background(Theme.colors.shade.primary)
-            )
+            suffixIcon()
         }
     }
 }
@@ -83,9 +70,9 @@ fun PillLabel(
 @Composable
 fun PillLabelExample() {
     CineVerseTheme {
-        Column (
+        Column(
             verticalArrangement = Arrangement.spacedBy(16.dp)
-        ){
+        ) {
             // Inactive state
             PillLabel(
                 text = "Label",
