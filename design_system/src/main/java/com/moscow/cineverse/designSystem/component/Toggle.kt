@@ -1,266 +1,272 @@
 package com.moscow.cineverse.designSystem.component
 
 import android.content.res.Configuration
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.zIndex
 import com.moscow.cineverse.designSystem.theme.CineVerseTheme
 import com.moscow.cineverse.designSystem.theme.Theme
 
-enum class ViewType {
-    GRID,
-    LIST
+enum class ViewMode {
+    GRID, LIST
 }
 
 @Composable
-fun CineVerseViewToggle(
-    selectedView: ViewType,
-    onViewTypeChange: (ViewType) -> Unit,
+fun ViewModeToggle(
+    selectedMode: ViewMode,
+    onModeSelected: (ViewMode) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Row(
-        modifier = modifier
-            .height(48.dp)
-            .clip(RoundedCornerShape(8.dp))
-            .border(
-                width = 1.dp,
-                color = Theme.colors.shade.quaternary,
-                shape = RoundedCornerShape(8.dp)
-            )
-            .background(Theme.colors.background.card)
+    Box(
+        modifier = modifier.height(56.dp)
     ) {
-        // Grid View Button with custom icon
+        // Background with border
         Box(
             modifier = Modifier
-                .weight(1f)
                 .fillMaxHeight()
-                .clickable { onViewTypeChange(ViewType.GRID) }
-                .background(
-                    if (selectedView == ViewType.GRID) Theme.colors.brand.primary
-                    else Color.Transparent
-                ),
-            contentAlignment = Alignment.Center
-        ) {
-            GridIcon(
-                isSelected = selectedView == ViewType.GRID
-            )
-        }
-
-        // Divider
-        Box(
-            modifier = Modifier
-                .width(1.dp)
-                .fillMaxHeight()
-                .background(Theme.colors.shade.quaternary)
+                .clip(RoundedCornerShape(Theme.radius.small))
+                .border(
+                    width = 1.dp,
+                    color = Theme.colors.stroke.primary,
+                    shape = RoundedCornerShape(Theme.radius.small)
+                )
+                .background(Theme.colors.background.card)
         )
 
-        // List View Button with custom icon
-        Box(
-            modifier = Modifier
-                .weight(1f)
-                .fillMaxHeight()
-                .clickable { onViewTypeChange(ViewType.LIST) }
-                .background(
-                    if (selectedView == ViewType.LIST) Theme.colors.brand.primary
-                    else Color.Transparent
-                ),
-            contentAlignment = Alignment.Center
+        // Buttons row
+        Row(
+            modifier = Modifier.fillMaxHeight(),
+            horizontalArrangement = Arrangement.Center
         ) {
-            ListIcon(
-                isSelected = selectedView == ViewType.LIST
+            // Grid button
+            ViewModeButton(
+                isSelected = selectedMode == ViewMode.GRID,
+                onClick = { onModeSelected(ViewMode.GRID) },
+                content = {
+                    GridIcon(
+                        isSelected = selectedMode == ViewMode.GRID
+                    )
+                }
+            )
+
+            // List button
+            ViewModeButton(
+                isSelected = selectedMode == ViewMode.LIST,
+                onClick = { onModeSelected(ViewMode.LIST) },
+                content = {
+                    ListIcon(
+                        isSelected = selectedMode == ViewMode.LIST
+                    )
+                }
             )
         }
     }
 }
 
 @Composable
-private fun GridIcon(
+private fun ViewModeButton(
     isSelected: Boolean,
-    modifier: Modifier = Modifier
+    onClick: () -> Unit,
+    content: @Composable () -> Unit
 ) {
-    val color = if (isSelected) Color.White else Theme.colors.shade.secondary
+    val backgroundColor by animateColorAsState(
+        targetValue = if (isSelected) Theme.colors.brand.tertiary else Color.Transparent,
+        label = "backgroundColor"
+    )
+
+    val borderColor by animateColorAsState(
+        targetValue = if (isSelected) Theme.colors.brand.secondary else Color.Transparent,
+        label = "borderColor"
+    )
+
+    Box(
+        modifier = Modifier
+            .fillMaxHeight()
+            .width(80.dp)
+            .zIndex(if (isSelected) 1f else 0f) // Bring selected button to front
+            .clip(RoundedCornerShape(Theme.radius.small))
+            .background(backgroundColor)
+            .then(
+                if (isSelected) {
+                    Modifier.border(
+                        width = 2.dp,
+                        color = borderColor,
+                        shape = RoundedCornerShape(Theme.radius.small)
+                    )
+                } else {
+                    Modifier
+                }
+            )
+            .clickable { onClick() },
+        contentAlignment = Alignment.Center
+    ) {
+        content()
+    }
+}
+
+@Composable
+private fun GridIcon(isSelected: Boolean) {
+    val iconColor by animateColorAsState(
+        targetValue = if (isSelected) Theme.colors.brand.primary else Theme.colors.shade.secondary,
+        label = "iconColor"
+    )
 
     Row(
-        modifier = modifier,
-        horizontalArrangement = Arrangement.spacedBy(3.dp)
+        horizontalArrangement = Arrangement.spacedBy(4.dp)
     ) {
         Column(
-            verticalArrangement = Arrangement.spacedBy(3.dp)
+            verticalArrangement = Arrangement.spacedBy(4.dp)
         ) {
             Box(
                 modifier = Modifier
-                    .size(7.dp)
-                    .background(color, RoundedCornerShape(1.5.dp))
+                    .size(12.dp)
+                    .clip(RoundedCornerShape(2.dp))
+                    .then(
+                        if (isSelected) {
+                            Modifier.background(iconColor)
+                        } else {
+                            Modifier.border(
+                                width = 1.5.dp,
+                                color = iconColor,
+                                shape = RoundedCornerShape(2.dp)
+                            )
+                        }
+                    )
             )
             Box(
                 modifier = Modifier
-                    .size(7.dp)
-                    .background(color, RoundedCornerShape(1.5.dp))
+                    .size(12.dp)
+                    .clip(RoundedCornerShape(2.dp))
+                    .then(
+                        if (isSelected) {
+                            Modifier.background(iconColor.copy(alpha = 0.4f))
+                        } else {
+                            Modifier.border(
+                                width = 1.5.dp,
+                                color = iconColor,
+                                shape = RoundedCornerShape(2.dp)
+                            )
+                        }
+                    )
             )
         }
         Column(
-            verticalArrangement = Arrangement.spacedBy(3.dp)
+            verticalArrangement = Arrangement.spacedBy(4.dp)
         ) {
             Box(
                 modifier = Modifier
-                    .size(7.dp)
-                    .background(color, RoundedCornerShape(1.5.dp))
+                    .size(12.dp)
+                    .clip(RoundedCornerShape(2.dp))
+                    .then(
+                        if (isSelected) {
+                            Modifier.background(iconColor.copy(alpha = 0.4f))
+                        } else {
+                            Modifier.border(
+                                width = 1.5.dp,
+                                color = iconColor,
+                                shape = RoundedCornerShape(2.dp)
+                            )
+                        }
+                    )
             )
             Box(
                 modifier = Modifier
-                    .size(7.dp)
-                    .background(color, RoundedCornerShape(1.5.dp))
+                    .size(12.dp)
+                    .clip(RoundedCornerShape(2.dp))
+                    .then(
+                        if (isSelected) {
+                            Modifier.background(iconColor)
+                        } else {
+                            Modifier.border(
+                                width = 1.5.dp,
+                                color = iconColor,
+                                shape = RoundedCornerShape(2.dp)
+                            )
+                        }
+                    )
             )
         }
     }
 }
 
 @Composable
-private fun ListIcon(
-    isSelected: Boolean,
-    modifier: Modifier = Modifier
-) {
-    val color = if (isSelected) Color.White else Theme.colors.shade.secondary
+private fun ListIcon(isSelected: Boolean) {
+    val iconColor by animateColorAsState(
+        targetValue = if (isSelected) Theme.colors.brand.primary else Theme.colors.shade.secondary,
+        label = "iconColor"
+    )
 
     Column(
-        modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(3.dp)
+        verticalArrangement = Arrangement.spacedBy(4.dp)
     ) {
         Box(
             modifier = Modifier
-                .width(18.dp)
-                .height(3.dp)
-                .background(color, RoundedCornerShape(1.5.dp))
+                .width(28.dp)
+                .height(12.dp)
+                .clip(RoundedCornerShape(2.dp))
+                .then(
+                    if (isSelected) {
+                        Modifier.background(iconColor)
+                    } else {
+                        Modifier.border(
+                            width = 1.5.dp,
+                            color = iconColor,
+                            shape = RoundedCornerShape(2.dp)
+                        )
+                    }
+                )
         )
         Box(
             modifier = Modifier
-                .width(18.dp)
-                .height(3.dp)
-                .background(color, RoundedCornerShape(1.5.dp))
+                .width(28.dp)
+                .height(12.dp)
+                .clip(RoundedCornerShape(2.dp))
+                .then(
+                    if (isSelected) {
+                        Modifier.background(iconColor.copy(alpha = 0.4f))
+                    } else {
+                        Modifier.border(
+                            width = 1.5.dp,
+                            color = iconColor,
+                            shape = RoundedCornerShape(2.dp)
+                        )
+                    }
+                )
         )
     }
 }
 
-@Preview(name = "Light Mode", uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true)
-@Preview(name = "Dark Mode", uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
+@Preview(name = "Light Mode", uiMode = Configuration.UI_MODE_NIGHT_NO)
+@Preview(name = "Dark Mode", uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
-private fun CineVerseViewTogglePreview() {
-    var selectedView by remember { mutableStateOf(ViewType.GRID) }
-
+fun ViewModeTogglePreview() {
+    var viewMode by remember { mutableStateOf(ViewMode.GRID) }
     CineVerseTheme {
-        Surface(
-            color = MaterialTheme.colorScheme.background,
-            modifier = Modifier.padding(16.dp)
-        ) {
-            Column(
-                verticalArrangement = Arrangement.spacedBy(24.dp),
-                modifier = Modifier.padding(16.dp)
-            ) {
-                Text(
-                    "View Toggle Component",
-                    style = MaterialTheme.typography.titleMedium
-                )
-
-                CineVerseViewToggle(
-                    selectedView = selectedView,
-                    onViewTypeChange = { selectedView = it }
-                )
-
-                // All states preview
-                Text(
-                    "All States",
-                    style = MaterialTheme.typography.titleMedium
-                )
-
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(16.dp)
-                ) {
-                    Column(
-                        verticalArrangement = Arrangement.spacedBy(8.dp)
-                    ) {
-                        Text("Grid Selected", style = MaterialTheme.typography.bodySmall)
-                        CineVerseViewToggle(
-                            selectedView = ViewType.GRID,
-                            onViewTypeChange = { },
-                            modifier = Modifier.width(100.dp)
-                        )
-                    }
-
-                    Column(
-                        verticalArrangement = Arrangement.spacedBy(8.dp)
-                    ) {
-                        Text("List Selected", style = MaterialTheme.typography.bodySmall)
-                        CineVerseViewToggle(
-                            selectedView = ViewType.LIST,
-                            onViewTypeChange = { },
-                            modifier = Modifier.width(100.dp)
-                        )
-                    }
-                }
-            }
-        }
-    }
-}
-
-// Preview showing the exact layout from your image
-@Preview(name = "Image Layout", showBackground = true, backgroundColor = 0xFF1C1C1C)
-@Composable
-private fun CineVerseViewToggleImageLayout() {
-    CineVerseTheme {
-        Box(
-            modifier = Modifier
-                .background(Color(0xFF1C1C1C))
-                .padding(32.dp)
-        ) {
-            Column(
-                verticalArrangement = Arrangement.spacedBy(16.dp)
-            ) {
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(16.dp)
-                ) {
-                    // Top left - Grid selected
-                    CineVerseViewToggle(
-                        selectedView = ViewType.GRID,
-                        onViewTypeChange = { },
-                        modifier = Modifier.size(80.dp)
-                    )
-
-                    // Top right - Grid selected (showing both buttons)
-                    CineVerseViewToggle(
-                        selectedView = ViewType.GRID,
-                        onViewTypeChange = { },
-                        modifier = Modifier.size(80.dp)
-                    )
-                }
-
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(16.dp)
-                ) {
-                    // Bottom left - List selected
-                    CineVerseViewToggle(
-                        selectedView = ViewType.LIST,
-                        onViewTypeChange = { },
-                        modifier = Modifier.size(80.dp)
-                    )
-
-                    // Bottom right - List selected
-                    CineVerseViewToggle(
-                        selectedView = ViewType.LIST,
-                        onViewTypeChange = { },
-                        modifier = Modifier.size(80.dp)
-                    )
-                }
-            }
-        }
+        ViewModeToggle(
+            selectedMode = viewMode,
+            onModeSelected = { viewMode = it }
+        )
     }
 }
