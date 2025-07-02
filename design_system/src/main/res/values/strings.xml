@@ -2,4 +2,5 @@
 <resources>
     <string name="label">label</string>
     <string name="forgot_password">Forgot Password?</string>
+    <string name="show_more">Show More</string>
 </resources>
