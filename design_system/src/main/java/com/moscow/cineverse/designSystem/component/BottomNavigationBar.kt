@@ -2,7 +2,6 @@
 
 package com.moscow.cineverse.designSystem.component
 
-import androidx.annotation.DrawableRes
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.FastOutSlowInEasing
@@ -42,43 +41,43 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.design_system.R
 import com.moscow.cineverse.designSystem.theme.CineVerseTheme
 import com.moscow.cineverse.designSystem.theme.Theme
 
 data class MovieNavItem(
     val route: String,
     val title: String,
-    @DrawableRes val filledIcon: Int,
-    @DrawableRes val outlinedIcon: Int
+    val filledIcon: Int,
+    val outlinedIcon: Int
 )
 
 
 object MovieNavItems {
+    @Composable
     fun getDefaultItems() = listOf(
         MovieNavItem(
             route = "home",
             title = "Home",
-            filledIcon = R.drawable.due_tone_home,
-            outlinedIcon = R.drawable.outline_home
+            filledIcon = Theme.icons.dueTone.home,
+            outlinedIcon = Theme.icons.outline.home
         ),
         MovieNavItem(
             route = "explore",
             title = "Explore",
-            filledIcon = R.drawable.due_tone_search,
-            outlinedIcon = R.drawable.outline_search
+            filledIcon = Theme.icons.dueTone.search,
+            outlinedIcon = Theme.icons.outline.search
         ),
         MovieNavItem(
             route = "match",
             title = "Match",
-            filledIcon = R.drawable.due_tone_magic_stick,
-            outlinedIcon = R.drawable.outline_magic_stick
+            filledIcon = Theme.icons.dueTone.magicStick,
+            outlinedIcon = Theme.icons.outline.magicStick
         ),
         MovieNavItem(
             route = "me",
             title = "Me",
-            filledIcon = R.drawable.due_tone_user_square,
-            outlinedIcon = R.drawable.outline_user_square
+            filledIcon = Theme.icons.dueTone.userSquare,
+            outlinedIcon = Theme.icons.outline.userSquare
         )
     )
 }
@@ -168,7 +167,7 @@ private fun AnimatedNavItem(
         ) {
             Box(
                 contentAlignment = Alignment.Center,
-                modifier = Modifier.padding( bottom = 8.dp)
+                modifier = Modifier.padding(bottom = 8.dp)
             ) {
                 AnimatedIcon(
                     isSelected = isSelected,
@@ -194,8 +193,8 @@ private fun AnimatedNavItem(
 @Composable
 private fun AnimatedIcon(
     isSelected: Boolean,
-    @DrawableRes filledIcon: Int,
-    @DrawableRes outlinedIcon: Int,
+    filledIcon: Int,
+    outlinedIcon: Int,
     contentDescription: String?,
     tint: Color,
     modifier: Modifier = Modifier

@@ -1,6 +1,5 @@
 package com.moscow.cineverse.designSystem.component
 
-import androidx.compose.ui.graphics.Color
 import androidx.annotation.DrawableRes
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.FastOutSlowInEasing
@@ -18,6 +17,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -27,6 +27,7 @@ import com.moscow.cineverse.designSystem.theme.Theme
 
 @Composable
 fun BuildingBlock(
+    modifier: Modifier = Modifier,
     isSelected: Boolean,
     onClick: () -> Unit,
     @DrawableRes iconRes: Int,
@@ -34,7 +35,6 @@ fun BuildingBlock(
     contentDescription: String? = null,
     selectedTint: Color = Theme.colors.brand.primary,
     unselectedTint: Color = Theme.colors.shade.tertiary,
-    modifier: Modifier = Modifier
 ) {
     val animatedTint by animateColorAsState(
         targetValue = if (isSelected) selectedTint else unselectedTint,
