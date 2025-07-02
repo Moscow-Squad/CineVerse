@@ -7,9 +7,12 @@ import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.geometry.Offset
@@ -27,13 +30,13 @@ import kotlin.math.sin
 
 @Composable
 fun MovieCircularProgressBar(
-    modifier: Modifier = Modifier.size(48.dp),
+    modifier: Modifier = Modifier,
     strokeWidth: Dp = 6.dp,
     gradientColors: List<Color>,
 ) {
     val rotation by rememberInfiniteTransition(label = "").animateFloat(
         initialValue = 0f,
-        targetValue = 360f,
+        targetValue = -360f,
         animationSpec = infiniteRepeatable(
             tween(1000, easing = LinearEasing),
             repeatMode = RepeatMode.Restart
@@ -41,7 +44,7 @@ fun MovieCircularProgressBar(
         label = ""
     )
 
-    Canvas(modifier = modifier.rotate(rotation)) {
+    Canvas(modifier = modifier.size(48.dp).rotate(rotation)) {
         val center = center
         val radius = size.minDimension / 2
         val strokeWidthPx = strokeWidth.toPx()
@@ -79,13 +82,18 @@ fun MovieCircularProgressBar(
 @Composable
 private fun ProgressPreview() {
 
-    MovieCircularProgressBar(
-        gradientColors = listOf(
-            Theme.colors.brand.primary,
-            Theme.colors.brand.tertiary
-        )
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ) {
+        MovieCircularProgressBar(
+            gradientColors = listOf(
+                Theme.colors.brand.primary,
+                Theme.colors.brand.tertiary
+            )
 
-    )
+        )
+    }
 
 }
 
