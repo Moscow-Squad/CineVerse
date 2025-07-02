@@ -1,4 +1,4 @@
-package com.moscow.cineverse.designSystem.component
+package com.moscow.cineverse.designSystem.component.tabs
 
 import android.content.res.Configuration
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
@@ -18,10 +18,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.moscow.cineverse.designSystem.theme.CineVerseTheme
 import com.moscow.cineverse.designSystem.theme.Theme
-import com.moscow.cineverse.designSystem.theme.ThemeState
 import kotlinx.coroutines.launch
 
 @Composable
@@ -56,7 +56,7 @@ fun ExploreTabs(
                     selected = pagerState.currentPage == index,
                     selectedContentColor = selectedContentColor,
                     unselectedContentColor = unselectedContentColor,
-                    text = { Text(text = currentTab.text) },
+                    text = { Text(text = stringResource(currentTab.textId)) },
                     onClick = {
                         scope.launch {
                             pagerState.animateScrollToPage(currentTab.ordinal)
