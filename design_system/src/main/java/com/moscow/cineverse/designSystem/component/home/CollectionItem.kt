@@ -17,13 +17,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import coil3.compose.SubcomposeAsyncImage
 import com.example.design_system.R
 import com.moscow.cineverse.designSystem.theme.CineVerseTheme
 import com.moscow.cineverse.designSystem.theme.Theme
@@ -32,7 +32,7 @@ import com.moscow.cineverse.designSystem.theme.ThemeState
 @Composable
 fun CollectionItem(
     description: String,
-    image: Painter,
+    imageURL: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -44,13 +44,14 @@ fun CollectionItem(
                     .clickable { onClick() },
                 contentAlignment = Alignment.BottomCenter
             ) {
-                Image(
-                    painter = image,
+                SubcomposeAsyncImage(
+                    model = imageURL,
                     contentDescription = stringResource(R.string.collection_image),
                     contentScale = ContentScale.FillWidth,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(80.dp)
+                        .height(80.dp),
+                    loading = { LoadingImage() }
                 )
                 Row(
                     modifier = Modifier
@@ -70,6 +71,14 @@ fun CollectionItem(
             BackLayer()
         }
     }
+}
+
+@Composable
+fun LoadingImage() {
+    Image(
+        painter = painterResource(R.drawable.due_tone_image),
+        contentDescription = stringResource(R.string.collection_image),
+    )
 }
 
 @Composable
@@ -110,10 +119,10 @@ private fun BackgroundLayer(
 @Preview(showBackground = true)
 @Composable
 private fun CollectionItemPreview() {
-    CineVerseTheme(state = ThemeState(isDark = true, {})) {
+    CineVerseTheme(state = ThemeState(isDark = true) {}) {
         CollectionItem(
             description = "Text",
-            image = painterResource(R.drawable.collection_image),
+            imageURL = "https://upload.wikimedia.org/wikipedia/commons/2/23/Real_Monasterio_de_San_Juan_de_la_Pe%C3%B1a%2C_Huesca%2C_Espa%C3%B1a%2C_2023-01-05%2C_DD_48-50_HDR.jpg",
             onClick = {}
         )
     }

@@ -9,8 +9,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -22,7 +20,7 @@ import com.moscow.cineverse.designSystem.theme.ThemeState
 data class FeaturedItem(
     // ToDo: Will be Ui_State
     val description: String,
-    val image: Painter,
+    val imageURL: String,
 )
 
 @Composable
@@ -63,8 +61,8 @@ private fun FeaturedCollections(
             CollectionItem(
                 modifier = Modifier.width(280.dp),
                 description = item.description,
-                image = item.image,
-                onClick = { onCollectionClick } // ToDo: Will add Action Later
+                imageURL = item.imageURL.toString(),
+                onClick = onCollectionClick  // ToDo: Will add Action Later
             )
         }
     }
@@ -78,11 +76,11 @@ private fun FeaturedCollectionsSectionPreview() {
         val collections = listOf(
             FeaturedItem(
                 description = "Description",
-                image = painterResource(R.drawable.collection_image),
+                imageURL = "https://upload.wikimedia.org/wikipedia/commons/2/23/Real_Monasterio_de_San_Juan_de_la_Pe%C3%B1a%2C_Huesca%2C_Espa%C3%B1a%2C_2023-01-05%2C_DD_48-50_HDR.jpg",
             ),
             FeaturedItem(
                 description = "Description",
-                image = painterResource(R.drawable.collection_image),
+                imageURL = "https://upload.wikimedia.org/wikipedia/commons/2/23/Real_Monasterio_de_San_Juan_de_la_Pe%C3%B1a%2C_Huesca%2C_Espa%C3%B1a%2C_2023-01-05%2C_DD_48-50_HDR.jpg",
             ),
         )
         FeaturedCollectionsSection(
