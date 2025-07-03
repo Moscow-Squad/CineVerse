@@ -27,11 +27,11 @@ import com.moscow.cineverse.designSystem.theme.Theme
 
 @Composable
 fun BuildingBlock(
-    modifier: Modifier = Modifier,
     isSelected: Boolean,
     onClick: () -> Unit,
     @DrawableRes iconRes: Int,
     title: String,
+    modifier: Modifier = Modifier,
     contentDescription: String? = null,
     selectedTint: Color = Theme.colors.brand.primary,
     unselectedTint: Color = Theme.colors.shade.tertiary,

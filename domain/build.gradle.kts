@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.presentation"
-    compileSdk = 35
+    namespace = "com.moscow.domain"
+    compileSdk = 36
 
     defaultConfig {
-        minSdk = 24
+        minSdk = 26
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -33,14 +33,11 @@ android {
 }
 
 dependencies {
-    implementation (project(":design_system"))
-    implementation(project(":domain"))
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-    implementation(libs.androidx.navigation.compose)
-    implementation(libs.koin.androidx.compose)
 }

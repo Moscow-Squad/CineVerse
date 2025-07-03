@@ -20,9 +20,9 @@ import com.moscow.cineverse.designSystem.theme.Theme
 @Composable
 fun MovieFloatingButton(
     buttonIcon: Int,
-    onClick:()->Unit,
-    backgroundColor:Color,
-    iconColor:Color,
+    onClick: () -> Unit,
+    backgroundColor: Color,
+    iconColor: Color,
     modifier: Modifier = Modifier
 ) {
     Button(
@@ -30,17 +30,17 @@ fun MovieFloatingButton(
         onClick = onClick,
         shape = RoundedCornerShape(Theme.radius.large),
         contentPadding = PaddingValues(16.dp),
-        colors =buttonColors(
+        colors = buttonColors(
             containerColor = backgroundColor,
             contentColor = Color.Unspecified
         )
     ) {
 
         Icon(
-             modifier = Modifier.size(24.dp),
-             painter = painterResource(buttonIcon),
-             tint = iconColor,
-             contentDescription = stringResource(R.string.floating_button_icon)
+            modifier = Modifier.size(24.dp),
+            painter = painterResource(buttonIcon),
+            tint = iconColor,
+            contentDescription = stringResource(R.string.floating_button_icon)
         )
 
     }

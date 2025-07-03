@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalMaterial3Api::class)
-
 package com.moscow.cineverse.designSystem.component
 
 import androidx.compose.foundation.background
@@ -20,7 +18,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -38,6 +35,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import com.example.design_system.R
+import com.moscow.cineverse.designSystem.theme.CineVerseTheme
 import com.moscow.cineverse.designSystem.theme.Theme
 
 data class Movie(
@@ -337,7 +335,7 @@ fun GridMovieCardLoadingPreview() {
 @Preview(showBackground = true, name = "List View - Loading State")
 @Composable
 fun ListMovieCardLoadingPreview() {
-    MaterialTheme {
+    CineVerseTheme {
         Column(modifier = Modifier.padding(16.dp)) {
             MoviePosterCard(
                 movie = Movie(
