@@ -10,7 +10,7 @@ plugins {
 
 android {
     namespace = "com.moscow.cineverse"
-    compileSdk = 36
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.moscow.cineverse"
