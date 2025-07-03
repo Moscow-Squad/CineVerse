@@ -33,7 +33,7 @@ fun AdvertisementSection(
             icon = painterResource(R.drawable.due_tone_magic_stick),
             title = advertisementTitle,
             caption = advertisementCaption,
-            onClickArrow = { onClickArrow } // ToDo: Will add Action Later
+            onClickArrow = onClickArrow  // ToDo: Will add Action Later
         )
     }
 }
