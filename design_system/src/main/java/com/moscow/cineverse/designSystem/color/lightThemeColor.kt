@@ -8,7 +8,8 @@ val lightThemeColor = CineVerseColor(
         screen = Color(0xFFF7F7F7),
         card = Color(0xFFFFFFFF),
         bottomSheet = Color(0xFFFFFFFF),
-        bottomSheetCard = Color(0xFFF6F6F6)
+        bottomSheetCard = Color(0xFFF6F6F6),
+        bottomSheetContainer = Color(0x12121299)
     ),
     shade = Shade(
         primary = Color(0xFF313131),
