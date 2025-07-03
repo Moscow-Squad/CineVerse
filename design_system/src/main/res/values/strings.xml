@@ -18,4 +18,6 @@
     <string name="scale">scale</string>
     <string name="iconcolor">iconColor</string>
     <string name="icon_cross_fade">iconCrossfade</string>
+    <string name="collection_image">Collection Image</string>
+    <string name="featured_collections">Featured Collections</string>
 </resources>
