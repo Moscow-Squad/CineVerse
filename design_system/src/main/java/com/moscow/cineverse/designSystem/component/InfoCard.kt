@@ -31,7 +31,7 @@ fun InfoCard(
         modifier = modifier
             .clip(RoundedCornerShape(8.dp))
             .background(containerColor)
-            .padding(0.dp)
+
     ) {
         Icon(
             painter = painterResource(id = R.drawable.due_tone_info_circle),
