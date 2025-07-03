@@ -19,12 +19,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.res.stringResource
+import coil3.compose.AsyncImage
 import com.example.design_system.R
 import com.moscow.cineverse.designSystem.theme.Theme
 
 @Composable
 fun MainDetails(
-    profileImage: Int,
+    profileImage: Painter,
     name: String,
     date: String,
     location: String,
@@ -46,7 +49,7 @@ fun MainDetails(
     )
 
     Card(
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(Theme.radius.extraLarge),
         colors = CardDefaults.cardColors(containerColor = Theme.colors.background.card),
         modifier = modifier.padding(20.dp)
     ) {
@@ -59,15 +62,14 @@ fun MainDetails(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
             ) {
-                Image(
-                    painter = painterResource(profileImage),
+                AsyncImage(
+                    model = profileImage,
                     contentDescription = "Profile Image",
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
                         .size(imageSize)
                         .clip(if (isCollapsed) CircleShape else RoundedCornerShape(cornerSize))
                 )
-
                 Column(modifier = Modifier.padding(start = 12.dp)) {
                     Text(
                         text = name,
@@ -81,12 +83,16 @@ fun MainDetails(
                             TextWithIcon(
                                 icon = R.drawable.outline_cake,
                                 text = date,
+                                textColour = Theme.colors.shade.secondary,
+                                iconTint = Theme.colors.shade.secondary,
                                 modifier = Modifier.padding(bottom = 8.dp)
                             )
                             TextWithIcon(
                                 icon = R.drawable.outline_location,
-                                text = location
-                            )
+                                text = location,
+                                iconTint = Theme.colors.shade.secondary,
+                                textColour = Theme.colors.shade.secondary,
+                                )
                         }
                     }
                 }
@@ -108,7 +114,7 @@ fun MainDetails(
                         prefixIcon = {
                             Image(
                                 painter = painterResource(id = R.drawable.colored_youtube),
-                                contentDescription = "YouTube Icon"
+                                contentDescription = stringResource(R.string.youtube_icon)
                             )
                         }
                     )
@@ -120,7 +126,7 @@ fun MainDetails(
                         prefixIcon = {
                             Image(
                                 painter = painterResource(id = R.drawable.colored_facebook),
-                                contentDescription = "Facebook Icon"
+                                contentDescription = stringResource(R.string.facebook_icon)
                             )
                         }
                     )
@@ -132,7 +138,7 @@ fun MainDetails(
                         prefixIcon = {
                             Image(
                                 painter = painterResource(id = R.drawable.colored_instagram),
-                                contentDescription = "Instagram Icon"
+                                contentDescription = stringResource(R.string.instagram_icon)
                             )
                         }
                     )
@@ -147,7 +153,7 @@ private fun MainDetailsPreview() {
     val scrollState = rememberScrollState()
     Column(modifier = Modifier.verticalScroll(scrollState)) {
         MainDetails(
-            profileImage = R.drawable.profile_image,
+            profileImage = painterResource(R.drawable.profile_image),
             name = "Christian Bale",
             date = "Born on Jan 30, 1974",
             location = "In Cardiff, Wales, UK",
