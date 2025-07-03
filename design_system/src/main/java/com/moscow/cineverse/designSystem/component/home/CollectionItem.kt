@@ -16,11 +16,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.example.design_system.R
 import com.moscow.cineverse.designSystem.theme.CineVerseTheme
@@ -34,9 +36,7 @@ fun CollectionItem(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Box(
-        modifier = modifier
-    ) {
+    Box(modifier = modifier) {
         Column {
             Box(
                 modifier = Modifier
@@ -74,31 +74,36 @@ fun CollectionItem(
 
 @Composable
 private fun BackLayer() {
+    BackgroundLayer(
+        horizontalPadding = 8.dp,
+        color = Theme.colors.brand.tertiary,
+    )
+
+    BackgroundLayer(
+        horizontalPadding = 16.dp,
+        color = Theme.colors.shade.quinary,
+    )
+}
+
+@Composable
+private fun BackgroundLayer(
+    horizontalPadding: Dp,
+    color: Color,
+    layerHeight: Dp = 6.dp,
+    radius: Dp = Theme.radius.small,
+) {
     Row(
         modifier = Modifier
-            .padding(horizontal = 8.dp)
+            .padding(horizontal = horizontalPadding)
             .clip(
                 RoundedCornerShape(
-                    bottomStart = Theme.radius.small,
-                    bottomEnd = Theme.radius.small
+                    bottomStart = radius,
+                    bottomEnd = radius
                 )
             )
             .fillMaxWidth()
-            .height(6.dp)
-            .background(Theme.colors.brand.tertiary),
-    ) {}
-    Row(
-        modifier = Modifier
-            .padding(horizontal = 16.dp)
-            .clip(
-                RoundedCornerShape(
-                    bottomStart = Theme.radius.small,
-                    bottomEnd = Theme.radius.small
-                )
-            )
-            .fillMaxWidth()
-            .height(6.dp)
-            .background(Theme.colors.shade.quinary),
+            .height(layerHeight)
+            .background(color = color),
     ) {}
 }
 
