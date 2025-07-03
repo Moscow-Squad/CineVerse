@@ -15,7 +15,7 @@ android {
     defaultConfig {
         applicationId = "com.moscow.cineverse"
         minSdk = 26
-        targetSdk = 35
+        targetSdk = 36
         versionCode = 1
         versionName = "1.0"
 
@@ -69,10 +69,7 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
-    implementation("androidx.compose.ui:ui:1.6.1")
-    implementation("androidx.compose.material3:material3:1.2.0")
-    implementation("androidx.compose.animation:animation:1.6.1")
-
-
-
+    implementation(libs.ui)
+    implementation(libs.material3)
+    implementation(libs.androidx.animation)
 }

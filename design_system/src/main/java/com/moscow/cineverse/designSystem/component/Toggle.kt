@@ -29,14 +29,10 @@ import androidx.compose.ui.zIndex
 import com.moscow.cineverse.designSystem.theme.CineVerseTheme
 import com.moscow.cineverse.designSystem.theme.Theme
 
-enum class LayoutMode {
-    GRID, LIST
-}
-
 @Composable
 fun ViewModeToggle(
-    selectedMode: LayoutMode,
-    onModeSelected: (LayoutMode) -> Unit,
+    selectedMode: ViewMode,
+    onModeSelected: (ViewMode) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Box(
@@ -62,22 +58,22 @@ fun ViewModeToggle(
         ) {
             // Grid button
             ViewModeButton(
-                isSelected = selectedMode == LayoutMode.GRID,
-                onClick = { onModeSelected(LayoutMode.GRID) },
+                isSelected = selectedMode == ViewMode.GRID,
+                onClick = { onModeSelected(ViewMode.GRID) },
                 content = {
                     GridIcon(
-                        isSelected = selectedMode == LayoutMode.GRID
+                        isSelected = selectedMode == ViewMode.GRID
                     )
                 }
             )
 
             // List button
             ViewModeButton(
-                isSelected = selectedMode == LayoutMode.LIST,
-                onClick = { onModeSelected(LayoutMode.LIST) },
+                isSelected = selectedMode == ViewMode.LIST,
+                onClick = { onModeSelected(ViewMode.LIST) },
                 content = {
                     ListIcon(
-                        isSelected = selectedMode == LayoutMode.LIST
+                        isSelected = selectedMode == ViewMode.LIST
                     )
                 }
             )
@@ -262,11 +258,11 @@ private fun ListIcon(isSelected: Boolean) {
 @Preview(name = "Dark Mode", uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 fun ViewModeTogglePreview() {
-    var layoutMode by remember { mutableStateOf(LayoutMode.GRID) }
+    var viewMode by remember { mutableStateOf(ViewMode.GRID) }
     CineVerseTheme {
         ViewModeToggle(
-            selectedMode = layoutMode,
-            onModeSelected = { layoutMode = it }
+            selectedMode = viewMode,
+            onModeSelected = { viewMode = it }
         )
     }
 }

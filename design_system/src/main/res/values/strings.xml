@@ -10,4 +10,8 @@
     <string name="cast_image">Cast Image</string>
     <string name="collection_item_icon">collection item</string>
     <string name="alt_arrow_right_icon">alt_arrow_right</string>
+    <string name="pulsescale">pulseScale</string>
+    <string name="scale">scale</string>
+    <string name="iconcolor">iconColor</string>
+    <string name="icon_cross_fade">iconCrossfade</string>
 </resources>

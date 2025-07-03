@@ -70,7 +70,7 @@ fun CircleImage(
 @Composable
 private fun CircleImageDarkMode() {
     CineVerseTheme(
-        state = ThemeState(isDark = true, {})
+        state = ThemeState(isDark = true, onThemeChanged = {})
     ) {
         Column {
             CircleImage(isLoading = false, image = painterResource(R.drawable.profile_image))
@@ -86,7 +86,7 @@ private fun CircleImageDarkMode() {
 @Composable
 private fun CircleImageLightMode() {
     CineVerseTheme(
-        state = ThemeState(isDark = false, {})
+        state = ThemeState(isDark = false, onThemeChanged = {})
     ) {
         Column {
             CircleImage(isLoading = false, image = painterResource(R.drawable.profile_image))
