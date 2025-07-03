@@ -18,7 +18,8 @@ data class Background(
     val screen: Color,
     val card: Color,
     val bottomSheet: Color,
-    val bottomSheetCard: Color
+    val bottomSheetCard: Color,
+    val bottomSheetContainer: Color
 )
 
 data class Shade(
