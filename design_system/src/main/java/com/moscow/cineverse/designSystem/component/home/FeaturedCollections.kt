@@ -19,15 +19,17 @@ import com.moscow.cineverse.designSystem.theme.CineVerseTheme
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.designSystem.theme.ThemeState
 
-data class FeaturedItem( // ToDo: Will be Ui_State
+data class FeaturedItem(
+    // ToDo: Will be Ui_State
     val description: String,
     val image: Painter,
 )
 
 @Composable
 fun FeaturedCollectionsSection(
-    modifier: Modifier = Modifier,
-    collections: List<FeaturedItem> // ToDo: Will be Ui_State
+    collections: List<FeaturedItem>, // ToDo: Will be Ui_State
+    onCollectionClick: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     Column(
         modifier = modifier,
@@ -38,14 +40,18 @@ fun FeaturedCollectionsSection(
             style = Theme.textStyle.title.small,
             color = Theme.colors.shade.primary
         )
-        FeaturedCollections(collections = collections)
+        FeaturedCollections(
+            collections = collections,
+            onCollectionClick = onCollectionClick
+        )
     }
 
 }
 
 @Composable
 private fun FeaturedCollections(
-    collections : List<FeaturedItem> = emptyList()
+    onCollectionClick: () -> Unit,
+    collections: List<FeaturedItem>
 ) {
     FlowRow(
         modifier = Modifier.horizontalScroll(rememberScrollState()),
@@ -58,7 +64,7 @@ private fun FeaturedCollections(
                 modifier = Modifier.width(280.dp),
                 description = item.description,
                 image = item.image,
-                onClick = {} // ToDo: Will add Action Later
+                onClick = { onCollectionClick } // ToDo: Will add Action Later
             )
         }
     }
@@ -80,7 +86,8 @@ private fun FeaturedCollectionsSectionPreview() {
             ),
         )
         FeaturedCollectionsSection(
-            collections = collections
+            collections = collections,
+            onCollectionClick = {}
         )
     }
 }
