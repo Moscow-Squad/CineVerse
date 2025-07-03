@@ -20,4 +20,5 @@
     <string name="icon_cross_fade">iconCrossfade</string>
     <string name="collection_image">Collection Image</string>
     <string name="featured_collections">Featured Collections</string>
+    <string name="you_collections_section">You Collections Section</string>
 </resources>
