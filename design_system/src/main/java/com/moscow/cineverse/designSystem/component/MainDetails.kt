@@ -27,7 +27,7 @@ import com.moscow.cineverse.designSystem.theme.Theme
 
 @Composable
 fun MainDetails(
-    profileImage: Painter,
+    profileImage: String,
     name: String,
     date: String,
     location: String,
@@ -153,7 +153,7 @@ private fun MainDetailsPreview() {
     val scrollState = rememberScrollState()
     Column(modifier = Modifier.verticalScroll(scrollState)) {
         MainDetails(
-            profileImage = painterResource(R.drawable.profile_image),
+            profileImage = "https://image.lexica.art/full_jpg/7515495b-982d-44d2-9931-5a8bbbf27532"          ,
             name = "Christian Bale",
             date = "Born on Jan 30, 1974",
             location = "In Cardiff, Wales, UK",
