@@ -55,13 +55,23 @@ fun MoviePosterCard(
     modifier: Modifier = Modifier,
     movie: Movie = Movie(),
     viewMode: ViewMode = ViewMode.GRID,
-    onMovieClick: (Movie) -> Unit = {}
+    showRating: Boolean = true,
+    onMovieClick: (Movie) -> Unit = {},
+    infoModifier: Modifier = Modifier,
+    titleTextAlign : TextAlign = TextAlign.Start,
+    descriptionTextAlign : TextAlign = TextAlign.Start,
+    showGenres: Boolean = false
 ) {
     when (viewMode) {
         ViewMode.GRID -> GridMovieCard(
             movie = movie,
+            showRating = showRating,
             onMovieClick = onMovieClick,
-            modifier = modifier
+            modifier = modifier,
+            infoModifier = infoModifier,
+            titleTextAlign = titleTextAlign,
+            descriptionTextAlign = descriptionTextAlign,
+            showGenres = showGenres
         )
 
         ViewMode.LIST -> ListMovieCard(
@@ -105,10 +115,11 @@ private fun GridMovieCard(
     modifier: Modifier = Modifier,
     movie: Movie,
     showGenres: Boolean = false,
+    showRating: Boolean = true,
     onMovieClick: (Movie) -> Unit,
     infoModifier: Modifier = Modifier,
-    titleTextAlign : TextAlign = TextAlign.Start,
-    descriptionTextAlign : TextAlign = TextAlign.Start
+    titleTextAlign : TextAlign,
+    descriptionTextAlign : TextAlign
 ) {
     Column {
         Card(
@@ -138,7 +149,7 @@ private fun GridMovieCard(
                     )
                 }
 
-                if (movie.rating > 0) {
+                if (showRating && movie.rating > 0) {
                     Surface(
                         modifier = Modifier
                             .align(Alignment.TopEnd)
