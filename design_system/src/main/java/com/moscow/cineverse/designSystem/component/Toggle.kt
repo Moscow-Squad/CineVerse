@@ -29,9 +29,6 @@ import androidx.compose.ui.zIndex
 import com.moscow.cineverse.designSystem.theme.CineVerseTheme
 import com.moscow.cineverse.designSystem.theme.Theme
 
-enum class ViewMode {
-    GRID, LIST
-}
 
 @Composable
 fun ViewModeToggle(
