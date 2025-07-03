@@ -3,4 +3,6 @@
     <string name="label">label</string>
     <string name="forgot_password">Forgot Password?</string>
     <string name="close_bottom_sheet">Close</string>
+    <string name="collection_image">Collection Image</string>
+    <string name="featured_collections">Featured Collections</string>
 </resources>
