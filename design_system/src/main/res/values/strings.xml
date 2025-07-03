@@ -6,4 +6,7 @@
     <string name="actors">Actors</string>
     <string name="forgot_password">Forgot Password?</string>
     <string name="close_bottom_sheet">Close</string>
+    <string name="youtube_icon">YouTube Icon</string>
+    <string name="facebook_icon">Facebook Icon</string>
+    <string name="instagram_icon">Instagram Icon</string>
 </resources>
