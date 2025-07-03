@@ -1,6 +1,5 @@
 package com.moscow.cineverse.designSystem.component
 
-import android.content.res.Configuration
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
@@ -30,29 +29,27 @@ fun MovieButton(
     textStyle: TextStyle,
     onClick:()->Unit,
     modifier: Modifier = Modifier,
-    buttonColor: Color?=null,
+    buttonColor: Color = Color.Transparent,
     cornerRadius: Dp = Theme.radius.large,
     enable:Boolean = true,
     isLoading: Boolean = false
 ) {
     val color by animateColorAsState(if(!enable) Theme.colors.button.onDisabled else textColor)
-
-    val backgroundModifier = buttonColor?.let {
-        val backgroundColor by animateColorAsState(
-            if (enable) it else Theme.colors.button.disabled
-        )
-        Modifier.background(backgroundColor, RoundedCornerShape(cornerRadius))
-    } ?: Modifier
+    val backgroundColor by animateColorAsState(
+        if(buttonColor != Color.Transparent)
+            if (enable) buttonColor else Theme.colors.button.disabled
+        else
+            buttonColor
+    )
 
     Row(
-        modifier = backgroundModifier
+        modifier = Modifier
+            .background(backgroundColor, RoundedCornerShape(cornerRadius))
             .clickable{ if (enable) onClick()}
             .then(modifier)
 
     )
     {
-
-
 
         AnimatedContent(isLoading) { state ->
             if(state == false )
@@ -67,7 +64,7 @@ fun MovieButton(
     }
 }
 
-@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Preview
 @Composable
 private fun PreviewButton() {
     var isLoading by remember { mutableStateOf(false) }
@@ -83,7 +80,7 @@ private fun PreviewButton() {
                 isEnabled = !isEnabled
 
             },
-            buttonColor = Theme.colors.button.primary,
+          //  buttonColor = Theme.colors.button.primary,
             modifier = Modifier
                 .padding(horizontal = 24.dp, vertical = 16.dp)
         )
