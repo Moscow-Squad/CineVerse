@@ -1,5 +1,6 @@
 package com.moscow.cineverse.designSystem.component
 
+import android.content.res.Configuration
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
@@ -19,9 +20,11 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.moscow.cineverse.designSystem.theme.Theme
+import com.moscow.cineverse.designSystem.utils.applyIf
 
 @Composable
 fun MovieButton(
@@ -30,17 +33,28 @@ fun MovieButton(
     textStyle: TextStyle,
     onClick:()->Unit,
     modifier: Modifier = Modifier,
+    buttonColor: Color?=null,
+    cornerRadius: Dp = Theme.radius.large,
     enable:Boolean = true,
     isLoading: Boolean = false
 ) {
 
     Row(
-        modifier = modifier
-            .then( if (enable) Modifier.clickable { onClick() } else Modifier )
+        modifier = Modifier
+            .applyIf(buttonColor != null){
+                val backgroundColor by animateColorAsState(
+                    if(enable) buttonColor!! else Theme.colors.button.disabled
+                )
+                this.background(color = backgroundColor, shape = RoundedCornerShape(cornerRadius))
+            }
+            .clickable{ if (enable) onClick()}
+            .then(modifier)
+
     )
     {
 
-        val color by animateColorAsState(if(!enable) Theme.colors.button.disabled else textColor)
+        val color by animateColorAsState(if(!enable) Theme.colors.button.onDisabled else textColor)
+
 
         AnimatedContent(isLoading) { state ->
             if(state == false )
@@ -75,8 +89,8 @@ private fun PreviewButton() {
             isEnabled = !isEnabled
 
         },
+        buttonColor = Theme.colors.button.primary,
         modifier = Modifier
-            .background(Color(0xFF8C9EFF), shape = RoundedCornerShape(10.dp))
             .padding(horizontal = 24.dp , vertical = 16.dp)
     )
 }
