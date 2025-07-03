@@ -1,6 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="label">label</string>
+    <string name="movies">Movies</string>
+    <string name="series">Series</string>
+    <string name="actors">Actors</string>
     <string name="forgot_password">Forgot Password?</string>
+    <string name="show_more">Show More</string>
+    <string name="floating_button_icon">floating button icon</string>
     <string name="close_bottom_sheet">Close</string>
+    <string name="cast_image">Cast Image</string>
+    <string name="youtube_icon">YouTube Icon</string>
+    <string name="facebook_icon">Facebook Icon</string>
+    <string name="instagram_icon">Instagram Icon</string>
+    <string name="collection_item_icon">collection item</string>
+    <string name="alt_arrow_right_icon">alt_arrow_right</string>
+    <string name="pulsescale">pulseScale</string>
+    <string name="scale">scale</string>
+    <string name="iconcolor">iconColor</string>
+    <string name="icon_cross_fade">iconCrossfade</string>
 </resources>
