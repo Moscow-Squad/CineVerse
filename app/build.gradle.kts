@@ -47,6 +47,8 @@ dependencies {
 
     implementation(project(":design_system"))
     implementation(project(":presentation"))
+    implementation(project(":data"))
+    implementation(project(":domain"))
     implementation(libs.koin.android)
 
     implementation(libs.androidx.core.ktx)
@@ -67,9 +69,8 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
-    implementation("androidx.compose.ui:ui:1.6.1")
-    implementation("androidx.compose.material3:material3:1.2.0")
-    implementation("androidx.compose.animation:animation:1.6.1")
-    implementation ("io.coil-kt:coil-compose:2.7.0")
-
+    implementation(libs.ui)
+    implementation(libs.material3)
+    implementation(libs.androidx.animation)
+    implementation (libs.coil.kt.coil.compose)
 }

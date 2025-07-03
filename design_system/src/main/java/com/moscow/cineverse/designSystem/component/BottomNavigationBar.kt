@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalMaterial3Api::class)
-
 package com.moscow.cineverse.designSystem.component
 
 import androidx.compose.animation.Crossfade
@@ -24,7 +22,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -39,8 +36,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.design_system.R
 import com.moscow.cineverse.designSystem.theme.CineVerseTheme
 import com.moscow.cineverse.designSystem.theme.Theme
 
@@ -135,7 +134,7 @@ private fun AnimatedNavItem(
             animation = tween(1000, easing = FastOutSlowInEasing),
             repeatMode = RepeatMode.Reverse
         ),
-        label = "pulseScale"
+        label = stringResource(R.string.pulsescale)
     )
 
     val scale by animateFloatAsState(
@@ -144,13 +143,13 @@ private fun AnimatedNavItem(
             dampingRatio = Spring.DampingRatioMediumBouncy,
             stiffness = Spring.StiffnessLow
         ),
-        label = "scale"
+        label = stringResource(R.string.scale)
     )
 
     val iconColor by animateColorAsState(
         targetValue = if (isSelected) selectedColor else unselectedColor,
         animationSpec = tween(400, easing = FastOutSlowInEasing),
-        label = "iconColor"
+        label = stringResource(R.string.iconcolor)
     )
     Box(modifier = Modifier.padding(vertical = 12.dp)) {
         Column(
@@ -205,7 +204,7 @@ private fun AnimatedIcon(
             durationMillis = 200,
             easing = FastOutSlowInEasing
         ),
-        label = "iconCrossfade",
+        label = stringResource(R.string.icon_cross_fade),
         modifier = modifier
     ) { selected ->
         Icon(

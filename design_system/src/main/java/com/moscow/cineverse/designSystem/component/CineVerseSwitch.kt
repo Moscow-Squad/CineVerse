@@ -43,10 +43,9 @@ fun CineVerseSwitch(
         onCheckedChange = onCheckedChange,
         enabled = isEnabled,
         thumbContent = {
-            // Custom thumb with consistent size
             Box(
                 modifier = Modifier
-                    .size(24.dp) // Fixed size for both states
+                    .size(24.dp)
                     .clip(CircleShape)
                     .background(
                         color = when {
@@ -59,12 +58,10 @@ fun CineVerseSwitch(
             )
         },
         colors = SwitchDefaults.colors(
-            // Checked state (ON)
             checkedThumbColor = Color.White,
             checkedTrackColor = Theme.colors.brand.primary,
             checkedBorderColor = Theme.colors.brand.primary,
 
-            // Unchecked state (OFF)
             uncheckedThumbColor = if (isDarkTheme) {
                 Theme.colors.shade.secondary
             } else {
@@ -73,12 +70,10 @@ fun CineVerseSwitch(
             uncheckedTrackColor = Theme.colors.shade.quaternary,
             uncheckedBorderColor = Theme.colors.shade.secondary,
 
-            // Disabled checked state
             disabledCheckedThumbColor = Theme.colors.shade.tertiary,
             disabledCheckedTrackColor = Theme.colors.shade.quaternary,
             disabledCheckedBorderColor = Theme.colors.shade.tertiary,
 
-            // Disabled unchecked state
             disabledUncheckedThumbColor = Theme.colors.shade.tertiary,
             disabledUncheckedTrackColor = Theme.colors.shade.quaternary,
             disabledUncheckedBorderColor = Theme.colors.shade.tertiary
@@ -142,7 +137,6 @@ private fun CineVerseSwitchPreview() {
                     )
                 }
 
-                // Disabled states
                 Text(
                     "Disabled States",
                     style = MaterialTheme.typography.titleMedium,
@@ -183,7 +177,6 @@ private fun CineVerseSwitchPreview() {
     }
 }
 
-// Compact preview matching the image layout
 @Preview(name = "Compact Layout - Dark", uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Preview(name = "Compact Layout - Light", uiMode = Configuration.UI_MODE_NIGHT_NO)
 @Composable
@@ -197,28 +190,24 @@ private fun CineVerseSwitchCompactPreview() {
                 horizontalArrangement = Arrangement.spacedBy(16.dp),
                 modifier = Modifier.padding(16.dp)
             ) {
-                // First switch - Enabled ON
                 CineVerseSwitch(
                     checked = true,
                     onCheckedChange = { },
                     isEnabled = true
                 )
 
-                // Second switch - Enabled OFF
                 CineVerseSwitch(
                     checked = false,
                     onCheckedChange = { },
                     isEnabled = true
                 )
 
-                // Third switch - Disabled OFF
                 CineVerseSwitch(
                     checked = false,
                     onCheckedChange = { },
                     isEnabled = false
                 )
 
-                // Fourth switch - Disabled ON
                 CineVerseSwitch(
                     checked = true,
                     onCheckedChange = { },

@@ -18,9 +18,9 @@ import com.moscow.cineverse.designSystem.theme.Theme
 @Composable
 fun InfoSection(
     title: String,
+    modifier: Modifier = Modifier,
     genres: List<String> = emptyList(),
     description: String? = null,
-    modifier: Modifier = Modifier,
     paddingBetween: Dp = 2.dp,
     showGenres: Boolean = true,
     maxDescriptionLines: Int = 3

@@ -22,9 +22,9 @@ import com.moscow.cineverse.designSystem.theme.ThemeState
 
 @Composable
 fun CollectionItem(
-    modifier: Modifier = Modifier,
     title: String,
-    description: String
+    description: String,
+    modifier: Modifier = Modifier
 ) {
     Row(
         modifier = modifier
