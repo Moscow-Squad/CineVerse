@@ -7,5 +7,6 @@
     <string name="forgot_password">Forgot Password?</string>
     <string name="floating_button_icon">floating button icon</string>
     <string name="close_bottom_sheet">Close</string>
-
+    <string name="collection_item_icon">collection item</string>
+    <string name="alt_arrow_right_icon">alt_arrow_right</string>
 </resources>
