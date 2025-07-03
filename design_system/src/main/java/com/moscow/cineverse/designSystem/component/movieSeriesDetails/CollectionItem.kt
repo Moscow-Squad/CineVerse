@@ -1,4 +1,4 @@
-package com.moscow.cineverse.designSystem.component.moveiSeriesDetailsComponent
+package com.moscow.cineverse.designSystem.component.movieSeriesDetails
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
