@@ -17,14 +17,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import com.moscow.cineverse.designSystem.theme.CineVerseTheme
 import com.moscow.cineverse.designSystem.theme.Theme
-import com.moscow.cineverse.designSystem.utils.applyIf
 
 @Composable
 fun MovieButton(
@@ -38,22 +35,23 @@ fun MovieButton(
     enable:Boolean = true,
     isLoading: Boolean = false
 ) {
+    val color by animateColorAsState(if(!enable) Theme.colors.button.onDisabled else textColor)
+
+    val backgroundModifier = buttonColor?.let {
+        val backgroundColor by animateColorAsState(
+            if (enable) it else Theme.colors.button.disabled
+        )
+        Modifier.background(backgroundColor, RoundedCornerShape(cornerRadius))
+    } ?: Modifier
 
     Row(
-        modifier = Modifier
-            .applyIf(buttonColor != null){
-                val backgroundColor by animateColorAsState(
-                    if(enable) buttonColor!! else Theme.colors.button.disabled
-                )
-                this.background(color = backgroundColor, shape = RoundedCornerShape(cornerRadius))
-            }
+        modifier = backgroundModifier
             .clickable{ if (enable) onClick()}
             .then(modifier)
 
     )
     {
 
-        val color by animateColorAsState(if(!enable) Theme.colors.button.onDisabled else textColor)
 
 
         AnimatedContent(isLoading) { state ->
@@ -69,28 +67,25 @@ fun MovieButton(
     }
 }
 
-@Preview
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 private fun PreviewButton() {
     var isLoading by remember { mutableStateOf(false) }
     var isEnabled by remember { mutableStateOf(true) }
+    CineVerseTheme {
+        MovieButton(
+            buttonText = "Login",
+            textColor = Theme.colors.button.onPrimary,
+            textStyle = Theme.textStyle.title.small,
+            isLoading = isLoading,
+            enable = isEnabled,
+            onClick = {
+                isEnabled = !isEnabled
 
-    MovieButton(
-        buttonText = "Login",
-        textColor = Color.Blue,
-        textStyle = TextStyle(
-            fontSize = 16.sp,
-            fontFamily = FontFamily.Monospace ,
-            fontWeight = FontWeight.W500
-        ),
-        isLoading = isLoading,
-        enable = isEnabled,
-        onClick = {
-            isEnabled = !isEnabled
-
-        },
-        buttonColor = Theme.colors.button.primary,
-        modifier = Modifier
-            .padding(horizontal = 24.dp , vertical = 16.dp)
-    )
+            },
+            buttonColor = Theme.colors.button.primary,
+            modifier = Modifier
+                .padding(horizontal = 24.dp, vertical = 16.dp)
+        )
+    }
 }
