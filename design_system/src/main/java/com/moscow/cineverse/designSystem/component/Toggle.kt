@@ -29,6 +29,7 @@ import androidx.compose.ui.zIndex
 import com.moscow.cineverse.designSystem.theme.CineVerseTheme
 import com.moscow.cineverse.designSystem.theme.Theme
 
+
 @Composable
 fun ViewModeToggle(
     selectedMode: ViewMode,
