@@ -47,36 +47,23 @@ fun ProgressIndicator(
         )
     )
 
-    Column(
+    Box(
         modifier = modifier
             .fillMaxWidth()
-            .padding(8.dp)
+            .height(12.dp)
+            .clip(RoundedCornerShape(Theme.radius.full))
+            .background(backgroundOfProgress)
     ) {
-        //progress bar
+
         Box(
             modifier = Modifier
-                .fillMaxWidth()
-                .height(12.dp)
-        ) {
-            // background of progress bar
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .clip(RoundedCornerShape(Theme.radius.full))
-                    .background(backgroundOfProgress)
-            )
-
-            // progress of progress bar
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth(size)
-                    .fillMaxHeight()
-                    .clip(RoundedCornerShape(Theme.radius.full))
-                    .background(progressColor)
-                    .animateContentSize()
-                    .padding(gapSize)
-            )
-        }
+                .fillMaxWidth(size)
+                .fillMaxHeight()
+                .clip(RoundedCornerShape(Theme.radius.full))
+                .background(progressColor)
+                .animateContentSize()
+                .padding(gapSize)
+        )
     }
 
     LaunchedEffect(true) {
