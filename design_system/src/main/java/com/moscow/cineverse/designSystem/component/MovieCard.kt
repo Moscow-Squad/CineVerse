@@ -37,6 +37,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import com.example.design_system.R
+import com.moscow.cineverse.designSystem.theme.CineVerseTheme
 import com.moscow.cineverse.designSystem.theme.Theme
 
 data class Movie(
@@ -325,7 +326,7 @@ fun GridMovieCardLoadingPreview() {
 @Preview(showBackground = true, name = "List View - Loading State")
 @Composable
 fun ListMovieCardLoadingPreview() {
-    MaterialTheme {
+    CineVerseTheme {
         Column(modifier = Modifier.padding(16.dp)) {
             MoviePosterCard(
                 movie = Movie(
