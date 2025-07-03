@@ -9,4 +9,5 @@
     <string name="close_bottom_sheet">Close</string>
     <string name="collection_item_icon">collection item</string>
     <string name="alt_arrow_right_icon">alt_arrow_right</string>
+    <string name="cast_member_image">Cast Member Image</string>
 </resources>
