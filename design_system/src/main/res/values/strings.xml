@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="label">label</string>
+    <string name="movies">Movies</string>
+    <string name="series">Series</string>
+    <string name="actors">Actors</string>
     <string name="forgot_password">Forgot Password?</string>
     <string name="close_bottom_sheet">Close</string>
 </resources>
