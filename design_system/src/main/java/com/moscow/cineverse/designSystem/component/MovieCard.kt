@@ -32,6 +32,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -48,10 +49,6 @@ data class Movie(
     val duration: String = "",
     val releaseDate: String = ""
 )
-
-enum class ViewMode {
-    GRID, LIST
-}
 
 @Composable
 fun MoviePosterCard(
@@ -105,9 +102,13 @@ private fun PlaceholderCard(
 
 @Composable
 private fun GridMovieCard(
+    modifier: Modifier = Modifier,
     movie: Movie,
+    showGenres: Boolean = false,
     onMovieClick: (Movie) -> Unit,
-    modifier: Modifier = Modifier
+    infoModifier: Modifier = Modifier,
+    titleTextAlign : TextAlign = TextAlign.Start,
+    descriptionTextAlign : TextAlign = TextAlign.Start
 ) {
     Column {
         Card(
@@ -170,9 +171,11 @@ private fun GridMovieCard(
 
         InfoSection(
             title = movie.title,
-            genres = emptyList(),
-            showGenres = false,
-            modifier = Modifier.padding(top = 8.dp)
+            genres = movie.genres,
+            showGenres = showGenres,
+            modifier = infoModifier.padding(top = 8.dp),
+            titleTextAlign = titleTextAlign,
+            descriptionTextAlign = descriptionTextAlign
         )
     }
 }
