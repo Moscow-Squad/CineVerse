@@ -23,6 +23,7 @@ import androidx.compose.ui.composed
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.TransformOrigin
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
@@ -39,6 +40,7 @@ import kotlin.math.absoluteValue
 fun CarouselAnimation(
     movies: List<Movie>,
     autoScrollDuration: Long = 3000L,
+    onMovieClick: (Movie) -> Unit = {},
 ) {
     val pagerState = rememberPagerState(
         initialPage = 0,
@@ -66,9 +68,12 @@ fun CarouselAnimation(
         MoviePosterCard(
             movie = movies[page],
             viewMode = ViewMode.GRID,
-            onMovieClick = { },
-            modifier = Modifier
-                .carouselLiftedCardTransition(page, pagerState)
+            onMovieClick = { onMovieClick(it) },
+            showRating = true,
+            showGenres = true,
+            titleTextAlign = TextAlign.Center,
+            descriptionTextAlign = TextAlign.Center,
+            modifier = Modifier.carouselLiftedCardTransition(page, pagerState)
         )
     }
 }
@@ -98,7 +103,8 @@ fun Modifier.carouselLiftedCardTransition(
         targetValue = lerp(0.dp, 40.dp, pageOffset),
         animationSpec = tween(300)
     )
-    this.graphicsLayer {
+    this
+        .graphicsLayer {
             transformOrigin = TransformOrigin(0.5f, 0f)
             scaleX = animatedScaleX
             scaleY = animatedScaleY
