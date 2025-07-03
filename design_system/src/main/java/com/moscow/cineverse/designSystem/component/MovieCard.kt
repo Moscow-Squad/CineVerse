@@ -49,10 +49,6 @@ data class Movie(
     val releaseDate: String = ""
 )
 
-enum class ViewMode {
-    GRID, LIST
-}
-
 @Composable
 fun MoviePosterCard(
     modifier: Modifier = Modifier,
