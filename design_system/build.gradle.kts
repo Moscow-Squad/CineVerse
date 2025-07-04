@@ -32,10 +32,6 @@ android {
     kotlinOptions {
         jvmTarget = "11"
     }
-
-    composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.composeCompiler.get()
-    }
     subprojects {
         afterEvaluate {
             tasks.withType<Test> {
@@ -64,7 +60,8 @@ jacoco {
 
 
 dependencies {
-
+    implementation(libs.coil.compose)
+    implementation(libs.coil.network.okhttp)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
