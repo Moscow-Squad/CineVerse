@@ -1,6 +1,5 @@
 package com.moscow.cineverse.designSystem.component
 
-import android.R.attr.width
 import android.content.res.Configuration
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -13,7 +12,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -23,12 +21,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontVariation.width
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.design_system.R
 import com.moscow.cineverse.designSystem.theme.CineVerseTheme
 import com.moscow.cineverse.designSystem.theme.Theme
-import com.example.design_system.R
 
 @Composable
 fun MessageInfoBox(
@@ -64,7 +61,7 @@ fun MessageInfoBox(
                 Image(
                     painter = painterResource(id = R.drawable.outline_arrow_left),
                     contentDescription = stringResource(R.string.arrow_left),
-                    colorFilter = ColorFilter.tint(Theme.colors.brand.primary), // Apply tint
+                    colorFilter = ColorFilter.tint(Theme.colors.brand.primary),
                     modifier = Modifier
                         .size(width = 24.dp, height = 24.dp)
                         .padding(end = 7.dp)
@@ -109,7 +106,9 @@ fun MessageInfoBox(
                     .padding(vertical = 14.5.dp)
             )
         }
-    }}
+    }
+}
+
 @Preview(name = "Dark Mode", uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 fun MessageInfoBoxExample() {
