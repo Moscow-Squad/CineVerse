@@ -9,6 +9,8 @@
     <string name="close_bottom_sheet">Close</string>
     <string name="collection_item_icon">collection item</string>
     <string name="alt_arrow_right_icon">alt_arrow_right</string>
+    <string name="show_more">Show More</string>
+    <string name="behind_the_scenes">Behind the Scenes</string>
     <string name="season">"Season %d"</string>
     <string name="season_poster">Season Poster</string>
     <string name="rate_icon">Rate icon</string>
