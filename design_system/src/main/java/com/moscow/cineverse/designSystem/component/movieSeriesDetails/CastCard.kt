@@ -76,12 +76,12 @@ fun CastCard(
 @Composable
 private fun CastCardPreview() {
     CineVerseTheme {
-        Column (
+        Column(
             modifier = Modifier
                 .background(Theme.colors.background.screen)
                 .padding(10.dp),
             verticalArrangement = Arrangement.spacedBy(10.dp)
-        ){
+        ) {
             CastCard(
                 castMember = CastMember(
                     realName = "Tom Cruise",

@@ -32,10 +32,6 @@ android {
     kotlinOptions {
         jvmTarget = "11"
     }
-
-    composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.composeCompiler.get()
-    }
     subprojects {
         afterEvaluate {
             tasks.withType<Test> {
