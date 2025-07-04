@@ -28,7 +28,7 @@ fun InfoSection(
     showTitle: Boolean = true,
     maxDescriptionLines: Int = 3,
     titleTextAlign: TextAlign = TextAlign.Start,
-    descriptionTextAlign: TextAlign = TextAlign.Start
+    descriptionTextAlign: TextAlign = TextAlign.Start,
 ) {
     Column(modifier = modifier) {
         if (title.isEmpty() && showTitle) {

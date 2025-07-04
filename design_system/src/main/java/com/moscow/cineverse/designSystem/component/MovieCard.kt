@@ -56,10 +56,10 @@ fun MoviePosterCard(
     showRating: Boolean = true,
     onMovieClick: (Movie) -> Unit = {},
     infoModifier: Modifier = Modifier,
-    titleTextAlign : TextAlign = TextAlign.Start,
-    descriptionTextAlign : TextAlign = TextAlign.Start,
+    titleTextAlign: TextAlign = TextAlign.Start,
+    descriptionTextAlign: TextAlign = TextAlign.Start,
     showGenres: Boolean = false,
-    showTitle: Boolean = true
+    showTitle: Boolean = true,
 ) {
     when (viewMode) {
         ViewMode.GRID -> GridMovieCard(
@@ -119,8 +119,8 @@ private fun GridMovieCard(
     showRating: Boolean = true,
     onMovieClick: (Movie) -> Unit,
     infoModifier: Modifier = Modifier,
-    titleTextAlign : TextAlign,
-    descriptionTextAlign : TextAlign
+    titleTextAlign: TextAlign,
+    descriptionTextAlign: TextAlign,
 ) {
     Column {
         Card(
@@ -163,7 +163,7 @@ private fun GridMovieCard(
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Text(
-                                text = String.format("%.1f", movie.rating),
+                                text = "%.1f".format(movie.rating),
                                 color = Theme.colors.shade.primary,
                                 style = Theme.textStyle.label.medium.medium
                             )
@@ -296,7 +296,7 @@ private fun ListMovieCard(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = String.format("%.1f", movie.rating),
+                        text = "%.1f".format(movie.rating),
                         color = Theme.colors.shade.primary,
                         style = Theme.textStyle.label.medium.medium
                     )
