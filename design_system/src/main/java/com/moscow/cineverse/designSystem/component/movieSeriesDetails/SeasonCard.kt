@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
@@ -110,7 +111,7 @@ fun SeasonCard(
                 icon = R.drawable.due_tone_video_library,
                 iconTint = Theme.colors.shade.secondary,
                 iconDescription = stringResource(R.string.episodes_icon),
-                title = stringResource(R.string.episodes,season.episodeCount)
+                title = stringResource(R.string.episodes, season.episodeCount)
             )
             SeasonInfo(
                 icon = R.drawable.due_tone_calendar,
@@ -153,15 +154,22 @@ private fun SeasonInfo(
 @Composable
 private fun SeasonCardPreview() {
     CineVerseTheme {
-        SeasonCard(
-            season = Season(
-                seasonNumber = 1,
-                episodeCount = 10,
-                airDate = "2019",
-                posterUrl = "https://www.dreamworks.com/storage/cms-uploads/the-wild-robot-poster4.jpg",
-                caption = "Season 1 of the series",
-                rate = 8.5f
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Theme.colors.background.screen)
+                .padding(16.dp),
+        ) {
+            SeasonCard(
+                season = Season(
+                    seasonNumber = 1,
+                    episodeCount = 10,
+                    airDate = "2019",
+                    posterUrl = "https://www.dreamworks.com/storage/cms-uploads/the-wild-robot-poster4.jpg",
+                    caption = "Season 1 of the series",
+                    rate = 8.5f
+                )
             )
-        )
+        }
     }
 }
