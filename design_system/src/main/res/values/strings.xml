@@ -9,6 +9,12 @@
     <string name="close_bottom_sheet">Close</string>
     <string name="collection_item_icon">collection item</string>
     <string name="alt_arrow_right_icon">alt_arrow_right</string>
+    <string name="season">"Season %d"</string>
+    <string name="season_poster">Season Poster</string>
+    <string name="rate_icon">Rate icon</string>
+    <string name="episodes_icon">Episodes icon</string>
+    <string name="air_date_icon">Air date icon</string>
+    <string name="episodes">Episodes %d</string>
     <string name="star_cast">Star Cast</string>
     <string name="show_more">Show More</string>
     <string name="cast_member_image">Cast Member Image</string>
