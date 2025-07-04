@@ -90,11 +90,11 @@ fun SelectionCard(
 }
 
 @Preview(
-    name = "Progress Light Mode",
+    name = "Card Light Mode",
     uiMode = Configuration.UI_MODE_NIGHT_NO or Configuration.UI_MODE_TYPE_NORMAL,
 )
 @Preview(
-    name = "Progress Dark Mode",
+    name = "Card Dark Mode",
     uiMode = Configuration.UI_MODE_NIGHT_YES or Configuration.UI_MODE_TYPE_NORMAL
 )
 @Composable
