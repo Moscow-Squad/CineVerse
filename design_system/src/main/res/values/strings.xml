@@ -15,4 +15,7 @@
     <string name="episodes_icon">Episodes icon</string>
     <string name="air_date_icon">Air date icon</string>
     <string name="episodes">Episodes %d</string>
+    <string name="star_cast">Star Cast</string>
+    <string name="show_more">Show More</string>
+    <string name="cast_member_image">Cast Member Image</string>
 </resources>
