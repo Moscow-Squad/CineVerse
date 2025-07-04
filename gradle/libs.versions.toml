@@ -1,5 +1,6 @@
 [versions]
 agp = "8.10.1"
+animation = "1.8.3"
 coilNetworkOkhttp = "3.2.0"
 koinAndroid = "4.0.4"
 koinAndroidxCompose = "4.0.4"
@@ -20,10 +21,12 @@ firebaseAnalytics = "22.5.0"
 firebasePerf = "21.0.5"
 googleFirebaseFirebasePerf = "1.4.2"
 googleFirebaseAppdistribution = "5.1.1"
-composeCompiler = "1.5.13"
+material3 = "1.3.2"
 navigationCompose = "2.9.0"
+ui = "1.8.3"
 
 [libraries]
+androidx-animation = { module = "androidx.compose.animation:animation", version.ref = "animation" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
 coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coilNetworkOkhttp" }
@@ -48,6 +51,8 @@ material = { group = "com.google.android.material", name = "material", version.r
 firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashlytics", version.ref = "firebaseCrashlytics" }
 firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics", version.ref = "firebaseAnalytics" }
 firebase-perf = { group = "com.google.firebase", name = "firebase-perf", version.ref = "firebasePerf" }
+material3 = { module = "androidx.compose.material3:material3", version.ref = "material3" }
+ui = { module = "androidx.compose.ui:ui", version.ref = "ui" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
