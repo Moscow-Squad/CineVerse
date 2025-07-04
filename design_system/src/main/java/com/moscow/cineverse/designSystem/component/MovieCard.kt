@@ -163,7 +163,7 @@ private fun GridMovieCard(
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Text(
-                                text = String.format("%.1f", movie.rating),
+                                text = "%.1f".format(movie.rating),
                                 color = Theme.colors.shade.primary,
                                 style = Theme.textStyle.label.medium.medium
                             )
@@ -296,7 +296,7 @@ private fun ListMovieCard(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = String.format("%.1f", movie.rating),
+                        text = "%.1f".format(movie.rating),
                         color = Theme.colors.shade.primary,
                         style = Theme.textStyle.label.medium.medium
                     )
