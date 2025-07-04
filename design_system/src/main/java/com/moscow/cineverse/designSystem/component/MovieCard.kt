@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalMaterial3Api::class)
-
 package com.moscow.cineverse.designSystem.component
 
 import androidx.compose.foundation.background
@@ -20,7 +18,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -32,11 +29,13 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import com.example.design_system.R
+import com.moscow.cineverse.designSystem.theme.CineVerseTheme
 import com.moscow.cineverse.designSystem.theme.Theme
 
 data class Movie(
@@ -54,13 +53,25 @@ fun MoviePosterCard(
     modifier: Modifier = Modifier,
     movie: Movie = Movie(),
     viewMode: ViewMode = ViewMode.GRID,
-    onMovieClick: (Movie) -> Unit = {}
+    showRating: Boolean = true,
+    onMovieClick: (Movie) -> Unit = {},
+    infoModifier: Modifier = Modifier,
+    titleTextAlign : TextAlign = TextAlign.Start,
+    descriptionTextAlign : TextAlign = TextAlign.Start,
+    showGenres: Boolean = false,
+    showTitle: Boolean = true
 ) {
     when (viewMode) {
         ViewMode.GRID -> GridMovieCard(
             movie = movie,
+            showRating = showRating,
             onMovieClick = onMovieClick,
-            modifier = modifier
+            modifier = modifier,
+            infoModifier = infoModifier,
+            titleTextAlign = titleTextAlign,
+            descriptionTextAlign = descriptionTextAlign,
+            showGenres = showGenres,
+            showTitle = showTitle
         )
 
         ViewMode.LIST -> ListMovieCard(
@@ -83,10 +94,9 @@ private fun PlaceholderCard(
             .background(
                 cardColor,
                 RoundedCornerShape(
-                    topStart = 12.dp,
-                    topEnd = 12.dp,
-                    bottomEnd = 0.dp,
-                    bottomStart = 12.dp
+                    topStart = Theme.radius.large,
+                    topEnd = Theme.radius.large,
+                    bottomStart = Theme.radius.large
                 )
             ),
         contentAlignment = Alignment.Center
@@ -102,9 +112,15 @@ private fun PlaceholderCard(
 
 @Composable
 private fun GridMovieCard(
+    modifier: Modifier = Modifier,
     movie: Movie,
+    showGenres: Boolean = false,
+    showTitle: Boolean = true,
+    showRating: Boolean = true,
     onMovieClick: (Movie) -> Unit,
-    modifier: Modifier = Modifier
+    infoModifier: Modifier = Modifier,
+    titleTextAlign : TextAlign,
+    descriptionTextAlign : TextAlign
 ) {
     Column {
         Card(
@@ -112,8 +128,7 @@ private fun GridMovieCard(
                 .fillMaxWidth()
                 .height(182.dp)
                 .clickable { onMovieClick(movie) },
-            elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-            shape = RoundedCornerShape(12.dp)
+            shape = RoundedCornerShape(Theme.radius.large)
         ) {
             Box {
                 if (movie.posterUrl.isNotEmpty()) {
@@ -125,7 +140,7 @@ private fun GridMovieCard(
                         contentScale = ContentScale.Crop,
                         modifier = Modifier
                             .fillMaxSize()
-                            .clip(RoundedCornerShape(12.dp))
+                            .clip(RoundedCornerShape(Theme.radius.large))
                     )
                 } else {
                     PlaceholderCard(
@@ -135,7 +150,7 @@ private fun GridMovieCard(
                     )
                 }
 
-                if (movie.rating > 0) {
+                if (showRating && movie.rating > 0) {
                     Surface(
                         modifier = Modifier
                             .align(Alignment.TopEnd)
@@ -148,7 +163,7 @@ private fun GridMovieCard(
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Text(
-                                text = String.format("%.1f", movie.rating),
+                                text = "%.1f".format(movie.rating),
                                 color = Theme.colors.shade.primary,
                                 style = Theme.textStyle.label.medium.medium
                             )
@@ -168,9 +183,12 @@ private fun GridMovieCard(
 
         InfoSection(
             title = movie.title,
-            genres = emptyList(),
-            showGenres = false,
-            modifier = Modifier.padding(top = 8.dp)
+            showTitle = showTitle,
+            genres = movie.genres,
+            showGenres = showGenres,
+            modifier = infoModifier.padding(top = 8.dp),
+            titleTextAlign = titleTextAlign,
+            descriptionTextAlign = descriptionTextAlign
         )
     }
 }
@@ -187,7 +205,7 @@ private fun ListMovieCard(
             .height(88.dp)
             .clickable { onMovieClick(movie) },
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
-        shape = RoundedCornerShape(12.dp),
+        shape = RoundedCornerShape(Theme.radius.large),
         colors = CardDefaults.cardColors(containerColor = Theme.colors.background.card)
     ) {
         Box(modifier = Modifier.fillMaxSize()) {
@@ -204,7 +222,7 @@ private fun ListMovieCard(
                         modifier = Modifier
                             .width(64.dp)
                             .fillMaxHeight()
-                            .clip(RoundedCornerShape(8.dp))
+                            .clip(RoundedCornerShape(Theme.radius.small))
                     )
                 } else {
                     PlaceholderCard(
@@ -278,7 +296,7 @@ private fun ListMovieCard(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = String.format("%.1f", movie.rating),
+                        text = "%.1f".format(movie.rating),
                         color = Theme.colors.shade.primary,
                         style = Theme.textStyle.label.medium.medium
                     )
@@ -321,7 +339,7 @@ fun GridMovieCardLoadingPreview() {
 @Preview(showBackground = true, name = "List View - Loading State")
 @Composable
 fun ListMovieCardLoadingPreview() {
-    MaterialTheme {
+    CineVerseTheme {
         Column(modifier = Modifier.padding(16.dp)) {
             MoviePosterCard(
                 movie = Movie(

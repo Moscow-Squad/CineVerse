@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
+    jacoco
 }
 
 android {
@@ -30,16 +31,41 @@ android {
     kotlinOptions {
         jvmTarget = "11"
     }
+    subprojects {
+        afterEvaluate {
+            tasks.withType<Test> {
+                configure<JacocoTaskExtension> {
+                    isIncludeNoLocationClasses = true
+                }
+            }
+        }
+    }
+    tasks.register<JacocoCoverageVerification>("jacocoTestCoverageVerification") {
+        dependsOn("testDebugUnitTest")
+        violationRules {
+            rule {
+                limit {
+                    minimum = BigDecimal("0.0")
+                }
+            }
+        }
+
+    }
+}
+jacoco {
+    toolVersion = "0.8.13"
+    reportsDirectory = layout.buildDirectory.dir("customJacocoReportDir")
+
 }
 
 dependencies {
+
     implementation (project(":design_system"))
+    implementation(project(":domain"))
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-    implementation(libs.androidx.navigation.compose)
-    implementation(libs.koin.androidx.compose)
 }
