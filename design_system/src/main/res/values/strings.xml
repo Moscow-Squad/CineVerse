@@ -17,8 +17,6 @@
     <string name="iconcolor">iconColor</string>
     <string name="icon_cross_fade">iconCrossfade</string>
     <string name="collection_image">Collection Image</string>
-    <string name="featured_collections">Featured Collections</string>
-    <string name="you_collections_section">You Collections Section</string>
     <string name="floating_button_icon">floating button icon</string>
     <string name="close_bottom_sheet">Close</string>
     <string name="show_more">Show More</string>
@@ -30,7 +28,6 @@
     <string name="air_date_icon">Air date icon</string>
     <string name="episodes">Episodes %d</string>
     <string name="star_cast">Star Cast</string>
-    <string name="collection_image">Collection Image</string>
     <string name="featured_collections">Featured Collections</string>
     <string name="you_collections_section">You Collections Section</string>
     <string name="cast_member_image">Cast Member Image</string>
