@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    namespace = "com.moscow.data"
+    namespace = "com.moscow.cineverse.data"
     compileSdk = 36
 
     defaultConfig {
