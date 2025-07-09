@@ -16,7 +16,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.moscow.cineverse.designSystem.theme.CineVerseTheme
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.example.design_system.R as DesignSystemR
-import com.moscow.cinverse.presentation.R as PresentationR
+import com.example.presentation.R as PresentationR
 
 @Composable
 fun VoiceRecognitionIcon(
