@@ -1,4 +1,4 @@
-package com.model
+package com.android.domain.model
 
 data class Genre(
     val id: Int,

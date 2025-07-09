@@ -1,6 +1,7 @@
 package com.utils
 
-import com.exception.CineVerseException
+import com.android.domain.exception.CineVerseException
+
 
 abstract class BaseRepository {
     protected suspend inline fun <T> tryToExecute(

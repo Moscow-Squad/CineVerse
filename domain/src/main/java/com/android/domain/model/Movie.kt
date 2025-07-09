@@ -1,14 +1,13 @@
-package com.model
+package com.android.domain.model
 
 import kotlinx.datetime.LocalDate
 
-data class SeriesSeason(
+data class Movie(
     val id: Int,
-    val number: Int,
-    val seriesId: Int,
-    val episodesCount: Int,
-    val rating: Float,
+    val name: String,
+    val genresId: List<Int>,
     val description: String,
+    val rating: Float,
     val releaseDate: LocalDate,
     val poster: String,
 )

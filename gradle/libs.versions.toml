@@ -30,6 +30,7 @@ kotlinxDatetime = "0.3.3"
 koin-bom = "4.1.0"
 # Network
 ktor = "3.0.2"
+jetbrainsKotlinJvm = "2.0.21"
 
 [libraries]
 androidx-animation = { module = "androidx.compose.animation:animation", version.ref = "animation" }
@@ -90,6 +91,7 @@ google-firebase-firebase-perf = { id = "com.google.firebase.firebase-perf", vers
 google-firebase-appdistribution = { id = "com.google.firebase.appdistribution", version.ref = "googleFirebaseAppdistribution" }
 android-secrets = { id = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin", version.ref = "secretsGradlePlugin" }
 serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrainsKotlinJvm" }
 
 [bundles]
 koin = [

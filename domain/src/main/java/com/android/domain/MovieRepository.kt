@@ -1,4 +1,4 @@
-package com
+package com.android.domain
 
 interface MovieRepository {
 }
