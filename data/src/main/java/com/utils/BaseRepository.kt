@@ -3,9 +3,9 @@ package com.utils
 import com.exception.CineVerseException
 
 abstract class BaseRepository {
-    protected suspend fun <T> wrapResponse(
+    protected suspend inline fun <T> tryToExecute(
         exception: CineVerseException,
-        function: suspend () -> T
+        crossinline function: suspend () -> T
     ): T {
         return try {
             function()
