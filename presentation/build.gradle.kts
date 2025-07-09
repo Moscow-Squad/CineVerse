@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.presentation"
+    namespace = "com.moscow.cinverse.presentation"
     compileSdk = 35
 
     defaultConfig {
