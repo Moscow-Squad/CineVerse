@@ -25,7 +25,7 @@ roomRuntime = "2.7.2"
 ui = "1.8.3"
 ksp = "2.0.21-1.0.25"
 secretsGradlePlugin = "2.0.1"
-
+kotlinxDatetime = "0.3.3"
 # DI
 koin-bom = "4.1.0"
 # Network
@@ -75,6 +75,8 @@ koin-android = { group = "io.insert-koin", name = "koin-android" }
 koin-core = { group = "io.insert-koin", name = "koin-core" }
 koin-compose = { group = "io.insert-koin", name = "koin-androidx-compose" }
 
+#kotlin date time
+kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinxDatetime" }
 
 [plugins]
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
