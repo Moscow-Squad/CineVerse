@@ -39,18 +39,18 @@ fun CollectionItem(
             painter = painterResource(Theme.icons.dueTone.folder),
             contentDescription = stringResource(R.string.collection_item_icon),
             tint = Theme.colors.brand.primary,
-            modifier = modifier
+            modifier = Modifier
                 .padding(end = 8.dp)
                 .size(20.dp)
         )
         Column(
-            modifier = modifier.weight(1f)
+            modifier = Modifier.weight(1f)
         ) {
             Text(
                 text = title,
                 style = Theme.textStyle.body.medium.medium,
                 color = Theme.colors.shade.primary,
-                modifier = modifier.padding(bottom = 4.dp)
+                modifier = Modifier.padding(bottom = 4.dp)
             )
             Text(
                 text = description,
@@ -62,7 +62,7 @@ fun CollectionItem(
             painter = painterResource(Theme.icons.outline.altArrowRight),
             contentDescription = stringResource(R.string.alt_arrow_right_icon),
             tint = Theme.colors.shade.tertiary,
-            modifier = modifier
+            modifier = Modifier
                 .padding(start = 8.dp)
                 .size(20.dp)
         )

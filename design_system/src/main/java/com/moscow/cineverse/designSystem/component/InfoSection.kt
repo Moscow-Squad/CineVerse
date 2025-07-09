@@ -25,12 +25,13 @@ fun InfoSection(
     description: String? = null,
     paddingBetween: Dp = 2.dp,
     showGenres: Boolean = true,
+    showTitle: Boolean = true,
     maxDescriptionLines: Int = 3,
     titleTextAlign: TextAlign = TextAlign.Start,
     descriptionTextAlign: TextAlign = TextAlign.Start
 ) {
     Column(modifier = modifier) {
-        if (title.isNotEmpty()) {
+        if (title.isEmpty() && showTitle) {
             Text(
                 text = title,
                 color = Theme.colors.shade.primary,
