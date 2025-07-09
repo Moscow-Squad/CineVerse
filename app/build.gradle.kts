@@ -74,4 +74,8 @@ dependencies {
     implementation(libs.material3)
     implementation(libs.androidx.animation)
     implementation (libs.coil.compose)
+
+    /** Koin */
+    implementation(platform(libs.koin.bom))
+    implementation(libs.bundles.koin)
 }
