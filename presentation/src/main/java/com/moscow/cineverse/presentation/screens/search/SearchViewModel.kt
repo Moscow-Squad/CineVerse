@@ -19,7 +19,8 @@ class SearchViewModel(
             action = {getLocalSuggestions()},
             onSuccess = { flow ->
                 viewModelScope.launch{
-                    flow.collect { suggestions ->
+                    flow.collect { history ->
+                        val suggestions = history.map { SuggestItemUiState(it, isHistory = true) }
                         updateState { it.copy(history = suggestions) }
                     }
                 }
