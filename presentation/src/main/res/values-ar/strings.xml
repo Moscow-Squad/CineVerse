@@ -4,4 +4,5 @@
     <string name="speak_to_search">تحدث للبحث</string>
     <string name="clear_all_history">مسح الجميع</string>
     <string name="history">التاريخ</string>
+    <string name="search_suggestions">المقتراحات</string>
 </resources>

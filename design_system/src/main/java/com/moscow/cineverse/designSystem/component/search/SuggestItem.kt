@@ -32,8 +32,9 @@ fun SuggestItem(
         modifier = modifier.fillMaxWidth().height(48.dp),
     ) {
         Row(
-            modifier = Modifier.fillMaxWidth().align(Alignment.CenterHorizontally),
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
+            modifier = Modifier.fillMaxWidth().height(47.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
                 modifier = Modifier.size(20.dp),

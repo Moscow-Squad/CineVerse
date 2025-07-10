@@ -4,4 +4,5 @@
     <string name="speak_to_search">Speak to search</string>
     <string name="clear_all_history">Clear All</string>
     <string name="history">History</string>
+    <string name="search_suggestions">Search Suggestions</string>
 </resources>
