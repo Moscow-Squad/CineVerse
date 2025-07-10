@@ -4,8 +4,11 @@ import com.android.domain.exception.CineVerseException.NoSuggestionFoundExceptio
 import com.android.domain.repository.MovieRepository
 import com.android.domain.usecase.GetLocalSuggestions
 import com.google.common.truth.Truth.assertThat
-import io.mockk.every
+import io.mockk.coEvery
 import io.mockk.mockk
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.api.Test
@@ -20,20 +23,20 @@ class GetLocalSuggestionsTest {
     }
 
     @Test
-    fun `should return list when repository returns list`() {
+    fun `should return list when repository returns list`() = runTest{
         //Given
         val res = listOf("suggest1", "suggest2", "suggest3")
         //when
-        every { movieRepository.getLocalSuggestions() } returns res
-        val testRes = getLocalSuggestions()
+        coEvery { movieRepository.getLocalSuggestions() } returns flowOf(res)
+        val testRes = getLocalSuggestions().first()
         //then
         assertThat(testRes).isEqualTo(res)
     }
 
     @Test
-    fun `should throw NoSuggestionFoundException when repository returns empty list`() {
+    fun `should throw NoSuggestionFoundException when repository returns empty list`() = runTest{
         //Given & when
-        every { movieRepository.getLocalSuggestions() } returns emptyList<String>()
+        coEvery { movieRepository.getLocalSuggestions() } returns flowOf(emptyList<String>())
         //then
         assertThrows<NoSuggestionFoundException> {
             getLocalSuggestions()
@@ -41,9 +44,9 @@ class GetLocalSuggestionsTest {
     }
 
     @Test
-    fun `should throws exception when repository throws exception`() {
+    fun `should throws exception when repository throws exception`() = runTest{
         //Given & when
-        every { movieRepository.getLocalSuggestions() } throws Exception()
+        coEvery { movieRepository.getLocalSuggestions() } throws Exception()
         //then
         assertThrows<Exception> {
             getLocalSuggestions()
