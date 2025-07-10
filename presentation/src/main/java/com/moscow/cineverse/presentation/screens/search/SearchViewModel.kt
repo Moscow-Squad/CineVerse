@@ -12,9 +12,10 @@ class SearchViewModel(
 
     fun onSearchBarClickedOn(){
         updateState { it.copy(isSearchBarClickedOn = true) }
+        getHistoryData()
     }
 
-    fun getHistoryData(){
+    private fun getHistoryData(){
         launchWithResult<Flow<List<String>>>(
             action = {getLocalSuggestions()},
             onSuccess = { flow ->
