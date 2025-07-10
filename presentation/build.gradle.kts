@@ -80,4 +80,12 @@ dependencies {
     implementation(libs.androidx.material3)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    /** Koin */
+    implementation(platform(libs.koin.bom))
+//    implementation(libs.bundles.koin)
+    implementation(libs.koin.core)
+    implementation(libs.koin.android)
+    implementation(libs.koin.compose)
+    implementation(libs.kotlinx.datetime)
 }
