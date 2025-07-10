@@ -28,7 +28,7 @@ fun SafeImageViewer(
     imageUrl: String,
     contentDescription: String?,
     modifier: Modifier = Modifier,
-    blurRadius: Int = 20,
+    blurRadius: Int = 300,
     placeholder: Painter? = null,
     error: Painter? = null,
     fallback: Painter? = error,

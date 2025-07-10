@@ -9,17 +9,18 @@ import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import java.nio.MappedByteBuffer
 import java.nio.channels.FileChannel
+import androidx.core.graphics.scale
 
-class NSFWClassifier(private val context: Context) {
+class NSFWClassifier(context: Context) {
     private val interpreter: Interpreter
 
     init {
-        interpreter = Interpreter(loadModelFile("nsfw_model.tflite", context))
+        interpreter = Interpreter(loadModelFile(context))
     }
 
     @Throws(IOException::class)
-    private fun loadModelFile(model: String, context: Context): MappedByteBuffer {
-        val fileDescriptor = context.assets.openFd(model)
+    private fun loadModelFile(context: Context): MappedByteBuffer {
+        val fileDescriptor = context.assets.openFd(MODEL_NAME)
         val inputStream = FileInputStream(fileDescriptor.fileDescriptor)
         val fileChannel = inputStream.channel
         val startOffset = fileDescriptor.startOffset
@@ -35,10 +36,11 @@ class NSFWClassifier(private val context: Context) {
         return isNSFW(output[0])
     }
 
-    private fun preprocess(bitmap: Bitmap): ByteBuffer {
+    private fun preprocess(originalBitmap: Bitmap): ByteBuffer {
         val inputSize = 224
         val byteBuffer = ByteBuffer.allocateDirect(4 * inputSize * inputSize * 3)
         byteBuffer.order(ByteOrder.nativeOrder())
+        val bitmap = originalBitmap.scale(inputSize, inputSize)
 
         val intValues = IntArray(inputSize * inputSize)
         bitmap.getPixels(intValues, 0, bitmap.width, 0, 0, bitmap.width, bitmap.height)
@@ -64,5 +66,9 @@ class NSFWClassifier(private val context: Context) {
         val sfwPhoto = (neutral > porn || porn < 0.5) && (neutral > sexy || sexy < 0.5)
 
         return !(sfwPhoto and sfwDrawing)
+    }
+
+    companion object{
+        const val MODEL_NAME = "nsfw_model.tflite"
     }
 }
