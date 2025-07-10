@@ -11,6 +11,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.moscow.cineverse.designSystem.component.SectionTitle
+import com.moscow.cineverse.designSystem.component.search.SuggestItem
+import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.presentation.screens.search.SuggestItemUiState
 import com.moscow.cinverse.presentation.R
 
@@ -19,7 +21,7 @@ fun SearchSuggestion(
     suggestionList: List<SuggestItemUiState>,
     isHistory: Boolean,
     onClearAllClicked: () -> Unit
-){
+) {
     val title = if (isHistory)
         stringResource(R.string.history)
     else
@@ -30,12 +32,12 @@ fun SearchSuggestion(
     else
         null
 
-    Column (
+    Column(
         modifier = Modifier
             .padding(horizontal = 16.dp)
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
-    ){
+    ) {
         SectionTitle(
             modifier = Modifier.padding(top = 24.dp),
             title = title,
@@ -46,9 +48,24 @@ fun SearchSuggestion(
     }
 }
 
+@Composable
+private fun SuggestItems(
+    suggestItems: List<SuggestItemUiState>,
+    modifier: Modifier = Modifier
+) {
+    Column(modifier = modifier) {
+        suggestItems.forEachIndexed { index, item ->
+            val title = item.title
+            val icon =
+                if (item.isHistory) Theme.icons.outline.history else Theme.icons.outline.search
+            SuggestItem(title = title, icon = icon)
+        }
+    }
+}
+
 @Preview
 @Composable
-private fun SearchSuggestionPreview(){
+private fun SearchSuggestionPreview() {
     SearchSuggestion(
         listOf(
             SuggestItemUiState("sug1", true),
