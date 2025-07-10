@@ -3,8 +3,6 @@ package com.moscow.cineverse.presentation.screens.search.component
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -20,7 +18,8 @@ import com.moscow.cinverse.presentation.R
 fun SearchSuggestion(
     suggestionList: List<SuggestItemUiState>,
     isHistory: Boolean,
-    onClearAllClicked: () -> Unit
+    onClearAllClicked: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     val title = if (isHistory)
         stringResource(R.string.history)
@@ -33,10 +32,8 @@ fun SearchSuggestion(
         null
 
     Column(
-        modifier = Modifier
-            .padding(horizontal = 16.dp)
+        modifier = modifier
             .fillMaxSize()
-            .verticalScroll(rememberScrollState())
     ) {
         SectionTitle(
             modifier = Modifier.padding(top = 24.dp),
