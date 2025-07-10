@@ -33,4 +33,5 @@
     <string name="cast_member_image">Cast Member Image</string>
     <string name="suggest_item_icon">suggest item icon</string>
     <string name="arrow_left_up">arrow left up</string>
+    <string name="search_icon">search icon</string>
 </resources>
