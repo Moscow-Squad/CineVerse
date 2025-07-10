@@ -4,6 +4,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
@@ -23,7 +25,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -44,7 +45,8 @@ fun SearchBar(
     maxLines: Int = 1,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
-    onCancelButtonClicked: () -> Unit = {}
+    onCancelButtonClicked: () -> Unit = {},
+    onFirstFocus: () -> Unit = {}
 ) {
     var isFocused by remember { mutableStateOf(false) }
     var blockRefocus by remember { mutableStateOf(false) }
@@ -68,7 +70,7 @@ fun SearchBar(
     Row(
         horizontalArrangement = Arrangement.spacedBy(6.dp),
         verticalAlignment = Alignment.CenterVertically,
-        modifier = modifier
+        modifier = modifier.fillMaxWidth()
     ) {
         if (isFocused || value.isNotEmpty()) {
             Icon(
@@ -76,6 +78,7 @@ fun SearchBar(
                 contentDescription = stringResource(R.string.search_icon),
                 tint = Theme.colors.shade.primary,
                 modifier = Modifier
+                    .padding(10.dp)
                     .size(20.dp)
                     .clickable(onClick = {
                         focusManager.clearFocus(force = true)
@@ -91,9 +94,13 @@ fun SearchBar(
             value = value,
             onValueChange = onValueChange,
             modifier = Modifier
+                .weight(1f)
                 .focusRequester(focusRequester)
                 .onFocusChanged { focusState ->
                     if (!blockRefocus) {
+                        if (focusState.isFocused) {
+                            onFirstFocus()
+                        }
                         isFocused = focusState.isFocused
                     }
                 }
@@ -142,12 +149,9 @@ fun SearchBar(
             shape = RoundedCornerShape(Theme.radius.large),
             colors = OutlinedTextFieldDefaults.colors(
                 focusedTextColor = Theme.colors.shade.primary,
-                focusedBorderColor = Theme.colors.brand.primary,
+                focusedBorderColor = Theme.colors.stroke.primary,
                 unfocusedBorderColor = Theme.colors.stroke.primary,
-                errorBorderColor = Theme.colors.additional.primary.red,
-                errorTextColor = Theme.colors.shade.primary,
                 cursorColor = Theme.colors.brand.primary,
-                errorCursorColor = Color.Transparent
             )
         )
     }
