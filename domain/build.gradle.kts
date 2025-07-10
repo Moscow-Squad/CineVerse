@@ -23,6 +23,9 @@ dependencies{
     //coroutines
     testImplementation(libs.kotlinx.coroutines.test)
     implementation(libs.kotlinx.coroutines.core)
+    //Koin
+    implementation(platform(libs.koin.bom))
+    implementation(libs.koin.core)
 }
 tasks.test {
     useJUnitPlatform()
