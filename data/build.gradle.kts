@@ -3,7 +3,6 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.ksp)
     alias(libs.plugins.serialization)
-    alias(libs.plugins.android.secrets)
 }
 
 android {
@@ -45,10 +44,8 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
 
     /** Koin */
-    implementation(platform("io.insert-koin:koin-bom:4.1.0"))
-    implementation("io.insert-koin:koin-androidx-compose:4.1.0")
-    implementation("io.insert-koin:koin-android:4.1.0")
-    implementation("io.insert-koin:koin-core:4.1.0")
+    implementation(platform(libs.koin.bom))
+    implementation(libs.bundles.koin)
 
     /** Ktor */
     api(libs.bundles.ktor)
