@@ -1,4 +1,4 @@
 package com.di
 
 
-val dataModule = apiServiceModule + localServiceModule
+val dataModule = apiServiceModule + localServiceModule + repositoryModule

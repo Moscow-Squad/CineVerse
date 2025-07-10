@@ -9,6 +9,7 @@ import io.ktor.client.plugins.logging.ANDROID
 import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.Logging
+import io.ktor.client.request.header
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 import io.ktor.http.ContentType
@@ -30,8 +31,12 @@ object HttpClientFactory {
                 level = LogLevel.ALL
                 logger = Logger.ANDROID
             }
+//            defaultRequest {
+//                contentType(ContentType.Application.Json)
+//            }
             defaultRequest {
                 contentType(ContentType.Application.Json)
+                header("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJiMzdkOWY1Njg2ODVlZmFkYWZhMmNlMGE4NzE1OTdmYiIsIm5iZiI6MTc1MTQ3ODAxMi40MTgsInN1YiI6IjY4NjU2ZWZjMzVmNTZjNzQ4NzZhYTM0ZCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.m1SEYwrplAih5yTaMhekrgBwD8ZkL9FCdFO9OmXHc_I")
             }
         }
     }
