@@ -32,6 +32,7 @@ koin-bom = "4.1.0"
 # Network
 ktor = "3.0.2"
 jetbrainsKotlinJvm = "2.0.21"
+workRuntimeKtx = "2.10.2"
 
 [libraries]
 androidx-animation = { module = "androidx.compose.animation:animation", version.ref = "animation" }
@@ -80,6 +81,7 @@ koin-compose = { group = "io.insert-koin", name = "koin-androidx-compose" }
 
 #kotlin date time
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinxDatetime" }
+androidx-work-runtime-ktx = { group = "androidx.work", name = "work-runtime-ktx", version.ref = "workRuntimeKtx" }
 
 [plugins]
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
