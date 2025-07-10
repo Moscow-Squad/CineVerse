@@ -11,7 +11,7 @@ class SearchViewModel(
 ) : BaseViewModel<SearchUiState, SearchEffect>(SearchUiState()) {
 
     fun onSearchBarClickedOn(){
-        updateState { it.copy(isSearchBarClickedOn = true) }
+        updateState { it.copy(isSearchBarClickedOn = true, showSuggestions = true) }
         getHistoryData()
     }
 
@@ -30,5 +30,13 @@ class SearchViewModel(
             onStart = { updateState { it.copy(isLoading = true) } },
             onFinally = { updateState { it.copy(isLoading = false, showHistory = true) } }
         )
+    }
+
+    fun onCancelButtonClicked(){
+        updateState { it.copy(searchText = "", showHistory = false, showSuggestions = false) }
+    }
+
+    fun onSearchValueChange(text: String){
+        updateState { it.copy(searchText = text) }
     }
 }
