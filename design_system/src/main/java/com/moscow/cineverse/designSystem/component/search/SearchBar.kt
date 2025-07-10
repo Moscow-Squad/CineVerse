@@ -1,5 +1,11 @@
 package com.moscow.cineverse.designSystem.component.search
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -55,7 +61,7 @@ fun SearchBar(
 
     LaunchedEffect(blockRefocus) {
         if (blockRefocus) {
-            delay(100)
+            delay(500)
             blockRefocus = false
         }
     }
@@ -72,7 +78,11 @@ fun SearchBar(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier.fillMaxWidth()
     ) {
-        if (isFocused || value.isNotEmpty()) {
+        AnimatedVisibility (
+            visible = isFocused || value.isNotEmpty(),
+            enter = slideInHorizontally(initialOffsetX = { -it }) + fadeIn(animationSpec = tween(300)),
+            exit = slideOutHorizontally(targetOffsetX = { -it }) + fadeOut(animationSpec = tween(300))
+            ) {
             Icon(
                 painter = painterResource(Theme.icons.outline.arrowLeft),
                 contentDescription = stringResource(R.string.search_icon),
@@ -89,7 +99,6 @@ fun SearchBar(
                     })
             )
         }
-
         OutlinedTextField(
             value = value,
             onValueChange = onValueChange,
