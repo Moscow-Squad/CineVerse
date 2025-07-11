@@ -15,6 +15,9 @@ dependencies{
     testImplementation(kotlin("test"))
     //kotlin datetime
     implementation(libs.kotlinx.datetime)
+
+    implementation (libs.kotlinx.coroutines.core)
+    implementation (libs.kotlinx.coroutines.android)
     //junit & truth
     testImplementation(libs.junit.junit)
     testImplementation(libs.junit.jupiter)

@@ -1,11 +1,14 @@
 package com.moscow.cineverse.screen.explore
 
+import com.android.domain.model.Suggestion
+
 data class ExploreScreenState(
     val searchKeyWord: String = "",
     val searchResult: Map<String, List<MediaItemUi>> = mutableMapOf(),
     val actorsSearchResult: List<ActorUi> = emptyList(),
     val isLoading: Boolean = false,
-    val selectedTab: String? = null
+    val selectedTab: String? = null,
+    val suggestions:List<Suggestion> = emptyList()
 ){
     data class MediaItemUi(
         val id: Int,
@@ -15,6 +18,7 @@ data class ExploreScreenState(
         val genres: List<String>,
         val releaseDate: String,
     )
+)
 
     data class ActorUi(
         val title: String,
