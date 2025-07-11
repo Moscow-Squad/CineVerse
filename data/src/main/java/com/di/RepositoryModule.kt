@@ -1,22 +1,14 @@
 package com.di
 
-import com.android.domain.SearchRepository
-import com.repository.search.SearchRepositoryImpl
-import org.koin.core.module.dsl.singleOf
-import org.koin.dsl.bind
-import org.koin.dsl.module
-
 import com.android.domain.repository.SearchRepository
-import com.repository.SearchRepositoryImpl
+import org.koin.dsl.module
 import kotlinx.coroutines.Dispatchers
 import org.koin.core.qualifier.named
 import com.android.domain.repository.ExploreRepository
-import com.android.domain.repository.MovieRepository
 import com.repository.ExploreRepositoryImpl
-import com.repository.MovieRepositoryImpl
+import com.repository.search.SearchRepositoryImpl
 
 val repositoryModule = module {
-    single<MovieRepository> { MovieRepositoryImpl() }
 
     single<ExploreRepository> {
         ExploreRepositoryImpl(
@@ -26,11 +18,12 @@ val repositoryModule = module {
     }
     single(named("IO")) { Dispatchers.IO }
 
-    single<SearchRepository>{
+    single<SearchRepository> {
         SearchRepositoryImpl(
             searchRemoteDataSource = get(),
-            get(qualifier = named("IO"))
+            ioDispatcher = get(qualifier = named("IO")),
+            searchLocalDateSource = get(),
+            workManager = get()
         )
     }
-
 }

@@ -11,7 +11,7 @@ const val YYYY_MMM_DD = "yyyy, MMM dd"
 
 fun Movie.toUi(): MediaItemUi =
     MediaItemUi(
-        id = id,
+        id = id.toInt(),
         name = name,
         posterPath = posterPath,
         rating = rating,

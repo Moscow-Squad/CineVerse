@@ -3,7 +3,7 @@ package com.remote
 import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
-import com.android.domain.SearchRepository
+import com.android.domain.repository.SearchRepository
 
 class DeleteQueryWorker(
     appContext: Context,

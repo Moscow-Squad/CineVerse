@@ -47,9 +47,11 @@ fun MovieDto.toDomain() =
         genreIds = genreIds ?: emptyList(),
         originalLanguage = originalLanguage.orEmpty(),
         rating = voteAverage ?: 0f,
-        id = id ?: 0,
+        id = (id ?: 0).toLong(),
         name = title.orEmpty(),
         video = video == true,
+        poster = "",
+        duration = "",
     )
 
 fun SeriesDto.toDomain() =
