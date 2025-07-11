@@ -5,6 +5,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface SearchRepository {
 
-    fun getSuggestions(keyWord:String):Flow<List<Suggestion>>
+    fun getRemoteSuggestions(keyWord:String,page:Int):Flow<List<Suggestion>>
+    fun getLocalSuggestions(keyWord:String):Flow<List<Suggestion>>
 
 }
