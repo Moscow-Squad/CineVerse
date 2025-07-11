@@ -24,13 +24,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.android.domain.model.Movie
-import com.moscow.cineverse.designSystem.component.MoviePosterCard
 import com.moscow.cineverse.designSystem.component.PillLabel
 import com.moscow.cineverse.designSystem.component.ViewMode
 import com.moscow.cineverse.designSystem.component.ViewModeToggle
 import com.moscow.cineverse.designSystem.component.tabs.ExploreTabs
 import com.moscow.cineverse.designSystem.theme.Theme
+import com.moscow.cineverse.presentation.component.MoviePosterCard
 
 @Composable
 fun ExploreScreen(
@@ -129,7 +128,7 @@ private fun ExploreScreenContent(
                                 modifier = Modifier.fillMaxSize()
                             ) {
                                 items(uiState.contentList) { item ->
-                                    val movie = item as Movie
+                                    val movie = item as UiMovie
                                     MoviePosterCard(
                                         movie = movie,
                                         viewMode = uiState.viewMode,
