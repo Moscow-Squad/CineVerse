@@ -30,19 +30,17 @@ class NSFWClassifier(context: Context) {
 
     fun classifyImage(bitmap: Bitmap): Boolean {
         val input = preprocess(bitmap)
-        val output = Array(1) { FloatArray(5) }  // Binary output
-
+        val output = Array(1) { FloatArray(OUTPUT_CLASSES) }
         interpreter.run(input, output)
         return isNSFW(output[0])
     }
 
     private fun preprocess(originalBitmap: Bitmap): ByteBuffer {
-        val inputSize = 224
-        val byteBuffer = ByteBuffer.allocateDirect(4 * inputSize * inputSize * 3)
+        val byteBuffer = ByteBuffer.allocateDirect(4 * INPUT_SIZE * INPUT_SIZE * PIXEL_SIZE)
         byteBuffer.order(ByteOrder.nativeOrder())
-        val bitmap = originalBitmap.scale(inputSize, inputSize)
+        val bitmap = originalBitmap.scale(INPUT_SIZE, INPUT_SIZE)
 
-        val intValues = IntArray(inputSize * inputSize)
+        val intValues = IntArray(INPUT_SIZE * INPUT_SIZE)
         bitmap.getPixels(intValues, 0, bitmap.width, 0, 0, bitmap.width, bitmap.height)
         for (pixelValue in intValues) {
             val r = (pixelValue shr 16 and 0xFF) / 255.0f
@@ -62,13 +60,17 @@ class NSFWClassifier(context: Context) {
         val porn = output[3]
         val sexy = output[4]
 
-        val sfwDrawing = drawings > hentai || hentai < 0.5
-        val sfwPhoto = (neutral > porn || porn < 0.5) && (neutral > sexy || sexy < 0.5)
+        val sfwDrawing = drawings > hentai || hentai < NSFW_THRESHOLD
+        val sfwPhoto = (neutral > porn || porn < NSFW_THRESHOLD) && (neutral > sexy || sexy < NSFW_THRESHOLD)
 
-        return !(sfwPhoto and sfwDrawing)
+        return !(sfwPhoto && sfwDrawing)
     }
 
-    companion object{
-        const val MODEL_NAME = "nsfw_model.tflite"
+    companion object {
+        private const val MODEL_NAME = "nsfw_model.tflite"
+        private const val INPUT_SIZE = 224
+        private const val PIXEL_SIZE = 3
+        private const val OUTPUT_CLASSES = 5
+        private const val NSFW_THRESHOLD = 0.5f
     }
 }
