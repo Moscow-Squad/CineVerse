@@ -58,7 +58,8 @@ fun MoviePosterCard(
     infoModifier: Modifier = Modifier,
     titleTextAlign : TextAlign = TextAlign.Start,
     descriptionTextAlign : TextAlign = TextAlign.Start,
-    showGenres: Boolean = false
+    showGenres: Boolean = false,
+    showTitle: Boolean = true
 ) {
     when (viewMode) {
         ViewMode.GRID -> GridMovieCard(
@@ -69,7 +70,8 @@ fun MoviePosterCard(
             infoModifier = infoModifier,
             titleTextAlign = titleTextAlign,
             descriptionTextAlign = descriptionTextAlign,
-            showGenres = showGenres
+            showGenres = showGenres,
+            showTitle = showTitle
         )
 
         ViewMode.LIST -> ListMovieCard(
@@ -113,6 +115,7 @@ private fun GridMovieCard(
     modifier: Modifier = Modifier,
     movie: Movie,
     showGenres: Boolean = false,
+    showTitle: Boolean = true,
     showRating: Boolean = true,
     onMovieClick: (Movie) -> Unit,
     infoModifier: Modifier = Modifier,
@@ -160,7 +163,7 @@ private fun GridMovieCard(
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Text(
-                                text = String.format("%.1f", movie.rating),
+                                text = "%.1f".format(movie.rating),
                                 color = Theme.colors.shade.primary,
                                 style = Theme.textStyle.label.medium.medium
                             )
@@ -180,6 +183,7 @@ private fun GridMovieCard(
 
         InfoSection(
             title = movie.title,
+            showTitle = showTitle,
             genres = movie.genres,
             showGenres = showGenres,
             modifier = infoModifier.padding(top = 8.dp),
@@ -292,7 +296,7 @@ private fun ListMovieCard(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = String.format("%.1f", movie.rating),
+                        text = "%.1f".format(movie.rating),
                         color = Theme.colors.shade.primary,
                         style = Theme.textStyle.label.medium.medium
                     )
