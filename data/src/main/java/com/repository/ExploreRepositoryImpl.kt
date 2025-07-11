@@ -18,47 +18,5 @@ class ExploreRepositoryImpl(
     private val ioDispatcher: CoroutineDispatcher,
 
     ) : ExploreRepository {
-    override suspend fun searchMulti(
-        query: String,
-    ): Flow<List<MultiSearch>> =
-        flow {
-            val result = searchRemoteDataSource.searchMulti(query)
-            if (result.isNotEmpty()) {
-                emit(result.map { it.toDomain() })
-            } else {
-                throw CineVerseException.NotFoundCineVerseException
-            }
-        }.flowOn(ioDispatcher)
 
-
-    override suspend fun searchMovie(query: String): Flow<List<Movie>> =
-        flow {
-            val result = searchRemoteDataSource.searchMovie(query)
-            if (result.isNotEmpty()) {
-                emit(result.map { it.toDomain() })
-            } else {
-                throw CineVerseException.NotFoundCineVerseException
-            }
-        }.flowOn(ioDispatcher)
-
-
-    override suspend fun searchSeries(query: String): Flow<List<Series>> =
-        flow {
-            val result = searchRemoteDataSource.searchSeries(query)
-            if (result.isNotEmpty()) {
-                emit(result.map { it.toDomain() })
-            } else {
-                throw CineVerseException.NotFoundCineVerseException
-            }
-        }.flowOn(ioDispatcher)
-
-    override suspend fun searchActor(query: String): Flow<List<Actor>> =
-        flow {
-            val result = searchRemoteDataSource.searchPearson(query)
-            if (result.isNotEmpty()) {
-                emit(result.map { it.toDomain() })
-            } else {
-                throw CineVerseException.NotFoundCineVerseException
-            }
-        }.flowOn(ioDispatcher)
 }

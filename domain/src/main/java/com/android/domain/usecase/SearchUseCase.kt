@@ -1,23 +1,23 @@
 package com.android.domain.usecase
 
-import com.android.domain.repository.ExploreRepository
+import com.android.domain.repository.SearchRepository
 
 class SearchUseCase(
-    private val exploreRepository: ExploreRepository
+    private val searchRepository: SearchRepository,
 ) {
     suspend fun searchMulti(
         query: String,
-    ) = exploreRepository.searchMulti(query)
+    ) = searchRepository.searchMulti(query)
 
     suspend fun searchMovie(
         query: String,
-    ) = exploreRepository.searchMovie(query)
+    ) = searchRepository.searchMovie(query)
 
     suspend fun searchSeries(
         query: String
-    ) = exploreRepository.searchSeries(query)
+    ) = searchRepository.searchSeries(query)
 
     suspend fun searchActor(
         query: String
-    ) = exploreRepository.searchActor(query)
+    ) = searchRepository.searchActor(query)
 }

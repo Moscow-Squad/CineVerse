@@ -4,8 +4,13 @@ import androidx.room.Transaction
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.workDataOf
+import com.android.domain.exception.CineVerseException
+import com.android.domain.model.Actor
 import com.android.domain.repository.SearchRepository
 import com.android.domain.model.Movie
+import com.android.domain.model.MultiSearch
+import com.android.domain.model.Series
+import com.mapper.toDomain
 import com.mapper.toModel
 import com.remote.DeleteQueryWorker
 import com.remote.source.SearchRemoteDataSource
@@ -25,7 +30,7 @@ class SearchRepositoryImpl(
     private val workManager: WorkManager
 ) : SearchRepository, BaseRepository(
 ) {
-    override suspend fun getMoviesBySearchTerm(searchTerm: String): List<Movie> {
+    override suspend fun getLocalMoviesBySearchTerm(searchTerm: String): List<Movie> {
         return searchLocalDateSource.getMoviesBySearchTerm(searchTerm).toDomain()
     }
 
@@ -52,7 +57,52 @@ class SearchRepositoryImpl(
     override fun getRemoteSuggestions(keyWord: String,page:Int): Flow<List<String>> =
         flow {
             val remoteSuggestions = searchRemoteDataSource.getSuggestions(keyWord,page)
-            emit(remoteSuggestions.toModel())
+            emit(remoteSuggestions.map { it.toModel() })
+        }.flowOn(ioDispatcher)
+
+    override suspend fun searchMulti(
+        query: String,
+    ): Flow<List<MultiSearch>> =
+        flow {
+            val result = searchRemoteDataSource.searchMulti(query)
+            if (result.isNotEmpty()) {
+                emit(result.map { it.toDomain() })
+            } else {
+                throw CineVerseException.NotFoundCineVerseException
+            }
+        }.flowOn(ioDispatcher)
+
+
+    override suspend fun searchMovie(query: String): Flow<List<Movie>> =
+        flow {
+            val result = searchRemoteDataSource.searchMovie(query)
+            if (result.isNotEmpty()) {
+                emit(result.map { it.toDomain() })
+                insertMovie(result.map {movie -> movie.toDomain() }, query)
+            } else {
+                throw CineVerseException.NotFoundCineVerseException
+            }
+        }.flowOn(ioDispatcher)
+
+
+    override suspend fun searchSeries(query: String): Flow<List<Series>> =
+        flow {
+            val result = searchRemoteDataSource.searchSeries(query)
+            if (result.isNotEmpty()) {
+                emit(result.map { it.toDomain() })
+            } else {
+                throw CineVerseException.NotFoundCineVerseException
+            }
+        }.flowOn(ioDispatcher)
+
+    override suspend fun searchActor(query: String): Flow<List<Actor>> =
+        flow {
+            val result = searchRemoteDataSource.searchPearson(query)
+            if (result.isNotEmpty()) {
+                emit(result.map { it.toDomain() })
+            } else {
+                throw CineVerseException.NotFoundCineVerseException
+            }
         }.flowOn(ioDispatcher)
 
 }
