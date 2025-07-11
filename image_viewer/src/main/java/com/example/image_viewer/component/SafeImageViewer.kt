@@ -25,7 +25,7 @@ import com.skydoves.cloudy.cloudy
 
 @Composable
 fun SafeImageViewer(
-    imageUrl: String,
+    model: Any?,
     contentDescription: String?,
     modifier: Modifier = Modifier,
     blurRadius: Int = 300,
@@ -49,10 +49,7 @@ fun SafeImageViewer(
 
     Box(modifier = modifier) {
         AsyncImage(
-            model = ImageRequest.Builder(context)
-                .data(imageUrl)
-                .allowHardware(false)
-                .build(),
+            model = model,
             modifier = modifier.cloudy(radius = blurRadius, enabled = blurImage),
             onSuccess = { success ->
                 val bitmapImage = success.result.image.toBitmap()
