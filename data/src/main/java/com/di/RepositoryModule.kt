@@ -9,7 +9,7 @@ import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 val repositoryModule = module {
-    single<MovieRepository> { MovieRepositoryImpl(get()) }
+    single<MovieRepository> { MovieRepositoryImpl() }
     single<ExploreRepository> {
         ExploreRepositoryImpl(
             searchRemoteDataSource = get(),
