@@ -1,4 +1,6 @@
 package com.android.domain.exception
 
-sealed class CineVerseException : Exception()
+sealed class CineVerseException : Exception(){
  object NotFoundCineVerseException: CineVerseException()
+    class NoSuggestionFoundException(): CineVerseException()
+}

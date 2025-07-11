@@ -18,7 +18,8 @@ import com.moscow.cineverse.designSystem.theme.Theme
 fun SectionTitle(
     title: String,
     modifier: Modifier = Modifier,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    actionTitle: String? = stringResource(R.string.show_more)
 ) {
     Row(
         modifier = modifier.fillMaxWidth(),
@@ -34,13 +35,15 @@ fun SectionTitle(
             )
         }
         Spacer(modifier = Modifier.weight(1f))
-        Text(
-            text = stringResource(R.string.show_more),
-            color = Theme.colors.brand.primary,
-            style = Theme.textStyle.body.medium.medium,
-            maxLines = 1,
-            modifier = Modifier.clickable { onClick() }
-        )
+        if (actionTitle != null){
+            Text(
+                text = actionTitle,
+                color = Theme.colors.brand.primary,
+                style = Theme.textStyle.body.medium.medium,
+                maxLines = 1,
+                modifier = Modifier.clickable { onClick() }
+            )
+        }
     }
 }
 
