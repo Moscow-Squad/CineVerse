@@ -1,11 +1,8 @@
 package com.mapper
 
-import com.dto.Result
-import com.dto.SuggestionResponse
+import com.remote.dto.SuggestionDto
 
-fun SuggestionResponse.toModel(): List<String> {
-    return results?.mapNotNull { it.toModel() } ?: emptyList()
-}
-fun Result.toModel(): String{
+
+fun SuggestionDto.toModel(): String{
     return this.name?:""
 }

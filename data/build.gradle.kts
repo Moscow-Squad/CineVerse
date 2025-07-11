@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
@@ -9,11 +11,22 @@ android {
     namespace = "com.moscow.cineverse.data"
     compileSdk = 36
 
+    buildFeatures {
+        buildConfig = true
+    }
+
     defaultConfig {
         minSdk = 26
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
+
+        val keystoreFile = project.rootProject.file("local.properties")
+        val properties = Properties()
+        properties.load(keystoreFile.inputStream())
+
+        buildConfigField("String", "TMDB_API_KEY", "\"${properties.getProperty("TMDB_API_KEY")}\"")
+
     }
 
     buildTypes {
@@ -32,6 +45,8 @@ android {
     kotlinOptions {
         jvmTarget = "11"
     }
+
+
 }
 
 dependencies {

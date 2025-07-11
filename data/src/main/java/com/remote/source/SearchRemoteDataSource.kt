@@ -1,16 +1,23 @@
 package com.remote.source
 
-import com.dto.SuggestionResponse
+import com.remote.dto.SuggestionDto
+import com.remote.dto.ActorDto
 import com.remote.dto.MovieDto
 import com.remote.dto.MultiSearchDto
-import com.remote.dto.MultiSearchResponse
-import com.remote.dto.ActorDto
-import com.remote.dto.SearchResponse
+import com.utils.ApiResponse
 import com.remote.dto.SeriesDto
+import com.utils.INCLUDE_ADULT
+import com.utils.PAGE
+import com.utils.QUERY
+import com.utils.SEARCH_ACTOR
+import com.utils.SEARCH_KEYWORD
+import com.utils.SEARCH_MOVIE
+import com.utils.SEARCH_MULTI
+import com.utils.SEARCH_SERIES
+import com.utils.performCall
 import io.ktor.client.HttpClient
-import io.ktor.client.call.body
-import io.ktor.client.request.get
 import io.ktor.client.request.parameter
+import io.ktor.http.HttpMethod
 
 class SearchRemoteDataSource(
     private val client: HttpClient
@@ -18,61 +25,67 @@ class SearchRemoteDataSource(
     suspend fun searchMulti(
         query: String,
     ): List<MultiSearchDto> {
-        val response: MultiSearchResponse =
-            client.get("https://api.themoviedb.org/3/search/multi") {
-                parameter("api_key", "b37d9f568685efadafa2ce0a871597fb")
-                parameter("query", query)
-                parameter("page", 1)
-                parameter("include_adult", false)
-            }.body()
-
-        return response.results
+        val response = client.performCall<Unit, ApiResponse<MultiSearchDto>>(
+            method = HttpMethod.Get,
+            path = SEARCH_MULTI,
+            requestBuilder = {
+                parameter(QUERY, query)
+                parameter(PAGE, 1)
+                parameter(INCLUDE_ADULT, false)
+            }
+        ).results
+        return response
     }
 
-    suspend fun searchMovie(query: String): List<MovieDto>{
-        val response: SearchResponse<MovieDto> =
-            client.get("https://api.themoviedb.org/3/search/movie") {
-                parameter("api_key", "b37d9f568685efadafa2ce0a871597fb")
-                parameter("query", query)
-                parameter("page", 1)
-                parameter("include_adult", false)
-            }.body()
-
-        return response.results
+    suspend fun searchMovie(query: String): List<MovieDto> {
+        val response = client.performCall<Unit, ApiResponse<MovieDto>>(
+            method = HttpMethod.Get,
+            path = SEARCH_MOVIE,
+            requestBuilder = {
+                parameter(QUERY, query)
+                parameter(PAGE, 1)
+                parameter(INCLUDE_ADULT, false)
+            }
+        ).results
+        return response
     }
 
-    suspend fun searchSeries(query: String): List<SeriesDto>{
-        val response: SearchResponse<SeriesDto> =
-            client.get("https://api.themoviedb.org/3/search/tv") {
-                parameter("api_key", "b37d9f568685efadafa2ce0a871597fb")
-                parameter("query", query)
-                parameter("page", 1)
-                parameter("include_adult", false)
-            }.body()
-
-        return response.results
+    suspend fun searchSeries(query: String): List<SeriesDto> {
+        val response = client.performCall<Unit, ApiResponse<SeriesDto>>(
+            method = HttpMethod.Get,
+            path = SEARCH_SERIES,
+            requestBuilder = {
+                parameter(QUERY, query)
+                parameter(PAGE, 1)
+                parameter(INCLUDE_ADULT, false)
+            }
+        ).results
+        return response
     }
 
-    suspend fun searchPearson(query: String): List<ActorDto>{
-        val response: SearchResponse<ActorDto> =
-            client.get("https://api.themoviedb.org/3/search/multi") {
-                parameter("api_key", "b37d9f568685efadafa2ce0a871597fb")
-                parameter("query", query)
-                parameter("page", 1)
-                parameter("include_adult", false)
-            }.body()
-
-        return response.results
+    suspend fun searchPearson(query: String): List<ActorDto> {
+        val response = client.performCall<Unit, ApiResponse<ActorDto>>(
+            method = HttpMethod.Get,
+            path = SEARCH_ACTOR,
+            requestBuilder = {
+                parameter(QUERY, query)
+                parameter(PAGE, 1)
+                parameter(INCLUDE_ADULT, false)
+            }
+        ).results
+        return response
     }
 
-    suspend fun getSuggestions(keyword:String,page:Int): SuggestionResponse{
-        val response: SuggestionResponse =
-            client.get("https://api.themoviedb.org/3/search/keyword"){
-                parameter("api_key", "b37d9f568685efadafa2ce0a871597fb")
-                parameter("query",keyword)
-                parameter("page",page)
-            }.body()
-
+    suspend fun getSuggestions(keyword: String, page: Int): List<SuggestionDto> {
+        val response = client.performCall<Unit, ApiResponse<SuggestionDto>>(
+            method = HttpMethod.Get,
+            path = SEARCH_KEYWORD,
+            requestBuilder = {
+                parameter(QUERY, keyword)
+                parameter(PAGE, page)
+                parameter(INCLUDE_ADULT, false)
+            }
+        ).results
         return response
     }
 }

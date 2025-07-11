@@ -1,11 +1,10 @@
-package com.remote.dto
+package com.utils
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-
 @Serializable
-class SearchResponse<T>(
+class ApiResponse<T>(
     @SerialName("page")
     val page: Int,
     @SerialName("results")
