@@ -33,8 +33,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import coil3.compose.AsyncImage
 import com.example.design_system.R
+import com.example.image_viewer.component.SafeImageViewer
 import com.moscow.cineverse.designSystem.theme.CineVerseTheme
 import com.moscow.cineverse.designSystem.theme.Theme
 
@@ -56,8 +56,8 @@ fun MoviePosterCard(
     showRating: Boolean = true,
     onMovieClick: (Movie) -> Unit = {},
     infoModifier: Modifier = Modifier,
-    titleTextAlign : TextAlign = TextAlign.Start,
-    descriptionTextAlign : TextAlign = TextAlign.Start,
+    titleTextAlign: TextAlign = TextAlign.Start,
+    descriptionTextAlign: TextAlign = TextAlign.Start,
     showGenres: Boolean = false,
     showTitle: Boolean = true
 ) {
@@ -119,8 +119,8 @@ private fun GridMovieCard(
     showRating: Boolean = true,
     onMovieClick: (Movie) -> Unit,
     infoModifier: Modifier = Modifier,
-    titleTextAlign : TextAlign,
-    descriptionTextAlign : TextAlign
+    titleTextAlign: TextAlign,
+    descriptionTextAlign: TextAlign
 ) {
     Column {
         Card(
@@ -132,7 +132,7 @@ private fun GridMovieCard(
         ) {
             Box {
                 if (movie.posterUrl.isNotEmpty()) {
-                    AsyncImage(
+                    SafeImageViewer(
                         model = movie.posterUrl,
                         contentDescription = movie.title,
                         placeholder = painterResource(id = R.drawable.due_tone_image),
@@ -213,7 +213,7 @@ private fun ListMovieCard(
             Row(modifier = Modifier.fillMaxSize()) {
 
                 if (movie.posterUrl.isNotEmpty()) {
-                    AsyncImage(
+                    SafeImageViewer(
                         model = movie.posterUrl,
                         contentDescription = movie.title,
                         placeholder = painterResource(id = R.drawable.due_tone_image),

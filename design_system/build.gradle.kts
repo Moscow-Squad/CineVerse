@@ -60,6 +60,9 @@ jacoco {
 
 
 dependencies {
+
+    implementation(project(":image_viewer"))
+
     implementation(libs.coil.compose)
     implementation(libs.coil.network.okhttp)
     implementation(libs.androidx.core.ktx)

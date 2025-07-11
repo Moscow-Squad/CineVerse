@@ -26,8 +26,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import coil3.compose.AsyncImage
 import com.example.design_system.R
+import com.example.image_viewer.component.SafeImageViewer
 import com.moscow.cineverse.designSystem.theme.CineVerseTheme
 import com.moscow.cineverse.designSystem.theme.Theme
 
@@ -52,7 +52,7 @@ fun SeasonCard(
             verticalAlignment = Alignment.CenterVertically
         ) {
 
-            AsyncImage(
+            SafeImageViewer(
                 model = season.posterUrl,
                 contentDescription = stringResource(R.string.season_poster),
                 fallback = painterResource(R.drawable.due_tone_image),
