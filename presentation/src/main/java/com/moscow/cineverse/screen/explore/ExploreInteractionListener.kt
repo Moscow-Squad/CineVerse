@@ -11,4 +11,6 @@ interface ExploreInteractionListener {
     fun SuggestionList() : List<SuggestItemUiState>
     fun onClickSuggestion(text: String)
     fun clearAllLocalSuggestions()
+    fun getMoviesGenres()
+    fun getSeriesGenres()
 }

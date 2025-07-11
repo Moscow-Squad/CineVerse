@@ -1,4 +1,4 @@
-package com.repository.search
+package com.repository.explore.search
 
 import androidx.room.Transaction
 import androidx.work.OneTimeWorkRequestBuilder

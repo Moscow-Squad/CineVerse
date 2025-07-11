@@ -1,4 +1,4 @@
-package com.repository.search
+package com.repository.explore.search
 
 import com.local.entity.MovieEntity
 

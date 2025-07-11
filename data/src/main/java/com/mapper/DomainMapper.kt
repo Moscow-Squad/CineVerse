@@ -2,11 +2,13 @@ package com.mapper
 
 import com.android.domain.model.Actor
 import com.android.domain.model.Gender
+import com.android.domain.model.Genre
 import com.android.domain.model.MediaType
 import com.android.domain.model.Movie
 import com.android.domain.model.MultiSearch
 import com.android.domain.model.Series
 import com.remote.dto.ActorDto
+import com.remote.dto.GenreDto
 import com.remote.dto.MovieDto
 import com.remote.dto.MultiSearchDto
 import com.remote.dto.SeriesDto
@@ -80,4 +82,10 @@ fun ActorDto.toDomain() =
         name = name.orEmpty(),
         gender = if (gender == 0) Gender.MALE else Gender.FEMALE,
         profileImg = profilePath.orEmpty(),
+    )
+
+fun GenreDto.toDomain() =
+    Genre(
+        id = id,
+        name = name
     )

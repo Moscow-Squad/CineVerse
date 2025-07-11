@@ -1,31 +1,33 @@
 package com.moscow.cineverse.screen.explore
 
 import com.android.domain.model.Actor
+import com.android.domain.model.Genre
 import com.android.domain.model.Movie
 import com.android.domain.model.Series
 import com.moscow.cineverse.screen.explore.ExploreScreenState.ActorUi
+import com.moscow.cineverse.screen.explore.ExploreScreenState.GenreUi
 import com.moscow.cineverse.screen.explore.ExploreScreenState.MediaItemUi
 import kotlinx.datetime.LocalDate
 
 const val YYYY_MMM_DD = "yyyy, MMM dd"
 
-fun Movie.toUi(): MediaItemUi =
+fun Movie.toUi(genresList: List<GenreUi>): MediaItemUi =
     MediaItemUi(
         id = id.toInt(),
         name = name,
         posterPath = posterPath,
         rating = rating,
-        genres = emptyList(),
+        genres = genreIds.map {it-> genresList.first { genre -> genre.id == it }.name },
         releaseDate = releaseDate.formatWith(YYYY_MMM_DD) ?: ""
     )
 
-fun Series.toUi(): MediaItemUi =
+fun Series.toUi(genresList: List<GenreUi>): MediaItemUi =
     MediaItemUi(
         id = id,
         name = name,
         posterPath = posterPath,
         rating = rating,
-        genres = emptyList(),
+        genres = genreIds.map {it-> genresList.first { genre -> genre.id == it }.name },
         releaseDate = firstAirDate.formatWith(YYYY_MMM_DD) ?: ""
     )
 
@@ -34,6 +36,12 @@ fun Actor.toUi(): ActorUi =
         title = name,
         icon = profileImg,
         id = id
+    )
+
+fun Genre.toUi() =
+    GenreUi(
+        id = id,
+        name = name
     )
 
 fun LocalDate.formatWith(pattern: String): String? {

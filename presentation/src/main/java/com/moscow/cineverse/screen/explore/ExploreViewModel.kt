@@ -1,14 +1,17 @@
 package com.moscow.cineverse.screen.explore
 
 import android.util.Log
+import androidx.lifecycle.viewModelScope
 import com.android.domain.model.Actor
+import com.android.domain.model.Genre
 import com.android.domain.model.Movie
 import com.android.domain.model.Series
-import com.android.domain.usecase.SearchUseCase
-import androidx.lifecycle.viewModelScope
+import com.android.domain.usecase.GenreUseCase
 import com.android.domain.usecase.GetLocalSuggestions
+import com.android.domain.usecase.SearchUseCase
 import com.android.domain.usecase.SuggestionUseCase
 import com.moscow.cineverse.base.BaseViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -22,6 +25,7 @@ class ExploreViewModel(
     private val searchUseCase: SearchUseCase,
     private val suggestionUseCase: SuggestionUseCase,
     val getLocalSuggestions: GetLocalSuggestions,
+    val genreUseCase: GenreUseCase
 ) : BaseViewModel<ExploreScreenState, ExploreScreenEvents>(ExploreScreenState()),
     ExploreInteractionListener {
 
@@ -62,7 +66,7 @@ class ExploreViewModel(
     private fun onMovieSearchSuccess(items: List<Movie>) {
         updateState {
             it.copy(
-                searchResult = it.searchResult.plus(it.selectedTab!! to items.map { it.toUi() }),
+                searchResult = it.searchResult.plus(it.selectedTab!! to items.map { it.toUi(uiState.value.moviesGenres) }),
                 isLoading = false
             )
         }
@@ -71,7 +75,7 @@ class ExploreViewModel(
     private fun onSeriesSearchSuccess(items: List<Series>) {
         updateState {
             it.copy(
-                searchResult = it.searchResult.plus(it.selectedTab!! to items.map { it.toUi() }),
+                searchResult = it.searchResult.plus(it.selectedTab!! to items.map { it.toUi(uiState.value.seriesGenres) }),
                 isLoading = false
             )
         }
@@ -181,4 +185,42 @@ class ExploreViewModel(
     override fun clearAllLocalSuggestions() {
         Log.d("dddddddddddddddd", "Clear allllllllllllllllll")
     }
+
+    override fun getMoviesGenres() {
+        launchWithFlow(
+            flowAction = { genreUseCase.getMoviesGenres() },
+            onSuccess = ::onMoviesGenresSuccess,
+            onError = ::onMoviesGenresFailed,
+            onStart = ::onLoading,
+            onFinally = ::onFinally
+        )
+    }
+
+    private fun onMoviesGenresSuccess(genres: List<Genre>) {
+        updateState { it.copy(moviesGenres = genres.map { it.toUi() }) }
+    }
+
+    private fun onMoviesGenresFailed(e: Throwable) {
+
+    }
+
+
+    override fun getSeriesGenres() {
+        launchWithFlow(
+            flowAction = { genreUseCase.getSeriesGenres() },
+            onSuccess = ::onSeriesGenresSuccess,
+            onError = ::onSeriesGenresFailed,
+            onStart = ::onLoading,
+            onFinally = ::onFinally
+        )
+    }
+
+    private fun onSeriesGenresSuccess(genres: List<Genre>) {
+        updateState { it.copy(seriesGenres = genres.map { it.toUi() }) }
+    }
+
+    private fun onSeriesGenresFailed(e: Throwable) {
+
+    }
+
 }

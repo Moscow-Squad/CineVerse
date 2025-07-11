@@ -5,15 +5,15 @@ import org.koin.dsl.module
 import kotlinx.coroutines.Dispatchers
 import org.koin.core.qualifier.named
 import com.android.domain.repository.ExploreRepository
-import com.repository.ExploreRepositoryImpl
-import com.repository.search.SearchRepositoryImpl
+import com.repository.explore.ExploreRepositoryImpl
+import com.repository.explore.search.SearchRepositoryImpl
 
 val repositoryModule = module {
 
     single<ExploreRepository> {
         ExploreRepositoryImpl(
-            searchRemoteDataSource = get(),
-            ioDispatcher = get(qualifier = named("IO"))
+            ioDispatcher = get(qualifier = named("IO")),
+            exploreRemoteDataSource = get()
         )
     }
     single(named("IO")) { Dispatchers.IO }
