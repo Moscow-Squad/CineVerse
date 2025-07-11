@@ -6,7 +6,6 @@ import androidx.work.WorkManager
 import androidx.work.workDataOf
 import com.android.domain.repository.SearchRepository
 import com.android.domain.model.Movie
-import com.android.domain.model.Suggestion
 import com.mapper.toModel
 import com.remote.DeleteQueryWorker
 import com.remote.source.SearchRemoteDataSource
@@ -50,7 +49,7 @@ class SearchRepositoryImpl(
         searchLocalDateSource.deleteSearchHistory(searchTerm)
     }
 
-    override fun getRemoteSuggestions(keyWord: String,page:Int): Flow<List<Suggestion>> =
+    override fun getRemoteSuggestions(keyWord: String,page:Int): Flow<List<String>> =
         flow {
             val remoteSuggestions = searchRemoteDataSource.getSuggestions(keyWord,page)
             emit(remoteSuggestions.toModel())

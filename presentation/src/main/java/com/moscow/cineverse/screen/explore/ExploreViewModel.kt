@@ -1,21 +1,17 @@
 package com.moscow.cineverse.screen.explore
 
-import android.util.Log
 import com.android.domain.model.Actor
 import com.android.domain.model.Movie
 import com.android.domain.model.Series
 import com.android.domain.usecase.SearchUseCase
 import androidx.lifecycle.viewModelScope
-import com.android.domain.model.Suggestion
 import com.android.domain.usecase.GetLocalSuggestions
 import com.android.domain.usecase.SuggestionUseCase
 import com.moscow.cineverse.base.BaseViewModel
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
@@ -117,7 +113,6 @@ class ExploreViewModel(
             .distinctUntilChanged()
             .filter { it.isNotBlank() }
             .onEach { keyword ->
-                Log.d("ddddddddddddd", "$keyword")
                 getSuggestions(keyword)
             }
             .launchIn(viewModelScope)
@@ -127,21 +122,16 @@ class ExploreViewModel(
         launchWithResult(
             action = { suggestionUseCase.getSuggestions(keyword, page) },
             onSuccess = ::onSuccessLoadingSuggestions,
-            onError = { Log.d("ddddddddddddd", "$it") },
+            onError = { },
             onStart = { },
             onFinally = { }
         )
     }
 
-    private fun onSuccessLoadingSuggestions(suggestion: Flow<List<Suggestion>>) {
-        Log.d("ddddddddddddd", "on successs")
+    private fun onSuccessLoadingSuggestions(suggestion: Flow<List<String>>) {
         viewModelScope.launch {
             suggestion.collect { s ->
-                updateState {
-                    it.copy(
-                        suggestions = s
-                    )
-                }
+                updateState { it.copy(remoteSuggestions = s) }
             }
         }
     }
@@ -156,7 +146,7 @@ class ExploreViewModel(
             action = {getLocalSuggestions()},
             onSuccess = { history ->
                 val suggestions = history.map { SuggestItemUiState(it, isHistory = true) }
-                updateState { it.copy(history = suggestions) }
+                updateState { it.copy(localSuggestions = suggestions) }
             },
             onError = {},
             onStart = {},
@@ -173,7 +163,7 @@ class ExploreViewModel(
     }
 
     override fun SuggestionList() : List<SuggestItemUiState> {
-        return (uiState.value.history.filter { it.title.contains(uiState.value.searchKeyWord, ignoreCase = true) }
-        + uiState.value.suggestions.map { SuggestItemUiState(it.name, isHistory = false) } )
+        return (uiState.value.localSuggestions.filter { it.title.contains(uiState.value.searchKeyWord, ignoreCase = true) }
+        + uiState.value.remoteSuggestions.map { SuggestItemUiState(it, isHistory = false) } )
     }
 }
