@@ -125,8 +125,7 @@ private fun GridMovieCard(
     Column {
         Card(
             modifier = modifier
-                .fillMaxWidth()
-                .height(182.dp)
+                .height(208.dp)
                 .clickable { onMovieClick(movie) },
             shape = RoundedCornerShape(Theme.radius.large)
         ) {

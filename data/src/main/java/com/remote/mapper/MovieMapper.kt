@@ -13,7 +13,7 @@ class MovieMapper {
         id = dto.id,
         title = dto.title,
         posterUrl = "https://image.tmdb.org/t/p/w500${dto.posterPath}",
-        voteAverage = dto.voteAverage,
+        rating = dto.voteAverage,
         genres = details.genres.joinToString(", ") { it.name },
         duration = formatDuration(details.runtime),
         releaseDate = formatReleaseDate(dto.releaseDate)
