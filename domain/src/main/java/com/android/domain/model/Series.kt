@@ -1,12 +1,11 @@
 package com.android.domain.model
 
-import java.time.LocalDate
+import kotlinx.datetime.LocalDate
 
 data class Series(
     val id: Int,
     val name: String,
     val rating: Float,
-    val poster: String,
     val adult: Boolean,
     val backdropPath: String,
     val firstAirDate: LocalDate,

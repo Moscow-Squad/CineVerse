@@ -10,7 +10,11 @@ import com.remote.dto.ActorDto
 import com.remote.dto.MovieDto
 import com.remote.dto.MultiSearchDto
 import com.remote.dto.SeriesDto
-import java.time.LocalDate
+import com.utils.IMAGES_URL
+import kotlinx.datetime.Clock
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 
 fun MultiSearchDto.toDomain() =
     MultiSearch(
@@ -32,11 +36,11 @@ fun MovieDto.toDomain() =
     Movie(
         originalTitle = originalTitle.orEmpty(),
         overview = overview.orEmpty(),
-        posterPath = posterPath.orEmpty(),
-        backdropPath = backdropPath.orEmpty(),
+        posterPath = IMAGES_URL + posterPath.orEmpty(),
+        backdropPath = IMAGES_URL + backdropPath.orEmpty(),
         adult = adult == true,
         releaseDate = if (releaseDate.isNullOrEmpty()) {
-            LocalDate.now()
+            Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
         } else {
             LocalDate.parse(releaseDate)
         },
@@ -45,18 +49,17 @@ fun MovieDto.toDomain() =
         rating = voteAverage ?: 0f,
         id = id ?: 0,
         name = title.orEmpty(),
-        poster = posterPath.orEmpty(),
         video = video == true,
     )
 
 fun SeriesDto.toDomain() =
     Series(
         overview = overview.orEmpty(),
-        posterPath = posterPath.orEmpty(),
-        backdropPath = backdropPath.orEmpty(),
+        posterPath = IMAGES_URL + posterPath.orEmpty(),
+        backdropPath = IMAGES_URL + backdropPath.orEmpty(),
         adult = adult == true,
         firstAirDate = if (firstAirDate.isNullOrEmpty()) {
-            LocalDate.now()
+            Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
         } else {
             LocalDate.parse(firstAirDate)
         },
@@ -64,7 +67,6 @@ fun SeriesDto.toDomain() =
         originalLanguage = originalLanguage.orEmpty(),
         id = id ?: 0,
         name = name.orEmpty(),
-        poster = posterPath.orEmpty(),
         originCountry = originCountry ?: emptyList(),
         originalName = originalName.orEmpty(),
         rating = voteAverage ?: 0f,

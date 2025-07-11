@@ -1,6 +1,6 @@
 package com.android.domain.model
 
-import java.time.LocalDate
+import kotlinx.datetime.LocalDate
 
 data class Movie(
     val id: Int,
@@ -8,7 +8,6 @@ data class Movie(
     val genreIds: List<Int>,
     val rating: Float,
     val releaseDate: LocalDate,
-    val poster: String,
     val adult: Boolean,
     val backdropPath: String,
     val originalLanguage: String,
