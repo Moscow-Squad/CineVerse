@@ -1,5 +1,10 @@
 package com.di
 
+import com.android.domain.SearchRepository
+import com.repository.search.SearchRepositoryImpl
+import org.koin.core.module.dsl.singleOf
+import org.koin.dsl.bind
+import org.koin.dsl.module
 
 import com.android.domain.repository.SearchRepository
 import com.repository.SearchRepositoryImpl
@@ -9,7 +14,6 @@ import com.android.domain.repository.ExploreRepository
 import com.android.domain.repository.MovieRepository
 import com.repository.ExploreRepositoryImpl
 import com.repository.MovieRepositoryImpl
-import org.koin.dsl.module
 
 val repositoryModule = module {
     single<MovieRepository> { MovieRepositoryImpl() }
@@ -28,4 +32,5 @@ val repositoryModule = module {
             get(qualifier = named("IO"))
         )
     }
+
 }

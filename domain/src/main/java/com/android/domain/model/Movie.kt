@@ -3,7 +3,7 @@ package com.android.domain.model
 import kotlinx.datetime.LocalDate
 
 data class Movie(
-    val id: Int,
+    val id: Long,
     val name: String,
     val genreIds: List<Int>,
     val rating: Float,
@@ -15,4 +15,6 @@ data class Movie(
     val overview: String,
     val posterPath: String,
     val video: Boolean,
+    val poster: String,
+    val duration: String ,
 )
