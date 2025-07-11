@@ -30,10 +30,12 @@ import com.moscow.cineverse.designSystem.component.ViewModeToggle
 import com.moscow.cineverse.designSystem.component.tabs.ExploreTabs
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.presentation.component.MoviePosterCard
+import com.moscow.cineverse.screen.explore.ExploreScreenState.MediaItemUi
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun ExploreScreen(
-    viewModel: ExploreViewModel,
+    viewModel: ExploreViewModel = koinViewModel(),
     modifier: Modifier = Modifier
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -128,7 +130,7 @@ private fun ExploreScreenContent(
                                 modifier = Modifier.fillMaxSize()
                             ) {
                                 items(uiState.contentList) { item ->
-                                    val movie = item as UiMovie
+                                    val movie = item as MediaItemUi
                                     MoviePosterCard(
                                         movie = movie,
                                         viewMode = uiState.viewMode,

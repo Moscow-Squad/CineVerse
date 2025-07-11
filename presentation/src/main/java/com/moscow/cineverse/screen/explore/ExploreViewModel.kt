@@ -2,7 +2,6 @@ package com.moscow.cineverse.screen.explore
 
 import androidx.lifecycle.viewModelScope
 import com.android.domain.model.Genre
-import com.android.domain.model.Movie
 import com.android.domain.usecase.GetMoviesUseCase
 import com.android.domain.usecase.GetSeriesUseCase
 import com.moscow.cineverse.base.BaseViewModel
@@ -19,16 +18,14 @@ class ExploreViewModel(
 
 
     init {
-        // Map screen state to UI state
         viewModelScope.launch {
             uiState.value.fromScreenState(uiState.value.selectedTab)
         }
 
-        // Load initial data
         loadData()
     }
 
-    // Direct interaction methods
+
     override fun onGenreSelected(genre: Genre) {
         updateState { it.copy(selectedGenre = genre) }
     }
@@ -37,14 +34,12 @@ class ExploreViewModel(
         updateState {it.copy(viewMode = viewMode) }
     }
 
-    override fun onMovieClick(movie: Movie) {
-        // Handle navigation or other movie click actions directly
-        sendEvent(ExploreScreenEvents.MovieClicked(movie))
+    override fun onMovieClick(movieId: Int) {
+        sendEvent(ExploreScreenEvents.MovieClicked(movieId))
     }
 
     override fun onTabSelected(tab: ExploreTabsPages) {
         updateState { it.copy(selectedTab = tab) }
-        // Refresh data when tab changes
         loadData()
     }
 
@@ -55,7 +50,6 @@ class ExploreViewModel(
     private fun loadData() {
         launchWithResult(
             action = {
-                // Load movies and series concurrently
                 val movies = getMoviesUseCase()
                 val series = getSeriesUseCase()
                 val genres = generateSampleGenres()
@@ -65,8 +59,8 @@ class ExploreViewModel(
             onSuccess = { (movies, series, genres) ->
                 updateState {
                     it.copy(
-                        movies = movies,
-                        series = series,
+                        movies = movies.map{ movie -> movie.toUi()},
+                        series = series.map{ series -> series.toUi()},
                         genres = genres,
                         selectedGenre = genres.firstOrNull(),
                         isLoading = false,

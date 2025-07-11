@@ -7,7 +7,7 @@ import com.moscow.cineverse.designSystem.component.tabs.ExploreTabsPages
 interface ExploreInteractionListener {
     fun onGenreSelected(genre: Genre)
     fun onViewModeChanged(viewMode: ViewMode)
-    fun onMovieClick(movie: Long)
+    fun onMovieClick(movieId: Int)
     fun onTabSelected(tab: ExploreTabsPages)
     fun onRefresh()
 }

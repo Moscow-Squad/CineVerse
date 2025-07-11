@@ -44,13 +44,13 @@ fun <T> MovieCard(
     movieData: T,
     viewMode: ViewMode = ViewMode.GRID,
     showRating: Boolean = true,
-    onMovieClick: (Long) -> Unit = {},
+    onMovieClick: (Int) -> Unit = {},
     infoModifier: Modifier = Modifier,
     titleTextAlign: TextAlign = TextAlign.Start,
     descriptionTextAlign: TextAlign = TextAlign.Start,
     showGenres: Boolean = false,
     showTitle: Boolean = true,
-    getId: (T) -> Long,
+    getId: (T) -> Int,
     getTitle: (T) -> String,
     getPosterUrl: (T) -> String,
     getRating: (T) -> Float,
@@ -128,11 +128,11 @@ private fun <T> GridMovieCard(
     showGenres: Boolean = false,
     showTitle: Boolean = true,
     showRating: Boolean = true,
-    onMovieClick: (Long) -> Unit,
+    onMovieClick: (Int) -> Unit,
     infoModifier: Modifier = Modifier,
     titleTextAlign: TextAlign,
     descriptionTextAlign: TextAlign,
-    getId: (T) -> Long,
+    getId: (T) -> Int,
     getTitle: (T) -> String,
     getPosterUrl: (T) -> String,
     getRating: (T) -> Float,
@@ -215,9 +215,9 @@ private fun <T> GridMovieCard(
 @Composable
 private fun <T> ListMovieCard(
     movieData: T,
-    onMovieClick: (Long) -> Unit,
+    onMovieClick: (Int) -> Unit,
     modifier: Modifier = Modifier,
-    getId: (T) -> Long,
+    getId: (T) -> Int,
     getTitle: (T) -> String,
     getPosterUrl: (T) -> String,
     getRating: (T) -> Float,
@@ -345,7 +345,7 @@ private fun <T> ListMovieCard(
 }
 
 private data class MockMovieData(
-    val id: Long,
+    val id: Int,
     val title: String,
     val posterUrl: String,
     val rating: Float,
@@ -361,7 +361,7 @@ fun GridMovieCardLoadingPreview() {
         Column(modifier = Modifier.padding(16.dp)) {
             MovieCard(
                 movieData = MockMovieData(
-                    id = 1L,
+                    id = 1,
                     title = "The Dark Knight",
                     posterUrl = "",
                     rating = 9.0f,
@@ -390,7 +390,7 @@ fun ListMovieCardLoadingPreview() {
         Column(modifier = Modifier.padding(16.dp)) {
             MovieCard(
                 movieData = MockMovieData(
-                    id = 1L,
+                    id = 1,
                     title = "Inception",
                     posterUrl = "",
                     rating = 8.8f,

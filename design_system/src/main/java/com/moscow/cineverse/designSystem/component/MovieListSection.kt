@@ -14,7 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
-@Composable
+/*@Composable
 fun MovieListSection(
     modifier: Modifier = Modifier,
     title: String,
@@ -113,3 +113,4 @@ fun MovieListSectionPreview() {
         )
     }
 }
+*/

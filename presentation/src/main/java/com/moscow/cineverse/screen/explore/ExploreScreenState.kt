@@ -31,11 +31,12 @@ data class ExploreScreenState(
 
     data class MediaItemUi(
         val id: Int,
-        val name: String,
+        val title: String,
         val posterPath: String,
         val rating: Float,
         val genres: List<String>,
         val releaseDate: String,
+        val duration: String
     )
 
     data class ActorUi(
