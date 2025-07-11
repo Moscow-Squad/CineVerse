@@ -21,14 +21,13 @@ fun SearchSuggestion(
     suggestionList: List<SuggestItemUiState>,
     isHistory: Boolean,
     onClearAllClicked: () -> Unit,
-    onClickSuggestion: (String) -> Unit = {},
     modifier: Modifier = Modifier,
+    onClickSuggestion: (String) -> Unit = {},
 ) {
     val title = if (isHistory)
         stringResource(R.string.history)
     else
-        stringResource(R.string.history)
-
+        stringResource(R.string.suggestions_title)
     val actionTitle = if (isHistory)
         stringResource(R.string.clear_all_history)
     else

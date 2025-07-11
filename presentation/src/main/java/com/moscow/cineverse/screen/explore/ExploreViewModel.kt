@@ -1,5 +1,6 @@
 package com.moscow.cineverse.screen.explore
 
+import android.util.Log
 import com.android.domain.model.Actor
 import com.android.domain.model.Movie
 import com.android.domain.model.Series
@@ -114,6 +115,7 @@ class ExploreViewModel(
             .filter { it.isNotBlank() }
             .onEach { keyword ->
                 getSuggestions(keyword)
+                updateState { it.copy(showHistory = false) }
             }
             .launchIn(viewModelScope)
     }
@@ -173,6 +175,10 @@ class ExploreViewModel(
     }
 
     override fun onClickSuggestion(text: String) {
+        Log.d("dddddddddddddddd", text)
+    }
 
+    override fun clearAllLocalSuggestions() {
+        Log.d("dddddddddddddddd", "Clear allllllllllllllllll")
     }
 }

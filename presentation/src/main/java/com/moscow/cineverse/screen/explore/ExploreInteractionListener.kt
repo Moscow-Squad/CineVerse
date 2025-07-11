@@ -10,4 +10,5 @@ interface ExploreInteractionListener {
     fun onSearchValueChange(text: String)
     fun SuggestionList() : List<SuggestItemUiState>
     fun onClickSuggestion(text: String)
+    fun clearAllLocalSuggestions()
 }
