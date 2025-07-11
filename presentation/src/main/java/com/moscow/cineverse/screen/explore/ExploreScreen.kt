@@ -49,7 +49,6 @@ fun ExploreComponent(
             .fillMaxSize()
             .background(color = Theme.colors.background.screen)
             .padding(horizontal = 16.dp)
-            .verticalScroll(rememberScrollState())
     ) {
         SearchBar(
             modifier = Modifier.fillMaxWidth().padding(top = 56.dp),

@@ -17,6 +17,7 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
@@ -105,18 +106,18 @@ class ExploreViewModel(
         updateState { it.copy(isLoading = false) }
     }
 
-    private val keywordFlow = MutableStateFlow(uiState.value.searchKeyWord)
-
     init {
         observeKeyword()
     }
 
     private fun observeKeyword() {
-        keywordFlow
+        uiState
+            .map   { it.searchKeyWord }
             .debounce(300)
             .distinctUntilChanged()
             .filter { it.isNotBlank() }
             .onEach { keyword ->
+                Log.d("ddddddddddddd", "$keyword")
                 getSuggestions(keyword)
             }
             .launchIn(viewModelScope)
@@ -124,22 +125,24 @@ class ExploreViewModel(
 
     private fun getSuggestions(keyword: String, page: Int = 1) {
         launchWithResult(
-            action = { suggestionUseCase.getSuggestions(keyword, page).first() },
+            action = { suggestionUseCase.getSuggestions(keyword, page) },
             onSuccess = ::onSuccessLoadingSuggestions,
-            onError = { },
+            onError = { Log.d("ddddddddddddd", "$it") },
             onStart = { },
             onFinally = { }
         )
     }
 
-    private fun onSuccessLoadingSuggestions(suggestion: List<Suggestion>) {
-        Log.d("ddddddddddddd", "ddddddddddddddddddddddddddddddddddddddd")
-
-        Log.d("ddddddddddddd", suggestion.toString())
-        updateState {
-            it.copy(
-                suggestions = suggestion
-            )
+    private fun onSuccessLoadingSuggestions(suggestion: Flow<List<Suggestion>>) {
+        Log.d("ddddddddddddd", "on successs")
+        viewModelScope.launch {
+            suggestion.collect { s ->
+                updateState {
+                    it.copy(
+                        suggestions = s
+                    )
+                }
+            }
         }
     }
 

@@ -7,12 +7,12 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 
 class SuggestionUseCase(
-    private val searchRepository: SearchRepository
+    private val searchRepository: SearchRepository,
 ) {
     fun getSuggestions(keyWord: String,page:Int): Flow<List<Suggestion>> = flow {
         val remoteSuggestions = searchRepository.getRemoteSuggestions(keyWord,page).first()
-        val localSuggestions = searchRepository.getLocalSuggestions(keyWord).first()
-        emit(remoteSuggestions + localSuggestions)
+        //val localSuggestions = movieRepository.getLocalSuggestions().first()
+        emit(remoteSuggestions)
     }
 
 }
