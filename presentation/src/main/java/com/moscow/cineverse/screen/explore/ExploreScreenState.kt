@@ -18,8 +18,6 @@ data class ExploreScreenState(
         val genres: List<String>,
         val releaseDate: String,
     )
-)
-
     data class ActorUi(
         val title: String,
         val icon: String,

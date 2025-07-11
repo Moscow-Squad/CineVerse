@@ -1,6 +1,6 @@
 package com.repository
 
-import com.android.domain.exception.NotFoundCineVerseException
+import com.android.domain.exception.CineVerseException
 import com.android.domain.model.Actor
 import com.android.domain.model.Movie
 import com.android.domain.model.MultiSearch
@@ -26,7 +26,7 @@ class ExploreRepositoryImpl(
             if (result.isNotEmpty()) {
                 emit(result.map { it.toDomain() })
             } else {
-                throw NotFoundCineVerseException
+                throw CineVerseException.NotFoundCineVerseException
             }
         }.flowOn(ioDispatcher)
 
@@ -37,7 +37,7 @@ class ExploreRepositoryImpl(
             if (result.isNotEmpty()) {
                 emit(result.map { it.toDomain() })
             } else {
-                throw NotFoundCineVerseException
+                throw CineVerseException.NotFoundCineVerseException
             }
         }.flowOn(ioDispatcher)
 
@@ -48,7 +48,7 @@ class ExploreRepositoryImpl(
             if (result.isNotEmpty()) {
                 emit(result.map { it.toDomain() })
             } else {
-                throw NotFoundCineVerseException
+                throw CineVerseException.NotFoundCineVerseException
             }
         }.flowOn(ioDispatcher)
 
@@ -58,7 +58,7 @@ class ExploreRepositoryImpl(
             if (result.isNotEmpty()) {
                 emit(result.map { it.toDomain() })
             } else {
-                throw NotFoundCineVerseException
+                throw CineVerseException.NotFoundCineVerseException
             }
         }.flowOn(ioDispatcher)
 }
