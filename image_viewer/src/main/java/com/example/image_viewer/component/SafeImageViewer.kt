@@ -17,8 +17,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import coil3.compose.AsyncImage
 import coil3.compose.AsyncImagePainter.State
-import coil3.request.ImageRequest
-import coil3.request.allowHardware
 import coil3.toBitmap
 import com.example.image_viewer.component.classfier.NSFWClassifier
 import com.skydoves.cloudy.cloudy
