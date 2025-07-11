@@ -108,7 +108,7 @@ class ExploreViewModel(
 
     private fun observeKeyword() {
         uiState
-            .map   { it.searchKeyWord }
+            .map { it.searchKeyWord }
             .debounce(300)
             .distinctUntilChanged()
             .filter { it.isNotBlank() }
@@ -136,14 +136,14 @@ class ExploreViewModel(
         }
     }
 
-    override fun onSearchBarClickedOn(){
+    override fun onSearchBarClickedOn() {
         updateState { it.copy(isSearchBarClickedOn = true, showSuggestions = true) }
         getHistoryData()
     }
 
-    private fun getHistoryData(){
+    private fun getHistoryData() {
         launchWithResult<List<String>>(
-            action = {getLocalSuggestions()},
+            action = { getLocalSuggestions() },
             onSuccess = { history ->
                 val suggestions = history.map { SuggestItemUiState(it, isHistory = true) }
                 updateState { it.copy(localSuggestions = suggestions) }
@@ -154,16 +154,25 @@ class ExploreViewModel(
         )
     }
 
-    override fun onCancelButtonClicked(){
+    override fun onCancelButtonClicked() {
         updateState { it.copy(searchKeyWord = "", showHistory = false, showSuggestions = false) }
     }
 
-    override fun onSearchValueChange(text: String){
+    override fun onSearchValueChange(text: String) {
         updateState { it.copy(searchKeyWord = text) }
     }
 
-    override fun SuggestionList() : List<SuggestItemUiState> {
-        return (uiState.value.localSuggestions.filter { it.title.contains(uiState.value.searchKeyWord, ignoreCase = true) }
-        + uiState.value.remoteSuggestions.map { SuggestItemUiState(it, isHistory = false) } )
+    override fun SuggestionList(): List<SuggestItemUiState> {
+        return (uiState.value.localSuggestions.filter {
+            it.title.contains(
+                uiState.value.searchKeyWord,
+                ignoreCase = true
+            )
+        }
+                + uiState.value.remoteSuggestions.map { SuggestItemUiState(it, isHistory = false) })
+    }
+
+    override fun onClickSuggestion(text: String) {
+
     }
 }

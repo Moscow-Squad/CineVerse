@@ -1,6 +1,7 @@
 package com.moscow.cineverse.designSystem.component.search
 
 import androidx.annotation.DrawableRes
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -26,10 +27,14 @@ import com.moscow.cineverse.designSystem.theme.Theme
 fun SuggestItem(
     title: String,
     @DrawableRes icon: Int,
-    modifier : Modifier = Modifier
+    modifier : Modifier = Modifier,
+    onClickItem: (String) -> Unit = {},
 ){
     Column(
-        modifier = modifier.fillMaxWidth().height(48.dp),
+        modifier = modifier
+            .fillMaxWidth()
+            .height(48.dp)
+            .clickable(onClick = {onClickItem(title)}),
     ) {
         Row(
             modifier = Modifier.fillMaxWidth().height(47.dp),

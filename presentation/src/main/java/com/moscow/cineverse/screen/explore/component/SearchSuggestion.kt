@@ -21,6 +21,7 @@ fun SearchSuggestion(
     suggestionList: List<SuggestItemUiState>,
     isHistory: Boolean,
     onClearAllClicked: () -> Unit,
+    onClickSuggestion: (String) -> Unit = {},
     modifier: Modifier = Modifier,
 ) {
     val title = if (isHistory)
@@ -44,13 +45,14 @@ fun SearchSuggestion(
             actionTitle = actionTitle,
             onClick = onClearAllClicked
         )
-        SuggestItems(suggestItems = suggestionList)
+        SuggestItems(suggestItems = suggestionList, onClickSuggestion = onClickSuggestion)
     }
 }
 
 @Composable
 private fun SuggestItems(
     suggestItems: List<SuggestItemUiState>,
+    onClickSuggestion: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier) {
@@ -58,7 +60,7 @@ private fun SuggestItems(
             val title = item.title
             val icon =
                 if (item.isHistory) Theme.icons.outline.history else Theme.icons.outline.search
-            SuggestItem(title = title, icon = icon)
+            SuggestItem(title = title, icon = icon, onClickItem = onClickSuggestion )
         }
     }
 }
