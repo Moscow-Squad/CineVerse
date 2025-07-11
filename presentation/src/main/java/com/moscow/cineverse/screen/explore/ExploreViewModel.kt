@@ -171,4 +171,9 @@ class ExploreViewModel(
     override fun onSearchValueChange(text: String){
         updateState { it.copy(searchKeyWord = text) }
     }
+
+    override fun SuggestionList() : List<SuggestItemUiState> {
+        return (uiState.value.history.filter { it.title.contains(uiState.value.searchKeyWord, ignoreCase = true) }
+        + uiState.value.suggestions.map { SuggestItemUiState(it.name, isHistory = false) } )
+    }
 }

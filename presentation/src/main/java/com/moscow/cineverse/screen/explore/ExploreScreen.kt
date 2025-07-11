@@ -38,12 +38,6 @@ fun ExploreComponent(
     uiState: ExploreScreenState,
     exploreListener: ExploreInteractionListener
 ) {
-    val searchText = uiState.searchKeyWord
-    val suggestions = uiState.history
-    val showHistory = uiState.showHistory
-    val showSuggestions = uiState.showSuggestions
-    val remoteSuggestions = uiState.suggestions
-
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -52,7 +46,7 @@ fun ExploreComponent(
     ) {
         SearchBar(
             modifier = Modifier.fillMaxWidth().padding(top = 56.dp),
-            value = searchText,
+            value = uiState.searchKeyWord,
             onValueChange = { exploreListener.onSearchValueChange(it) },
             onCancelButtonClicked = { exploreListener.onCancelButtonClicked() },
             onFirstFocus = { exploreListener.onSearchBarClickedOn() },
@@ -66,7 +60,7 @@ fun ExploreComponent(
         )
 
         AnimatedVisibility(
-            visible = showSuggestions,
+            visible = uiState.showSuggestions,
             enter = slideInVertically(
                 initialOffsetY = {it},
                 animationSpec = tween(500)
@@ -78,8 +72,8 @@ fun ExploreComponent(
         ) {
             SearchSuggestion(
                 modifier = Modifier.padding(top = 24.dp),
-                suggestionList = suggestions + remoteSuggestions.map { SuggestItemUiState(it.name, isHistory = false) },
-                isHistory = showHistory,
+                suggestionList = exploreListener.SuggestionList(),
+                isHistory = uiState.showHistory,
                 onClearAllClicked = {}
             )
         }

@@ -8,4 +8,5 @@ interface ExploreInteractionListener {
     fun onSearchBarClickedOn()
     fun onCancelButtonClicked()
     fun onSearchValueChange(text: String)
+    fun SuggestionList() : List<SuggestItemUiState>
 }
