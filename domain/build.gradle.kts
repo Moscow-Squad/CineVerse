@@ -12,5 +12,21 @@ kotlin {
     }
 }
 dependencies{
+    testImplementation(kotlin("test"))
+    //kotlin datetime
     implementation(libs.kotlinx.datetime)
+    //junit & truth
+    testImplementation(libs.junit.junit)
+    testImplementation(libs.junit.jupiter)
+    testImplementation(libs.truth)
+    testImplementation(libs.mockk)
+    //coroutines
+    testImplementation(libs.kotlinx.coroutines.test)
+    implementation(libs.kotlinx.coroutines.core)
+    //Koin
+    implementation(platform(libs.koin.bom))
+    implementation(libs.koin.core)
+}
+tasks.test {
+    useJUnitPlatform()
 }
