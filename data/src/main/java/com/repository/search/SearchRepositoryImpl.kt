@@ -26,7 +26,7 @@ class SearchRepositoryImpl(
         searchLocalDateSource.insertSearchHistory(searchTerm)
         searchLocalDateSource.insertMovie(movies.toEntity(searchTerm), searchTerm)
         val deleteWork = OneTimeWorkRequestBuilder<DeleteQueryWorker>()
-            .setInitialDelay(1, TimeUnit.MINUTES)
+            .setInitialDelay(1, TimeUnit.HOURS)
             .setInputData(workDataOf("query" to searchTerm))
             .addTag("delete_search_query_history")
             .build()
