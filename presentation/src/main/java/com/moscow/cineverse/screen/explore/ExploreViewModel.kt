@@ -8,9 +8,6 @@ import com.android.domain.usecase.GetSeriesUseCase
 import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.cineverse.designSystem.component.ViewMode
 import com.moscow.cineverse.designSystem.component.tabs.ExploreTabsPages
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class ExploreViewModel(
@@ -19,18 +16,12 @@ class ExploreViewModel(
 ) : BaseViewModel<ExploreScreenState, ExploreScreenEvents>(ExploreScreenState()),
     ExploreInteractionListener {
 
-    private val _exploreUiState = MutableStateFlow(ExploreUiState())
-    val exploreUiState: StateFlow<ExploreUiState> = _exploreUiState.asStateFlow()
 
-    // Use the state from BaseViewModel
-    val state: StateFlow<ExploreScreenState> = uiState
 
     init {
         // Map screen state to UI state
         viewModelScope.launch {
-            uiState.collect { screenState ->
-                _exploreUiState.value = ExploreUiState.fromScreenState(screenState)
-            }
+            uiState.value.fromScreenState(uiState.value.selectedTab)
         }
 
         // Load initial data
@@ -39,11 +30,11 @@ class ExploreViewModel(
 
     // Direct interaction methods
     override fun onGenreSelected(genre: Genre) {
-        updateState { copy(selectedGenre = genre) }
+        updateState { it.copy(selectedGenre = genre) }
     }
 
     override fun onViewModeChanged(viewMode: ViewMode) {
-        updateState { copy(viewMode = viewMode) }
+        updateState {it.copy(viewMode = viewMode) }
     }
 
     override fun onMovieClick(movie: Movie) {
@@ -52,7 +43,7 @@ class ExploreViewModel(
     }
 
     override fun onTabSelected(tab: ExploreTabsPages) {
-        updateState { copy(selectedTab = tab) }
+        updateState { it.copy(selectedTab = tab) }
         // Refresh data when tab changes
         loadData()
     }
@@ -73,7 +64,7 @@ class ExploreViewModel(
             },
             onSuccess = { (movies, series, genres) ->
                 updateState {
-                    copy(
+                    it.copy(
                         movies = movies,
                         series = series,
                         genres = genres,
@@ -85,14 +76,14 @@ class ExploreViewModel(
             },
             onError = { exception ->
                 updateState {
-                    copy(
+                    it.copy(
                         isLoading = false,
                         error = exception.message ?: "An error occurred"
                     )
                 }
             },
             onStart = {
-                updateState { copy(isLoading = true, error = null) }
+                updateState { it.copy(isLoading = true, error = null) }
             }
         )
     }

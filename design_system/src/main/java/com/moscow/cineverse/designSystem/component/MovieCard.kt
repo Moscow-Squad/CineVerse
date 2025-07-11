@@ -51,7 +51,7 @@ data class Movie(
 @Composable
 fun MoviePosterCard(
     modifier: Modifier = Modifier,
-    movie: Movie = Movie(),
+    movie: Movie,
     viewMode: ViewMode = ViewMode.GRID,
     showRating: Boolean = true,
     onMovieClick: (Movie) -> Unit = {},

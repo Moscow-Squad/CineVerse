@@ -37,11 +37,9 @@ fun ExploreScreen(
     viewModel: ExploreViewModel,
     modifier: Modifier = Modifier
 ) {
-    val screenState by viewModel.state.collectAsState()
-    val uiState by viewModel.exploreUiState.collectAsState()
+    val uiState by viewModel.uiState.collectAsState()
 
     ExploreScreenContent(
-        state = screenState,
         uiState = uiState,
         interactionListener = viewModel,
         modifier = modifier
@@ -50,8 +48,7 @@ fun ExploreScreen(
 
 @Composable
 private fun ExploreScreenContent(
-    state: ExploreScreenState,
-    uiState: ExploreUiState,
+    uiState: ExploreScreenState,
     interactionListener: ExploreInteractionListener,
     modifier: Modifier = Modifier
 ) {
@@ -62,7 +59,7 @@ private fun ExploreScreenContent(
         Box(modifier = Modifier.fillMaxSize()) {
             Column(modifier = Modifier.fillMaxSize()) {
                 ExploreTabs(
-                    selectedTab = state.selectedTab,
+                    selectedTab = uiState.selectedTab,
                     onTabSelected = interactionListener::onTabSelected,
                     showAllTabs = false,
                     modifier = Modifier.fillMaxWidth()
@@ -117,7 +114,7 @@ private fun ExploreScreenContent(
 
                         else -> {
                             LazyVerticalGrid(
-                                columns = if (state.viewMode == ViewMode.GRID)
+                                columns = if (uiState.viewMode == ViewMode.GRID)
                                     GridCells.Adaptive(minSize = 160.dp)
                                 else
                                     GridCells.Fixed(1),
@@ -135,7 +132,7 @@ private fun ExploreScreenContent(
                                     val movie = item as Movie
                                     MoviePosterCard(
                                         movie = movie,
-                                        viewMode = state.viewMode,
+                                        viewMode = uiState.viewMode,
                                         onMovieClick = interactionListener::onMovieClick
                                     )
                                 }
@@ -152,10 +149,10 @@ private fun ExploreScreenContent(
                                 .height(56.dp)
                                 .align(Alignment.TopCenter)
                         ) {
-                            items(state.genres) { genre ->
+                            items(uiState.genres) { genre ->
                                 PillLabel(
                                     text = genre.name,
-                                    isActive = state.selectedGenre?.id == genre.id,
+                                    isActive = uiState.selectedGenre?.id == genre.id,
                                     onClick = { interactionListener.onGenreSelected(genre) }
                                 )
                             }
@@ -165,7 +162,7 @@ private fun ExploreScreenContent(
             }
 
             ViewModeToggle(
-                selectedMode = state.viewMode,
+                selectedMode = uiState.viewMode,
                 onModeSelected = interactionListener::onViewModeChanged,
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
