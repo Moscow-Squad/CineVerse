@@ -1,5 +1,6 @@
 package com.remote.source
 
+import com.dto.SuggestionResponse
 import com.remote.dto.MovieDto
 import com.remote.dto.MultiSearchDto
 import com.remote.dto.MultiSearchResponse
@@ -62,5 +63,16 @@ class SearchRemoteDataSource(
             }.body()
 
         return response.results
+    }
+
+    suspend fun getSuggestions(keyword:String,page:Int): SuggestionResponse{
+        val response: SuggestionResponse =
+            client.get("https://api.themoviedb.org/3/search/keyword"){
+                parameter("api_key", "b37d9f568685efadafa2ce0a871597fb")
+                parameter("query",keyword)
+                parameter("page",page)
+            }.body()
+
+        return response
     }
 }

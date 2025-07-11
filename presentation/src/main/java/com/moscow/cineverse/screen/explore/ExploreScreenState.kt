@@ -8,7 +8,12 @@ data class ExploreScreenState(
     val actorsSearchResult: List<ActorUi> = emptyList(),
     val isLoading: Boolean = false,
     val selectedTab: String? = null,
-    val suggestions:List<Suggestion> = emptyList()
+    val suggestions:List<Suggestion> = emptyList(),
+
+    val isSearchBarClickedOn : Boolean = false,
+    val showHistory : Boolean = false,
+    val showSuggestions : Boolean = false,
+    val history: List<SuggestItemUiState> = listOf()
 ){
     data class MediaItemUi(
         val id: Int,

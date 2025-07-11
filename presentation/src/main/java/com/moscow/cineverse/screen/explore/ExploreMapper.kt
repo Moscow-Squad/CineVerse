@@ -1,7 +1,5 @@
 package com.moscow.cineverse.screen.explore
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import com.android.domain.model.Actor
 import com.android.domain.model.Movie
 import com.android.domain.model.Series
@@ -9,11 +7,8 @@ import com.moscow.cineverse.screen.explore.ExploreScreenState.ActorUi
 import com.moscow.cineverse.screen.explore.ExploreScreenState.MediaItemUi
 import kotlinx.datetime.LocalDate
 
-import kotlinx.datetime.toJavaLocalDate
-import java.time.format.DateTimeFormatter
-import java.util.Locale
+const val YYYY_MMM_DD = "yyyy, MMM dd"
 
-@RequiresApi(Build.VERSION_CODES.O)
 fun Movie.toUi(): MediaItemUi =
     MediaItemUi(
         id = id,
@@ -24,7 +19,6 @@ fun Movie.toUi(): MediaItemUi =
         releaseDate = releaseDate.formatWith(YYYY_MMM_DD) ?: ""
     )
 
-@RequiresApi(Build.VERSION_CODES.O)
 fun Series.toUi(): MediaItemUi =
     MediaItemUi(
         id = id,
@@ -35,7 +29,6 @@ fun Series.toUi(): MediaItemUi =
         releaseDate = firstAirDate.formatWith(YYYY_MMM_DD) ?: ""
     )
 
-
 fun Actor.toUi(): ActorUi =
     ActorUi(
         title = name,
@@ -43,15 +36,15 @@ fun Actor.toUi(): ActorUi =
         id = id
     )
 
-const val YYYY_MMM_DD = "yyyy, MMM dd"
+fun LocalDate.formatWith(pattern: String): String? {
+    val day = dayOfMonth.toString().padStart(2, '0')
+    val month = monthNumber.toString().padStart(2, '0')
+    val year = year.toString()
 
-@RequiresApi(Build.VERSION_CODES.O)
-fun LocalDate.formatWith(
-    format: String,
-    locale: Locale = Locale.ENGLISH,
-): String? {
     return runCatching {
-        this.toJavaLocalDate().format(DateTimeFormatter.ofPattern(format, locale))
+        pattern.replace("dd", day)
+            .replace("MM", month)
+            .replace("yyyy", year)
     }.getOrElse {
         it.printStackTrace()
         null

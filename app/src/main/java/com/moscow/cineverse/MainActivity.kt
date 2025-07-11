@@ -7,7 +7,7 @@ import androidx.activity.enableEdgeToEdge
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.ktx.Firebase
-import com.moscow.cineverse.presentation.screens.search.Search
+import com.moscow.cineverse.screen.explore.ExploreScreen
 import com.moscow.cineverse.ui.theme.CineVerseTheme
 
 class MainActivity : ComponentActivity() {
@@ -20,7 +20,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             CineVerseTheme {
-                Search()
+                ExploreScreen()
             }
         }
     }

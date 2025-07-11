@@ -1,4 +1,4 @@
-package com.moscow.cineverse.presentation.screens.search
+package com.moscow.cineverse.screen.explore
 
 import android.app.Activity
 import android.content.Intent

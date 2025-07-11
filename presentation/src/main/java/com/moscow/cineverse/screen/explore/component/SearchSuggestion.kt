@@ -1,4 +1,4 @@
-package com.moscow.cineverse.presentation.screens.search.component
+package com.moscow.cineverse.screen.explore.component
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -11,7 +11,7 @@ import androidx.compose.ui.unit.dp
 import com.moscow.cineverse.designSystem.component.SectionTitle
 import com.moscow.cineverse.designSystem.component.search.SuggestItem
 import com.moscow.cineverse.designSystem.theme.Theme
-import com.moscow.cineverse.presentation.screens.search.SuggestItemUiState
+import com.moscow.cineverse.screen.explore.SuggestItemUiState
 import com.moscow.cinverse.presentation.R
 
 @Composable

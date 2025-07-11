@@ -1,13 +1,16 @@
 package com.moscow.cineverse.screen.explore
 
+import android.util.Log
 import com.android.domain.model.Actor
 import com.android.domain.model.Movie
 import com.android.domain.model.Series
 import com.android.domain.usecase.SearchUseCase
 import androidx.lifecycle.viewModelScope
 import com.android.domain.model.Suggestion
+import com.android.domain.usecase.GetLocalSuggestions
 import com.android.domain.usecase.SuggestionUseCase
 import com.moscow.cineverse.base.BaseViewModel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -15,10 +18,12 @@ import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 
 class ExploreViewModel(
     private val searchUseCase: SearchUseCase,
-    private val suggestionUseCase: SuggestionUseCase
+    private val suggestionUseCase: SuggestionUseCase,
+    val getLocalSuggestions: GetLocalSuggestions,
 ) : BaseViewModel<ExploreScreenState, ExploreScreenEvents>(ExploreScreenState()),
     ExploreInteractionListener {
 
@@ -106,10 +111,6 @@ class ExploreViewModel(
         observeKeyword()
     }
 
-    fun onKeywordChanged(newKeyword: String) {
-        keywordFlow.value = newKeyword
-    }
-
     private fun observeKeyword() {
         keywordFlow
             .debounce(300)
@@ -132,11 +133,43 @@ class ExploreViewModel(
     }
 
     private fun onSuccessLoadingSuggestions(suggestion: List<Suggestion>) {
+        Log.d("ddddddddddddd", "ddddddddddddddddddddddddddddddddddddddd")
 
+        Log.d("ddddddddddddd", suggestion.toString())
         updateState {
             it.copy(
                 suggestions = suggestion
             )
         }
+    }
+
+    override fun onSearchBarClickedOn(){
+        updateState { it.copy(isSearchBarClickedOn = true, showSuggestions = true) }
+        getHistoryData()
+    }
+
+    private fun getHistoryData(){
+        launchWithResult<Flow<List<String>>>(
+            action = {getLocalSuggestions()},
+            onSuccess = { flow ->
+                viewModelScope.launch{
+                    flow.collect { history ->
+                        val suggestions = history.map { SuggestItemUiState(it, isHistory = true) }
+                        updateState { it.copy(history = suggestions) }
+                    }
+                }
+            },
+            onError = {},
+            onStart = {},
+            onFinally = { updateState { it.copy(showHistory = true) } }
+        )
+    }
+
+    override fun onCancelButtonClicked(){
+        updateState { it.copy(searchKeyWord = "", showHistory = false, showSuggestions = false) }
+    }
+
+    override fun onSearchValueChange(text: String){
+        updateState { it.copy(searchKeyWord = text) }
     }
 }

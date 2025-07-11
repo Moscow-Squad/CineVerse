@@ -3,7 +3,7 @@ package com.repository
 import com.android.domain.model.Suggestion
 import com.android.domain.repository.SearchRepository
 import com.mapper.toModel
-import com.remote.SearchRemoteDataSource
+import com.remote.source.SearchRemoteDataSource
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow

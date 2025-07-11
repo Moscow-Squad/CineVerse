@@ -5,4 +5,7 @@ interface ExploreInteractionListener {
     fun searchSeries()
     fun searchActor()
     fun getSavedHistoryItems(suggestion: String)
+    fun onSearchBarClickedOn()
+    fun onCancelButtonClicked()
+    fun onSearchValueChange(text: String)
 }
