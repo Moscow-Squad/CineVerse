@@ -17,4 +17,3 @@ val useCases = module {
 }
 
 val presentationModule = viewModels + useCases
-
