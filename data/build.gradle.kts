@@ -1,10 +1,12 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.serialization)
 }
 
 android {
-    namespace = "com.moscow.data"
+    namespace = "com.moscow.cineverse.data"
     compileSdk = 36
 
     defaultConfig {
@@ -37,7 +39,21 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
+    implementation(libs.androidx.work.runtime.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+    /** Koin */
+    implementation(platform(libs.koin.bom))
+    implementation(libs.bundles.koin)
+
+    /** Ktor */
+    api(libs.bundles.ktor)
+
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
+    ksp(libs.androidx.room.compiler)
+    implementation(libs.gson)
+    implementation(libs.kotlinx.datetime)
 }
