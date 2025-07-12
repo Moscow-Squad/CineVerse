@@ -35,6 +35,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import com.example.design_system.R
+import com.example.image_viewer.component.SafeImageViewer
 import com.moscow.cineverse.designSystem.theme.CineVerseTheme
 import com.moscow.cineverse.designSystem.theme.Theme
 
@@ -150,7 +151,7 @@ private fun <T> GridMovieCard(
             Box {
                 val posterUrl = getPosterUrl(movieData)
                 if (posterUrl.isNotEmpty()) {
-                    AsyncImage(
+                    SafeImageViewer(
                         model = posterUrl,
                         contentDescription = getTitle(movieData),
                         placeholder = painterResource(id = R.drawable.due_tone_image),

@@ -14,6 +14,7 @@
             <option value="$PROJECT_DIR$/data" />
             <option value="$PROJECT_DIR$/design_system" />
             <option value="$PROJECT_DIR$/domain" />
+            <option value="$PROJECT_DIR$/image_viewer" />
             <option value="$PROJECT_DIR$/presentation" />
           </set>
         </option>
