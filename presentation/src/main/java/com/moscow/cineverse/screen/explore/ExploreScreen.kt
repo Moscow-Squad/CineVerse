@@ -12,9 +12,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.moscow.cineverse.designSystem.component.search.SearchBar
@@ -45,6 +48,12 @@ fun ExploreComponent(
         SearchBar(
             modifier = Modifier.fillMaxWidth().padding(top = 56.dp),
             value = uiState.searchKeyWord,
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
+            keyboardActions = KeyboardActions(
+                onNext =  {
+                    exploreListener.onKeyboardClick()
+                }
+            ),
             onValueChange = { exploreListener.onSearchValueChange(it) },
             onCancelButtonClicked = { exploreListener.onCancelButtonClicked() },
             onFirstFocus = { exploreListener.onSearchBarClickedOn() },

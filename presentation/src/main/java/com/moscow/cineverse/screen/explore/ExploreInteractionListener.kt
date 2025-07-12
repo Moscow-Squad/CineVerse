@@ -13,4 +13,5 @@ interface ExploreInteractionListener {
     fun clearAllLocalSuggestions()
     fun getMoviesGenres()
     fun getSeriesGenres()
+    fun onKeyboardClick()
 }
