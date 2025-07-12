@@ -9,6 +9,8 @@ import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.bind
 import org.koin.dsl.module
 import com.local.SearchLocalDateSourceImpl
+import com.local.dao.search.ActorDao
+import com.local.dao.search.SeriesDao
 import com.repository.search.SearchLocalDateSource
 
 private const val CINE_VERSE_DATABASE = "cineverse_database"
@@ -26,7 +28,8 @@ val localServiceModule = module {
 
     single<MovieDao> { get<CineVerseDataBase>().movieDao() }
     single<SearchHistoryDao> { get<CineVerseDataBase>().searchHistoryDao() }
-
+    single<ActorDao> { get<CineVerseDataBase>().actorDao() }
+    single<SeriesDao> { get<CineVerseDataBase>().seriesDao() }
 
     singleOf(::SearchLocalDateSourceImpl) bind SearchLocalDateSource::class
 
