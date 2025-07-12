@@ -13,4 +13,6 @@ interface ExploreInteractionListener {
     fun clearAllLocalSuggestions()
     fun getMoviesGenres()
     fun getSeriesGenres()
+    fun getMoviesByGenreId(genreId: Int)
+    fun getSeriesByGenreId(genreId: Int)
 }

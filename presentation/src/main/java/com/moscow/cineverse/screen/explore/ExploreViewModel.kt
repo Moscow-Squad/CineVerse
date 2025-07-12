@@ -8,10 +8,11 @@ import com.android.domain.model.Movie
 import com.android.domain.model.Series
 import com.android.domain.usecase.GenreUseCase
 import com.android.domain.usecase.GetLocalSuggestions
+import com.android.domain.usecase.GetMovieByGenreIdUseCase
+import com.android.domain.usecase.GetSeriesByGenreIdUseCase
 import com.android.domain.usecase.SearchUseCase
 import com.android.domain.usecase.SuggestionUseCase
 import com.moscow.cineverse.base.BaseViewModel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -24,8 +25,10 @@ import kotlinx.coroutines.launch
 class ExploreViewModel(
     private val searchUseCase: SearchUseCase,
     private val suggestionUseCase: SuggestionUseCase,
-    val getLocalSuggestions: GetLocalSuggestions,
-    val genreUseCase: GenreUseCase
+    private val getLocalSuggestions: GetLocalSuggestions,
+    private val genreUseCase: GenreUseCase,
+    private val getMovieByGenreIdUseCase: GetMovieByGenreIdUseCase,
+    private val getSeriesByGenreIdUseCase: GetSeriesByGenreIdUseCase,
 ) : BaseViewModel<ExploreScreenState, ExploreScreenEvents>(ExploreScreenState()),
     ExploreInteractionListener {
 
@@ -222,5 +225,42 @@ class ExploreViewModel(
     private fun onSeriesGenresFailed(e: Throwable) {
 
     }
+
+    override fun getMoviesByGenreId(genreId: Int) {
+        launchWithFlow(
+            flowAction = { getMovieByGenreIdUseCase.getMovieByGenreId(genreId) },
+            onSuccess = ::onGetMovieByGenreIdSuccess,
+            onError = ::onGetMovieByGenreIdFailed,
+            onStart = ::onLoading,
+            onFinally = ::onFinally
+        )
+    }
+
+    private fun onGetMovieByGenreIdFailed(e: Throwable) {
+
+    }
+
+    private fun onGetMovieByGenreIdSuccess(movies: List<Movie>) {
+        //TODO: update movie content
+    }
+
+    override fun getSeriesByGenreId(genreId: Int) {
+        launchWithFlow(
+            flowAction = { getSeriesByGenreIdUseCase.getSeriesByGenreId(genreId) },
+            onSuccess = ::onGetSeriesByGenreIdSuccess,
+            onError = ::onGetSeriesByGenreIdFailed,
+            onStart = ::onLoading,
+            onFinally = ::onFinally
+        )
+    }
+
+    private fun onGetSeriesByGenreIdSuccess(movies: List<Series>) {
+        //TODO: update movie content
+    }
+
+    private fun onGetSeriesByGenreIdFailed(e: Throwable) {
+
+    }
+
 
 }
