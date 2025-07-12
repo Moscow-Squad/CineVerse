@@ -16,11 +16,4 @@ data class Movie(
     val posterPath: String,
     val video: Boolean,
     val poster: String,
-    val adult: Boolean,
-    val backdropPath: String,
-    val originalLanguage: String,
-    val originalTitle: String,
-    val overview: String,
-    val posterPath: String,
-    val video: Boolean,
 )

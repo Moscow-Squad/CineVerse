@@ -7,14 +7,13 @@ import kotlinx.datetime.LocalDate
 fun List<MovieEntity>.toDomain(): List<Movie>  {
     return map { movieEntity ->
         Movie(
-            id = movieEntity.id,
+            id = movieEntity.id.toInt(),
             name = movieEntity.name,
             genreIds = movieEntity.genresId,
             overview = "",
             rating = movieEntity.rating,
             releaseDate = LocalDate.parse(movieEntity.releaseDate),
             poster = movieEntity.poster,
-            duration = movieEntity.duration,
             adult = false,
             backdropPath = "",
             originalLanguage = "en",
@@ -28,13 +27,13 @@ fun List<MovieEntity>.toDomain(): List<Movie>  {
 fun List<Movie>.toEntity(searchTerm: String): List<MovieEntity> {
     return map { movie ->
         MovieEntity(
-            id = movie.id,
+            id = movie.id.toLong(),
             name = movie.name,
             genresId = movie.genreIds,
             rating = movie.rating,
             releaseDate = movie.releaseDate.toString(),
             poster = movie.poster,
-            duration = movie.duration,
+            duration = "",
             searchTerm = searchTerm
         )
     }

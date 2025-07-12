@@ -9,6 +9,6 @@ import kotlinx.coroutines.flow.Flow
 interface ExploreRepository {
     suspend fun getSeriesGenres(): Flow<List<Genre>>
     suspend fun getMoviesGenres(): Flow<List<Genre>>
-    suspend fun geMovies(): List<Movie>
-    suspend fun getSeries(): List<Series>
+    suspend fun geMovies(): Flow<List<Movie>>
+    suspend fun getSeries(): Flow<List<Series>>
 }

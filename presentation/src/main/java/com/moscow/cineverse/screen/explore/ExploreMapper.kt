@@ -15,21 +15,23 @@ const val YYYY_MMM_DD = "yyyy, MMM dd"
 fun Movie.toUi(genresList: List<GenreUi>): MediaItemUi =
     MediaItemUi(
         id = id.toInt(),
-        name = name,
+        title = name,
         posterPath = poster,
         rating = rating,
         genres = genreIds.map {it-> genresList.first { genre -> genre.id == it }.name },
-        releaseDate = releaseDate.formatWith(YYYY_MMM_DD) ?: ""
+        releaseDate = releaseDate.formatWith(YYYY_MMM_DD) ?: "",
+        duration = ""
     )
 
 fun Series.toUi(genresList: List<GenreUi>): MediaItemUi =
     MediaItemUi(
         id = id,
-        name = name,
+        title = name,
         posterPath = posterPath,
         rating = rating,
         genres = genreIds.map {it-> genresList.first { genre -> genre.id == it }.name },
-        releaseDate = firstAirDate.formatWith(YYYY_MMM_DD) ?: ""
+        releaseDate = firstAirDate.formatWith(YYYY_MMM_DD) ?: "",
+        duration = ""
     )
 
 fun Actor.toUi(): ActorUi =

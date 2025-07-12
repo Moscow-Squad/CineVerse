@@ -16,6 +16,7 @@ import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.cineverse.designSystem.component.ViewMode
 import com.moscow.cineverse.designSystem.component.tabs.ExploreTabsPages
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
@@ -36,12 +37,7 @@ class ExploreViewModel(
     ExploreInteractionListener {
 
     init {
-        viewModelScope.launch {
-            uiState.value.fromScreenState(uiState.value.selectedTab)
-        }
-
         loadData()
-
         observeKeyword()
     }
 
@@ -82,7 +78,11 @@ class ExploreViewModel(
     private fun onMovieSearchSuccess(items: List<Movie>) {
         updateState {
             it.copy(
-                searchResult = it.searchResult.plus(it.selectedTab.toTitle() to items.map { it.toUi(uiState.value.moviesGenres) }),
+                searchResult = it.searchResult.plus(it.selectedTab.toTitle() to items.map {
+                    it.toUi(
+                        uiState.value.moviesGenres
+                    )
+                }),
                 isLoading = false
             )
         }
@@ -91,7 +91,11 @@ class ExploreViewModel(
     private fun onSeriesSearchSuccess(items: List<Series>) {
         updateState {
             it.copy(
-                searchResult = it.searchResult.plus(it.selectedTab.toTitle() to items.map { it.toUi(uiState.value.seriesGenres) }),
+                searchResult = it.searchResult.plus(it.selectedTab.toTitle() to items.map {
+                    it.toUi(
+                        uiState.value.seriesGenres
+                    )
+                }),
                 isLoading = false
             )
         }
@@ -245,7 +249,7 @@ class ExploreViewModel(
     }
 
     override fun onViewModeChanged(viewMode: ViewMode) {
-        updateState {it.copy(viewMode = viewMode) }
+        updateState { it.copy(viewMode = viewMode) }
     }
 
     override fun onMovieClick(movieId: Int) {
@@ -253,7 +257,15 @@ class ExploreViewModel(
     }
 
     override fun onTabSelected(tab: ExploreTabsPages) {
-        updateState { it.copy(selectedTab = tab) }
+        updateState {
+            it.copy(
+                selectedTab = tab, contentList = when (tab) {
+                    ExploreTabsPages.MOVIES -> it.movies
+                    ExploreTabsPages.SERIES -> it.series
+                    ExploreTabsPages.ACTORS -> it.movies
+                }
+            )
+        }
         loadData()
     }
 
@@ -262,35 +274,71 @@ class ExploreViewModel(
     }
 
     private fun loadData() {
-        launchWithResult(
-            action = {
-                val movies = getMoviesUseCase()
-                val series = getSeriesUseCase()
-
-                Pair<List<Movie>, List<Series>>(movies , series)
-            },
-            onSuccess = { result ->
+        viewModelScope.launch {
+            combine(
+                flow = genreUseCase.getMoviesGenres(),
+                flow2 = getMoviesUseCase(),
+                transform = { movieGenres, movies ->
+                    Pair(movieGenres, movies)
+                }
+            ).collect { result ->
                 updateState {
                     it.copy(
-                        movies = result.first.map{ movie -> movie.toUi(it.moviesGenres)},
-                        series = result.second.map{ series -> series.toUi(it.seriesGenres)},
-                        isLoading = false,
-                        error = null
+                        moviesGenres = result.first.map { it.toUi() },
+                        movies = result.second.map { movie -> movie.toUi(result.first.map { it.toUi() }) },
                     )
                 }
-            },
-            onError = { exception ->
-                updateState {
-                    it.copy(
-                        isLoading = false,
-                        error = exception.message ?: "An error occurred"
-                    )
+                if (uiState.value.contentList.isEmpty()){
+                    updateState { it.copy(contentList = it.movies) }
                 }
-            },
-            onStart = {
-                updateState { it.copy(isLoading = true, error = null) }
             }
-        )
+        }
+        viewModelScope.launch {
+            combine(
+                flow = genreUseCase.getSeriesGenres(),
+                flow2 = getSeriesUseCase(),
+                transform = { seriesGenres, series ->
+                    Pair(seriesGenres, series)
+                }
+            ).collect { result ->
+                updateState {
+                    it.copy(
+                        seriesGenres = result.first.map { it.toUi() },
+                        series = result.second.map { series -> series.toUi(result.first.map { it.toUi() }) },
+                    )
+                }
+            }
+        }
+
+//        launchWithResult(
+//            action = {
+//                val movies = getMoviesUseCase()
+//                val series = getSeriesUseCase()
+//
+//                Pair<List<Movie>, List<Series>>(movies , series)
+//            },
+//            onSuccess = { result ->
+//                updateState {
+//                    it.copy(
+//                        movies = result.first.map{ movie -> movie.toUi(it.moviesGenres)},
+//                        series = result.second.map{ series -> series.toUi(it.seriesGenres)},
+//                        isLoading = false,
+//                        error = null
+//                    )
+//                }
+//            },
+//            onError = { exception ->
+//                updateState {
+//                    it.copy(
+//                        isLoading = false,
+//                        error = exception.message ?: "An error occurred"
+//                    )
+//                }
+//            },
+//            onStart = {
+//                updateState { it.copy(isLoading = true, error = null) }
+//            }
+//        )
     }
 
 }
