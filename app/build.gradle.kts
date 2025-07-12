@@ -105,6 +105,9 @@ firebaseAppDistribution {
     appId = System.getenv("FIREBASE_APP_ID")
     serviceCredentialsFile = "service-account-key.json"
     artifactType = "APK"
+
+    groups = "tester"
+
 }
 
 
