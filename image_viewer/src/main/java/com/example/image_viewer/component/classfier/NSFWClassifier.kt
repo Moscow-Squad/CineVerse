@@ -38,7 +38,14 @@ class NSFWClassifier(context: Context) {
     private fun preprocess(originalBitmap: Bitmap): ByteBuffer {
         val byteBuffer = ByteBuffer.allocateDirect(4 * INPUT_SIZE * INPUT_SIZE * PIXEL_SIZE)
         byteBuffer.order(ByteOrder.nativeOrder())
-        val bitmap = originalBitmap.scale(INPUT_SIZE, INPUT_SIZE)
+
+        val scaledBitmap = originalBitmap.scale(INPUT_SIZE, INPUT_SIZE)
+
+        val bitmap = if (scaledBitmap.config != Bitmap.Config.ARGB_8888) {
+            scaledBitmap.copy(Bitmap.Config.ARGB_8888, false)
+        } else {
+            scaledBitmap
+        }
 
         val intValues = IntArray(INPUT_SIZE * INPUT_SIZE)
         bitmap.getPixels(intValues, 0, bitmap.width, 0, 0, bitmap.width, bitmap.height)
@@ -62,7 +69,6 @@ class NSFWClassifier(context: Context) {
 
         val sfwDrawing = drawings > hentai || hentai < NSFW_THRESHOLD
         val sfwPhoto = (neutral > porn || porn < NSFW_THRESHOLD) && (neutral > sexy || sexy < NSFW_THRESHOLD)
-
         return !(sfwPhoto && sfwDrawing)
     }
 
