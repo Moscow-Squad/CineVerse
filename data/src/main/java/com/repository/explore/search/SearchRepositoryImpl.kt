@@ -54,7 +54,7 @@ class SearchRepositoryImpl(
         searchLocalDateSource.deleteSearchHistory(searchTerm)
     }
 
-    override fun getRemoteSuggestions(keyWord: String,page:Int): Flow<List<String>> =
+    override suspend fun getRemoteSuggestions(keyWord: String,page:Int): Flow<List<String>> =
         flow {
             val remoteSuggestions = searchRemoteDataSource.getSuggestions(keyWord,page)
             emit(remoteSuggestions.map { it.toModel() })

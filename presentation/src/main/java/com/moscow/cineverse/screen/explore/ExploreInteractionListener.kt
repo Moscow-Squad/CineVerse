@@ -15,4 +15,5 @@ interface ExploreInteractionListener {
     fun getSeriesGenres()
     fun getMoviesByGenreId(genreId: Int)
     fun getSeriesByGenreId(genreId: Int)
+    fun onKeyboardClick()
 }

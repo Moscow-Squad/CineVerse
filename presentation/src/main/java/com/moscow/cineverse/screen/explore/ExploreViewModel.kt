@@ -218,6 +218,10 @@ class ExploreViewModel(
         )
     }
 
+    override fun onKeyboardClick() {
+        getSuggestions(uiState.value.searchKeyWord)
+    }
+
     private fun onSeriesGenresSuccess(genres: List<Genre>) {
         updateState { it.copy(seriesGenres = genres.map { it.toUi() }) }
     }
