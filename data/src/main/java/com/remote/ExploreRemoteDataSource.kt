@@ -7,8 +7,12 @@ import com.remote.dto.MovieDto
 import com.remote.dto.PopularResponse
 import com.remote.dto.SeriesDetailsDto
 import com.remote.dto.SeriesDto
+import com.utils.ApiResponse
+import com.utils.DISCOVER_MOVIE_LIST
+import com.utils.DISCOVER_SERIES_LIST
 import com.utils.GENRE_MOVIE_LIST
 import com.utils.GENRE_SERIES_LIST
+import com.utils.WITH_GENRES
 import com.utils.performCall
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
@@ -50,5 +54,21 @@ class ExploreRemoteDataSource(
         client.get("https://api.themoviedb.org/3/tv/$id") {
             parameter("language", "en-US")
         }.body()
+    suspend fun getSeriesByGenreId(genreId: Int): List<SeriesDto> =
+        client.performCall<Unit, ApiResponse<SeriesDto>>(
+            method = HttpMethod.Get,
+            path = DISCOVER_SERIES_LIST,
+            requestBuilder = {
+                parameter(WITH_GENRES, genreId)
+            }
+        ).results
 
+    suspend fun getMoviesByGenreId(genreId: Int): List<MovieDto> =
+        client.performCall<Unit, ApiResponse<MovieDto>>(
+            method = HttpMethod.Get,
+            path = DISCOVER_MOVIE_LIST,
+            requestBuilder = {
+                parameter(WITH_GENRES, genreId)
+            }
+        ).results
 }

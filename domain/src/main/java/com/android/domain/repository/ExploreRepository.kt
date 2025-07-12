@@ -11,4 +11,7 @@ interface ExploreRepository {
     suspend fun getMoviesGenres(): Flow<List<Genre>>
     suspend fun geMovies(): Flow<List<Movie>>
     suspend fun getSeries(): Flow<List<Series>>
+    suspend fun getMoviesByGenreId(genreId: Int): Flow<List<Movie>>
+    suspend fun getSeriesByGenreId(genreId: Int): Flow<List<Series>>
+
 }

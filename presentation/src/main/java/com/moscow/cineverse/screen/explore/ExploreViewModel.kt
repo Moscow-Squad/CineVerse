@@ -8,6 +8,8 @@ import com.android.domain.model.Movie
 import com.android.domain.model.Series
 import com.android.domain.usecase.GenreUseCase
 import com.android.domain.usecase.GetLocalSuggestions
+import com.android.domain.usecase.GetMovieByGenreIdUseCase
+import com.android.domain.usecase.GetSeriesByGenreIdUseCase
 import com.android.domain.usecase.GetMoviesUseCase
 import com.android.domain.usecase.GetSeriesUseCase
 import com.android.domain.usecase.SearchUseCase
@@ -33,6 +35,10 @@ class ExploreViewModel(
     private val getSeriesUseCase: GetSeriesUseCase,
     val getLocalSuggestions: GetLocalSuggestions,
     val genreUseCase: GenreUseCase
+    private val getLocalSuggestions: GetLocalSuggestions,
+    private val genreUseCase: GenreUseCase,
+    private val getMovieByGenreIdUseCase: GetMovieByGenreIdUseCase,
+    private val getSeriesByGenreIdUseCase: GetSeriesByGenreIdUseCase,
 ) : BaseViewModel<ExploreScreenState, ExploreScreenEvents>(ExploreScreenState()),
     ExploreInteractionListener {
 
@@ -253,6 +259,43 @@ class ExploreViewModel(
     private fun onSeriesGenresFailed(e: Throwable) {
 
     }
+
+    override fun getMoviesByGenreId(genreId: Int) {
+        launchWithFlow(
+            flowAction = { getMovieByGenreIdUseCase.getMovieByGenreId(genreId) },
+            onSuccess = ::onGetMovieByGenreIdSuccess,
+            onError = ::onGetMovieByGenreIdFailed,
+            onStart = ::onLoading,
+            onFinally = ::onFinally
+        )
+    }
+
+    private fun onGetMovieByGenreIdFailed(e: Throwable) {
+
+    }
+
+    private fun onGetMovieByGenreIdSuccess(movies: List<Movie>) {
+        //TODO: update movie content
+    }
+
+    override fun getSeriesByGenreId(genreId: Int) {
+        launchWithFlow(
+            flowAction = { getSeriesByGenreIdUseCase.getSeriesByGenreId(genreId) },
+            onSuccess = ::onGetSeriesByGenreIdSuccess,
+            onError = ::onGetSeriesByGenreIdFailed,
+            onStart = ::onLoading,
+            onFinally = ::onFinally
+        )
+    }
+
+    private fun onGetSeriesByGenreIdSuccess(movies: List<Series>) {
+        //TODO: update movie content
+    }
+
+    private fun onGetSeriesByGenreIdFailed(e: Throwable) {
+
+    }
+
 
     override fun onGenreSelected(genreId: Int) {
         updateState { it.copy(selectedGenre = genreId) }
