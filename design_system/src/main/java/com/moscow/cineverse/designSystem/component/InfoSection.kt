@@ -31,7 +31,7 @@ fun InfoSection(
     descriptionTextAlign: TextAlign = TextAlign.Start
 ) {
     Column(modifier = modifier) {
-        if (title.isEmpty() && showTitle) {
+        if (title.isNotEmpty() && showTitle) {
             Text(
                 text = title,
                 color = Theme.colors.shade.primary,

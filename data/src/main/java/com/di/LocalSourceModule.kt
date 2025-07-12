@@ -1,21 +1,21 @@
 package com.di
 
 import androidx.room.Room
+import com.local.SearchLocalDateSourceImpl
+import com.local.dao.search.ActorDao
 import com.local.dao.search.MovieDao
 import com.local.dao.search.SearchHistoryDao
+import com.local.dao.search.SeriesDao
 import com.local.database.CineVerseDataBase
+import com.repository.explore.search.SearchLocalDateSource
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.bind
 import org.koin.dsl.module
-import com.local.SearchLocalDateSourceImpl
-import com.local.dao.search.ActorDao
-import com.local.dao.search.SeriesDao
-import com.repository.search.SearchLocalDateSource
 
 private const val CINE_VERSE_DATABASE = "cineverse_database"
 
-val localServiceModule = module {
+val localSourceModule = module {
     single {
         Room.databaseBuilder(
             androidContext(),
@@ -32,5 +32,5 @@ val localServiceModule = module {
     single<SeriesDao> { get<CineVerseDataBase>().seriesDao() }
 
     singleOf(::SearchLocalDateSourceImpl) bind SearchLocalDateSource::class
-
 }
+

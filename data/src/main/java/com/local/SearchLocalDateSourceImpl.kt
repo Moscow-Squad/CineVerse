@@ -8,7 +8,7 @@ import com.local.entity.ActorEntity
 import com.local.entity.MovieEntity
 import com.local.entity.SearchHistoryEntity
 import com.local.entity.SeriesEntity
-import com.repository.search.SearchLocalDateSource
+import com.repository.explore.search.SearchLocalDateSource
 
 class SearchLocalDateSourceImpl(
     private val searchHistoryDao: SearchHistoryDao,

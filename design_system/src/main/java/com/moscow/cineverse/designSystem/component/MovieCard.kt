@@ -38,32 +38,29 @@ import com.example.design_system.R
 import com.moscow.cineverse.designSystem.theme.CineVerseTheme
 import com.moscow.cineverse.designSystem.theme.Theme
 
-data class Movie(
-    val id: Int = 0,
-    val title: String = "",
-    val posterUrl: String = "",
-    val rating: Float = 0f,
-    val genres: List<String> = emptyList(),
-    val duration: String = "",
-    val releaseDate: String = ""
-)
-
 @Composable
-fun MoviePosterCard(
+fun <T> MovieCard(
     modifier: Modifier = Modifier,
-    movie: Movie = Movie(),
+    movieData: T,
     viewMode: ViewMode = ViewMode.GRID,
     showRating: Boolean = true,
-    onMovieClick: (Movie) -> Unit = {},
+    onMovieClick: (Int) -> Unit = {},
     infoModifier: Modifier = Modifier,
-    titleTextAlign : TextAlign = TextAlign.Start,
-    descriptionTextAlign : TextAlign = TextAlign.Start,
+    titleTextAlign: TextAlign = TextAlign.Start,
+    descriptionTextAlign: TextAlign = TextAlign.Start,
     showGenres: Boolean = false,
-    showTitle: Boolean = true
+    showTitle: Boolean = true,
+    getId: (T) -> Int,
+    getTitle: (T) -> String,
+    getPosterUrl: (T) -> String,
+    getRating: (T) -> Float,
+    getGenres: (T) -> List<String>,
+    getDuration: (T) -> String,
+    getReleaseDate: (T) -> String
 ) {
     when (viewMode) {
         ViewMode.GRID -> GridMovieCard(
-            movie = movie,
+            movieData = movieData,
             showRating = showRating,
             onMovieClick = onMovieClick,
             modifier = modifier,
@@ -71,13 +68,27 @@ fun MoviePosterCard(
             titleTextAlign = titleTextAlign,
             descriptionTextAlign = descriptionTextAlign,
             showGenres = showGenres,
-            showTitle = showTitle
+            showTitle = showTitle,
+            getId = getId,
+            getTitle = getTitle,
+            getPosterUrl = getPosterUrl,
+            getRating = getRating,
+            getGenres = getGenres,
+            getDuration = getDuration,
+            getReleaseDate = getReleaseDate
         )
 
         ViewMode.LIST -> ListMovieCard(
-            movie = movie,
+            movieData = movieData,
             onMovieClick = onMovieClick,
-            modifier = modifier
+            modifier = modifier,
+            getId = getId,
+            getTitle = getTitle,
+            getPosterUrl = getPosterUrl,
+            getRating = getRating,
+            getGenres = getGenres,
+            getDuration = getDuration,
+            getReleaseDate = getReleaseDate
         )
     }
 }
@@ -111,30 +122,37 @@ private fun PlaceholderCard(
 }
 
 @Composable
-private fun GridMovieCard(
+private fun <T> GridMovieCard(
     modifier: Modifier = Modifier,
-    movie: Movie,
+    movieData: T,
     showGenres: Boolean = false,
     showTitle: Boolean = true,
     showRating: Boolean = true,
-    onMovieClick: (Movie) -> Unit,
+    onMovieClick: (Int) -> Unit,
     infoModifier: Modifier = Modifier,
-    titleTextAlign : TextAlign,
-    descriptionTextAlign : TextAlign
+    titleTextAlign: TextAlign,
+    descriptionTextAlign: TextAlign,
+    getId: (T) -> Int,
+    getTitle: (T) -> String,
+    getPosterUrl: (T) -> String,
+    getRating: (T) -> Float,
+    getGenres: (T) -> List<String>,
+    getDuration: (T) -> String,
+    getReleaseDate: (T) -> String
 ) {
     Column {
         Card(
             modifier = modifier
-                .fillMaxWidth()
-                .height(182.dp)
-                .clickable { onMovieClick(movie) },
+                .height(208.dp)
+                .clickable { onMovieClick(getId(movieData)) },
             shape = RoundedCornerShape(Theme.radius.large)
         ) {
             Box {
-                if (movie.posterUrl.isNotEmpty()) {
+                val posterUrl = getPosterUrl(movieData)
+                if (posterUrl.isNotEmpty()) {
                     AsyncImage(
-                        model = movie.posterUrl,
-                        contentDescription = movie.title,
+                        model = posterUrl,
+                        contentDescription = getTitle(movieData),
                         placeholder = painterResource(id = R.drawable.due_tone_image),
                         error = painterResource(id = R.drawable.due_tone_image),
                         contentScale = ContentScale.Crop,
@@ -150,7 +168,8 @@ private fun GridMovieCard(
                     )
                 }
 
-                if (showRating && movie.rating > 0) {
+                val rating = getRating(movieData)
+                if (showRating && rating > 0) {
                     Surface(
                         modifier = Modifier
                             .align(Alignment.TopEnd)
@@ -163,7 +182,7 @@ private fun GridMovieCard(
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Text(
-                                text = "%.1f".format(movie.rating),
+                                text = "%.1f".format(rating),
                                 color = Theme.colors.shade.primary,
                                 style = Theme.textStyle.label.medium.medium
                             )
@@ -182,9 +201,9 @@ private fun GridMovieCard(
         }
 
         InfoSection(
-            title = movie.title,
+            title = getTitle(movieData),
             showTitle = showTitle,
-            genres = movie.genres,
+            genres = getGenres(movieData),
             showGenres = showGenres,
             modifier = infoModifier.padding(top = 8.dp),
             titleTextAlign = titleTextAlign,
@@ -194,16 +213,23 @@ private fun GridMovieCard(
 }
 
 @Composable
-private fun ListMovieCard(
-    movie: Movie,
-    onMovieClick: (Movie) -> Unit,
-    modifier: Modifier = Modifier
+private fun <T> ListMovieCard(
+    movieData: T,
+    onMovieClick: (Int) -> Unit,
+    modifier: Modifier = Modifier,
+    getId: (T) -> Int,
+    getTitle: (T) -> String,
+    getPosterUrl: (T) -> String,
+    getRating: (T) -> Float,
+    getGenres: (T) -> List<String>,
+    getDuration: (T) -> String,
+    getReleaseDate: (T) -> String
 ) {
     Card(
         modifier = modifier
             .fillMaxWidth()
             .height(88.dp)
-            .clickable { onMovieClick(movie) },
+            .clickable { onMovieClick(getId(movieData)) },
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
         shape = RoundedCornerShape(Theme.radius.large),
         colors = CardDefaults.cardColors(containerColor = Theme.colors.background.card)
@@ -212,10 +238,11 @@ private fun ListMovieCard(
 
             Row(modifier = Modifier.fillMaxSize()) {
 
-                if (movie.posterUrl.isNotEmpty()) {
+                val posterUrl = getPosterUrl(movieData)
+                if (posterUrl.isNotEmpty()) {
                     AsyncImage(
-                        model = movie.posterUrl,
-                        contentDescription = movie.title,
+                        model = posterUrl,
+                        contentDescription = getTitle(movieData),
                         placeholder = painterResource(id = R.drawable.due_tone_image),
                         error = painterResource(id = R.drawable.due_tone_image),
                         contentScale = ContentScale.Crop,
@@ -241,8 +268,8 @@ private fun ListMovieCard(
                     verticalArrangement = Arrangement.SpaceBetween
                 ) {
                     InfoSection(
-                        title = movie.title,
-                        genres = movie.genres,
+                        title = getTitle(movieData),
+                        genres = getGenres(movieData),
                         paddingBetween = 4.dp
                     )
 
@@ -250,7 +277,8 @@ private fun ListMovieCard(
                         modifier = Modifier.padding(top = 8.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        if (movie.duration.isNotEmpty()) {
+                        val duration = getDuration(movieData)
+                        if (duration.isNotEmpty()) {
                             Icon(
                                 painter = painterResource(R.drawable.due_tone_clock),
                                 contentDescription = "Duration",
@@ -258,18 +286,19 @@ private fun ListMovieCard(
                                 modifier = Modifier.size(16.dp)
                             )
                             Text(
-                                text = movie.duration,
+                                text = duration,
                                 style = Theme.textStyle.label.medium.medium,
                                 color = Theme.colors.shade.secondary,
                                 modifier = Modifier.padding(start = 4.dp)
                             )
                         }
 
-                        if (movie.duration.isNotEmpty() && movie.releaseDate.isNotEmpty()) {
+                        val releaseDate = getReleaseDate(movieData)
+                        if (duration.isNotEmpty() && releaseDate.isNotEmpty()) {
                             Spacer(modifier = Modifier.width(8.dp))
                         }
 
-                        if (movie.releaseDate.isNotEmpty()) {
+                        if (releaseDate.isNotEmpty()) {
                             Icon(
                                 painter = painterResource(R.drawable.due_tone_calendar),
                                 contentDescription = "Release Date",
@@ -277,7 +306,7 @@ private fun ListMovieCard(
                                 modifier = Modifier.size(16.dp)
                             )
                             Text(
-                                text = movie.releaseDate,
+                                text = releaseDate,
                                 style = Theme.textStyle.label.medium.medium,
                                 color = Theme.colors.shade.secondary,
                                 modifier = Modifier.padding(start = 4.dp)
@@ -287,7 +316,8 @@ private fun ListMovieCard(
                 }
             }
 
-            if (movie.rating > 0) {
+            val rating = getRating(movieData)
+            if (rating > 0) {
                 Row(
                     modifier = Modifier
                         .align(Alignment.TopEnd)
@@ -296,7 +326,7 @@ private fun ListMovieCard(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = "%.1f".format(movie.rating),
+                        text = "%.1f".format(rating),
                         color = Theme.colors.shade.primary,
                         style = Theme.textStyle.label.medium.medium
                     )
@@ -314,13 +344,23 @@ private fun ListMovieCard(
     }
 }
 
+private data class MockMovieData(
+    val id: Int,
+    val title: String,
+    val posterUrl: String,
+    val rating: Float,
+    val genres: List<String>,
+    val duration: String,
+    val releaseDate: String
+)
+
 @Preview(showBackground = true, name = "Grid View - Loading State")
 @Composable
 fun GridMovieCardLoadingPreview() {
     MaterialTheme {
         Column(modifier = Modifier.padding(16.dp)) {
-            MoviePosterCard(
-                movie = Movie(
+            MovieCard(
+                movieData = MockMovieData(
                     id = 1,
                     title = "The Dark Knight",
                     posterUrl = "",
@@ -330,7 +370,14 @@ fun GridMovieCardLoadingPreview() {
                     releaseDate = "2008, Jul 18"
                 ),
                 viewMode = ViewMode.GRID,
-                onMovieClick = {}
+                onMovieClick = {},
+                getId = { it.id },
+                getTitle = { it.title },
+                getPosterUrl = { it.posterUrl },
+                getRating = { it.rating },
+                getGenres = { it.genres },
+                getDuration = { it.duration },
+                getReleaseDate = { it.releaseDate }
             )
         }
     }
@@ -341,8 +388,8 @@ fun GridMovieCardLoadingPreview() {
 fun ListMovieCardLoadingPreview() {
     CineVerseTheme {
         Column(modifier = Modifier.padding(16.dp)) {
-            MoviePosterCard(
-                movie = Movie(
+            MovieCard(
+                movieData = MockMovieData(
                     id = 1,
                     title = "Inception",
                     posterUrl = "",
@@ -352,7 +399,14 @@ fun ListMovieCardLoadingPreview() {
                     releaseDate = "2008, Jul 18"
                 ),
                 viewMode = ViewMode.LIST,
-                onMovieClick = {}
+                onMovieClick = {},
+                getId = { it.id },
+                getTitle = { it.title },
+                getPosterUrl = { it.posterUrl },
+                getRating = { it.rating },
+                getGenres = { it.genres },
+                getDuration = { it.duration },
+                getReleaseDate = { it.releaseDate }
             )
         }
     }
