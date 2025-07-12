@@ -32,31 +32,9 @@ android {
     kotlinOptions {
         jvmTarget = "11"
     }
-    subprojects {
-        afterEvaluate {
-            tasks.withType<Test> {
-                configure<JacocoTaskExtension> {
-                    isIncludeNoLocationClasses = true
-                }
-            }
-        }
-    }
-    tasks.register<JacocoCoverageVerification>("jacocoTestCoverageVerification") {
-        dependsOn("testDebugUnitTest")
-        violationRules {
-            rule {
-                limit {
-                    minimum = BigDecimal("0.0")
-                }
-            }
-        }
 
-    }
 }
-jacoco {
-    toolVersion = "0.8.13"
-    reportsDirectory = layout.buildDirectory.dir("customJacocoReportDir")
-}
+
 
 
 dependencies {
