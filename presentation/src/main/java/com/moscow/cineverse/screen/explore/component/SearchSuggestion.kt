@@ -1,6 +1,7 @@
 package com.moscow.cineverse.screen.explore.component
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -23,7 +24,7 @@ fun SearchSuggestion(
     isHistory: Boolean,
     onClearAllClicked: () -> Unit,
     modifier: Modifier = Modifier,
-    onClickSuggestion: (String) -> Unit = {},
+    onClickSuggestion: (SuggestItemUiState) -> Unit = {},
 ) {
     val title = if (isHistory)
         stringResource(R.string.history)
@@ -55,7 +56,7 @@ fun SearchSuggestion(
 @Composable
 private fun SuggestItems(
     suggestItems: List<SuggestItemUiState>,
-    onClickSuggestion: (String) -> Unit,
+    onClickSuggestion: (SuggestItemUiState) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier) {
@@ -63,7 +64,11 @@ private fun SuggestItems(
             val title = item.title
             val icon =
                 if (item.isHistory) Theme.icons.outline.history else Theme.icons.outline.search
-            SuggestItem(title = title, icon = icon, onClickItem = onClickSuggestion )
+            SuggestItem(
+                title = title,
+                icon = icon,
+                modifier = Modifier.clickable(onClick = { onClickSuggestion(item) }),
+            )
         }
     }
 }

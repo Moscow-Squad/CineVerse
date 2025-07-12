@@ -2,6 +2,7 @@ package com.repository.mapper
 
 import com.android.domain.model.Movie
 import com.local.entity.MovieEntity
+import com.utils.IMAGES_URL
 import kotlinx.datetime.LocalDate
 
 fun List<MovieEntity>.toDomain(): List<Movie>  {
@@ -18,7 +19,7 @@ fun List<MovieEntity>.toDomain(): List<Movie>  {
             backdropPath = "",
             originalLanguage = "en",
             originalTitle = "",
-            posterPath = "",
+            posterPath = IMAGES_URL + movieEntity.poster,
             video = true
         )
     }

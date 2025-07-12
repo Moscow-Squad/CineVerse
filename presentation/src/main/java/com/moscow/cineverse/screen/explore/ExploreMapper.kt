@@ -16,7 +16,7 @@ fun Movie.toUi(genresList: List<GenreUi>): MediaItemUi =
     MediaItemUi(
         id = id.toInt(),
         title = name,
-        posterPath = poster,
+        posterPath = posterPath,
         rating = rating,
         genres = genreIds.map {it-> genresList.first { genre -> genre.id == it }.name },
         releaseDate = releaseDate.formatWith(YYYY_MMM_DD) ?: "",

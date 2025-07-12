@@ -9,8 +9,8 @@ import com.android.domain.model.Series
 import com.android.domain.usecase.GenreUseCase
 import com.android.domain.usecase.GetLocalSuggestions
 import com.android.domain.usecase.GetMovieByGenreIdUseCase
-import com.android.domain.usecase.GetSeriesByGenreIdUseCase
 import com.android.domain.usecase.GetMoviesUseCase
+import com.android.domain.usecase.GetSeriesByGenreIdUseCase
 import com.android.domain.usecase.GetSeriesUseCase
 import com.android.domain.usecase.SearchUseCase
 import com.android.domain.usecase.SuggestionUseCase
@@ -26,7 +26,6 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import kotlin.collections.map
 
 class ExploreViewModel(
     private val searchUseCase: SearchUseCase,
@@ -34,9 +33,7 @@ class ExploreViewModel(
     private val getMoviesUseCase: GetMoviesUseCase,
     private val getSeriesUseCase: GetSeriesUseCase,
     val getLocalSuggestions: GetLocalSuggestions,
-    val genreUseCase: GenreUseCase
-    private val getLocalSuggestions: GetLocalSuggestions,
-    private val genreUseCase: GenreUseCase,
+    val genreUseCase: GenreUseCase,
     private val getMovieByGenreIdUseCase: GetMovieByGenreIdUseCase,
     private val getSeriesByGenreIdUseCase: GetSeriesByGenreIdUseCase,
 ) : BaseViewModel<ExploreScreenState, ExploreScreenEvents>(ExploreScreenState()),
@@ -92,6 +89,7 @@ class ExploreViewModel(
                 isLoading = false
             )
         }
+        updateContentList()
     }
 
     private fun onSeriesSearchSuccess(items: List<Series>) {
@@ -193,13 +191,20 @@ class ExploreViewModel(
                 searchKeyWord = "",
                 showHistory = false,
                 showSuggestions = false,
-                remoteSuggestions = emptyList()
+                remoteSuggestions = emptyList(),
+                searchResult = mutableMapOf()
             )
         }
+        updateContentList()
     }
 
     override fun onSearchValueChange(text: String) {
-        updateState { it.copy(searchKeyWord = text) }
+        updateState {
+            it.copy(
+                searchKeyWord = text,
+                showSuggestions = true
+            )
+        }
     }
 
     override fun SuggestionList(): List<SuggestItemUiState> {
@@ -211,8 +216,24 @@ class ExploreViewModel(
         } + uiState.value.remoteSuggestions.map { SuggestItemUiState(it, isHistory = false) })
     }
 
-    override fun onClickSuggestion(text: String) {
-        Log.d("dddddddddddddddd", text)
+    override fun onClickSuggestion(suggestion: SuggestItemUiState) {
+        updateState {
+            it.copy(
+                searchKeyWord = suggestion.title,
+            )
+        }
+        if (suggestion.isHistory) {
+
+        } else {
+            searchMovie()
+        }
+        updateState {
+            it.copy(
+                showHistory = false,
+                showSuggestions = false,
+                remoteSuggestions = emptyList()
+            )
+        }
     }
 
     override fun clearAllLocalSuggestions() {
@@ -400,6 +421,29 @@ class ExploreViewModel(
 //                updateState { it.copy(isLoading = true, error = null) }
 //            }
 //        )
+    }
+
+    private fun updateContentList() {
+        if (uiState.value.searchResult.isNotEmpty())
+            updateState {
+                it.copy(
+                    contentList = it.searchResult.getOrDefault(
+                        it.selectedTab.toTitle(),
+                        emptyList()
+                    )
+                )
+            }
+        else {
+            updateState {
+                it.copy(
+                    contentList = when (it.selectedTab) {
+                        ExploreTabsPages.MOVIES -> it.movies
+                        ExploreTabsPages.SERIES -> it.series
+                        ExploreTabsPages.ACTORS -> it.movies
+                    },
+                )
+            }
+        }
     }
 
 }

@@ -28,13 +28,11 @@ fun SuggestItem(
     title: String,
     @DrawableRes icon: Int,
     modifier : Modifier = Modifier,
-    onClickItem: (String) -> Unit = {},
 ){
     Column(
         modifier = modifier
             .fillMaxWidth()
             .height(48.dp)
-            .clickable(onClick = {onClickItem(title)}),
     ) {
         Row(
             modifier = Modifier.fillMaxWidth().height(47.dp),
