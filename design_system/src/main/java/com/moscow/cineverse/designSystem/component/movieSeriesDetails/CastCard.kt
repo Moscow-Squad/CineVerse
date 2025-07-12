@@ -17,8 +17,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import coil3.compose.AsyncImage
 import com.example.design_system.R
+import com.example.image_viewer.component.SafeImageViewer
 import com.moscow.cineverse.designSystem.theme.CineVerseTheme
 import com.moscow.cineverse.designSystem.theme.Theme
 
@@ -33,7 +33,7 @@ fun CastCard(
             .clip(RoundedCornerShape(Theme.radius.large))
             .background(Theme.colors.background.card)
     ) {
-        AsyncImage(
+        SafeImageViewer(
             model = castMember.imageUrl,
             contentDescription = stringResource(R.string.cast_member_image),
             placeholder = painterResource(R.drawable.due_tone_profile),
