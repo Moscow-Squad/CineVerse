@@ -73,8 +73,11 @@ class SearchRepositoryImpl(
         }.flowOn(ioDispatcher)
 
 
-    override suspend fun searchMovie(query: String): Flow<List<Movie>> =
+    override suspend fun searchMovie(query: String,isHistory: Boolean): Flow<List<Movie>> =
         flow {
+            if (isHistory){
+                emit(getLocalMoviesBySearchTerm(query))
+            }
             val result = searchRemoteDataSource.searchMovie(query)
             if (result.isNotEmpty()) {
                 emit(result.map { it.toDomain() })
@@ -85,8 +88,10 @@ class SearchRepositoryImpl(
         }.flowOn(ioDispatcher)
 
 
-    override suspend fun searchSeries(query: String): Flow<List<Series>> =
+    override suspend fun searchSeries(query: String,isHistory: Boolean): Flow<List<Series>> =
         flow {
+            if (isHistory){
+            }
             val result = searchRemoteDataSource.searchSeries(query)
             if (result.isNotEmpty()) {
                 emit(result.map { it.toDomain() })
@@ -95,8 +100,10 @@ class SearchRepositoryImpl(
             }
         }.flowOn(ioDispatcher)
 
-    override suspend fun searchActor(query: String): Flow<List<Actor>> =
+    override suspend fun searchActor(query: String,isHistory: Boolean): Flow<List<Actor>> =
         flow {
+            if (isHistory){
+            }
             val result = searchRemoteDataSource.searchPearson(query)
             if (result.isNotEmpty()) {
                 emit(result.map { it.toDomain() })
