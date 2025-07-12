@@ -67,6 +67,7 @@ jobs:
     name: 📱 Distribute Debug APK to Firebase App Distribution
     runs-on: ubuntu-latest
     needs: [build, test_coverage]
+    if: github.event_name == 'push' || github.event_name == 'pull_request'
 
     steps:
       - name: Checkout code
@@ -87,10 +88,25 @@ jobs:
       - name: Build Debug APK
         run: ./gradlew assembleDebug
 
+      - name: Download Debug APK
+        uses: actions/download-artifact@v4
+        with:
+          name: debug-apk
+          path: app/build/outputs/apk/debug/
+
       - name: Save Service Account Key
         env:
           FIREBASE_SERVICE_ACCOUNT_KEY: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_KEY }}
         run: echo "$FIREBASE_SERVICE_ACCOUNT_KEY" > service-account-key.json
+
+      - name: Set Release Notes
+        id: set-release-notes
+        run: |
+              if [ "${{ github.event_name }}" = "pull_request" ]; then
+                echo "RELEASE_NOTES=PR #${{ github.event.pull_request.number }}: ${{ github.event.pull_request.title }}" >> $GITHUB_ENV
+              else
+                echo "RELEASE_NOTES=Push to develop: ${{ github.sha }}" >> $GITHUB_ENV
+              fi
 
       - name: Distribute Debug APK to Firebase App Distribution
         run: ./gradlew appDistributionUploadDebug --stacktrace
