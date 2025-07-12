@@ -1,5 +1,6 @@
 package com.moscow.cineverse.screen.explore
 
+import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
@@ -32,6 +33,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import com.moscow.cineverse.designSystem.component.PillLabel
@@ -39,11 +41,13 @@ import com.moscow.cineverse.designSystem.component.ViewMode
 import com.moscow.cineverse.designSystem.component.ViewModeToggle
 import com.moscow.cineverse.designSystem.component.search.SearchBar
 import com.moscow.cineverse.designSystem.component.tabs.ExploreTabs
+import com.moscow.cineverse.designSystem.component.tabs.ExploreTabsPages
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.presentation.component.MoviePosterCard
 import com.moscow.cineverse.screen.explore.ExploreScreenState.GenreUi
-import com.moscow.cineverse.screen.explore.ExploreScreenState.MediaItemUi
+import com.moscow.cineverse.screen.explore.component.ActorPosterCard
 import com.moscow.cineverse.screen.explore.component.SearchSuggestion
+import com.moscow.cinverse.presentation.R
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -98,17 +102,19 @@ private fun ExploreScreenContent(
                 ExploreTabs(
                     selectedTab = uiState.selectedTab,
                     onTabSelected = interactionListener::onTabSelected,
-                    showAllTabs = false,
+                    showAllTabs = uiState.searchKeyWord.isNotEmpty(),
                     modifier = Modifier.fillMaxWidth()
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 Box(modifier = Modifier.fillMaxSize()) {
                     when {
-                        uiState.shouldShowLoading -> {
+                        uiState.isLoading -> {
                             Box(
                                 modifier = Modifier.fillMaxSize(),
                                 contentAlignment = Alignment.Center
-                            ) { CircularProgressIndicator() }
+                            ) {
+                                CircularProgressIndicator()
+                            }
                         }
 
                         uiState.shouldShowError -> {
@@ -127,7 +133,7 @@ private fun ExploreScreenContent(
                                     Button(
                                         onClick = interactionListener::onRefresh
                                     ) {
-                                        Text("Retry")
+                                        Text(stringResource(R.string.retry))
                                     }
                                 }
                             }
@@ -139,7 +145,7 @@ private fun ExploreScreenContent(
                                 contentAlignment = Alignment.Center
                             ) {
                                 Text(
-                                    text = "No content available",
+                                    text = stringResource(R.string.no_content_available),
                                     color = Theme.colors.shade.primary
                                 )
                             }
@@ -162,12 +168,24 @@ private fun ExploreScreenContent(
                                 modifier = Modifier.fillMaxSize()
                             ) {
                                 items(uiState.contentList) { item ->
-                                    val movie = item as MediaItemUi
-                                    MoviePosterCard(
-                                        movie = movie,
-                                        viewMode = uiState.viewMode,
-                                        onMovieClick = interactionListener::onMovieClick
-                                    )
+                                    Log.d("TAG", "ExploreScreenContent: ${uiState.contentList}")
+                                    val movie = item //as MediaItemUi
+                                    when(item){
+                                        is ExploreScreenState.MediaItemUi -> {
+                                            MoviePosterCard(
+                                                movie = item,
+                                                viewMode = uiState.viewMode,
+                                                onMovieClick = interactionListener::onMovieClick
+                                            )
+                                        }
+                                        is ExploreScreenState.ActorUi ->{
+                                            ActorPosterCard(
+                                                movie = item,
+                                                viewMode = uiState.viewMode,
+                                            )
+                                        }
+                                    }
+
                                 }
                             }
                         }
@@ -213,7 +231,8 @@ private fun ExploreScreenContent(
                 )
             }
 
-            ViewModeToggle(
+            if(uiState.selectedTab != ExploreTabsPages.ACTORS)
+                ViewModeToggle(
                 selectedMode = uiState.viewMode,
                 onModeSelected = interactionListener::onViewModeChanged,
                 modifier = Modifier

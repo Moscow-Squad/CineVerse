@@ -33,7 +33,7 @@ data class ExploreScreenState(
     val shouldShowLoading: Boolean = false,
     val shouldShowError: Boolean = false,
     val errorMessage: String = "",
-    val contentList: List<MediaItemUi> = emptyList()
+    val contentList: List<Any> = emptyList()
 
 ) {
     fun fromScreenState(selectedTab: ExploreTabsPages): List<MediaItemUi> {
