@@ -8,14 +8,13 @@ import com.android.domain.model.Movie
 import com.android.domain.model.Series
 import com.android.domain.usecase.GenreUseCase
 import com.android.domain.usecase.GetLocalSuggestions
-import com.android.domain.usecase.SearchUseCase
-import com.android.domain.usecase.SuggestionUseCase
-import androidx.lifecycle.viewModelScope
-import com.android.domain.model.Genre
 import com.android.domain.usecase.GetMoviesUseCase
 import com.android.domain.usecase.GetSeriesUseCase
+import com.android.domain.usecase.SearchUseCase
+import com.android.domain.usecase.SuggestionUseCase
 import com.moscow.cineverse.base.BaseViewModel
-import kotlinx.coroutines.delay
+import com.moscow.cineverse.designSystem.component.ViewMode
+import com.moscow.cineverse.designSystem.component.tabs.ExploreTabsPages
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -23,9 +22,6 @@ import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
-import com.moscow.cineverse.designSystem.component.ViewMode
-import com.moscow.cineverse.designSystem.component.tabs.ExploreTabsPages
 import kotlinx.coroutines.launch
 import kotlin.collections.map
 
@@ -86,7 +82,7 @@ class ExploreViewModel(
     private fun onMovieSearchSuccess(items: List<Movie>) {
         updateState {
             it.copy(
-                searchResult = it.searchResult.plus(it.selectedTab!! to items.map { it.toUi(uiState.value.moviesGenres) }),
+                searchResult = it.searchResult.plus(it.selectedTab.toTitle() to items.map { it.toUi(uiState.value.moviesGenres) }),
                 isLoading = false
             )
         }
@@ -95,7 +91,7 @@ class ExploreViewModel(
     private fun onSeriesSearchSuccess(items: List<Series>) {
         updateState {
             it.copy(
-                searchResult = it.searchResult.plus(it.selectedTab!! to items.map { it.toUi(uiState.value.seriesGenres) }),
+                searchResult = it.searchResult.plus(it.selectedTab.toTitle() to items.map { it.toUi(uiState.value.seriesGenres) }),
                 isLoading = false
             )
         }
@@ -270,17 +266,14 @@ class ExploreViewModel(
             action = {
                 val movies = getMoviesUseCase()
                 val series = getSeriesUseCase()
-                val genres = generateSampleGenres()
 
-                Triple(movies, series, genres)
+                Pair<List<Movie>, List<Series>>(movies , series)
             },
-            onSuccess = { (movies, series, genres) ->
+            onSuccess = { result ->
                 updateState {
                     it.copy(
-                        movies = movies.map{ movie -> movie.toUi()},
-                        series = series.map{ series -> series.toUi()},
-                        genres = genres,
-                        selectedGenre = genres.firstOrNull(),
+                        movies = result.first.map{ movie -> movie.toUi(it.moviesGenres)},
+                        series = result.second.map{ series -> series.toUi(it.seriesGenres)},
                         isLoading = false,
                         error = null
                     )
