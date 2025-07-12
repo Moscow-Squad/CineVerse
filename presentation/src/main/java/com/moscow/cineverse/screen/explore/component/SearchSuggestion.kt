@@ -1,5 +1,6 @@
 package com.moscow.cineverse.screen.explore.component
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -36,6 +37,9 @@ fun SearchSuggestion(
     Column(
         modifier = modifier
             .fillMaxSize()
+            .padding(top = 104.dp)
+            .background(color = Theme.colors.background.screen)
+            .padding(horizontal = 16.dp)
             .verticalScroll(rememberScrollState())
     ) {
         SectionTitle(

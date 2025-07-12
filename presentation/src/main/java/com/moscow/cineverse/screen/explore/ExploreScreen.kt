@@ -1,6 +1,5 @@
 package com.moscow.cineverse.screen.explore
 
-import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
@@ -42,6 +41,7 @@ import com.moscow.cineverse.designSystem.component.search.SearchBar
 import com.moscow.cineverse.designSystem.component.tabs.ExploreTabs
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.presentation.component.MoviePosterCard
+import com.moscow.cineverse.screen.explore.ExploreScreenState.GenreUi
 import com.moscow.cineverse.screen.explore.ExploreScreenState.MediaItemUi
 import com.moscow.cineverse.screen.explore.component.SearchSuggestion
 import org.koin.androidx.compose.koinViewModel
@@ -73,11 +73,14 @@ private fun ExploreScreenContent(
         Box(modifier = Modifier.fillMaxSize()) {
             Column(modifier = Modifier.fillMaxSize()) {
                 SearchBar(
-                    modifier = Modifier.fillMaxWidth().padding(top = 56.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 56.dp)
+                        .padding(horizontal = 16.dp),
                     value = uiState.searchKeyWord,
                     keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
                     keyboardActions = KeyboardActions(
-                        onNext =  {
+                        onNext = {
                             interactionListener.onKeyboardClick()
                         }
                     ),
@@ -98,18 +101,14 @@ private fun ExploreScreenContent(
                     showAllTabs = false,
                     modifier = Modifier.fillMaxWidth()
                 )
-
                 Spacer(modifier = Modifier.height(8.dp))
-
                 Box(modifier = Modifier.fillMaxSize()) {
                     when {
                         uiState.shouldShowLoading -> {
                             Box(
                                 modifier = Modifier.fillMaxSize(),
                                 contentAlignment = Alignment.Center
-                            ) {
-                                CircularProgressIndicator()
-                            }
+                            ) { CircularProgressIndicator() }
                         }
 
                         uiState.shouldShowError -> {
@@ -162,7 +161,6 @@ private fun ExploreScreenContent(
                                 horizontalArrangement = Arrangement.spacedBy(12.dp),
                                 modifier = Modifier.fillMaxSize()
                             ) {
-                                Log.d("DDDDDDDDDDDDDDDDDDDD", uiState.contentList.toString())
                                 items(uiState.contentList) { item ->
                                     val movie = item as MediaItemUi
                                     MoviePosterCard(
@@ -184,11 +182,11 @@ private fun ExploreScreenContent(
                                 .height(56.dp)
                                 .align(Alignment.TopCenter)
                         ) {
-                            items(uiState.genres) { genre ->
+                            items(listOf(GenreUi(id = 0, name = "All")) + uiState.genres) { genre ->
                                 PillLabel(
                                     text = genre.name,
-                                    isActive = uiState.selectedGenre?.id == genre.id,
-                                    onClick = { interactionListener.onGenreSelected(genre) }
+                                    isActive = uiState.selectedGenre == genre.id,
+                                    onClick = { interactionListener.onGenreSelected(genre.id) }
                                 )
                             }
                         }
@@ -198,11 +196,11 @@ private fun ExploreScreenContent(
             AnimatedVisibility(
                 visible = uiState.showSuggestions,
                 enter = slideInVertically(
-                    initialOffsetY = {it},
+                    initialOffsetY = { it },
                     animationSpec = tween(500)
                 ) + fadeIn(animationSpec = tween(500)),
                 exit = slideOutVertically(
-                    targetOffsetY = {it},
+                    targetOffsetY = { it },
                     animationSpec = tween(500)
                 ) + fadeOut(animationSpec = tween(500))
             ) {

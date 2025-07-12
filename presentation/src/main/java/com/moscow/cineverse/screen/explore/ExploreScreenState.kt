@@ -1,6 +1,5 @@
 package com.moscow.cineverse.screen.explore
 
-import com.android.domain.model.Genre
 import com.moscow.cineverse.designSystem.component.ViewMode
 import com.moscow.cineverse.designSystem.component.tabs.ExploreTabsPages
 
@@ -20,16 +19,17 @@ data class ExploreScreenState(
     val moviesGenres: List<GenreUi> = emptyList(),
     val seriesGenres: List<GenreUi> = emptyList(),
 
-    val genres: List<Genre> = emptyList(),
+    val genres: List<GenreUi> = emptyList(),
     val movies: List<MediaItemUi> = emptyList(),
     val series: List<MediaItemUi> = emptyList(),
-    val selectedGenre: Genre? = null,
+
+    val selectedGenre: Int = 0,
     val selectedTab: ExploreTabsPages = ExploreTabsPages.MOVIES,
     val viewMode: ViewMode = ViewMode.GRID,
     val isLoading: Boolean = false,
     val error: String? = null,
     val isContentEmpty: Boolean = false,
-    val shouldShowGenres: Boolean = false,
+    val shouldShowGenres: Boolean = true,
     val shouldShowLoading: Boolean = false,
     val shouldShowError: Boolean = false,
     val errorMessage: String = "",

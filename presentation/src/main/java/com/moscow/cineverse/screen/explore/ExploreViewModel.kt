@@ -173,12 +173,23 @@ class ExploreViewModel(
             },
             onError = {},
             onStart = {},
-            onFinally = { updateState { it.copy(showHistory = true) } }
+            onFinally = {
+                if (uiState.value.localSuggestions.isNotEmpty()) {
+                    updateState { it.copy(showHistory = true) }
+                }
+            }
         )
     }
 
     override fun onCancelButtonClicked() {
-        updateState { it.copy(searchKeyWord = "", showHistory = false, showSuggestions = false) }
+        updateState {
+            it.copy(
+                searchKeyWord = "",
+                showHistory = false,
+                showSuggestions = false,
+                remoteSuggestions = emptyList()
+            )
+        }
     }
 
     override fun onSearchValueChange(text: String) {
@@ -191,8 +202,7 @@ class ExploreViewModel(
                 uiState.value.searchKeyWord,
                 ignoreCase = true
             )
-        }
-                + uiState.value.remoteSuggestions.map { SuggestItemUiState(it, isHistory = false) })
+        } + uiState.value.remoteSuggestions.map { SuggestItemUiState(it, isHistory = false) })
     }
 
     override fun onClickSuggestion(text: String) {
@@ -244,8 +254,8 @@ class ExploreViewModel(
 
     }
 
-    override fun onGenreSelected(genre: Genre) {
-        updateState { it.copy(selectedGenre = genre) }
+    override fun onGenreSelected(genreId: Int) {
+        updateState { it.copy(selectedGenre = genreId) }
     }
 
     override fun onViewModeChanged(viewMode: ViewMode) {
@@ -263,6 +273,11 @@ class ExploreViewModel(
                     ExploreTabsPages.MOVIES -> it.movies
                     ExploreTabsPages.SERIES -> it.series
                     ExploreTabsPages.ACTORS -> it.movies
+                },
+                genres = when (tab) {
+                    ExploreTabsPages.MOVIES -> it.moviesGenres
+                    ExploreTabsPages.SERIES -> it.seriesGenres
+                    ExploreTabsPages.ACTORS -> it.moviesGenres
                 }
             )
         }
@@ -288,8 +303,11 @@ class ExploreViewModel(
                         movies = result.second.map { movie -> movie.toUi(result.first.map { it.toUi() }) },
                     )
                 }
-                if (uiState.value.contentList.isEmpty()){
-                    updateState { it.copy(contentList = it.movies) }
+                if (uiState.value.contentList.isEmpty()) {
+                    updateState { it.copy(contentList = it.movies, selectedGenre = 0) }
+                }
+                if (uiState.value.genres.isEmpty()) {
+                    updateState { it.copy(genres = it.moviesGenres, selectedGenre = 0) }
                 }
             }
         }
