@@ -26,7 +26,6 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import kotlin.collections.map
 
 class ExploreViewModel(
     private val searchUseCase: SearchUseCase,
@@ -452,7 +451,7 @@ class ExploreViewModel(
                         it.selectedTab.toTitle(),
                         emptyList()
                     ),
-                    shouldShowGenres = false
+                    shouldShowGenres = uiState.value.searchKeyWord.isEmpty()
                 )
             }
         else {
