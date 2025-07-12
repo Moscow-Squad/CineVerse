@@ -12,16 +12,16 @@ class SearchUseCase(
     suspend fun searchMovie(
         query: String,
         isHistory: Boolean = false
-    ) = searchRepository.searchMovie(query)
+    ) = searchRepository.searchMovie(query,isHistory)
 
     suspend fun searchSeries(
         query: String,
         isHistory: Boolean = false
-    ) = searchRepository.searchSeries(query)
+    ) = searchRepository.searchSeries(query,isHistory)
 
     suspend fun searchActor(
         query: String,
         isHistory: Boolean = false
-    ) = searchRepository.searchActor(query)
+    ) = searchRepository.searchActor(query,isHistory)
 
 }

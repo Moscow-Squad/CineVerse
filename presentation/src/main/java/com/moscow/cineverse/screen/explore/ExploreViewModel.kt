@@ -195,7 +195,8 @@ class ExploreViewModel(
                 showHistory = false,
                 showSuggestions = false,
                 remoteSuggestions = emptyList(),
-                searchResult = mutableMapOf()
+                searchResult = mutableMapOf(),
+                shouldShowGenres = true
             )
         }
         updateContentList()
@@ -227,6 +228,8 @@ class ExploreViewModel(
         }
         if (suggestion.isHistory) {
             searchMovie(isHistory = true)
+            searchSeries(isHistory = true)
+
         } else {
             searchMovie()
         }
@@ -367,21 +370,32 @@ class ExploreViewModel(
     }
 
     override fun onTabSelected(tab: ExploreTabsPages) {
-        updateState {
-            it.copy(
-                selectedTab = tab, contentList = when (tab) {
-                    ExploreTabsPages.MOVIES -> it.movies
-                    ExploreTabsPages.SERIES -> it.series
-                    ExploreTabsPages.ACTORS -> it.movies
-                },
-                genres = when (tab) {
-                    ExploreTabsPages.MOVIES -> it.moviesGenres
-                    ExploreTabsPages.SERIES -> it.seriesGenres
-                    ExploreTabsPages.ACTORS -> it.moviesGenres
-                }
-            )
+        updateState { it.copy(selectedTab = tab) }
+        if( uiState.value.searchKeyWord.isNotEmpty()){
+            when (tab) {
+                ExploreTabsPages.MOVIES -> searchMovie()
+                ExploreTabsPages.SERIES -> searchSeries()
+                ExploreTabsPages.ACTORS -> searchActor()
+            }
+        }else{
+            updateState {
+                it.copy(
+                    selectedTab = tab, contentList = when (tab) {
+                        ExploreTabsPages.MOVIES -> it.movies
+                        ExploreTabsPages.SERIES -> it.series
+                        ExploreTabsPages.ACTORS -> it.movies
+                    },
+                    genres = when (tab) {
+                        ExploreTabsPages.MOVIES -> it.moviesGenres
+                        ExploreTabsPages.SERIES -> it.seriesGenres
+                        ExploreTabsPages.ACTORS -> it.moviesGenres
+                    }
+                )
+            }
+            loadData()
         }
-        loadData()
+
+
     }
 
     override fun onRefresh() {
@@ -444,7 +458,7 @@ class ExploreViewModel(
         else {
             updateState {
                 it.copy(
-                    shouldShowGenres = false,
+                    shouldShowGenres = true,
                     contentList = when (it.selectedTab) {
                         ExploreTabsPages.MOVIES -> it.movies
                         ExploreTabsPages.SERIES -> it.series

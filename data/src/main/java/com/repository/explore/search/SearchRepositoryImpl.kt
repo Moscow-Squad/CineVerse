@@ -46,6 +46,31 @@ class SearchRepositoryImpl(
 
         workManager.enqueue(deleteWork)
     }
+
+    override suspend fun insertActors(actors: List<Actor>, searchTerm: String) {
+        searchLocalDateSource.insertSearchHistory(searchTerm)
+        searchLocalDateSource.insertActors(actors.toEntity(searchTerm), searchTerm)
+        val deleteWork = OneTimeWorkRequestBuilder<DeleteQueryWorker>()
+            .setInitialDelay(1, TimeUnit.MINUTES)
+            .setInputData(workDataOf("query" to searchTerm))
+            .addTag("delete_search_query_history")
+            .build()
+
+        workManager.enqueue(deleteWork)
+    }
+
+    override suspend fun insertSeries(series: List<Series>, searchTerm: String) {
+        searchLocalDateSource.insertSearchHistory(searchTerm)
+        searchLocalDateSource.insertSeries(series.toEntity(searchTerm), searchTerm)
+        val deleteWork = OneTimeWorkRequestBuilder<DeleteQueryWorker>()
+            .setInitialDelay(1, TimeUnit.MINUTES)
+            .setInputData(workDataOf("query" to searchTerm))
+            .addTag("delete_search_query_history")
+            .build()
+
+        workManager.enqueue(deleteWork)
+    }
+
     override suspend fun getLocalSuggestions(): List<String> {
         return searchLocalDateSource.getAllSearchHistory()
     }
@@ -91,10 +116,12 @@ class SearchRepositoryImpl(
     override suspend fun searchSeries(query: String,isHistory: Boolean): Flow<List<Series>> =
         flow {
             if (isHistory){
+                emit(searchLocalDateSource.getSeriesBySearchTerm(query).toDomain())
             }
             val result = searchRemoteDataSource.searchSeries(query)
             if (result.isNotEmpty()) {
                 emit(result.map { it.toDomain() })
+                insertSeries(result.map { series -> series.toDomain() }, query)
             } else {
                 throw CineVerseException.NotFoundCineVerseException
             }
@@ -103,10 +130,12 @@ class SearchRepositoryImpl(
     override suspend fun searchActor(query: String,isHistory: Boolean): Flow<List<Actor>> =
         flow {
             if (isHistory){
+                emit(searchLocalDateSource.getActorsBySearchTerm(query).toDomain())
             }
             val result = searchRemoteDataSource.searchPearson(query)
             if (result.isNotEmpty()) {
                 emit(result.map { it.toDomain() })
+                insertActors(result.map { actor -> actor.toDomain() }, query)
             } else {
                 throw CineVerseException.NotFoundCineVerseException
             }
