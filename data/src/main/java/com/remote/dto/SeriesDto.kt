@@ -5,9 +5,18 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class SeriesDto(
-    val id: Int,
-    @SerialName("name") val title: String,
-    @SerialName("poster_path") val posterPath: String?,
-    @SerialName("vote_average") val voteAverage: Double,
-    @SerialName("first_air_date") val releaseDate: String?
+    @SerialName("adult") val adult: Boolean? = null,
+    @SerialName("backdropPath") val backdropPath: String? = null,
+    @SerialName("first_air_date") val firstAirDate: String? = null,
+    @SerialName("genre_ids") val genreIds: List<Int>? = null,
+    @SerialName("id") val id: Int? = null,
+    @SerialName("name") val name: String? = null,
+    @SerialName("origin_country") val originCountry: List<String>? = null,
+    @SerialName("original_language") val originalLanguage: String? = null,
+    @SerialName("original_name") val originalName: String? = null,
+    @SerialName("overview") val overview: String? = null,
+    @SerialName("popularity") val popularity: Double? = null,
+    @SerialName("poster_path") val posterPath: String? = null,
+    @SerialName("vote_average") val voteAverage: Float? = null,
+    @SerialName("vote_count") val voteCount: Int? = null,
 )

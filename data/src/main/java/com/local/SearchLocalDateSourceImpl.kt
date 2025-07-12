@@ -4,7 +4,7 @@ import com.local.dao.search.MovieDao
 import com.local.dao.search.SearchHistoryDao
 import com.local.entity.MovieEntity
 import com.local.entity.SearchHistoryEntity
-import com.repository.search.SearchLocalDateSource
+import com.repository.explore.search.SearchLocalDateSource
 
 class SearchLocalDateSourceImpl(
     private val searchHistoryDao: SearchHistoryDao,

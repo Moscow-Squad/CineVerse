@@ -10,4 +10,17 @@ interface ExploreInteractionListener {
     fun onMovieClick(movieId: Int)
     fun onTabSelected(tab: ExploreTabsPages)
     fun onRefresh()
+    fun searchMovie()
+    fun searchSeries()
+    fun searchActor()
+    fun getSavedHistoryItems(suggestion: String)
+    fun onSearchBarClickedOn()
+    fun onCancelButtonClicked()
+    fun onSearchValueChange(text: String)
+    fun SuggestionList() : List<SuggestItemUiState>
+    fun onClickSuggestion(text: String)
+    fun clearAllLocalSuggestions()
+    fun getMoviesGenres()
+    fun getSeriesGenres()
+    fun onKeyboardClick()
 }

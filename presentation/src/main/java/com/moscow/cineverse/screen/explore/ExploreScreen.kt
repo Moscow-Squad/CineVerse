@@ -1,5 +1,11 @@
 package com.moscow.cineverse.screen.explore
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -9,20 +15,38 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import com.moscow.cineverse.designSystem.component.PillLabel
 import com.moscow.cineverse.designSystem.component.ViewMode
@@ -31,6 +55,13 @@ import com.moscow.cineverse.designSystem.component.tabs.ExploreTabs
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.presentation.component.MoviePosterCard
 import com.moscow.cineverse.screen.explore.ExploreScreenState.MediaItemUi
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.moscow.cineverse.designSystem.component.search.SearchBar
+import com.moscow.cineverse.designSystem.theme.Theme
+import com.moscow.cineverse.screen.explore.component.SearchSuggestion
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -59,6 +90,26 @@ private fun ExploreScreenContent(
     ) {
         Box(modifier = Modifier.fillMaxSize()) {
             Column(modifier = Modifier.fillMaxSize()) {
+                SearchBar(
+                    modifier = Modifier.fillMaxWidth().padding(top = 56.dp),
+                    value = uiState.searchKeyWord,
+                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
+                    keyboardActions = KeyboardActions(
+                        onNext =  {
+                            interactionListener.onKeyboardClick()
+                        }
+                    ),
+                    onValueChange = { interactionListener.onSearchValueChange(it) },
+                    onCancelButtonClicked = { interactionListener.onCancelButtonClicked() },
+                    onFirstFocus = { interactionListener.onSearchBarClickedOn() },
+                    trailingIcon = {
+                        VoiceRecognitionIcon(
+                            modifier = Modifier.size(20.dp),
+                            onResult = { interactionListener.onSearchValueChange(it.toString()) },
+                            onError = {}
+                        )
+                    }
+                )
                 ExploreTabs(
                     selectedTab = uiState.selectedTab,
                     onTabSelected = interactionListener::onTabSelected,
@@ -160,6 +211,25 @@ private fun ExploreScreenContent(
                         }
                     }
                 }
+            }
+            AnimatedVisibility(
+                visible = uiState.showSuggestions,
+                enter = slideInVertically(
+                    initialOffsetY = {it},
+                    animationSpec = tween(500)
+                ) + fadeIn(animationSpec = tween(500)),
+                exit = slideOutVertically(
+                    targetOffsetY = {it},
+                    animationSpec = tween(500)
+                ) + fadeOut(animationSpec = tween(500))
+            ) {
+                SearchSuggestion(
+                    modifier = Modifier.padding(top = 24.dp),
+                    suggestionList = interactionListener.SuggestionList(),
+                    isHistory = uiState.showHistory,
+                    onClickSuggestion = interactionListener::onClickSuggestion,
+                    onClearAllClicked = interactionListener::clearAllLocalSuggestions
+                )
             }
 
             ViewModeToggle(

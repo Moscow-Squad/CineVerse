@@ -9,11 +9,11 @@ import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.bind
 import org.koin.dsl.module
 import com.local.SearchLocalDateSourceImpl
-import com.repository.search.SearchLocalDateSource
+import com.repository.explore.search.SearchLocalDateSource
 
 private const val CINE_VERSE_DATABASE = "cineverse_database"
 
-val localServiceModule = module {
+val localSourceModule = module {
     single {
         Room.databaseBuilder(
             androidContext(),
@@ -29,5 +29,5 @@ val localServiceModule = module {
 
 
     singleOf(::SearchLocalDateSourceImpl) bind SearchLocalDateSource::class
-
 }
+
