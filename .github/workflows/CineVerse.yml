@@ -88,12 +88,6 @@ jobs:
       - name: Build Debug APK
         run: ./gradlew assembleDebug
 
-      - name: Download Debug APK
-        uses: actions/download-artifact@v4
-        with:
-          name: debug-apk
-          path: app/build/outputs/apk/debug/
-
       - name: Save Service Account Key
         env:
           FIREBASE_SERVICE_ACCOUNT_KEY: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_KEY }}
