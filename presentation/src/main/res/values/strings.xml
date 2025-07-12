@@ -6,4 +6,6 @@
     <string name="history">History</string>
     <string name="search_suggestions">Search Suggestions</string>
     <string name="suggestions_title">Suggestions</string>
+    <string name="no_content_available">No content available</string>
+    <string name="retry">Retry</string>
 </resources>

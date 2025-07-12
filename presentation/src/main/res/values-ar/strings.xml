@@ -6,4 +6,6 @@
     <string name="history">التاريخ</string>
     <string name="search_suggestions">المقتراحات</string>
     <string name="suggestions_title">المقتراحات</string>
+    <string name="no_content_available">لا يتوفر محتوى</string>
+    <string name="retry">إعادة المحاولة</string>
 </resources>

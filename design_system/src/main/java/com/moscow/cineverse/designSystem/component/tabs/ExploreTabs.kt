@@ -75,7 +75,6 @@ fun ExploreTabs(
 private fun ExploreTabsPreview() {
     CineVerseTheme {
         var selectedTab by remember { mutableStateOf(ExploreTabsPages.MOVIES) }
-
         ExploreTabs(
             selectedTab = selectedTab,
             onTabSelected = { selectedTab = it },

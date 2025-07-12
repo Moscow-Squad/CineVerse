@@ -1,0 +1,30 @@
+package com.moscow.cineverse.screen.explore.component
+
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
+import com.moscow.cineverse.designSystem.component.MovieCard
+import com.moscow.cineverse.designSystem.component.ViewMode
+import com.moscow.cineverse.screen.explore.ExploreScreenState
+
+@Composable
+fun ActorPosterCard(
+    movie: ExploreScreenState.ActorUi,
+    modifier: Modifier = Modifier,
+    viewMode: ViewMode = ViewMode.GRID,
+    titleTextAlign: TextAlign = TextAlign.Start,
+) {
+    MovieCard(
+        modifier = modifier,
+        movieData = movie,
+        viewMode = viewMode,
+        titleTextAlign = titleTextAlign,
+        getId = { it.id },
+        getTitle = { it.title },
+        getPosterUrl = { it.icon },
+        getRating = {0.0f},
+        getGenres = {listOf()},
+        getDuration = { "" },
+        getReleaseDate = {""}
+    )
+}
