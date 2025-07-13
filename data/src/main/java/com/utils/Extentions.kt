@@ -14,7 +14,6 @@ import io.ktor.client.request.url
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpMethod
-import io.ktor.http.contentType
 
 @SuppressWarnings("kotlin:S6312")
 suspend inline fun <reified Request, reified Response> HttpClient.performCall(
@@ -31,7 +30,6 @@ suspend inline fun <reified Request, reified Response> HttpClient.performCall(
                 method = method,
                 baseUrl = baseUrl,
                 path = path,
-                contentType = contentType,
                 requestBuilder = requestBuilder,
             )
             body?.let { setBody(body) }
@@ -43,16 +41,12 @@ suspend fun HttpRequestBuilder.configureRequestDefaults(
     method: HttpMethod,
     baseUrl: String,
     path: String,
-    contentType: ContentType = ContentType.Application.Json,
     requestBuilder: HttpRequestBuilder.() -> Unit,
 ) {
     this.method = method
     url(baseUrl.plus(path))
     addDefaultsHeaders()
     addDefaultParameters()
-    headers {
-        contentType(contentType)
-    }
     requestBuilder()
 }
 
