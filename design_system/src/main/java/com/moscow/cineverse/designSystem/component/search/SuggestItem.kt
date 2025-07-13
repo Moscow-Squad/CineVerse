@@ -1,13 +1,11 @@
 package com.moscow.cineverse.designSystem.component.search
 
 import androidx.annotation.DrawableRes
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -28,8 +26,8 @@ import com.moscow.cineverse.designSystem.theme.Theme
 fun SuggestItem(
     title: String,
     @DrawableRes icon: Int,
-    modifier : Modifier = Modifier,
-){
+    modifier: Modifier = Modifier,
+) {
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -38,7 +36,7 @@ fun SuggestItem(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 15.dp),
+                .height(47.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {

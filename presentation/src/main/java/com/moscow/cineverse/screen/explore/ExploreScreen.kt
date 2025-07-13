@@ -103,9 +103,7 @@ private fun ExploreScreenContent(
                     selectedTab = uiState.selectedTab,
                     onTabSelected = interactionListener::onTabSelected,
                     showAllTabs = uiState.searchKeyWord.isNotEmpty(),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 12.dp)
+                    modifier = Modifier.fillMaxWidth()
                 )
                 Box(modifier = Modifier.fillMaxSize()) {
                     when {
@@ -199,6 +197,7 @@ private fun ExploreScreenContent(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .align(Alignment.TopCenter)
+                                .padding(top = 12.dp)
                         ) {
                             items(listOf(GenreUi(id = 0, name = "All")) + uiState.genres) { genre ->
                                 PillLabel(

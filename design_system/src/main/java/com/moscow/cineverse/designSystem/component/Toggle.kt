@@ -23,6 +23,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Color.Companion.Red
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
@@ -39,21 +40,23 @@ fun ViewModeToggle(
     Box(
         modifier = modifier
             .height(56.dp)
+            .clip(RoundedCornerShape(Theme.radius.large))
+            .background(Theme.colors.background.card)
             .border(
                 width = 1.dp,
                 color = Theme.colors.stroke.primary,
-                shape = RoundedCornerShape(Theme.radius.small)
+                shape = RoundedCornerShape(Theme.radius.large)
             )
     ) {
         // Background with border
         Box(
             modifier = Modifier
                 .fillMaxHeight()
-                .clip(RoundedCornerShape(Theme.radius.small))
+                .clip(RoundedCornerShape(Theme.radius.large))
                 .border(
                     width = 1.dp,
                     color = Theme.colors.stroke.primary,
-                    shape = RoundedCornerShape(Theme.radius.small)
+                    shape = RoundedCornerShape(Theme.radius.large)
                 )
                 .background(Theme.colors.background.card)
         )
@@ -109,14 +112,14 @@ private fun ViewModeButton(
             .fillMaxHeight()
             .width(80.dp)
             .zIndex(if (isSelected) 1f else 0f) // Bring selected button to front
-            .clip(RoundedCornerShape(Theme.radius.small))
+            .clip(RoundedCornerShape(Theme.radius.large))
             .background(backgroundColor)
             .then(
                 if (isSelected) {
                     Modifier.border(
                         width = 2.dp,
                         color = borderColor,
-                        shape = RoundedCornerShape(Theme.radius.small)
+                        shape = RoundedCornerShape(Theme.radius.large)
                     )
                 } else {
                     Modifier
