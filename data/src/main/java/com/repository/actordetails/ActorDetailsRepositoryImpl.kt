@@ -3,8 +3,11 @@ package com.repository.actordetails
 import com.android.domain.model.Actor
 import com.android.domain.model.Movie
 import com.android.domain.repository.ActorDetailsRepository
+import com.remote.actordetails.ActorDetailsRemoteDataSource
 
-class ActorDetailsRepositoryImpl() : ActorDetailsRepository {
+class ActorDetailsRepositoryImpl(
+    private val actorDetailsRemoteDataSource: ActorDetailsRemoteDataSource
+) : ActorDetailsRepository {
     override fun getActorDetails(actorId: Int): Actor {
         TODO("Not yet implemented")
     }
