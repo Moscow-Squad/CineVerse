@@ -1,0 +1,19 @@
+package com.repository.actordetails
+
+import com.android.domain.model.Actor
+import com.android.domain.model.Movie
+import com.android.domain.repository.ActorDetailsRepository
+
+class ActorDetailsRepositoryImpl() : ActorDetailsRepository {
+    override fun getActorDetails(actorId: Int): Actor {
+        TODO("Not yet implemented")
+    }
+
+    override fun getGallery(actorId: Int): List<String> {
+        TODO("Not yet implemented")
+    }
+
+    override fun getBestOfMovies(actorId: Int): List<Movie> {
+        TODO("Not yet implemented")
+    }
+}
