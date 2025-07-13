@@ -1,11 +1,9 @@
 package com.android.domain.usecase
 
-import com.android.domain.exception.CineVerseException.NoSuggestionFoundException
 import com.android.domain.repository.SearchRepository
+import kotlinx.coroutines.flow.Flow
 
 class GetLocalSuggestions(private val searchRepository: SearchRepository) {
-    suspend operator fun invoke(): List<String> {
-        val suggestions = searchRepository.getLocalSuggestions()
-        return if (suggestions.isEmpty()) throw NoSuggestionFoundException() else suggestions
-    }
+    suspend fun localSuggestions(): Flow<List<String>> =
+        searchRepository.getLocalSuggestions()
 }

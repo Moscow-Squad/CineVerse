@@ -172,8 +172,8 @@ class ExploreViewModel(
     }
 
     private fun getHistoryData() {
-        launchWithResult<List<String>>(
-            action = { getLocalSuggestions() },
+        launchWithFlow(
+            flowAction = { getLocalSuggestions.localSuggestions() },
             onSuccess = { history ->
                 val suggestions = history.map { SuggestItemUiState(it, isHistory = true) }
                 updateState { it.copy(localSuggestions = suggestions) }
