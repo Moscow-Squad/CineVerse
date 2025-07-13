@@ -51,7 +51,12 @@ class ExploreViewModel(
 
     override fun searchMovie(isHistory: Boolean) {
         launchWithFlow(
-            flowAction = { searchUseCase.searchMovie(uiState.value.searchKeyWord) },
+            flowAction = {
+                searchUseCase.searchMovie(
+                    uiState.value.searchKeyWord,
+                    isHistory = isHistory
+                )
+            },
             onSuccess = ::onMovieSearchSuccess,
             onError = ::onMovieSearchFailed,
             onStart = ::onLoading,
@@ -61,7 +66,7 @@ class ExploreViewModel(
 
     override fun searchSeries(isHistory: Boolean) {
         launchWithFlow(
-            flowAction = { searchUseCase.searchSeries(uiState.value.searchKeyWord) },
+            flowAction = { searchUseCase.searchSeries(uiState.value.searchKeyWord, isHistory) },
             onSuccess = ::onSeriesSearchSuccess,
             onError = ::onSeriesSearchFailed,
             onStart = ::onLoading,
@@ -71,7 +76,7 @@ class ExploreViewModel(
 
     override fun searchActor(isHistory: Boolean) {
         launchWithFlow(
-            flowAction = { searchUseCase.searchActor(uiState.value.searchKeyWord) },
+            flowAction = { searchUseCase.searchActor(uiState.value.searchKeyWord, isHistory) },
             onSuccess = ::onActorSearchSuccess,
             onError = ::onActorsSearchFailed,
             onStart = ::onLoading,
@@ -209,6 +214,7 @@ class ExploreViewModel(
             )
         }
     }
+
     override fun onSearchWordDetected(searchKeyWord: List<String>) {
         updateState {
             it.copy(
@@ -233,6 +239,7 @@ class ExploreViewModel(
                 searchKeyWord = suggestion.title,
             )
         }
+        Log.d("Tag", "Clicked suggestion: ${suggestion}")
         if (suggestion.isHistory) {
             searchMovie(isHistory = true)
         } else {

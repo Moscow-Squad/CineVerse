@@ -52,8 +52,8 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun ExploreScreen(
+    modifier: Modifier = Modifier,
     viewModel: ExploreViewModel = koinViewModel(),
-    modifier: Modifier = Modifier
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
