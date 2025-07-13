@@ -94,7 +94,7 @@ private fun ExploreScreenContent(
                     trailingIcon = {
                         VoiceRecognitionIcon(
                             modifier = Modifier.size(20.dp),
-                            onResult = { interactionListener.onSearchValueChange(it.toString()) },
+                            onResult = { interactionListener.onSearchWordDetected(it) },
                             onError = {}
                         )
                     }
