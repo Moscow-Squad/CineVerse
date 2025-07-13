@@ -5,7 +5,6 @@ import com.moscow.cineverse.data.BuildConfig
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.HttpRequestBuilder
-import io.ktor.client.request.accept
 import io.ktor.client.request.header
 import io.ktor.client.request.headers
 import io.ktor.client.request.parameter
@@ -59,7 +58,6 @@ suspend fun HttpRequestBuilder.configureRequestDefaults(
 
 private suspend fun HttpRequestBuilder.addDefaultsHeaders() {
     headers {
-        accept(ContentType.Application.Json)
         header(key = HttpHeaders.AcceptLanguage, Locale.current.language)
     }
 }
