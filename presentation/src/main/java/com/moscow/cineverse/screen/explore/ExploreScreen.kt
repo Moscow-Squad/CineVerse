@@ -103,9 +103,10 @@ private fun ExploreScreenContent(
                     selectedTab = uiState.selectedTab,
                     onTabSelected = interactionListener::onTabSelected,
                     showAllTabs = uiState.searchKeyWord.isNotEmpty(),
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 12.dp)
                 )
-                Spacer(modifier = Modifier.height(8.dp))
                 Box(modifier = Modifier.fillMaxSize()) {
                     when {
                         uiState.isLoading -> {
@@ -193,11 +194,10 @@ private fun ExploreScreenContent(
 
                     if (uiState.shouldShowGenres) {
                         LazyRow(
-                            horizontalArrangement = Arrangement.spacedBy(8.dp),
+                            horizontalArrangement = Arrangement.spacedBy(12.dp),
                             contentPadding = PaddingValues(horizontal = 16.dp),
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .height(56.dp)
                                 .align(Alignment.TopCenter)
                         ) {
                             items(listOf(GenreUi(id = 0, name = "All")) + uiState.genres) { genre ->

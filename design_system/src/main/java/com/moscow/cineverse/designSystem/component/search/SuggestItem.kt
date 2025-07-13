@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -35,7 +36,9 @@ fun SuggestItem(
             .height(48.dp)
     ) {
         Row(
-            modifier = Modifier.fillMaxWidth().height(47.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 15.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -43,7 +46,7 @@ fun SuggestItem(
                 modifier = Modifier.size(20.dp),
                 painter = painterResource(icon),
                 contentDescription = stringResource(R.string.suggest_item_icon),
-                tint = Theme.colors.shade.secondary
+                tint = Theme.colors.shade.tertiary
             )
             Text(
                 modifier = Modifier.weight(1f),
@@ -58,7 +61,7 @@ fun SuggestItem(
                 modifier = Modifier.size(20.dp),
                 painter = painterResource(Theme.icons.outline.arrowLeftUp),
                 contentDescription = stringResource(R.string.arrow_left_up),
-                tint = Theme.colors.shade.secondary
+                tint = Theme.colors.shade.tertiary
             )
         }
         HorizontalDivider(

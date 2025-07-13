@@ -37,7 +37,13 @@ fun ViewModeToggle(
     modifier: Modifier = Modifier
 ) {
     Box(
-        modifier = modifier.height(56.dp)
+        modifier = modifier
+            .height(56.dp)
+            .border(
+                width = 1.dp,
+                color = Theme.colors.stroke.primary,
+                shape = RoundedCornerShape(Theme.radius.small)
+            )
     ) {
         // Background with border
         Box(

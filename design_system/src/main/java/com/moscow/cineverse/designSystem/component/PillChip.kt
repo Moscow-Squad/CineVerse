@@ -32,7 +32,6 @@ fun PillLabel(
 ) {
     Box(
         modifier = modifier
-            .height(32.dp)
             .clip(RoundedCornerShape(Theme.radius.full))
             .background(if (isActive) Theme.colors.brand.tertiary else Theme.colors.background.card)
             .then(
@@ -45,7 +44,7 @@ fun PillLabel(
                 } else Modifier
             )
             .clickable { onClick() }
-            .padding(horizontal = 10.dp, vertical = 8.dp),
+            .padding(horizontal = 12.dp, vertical = 8.dp),
         contentAlignment = Alignment.Center
     ) {
         Row(
@@ -56,7 +55,7 @@ fun PillLabel(
 
             Text(
                 text = text,
-                color = if (isActive) Theme.colors.brand.primary else Theme.colors.shade.primary,
+                color = if (isActive) Theme.colors.brand.primary else Theme.colors.shade.secondary,
                 style = Theme.textStyle.label.medium.medium
             )
 

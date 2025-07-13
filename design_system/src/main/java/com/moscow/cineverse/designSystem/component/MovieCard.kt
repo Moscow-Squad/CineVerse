@@ -231,7 +231,7 @@ private fun <T> ListMovieCard(
             .fillMaxWidth()
             .height(88.dp)
             .clickable { onMovieClick(getId(movieData)) },
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
         shape = RoundedCornerShape(Theme.radius.large),
         colors = CardDefaults.cardColors(containerColor = Theme.colors.background.card)
     ) {
@@ -241,7 +241,7 @@ private fun <T> ListMovieCard(
 
                 val posterUrl = getPosterUrl(movieData)
                 if (posterUrl.isNotEmpty()) {
-                    AsyncImage(
+                    SafeImageViewer(
                         model = posterUrl,
                         contentDescription = getTitle(movieData),
                         placeholder = painterResource(id = R.drawable.due_tone_image),
@@ -250,7 +250,13 @@ private fun <T> ListMovieCard(
                         modifier = Modifier
                             .width(64.dp)
                             .fillMaxHeight()
-                            .clip(RoundedCornerShape(Theme.radius.small))
+                            .clip(
+                                RoundedCornerShape(
+                                    topStart = Theme.radius.large,
+                                    topEnd = Theme.radius.large,
+                                    bottomStart = Theme.radius.large
+                                )
+                            )
                     )
                 } else {
                     PlaceholderCard(
