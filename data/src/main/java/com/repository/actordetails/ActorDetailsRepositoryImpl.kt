@@ -19,12 +19,11 @@ class ActorDetailsRepositoryImpl(
     override suspend fun getActorDetails(actorId: Int): ActorDetails =
         tryToExecute(exception = CineVerseException.ActorDetailsNotFoundException) {
             val socialMedia = actorDetailsRemoteDataSource.getSocialMedia(actorId)
-            val res = actorDetailsRemoteDataSource.getActorDetails(actorId).toDomain(
+            actorDetailsRemoteDataSource.getActorDetails(actorId).toDomain(
                 youtubeLink = socialMedia.youtubeId ?: "",
                 facebookLink = socialMedia.facebookId ?: "",
                 instagramLink = socialMedia.instagramId ?: ""
             )
-            res
         }
 
     override suspend fun getGallery(actorId: Int): Flow<List<String>> =
