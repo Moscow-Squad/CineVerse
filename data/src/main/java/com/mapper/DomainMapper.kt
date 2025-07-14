@@ -96,7 +96,8 @@ fun GenreDto.toDomain() =
 
 fun ActorDetailsDto.toDomain(youtubeLink: String, facebookLink: String, instagramLink: String) =
     ActorDetails(
-        id = id?: throw CineVerseException.MappingToDomainException,
+        id = id ?: throw CineVerseException.MappingToDomainException,
+        name = name ?: throw CineVerseException.MappingToDomainException,
         birthDate = if (birthday == null) throw CineVerseException.MappingToDomainException else LocalDate.parse(birthday),
         placeOfBirth = placeOfBirth ?: throw CineVerseException.MappingToDomainException,
         youtubeLink = youtubeLink,
