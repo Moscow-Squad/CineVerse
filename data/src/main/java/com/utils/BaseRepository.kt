@@ -10,7 +10,10 @@ abstract class BaseRepository {
     ): T {
         return try {
             function()
-        } catch (e: Exception) {
+        } catch (e: CineVerseException) {
+            throw e
+        }
+        catch (e: Exception) {
             throw exception
         }
     }

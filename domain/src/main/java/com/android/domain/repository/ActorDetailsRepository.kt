@@ -4,7 +4,7 @@ import com.android.domain.model.ActorDetails
 import com.android.domain.model.Movie
 
 interface ActorDetailsRepository {
-    fun getActorDetails(actorId: Int): ActorDetails
-    fun getGallery(actorId: Int): List<String>
-    fun getBestOfMovies(actorId: Int): List<Movie>
+    suspend fun getActorDetails(actorId: Int): ActorDetails
+    suspend fun getGallery(actorId: Int): List<String>
+    suspend fun getBestOfMovies(actorId: Int): List<Movie>
 }
