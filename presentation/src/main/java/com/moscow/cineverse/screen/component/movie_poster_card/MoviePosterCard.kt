@@ -1,11 +1,10 @@
-package com.moscow.cineverse.presentation.component
+package com.moscow.cineverse.screen.component.movie_poster_card
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import com.moscow.cineverse.designSystem.component.MovieCard
 import com.moscow.cineverse.designSystem.component.ViewMode
-import com.moscow.cineverse.screen.explore.ExploreScreenState.MediaItemUi
 
 @Composable
 fun MoviePosterCard(

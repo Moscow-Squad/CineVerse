@@ -43,7 +43,8 @@ import com.moscow.cineverse.designSystem.component.search.SearchBar
 import com.moscow.cineverse.designSystem.component.tabs.ExploreTabs
 import com.moscow.cineverse.designSystem.component.tabs.ExploreTabsPages
 import com.moscow.cineverse.designSystem.theme.Theme
-import com.moscow.cineverse.presentation.component.MoviePosterCard
+import com.moscow.cineverse.screen.component.movie_poster_card.MediaItemUi
+import com.moscow.cineverse.screen.component.movie_poster_card.MoviePosterCard
 import com.moscow.cineverse.screen.explore.ExploreScreenState.GenreUi
 import com.moscow.cineverse.screen.explore.component.ActorPosterCard
 import com.moscow.cineverse.screen.explore.component.SearchSuggestion
@@ -171,7 +172,7 @@ private fun ExploreScreenContent(
                                     Log.d("TAG", "ExploreScreenContent: ${uiState.contentList}")
                                     val movie = item //as MediaItemUi
                                     when (item) {
-                                        is ExploreScreenState.MediaItemUi -> {
+                                        is MediaItemUi -> {
                                             MoviePosterCard(
                                                 movie = item,
                                                 viewMode = uiState.viewMode,

@@ -25,11 +25,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.moscow.cineverse.designSystem.component.CineVersePreviews
 import com.moscow.cineverse.designSystem.component.MovieAppBar
-import com.moscow.cineverse.designSystem.component.MoviePosterCard
-import com.moscow.cineverse.designSystem.component.MovieUI
 import com.moscow.cineverse.designSystem.component.ViewMode
 import com.moscow.cineverse.designSystem.component.ViewModeToggle
 import com.moscow.cineverse.designSystem.theme.Theme
+import com.moscow.cineverse.screen.component.movie_poster_card.MediaItemUi
+import com.moscow.cineverse.screen.component.movie_poster_card.MoviePosterCard
 import com.moscow.cinverse.presentation.R
 import org.koin.androidx.compose.koinViewModel
 
@@ -112,9 +112,9 @@ fun ShowAllActorMoviesContent(
                             horizontalArrangement = Arrangement.spacedBy(12.dp),
                             modifier = Modifier.fillMaxSize()
                         ) {
-                            items(uiState.moviesUI) { item ->
+                            items(uiState.movies) { item ->
                                 MoviePosterCard(
-                                    movieUI = item,
+                                    movie = item,
                                     viewMode = uiState.viewMode,
                                     onMovieClick = interactionListener::onMovieClick
                                 )
@@ -149,11 +149,11 @@ fun ShowAllActorMoviesPreview(modifier: Modifier = Modifier) {
             isLoading = false,
             error = null,
             viewMode = ViewMode.GRID,
-            moviesUI = List(20) { index ->
-                MovieUI(
+            movies = List(20) { index ->
+                MediaItemUi(
                     id = index,
                     title = "Movie $index",
-                    posterUrl = "https://example.com/poster_$index.jpg",
+                    posterPath = "https://example.com/poster_$index.jpg",
                     rating = 7.5f,
                     genres = listOf("Action", "Adventure"),
                     duration = "2h 30m",
