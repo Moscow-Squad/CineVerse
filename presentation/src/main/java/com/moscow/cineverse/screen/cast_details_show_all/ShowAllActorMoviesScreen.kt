@@ -9,14 +9,9 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.material3.Button
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -26,7 +21,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.moscow.cineverse.designSystem.component.CineVersePreviews
 import com.moscow.cineverse.designSystem.component.MovieAppBar
+import com.moscow.cineverse.designSystem.component.MovieButton
 import com.moscow.cineverse.designSystem.component.MovieCircularProgressBar
+import com.moscow.cineverse.designSystem.component.MovieScaffold
+import com.moscow.cineverse.designSystem.component.MovieText
 import com.moscow.cineverse.designSystem.component.ViewMode
 import com.moscow.cineverse.designSystem.component.ViewModeToggle
 import com.moscow.cineverse.designSystem.theme.Theme
@@ -59,10 +57,8 @@ fun ShowAllActorMoviesContent(
     modifier: Modifier = Modifier,
     title: String
 ) {
-    Scaffold(
-        modifier = modifier.fillMaxSize()
-    ) { paddingValues ->
-        Box(modifier = Modifier.fillMaxSize().background(Theme.colors.background.screen).padding(paddingValues)) {
+    MovieScaffold {
+        Box(modifier = modifier.fillMaxSize()) {
             when {
                 uiState.isLoading -> {
                     MovieCircularProgressBar(
@@ -81,16 +77,15 @@ fun ShowAllActorMoviesContent(
                         Column(
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
-                            Text(
+                            MovieText(
                                 text = uiState.error,
                                 color = Theme.colors.shade.primary
                             )
                             Spacer(modifier = Modifier.height(16.dp))
-                            Button(
+                            MovieButton(
+                                text = stringResource(R.string.retry),
                                 onClick = interactionListener::onRefresh
-                            ) {
-                                Text(stringResource(R.string.retry))
-                            }
+                            )
                         }
                     }
                 }
