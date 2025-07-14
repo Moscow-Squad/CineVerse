@@ -1,4 +1,4 @@
-package com.remote.actordetails
+package com.remote.source
 
 import com.remote.dto.ActorBestOfMoviesDto
 import com.remote.dto.ActorDetailsDto
@@ -11,10 +11,10 @@ import io.ktor.client.HttpClient
 import io.ktor.client.request.parameter
 import io.ktor.http.HttpMethod
 
-class ActorDetailsRemoteDataSource( private val client: HttpClient ) {
-    suspend fun getActorDetails(actorId: Int): ActorDetailsDto{
+class ActorDetailsRemoteDataSource( private val client: HttpClient) {
+    suspend fun getActorDetails(actorId: Int): ActorDetailsDto {
         return client.performCall<Unit, ActorDetailsDto>(
-            method = HttpMethod.Get,
+            method = HttpMethod.Companion.Get,
             path = ACTOR,
             requestBuilder = {
                 parameter(PERSONID, actorId)
@@ -24,15 +24,15 @@ class ActorDetailsRemoteDataSource( private val client: HttpClient ) {
 
     suspend fun getGallery(actorId: Int): List<ActorImagesDto>{
         return client.performCall<Unit, ActorImagesResponse>(
-            method = HttpMethod.Get,
-            path = "$ACTOR/{$actorId}/images",
+            method = HttpMethod.Companion.Get,
+            path = "${ACTOR}/{$actorId}/images",
         ).profiles
     }
 
-    suspend fun getBestOfMovies(actorId: Int): ActorBestOfMoviesDto{
+    suspend fun getBestOfMovies(actorId: Int): ActorBestOfMoviesDto {
         return client.performCall<Unit, ActorBestOfMoviesDto>(
-            method = HttpMethod.Get,
-            path = "$ACTOR/{$actorId}/movie_credits",
+            method = HttpMethod.Companion.Get,
+            path = "${ACTOR}/{$actorId}/movie_credits",
         )
     }
 }

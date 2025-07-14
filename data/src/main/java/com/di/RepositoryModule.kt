@@ -30,7 +30,8 @@ val repositoryModule = module {
     }
     single<ActorDetailsRepository> {
         ActorDetailsRepositoryImpl(
-            actorDetailsRemoteDataSource = get()
+            actorDetailsRemoteDataSource = get(),
+            ioDispatcher = get(qualifier = named("IO")),
         )
     }
 }
