@@ -28,8 +28,7 @@ class SearchRepositoryImpl(
     private val searchRemoteDataSource: SearchRemoteDataSource,
     private val ioDispatcher: CoroutineDispatcher,
     private val workManager: WorkManager
-) : SearchRepository, BaseRepository(
-) {
+) : SearchRepository, BaseRepository() {
     override suspend fun getLocalMoviesBySearchTerm(searchTerm: String): List<Movie> {
         return searchLocalDateSource.getMoviesBySearchTerm(searchTerm).toDomain()
     }
@@ -81,15 +80,17 @@ class SearchRepositoryImpl(
 
     override suspend fun getRemoteSuggestions(keyWord: String, page: Int): Flow<List<String>> =
         flow {
-            val remoteSuggestions = searchRemoteDataSource.getSuggestions(keyWord, page)
+            val remoteSuggestions = tryToExecute {
+                searchRemoteDataSource.getSuggestions(keyWord, page)
+            }
             emit(remoteSuggestions.map { it.toModel() })
         }.flowOn(ioDispatcher)
 
-    override suspend fun searchMulti(
-        query: String,
-    ): Flow<List<MultiSearch>> =
+    override suspend fun searchMulti(query: String): Flow<List<MultiSearch>> =
         flow {
-            val result = searchRemoteDataSource.searchMulti(query)
+            val result = tryToExecute {
+                searchRemoteDataSource.searchMulti(query)
+            }
             if (result.isNotEmpty()) {
                 emit(result.map { it.toDomain() })
             } else {
@@ -97,13 +98,14 @@ class SearchRepositoryImpl(
             }
         }.flowOn(ioDispatcher)
 
-
     override suspend fun searchMovie(query: String, isHistory: Boolean): Flow<List<Movie>> =
         flow {
             if (isHistory) {
                 emit(getLocalMoviesBySearchTerm(query))
             }
-            val result = searchRemoteDataSource.searchMovie(query)
+            val result = tryToExecute {
+                searchRemoteDataSource.searchMovie(query)
+            }
             if (result.isNotEmpty()) {
                 emit(result.map { it.toDomain() })
                 insertMovie(result.map { movie -> movie.toDomain() }, query)
@@ -112,13 +114,14 @@ class SearchRepositoryImpl(
             }
         }.flowOn(ioDispatcher)
 
-
     override suspend fun searchSeries(query: String, isHistory: Boolean): Flow<List<Series>> =
         flow {
             if (isHistory) {
                 emit(searchLocalDateSource.getSeriesBySearchTerm(query).toDomain())
             }
-            val result = searchRemoteDataSource.searchSeries(query)
+            val result = tryToExecute {
+                searchRemoteDataSource.searchSeries(query)
+            }
             if (result.isNotEmpty()) {
                 emit(result.map { it.toDomain() })
                 insertSeries(result.map { series -> series.toDomain() }, query)
@@ -132,7 +135,9 @@ class SearchRepositoryImpl(
             if (isHistory) {
                 emit(searchLocalDateSource.getActorsBySearchTerm(query).toDomain())
             }
-            val result = searchRemoteDataSource.searchPearson(query)
+            val result = tryToExecute {
+                searchRemoteDataSource.searchPearson(query)
+            }
             if (result.isNotEmpty()) {
                 emit(result.map { it.toDomain() })
                 insertActors(result.map { actor -> actor.toDomain() }, query)
@@ -140,5 +145,4 @@ class SearchRepositoryImpl(
                 throw CineVerseException.NotFoundCineVerseException
             }
         }.flowOn(ioDispatcher)
-
 }
