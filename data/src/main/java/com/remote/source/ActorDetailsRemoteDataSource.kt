@@ -15,32 +15,29 @@ import io.ktor.http.HttpMethod
 class ActorDetailsRemoteDataSource( private val client: HttpClient) {
     suspend fun getActorDetails(actorId: Int): ActorDetailsDto {
         return client.performCall<Unit, ActorDetailsDto>(
-            method = HttpMethod.Companion.Get,
-            path = ACTOR,
-            requestBuilder = {
-                parameter(PERSONID, actorId)
-            }
+            method = HttpMethod.Get,
+            path = "${ACTOR}$actorId",
         )
     }
 
     suspend fun getGallery(actorId: Int): List<ActorImagesDto>{
         return client.performCall<Unit, ActorImagesResponse>(
-            method = HttpMethod.Companion.Get,
-            path = "${ACTOR}/{$actorId}/images",
+            method = HttpMethod.Get,
+            path = "${ACTOR}$actorId/images",
         ).profiles
     }
 
     suspend fun getBestOfMovies(actorId: Int): ActorBestOfMoviesDto {
         return client.performCall<Unit, ActorBestOfMoviesDto>(
-            method = HttpMethod.Companion.Get,
-            path = "${ACTOR}/{$actorId}/movie_credits",
+            method = HttpMethod.Get,
+            path = "${ACTOR}$actorId/movie_credits",
         )
     }
 
     suspend fun getSocialMedia(actorId: Int): ActorSocialMediaDto {
         return client.performCall<Unit, ActorSocialMediaDto>(
-            method = HttpMethod.Companion.Get,
-            path = "${ACTOR}/{$actorId}/external_ids",
+            method = HttpMethod.Get,
+            path = "${ACTOR}$actorId/external_ids",
         )
     }
 }
