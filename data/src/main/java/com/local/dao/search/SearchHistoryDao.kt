@@ -6,6 +6,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.local.entity.SearchHistoryEntity
+import kotlinx.coroutines.flow.Flow
 
 
 @Dao
@@ -14,7 +15,7 @@ interface SearchHistoryDao {
     suspend fun insertSearchHistory(searchHistory: SearchHistoryEntity)
 
     @Query("SELECT searchTerm FROM search_history_table")
-    suspend fun getAllSearchHistory(): List<String>
+     fun getAllSearchHistory(): Flow<List<String>>
 
     @Delete
     suspend fun deleteSearchHistory(searchHistory: SearchHistoryEntity)

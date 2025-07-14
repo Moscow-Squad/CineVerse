@@ -145,4 +145,8 @@ dependencies {
     /** Koin */
     implementation(platform(libs.koin.bom))
     implementation(libs.bundles.koin)
+
+    /** work manager */
+    implementation(libs.androidx.work.runtime.ktx)
+    implementation(libs.koin.androidx.workmanager)
 }

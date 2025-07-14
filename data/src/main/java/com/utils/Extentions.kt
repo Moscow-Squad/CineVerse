@@ -5,7 +5,6 @@ import com.moscow.cineverse.data.BuildConfig
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.HttpRequestBuilder
-import io.ktor.client.request.accept
 import io.ktor.client.request.header
 import io.ktor.client.request.headers
 import io.ktor.client.request.parameter
@@ -15,7 +14,6 @@ import io.ktor.client.request.url
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpMethod
-import io.ktor.http.contentType
 
 @SuppressWarnings("kotlin:S6312")
 suspend inline fun <reified Request, reified Response> HttpClient.performCall(
@@ -32,7 +30,6 @@ suspend inline fun <reified Request, reified Response> HttpClient.performCall(
                 method = method,
                 baseUrl = baseUrl,
                 path = path,
-                contentType = contentType,
                 requestBuilder = requestBuilder,
             )
             body?.let { setBody(body) }
@@ -44,22 +41,17 @@ suspend fun HttpRequestBuilder.configureRequestDefaults(
     method: HttpMethod,
     baseUrl: String,
     path: String,
-    contentType: ContentType = ContentType.Application.Json,
     requestBuilder: HttpRequestBuilder.() -> Unit,
 ) {
     this.method = method
     url(baseUrl.plus(path))
     addDefaultsHeaders()
     addDefaultParameters()
-    headers {
-        contentType(contentType)
-    }
     requestBuilder()
 }
 
 private suspend fun HttpRequestBuilder.addDefaultsHeaders() {
     headers {
-        accept(ContentType.Application.Json)
         header(key = HttpHeaders.AcceptLanguage, Locale.current.language)
     }
 }

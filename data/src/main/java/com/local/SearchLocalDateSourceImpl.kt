@@ -9,16 +9,17 @@ import com.local.entity.MovieEntity
 import com.local.entity.SearchHistoryEntity
 import com.local.entity.SeriesEntity
 import com.repository.explore.search.SearchLocalDateSource
+import kotlinx.coroutines.flow.Flow
 
 class SearchLocalDateSourceImpl(
     private val searchHistoryDao: SearchHistoryDao,
     private val movieDao: MovieDao,
     private val actorDao: ActorDao,
     private val seriesDao: SeriesDao
-): SearchLocalDateSource {
-    override suspend fun getAllSearchHistory(): List<String> {
-        return searchHistoryDao.getAllSearchHistory()
-    }
+) : SearchLocalDateSource {
+    override suspend fun getAllSearchHistory(): Flow<List<String>> =
+        searchHistoryDao.getAllSearchHistory()
+
 
     override suspend fun insertSearchHistory(searchTerm: String) {
         searchHistoryDao.insertSearchHistory(SearchHistoryEntity(searchTerm))
@@ -29,7 +30,7 @@ class SearchLocalDateSourceImpl(
     }
 
     override suspend fun insertMovie(moviesEntity: List<MovieEntity>, searchTerm: String) {
-        val updatedMovieEntity = moviesEntity.map { movie->movie.copy(searchTerm = searchTerm)}
+        val updatedMovieEntity = moviesEntity.map { movie -> movie.copy(searchTerm = searchTerm) }
         movieDao.insertMovies(updatedMovieEntity)
     }
 
