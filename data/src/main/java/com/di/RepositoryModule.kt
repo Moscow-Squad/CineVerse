@@ -1,12 +1,14 @@
 package com.di
 
-import com.android.domain.repository.SearchRepository
-import org.koin.dsl.module
-import kotlinx.coroutines.Dispatchers
-import org.koin.core.qualifier.named
+import com.android.domain.repository.DetailsRepository
 import com.android.domain.repository.ExploreRepository
+import com.android.domain.repository.SearchRepository
+import com.repository.details.DetailsRepositoryImpl
 import com.repository.explore.ExploreRepositoryImpl
 import com.repository.explore.search.SearchRepositoryImpl
+import kotlinx.coroutines.Dispatchers
+import org.koin.core.qualifier.named
+import org.koin.dsl.module
 
 val repositoryModule = module {
 
@@ -24,6 +26,11 @@ val repositoryModule = module {
             ioDispatcher = get(qualifier = named("IO")),
             searchLocalDateSource = get(),
             workManager = get()
+        )
+    }
+    single<DetailsRepository> {
+        DetailsRepositoryImpl(
+            get()
         )
     }
 }
