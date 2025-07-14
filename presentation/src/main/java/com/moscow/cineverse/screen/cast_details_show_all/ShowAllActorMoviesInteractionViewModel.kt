@@ -1,4 +1,4 @@
-package com.moscow.cineverse.screen.cast_details
+package com.moscow.cineverse.screen.cast_details_show_all
 
 import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.cineverse.designSystem.component.ViewMode
