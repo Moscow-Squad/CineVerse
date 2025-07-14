@@ -1,10 +1,9 @@
-name: CI/CD - Build, Coverage
+name: CI/CD - Push to Develop
 
 on:
-  pull_request:
-    branches: [ develop ]
   push:
     branches: [ develop ]
+
 permissions:
   checks: write
   pull-requests: write
@@ -12,7 +11,7 @@ permissions:
 
 jobs:
   build:
-    name: 🛠️ build Project
+    name: 🛠️ Build Project
     runs-on: ubuntu-latest
 
     steps:
@@ -67,7 +66,6 @@ jobs:
     name: 📱 Distribute Debug APK to Firebase App Distribution
     runs-on: ubuntu-latest
     needs: [build, test_coverage]
-    if: github.event_name == 'push'
 
     steps:
       - name: Checkout code
@@ -96,11 +94,7 @@ jobs:
       - name: Set Release Notes
         id: set-release-notes
         run: |
-              if [ "${{ github.event_name }}" = "pull_request" ]; then
-                echo "RELEASE_NOTES=PR #${{ github.event.pull_request.number }}: ${{ github.event.pull_request.title }}" >> $GITHUB_ENV
-              else
-                echo "RELEASE_NOTES=Push to develop: ${{ github.sha }}" >> $GITHUB_ENV
-              fi
+          echo "RELEASE_NOTES=Push to develop: ${{ github.sha }}" >> $GITHUB_ENV
 
       - name: Distribute Debug APK to Firebase App Distribution
         run: ./gradlew appDistributionUploadDebug --stacktrace
