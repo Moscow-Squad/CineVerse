@@ -1,6 +1,5 @@
 package com.repository.actordetails
 
-import android.util.Log
 import com.android.domain.exception.CineVerseException
 import com.android.domain.model.ActorDetails
 import com.android.domain.model.Movie
