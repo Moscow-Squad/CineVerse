@@ -10,7 +10,7 @@ import com.remote.actordetails.ActorDetailsRemoteDataSource
 import com.utils.BaseRepository
 
 class ActorDetailsRepositoryImpl(
-    private val actorDetailsRemoteDataSource: ActorDetailsRemoteDataSource
+    private val actorDetailsRemoteDataSource: ActorDetailsRemoteDataSource,
 ) : ActorDetailsRepository, BaseRepository() {
     override suspend fun getActorDetails(actorId: Int): ActorDetails
     = tryToExecute(exception = CineVerseException.ActorDetailsNotFoundException){
