@@ -1,5 +1,6 @@
 package com.repository.actordetails
 
+import android.util.Log
 import com.android.domain.exception.CineVerseException
 import com.android.domain.model.ActorDetails
 import com.android.domain.model.Movie
@@ -19,11 +20,14 @@ class ActorDetailsRepositoryImpl(
     override suspend fun getActorDetails(actorId: Int): ActorDetails =
         tryToExecute(exception = CineVerseException.ActorDetailsNotFoundException) {
             val socialMedia = actorDetailsRemoteDataSource.getSocialMedia(actorId)
-            actorDetailsRemoteDataSource.getActorDetails(actorId).toDomain(
+            Log.d("dddddddddddddd", socialMedia.toString())
+            val res = actorDetailsRemoteDataSource.getActorDetails(actorId).toDomain(
                 youtubeLink = socialMedia.youtubeId ?: "",
                 facebookLink = socialMedia.facebookId ?: "",
                 instagramLink = socialMedia.instagramId ?: ""
             )
+            Log.d("dddddddddddddd", res.toString())
+            res
         }
 
     override suspend fun getGallery(actorId: Int): Flow<List<String>> =
