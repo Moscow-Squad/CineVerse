@@ -1,16 +1,13 @@
-package com.moscow.cineverse.presentation.component
+package com.moscow.cineverse.designSystem.component
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
-import com.moscow.cineverse.designSystem.component.MovieCard
-import com.moscow.cineverse.designSystem.component.ViewMode
-import com.moscow.cineverse.screen.explore.ExploreScreenState.MediaItemUi
 
 @Composable
 fun MoviePosterCard(
     modifier: Modifier = Modifier,
-    movie: MediaItemUi,
+    movieUI: MovieUI,
     viewMode: ViewMode = ViewMode.GRID,
     showRating: Boolean = true,
     onMovieClick: (Int) -> Unit = {},
@@ -22,7 +19,7 @@ fun MoviePosterCard(
 ) {
     MovieCard(
         modifier = modifier,
-        movieData = movie,
+        movieData = movieUI,
         viewMode = viewMode,
         showRating = showRating,
         onMovieClick = onMovieClick,
@@ -33,7 +30,7 @@ fun MoviePosterCard(
         showTitle = showTitle,
         getId = { it.id },
         getTitle = { it.title },
-        getPosterUrl = { it.posterPath },
+        getPosterUrl = { it.posterUrl },
         getRating = { it.rating },
         getGenres = { it.genres },
         getDuration = { it.duration },

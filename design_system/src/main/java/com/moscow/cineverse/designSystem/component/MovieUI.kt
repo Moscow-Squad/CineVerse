@@ -1,6 +1,6 @@
 package com.moscow.cineverse.designSystem.component
 
-data class Movie(
+data class MovieUI(
     val id: Int = 0,
     val title: String = "",
     val posterUrl: String = "",

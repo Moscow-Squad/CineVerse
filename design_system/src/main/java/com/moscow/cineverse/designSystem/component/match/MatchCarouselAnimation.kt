@@ -18,25 +18,23 @@ import androidx.compose.ui.composed
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.TransformOrigin
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.lerp
 import androidx.compose.ui.util.lerp
-import com.moscow.cineverse.designSystem.component.Movie
-import com.moscow.cineverse.designSystem.component.ViewMode
+import com.moscow.cineverse.designSystem.component.MovieUI
 import com.moscow.cineverse.designSystem.theme.CineVerseTheme
 import kotlin.math.absoluteValue
 
 @Composable
 fun MatchCarouselAnimation(
-    movies: List<Movie>,
-    onMovieClick: (Movie) -> Unit = {},
+    moviesUI: List<MovieUI>,
+    onMovieClick: (MovieUI) -> Unit = {},
 ) {
     val pagerState = rememberPagerState(
         initialPage = 0,
-        pageCount = { movies.size }
+        pageCount = { moviesUI.size }
     )
     HorizontalPager(
         state = pagerState,
@@ -105,7 +103,7 @@ private fun AwesomeCarouselPreview() {
             modifier = Modifier.background(Color.Black)
         ) {
             val sampleMovies = List(5) {
-                Movie(
+                MovieUI(
                     id = it,
                     title = "Inception $it",
                     posterUrl = "",
@@ -115,7 +113,7 @@ private fun AwesomeCarouselPreview() {
                     releaseDate = "2010, Jul 16"
                 )
             }
-            MatchCarouselAnimation(movies = sampleMovies)
+            MatchCarouselAnimation(moviesUI = sampleMovies)
         }
     }
 }
