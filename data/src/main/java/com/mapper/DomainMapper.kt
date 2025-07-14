@@ -1,12 +1,14 @@
 package com.mapper
 
 import com.android.domain.model.Actor
+import com.android.domain.model.ActorDetails
 import com.android.domain.model.Gender
 import com.android.domain.model.Genre
 import com.android.domain.model.MediaType
 import com.android.domain.model.Movie
 import com.android.domain.model.MultiSearch
 import com.android.domain.model.Series
+import com.remote.dto.ActorDetailsDto
 import com.remote.dto.ActorDto
 import com.remote.dto.GenreDto
 import com.remote.dto.MovieDto
@@ -86,4 +88,16 @@ fun GenreDto.toDomain() =
     Genre(
         id = id,
         name = name
+    )
+
+fun ActorDetailsDto.toDomain() =
+    ActorDetails(
+        id = id?: throw Exception(),
+        birthDate = if (birthday == null) throw Exception() else LocalDate.parse(birthday),
+        placeOfBirth = placeOfBirth ?: throw Exception(),
+        youtubeLink = "",
+        facebookLink = "",
+        instagramLink = "",
+        biography = biography ?: throw Exception(),
+        profileImg = IMAGES_URL + (profilePath ?: throw Exception())
     )

@@ -4,10 +4,11 @@ import kotlinx.datetime.LocalDate
 
 data class ActorDetails(
     val id: Int,
-    val date: LocalDate,
-    val location: String,
+    val birthDate: LocalDate,
+    val placeOfBirth: String,
     val youtubeLink: String,
     val facebookLink: String,
     val instagramLink: String,
-    val biography: String
+    val biography: String,
+    val profileImg: String
 )
