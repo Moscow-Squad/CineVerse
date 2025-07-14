@@ -1,3 +1,4 @@
+
 package com.remote.source
 
 import com.remote.dto.SuggestionDto
@@ -6,6 +7,7 @@ import com.remote.dto.MovieDto
 import com.remote.dto.MultiSearchDto
 import com.utils.ApiResponse
 import com.remote.dto.SeriesDto
+import com.utils.BaseRepository
 import com.utils.INCLUDE_ADULT
 import com.utils.PAGE
 import com.utils.QUERY
@@ -21,11 +23,9 @@ import io.ktor.http.HttpMethod
 
 class SearchRemoteDataSource(
     private val client: HttpClient
-) {
-    suspend fun searchMulti(
-        query: String,
-    ): List<MultiSearchDto> {
-        val response = client.performCall<Unit, ApiResponse<MultiSearchDto>>(
+) : BaseRepository() {
+    suspend fun searchMulti(query: String): List<MultiSearchDto> = tryToExecute {
+        client.performCall<Unit, ApiResponse<MultiSearchDto>>(
             method = HttpMethod.Get,
             path = SEARCH_MULTI,
             requestBuilder = {
@@ -34,11 +34,10 @@ class SearchRemoteDataSource(
                 parameter(INCLUDE_ADULT, false)
             }
         ).results
-        return response
     }
 
-    suspend fun searchMovie(query: String): List<MovieDto> {
-        val response = client.performCall<Unit, ApiResponse<MovieDto>>(
+    suspend fun searchMovie(query: String): List<MovieDto> = tryToExecute {
+        client.performCall<Unit, ApiResponse<MovieDto>>(
             method = HttpMethod.Get,
             path = SEARCH_MOVIE,
             requestBuilder = {
@@ -47,11 +46,10 @@ class SearchRemoteDataSource(
                 parameter(INCLUDE_ADULT, false)
             }
         ).results
-        return response
     }
 
-    suspend fun searchSeries(query: String): List<SeriesDto> {
-        val response = client.performCall<Unit, ApiResponse<SeriesDto>>(
+    suspend fun searchSeries(query: String): List<SeriesDto> = tryToExecute {
+        client.performCall<Unit, ApiResponse<SeriesDto>>(
             method = HttpMethod.Get,
             path = SEARCH_SERIES,
             requestBuilder = {
@@ -60,11 +58,10 @@ class SearchRemoteDataSource(
                 parameter(INCLUDE_ADULT, false)
             }
         ).results
-        return response
     }
 
-    suspend fun searchPearson(query: String): List<ActorDto> {
-        val response = client.performCall<Unit, ApiResponse<ActorDto>>(
+    suspend fun searchPearson(query: String): List<ActorDto> = tryToExecute {
+        client.performCall<Unit, ApiResponse<ActorDto>>(
             method = HttpMethod.Get,
             path = SEARCH_ACTOR,
             requestBuilder = {
@@ -73,11 +70,10 @@ class SearchRemoteDataSource(
                 parameter(INCLUDE_ADULT, false)
             }
         ).results
-        return response
     }
 
-    suspend fun getSuggestions(keyword: String, page: Int): List<SuggestionDto> {
-        val response = client.performCall<Unit, ApiResponse<SuggestionDto>>(
+    suspend fun getSuggestions(keyword: String, page: Int): List<SuggestionDto> = tryToExecute {
+        client.performCall<Unit, ApiResponse<SuggestionDto>>(
             method = HttpMethod.Get,
             path = SEARCH_KEYWORD,
             requestBuilder = {
@@ -86,6 +82,5 @@ class SearchRemoteDataSource(
                 parameter(INCLUDE_ADULT, false)
             }
         ).results
-        return response
     }
 }
