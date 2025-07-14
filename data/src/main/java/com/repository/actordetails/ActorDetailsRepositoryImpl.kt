@@ -37,8 +37,8 @@ class ActorDetailsRepositoryImpl(
         tryToExecute(exception = CineVerseException.BestOfMoviesNotFoundException) {
             flow {
                 val bestMovies = actorDetailsRemoteDataSource.getBestOfMovies(actorId)
-                val bestAsCast = bestMovies.cast.map { it.toDomain() }.sortedBy { it.rating }
-                val bestAsCrew = bestMovies.crew.map { it.toDomain() }.sortedBy { it.rating }
+                val bestAsCast = bestMovies.cast.mapNotNull { runCatching { it.toDomain() }.getOrNull() }.sortedBy { it.rating }
+                val bestAsCrew = bestMovies.crew .mapNotNull { runCatching { it.toDomain() }.getOrNull() }.sortedBy { it.rating }
                 emit((bestAsCast + bestAsCrew).sortedBy { it.rating })
             }.flowOn(ioDispatcher)
         }

@@ -41,7 +41,7 @@ data class ActorBestOfMoviesAsCastDto(
     @SerialName("poster_path")
     val posterPath: String?,
     @SerialName("release_date")
-    val releaseDate: String?,
+    val releaseDate: String,
     @SerialName("title")
     val title: String?,
     @SerialName("video")
@@ -79,7 +79,7 @@ data class ActorBestOfMoviesAsCrewDto(
     @SerialName("poster_path")
     val posterPath: String?,
     @SerialName("release_date")
-    val releaseDate: String?,
+    val releaseDate: String,
     @SerialName("title")
     val title: String?,
     @SerialName("video")
