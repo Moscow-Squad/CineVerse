@@ -4,6 +4,7 @@ import com.remote.dto.ActorBestOfMoviesDto
 import com.remote.dto.ActorDetailsDto
 import com.remote.dto.ActorImagesDto
 import com.remote.dto.ActorImagesResponse
+import com.remote.dto.ActorSocialMediaDto
 import com.utils.ACTOR
 import com.utils.PERSONID
 import com.utils.performCall
@@ -33,6 +34,13 @@ class ActorDetailsRemoteDataSource( private val client: HttpClient) {
         return client.performCall<Unit, ActorBestOfMoviesDto>(
             method = HttpMethod.Companion.Get,
             path = "${ACTOR}/{$actorId}/movie_credits",
+        )
+    }
+
+    suspend fun getSocialMedia(actorId: Int): ActorSocialMediaDto {
+        return client.performCall<Unit, ActorSocialMediaDto>(
+            method = HttpMethod.Companion.Get,
+            path = "${ACTOR}/{$actorId}/external_ids",
         )
     }
 }
