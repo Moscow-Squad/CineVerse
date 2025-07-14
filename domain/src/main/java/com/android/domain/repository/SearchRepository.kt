@@ -12,7 +12,7 @@ interface SearchRepository {
     suspend fun insertActors(actors: List<Actor>, searchTerm: String)
     suspend fun insertSeries(series: List<Series>, searchTerm: String)
 
-    suspend fun getLocalSuggestions(): List<String>
+    suspend fun getLocalSuggestions(): Flow<List<String>>
     suspend fun deleteSearchHistory(searchTerm: String)
     suspend fun getRemoteSuggestions(keyWord: String, page: Int): Flow<List<String>>
     suspend fun searchMulti(query: String): Flow<List<MultiSearch>>
