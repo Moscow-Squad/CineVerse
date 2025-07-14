@@ -5,4 +5,8 @@ sealed class CineVerseException : Exception() {
     class NoSuggestionFoundException() : CineVerseException()
     object NoGalleryFoundException : CineVerseException()
     object NoMoviesFoundException : CineVerseException()
+    object ActorDetailsNotFoundException  : CineVerseException()
+    object GalleryNotFoundException  : CineVerseException()
+    object BestOfMoviesNotFoundException  : CineVerseException()
+    object MappingToDomainException: CineVerseException()
 }

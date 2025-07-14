@@ -1,5 +1,6 @@
 package com.mapper
 
+import com.android.domain.exception.CineVerseException
 import com.android.domain.model.Actor
 import com.android.domain.model.ActorDetails
 import com.android.domain.model.Gender
@@ -95,49 +96,49 @@ fun GenreDto.toDomain() =
 
 fun ActorDetailsDto.toDomain() =
     ActorDetails(
-        id = id?: throw Exception(),
-        birthDate = if (birthday == null) throw Exception() else LocalDate.parse(birthday),
-        placeOfBirth = placeOfBirth ?: throw Exception(),
+        id = id?: throw CineVerseException.MappingToDomainException,
+        birthDate = if (birthday == null) throw CineVerseException.MappingToDomainException else LocalDate.parse(birthday),
+        placeOfBirth = placeOfBirth ?: throw CineVerseException.MappingToDomainException,
         youtubeLink = "",
         facebookLink = "",
         instagramLink = "",
-        biography = biography ?: throw Exception(),
-        profileImg = IMAGES_URL + (profilePath ?: throw Exception())
+        biography = biography ?: throw CineVerseException.MappingToDomainException,
+        profileImg = IMAGES_URL + (profilePath ?: throw CineVerseException.MappingToDomainException)
     )
 
 fun ActorImagesDto.toDomain() =
-    IMAGES_URL + (filePath ?: throw Exception())
+    IMAGES_URL + (filePath ?: throw CineVerseException.MappingToDomainException)
 
 fun ActorBestOfMoviesAsCrewDto.toDomain() = 
     Movie(
-        id = id ?: throw Exception(),
-        name = title ?: throw Exception(),
+        id = id ?: throw CineVerseException.MappingToDomainException,
+        name = title ?: throw CineVerseException.MappingToDomainException,
         genreIds = genreIds,
-        rating = (popularity ?: throw Exception()).toFloat(),
-        releaseDate = if(releaseDate == null) throw Exception() else LocalDate.parse(releaseDate),
-        adult = adult ?: throw Exception(),
-        backdropPath = backdropPath ?: throw Exception(),
-        originalLanguage = originalLanguage ?: throw Exception(),
-        originalTitle = originalTitle ?: throw Exception(),
-        overview = overview ?: throw Exception(),
-        posterPath = IMAGES_URL + (posterPath ?: throw Exception()),
-        video = video ?: throw Exception(),
+        rating = (popularity ?: throw CineVerseException.MappingToDomainException).toFloat(),
+        releaseDate = if(releaseDate == null) throw CineVerseException.MappingToDomainException else LocalDate.parse(releaseDate),
+        adult = adult ?: throw CineVerseException.MappingToDomainException,
+        backdropPath = backdropPath ?: throw CineVerseException.MappingToDomainException,
+        originalLanguage = originalLanguage ?: throw CineVerseException.MappingToDomainException,
+        originalTitle = originalTitle ?: throw CineVerseException.MappingToDomainException,
+        overview = overview ?: throw CineVerseException.MappingToDomainException,
+        posterPath = IMAGES_URL + (posterPath ?: throw CineVerseException.MappingToDomainException),
+        video = video ?: throw CineVerseException.MappingToDomainException,
         poster = IMAGES_URL + posterPath
     )
 
 fun ActorBestOfMoviesAsCastDto.toDomain() =
     Movie(
-        id = id ?: throw Exception(),
-        name = title ?: throw Exception(),
+        id = id ?: throw CineVerseException.MappingToDomainException,
+        name = title ?: throw CineVerseException.MappingToDomainException,
         genreIds = genreIds,
-        rating = (popularity ?: throw Exception()).toFloat(),
-        releaseDate = if(releaseDate == null) throw Exception() else LocalDate.parse(releaseDate),
-        adult = adult ?: throw Exception(),
-        backdropPath = backdropPath ?: throw Exception(),
-        originalLanguage = originalLanguage ?: throw Exception(),
-        originalTitle = originalTitle ?: throw Exception(),
-        overview = overview ?: throw Exception(),
-        posterPath = IMAGES_URL + (posterPath ?: throw Exception()),
-        video = video ?: throw Exception(),
+        rating = (popularity ?: throw CineVerseException.MappingToDomainException).toFloat(),
+        releaseDate = if(releaseDate == null) throw CineVerseException.MappingToDomainException else LocalDate.parse(releaseDate),
+        adult = adult ?: throw CineVerseException.MappingToDomainException,
+        backdropPath = backdropPath ?: throw CineVerseException.MappingToDomainException,
+        originalLanguage = originalLanguage ?: throw CineVerseException.MappingToDomainException,
+        originalTitle = originalTitle ?: throw CineVerseException.MappingToDomainException,
+        overview = overview ?: throw CineVerseException.MappingToDomainException,
+        posterPath = IMAGES_URL + (posterPath ?: throw CineVerseException.MappingToDomainException),
+        video = video ?: throw CineVerseException.MappingToDomainException,
         poster = IMAGES_URL + posterPath
     )
