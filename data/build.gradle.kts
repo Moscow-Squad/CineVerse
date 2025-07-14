@@ -56,7 +56,15 @@ dependencies {
     implementation(libs.material)
     implementation(libs.firebase.crashlytics.buildtools)
     implementation(libs.androidx.work.runtime.ktx)
-    testImplementation(libs.junit)
+
+    testImplementation(libs.kotlin.test)
+    testImplementation(libs.junit.jupiter.api)
+    testImplementation(libs.kotlinx.coroutines.test.v1102)
+
+    testImplementation(libs.truth)
+
+    testImplementation(libs.mockk)
+
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
