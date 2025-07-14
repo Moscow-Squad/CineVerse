@@ -1,6 +1,8 @@
 package com.remote.actordetails
 
 import com.remote.dto.ActorDetailsDto
+import com.remote.dto.ActorImagesDto
+import com.remote.dto.ActorImagesResponse
 import com.utils.ACTOR
 import com.utils.PERSONID
 import com.utils.performCall
@@ -17,5 +19,12 @@ class ActorDetailsRemoteDataSource( private val client: HttpClient ) {
                 parameter(PERSONID, actorId)
             }
         )
+    }
+
+    suspend fun getGallery(actorId: Int): List<ActorImagesDto>{
+        return client.performCall<Unit, ActorImagesResponse>(
+            method = HttpMethod.Get,
+            path = "$ACTOR/{$actorId}/images",
+        ).profiles
     }
 }

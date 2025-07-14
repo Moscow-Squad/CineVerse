@@ -10,6 +10,7 @@ import com.android.domain.model.MultiSearch
 import com.android.domain.model.Series
 import com.remote.dto.ActorDetailsDto
 import com.remote.dto.ActorDto
+import com.remote.dto.ActorImagesDto
 import com.remote.dto.GenreDto
 import com.remote.dto.MovieDto
 import com.remote.dto.MultiSearchDto
@@ -101,3 +102,6 @@ fun ActorDetailsDto.toDomain() =
         biography = biography ?: throw Exception(),
         profileImg = IMAGES_URL + (profilePath ?: throw Exception())
     )
+
+fun ActorImagesDto.toDomain() =
+    IMAGES_URL + (filePath ?: throw Exception())
