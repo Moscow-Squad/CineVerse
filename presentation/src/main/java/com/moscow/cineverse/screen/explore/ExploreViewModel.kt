@@ -17,7 +17,6 @@ import com.android.domain.usecase.SuggestionUseCase
 import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.cineverse.designSystem.component.ViewMode
 import com.moscow.cineverse.designSystem.component.tabs.ExploreTabsPages
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -163,11 +162,9 @@ class ExploreViewModel(
         )
     }
 
-    private fun onSuccessLoadingSuggestions(suggestion: Flow<List<String>>) {
+    private fun onSuccessLoadingSuggestions(suggestion: List<String>) {
         viewModelScope.launch {
-            suggestion.collect { s ->
-                updateState { it.copy(remoteSuggestions = s) }
-            }
+            updateState { it.copy(remoteSuggestions = suggestion) }
         }
     }
 
@@ -230,7 +227,8 @@ class ExploreViewModel(
                 uiState.value.searchKeyWord,
                 ignoreCase = true
             )
-        } + uiState.value.remoteSuggestions.map { SuggestItemUiState(it, isHistory = false) })
+        } + uiState.value.remoteSuggestions.filter { remoteSuggestions -> remoteSuggestions !in uiState.value.localSuggestions.map { it.title } }
+            .map { SuggestItemUiState(it, isHistory = false) })
     }
 
     override fun onClickSuggestion(suggestion: SuggestItemUiState) {
@@ -242,8 +240,12 @@ class ExploreViewModel(
         Log.d("Tag", "Clicked suggestion: ${suggestion}")
         if (suggestion.isHistory) {
             searchMovie(isHistory = true)
+            searchSeries(isHistory = true)
+            searchActor(isHistory = true)
         } else {
             searchMovie()
+            searchSeries()
+            searchActor()
         }
         updateState {
             it.copy(
@@ -340,7 +342,6 @@ class ExploreViewModel(
             )
         }
         updateContentList()
-        updateContentList()
     }
 
     private fun onGetSeriesByGenreIdFailed(e: Throwable) {
@@ -380,52 +381,52 @@ class ExploreViewModel(
 
     override fun onTabSelected(tab: ExploreTabsPages) {
         updateState {
-            it.copy(
-                selectedTab = tab, contentList = when (tab) {
-                    ExploreTabsPages.MOVIES -> it.movies
-                    ExploreTabsPages.SERIES -> it.series
-                    ExploreTabsPages.ACTORS -> it.movies
-                },
-                genres = when (tab) {
-                    ExploreTabsPages.MOVIES -> it.moviesGenres
-                    ExploreTabsPages.SERIES -> it.seriesGenres
-                    ExploreTabsPages.ACTORS -> it.moviesGenres
-                }
-            )
+            it.copy(selectedTab = tab)
         }
+        updateContentList()
     }
 
     override fun onRefresh() {
     }
 
     private fun loadSeries() {
-        viewModelScope.launch {
-            combine(
-                flow = genreUseCase.getSeriesGenres(),
-                flow2 = getSeriesUseCase(),
-                transform = { seriesGenres, series ->
-                    Pair(seriesGenres, series)
-                }
-            ).collect { result ->
+        launchWithFlow(
+            flowAction = {
+                combine(
+                    flow = genreUseCase.getSeriesGenres(),
+                    flow2 = getSeriesUseCase(),
+                    transform = { seriesGenres, series ->
+                        Pair(seriesGenres, series)
+                    }
+                )
+            },
+            onSuccess = { result ->
                 updateState {
                     it.copy(
                         seriesGenres = result.first.map { it.toUi() },
                         series = result.second.map { series -> series.toUi(result.first.map { it.toUi() }) },
                     )
                 }
-            }
-        }
+            },
+            onError = {
+                updateState { it.copy(error = it.error) }
+            },
+        )
+
     }
 
     private fun loadMovies() {
-        viewModelScope.launch {
-            combine(
-                flow = genreUseCase.getMoviesGenres(),
-                flow2 = getMoviesUseCase(),
-                transform = { movieGenres, movies ->
-                    Pair(movieGenres, movies)
-                }
-            ).collect { result ->
+        launchWithFlow(
+            flowAction = {
+                combine(
+                    flow = genreUseCase.getMoviesGenres(),
+                    flow2 = getMoviesUseCase(),
+                    transform = { movieGenres, movies ->
+                        Pair(movieGenres, movies)
+                    }
+                )
+            },
+            onSuccess = { result ->
                 updateState {
                     it.copy(
                         moviesGenres = result.first.map { it.toUi() },
@@ -438,22 +439,35 @@ class ExploreViewModel(
                 if (uiState.value.genres.isEmpty()) {
                     updateState { it.copy(genres = it.moviesGenres, selectedGenre = 0) }
                 }
+            },
+            onError = { error ->
+                updateState { it.copy(error = error.message) }
             }
-        }
+        )
+
     }
 
     private fun updateContentList() {
-        if (uiState.value.searchResult.isNotEmpty())
+        if (uiState.value.searchResult.isNotEmpty()) {
             updateState {
                 it.copy(
-                    contentList = it.searchResult.getOrDefault(
-                        it.selectedTab.toTitle(),
-                        emptyList()
-                    ),
+                    contentList =
+                        when (it.selectedTab) {
+                            ExploreTabsPages.ACTORS -> {
+                                it.actorsSearchResult
+                            }
+
+                            else -> {
+                                it.searchResult.getOrDefault(
+                                    it.selectedTab.toTitle(),
+                                    emptyList()
+                                )
+                            }
+                        },
                     shouldShowGenres = false
                 )
             }
-        else {
+        } else {
             updateState {
                 it.copy(
                     shouldShowGenres = true,
@@ -462,6 +476,11 @@ class ExploreViewModel(
                         ExploreTabsPages.SERIES -> it.series
                         ExploreTabsPages.ACTORS -> it.movies
                     },
+                    genres = when (it.selectedTab) {
+                        ExploreTabsPages.MOVIES -> it.moviesGenres
+                        ExploreTabsPages.SERIES -> it.seriesGenres
+                        ExploreTabsPages.ACTORS -> it.moviesGenres
+                    }
                 )
             }
         }

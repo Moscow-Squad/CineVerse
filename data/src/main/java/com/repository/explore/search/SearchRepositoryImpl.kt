@@ -28,7 +28,8 @@ class SearchRepositoryImpl(
     private val searchRemoteDataSource: SearchRemoteDataSource,
     private val ioDispatcher: CoroutineDispatcher,
     private val workManager: WorkManager
-) : SearchRepository, BaseRepository() {
+) : SearchRepository, BaseRepository(
+) {
     override suspend fun getLocalMoviesBySearchTerm(searchTerm: String): List<Movie> {
         return searchLocalDateSource.getMoviesBySearchTerm(searchTerm).toDomain()
     }
@@ -78,13 +79,10 @@ class SearchRepositoryImpl(
         searchLocalDateSource.deleteSearchHistory(searchTerm)
     }
 
-    override suspend fun getRemoteSuggestions(keyWord: String, page: Int): Flow<List<String>> =
-        flow {
-            val remoteSuggestions = tryToExecute {
-                searchRemoteDataSource.getSuggestions(keyWord, page)
-            }
-            emit(remoteSuggestions.map { it.toModel() })
-        }.flowOn(ioDispatcher)
+    override suspend fun getRemoteSuggestions(keyWord: String, page: Int): List<String> =
+        tryToExecute {
+            searchRemoteDataSource.getSuggestions(keyWord, page)
+        }.map { it.toModel() }
 
     override suspend fun searchMulti(query: String): Flow<List<MultiSearch>> =
         flow {
@@ -102,6 +100,7 @@ class SearchRepositoryImpl(
         flow {
             if (isHistory) {
                 emit(getLocalMoviesBySearchTerm(query))
+                return@flow
             }
             val result = tryToExecute {
                 searchRemoteDataSource.searchMovie(query)
@@ -118,6 +117,7 @@ class SearchRepositoryImpl(
         flow {
             if (isHistory) {
                 emit(searchLocalDateSource.getSeriesBySearchTerm(query).toDomain())
+                return@flow
             }
             val result = tryToExecute {
                 searchRemoteDataSource.searchSeries(query)
@@ -134,6 +134,7 @@ class SearchRepositoryImpl(
         flow {
             if (isHistory) {
                 emit(searchLocalDateSource.getActorsBySearchTerm(query).toDomain())
+                return@flow
             }
             val result = tryToExecute {
                 searchRemoteDataSource.searchPearson(query)

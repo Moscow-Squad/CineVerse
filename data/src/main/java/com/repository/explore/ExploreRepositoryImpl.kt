@@ -5,7 +5,7 @@ import com.android.domain.model.Movie
 import com.android.domain.model.Series
 import com.android.domain.repository.ExploreRepository
 import com.mapper.toDomain
-import com.remote.ExploreRemoteDataSource
+import com.remote.source.ExploreRemoteDataSource
 import com.utils.BaseRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
@@ -25,11 +25,11 @@ class ExploreRepositoryImpl(
     }.flowOn(ioDispatcher)
 
     override suspend fun geMovies(): Flow<List<Movie>> = flow {
-        emit(tryToExecute { exploreRemoteDataSource.getMovies() }.results.map { it.toDomain() })
+        emit(tryToExecute { exploreRemoteDataSource.getMovies() }.map { it.toDomain() })
     }.flowOn(ioDispatcher)
 
     override suspend fun getSeries(): Flow<List<Series>> = flow {
-        emit(tryToExecute { exploreRemoteDataSource.getSeries() }.results.map { it.toDomain() })
+        emit(tryToExecute { exploreRemoteDataSource.getSeries() }.map { it.toDomain() })
     }.flowOn(ioDispatcher)
 
     override suspend fun getMoviesByGenreId(genreId: Int): Flow<List<Movie>> = flow {

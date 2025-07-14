@@ -2,10 +2,8 @@ package com.moscow.cineverse.designSystem.component.tabs
 
 import android.content.res.Configuration
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.pager.PagerState
-import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.TabRowDefaults
@@ -15,15 +13,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.moscow.cineverse.designSystem.theme.CineVerseTheme
 import com.moscow.cineverse.designSystem.theme.Theme
-import kotlinx.coroutines.launch
 
 @Composable
 fun ExploreTabs(
@@ -46,8 +44,11 @@ fun ExploreTabs(
         modifier = modifier,
         indicator = { tabPositions ->
             TabRowDefaults.SecondaryIndicator(
-                Modifier.tabIndicatorOffset(tabPositions[tabsToShow.indexOf(selectedTab)]),
-                color = selectedContentColor
+                Modifier
+                    .tabIndicatorOffset(tabPositions[tabsToShow.indexOf(selectedTab)])
+                    .padding(horizontal = 16.dp)
+                    .clip(RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)),
+                color = selectedContentColor,
             )
         }
     ) {
