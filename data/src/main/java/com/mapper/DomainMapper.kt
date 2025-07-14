@@ -8,7 +8,9 @@ import com.android.domain.model.MediaType
 import com.android.domain.model.Movie
 import com.android.domain.model.MultiSearch
 import com.android.domain.model.Series
+import com.remote.dto.ActorBestOfMoviesAsCastDto
 import com.remote.dto.ActorDetailsDto
+import com.remote.dto.ActorBestOfMoviesAsCrewDto
 import com.remote.dto.ActorDto
 import com.remote.dto.ActorImagesDto
 import com.remote.dto.GenreDto
@@ -105,3 +107,37 @@ fun ActorDetailsDto.toDomain() =
 
 fun ActorImagesDto.toDomain() =
     IMAGES_URL + (filePath ?: throw Exception())
+
+fun ActorBestOfMoviesAsCrewDto.toDomain() = 
+    Movie(
+        id = id ?: throw Exception(),
+        name = title ?: throw Exception(),
+        genreIds = genreIds,
+        rating = (popularity ?: throw Exception()).toFloat(),
+        releaseDate = if(releaseDate == null) throw Exception() else LocalDate.parse(releaseDate),
+        adult = adult ?: throw Exception(),
+        backdropPath = backdropPath ?: throw Exception(),
+        originalLanguage = originalLanguage ?: throw Exception(),
+        originalTitle = originalTitle ?: throw Exception(),
+        overview = overview ?: throw Exception(),
+        posterPath = IMAGES_URL + (posterPath ?: throw Exception()),
+        video = video ?: throw Exception(),
+        poster = IMAGES_URL + posterPath
+    )
+
+fun ActorBestOfMoviesAsCastDto.toDomain() =
+    Movie(
+        id = id ?: throw Exception(),
+        name = title ?: throw Exception(),
+        genreIds = genreIds,
+        rating = (popularity ?: throw Exception()).toFloat(),
+        releaseDate = if(releaseDate == null) throw Exception() else LocalDate.parse(releaseDate),
+        adult = adult ?: throw Exception(),
+        backdropPath = backdropPath ?: throw Exception(),
+        originalLanguage = originalLanguage ?: throw Exception(),
+        originalTitle = originalTitle ?: throw Exception(),
+        overview = overview ?: throw Exception(),
+        posterPath = IMAGES_URL + (posterPath ?: throw Exception()),
+        video = video ?: throw Exception(),
+        poster = IMAGES_URL + posterPath
+    )

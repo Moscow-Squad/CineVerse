@@ -1,5 +1,6 @@
 package com.remote.actordetails
 
+import com.remote.dto.ActorBestOfMoviesDto
 import com.remote.dto.ActorDetailsDto
 import com.remote.dto.ActorImagesDto
 import com.remote.dto.ActorImagesResponse
@@ -26,5 +27,12 @@ class ActorDetailsRemoteDataSource( private val client: HttpClient ) {
             method = HttpMethod.Get,
             path = "$ACTOR/{$actorId}/images",
         ).profiles
+    }
+
+    suspend fun getBestOfMovies(actorId: Int): ActorBestOfMoviesDto{
+        return client.performCall<Unit, ActorBestOfMoviesDto>(
+            method = HttpMethod.Get,
+            path = "$ACTOR/{$actorId}/movie_credits",
+        )
     }
 }
