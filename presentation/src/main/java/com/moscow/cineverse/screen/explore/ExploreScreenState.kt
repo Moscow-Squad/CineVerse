@@ -1,6 +1,5 @@
 package com.moscow.cineverse.screen.explore
 
-import com.moscow.cineverse.designSystem.component.MovieUI
 import com.moscow.cineverse.designSystem.component.ViewMode
 import com.moscow.cineverse.designSystem.component.tabs.ExploreTabsPages
 
@@ -8,7 +7,7 @@ data class ExploreScreenState(
 
     val searchKeyWord: String = "",
 
-    val searchResult: Map<String, List<MovieUI>> = mutableMapOf(),
+    val searchResult: Map<String, List<MediaItemUi>> = mutableMapOf(),
 
     val actorsSearchResult: List<ActorUi> = emptyList(),
     val remoteSuggestions:List<String> = emptyList(),
@@ -23,8 +22,8 @@ data class ExploreScreenState(
     val moviesGenres: List<GenreUi> = emptyList(),
     val seriesGenres: List<GenreUi> = emptyList(),
 
-    val moviesUI: List<MovieUI> = emptyList(),
-    val series: List<MovieUI> = emptyList(),
+    val movies: List<MediaItemUi> = emptyList(),
+    val series: List<MediaItemUi> = emptyList(),
 
     val selectedGenre: Int = 0,
     val selectedTab: ExploreTabsPages = ExploreTabsPages.MOVIES,
@@ -39,15 +38,23 @@ data class ExploreScreenState(
     val contentList: List<Any> = emptyList()
 
 ) {
-    fun fromScreenState(selectedTab: ExploreTabsPages): List<MovieUI> {
+    fun fromScreenState(selectedTab: ExploreTabsPages): List<MediaItemUi> {
         return when (selectedTab) {
-            ExploreTabsPages.MOVIES -> moviesUI
+            ExploreTabsPages.MOVIES -> movies
             ExploreTabsPages.SERIES -> series
             else -> emptyList()
         }
     }
 
-
+    data class MediaItemUi(
+        val id: Int,
+        val title: String,
+        val posterPath: String,
+        val rating: Float,
+        val genres: List<String>,
+        val releaseDate: String,
+        val duration: String
+    )
 
     data class ActorUi(
         val title: String,

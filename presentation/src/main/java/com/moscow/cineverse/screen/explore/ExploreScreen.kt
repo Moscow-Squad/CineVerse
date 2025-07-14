@@ -36,8 +36,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
-import com.moscow.cineverse.designSystem.component.MovieUI
-import com.moscow.cineverse.designSystem.component.MoviePosterCard
 import com.moscow.cineverse.designSystem.component.PillLabel
 import com.moscow.cineverse.designSystem.component.ViewMode
 import com.moscow.cineverse.designSystem.component.ViewModeToggle
@@ -45,6 +43,7 @@ import com.moscow.cineverse.designSystem.component.search.SearchBar
 import com.moscow.cineverse.designSystem.component.tabs.ExploreTabs
 import com.moscow.cineverse.designSystem.component.tabs.ExploreTabsPages
 import com.moscow.cineverse.designSystem.theme.Theme
+import com.moscow.cineverse.presentation.component.MoviePosterCard
 import com.moscow.cineverse.screen.explore.ExploreScreenState.GenreUi
 import com.moscow.cineverse.screen.explore.component.ActorPosterCard
 import com.moscow.cineverse.screen.explore.component.SearchSuggestion
@@ -172,9 +171,9 @@ private fun ExploreScreenContent(
                                     Log.d("TAG", "ExploreScreenContent: ${uiState.contentList}")
                                     val movie = item //as MediaItemUi
                                     when (item) {
-                                        is MovieUI -> {
+                                        is ExploreScreenState.MediaItemUi -> {
                                             MoviePosterCard(
-                                                movieUI = item,
+                                                movie = item,
                                                 viewMode = uiState.viewMode,
                                                 onMovieClick = interactionListener::onMovieClick
                                             )

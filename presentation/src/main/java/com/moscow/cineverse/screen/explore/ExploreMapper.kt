@@ -4,30 +4,30 @@ import com.android.domain.model.Actor
 import com.android.domain.model.Genre
 import com.android.domain.model.Movie
 import com.android.domain.model.Series
-import com.moscow.cineverse.designSystem.component.MovieUI
 import com.moscow.cineverse.designSystem.component.tabs.ExploreTabsPages
 import com.moscow.cineverse.screen.explore.ExploreScreenState.ActorUi
 import com.moscow.cineverse.screen.explore.ExploreScreenState.GenreUi
+import com.moscow.cineverse.screen.explore.ExploreScreenState.MediaItemUi
 import kotlinx.datetime.LocalDate
 
 const val YYYY_MMM_DD = "yyyy, MMM dd"
 
-fun Movie.toUi(genresList: List<GenreUi>): MovieUI =
-   MovieUI(
+fun Movie.toUi(genresList: List<GenreUi>): MediaItemUi =
+    MediaItemUi(
         id = id.toInt(),
         title = name,
-        posterUrl = posterPath,
+        posterPath = posterPath,
         rating = rating,
         genres = genreIds.map {it-> genresList.first { genre -> genre.id == it }.name },
         releaseDate = releaseDate.formatWith(YYYY_MMM_DD) ?: "",
         duration = ""
     )
 
-fun Series.toUi(genresList: List<GenreUi>):MovieUI =
-   MovieUI(
+fun Series.toUi(genresList: List<GenreUi>): MediaItemUi =
+    MediaItemUi(
         id = id,
         title = name,
-        posterUrl = posterPath,
+        posterPath = posterPath,
         rating = rating,
         genres = genreIds.map {it-> genresList.first { genre -> genre.id == it }.name },
         releaseDate = firstAirDate.formatWith(YYYY_MMM_DD) ?: "",

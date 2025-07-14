@@ -316,7 +316,7 @@ class ExploreViewModel(
     private fun onGetMovieByGenreIdSuccess(movies: List<Movie>) {
         updateState {
             it.copy(
-                moviesUI = movies.map { movie -> movie.toUi(uiState.value.moviesGenres) }
+                movies = movies.map { movie -> movie.toUi(uiState.value.moviesGenres) }
             )
         }
         updateContentList()
@@ -382,9 +382,9 @@ class ExploreViewModel(
         updateState {
             it.copy(
                 selectedTab = tab, contentList = when (tab) {
-                    ExploreTabsPages.MOVIES -> it.moviesUI
+                    ExploreTabsPages.MOVIES -> it.movies
                     ExploreTabsPages.SERIES -> it.series
-                    ExploreTabsPages.ACTORS -> it.moviesUI
+                    ExploreTabsPages.ACTORS -> it.movies
                 },
                 genres = when (tab) {
                     ExploreTabsPages.MOVIES -> it.moviesGenres
@@ -429,11 +429,11 @@ class ExploreViewModel(
                 updateState {
                     it.copy(
                         moviesGenres = result.first.map { it.toUi() },
-                        moviesUI = result.second.map { movie -> movie.toUi(result.first.map { it.toUi() }) },
+                        movies = result.second.map { movie -> movie.toUi(result.first.map { it.toUi() }) },
                     )
                 }
                 if (uiState.value.contentList.isEmpty()) {
-                    updateState { it.copy(contentList = it.moviesUI, selectedGenre = 0) }
+                    updateState { it.copy(contentList = it.movies, selectedGenre = 0) }
                 }
                 if (uiState.value.genres.isEmpty()) {
                     updateState { it.copy(genres = it.moviesGenres, selectedGenre = 0) }
@@ -458,9 +458,9 @@ class ExploreViewModel(
                 it.copy(
                     shouldShowGenres = true,
                     contentList = when (it.selectedTab) {
-                        ExploreTabsPages.MOVIES -> it.moviesUI
+                        ExploreTabsPages.MOVIES -> it.movies
                         ExploreTabsPages.SERIES -> it.series
-                        ExploreTabsPages.ACTORS -> it.moviesUI
+                        ExploreTabsPages.ACTORS -> it.movies
                     },
                 )
             }
