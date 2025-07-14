@@ -214,6 +214,14 @@ class ExploreViewModel(
             )
         }
     }
+    override fun onSearchWordDetected(searchKeyWord: List<String>) {
+        updateState {
+            it.copy(
+                searchKeyWord = searchKeyWord[0],
+                showSuggestions = true,
+            )
+        }
+    }
 
     override fun onSearchWordDetected(searchKeyWord: List<String>) {
         updateState {
