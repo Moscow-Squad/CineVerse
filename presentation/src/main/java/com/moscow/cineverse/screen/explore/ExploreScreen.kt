@@ -52,8 +52,8 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun ExploreScreen(
+    modifier: Modifier = Modifier,
     viewModel: ExploreViewModel = koinViewModel(),
-    modifier: Modifier = Modifier
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
@@ -94,7 +94,7 @@ private fun ExploreScreenContent(
                     trailingIcon = {
                         VoiceRecognitionIcon(
                             modifier = Modifier.size(20.dp),
-                            onResult = { interactionListener.onSearchValueChange(it.toString()) },
+                            onResult = { interactionListener.onSearchWordDetected(it) },
                             onError = {}
                         )
                     }
@@ -170,7 +170,7 @@ private fun ExploreScreenContent(
                                 items(uiState.contentList) { item ->
                                     Log.d("TAG", "ExploreScreenContent: ${uiState.contentList}")
                                     val movie = item //as MediaItemUi
-                                    when(item){
+                                    when (item) {
                                         is ExploreScreenState.MediaItemUi -> {
                                             MoviePosterCard(
                                                 movie = item,
@@ -178,7 +178,8 @@ private fun ExploreScreenContent(
                                                 onMovieClick = interactionListener::onMovieClick
                                             )
                                         }
-                                        is ExploreScreenState.ActorUi ->{
+
+                                        is ExploreScreenState.ActorUi -> {
                                             ActorPosterCard(
                                                 movie = item,
                                                 viewMode = uiState.viewMode,
@@ -231,14 +232,14 @@ private fun ExploreScreenContent(
                 )
             }
 
-            if(uiState.selectedTab != ExploreTabsPages.ACTORS)
+            if (uiState.selectedTab != ExploreTabsPages.ACTORS)
                 ViewModeToggle(
-                selectedMode = uiState.viewMode,
-                onModeSelected = interactionListener::onViewModeChanged,
-                modifier = Modifier
-                    .align(Alignment.BottomEnd)
-                    .padding(16.dp)
-            )
+                    selectedMode = uiState.viewMode,
+                    onModeSelected = interactionListener::onViewModeChanged,
+                    modifier = Modifier
+                        .align(Alignment.BottomEnd)
+                        .padding(16.dp)
+                )
         }
     }
 }

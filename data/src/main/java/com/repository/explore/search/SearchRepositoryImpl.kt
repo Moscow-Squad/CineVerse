@@ -6,13 +6,13 @@ import androidx.work.WorkManager
 import androidx.work.workDataOf
 import com.android.domain.exception.CineVerseException
 import com.android.domain.model.Actor
-import com.android.domain.repository.SearchRepository
 import com.android.domain.model.Movie
 import com.android.domain.model.MultiSearch
 import com.android.domain.model.Series
+import com.android.domain.repository.SearchRepository
+import com.local.DeleteQueryWorker
 import com.mapper.toDomain
 import com.mapper.toModel
-import com.remote.DeleteQueryWorker
 import com.remote.source.SearchRemoteDataSource
 import com.repository.mapper.toDomain
 import com.repository.mapper.toEntity
@@ -38,7 +38,7 @@ class SearchRepositoryImpl(
         searchLocalDateSource.insertSearchHistory(searchTerm)
         searchLocalDateSource.insertMovie(movies.toEntity(searchTerm), searchTerm)
         val deleteWork = OneTimeWorkRequestBuilder<DeleteQueryWorker>()
-            .setInitialDelay(1, TimeUnit.MINUTES)
+            .setInitialDelay(1, TimeUnit.HOURS)
             .setInputData(workDataOf("query" to searchTerm))
             .addTag("delete_search_query_history")
             .build()
@@ -50,7 +50,7 @@ class SearchRepositoryImpl(
         searchLocalDateSource.insertSearchHistory(searchTerm)
         searchLocalDateSource.insertActors(actors.toEntity(searchTerm), searchTerm)
         val deleteWork = OneTimeWorkRequestBuilder<DeleteQueryWorker>()
-            .setInitialDelay(1, TimeUnit.MINUTES)
+            .setInitialDelay(1, TimeUnit.HOURS)
             .setInputData(workDataOf("query" to searchTerm))
             .addTag("delete_search_query_history")
             .build()
@@ -62,7 +62,7 @@ class SearchRepositoryImpl(
         searchLocalDateSource.insertSearchHistory(searchTerm)
         searchLocalDateSource.insertSeries(series.toEntity(searchTerm), searchTerm)
         val deleteWork = OneTimeWorkRequestBuilder<DeleteQueryWorker>()
-            .setInitialDelay(1, TimeUnit.MINUTES)
+            .setInitialDelay(1, TimeUnit.HOURS)
             .setInputData(workDataOf("query" to searchTerm))
             .addTag("delete_search_query_history")
             .build()
@@ -70,7 +70,7 @@ class SearchRepositoryImpl(
         workManager.enqueue(deleteWork)
     }
 
-    override suspend fun getLocalSuggestions(): List<String> {
+    override suspend fun getLocalSuggestions(): Flow<List<String>> {
         return searchLocalDateSource.getAllSearchHistory()
     }
 
