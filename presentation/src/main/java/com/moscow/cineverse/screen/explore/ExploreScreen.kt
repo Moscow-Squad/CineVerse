@@ -43,7 +43,6 @@ import com.moscow.cineverse.designSystem.component.search.SearchBar
 import com.moscow.cineverse.designSystem.component.tabs.ExploreTabs
 import com.moscow.cineverse.designSystem.component.tabs.ExploreTabsPages
 import com.moscow.cineverse.designSystem.theme.Theme
-import com.moscow.cineverse.presentation.component.MoviePosterCard
 import com.moscow.cineverse.screen.explore.ExploreScreenState.GenreUi
 import com.moscow.cineverse.screen.explore.component.ActorPosterCard
 import com.moscow.cineverse.screen.explore.component.SearchSuggestion
@@ -52,8 +51,8 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun ExploreScreen(
+    modifier: Modifier = Modifier,
     viewModel: ExploreViewModel = koinViewModel(),
-    modifier: Modifier = Modifier
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
