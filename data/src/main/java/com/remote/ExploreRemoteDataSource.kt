@@ -8,6 +8,7 @@ import com.remote.dto.PopularResponse
 import com.remote.dto.SeriesDetailsDto
 import com.remote.dto.SeriesDto
 import com.utils.ApiResponse
+import com.utils.BaseRepository
 import com.utils.DISCOVER_MOVIE_LIST
 import com.utils.DISCOVER_SERIES_LIST
 import com.utils.GENRE_MOVIE_LIST
@@ -22,39 +23,48 @@ import io.ktor.http.HttpMethod
 
 class ExploreRemoteDataSource(
     private val client: HttpClient
-) {
-    suspend fun getMoviesGenres(): List<GenreDto> =
+) : BaseRepository() {
+    suspend fun getMoviesGenres(): List<GenreDto> = tryToExecute {
         client.performCall<Unit, GenreResponse>(
             method = HttpMethod.Get,
             path = GENRE_MOVIE_LIST
         ).genres
+    }
 
-    suspend fun getSeriesGenres() =
+    suspend fun getSeriesGenres(): List<GenreDto> = tryToExecute {
         client.performCall<Unit, GenreResponse>(
             method = HttpMethod.Get,
             path = GENRE_SERIES_LIST
         ).genres
+    }
 
-    suspend fun getMovies(): PopularResponse<MovieDto> =
+    suspend fun getMovies(): PopularResponse<MovieDto> = tryToExecute {
         client.get("https://api.themoviedb.org/3/movie/popular") {
             parameter("language", "en-US")
             parameter("page", 1)
         }.body()
-    suspend fun getMovieDetails(id: Int): MovieDetailsDto =
+    }
+
+    suspend fun getMovieDetails(id: Int): MovieDetailsDto = tryToExecute {
         client.get("https://api.themoviedb.org/3/movie/$id") {
             parameter("language", "en-US")
         }.body()
+    }
 
-    suspend fun getSeries(): PopularResponse<SeriesDto> =
+    suspend fun getSeries(): PopularResponse<SeriesDto> = tryToExecute {
         client.get("https://api.themoviedb.org/3/tv/popular") {
             parameter("language", "en-US")
             parameter("page", 1)
         }.body()
-    suspend fun getSeriesDetails(id: Int): SeriesDetailsDto =
+    }
+
+    suspend fun getSeriesDetails(id: Int): SeriesDetailsDto = tryToExecute {
         client.get("https://api.themoviedb.org/3/tv/$id") {
             parameter("language", "en-US")
         }.body()
-    suspend fun getSeriesByGenreId(genreId: Int): List<SeriesDto> =
+    }
+
+    suspend fun getSeriesByGenreId(genreId: Int): List<SeriesDto> = tryToExecute {
         client.performCall<Unit, ApiResponse<SeriesDto>>(
             method = HttpMethod.Get,
             path = DISCOVER_SERIES_LIST,
@@ -62,8 +72,9 @@ class ExploreRemoteDataSource(
                 parameter(WITH_GENRES, genreId)
             }
         ).results
+    }
 
-    suspend fun getMoviesByGenreId(genreId: Int): List<MovieDto> =
+    suspend fun getMoviesByGenreId(genreId: Int): List<MovieDto> = tryToExecute {
         client.performCall<Unit, ApiResponse<MovieDto>>(
             method = HttpMethod.Get,
             path = DISCOVER_MOVIE_LIST,
@@ -71,4 +82,5 @@ class ExploreRemoteDataSource(
                 parameter(WITH_GENRES, genreId)
             }
         ).results
+    }
 }
