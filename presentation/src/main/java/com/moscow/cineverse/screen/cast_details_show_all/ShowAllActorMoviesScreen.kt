@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
@@ -25,6 +26,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.moscow.cineverse.designSystem.component.CineVersePreviews
 import com.moscow.cineverse.designSystem.component.MovieAppBar
+import com.moscow.cineverse.designSystem.component.MovieCircularProgressBar
 import com.moscow.cineverse.designSystem.component.ViewMode
 import com.moscow.cineverse.designSystem.component.ViewModeToggle
 import com.moscow.cineverse.designSystem.theme.Theme
@@ -63,12 +65,12 @@ fun ShowAllActorMoviesContent(
         Box(modifier = Modifier.fillMaxSize().background(Theme.colors.background.screen).padding(paddingValues)) {
             when {
                 uiState.isLoading -> {
-                    Box(
-                        modifier = Modifier.fillMaxSize(),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        CircularProgressIndicator()
-                    }
+                    MovieCircularProgressBar(
+                        gradientColors = listOf(
+                            Theme.colors.shade.primary,
+                            Theme.colors.shade.tertiary
+                        )
+                    )
                 }
 
                 uiState.error != null -> {
