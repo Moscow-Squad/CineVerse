@@ -5,9 +5,9 @@ import com.android.domain.model.Genre
 import com.android.domain.model.Movie
 import com.android.domain.model.Series
 import com.moscow.cineverse.designSystem.component.tabs.ExploreTabsPages
+import com.moscow.cineverse.screen.component.movie_poster_card.MediaItemUi
 import com.moscow.cineverse.screen.explore.ExploreScreenState.ActorUi
 import com.moscow.cineverse.screen.explore.ExploreScreenState.GenreUi
-import com.moscow.cineverse.screen.explore.ExploreScreenState.MediaItemUi
 import kotlinx.datetime.LocalDate
 
 const val YYYY_MMM_DD = "yyyy, MMM dd"
