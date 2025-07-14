@@ -45,7 +45,7 @@ class ExploreRepositoryImplTest {
     }
 
     @Test
-    fun `Given valid series genres from data source, When getSeriesGenres is called, Then emits list of mapped genres`() =
+    fun `getSeriesGenres should emit list of mapped genres when series genres is valid`() =
         runTest {
             // Given
             val genreDtos = GENRE_DTOs
@@ -60,7 +60,7 @@ class ExploreRepositoryImplTest {
         }
 
     @Test
-    fun `Given valid movies for genre ID, When getMoviesByGenreId is called, Then emits list of mapped movies`() =
+    fun `getMoviesByGenreId should emit list of mapped movies when get valid movies by genre id`() =
         runTest {
             // Given
             val genreId = 1
@@ -76,7 +76,7 @@ class ExploreRepositoryImplTest {
         }
 
     @Test
-    fun `Given valid movie genres from data source, When getMoviesGenres is called, Then emits list of mapped genres`() =
+    fun `getMoviesGenres should emit list of mapped genres When get valid movie genres`() =
         runTest {
             // Given
             val genreDtos = GENRE_DTOs
@@ -91,7 +91,7 @@ class ExploreRepositoryImplTest {
         }
 
     @Test
-    fun `Given valid movies from data source, When getMovies is called, Then emits list of mapped movies`() =
+    fun `getMovies should emit list of mapped movies when get valid movies`() =
         runTest {
             // Given
             val movieDtos = MOVIE_DTOs
@@ -106,7 +106,7 @@ class ExploreRepositoryImplTest {
         }
 
     @Test
-    fun `Given valid series from data source, When getSeries is called, Then emits list of mapped series`() =
+    fun `getSeries should emit list of mapped series when get valid series`() =
         runTest {
             // Given
             val seriesDtos = SERIES_DTOs
@@ -121,7 +121,7 @@ class ExploreRepositoryImplTest {
         }
 
     @Test
-    fun `Given valid series for genre ID, When getSeriesByGenreId is called, Then emits list of mapped series`() =
+    fun `getSeriesByGenreId should emit list of mapped series when get valid series by genre ID`() =
         runTest {
             // Given
             val genreId = 3
