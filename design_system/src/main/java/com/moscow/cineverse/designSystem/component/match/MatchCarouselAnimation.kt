@@ -25,7 +25,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.lerp
 import androidx.compose.ui.util.lerp
 import com.moscow.cineverse.designSystem.component.Movie
-import com.moscow.cineverse.designSystem.component.MoviePosterCard
 import com.moscow.cineverse.designSystem.component.ViewMode
 import com.moscow.cineverse.designSystem.theme.CineVerseTheme
 import kotlin.math.absoluteValue
@@ -45,18 +44,18 @@ fun MatchCarouselAnimation(
         contentPadding = PaddingValues(horizontal = 60.dp),
         modifier = Modifier,
     ) { page ->
-        MoviePosterCard(
-            movie = movies[page],
-            viewMode = ViewMode.GRID,
-            onMovieClick = { onMovieClick(it) },
-            showRating = false,
-            showGenres = false,
-            showTitle = false,
-            titleTextAlign = TextAlign.Center,
-            descriptionTextAlign = TextAlign.Center,
-            modifier = Modifier
-                .carouselLiftedCardTransition(page, pagerState)
-        )
+//        MoviePosterCard(
+//            movie = movies[page],
+//            viewMode = ViewMode.GRID,
+//            onMovieClick = { onMovieClick(it) },
+//            showRating = false,
+//            showGenres = false,
+//            showTitle = false,
+//            titleTextAlign = TextAlign.Center,
+//            descriptionTextAlign = TextAlign.Center,
+//            modifier = Modifier
+//                .carouselLiftedCardTransition(page, pagerState)
+//        )
     }
 }
 

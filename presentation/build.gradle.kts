@@ -7,7 +7,7 @@ plugins {
 
 android {
     namespace = "com.moscow.cinverse.presentation"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         minSdk = 24
@@ -32,31 +32,6 @@ android {
     kotlinOptions {
         jvmTarget = "11"
     }
-    subprojects {
-        afterEvaluate {
-            tasks.withType<Test> {
-                configure<JacocoTaskExtension> {
-                    isIncludeNoLocationClasses = true
-                }
-            }
-        }
-    }
-    tasks.register<JacocoCoverageVerification>("jacocoTestCoverageVerification") {
-        dependsOn("testDebugUnitTest")
-        violationRules {
-            rule {
-                limit {
-                    minimum = BigDecimal("0.0")
-                }
-            }
-        }
-
-    }
-}
-jacoco {
-    toolVersion = "0.8.13"
-    reportsDirectory = layout.buildDirectory.dir("customJacocoReportDir")
-
 }
 
 dependencies {
@@ -88,4 +63,7 @@ dependencies {
     implementation(libs.koin.android)
     implementation(libs.koin.compose)
     implementation(libs.kotlinx.datetime)
+
+    implementation(libs.androidx.paging.runtime)
+    implementation(libs.androidx.paging.compose)
 }

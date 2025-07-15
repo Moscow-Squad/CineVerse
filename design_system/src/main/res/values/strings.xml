@@ -32,4 +32,7 @@
     <string name="you_collections_section">You Collections Section</string>
     <string name="cast_member_image">Cast Member Image</string>
     <string name="star_icon">star icon</string>
+    <string name="suggest_item_icon">suggest item icon</string>
+    <string name="arrow_left_up">arrow left up</string>
+    <string name="search_icon">search icon</string>
 </resources>

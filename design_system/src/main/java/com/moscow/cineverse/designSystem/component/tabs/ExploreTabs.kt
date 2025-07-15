@@ -16,6 +16,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
@@ -26,44 +27,38 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun ExploreTabs(
-    pagerState: PagerState,
+    selectedTab: ExploreTabsPages,
+    onTabSelected: (ExploreTabsPages) -> Unit,
     modifier: Modifier = Modifier,
     showAllTabs: Boolean = true,
     selectedContentColor: Color = Theme.colors.brand.primary,
     unselectedContentColor: Color = Theme.colors.shade.tertiary,
 ) {
-    val scope = rememberCoroutineScope()
     val tabsToShow = remember(showAllTabs) {
         if (showAllTabs) ExploreTabsPages.entries
         else ExploreTabsPages.entries.take(2)
     }
-    Column(
-        modifier = modifier.fillMaxSize()
+
+    TabRow(
+        selectedTabIndex = tabsToShow.indexOf(selectedTab),
+        contentColor = selectedContentColor,
+        containerColor = Theme.colors.background.screen,
+        modifier = modifier,
+        indicator = { tabPositions ->
+            TabRowDefaults.SecondaryIndicator(
+                Modifier.tabIndicatorOffset(tabPositions[tabsToShow.indexOf(selectedTab)]),
+                color = selectedContentColor
+            )
+        }
     ) {
-        TabRow(
-            selectedTabIndex = pagerState.currentPage,
-            contentColor = selectedContentColor,
-            indicator = { tabPositions ->
-                TabRowDefaults.SecondaryIndicator(
-                    Modifier
-                        .tabIndicatorOffset(tabPositions[pagerState.currentPage]),
-                    color = selectedContentColor
-                )
-            },
-        ) {
-            tabsToShow.forEachIndexed { index, currentTab ->
-                Tab(
-                    selected = pagerState.currentPage == index,
-                    selectedContentColor = selectedContentColor,
-                    unselectedContentColor = unselectedContentColor,
-                    text = { Text(text = stringResource(currentTab.textId)) },
-                    onClick = {
-                        scope.launch {
-                            pagerState.animateScrollToPage(currentTab.ordinal)
-                        }
-                    }
-                )
-            }
+        tabsToShow.forEach { tab ->
+            Tab(
+                selected = selectedTab == tab,
+                selectedContentColor = selectedContentColor,
+                unselectedContentColor = unselectedContentColor,
+                text = { Text(text = stringResource(tab.textId)) },
+                onClick = { onTabSelected(tab) }
+            )
         }
     }
 }
@@ -79,13 +74,11 @@ fun ExploreTabs(
 @Composable
 private fun ExploreTabsPreview() {
     CineVerseTheme {
-        val pagerState = rememberPagerState(pageCount = { ExploreTabsPages.entries.size })
-        val showAllTabs by remember { mutableStateOf(true) }
-
+        var selectedTab by remember { mutableStateOf(ExploreTabsPages.MOVIES) }
         ExploreTabs(
-            pagerState = pagerState,
-            showAllTabs = showAllTabs
+            selectedTab = selectedTab,
+            onTabSelected = { selectedTab = it },
+            showAllTabs = true
         )
     }
 }
-

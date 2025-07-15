@@ -1,3 +1,5 @@
+import com.google.firebase.appdistribution.gradle.firebaseAppDistribution
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -31,6 +33,12 @@ android {
                 "proguard-rules.pro"
             )
         }
+        debug {
+            isDebuggable = true
+            isMinifyEnabled = false
+            enableAndroidTestCoverage = true
+            enableUnitTestCoverage = true
+        }
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
@@ -43,6 +51,65 @@ android {
         compose = true
     }
 }
+
+jacoco {
+
+    toolVersion = "0.8.12"
+}
+subprojects {
+    afterEvaluate {
+        tasks.withType<Test> {
+            configure<JacocoTaskExtension> {
+                isIncludeNoLocationClasses = true
+            }
+        }
+    }
+}
+tasks.register<JacocoReport>("testCoverage") {
+    dependsOn("testDebugUnitTest")
+
+    reports {
+        xml.required.set(true)
+        html.required.set(true)
+        xml.outputLocation.set(layout.buildDirectory.file("reports/jacoco/testCoverage/testCoverage.xml").get().asFile)
+        html.outputLocation.set(layout.buildDirectory.dir("reports/jacoco/html").get().asFile)
+    }
+
+    val fileFilter = listOf(
+        "**/R.class",
+        "**/R$*.class",
+        "**/BuildConfig.*",
+        "**/Manifest*.*",
+        "**/*Test*.*",
+        "android/**/*.*",
+        "**/*_MembersInjector.class",
+        "**/*Module*.*",
+        "**/*Dagger*.*",
+        "**/*Hilt*.*"
+    )
+    val debugTree = fileTree(mapOf(
+        "dir" to layout.buildDirectory.dir("intermediates/classes/debug").get().asFile,
+        "excludes" to fileFilter
+    ))
+    val mainSrc = "${project.projectDir}/src/main/java"
+
+    sourceDirectories.setFrom(files(mainSrc))
+    classDirectories.setFrom(files(debugTree))
+    executionData.setFrom(fileTree(mapOf(
+        "dir" to layout.buildDirectory.get().asFile,
+        "includes" to listOf("jacoco/testDebugUnitTest.exec")
+    )))
+}
+
+firebaseAppDistribution {
+    appId = System.getenv("FIREBASE_APP_ID")
+    serviceCredentialsFile = "service-account-key.json"
+    artifactType = "APK"
+
+    groups = "tester"
+
+}
+
 
 dependencies {
 
@@ -78,4 +145,8 @@ dependencies {
     /** Koin */
     implementation(platform(libs.koin.bom))
     implementation(libs.bundles.koin)
+
+    /** work manager */
+    implementation(libs.androidx.work.runtime.ktx)
+    implementation(libs.koin.androidx.workmanager)
 }

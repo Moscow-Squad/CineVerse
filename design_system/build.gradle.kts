@@ -7,10 +7,10 @@ plugins {
 
 android {
     namespace = "com.example.design_system"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
-        minSdk = 24
+        minSdk = 26
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -32,34 +32,15 @@ android {
     kotlinOptions {
         jvmTarget = "11"
     }
-    subprojects {
-        afterEvaluate {
-            tasks.withType<Test> {
-                configure<JacocoTaskExtension> {
-                    isIncludeNoLocationClasses = true
-                }
-            }
-        }
-    }
-    tasks.register<JacocoCoverageVerification>("jacocoTestCoverageVerification") {
-        dependsOn("testDebugUnitTest")
-        violationRules {
-            rule {
-                limit {
-                    minimum = BigDecimal("0.0")
-                }
-            }
-        }
 
-    }
 }
-jacoco {
-    toolVersion = "0.8.13"
-    reportsDirectory = layout.buildDirectory.dir("customJacocoReportDir")
-}
+
 
 
 dependencies {
+
+    implementation(project(":image_viewer"))
+
     implementation(libs.coil.compose)
     implementation(libs.coil.network.okhttp)
     implementation(libs.androidx.core.ktx)
