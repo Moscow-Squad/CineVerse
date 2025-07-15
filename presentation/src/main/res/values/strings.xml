@@ -8,4 +8,8 @@
     <string name="suggestions_title">Suggestions</string>
     <string name="no_content_available">No content available</string>
     <string name="retry">Retry</string>
+    <string name="give_it_stars">Give it Stars!</string>
+    <string name="let_the_world_know_how_you_felt">Let the world know how you felt.</string>
+    <string name="storyline">Storyline</string>
+    <string name="top_reviews">Top Reviews</string>
 </resources>

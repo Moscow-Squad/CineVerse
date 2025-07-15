@@ -5,7 +5,7 @@ import com.local.entity.MovieEntity
 import com.utils.IMAGES_URL
 import kotlinx.datetime.LocalDate
 
-fun List<MovieEntity>.toDomain(): List<Movie>  {
+fun List<MovieEntity>.toDomain(): List<Movie> {
     return map { movieEntity ->
         Movie(
             id = movieEntity.id.toInt(),
@@ -39,3 +39,4 @@ fun List<Movie>.toEntity(searchTerm: String): List<MovieEntity> {
         )
     }
 }
+

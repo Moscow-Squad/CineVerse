@@ -1,5 +1,6 @@
 package com.moscow.cineverse.designSystem.component.movieSeriesDetails
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -13,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -27,29 +29,46 @@ fun CastCard(
     modifier: Modifier = Modifier,
     castMember: CastMember
 ) {
+    val isPreview = LocalInspectionMode.current
     Row(
         modifier = modifier
             .width(200.dp)
             .clip(RoundedCornerShape(Theme.radius.large))
             .background(Theme.colors.background.card)
     ) {
-        SafeImageViewer(
-            model = castMember.imageUrl,
-            contentDescription = stringResource(R.string.cast_member_image),
-            placeholder = painterResource(R.drawable.due_tone_profile),
-            fallback = painterResource(R.drawable.due_tone_profile),
-            modifier = Modifier
-                .size(64.dp)
-                .clip(
-                    RoundedCornerShape(
-                        topEnd = Theme.radius.large,
-                        topStart = Theme.radius.large,
-                        bottomStart = Theme.radius.large
-                    )
-                ),
-            contentScale = ContentScale.Crop
-        )
-
+        if (isPreview) {
+            Image(
+                painter = painterResource(R.drawable.profile_image),
+                contentDescription = "Image",
+                modifier = Modifier
+                    .size(64.dp)
+                    .clip(
+                        RoundedCornerShape(
+                            topEnd = Theme.radius.large,
+                            topStart = Theme.radius.large,
+                            bottomStart = Theme.radius.large
+                        )
+                    ),
+                contentScale = ContentScale.Crop
+            )
+        } else {
+            SafeImageViewer(
+                model = castMember.imageUrl,
+                contentDescription = stringResource(R.string.cast_member_image),
+                placeholder = painterResource(R.drawable.due_tone_profile),
+                fallback = painterResource(R.drawable.due_tone_profile),
+                modifier = Modifier
+                    .size(64.dp)
+                    .clip(
+                        RoundedCornerShape(
+                            topEnd = Theme.radius.large,
+                            topStart = Theme.radius.large,
+                            bottomStart = Theme.radius.large
+                        )
+                    ),
+                contentScale = ContentScale.Crop
+            )
+        }
         Column(
             modifier = Modifier.padding(12.dp),
             verticalArrangement = Arrangement.spacedBy(4.dp)

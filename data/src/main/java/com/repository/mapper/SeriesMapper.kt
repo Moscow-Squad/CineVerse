@@ -2,15 +2,14 @@ package com.repository.mapper
 
 import com.android.domain.model.Series
 import com.local.entity.SeriesEntity
-import com.utils.IMAGES_URL
 
 fun List<SeriesEntity>.toDomain(): List<Series> {
-    return map{
+    return map {
         Series(
             id = it.id,
             name = it.name,
             rating = it.rating,
-            adult =false,
+            adult = false,
             backdropPath = "",
             firstAirDate = it.releaseDate,
             genreIds = it.genresId,
