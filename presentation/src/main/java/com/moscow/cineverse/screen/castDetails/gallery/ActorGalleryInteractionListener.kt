@@ -1,4 +1,4 @@
-package com.moscow.cineverse.screen.cast_details_gallery
+package com.moscow.cineverse.screen.castDetails.gallery
 
 
 interface ActorGalleryInteractionListener {
