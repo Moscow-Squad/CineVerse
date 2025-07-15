@@ -17,7 +17,8 @@ fun MoviePosterCard(
     titleTextAlign: TextAlign = TextAlign.Start,
     descriptionTextAlign: TextAlign = TextAlign.Start,
     showGenres: Boolean = false,
-    showTitle: Boolean = true
+    showTitle: Boolean = true,
+    getTitleOverride: ((MediaItemUi) -> String)? = null
 ) {
     MovieCard(
         modifier = modifier,
@@ -31,7 +32,7 @@ fun MoviePosterCard(
         showGenres = showGenres,
         showTitle = showTitle,
         getId = { it.id },
-        getTitle = { it.title },
+        getTitle = getTitleOverride ?: { it.title },
         getPosterUrl = { it.posterPath },
         getRating = { it.rating },
         getGenres = { it.genres },

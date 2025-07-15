@@ -5,10 +5,14 @@ import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.ScrollState
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -25,11 +29,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.design_system.R
 import com.example.image_viewer.component.SafeImageViewer
-import com.moscow.cineverse.designSystem.component.PillLabel
 import com.moscow.cineverse.designSystem.theme.Theme
 
 @Composable
@@ -109,66 +111,79 @@ fun MainDetails(
                 }
             }
 
-            AnimatedVisibility(visible = !isCollapsed) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 12.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                ) {
-                    socialMediaLinks.youtube?.let { youtubeUrl ->
-                        PillLabel(
-                            text = "YouTube",
-                            onClick = {
-                                onSocialMediaClick("youtube", youtubeUrl)
-                            },
-                            isActive = true,
-                            modifier = Modifier.weight(1f),
-                            prefixIcon = {
-                                Image(
-                                    painter = painterResource(id = R.drawable.colored_youtube),
-                                    contentDescription = stringResource(R.string.youtube_icon)
-                                )
-                            }
-                        )
-                    }
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 12.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
+                SocialMediaPill(
+                    name = "YouTube",
+                    iconRes = R.drawable.colored_youtube,
+                    url = socialMediaLinks.youtube,
+                    onClick = { onSocialMediaClick("youtube", it) },
+                    modifier = Modifier.weight(1f)
+                )
 
-                    socialMediaLinks.facebook?.let { facebookUrl ->
-                        PillLabel(
-                            text = "Facebook",
-                            onClick = {
-                                onSocialMediaClick("facebook", facebookUrl)
-                            },
-                            isActive = true,
-                            modifier = Modifier.weight(1f),
-                            prefixIcon = {
-                                Image(
-                                    painter = painterResource(id = R.drawable.colored_facebook),
-                                    contentDescription = stringResource(R.string.facebook_icon)
-                                )
-                            }
-                        )
-                    }
+                SocialMediaPill(
+                    name = "Facebook",
+                    iconRes = R.drawable.colored_facebook,
+                    url = socialMediaLinks.facebook,
+                    onClick = { onSocialMediaClick("facebook", it) },
+                    modifier = Modifier.weight(1f)
+                )
 
-                    socialMediaLinks.instagram?.let { instagramUrl ->
-                        PillLabel(
-                            text = "Instagram",
-                            onClick = {
-                                onSocialMediaClick("instagram", instagramUrl)
-                            },
-                            isActive = true,
-                            modifier = Modifier.weight(1f),
-                            prefixIcon = {
-                                Image(
-                                    painter = painterResource(id = R.drawable.colored_instagram),
-                                    contentDescription = stringResource(R.string.instagram_icon)
-                                )
-                            }
-                        )
-                    }
-                }
+                SocialMediaPill(
+                    name = "Instagram",
+                    iconRes = R.drawable.colored_instagram,
+                    url = socialMediaLinks.instagram,
+                    onClick = { onSocialMediaClick("instagram", it) },
+                    modifier = Modifier.weight(1f)
+                )
             }
+        }
+    }
+}
+
+@Composable
+private fun SocialMediaPill(
+    name: String,
+    iconRes: Int,
+    url: String?,
+    onClick: (String) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val (backgroundColor, textColor) = when (name.lowercase()) {
+        "youtube" -> Theme.colors.shade.quinary to Theme.colors.shade.primary
+        "facebook" -> Theme.colors.shade.quinary to Theme.colors.shade.primary
+        "instagram" -> Theme.colors.shade.quinary to Theme.colors.shade.primary
+        else -> Theme.colors.shade.quinary to Theme.colors.shade.primary
+    }
+
+    Box(
+        modifier = modifier
+            .height(32.dp)
+            .clip(RoundedCornerShape(Theme.radius.full))
+            .background(backgroundColor)
+            .clickable { url?.let { onClick(it) } }
+            .padding(horizontal = 10.dp, vertical = 8.dp),
+        contentAlignment = Alignment.Center
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(6.dp)
+        ) {
+            Image(
+                painter = painterResource(id = iconRes),
+                contentDescription = "$name icon"
+            )
+
+            Text(
+                text = name,
+                color = textColor,
+                style = Theme.textStyle.label.medium.medium
+            )
         }
     }
 }
