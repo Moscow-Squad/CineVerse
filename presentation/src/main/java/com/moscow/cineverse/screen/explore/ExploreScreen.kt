@@ -43,7 +43,6 @@ import com.moscow.cineverse.designSystem.component.search.SearchBar
 import com.moscow.cineverse.designSystem.component.tabs.ExploreTabs
 import com.moscow.cineverse.designSystem.component.tabs.ExploreTabsPages
 import com.moscow.cineverse.designSystem.theme.Theme
-import com.moscow.cineverse.presentation.component.MoviePosterCard
 import com.moscow.cineverse.screen.explore.ExploreScreenState.GenreUi
 import com.moscow.cineverse.screen.explore.component.ActorPosterCard
 import com.moscow.cineverse.screen.explore.component.SearchSuggestion
@@ -105,7 +104,6 @@ private fun ExploreScreenContent(
                     showAllTabs = uiState.searchKeyWord.isNotEmpty(),
                     modifier = Modifier.fillMaxWidth()
                 )
-                Spacer(modifier = Modifier.height(8.dp))
                 Box(modifier = Modifier.fillMaxSize()) {
                     when {
                         uiState.isLoading -> {
@@ -194,12 +192,12 @@ private fun ExploreScreenContent(
 
                     if (uiState.shouldShowGenres) {
                         LazyRow(
-                            horizontalArrangement = Arrangement.spacedBy(8.dp),
+                            horizontalArrangement = Arrangement.spacedBy(12.dp),
                             contentPadding = PaddingValues(horizontal = 16.dp),
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .height(56.dp)
                                 .align(Alignment.TopCenter)
+                                .padding(top = 12.dp)
                         ) {
                             items(listOf(GenreUi(id = 0, name = "All")) + uiState.genres) { genre ->
                                 PillLabel(
