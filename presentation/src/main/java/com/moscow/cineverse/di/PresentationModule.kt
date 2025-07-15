@@ -3,8 +3,11 @@ package com.moscow.cineverse.di
 import com.android.domain.usecase.GenreUseCase
 import com.android.domain.usecase.GetLocalSuggestions
 import com.android.domain.usecase.GetMovieByGenreIdUseCase
+import com.android.domain.usecase.GetMovieDetailUseCase
 import com.android.domain.usecase.GetMoviesUseCase
+import com.android.domain.usecase.GetReviewsPageUseCase
 import com.android.domain.usecase.GetSeriesByGenreIdUseCase
+import com.android.domain.usecase.GetSeriesDetailUseCase
 import com.android.domain.usecase.GetSeriesUseCase
 import com.android.domain.usecase.SearchUseCase
 import com.android.domain.usecase.SuggestionUseCase
@@ -19,6 +22,9 @@ val useCases = module {
     single { GetSeriesUseCase(get()) }
     single { GetMovieByGenreIdUseCase(get()) }
     single { GetSeriesByGenreIdUseCase(get()) }
+    single { GetMovieDetailUseCase(get()) }
+    single { GetSeriesDetailUseCase(get()) }
+    single { GetReviewsPageUseCase(get()) }
 }
 
 val presentationModule = viewModels + useCases
