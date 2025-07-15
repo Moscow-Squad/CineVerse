@@ -1,6 +1,5 @@
-package com.moscow.cineverse.screen.cast_details_gallery
+package com.moscow.cineverse.screen.castDetails.gallery
 
-import androidx.lifecycle.SavedStateHandle
 import com.android.domain.usecase.actordetails.GetActorGallery
 import com.moscow.cineverse.base.BaseViewModel
 

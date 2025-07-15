@@ -1,4 +1,4 @@
-package com.moscow.cineverse.screen.cast_details_show_all
+package com.moscow.cineverse.screen.castDetails.best0fmovies
 
 import com.moscow.cineverse.designSystem.component.ViewMode
 

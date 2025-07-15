@@ -1,7 +1,8 @@
-package com.moscow.cineverse.screen.cast_details_show_all
+package com.moscow.cineverse.screen.castDetails.best0fmovies
 
 import androidx.lifecycle.SavedStateHandle
 import com.android.domain.model.Movie
+import com.android.domain.usecase.GenreUseCase
 import com.android.domain.usecase.actordetails.GetActorBestOfMovies
 import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.cineverse.designSystem.component.ViewMode
@@ -11,7 +12,7 @@ import kotlinx.coroutines.flow.flatMapConcat
 class ShowAllActorMoviesInteractionViewModel (
    private val getActorBestOfMovies: GetActorBestOfMovies,
     savedStateHandle: SavedStateHandle,
-    private val genreUseCase: com.android.domain.usecase.GenreUseCase
+    private val genreUseCase: GenreUseCase
 ): BaseViewModel<ShowAllActorMoviesState, ShowAllActorMoviesEvents>(ShowAllActorMoviesState()),
 ShowAllActorMoviesInteractionListener {
     //todo enhance when make navigation

@@ -2,8 +2,8 @@ package com.moscow.cineverse.di
 
 import com.moscow.cineverse.screen.castDetails.CastDetailsViewModel
 import com.moscow.cineverse.screen.explore.ExploreViewModel
-import com.moscow.cineverse.screen.cast_details_show_all.ShowAllActorMoviesInteractionViewModel
-import com.moscow.cineverse.screen.cast_details_gallery.ActorGalleryViewModel
+import com.moscow.cineverse.screen.castDetails.best0fmovies.ShowAllActorMoviesInteractionViewModel
+import com.moscow.cineverse.screen.castDetails.gallery.ActorGalleryViewModel
 import org.koin.core.module.dsl.viewModel
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
