@@ -6,13 +6,13 @@ import androidx.work.WorkManager
 import androidx.work.workDataOf
 import com.android.domain.exception.CineVerseException
 import com.android.domain.model.Actor
-import com.android.domain.repository.SearchRepository
 import com.android.domain.model.Movie
 import com.android.domain.model.MultiSearch
 import com.android.domain.model.Series
+import com.android.domain.repository.SearchRepository
+import com.local.DeleteQueryWorker
 import com.mapper.toDomain
 import com.mapper.toModel
-import com.remote.DeleteQueryWorker
 import com.remote.source.SearchRemoteDataSource
 import com.repository.mapper.toDomain
 import com.repository.mapper.toEntity
@@ -39,7 +39,7 @@ class SearchRepositoryImpl(
         searchLocalDateSource.insertSearchHistory(searchTerm)
         searchLocalDateSource.insertMovie(movies.toEntity(searchTerm), searchTerm)
         val deleteWork = OneTimeWorkRequestBuilder<DeleteQueryWorker>()
-            .setInitialDelay(1, TimeUnit.MINUTES)
+            .setInitialDelay(1, TimeUnit.HOURS)
             .setInputData(workDataOf("query" to searchTerm))
             .addTag("delete_search_query_history")
             .build()
@@ -51,7 +51,7 @@ class SearchRepositoryImpl(
         searchLocalDateSource.insertSearchHistory(searchTerm)
         searchLocalDateSource.insertActors(actors.toEntity(searchTerm), searchTerm)
         val deleteWork = OneTimeWorkRequestBuilder<DeleteQueryWorker>()
-            .setInitialDelay(1, TimeUnit.MINUTES)
+            .setInitialDelay(1, TimeUnit.HOURS)
             .setInputData(workDataOf("query" to searchTerm))
             .addTag("delete_search_query_history")
             .build()
@@ -63,7 +63,7 @@ class SearchRepositoryImpl(
         searchLocalDateSource.insertSearchHistory(searchTerm)
         searchLocalDateSource.insertSeries(series.toEntity(searchTerm), searchTerm)
         val deleteWork = OneTimeWorkRequestBuilder<DeleteQueryWorker>()
-            .setInitialDelay(1, TimeUnit.MINUTES)
+            .setInitialDelay(1, TimeUnit.HOURS)
             .setInputData(workDataOf("query" to searchTerm))
             .addTag("delete_search_query_history")
             .build()
@@ -71,7 +71,7 @@ class SearchRepositoryImpl(
         workManager.enqueue(deleteWork)
     }
 
-    override suspend fun getLocalSuggestions(): List<String> {
+    override suspend fun getLocalSuggestions(): Flow<List<String>> {
         return searchLocalDateSource.getAllSearchHistory()
     }
 
@@ -79,9 +79,9 @@ class SearchRepositoryImpl(
         searchLocalDateSource.deleteSearchHistory(searchTerm)
     }
 
-    override suspend fun getRemoteSuggestions(keyWord: String,page:Int): Flow<List<String>> =
+    override suspend fun getRemoteSuggestions(keyWord: String, page: Int): Flow<List<String>> =
         flow {
-            val remoteSuggestions = searchRemoteDataSource.getSuggestions(keyWord,page)
+            val remoteSuggestions = searchRemoteDataSource.getSuggestions(keyWord, page)
             emit(remoteSuggestions.map { it.toModel() })
         }.flowOn(ioDispatcher)
 
@@ -98,24 +98,24 @@ class SearchRepositoryImpl(
         }.flowOn(ioDispatcher)
 
 
-    override suspend fun searchMovie(query: String,isHistory: Boolean): Flow<List<Movie>> =
+    override suspend fun searchMovie(query: String, isHistory: Boolean): Flow<List<Movie>> =
         flow {
-            if (isHistory){
+            if (isHistory) {
                 emit(getLocalMoviesBySearchTerm(query))
             }
             val result = searchRemoteDataSource.searchMovie(query)
             if (result.isNotEmpty()) {
                 emit(result.map { it.toDomain() })
-                insertMovie(result.map {movie -> movie.toDomain() }, query)
+                insertMovie(result.map { movie -> movie.toDomain() }, query)
             } else {
                 throw CineVerseException.NotFoundCineVerseException
             }
         }.flowOn(ioDispatcher)
 
 
-    override suspend fun searchSeries(query: String,isHistory: Boolean): Flow<List<Series>> =
+    override suspend fun searchSeries(query: String, isHistory: Boolean): Flow<List<Series>> =
         flow {
-            if (isHistory){
+            if (isHistory) {
                 emit(searchLocalDateSource.getSeriesBySearchTerm(query).toDomain())
             }
             val result = searchRemoteDataSource.searchSeries(query)
@@ -127,9 +127,9 @@ class SearchRepositoryImpl(
             }
         }.flowOn(ioDispatcher)
 
-    override suspend fun searchActor(query: String,isHistory: Boolean): Flow<List<Actor>> =
+    override suspend fun searchActor(query: String, isHistory: Boolean): Flow<List<Actor>> =
         flow {
-            if (isHistory){
+            if (isHistory) {
                 emit(searchLocalDateSource.getActorsBySearchTerm(query).toDomain())
             }
             val result = searchRemoteDataSource.searchPearson(query)

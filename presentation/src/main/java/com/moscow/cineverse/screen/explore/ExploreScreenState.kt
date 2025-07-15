@@ -8,6 +8,7 @@ data class ExploreScreenState(
     val searchKeyWord: String = "",
 
     val searchResult: Map<String, List<MediaItemUi>> = mutableMapOf(),
+
     val actorsSearchResult: List<ActorUi> = emptyList(),
     val remoteSuggestions:List<String> = emptyList(),
 
@@ -16,10 +17,11 @@ data class ExploreScreenState(
     val showSuggestions : Boolean = false,
     val localSuggestions: List<SuggestItemUiState> = listOf(),
 
+    val genres: List<GenreUi> = emptyList(),
+
     val moviesGenres: List<GenreUi> = emptyList(),
     val seriesGenres: List<GenreUi> = emptyList(),
 
-    val genres: List<GenreUi> = emptyList(),
     val movies: List<MediaItemUi> = emptyList(),
     val series: List<MediaItemUi> = emptyList(),
 

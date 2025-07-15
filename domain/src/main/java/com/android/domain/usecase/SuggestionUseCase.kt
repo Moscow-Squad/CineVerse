@@ -10,7 +10,7 @@ class SuggestionUseCase(
 ) {
     fun getSuggestions(keyWord: String,page:Int): Flow<List<String>> = flow {
         val remoteSuggestions = searchRepository
-            .getRemoteSuggestions(keyWord,page)
+            .getRemoteSuggestions(keyWord, page)
             .first()
         emit(remoteSuggestions)
     }
