@@ -2,7 +2,6 @@ package com.remote.source
 
 import com.remote.dto.GenreDto
 import com.remote.dto.GenreResponse
-import com.remote.dto.MovieDetailsDto
 import com.remote.dto.MovieDto
 import com.remote.dto.SeriesDto
 import com.utils.ApiResponse
@@ -53,20 +52,6 @@ class ExploreRemoteDataSource(
         ) {
             parameter(PAGE, 1)
         }.results
-
-
-    suspend fun getMovieDetails(id: Int): MovieDetailsDto =
-        client.performCall<Unit, MovieDetailsDto>(
-            method = HttpMethod.Get,
-            path = MOVIE + id
-        )
-
-    suspend fun getSeriesDetails(id: Int): SeriesDto =
-        client.performCall<Unit, SeriesDto>(
-            method = HttpMethod.Get,
-            path = SERIES + id
-        )
-
 
     suspend fun getSeriesByGenreId(genreId: Int): List<SeriesDto> =
         client.performCall<Unit, ApiResponse<SeriesDto>>(

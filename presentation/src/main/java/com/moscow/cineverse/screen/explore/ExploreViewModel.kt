@@ -17,7 +17,6 @@ import com.android.domain.usecase.SuggestionUseCase
 import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.cineverse.designSystem.component.ViewMode
 import com.moscow.cineverse.designSystem.component.tabs.ExploreTabsPages
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
@@ -176,8 +175,8 @@ class ExploreViewModel(
     }
 
     private fun getHistoryData() {
-        launchWithResult(
-            action = { getLocalSuggestions() },
+        launchWithFlow(
+            flowAction = { getLocalSuggestions.localSuggestions() },
             onSuccess = ::onGetHistoryDataSuccess,
             onError = ::onGetHistoryDataFailed,
             onStart = ::onLoading,
