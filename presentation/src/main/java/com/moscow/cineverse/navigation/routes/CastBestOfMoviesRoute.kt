@@ -2,6 +2,7 @@ package com.moscow.cineverse.navigation.routes
 
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import kotlinx.serialization.Serializable
@@ -9,7 +10,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class CastBestOfMovieRoute(val castId: Int)
 
-fun NavGraphBuilder.CastBestOfMovieRoute(navController: NavController) {
+fun NavGraphBuilder.CastBestOfMovieRoute(navController: NavHostController) {
     composable<CastBestOfMovieRoute>{
         val args = it.toRoute<CastBestOfMovieRoute>()
     }
