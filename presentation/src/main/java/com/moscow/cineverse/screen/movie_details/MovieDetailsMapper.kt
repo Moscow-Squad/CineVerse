@@ -1,16 +1,11 @@
 package com.moscow.cineverse.screen.movie_details
 
-import androidx.compose.ui.graphics.vector.RenderVectorGroup
 import com.android.domain.model.Actor
 import com.android.domain.model.Genre
-import com.android.domain.model.Movie
 import com.android.domain.model.MovieDetail
 import com.android.domain.model.Review
-import com.android.domain.model.Series
-import com.moscow.cineverse.designSystem.component.tabs.ExploreTabsPages
 import com.moscow.cineverse.screen.explore.ExploreScreenState.ActorUi
 import com.moscow.cineverse.screen.explore.ExploreScreenState.GenreUi
-import com.moscow.cineverse.screen.explore.ExploreScreenState.MediaItemUi
 import com.moscow.cineverse.screen.movie_details.MovieScreenState.ReviewUi
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.toLocalDate
@@ -19,7 +14,7 @@ const val YYYY_MMM_DD = "yyyy, MMM dd"
 
 fun MovieDetail.toUi(): MovieScreenState.MovieDetailsUi =
     MovieScreenState.MovieDetailsUi(
-        id = id.toInt(),
+        id = id,
         title = title,
         posterPath = posterPath?:"",
         rating = voteAverage,
@@ -44,9 +39,9 @@ fun Review.toUi(): ReviewUi =
 
 fun Actor.toUi(): ActorUi =
     ActorUi(
+        id = id,
         title = name,
-        icon = profileImg,
-        id = id
+        profilePath = profileImg
     )
 
 fun Genre.toUi() =

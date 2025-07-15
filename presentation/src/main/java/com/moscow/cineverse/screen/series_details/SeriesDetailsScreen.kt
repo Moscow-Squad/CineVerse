@@ -218,7 +218,9 @@ fun SeriesDetailsScreen(
                         ),
                         onClickShowMore = { },
                         onClickPoster = { },
-                        modifier = Modifier.padding(top = 16.dp)
+                        modifier = Modifier.padding(top = 16.dp),
+                        movieCardContent = { movie, modifier, onClick ->
+                        }
                     )
                 }
 
@@ -249,9 +251,9 @@ fun SeriesDetailsScreen(
                     items(reviews) { review ->
                         MovieReviewCard(
                             review.author,
-                            "@${review.username ?: review.author}",
+                            "@${review.username}",
                             review.content,
-                            review.rating?.toInt() ?: 0,
+                            review.rating.toInt(),
                             formatReviewDate(review.createdAt),
                             painterResource(R.drawable.outline_user),
                             modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 12.dp)

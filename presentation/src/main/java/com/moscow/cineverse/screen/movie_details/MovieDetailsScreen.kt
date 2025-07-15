@@ -7,6 +7,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -32,7 +33,6 @@ import com.moscow.cineverse.designSystem.component.movieSeriesDetails.StaffInfoS
 import com.moscow.cineverse.designSystem.component.movieSeriesDetails.StarCastSection
 import com.moscow.cineverse.designSystem.theme.Theme
 import org.koin.androidx.compose.koinViewModel
-import androidx.compose.runtime.getValue
 
 @Composable
 fun MovieDetailsScreen(
@@ -183,7 +183,9 @@ fun MovieDetailsContent(
                         ),
                         onClickShowMore = { },
                         onClickPoster = { },
-                        modifier = Modifier.padding(top = 16.dp)
+                        modifier = Modifier.padding(top = 16.dp),
+                        movieCardContent = { movie, modifier, onClick ->
+                        }
                     )
                 }
                 item {

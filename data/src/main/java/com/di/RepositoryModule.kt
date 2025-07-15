@@ -1,14 +1,11 @@
 package com.di
 
-import com.android.domain.repository.DetailsRepository
 import com.android.domain.repository.ActorDetailsRepository
-import com.android.domain.repository.SearchRepository
-import org.koin.dsl.module
-import org.koin.core.qualifier.named
+import com.android.domain.repository.DetailsRepository
 import com.android.domain.repository.ExploreRepository
 import com.android.domain.repository.SearchRepository
-import com.repository.details.DetailsRepositoryImpl
 import com.repository.actordetails.ActorDetailsRepositoryImpl
+import com.repository.details.DetailsRepositoryImpl
 import com.repository.explore.ExploreRepositoryImpl
 import com.repository.explore.search.SearchRepositoryImpl
 import kotlinx.coroutines.Dispatchers
