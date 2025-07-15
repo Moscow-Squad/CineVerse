@@ -2,7 +2,9 @@ package com.remote.source
 
 import com.remote.dto.MovieDetailDto
 import com.remote.dto.SeriesDetailDto
+import com.remote.dto.review.movie_review.ReviewDto
 import com.utils.MOVIE
+import com.utils.REVIEWS
 import com.utils.SERIES
 import com.utils.performCall
 import io.ktor.client.HttpClient
@@ -21,5 +23,16 @@ class DetailsRemoteDataSource(
         client.performCall<Unit, SeriesDetailDto>(
             method = HttpMethod.Get,
             path = SERIES + id
+        )
+
+    suspend fun getReviews(id: Int, page: Int, isMovie: Boolean): ReviewDto =
+        client.performCall<Unit, ReviewDto>(
+            method = HttpMethod.Get,
+            path = (if (isMovie) MOVIE else SERIES) + id + REVIEWS,
+            requestBuilder = {
+                url {
+                    parameters.append("page", page.toString())
+                }
+            }
         )
 }
