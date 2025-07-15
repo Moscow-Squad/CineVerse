@@ -17,6 +17,8 @@ import com.remote.source.SearchRemoteDataSource
 import com.repository.mapper.toDomain
 import com.repository.mapper.toEntity
 import com.utils.BaseRepository
+import com.utils.DELETE_SEARCH_QUERY_HISTORY
+import com.utils.QUERY
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -40,8 +42,8 @@ class SearchRepositoryImpl(
         searchLocalDateSource.insertMovie(movies.toEntity(searchTerm), searchTerm)
         val deleteWork = OneTimeWorkRequestBuilder<DeleteQueryWorker>()
             .setInitialDelay(1, TimeUnit.HOURS)
-            .setInputData(workDataOf("query" to searchTerm))
-            .addTag("delete_search_query_history")
+            .setInputData(workDataOf(QUERY to searchTerm))
+            .addTag(DELETE_SEARCH_QUERY_HISTORY)
             .build()
 
         workManager.enqueue(deleteWork)
@@ -52,8 +54,8 @@ class SearchRepositoryImpl(
         searchLocalDateSource.insertActors(actors.toEntity(searchTerm), searchTerm)
         val deleteWork = OneTimeWorkRequestBuilder<DeleteQueryWorker>()
             .setInitialDelay(1, TimeUnit.HOURS)
-            .setInputData(workDataOf("query" to searchTerm))
-            .addTag("delete_search_query_history")
+            .setInputData(workDataOf(QUERY to searchTerm))
+            .addTag(DELETE_SEARCH_QUERY_HISTORY)
             .build()
 
         workManager.enqueue(deleteWork)
@@ -64,8 +66,8 @@ class SearchRepositoryImpl(
         searchLocalDateSource.insertSeries(series.toEntity(searchTerm), searchTerm)
         val deleteWork = OneTimeWorkRequestBuilder<DeleteQueryWorker>()
             .setInitialDelay(1, TimeUnit.HOURS)
-            .setInputData(workDataOf("query" to searchTerm))
-            .addTag("delete_search_query_history")
+            .setInputData(workDataOf(QUERY to searchTerm))
+            .addTag(DELETE_SEARCH_QUERY_HISTORY)
             .build()
 
         workManager.enqueue(deleteWork)
