@@ -29,6 +29,7 @@ fun NewCollection(
     modifier: Modifier = Modifier
 ) {
     Column(
+        modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(24.dp)
     ) {
         AppTextField(
