@@ -24,6 +24,7 @@ import com.moscow.cineverse.designSystem.component.cast_details.CastGallery
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cinverse.presentation.R
 import org.koin.androidx.compose.koinViewModel
+import org.koin.core.parameter.parametersOf
 
 @Composable
 fun ActorGalleryScreen(
@@ -31,13 +32,8 @@ fun ActorGalleryScreen(
     title: String,
     modifier: Modifier = Modifier,
 ) {
-    val viewModel: ActorGalleryViewModel = koinViewModel()
+    val viewModel: ActorGalleryViewModel = koinViewModel(parameters = { parametersOf(actorId, title) })
     val uiState by viewModel.uiState.collectAsState()
-
-    LaunchedEffect(true) {
-        viewModel.getActor(actorId, title)
-        viewModel.getActorPhotos()
-    }
 
     ActorGalleryContent(
         uiState = uiState,

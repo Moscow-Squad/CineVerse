@@ -6,12 +6,14 @@ import com.moscow.cineverse.base.BaseViewModel
 
 class ActorGalleryViewModel(
     private val getActorGallery: GetActorGallery,
-    savedStateHandle: SavedStateHandle,
+    actorId: Int,
+    actorName: String,
 ) : BaseViewModel<ShowAllActorMoviesState, ActorGalleryEvents>(ShowAllActorMoviesState()),
     ActorGalleryInteractionListener {
 
     init {
-
+        getActor(actorId, actorName)
+        getActorPhotos()
     }
 
     fun getActor(actorId: Int, actorName: String){
