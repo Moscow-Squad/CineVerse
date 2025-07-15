@@ -39,7 +39,7 @@ class ActorDetailsRepositoryImpl(
                 val bestMovies = actorDetailsRemoteDataSource.getBestOfMovies(actorId)
                 val bestAsCast = bestMovies.cast.mapNotNull { runCatching { it.toDomain() }.getOrNull() }
                 val bestAsCrew = bestMovies.crew .mapNotNull { runCatching { it.toDomain() }.getOrNull() }
-                emit((bestAsCast + bestAsCrew).sortedBy { it.rating })
+                emit((bestAsCast + bestAsCrew).sortedByDescending { it.rating })
             }.flowOn(ioDispatcher)
         }
 }
