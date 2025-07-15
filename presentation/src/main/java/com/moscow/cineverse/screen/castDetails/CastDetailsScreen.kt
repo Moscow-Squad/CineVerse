@@ -35,6 +35,9 @@ import com.moscow.cineverse.designSystem.component.ViewMode
 import com.moscow.cineverse.designSystem.component.cast_details.MainDetails
 import com.moscow.cineverse.designSystem.component.cast_details.GallerySection
 import com.moscow.cineverse.designSystem.theme.Theme
+import com.moscow.cineverse.navigation.routes.CastBestOfMovieRoute
+import com.moscow.cineverse.navigation.routes.CastDetailsRoute
+import com.moscow.cineverse.navigation.routes.CastGalleryRoute
 import com.moscow.cineverse.screen.component.movie_poster_card.MoviePosterCard
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
@@ -43,10 +46,10 @@ import com.moscow.cinverse.presentation.R as PresentationR
 @Composable
 fun CastDetailsScreen(
     navController: NavHostController,
-    actor: Int,
+    actorId: Int,
     onNavigateBack: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: CastDetailsViewModel = koinViewModel { parametersOf(actor, actor) }
+    viewModel: CastDetailsViewModel = koinViewModel (parameters = { parametersOf(actorId) })
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val context = LocalContext.current
@@ -71,11 +74,17 @@ fun CastDetailsScreen(
                 }
 
                 is CastDetailsEvent.NavigateToFullMovieList -> {
+                    navController.navigate(
+                        CastBestOfMovieRoute(event.actorId, event.actorName)
+                    )
                     // Handle navigation to full movie list
                     // onNavigateToFullMovieList(event.actorId)
                 }
 
                 is CastDetailsEvent.NavigateToFullGallery -> {
+                    navController.navigate(
+                        CastGalleryRoute(event.actorId, event.actorName)
+                    )
                     // Handle navigation to full gallery
                     // onNavigateToFullGallery(event.actorId)
                 }

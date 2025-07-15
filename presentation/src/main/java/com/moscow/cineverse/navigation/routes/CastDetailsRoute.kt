@@ -15,7 +15,7 @@ fun NavGraphBuilder.CastDetailsRoute(navController: NavHostController) {
         val args = it.toRoute<CastDetailsRoute>()
         CastDetailsScreen(
             navController = navController,
-            actor = args.castId,
+            actorId = args.castId,
             onNavigateBack = {},
         )
     }
