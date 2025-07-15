@@ -36,6 +36,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.moscow.cineverse.designSystem.component.PillLabel
 import com.moscow.cineverse.designSystem.component.ViewMode
 import com.moscow.cineverse.designSystem.component.ViewModeToggle
@@ -53,6 +55,7 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun ExploreScreen(
+    navController: NavController = rememberNavController(),
     modifier: Modifier = Modifier,
     viewModel: ExploreViewModel = koinViewModel(),
 ) {

@@ -63,4 +63,6 @@ dependencies {
     implementation(libs.koin.android)
     implementation(libs.koin.compose)
     implementation(libs.kotlinx.datetime)
+    //navigation
+    implementation(libs.androidx.navigation.compose)
 }
