@@ -12,7 +12,7 @@ import com.moscow.cineverse.navigation.routes.SeriesDetailsRoute
 
 @Composable
 fun CineVerseNavGraph(navController: NavHostController) {
-    NavHost(navController = navController, startDestination = CastDetailsRoute(castId = 679)) {
+    NavHost(navController = navController, startDestination = ExploreRoute) {
         ExploreRoute(navController)
         CastDetailsRoute(navController)
         CastGalleryRoute(navController)
