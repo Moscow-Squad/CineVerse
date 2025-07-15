@@ -2,7 +2,7 @@ package com.remote.source
 
 import com.remote.dto.MovieDetailDto
 import com.remote.dto.SeriesDetailDto
-import com.remote.dto.review.movie_review.ReviewDto
+import com.remote.dto.review.ReviewDto
 import com.utils.MOVIE
 import com.utils.REVIEWS
 import com.utils.SERIES
