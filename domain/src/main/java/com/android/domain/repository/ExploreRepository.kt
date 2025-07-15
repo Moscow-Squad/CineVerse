@@ -5,7 +5,6 @@ import com.android.domain.model.Movie
 import com.android.domain.model.Series
 import kotlinx.coroutines.flow.Flow
 
-
 interface ExploreRepository {
     suspend fun getSeriesGenres(): Flow<List<Genre>>
     suspend fun getMoviesGenres(): Flow<List<Genre>>
@@ -13,5 +12,4 @@ interface ExploreRepository {
     suspend fun getSeries(): Flow<List<Series>>
     suspend fun getMoviesByGenreId(genreId: Int): Flow<List<Movie>>
     suspend fun getSeriesByGenreId(genreId: Int): Flow<List<Series>>
-
 }

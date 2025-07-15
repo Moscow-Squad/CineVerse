@@ -149,4 +149,6 @@ dependencies {
     /** work manager */
     implementation(libs.androidx.work.runtime.ktx)
     implementation(libs.koin.androidx.workmanager)
+    //navigation
+    implementation(libs.androidx.navigation.compose)
 }

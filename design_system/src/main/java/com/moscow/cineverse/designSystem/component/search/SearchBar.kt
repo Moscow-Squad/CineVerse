@@ -39,6 +39,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.design_system.R
 import com.moscow.cineverse.designSystem.theme.Theme
+import com.moscow.cineverse.designSystem.utils.noRibbleClick
 import kotlinx.coroutines.delay
 
 @Composable
@@ -78,11 +79,11 @@ fun SearchBar(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier.fillMaxWidth()
     ) {
-        AnimatedVisibility (
+        AnimatedVisibility(
             visible = isFocused || value.isNotEmpty(),
             enter = slideInHorizontally(initialOffsetX = { -it }) + fadeIn(animationSpec = tween(300)),
             exit = slideOutHorizontally(targetOffsetX = { -it }) + fadeOut(animationSpec = tween(300))
-            ) {
+        ) {
             Icon(
                 painter = painterResource(Theme.icons.outline.arrowLeft),
                 contentDescription = stringResource(R.string.search_icon),
@@ -90,13 +91,15 @@ fun SearchBar(
                 modifier = Modifier
                     .padding(10.dp)
                     .size(20.dp)
-                    .clickable(onClick = {
-                        focusManager.clearFocus(force = true)
-                        focusRequester.freeFocus()
-                        isFocused = false
-                        blockRefocus = true
-                        onCancelButtonClicked()
-                    })
+                    .noRibbleClick(
+                        onClick = {
+                            focusManager.clearFocus(force = true)
+                            focusRequester.freeFocus()
+                            isFocused = false
+                            blockRefocus = true
+                            onCancelButtonClicked()
+                        },
+                    )
             )
         }
         OutlinedTextField(

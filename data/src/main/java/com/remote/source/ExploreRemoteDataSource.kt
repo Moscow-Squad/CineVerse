@@ -28,11 +28,13 @@ class ExploreRemoteDataSource(
             path = GENRE_MOVIE_LIST
         ).genres
 
-    suspend fun getSeriesGenres() =
+
+    suspend fun getSeriesGenres(): List<GenreDto> =
         client.performCall<Unit, GenreResponse>(
             method = HttpMethod.Companion.Get,
             path = GENRE_SERIES_LIST
         ).genres
+
 
     suspend fun getMovies(): List<MovieDto> =
         client.performCall<Unit, ApiResponse<MovieDto>>(
@@ -60,6 +62,7 @@ class ExploreRemoteDataSource(
             }
         ).results
 
+
     suspend fun getMoviesByGenreId(genreId: Int): List<MovieDto> =
         client.performCall<Unit, ApiResponse<MovieDto>>(
             method = HttpMethod.Companion.Get,
@@ -68,4 +71,5 @@ class ExploreRemoteDataSource(
                 parameter(WITH_GENRES, genreId)
             }
         ).results
+
 }

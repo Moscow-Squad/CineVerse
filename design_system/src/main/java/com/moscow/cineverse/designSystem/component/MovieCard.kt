@@ -129,6 +129,7 @@ private fun <T> GridMovieCard(
         Card(
             modifier = modifier
                 .height(208.dp)
+                .clip(RoundedCornerShape(Theme.radius.large))
                 .clickable { onMovieClick(getId(movieData)) },
             shape = RoundedCornerShape(Theme.radius.large)
         ) {
@@ -211,6 +212,7 @@ private fun <T> ListMovieCard(
         modifier = modifier
             .fillMaxWidth()
             .height(88.dp)
+            .clip(RoundedCornerShape(Theme.radius.large))
             .clickable { onMovieClick(getId(movieData)) },
         elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
         shape = RoundedCornerShape(Theme.radius.large),
