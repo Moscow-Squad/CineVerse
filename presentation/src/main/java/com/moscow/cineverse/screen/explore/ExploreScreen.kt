@@ -1,6 +1,5 @@
 package com.moscow.cineverse.screen.explore
 
-import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
@@ -29,13 +28,14 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.moscow.cineverse.designSystem.component.PillLabel
 import com.moscow.cineverse.designSystem.component.ViewMode
 import com.moscow.cineverse.designSystem.component.ViewModeToggle
@@ -55,7 +55,7 @@ fun ExploreScreen(
     viewModel: ExploreViewModel = koinViewModel(),
     modifier: Modifier = Modifier
 ) {
-    val uiState by viewModel.uiState.collectAsState()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     ExploreScreenContent(
         uiState = uiState,
@@ -152,11 +152,14 @@ private fun ExploreScreenContent(
                         }
 
                         else -> {
-                            LazyVerticalGrid(
-                                columns = if (uiState.viewMode == ViewMode.GRID)
+                            val gridColumns = remember(uiState.viewMode) {
+                                if (uiState.viewMode == ViewMode.GRID)
                                     GridCells.Adaptive(minSize = 160.dp)
                                 else
-                                    GridCells.Fixed(1),
+                                    GridCells.Fixed(1)
+                            }
+                            LazyVerticalGrid(
+                                columns = gridColumns,
                                 contentPadding = PaddingValues(
                                     top = 56.dp,
                                     start = 16.dp,
@@ -168,9 +171,7 @@ private fun ExploreScreenContent(
                                 modifier = Modifier.fillMaxSize()
                             ) {
                                 items(uiState.contentList) { item ->
-                                    Log.d("TAG", "ExploreScreenContent: ${uiState.contentList}")
-                                    val movie = item //as MediaItemUi
-                                    when(item){
+                                    when (item) {
                                         is ExploreScreenState.MediaItemUi -> {
                                             MoviePosterCard(
                                                 movie = item,
@@ -178,7 +179,8 @@ private fun ExploreScreenContent(
                                                 onMovieClick = interactionListener::onMovieClick
                                             )
                                         }
-                                        is ExploreScreenState.ActorUi ->{
+
+                                        is ExploreScreenState.ActorUi -> {
                                             ActorPosterCard(
                                                 movie = item,
                                                 viewMode = uiState.viewMode,
@@ -231,14 +233,14 @@ private fun ExploreScreenContent(
                 )
             }
 
-            if(uiState.selectedTab != ExploreTabsPages.ACTORS)
+            if (uiState.selectedTab != ExploreTabsPages.ACTORS)
                 ViewModeToggle(
-                selectedMode = uiState.viewMode,
-                onModeSelected = interactionListener::onViewModeChanged,
-                modifier = Modifier
-                    .align(Alignment.BottomEnd)
-                    .padding(16.dp)
-            )
+                    selectedMode = uiState.viewMode,
+                    onModeSelected = interactionListener::onViewModeChanged,
+                    modifier = Modifier
+                        .align(Alignment.BottomEnd)
+                        .padding(16.dp)
+                )
         }
     }
 }
