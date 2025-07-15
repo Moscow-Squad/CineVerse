@@ -2,10 +2,12 @@ package com.moscow.cineverse.di
 
 import com.moscow.cineverse.screen.explore.ExploreViewModel
 import com.moscow.cineverse.screen.cast_details_show_all.ShowAllActorMoviesInteractionViewModel
+import com.moscow.cineverse.screen.cast_details_gallery.ActorGalleryViewModel
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 
 val viewModels = module{
     viewModelOf(::ExploreViewModel)
     viewModelOf(::ShowAllActorMoviesInteractionViewModel)
+    viewModelOf(::ActorGalleryViewModel)
 }
