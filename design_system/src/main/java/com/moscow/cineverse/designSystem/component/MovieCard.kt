@@ -1,5 +1,6 @@
 package com.moscow.cineverse.designSystem.component
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -28,6 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -142,6 +144,7 @@ private fun <T> GridMovieCard(
     getReleaseDate: (T) -> String
 ) {
     Column {
+        val isPreview = LocalInspectionMode.current
         Card(
             modifier = modifier
                 .height(208.dp)
@@ -151,6 +154,16 @@ private fun <T> GridMovieCard(
             Box {
                 val posterUrl = getPosterUrl(movieData)
                 if (posterUrl.isNotEmpty()) {
+                    if (isPreview) {
+                        Image(
+                            painter = painterResource(R.drawable.profile_image),
+                            contentDescription = "Image",
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .clip(RoundedCornerShape(Theme.radius.large)),
+                            contentScale = ContentScale.Crop
+                        )
+                    } else {
                     SafeImageViewer(
                         model = posterUrl,
                         contentDescription = getTitle(movieData),
@@ -161,6 +174,7 @@ private fun <T> GridMovieCard(
                             .fillMaxSize()
                             .clip(RoundedCornerShape(Theme.radius.large))
                     )
+                    }
                 } else {
                     PlaceholderCard(
                         modifier = Modifier.fillMaxSize(),
@@ -345,7 +359,7 @@ private fun <T> ListMovieCard(
     }
 }
 
-private data class MockMovieData(
+data class MockMovieData(
     val id: Int,
     val title: String,
     val posterUrl: String,
