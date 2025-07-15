@@ -44,6 +44,7 @@ fun AppTextField(
     errorMessage: String? = null,
     isPassword: Boolean = false,
     trailingIcon: @Composable (() -> Unit)? = null,
+    leadingIcon: Int,
     singleLine: Boolean = true,
     maxLines: Int = 1,
     enabled: Boolean = true,
@@ -85,7 +86,7 @@ fun AppTextField(
             enabled = enabled,
             leadingIcon ={
                 Icon(
-                    painter = if (isPassword) painterResource(R.drawable.outline_lock) else painterResource(R.drawable.due_tone_profile),
+                    painter = painterResource(leadingIcon) ,
                     contentDescription = "leading icon"
                 )
             },
@@ -162,6 +163,7 @@ private fun PreviewBasicAppTextField() {
             value = text,
             onValueChange = { text = it },
             placeholder = "Enter your name",
+            leadingIcon = R.drawable.due_tone_profile
         )
     }
 }
@@ -178,6 +180,7 @@ private fun PreviewPasswordAppTextField() {
             onValueChange = { password = it },
             placeholder = "Password",
             isPassword = true,
+            leadingIcon = R.drawable.due_tone_profile
         )
     }
 }
@@ -195,6 +198,7 @@ private fun PreviewErrorAppTextField() {
             placeholder = "Email",
             isError = true,
             errorMessage = "Error Message",
+            leadingIcon = R.drawable.due_tone_profile
         )
     }
 }
