@@ -9,7 +9,6 @@ import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.ktx.Firebase
 import com.moscow.cineverse.designSystem.theme.CineVerseTheme
 import com.moscow.cineverse.screen.cast_details_gallery.ActorGalleryScreen
-import com.moscow.cineverse.screen.explore.ExploreScreen
 
 class MainActivity : ComponentActivity() {
 

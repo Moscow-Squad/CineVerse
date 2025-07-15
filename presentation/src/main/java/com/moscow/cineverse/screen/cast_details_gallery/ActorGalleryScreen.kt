@@ -47,7 +47,6 @@ fun ActorGalleryScreen(
     )
 }
 
-
 @Composable
 fun ActorGalleryContent(
     uiState: ShowAllActorMoviesState,
@@ -110,8 +109,6 @@ fun ActorGalleryContent(
 
         }
     }
-
-
 }
 
 @CineVersePreviews
@@ -130,5 +127,4 @@ fun ActorGalleryPreview(modifier: Modifier = Modifier) {
         modifier = modifier,
         title = "Actor Gallery"
     )
-
 }
