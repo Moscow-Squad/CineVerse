@@ -3,8 +3,9 @@ package com.moscow.cineverse.designSystem.component
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -14,12 +15,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
-/*@Composable
+@Composable
 fun MovieListSection(
     modifier: Modifier = Modifier,
     title: String,
     movies: List<Movie>,
-    paddingHorizontal: Int = 16,
     onClickShowMore: () -> Unit = {},
     onClickPoster: (Movie) -> Unit = {}
 ) {
@@ -29,23 +29,40 @@ fun MovieListSection(
     ) {
         SectionTitle(
             title = title,
-            modifier = modifier
-                .fillMaxWidth()
-                .padding(horizontal = paddingHorizontal.dp),
+            modifier = Modifier
+                .fillMaxWidth(),
             onClick = onClickShowMore
         )
 
         LazyRow(
             horizontalArrangement = Arrangement.spacedBy(12.dp),
-            contentPadding = PaddingValues(horizontal = paddingHorizontal.dp)
+            contentPadding = PaddingValues(horizontal = 16.dp),
+            modifier = Modifier.height(168.dp)
         ) {
-            itemsIndexed(movies) { index, movie ->
-                MoviePosterCard(
-                    modifier = Modifier
-                        .width(136.dp),
-                    movie = movies[index],
+            itemsIndexed(movies) { _, movie ->
+                MovieCard(
+                    movieData = MockMovieData(
+                        id = 1,
+                        title = "The Dark Knight",
+                        posterUrl = "",
+                        rating = 9.0f,
+                        genres = listOf("Action", "Crime", "Drama"),
+                        duration = "2h 32m",
+                        releaseDate = "2008, Jul 18"
+                    ),
                     viewMode = ViewMode.GRID,
-                    onMovieClick = { movie -> onClickPoster(movie) }
+                    onMovieClick = { onClickPoster(movie) },
+                    getId = { it.id },
+                    getTitle = { it.title },
+                    getPosterUrl = { it.posterUrl },
+                    getRating = { it.rating },
+                    getGenres = { it.genres },
+                    getDuration = { it.duration },
+                    getReleaseDate = { it.releaseDate },
+                    modifier = Modifier
+                        .fillMaxHeight()
+                        .width(136.dp)
+
                 )
 
             }
@@ -113,4 +130,3 @@ fun MovieListSectionPreview() {
         )
     }
 }
-*/
