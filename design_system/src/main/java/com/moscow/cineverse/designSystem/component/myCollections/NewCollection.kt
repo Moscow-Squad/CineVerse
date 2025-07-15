@@ -5,14 +5,12 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.design_system.R
@@ -37,13 +35,7 @@ fun NewCollection(
             onValueChange = onCollectionNameChange,
             placeholder = "e.g. My Watchlist",
             label = "Collection name",
-            trailingIcon = {
-                Icon(
-                    painter = painterResource(R.drawable.outline_folder),
-                    contentDescription = "Folder",
-                    tint = Theme.colors.shade.tertiary
-                )
-            }
+            leadingIcon = R.drawable.outline_folder
         )
 
         Row(
@@ -58,7 +50,7 @@ fun NewCollection(
                 buttonColor = Theme.colors.button.secondary,
                 modifier = Modifier
                     .weight(1f)
-                    .padding(vertical = 14.5.dp)
+                    .padding(vertical = 14.dp)
             )
             MovieButton(
                 buttonText = "Create",
@@ -68,7 +60,8 @@ fun NewCollection(
                 buttonColor = Theme.colors.button.primary,
                 modifier = Modifier
                     .weight(1f)
-                    .padding(vertical = 14.5.dp)
+                    .padding(vertical = 14.dp),
+                enable = collectionName.isNotBlank()
             )
         }
     }
