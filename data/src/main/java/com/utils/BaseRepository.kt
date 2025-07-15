@@ -1,5 +1,6 @@
 package com.utils
 
+import com.android.domain.exception.CineVerseException
 import io.ktor.client.plugins.ClientRequestException
 import io.ktor.client.plugins.HttpRequestTimeoutException
 import io.ktor.client.plugins.ServerResponseException
@@ -8,7 +9,6 @@ import kotlinx.io.IOException
 
 abstract class BaseRepository {
     protected suspend inline fun <T> tryToExecute(
-        exception: CineVerseException = CineVerseExceptions.UnknownException(cause = e),
         crossinline function: suspend () -> T
     ): T {
         return try {
@@ -16,9 +16,7 @@ abstract class BaseRepository {
         } catch (e: CineVerseException) {
             throw e
         }
-        catch (e: Exception) {
-            throw exception
-        } catch (e: IOException) {
+         catch (e: IOException) {
             throw CineVerseExceptions.IOException()
         } catch (e: ClientRequestException) {
             when (e.response.status.value) {

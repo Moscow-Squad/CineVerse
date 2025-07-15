@@ -212,7 +212,7 @@ private fun ExploreScreenContent(
                                         "ExploreScreenContent: ${uiState.contentList}"
                                     )
                                     when (item) {
-                                        is ExploreScreenState.MediaItemUi -> {
+                                        is MediaItemUi -> {
                                             MoviePosterCard(
                                                 movie = item,
                                                 viewMode = uiState.viewMode,

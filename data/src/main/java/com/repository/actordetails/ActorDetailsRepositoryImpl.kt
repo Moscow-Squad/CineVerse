@@ -1,6 +1,5 @@
 package com.repository.actordetails
 
-import com.android.domain.exception.CineVerseException
 import com.android.domain.model.ActorDetails
 import com.android.domain.model.Movie
 import com.android.domain.repository.ActorDetailsRepository
@@ -17,7 +16,7 @@ class ActorDetailsRepositoryImpl(
     private val ioDispatcher: CoroutineDispatcher,
 ) : ActorDetailsRepository, BaseRepository() {
     override suspend fun getActorDetails(actorId: Int): ActorDetails =
-        tryToExecute(exception = CineVerseException.ActorDetailsNotFoundException) {
+        tryToExecute {
             val socialMedia = actorDetailsRemoteDataSource.getSocialMedia(actorId)
             actorDetailsRemoteDataSource.getActorDetails(actorId).toDomain(
                 youtubeLink = socialMedia.youtubeId ?: "",
@@ -27,14 +26,14 @@ class ActorDetailsRepositoryImpl(
         }
 
     override suspend fun getGallery(actorId: Int): Flow<List<String>> =
-        tryToExecute(exception = CineVerseException.GalleryNotFoundException) {
+        tryToExecute {
             flow {
                 emit(actorDetailsRemoteDataSource.getGallery(actorId).map { it.toDomain() })
             }.flowOn(ioDispatcher)
         }
 
     override suspend fun getBestOfMovies(actorId: Int): Flow<List<Movie>> =
-        tryToExecute(exception = CineVerseException.BestOfMoviesNotFoundException) {
+        tryToExecute {
             flow {
                 val bestMovies = actorDetailsRemoteDataSource.getBestOfMovies(actorId)
                 val bestAsCast = bestMovies.cast.mapNotNull { runCatching { it.toDomain() }.getOrNull() }

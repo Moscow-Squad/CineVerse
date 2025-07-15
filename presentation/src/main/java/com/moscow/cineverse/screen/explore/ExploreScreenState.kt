@@ -48,16 +48,6 @@ data class ExploreScreenState(
         }
     }
 
-    data class MediaItemUi(
-        val id: Int,
-        val title: String,
-        val imagePath: String,
-        val rating: Float,
-        val genres: List<String>,
-        val releaseDate: String,
-        val duration: String
-    )
-
     data class ActorUi(
         val title: String,
         val profilePath: String,

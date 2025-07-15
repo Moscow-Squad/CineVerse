@@ -98,13 +98,13 @@ fun ActorDetailsDto.toDomain(youtubeLink: String, facebookLink: String, instagra
     ActorDetails(
         id = id ?: throw CineVerseException.MappingToDomainException,
         name = name ?: throw CineVerseException.MappingToDomainException,
-        birthDate = if (birthday == null) throw CineVerseException.MappingToDomainException else LocalDate.parse(birthday),
-        placeOfBirth = placeOfBirth ?: throw CineVerseException.MappingToDomainException,
+        birthDate = if (birthday == null) Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date else LocalDate.parse(birthday),
+        placeOfBirth = placeOfBirth ?: "",
         youtubeLink = youtubeLink,
         facebookLink = facebookLink,
         instagramLink = instagramLink,
-        biography = biography ?: throw CineVerseException.MappingToDomainException,
-        profileImg = IMAGES_URL + (profilePath ?: throw CineVerseException.MappingToDomainException)
+        biography = biography ?: "",
+        profileImg = IMAGES_URL + (profilePath ?: "")
     )
 
 fun ActorImagesDto.toDomain() =
