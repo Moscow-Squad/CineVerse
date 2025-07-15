@@ -1,4 +1,4 @@
-package com.moscow.cineverse.designSystem.component
+package com.moscow.cineverse.designSystem.component.cast_details
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.layout.Row
