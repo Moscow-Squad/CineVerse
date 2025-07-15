@@ -16,7 +16,7 @@ fun Movie.toUi(genresList: List<GenreUi>): MediaItemUi =
     MediaItemUi(
         id = id.toInt(),
         title = name,
-        posterPath = posterPath,
+        imagePath = posterPath,
         rating = rating,
         genres = genreIds.map { it -> genresList.first { genre -> genre.id == it }.name },
         releaseDate = releaseDate.formatWith(YYYY_MMM_DD) ?: "",
@@ -27,7 +27,7 @@ fun Series.toUi(genresList: List<GenreUi>): MediaItemUi =
     MediaItemUi(
         id = id,
         title = name,
-        posterPath = posterPath,
+        imagePath = posterPath,
         rating = rating,
         genres = genreIds.map { it -> genresList.first { genre -> genre.id == it }.name },
         releaseDate = firstAirDate.formatWith(YYYY_MMM_DD) ?: "",
@@ -37,7 +37,7 @@ fun Series.toUi(genresList: List<GenreUi>): MediaItemUi =
 fun Actor.toUi(): ActorUi =
     ActorUi(
         title = name,
-        icon = profileImg,
+        profilePath = profileImg,
         id = id
     )
 

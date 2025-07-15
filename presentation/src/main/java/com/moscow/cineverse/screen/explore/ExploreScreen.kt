@@ -32,6 +32,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -40,6 +41,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.moscow.cineverse.designSystem.component.PillLabel
 import com.moscow.cineverse.designSystem.component.ViewMode
 import com.moscow.cineverse.designSystem.component.ViewModeToggle
@@ -62,7 +64,7 @@ fun ExploreScreen(
     modifier: Modifier = Modifier,
     viewModel: ExploreViewModel = koinViewModel(),
 ) {
-    val uiState by viewModel.uiState.collectAsState()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
         viewModel.uiEvent.collect { event -> handleEffects(event, navController) }
@@ -123,7 +125,7 @@ private fun ExploreScreenContent(
                     trailingIcon = {
                         VoiceRecognitionIcon(
                             modifier = Modifier.size(20.dp),
-                            onResult = { interactionListener.onSearchWordDetected(it) },
+                            onResult = { interactionListener.onSearchValueChange(it.toString()) },
                             onError = {}
                         )
                     }
@@ -180,11 +182,20 @@ private fun ExploreScreenContent(
                         }
 
                         else -> {
+                            val gridColumns = remember(uiState.viewMode, uiState.selectedTab) {
+                                if (uiState.viewMode == ViewMode.GRID) {
+                                    when (uiState.selectedTab) {
+                                        ExploreTabsPages.ACTORS -> GridCells.Adaptive(minSize = 98.dp) // Smaller for actors
+                                        ExploreTabsPages.MOVIES, ExploreTabsPages.SERIES -> GridCells.Adaptive(
+                                            minSize = 160.dp
+                                        ) // Larger for movies/series
+                                    }
+                                } else {
+                                    GridCells.Fixed(1)
+                                }
+                            }
                             LazyVerticalGrid(
-                                columns = if (uiState.viewMode == ViewMode.GRID)
-                                    GridCells.Adaptive(minSize = 160.dp)
-                                else
-                                    GridCells.Fixed(1),
+                                columns = gridColumns,
                                 contentPadding = PaddingValues(
                                     top = 56.dp,
                                     start = 16.dp,
@@ -196,10 +207,12 @@ private fun ExploreScreenContent(
                                 modifier = Modifier.fillMaxSize()
                             ) {
                                 items(uiState.contentList) { item ->
-                                    Log.d("TAG", "ExploreScreenContent: ${uiState.contentList}")
-                                    val movie = item //as MediaItemUi
+                                    Log.e(
+                                        "jxjxjxxkx",
+                                        "ExploreScreenContent: ${uiState.contentList}"
+                                    )
                                     when (item) {
-                                        is MediaItemUi -> {
+                                        is ExploreScreenState.MediaItemUi -> {
                                             MoviePosterCard(
                                                 movie = item,
                                                 viewMode = uiState.viewMode,
@@ -209,9 +222,10 @@ private fun ExploreScreenContent(
 
                                         is ExploreScreenState.ActorUi -> {
                                             ActorPosterCard(
-                                                movie = item,
+                                                actor = item,
                                                 viewMode = uiState.viewMode,
-                                                onActorClicked = interactionListener::onActorClick
+                                                onActorClicked = interactionListener::onActorClick,
+                                                modifier = Modifier.size(98.dp)
                                             )
                                         }
                                     }
