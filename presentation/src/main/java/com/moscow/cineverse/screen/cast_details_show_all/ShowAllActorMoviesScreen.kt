@@ -1,6 +1,5 @@
 package com.moscow.cineverse.screen.cast_details_show_all
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -62,9 +61,10 @@ fun ShowAllActorMoviesContent(
             when {
                 uiState.isLoading -> {
                     MovieCircularProgressBar(
+                        modifier = Modifier.align(Alignment.Center),
                         gradientColors = listOf(
-                            Theme.colors.shade.primary,
-                            Theme.colors.shade.tertiary
+                            Theme.colors.brand.primary,
+                            Theme.colors.brand.tertiary
                         )
                     )
                 }
@@ -83,7 +83,9 @@ fun ShowAllActorMoviesContent(
                             )
                             Spacer(modifier = Modifier.height(16.dp))
                             MovieButton(
-                                text = stringResource(R.string.retry),
+                                buttonText = stringResource(R.string.retry),
+                                textColor = Theme.colors.button.primary,
+                                textStyle = Theme.textStyle.title.small,
                                 onClick = interactionListener::onRefresh
                             )
                         }
