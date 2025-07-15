@@ -31,13 +31,15 @@ import com.moscow.cineverse.screen.component.movie_poster_card.MediaItemUi
 import com.moscow.cineverse.screen.component.movie_poster_card.MoviePosterCard
 import com.moscow.cinverse.presentation.R
 import org.koin.androidx.compose.koinViewModel
+import org.koin.core.parameter.parametersOf
 
 @Composable
 fun ShowAllActorMoviesScreen(
+    actorId: Int,
+    title: String,
     modifier: Modifier = Modifier,
-    title: String
 ) {
-    val viewModel: ShowAllActorMoviesInteractionViewModel = koinViewModel()
+    val viewModel: ShowAllActorMoviesInteractionViewModel = koinViewModel(parameters = { parametersOf(actorId, title) })
     val uiState by viewModel.uiState.collectAsState()
 
     ShowAllActorMoviesContent(

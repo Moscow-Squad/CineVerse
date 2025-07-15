@@ -1,6 +1,5 @@
 package com.moscow.cineverse.screen.castDetails.best0fmovies
 
-import androidx.lifecycle.SavedStateHandle
 import com.android.domain.model.Movie
 import com.android.domain.usecase.GenreUseCase
 import com.android.domain.usecase.actordetails.GetActorBestOfMovies
@@ -11,13 +10,12 @@ import kotlinx.coroutines.flow.flatMapConcat
 
 class ShowAllActorMoviesInteractionViewModel (
    private val getActorBestOfMovies: GetActorBestOfMovies,
-    savedStateHandle: SavedStateHandle,
+   actorId: Int,
     private val genreUseCase: GenreUseCase
 ): BaseViewModel<ShowAllActorMoviesState, ShowAllActorMoviesEvents>(ShowAllActorMoviesState()),
 ShowAllActorMoviesInteractionListener {
-    //todo enhance when make navigation
-    private val actorId = savedStateHandle.get<Int>("actorId")?: 1
     init {
+        updateState { it.copy(actorId = actorId) }
         getActorMovies()
     }
 
@@ -28,7 +26,7 @@ ShowAllActorMoviesInteractionListener {
             flowAction = {
                 genreUseCase.getMoviesGenres().flatMapConcat { genres ->
                     updateState { it.copy(moviesGenres = genres.map { it.toUi() }) }
-                    getActorBestOfMovies.getActorBestOfMovies(actorId)
+                    getActorBestOfMovies.getActorBestOfMovies(uiState.value.actorId)
                 }
             },
             onSuccess = ::onGetMovieSuccess,

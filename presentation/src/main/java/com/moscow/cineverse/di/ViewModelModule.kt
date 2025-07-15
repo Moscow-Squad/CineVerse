@@ -13,6 +13,13 @@ val viewModels = module{
     viewModelOf(::CastDetailsViewModel)
     viewModelOf(::ShowAllActorMoviesInteractionViewModel)
     viewModel { (actorId: Int, actorName: String) ->
+        ShowAllActorMoviesInteractionViewModel(
+            getActorBestOfMovies = get(),
+            genreUseCase = get(),
+            actorId   = actorId,
+        )
+    }
+    viewModel { (actorId: Int, actorName: String) ->
         ActorGalleryViewModel(
             getActorGallery = get(),
             actorId   = actorId,

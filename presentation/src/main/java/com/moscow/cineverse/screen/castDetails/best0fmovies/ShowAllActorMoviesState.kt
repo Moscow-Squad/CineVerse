@@ -4,6 +4,7 @@ import com.moscow.cineverse.designSystem.component.ViewMode
 import com.moscow.cineverse.screen.component.movie_poster_card.MediaItemUi
 
 data class ShowAllActorMoviesState(
+    val actorId: Int = 0,
     val isLoading: Boolean = false,
     val error: String? = null,
     val viewMode: ViewMode = ViewMode.GRID,
