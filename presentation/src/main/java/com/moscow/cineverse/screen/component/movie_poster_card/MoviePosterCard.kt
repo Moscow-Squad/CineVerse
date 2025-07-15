@@ -13,12 +13,12 @@ fun MoviePosterCard(
     viewMode: ViewMode = ViewMode.GRID,
     showRating: Boolean = true,
     onMovieClick: (Int) -> Unit = {},
-    infoModifier: Modifier = Modifier,
     titleTextAlign: TextAlign = TextAlign.Start,
     descriptionTextAlign: TextAlign = TextAlign.Start,
     showGenres: Boolean = false,
     showTitle: Boolean = true,
-    getTitleOverride: ((MediaItemUi) -> String)? = null
+    getTitleOverride: ((MediaItemUi) -> String)? = null,
+    showTitle: Boolean = true
 ) {
     MovieCard(
         modifier = modifier,
@@ -26,10 +26,7 @@ fun MoviePosterCard(
         viewMode = viewMode,
         showRating = showRating,
         onMovieClick = onMovieClick,
-        infoModifier = infoModifier,
         titleTextAlign = titleTextAlign,
-        descriptionTextAlign = descriptionTextAlign,
-        showGenres = showGenres,
         showTitle = showTitle,
         getId = { it.id },
         getTitle = getTitleOverride ?: { it.title },

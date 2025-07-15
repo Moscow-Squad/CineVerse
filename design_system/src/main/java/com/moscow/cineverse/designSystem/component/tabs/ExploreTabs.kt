@@ -2,10 +2,11 @@ package com.moscow.cineverse.designSystem.component.tabs
 
 import android.content.res.Configuration
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.pager.PagerState
-import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.TabRowDefaults
@@ -15,15 +16,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.moscow.cineverse.designSystem.theme.CineVerseTheme
 import com.moscow.cineverse.designSystem.theme.Theme
-import kotlinx.coroutines.launch
 
 @Composable
 fun ExploreTabs(
@@ -34,10 +35,13 @@ fun ExploreTabs(
     selectedContentColor: Color = Theme.colors.brand.primary,
     unselectedContentColor: Color = Theme.colors.shade.tertiary,
 ) {
+
     val tabsToShow = remember(showAllTabs) {
         if (showAllTabs) ExploreTabsPages.entries
         else ExploreTabsPages.entries.take(2)
     }
+
+    val indicatorWidth = if (tabsToShow.size == 2) 158.dp else 101.dp
 
     TabRow(
         selectedTabIndex = tabsToShow.indexOf(selectedTab),
@@ -45,9 +49,22 @@ fun ExploreTabs(
         containerColor = Theme.colors.background.screen,
         modifier = modifier,
         indicator = { tabPositions ->
-            TabRowDefaults.SecondaryIndicator(
-                Modifier.tabIndicatorOffset(tabPositions[tabsToShow.indexOf(selectedTab)]),
-                color = selectedContentColor
+            TabRowDefaults.PrimaryIndicator(
+                Modifier
+                    .tabIndicatorOffset(tabPositions[tabsToShow.indexOf(selectedTab)]),
+                color = selectedContentColor,
+                width = indicatorWidth,
+                height = 2.dp,
+                shape = RoundedCornerShape(
+                    topStart = Theme.radius.full,
+                    topEnd = Theme.radius.full
+                )
+            )
+        },
+        divider = {
+            HorizontalDivider(
+                thickness = 1.dp,
+                color = Theme.colors.stroke.primary
             )
         }
     ) {
@@ -56,7 +73,12 @@ fun ExploreTabs(
                 selected = selectedTab == tab,
                 selectedContentColor = selectedContentColor,
                 unselectedContentColor = unselectedContentColor,
-                text = { Text(text = stringResource(tab.textId)) },
+                text = {
+                    Text(
+                        text = stringResource(tab.textId),
+                        style = Theme.textStyle.body.medium.medium
+                    )
+                },
                 onClick = { onTabSelected(tab) }
             )
         }
