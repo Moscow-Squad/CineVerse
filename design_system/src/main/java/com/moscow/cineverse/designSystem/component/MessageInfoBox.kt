@@ -11,16 +11,16 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.design_system.R
@@ -31,11 +31,13 @@ import com.moscow.cineverse.designSystem.theme.Theme
 fun MessageInfoBox(
     title: String,
     description: String,
+    icon: Painter,
+    showButtonsGroup: Boolean,
     firstButtonText: String,
-    secondButtonText: String,
     onClickFirstButton: () -> Unit,
-    onClickSecondButton: () -> Unit,
     modifier: Modifier = Modifier,
+    secondButtonText: String = "",
+    onClickSecondButton: () -> Unit = {},
 ) {
     Column(
         modifier = modifier,
@@ -51,22 +53,11 @@ fun MessageInfoBox(
                 ),
             contentAlignment = Alignment.Center
         ) {
-            Box(
-                modifier = Modifier
-                    .size(width = 16.dp, height = 24.dp)
-                    .clip(RoundedCornerShape(30.dp))
-                    .background(Theme.colors.brand.primary.copy(alpha = 0.4f)),
-                contentAlignment = Alignment.Center
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.outline_arrow_left),
-                    contentDescription = stringResource(R.string.arrow_left),
-                    colorFilter = ColorFilter.tint(Theme.colors.brand.primary),
-                    modifier = Modifier
-                        .size(width = 24.dp, height = 24.dp)
-                        .padding(end = 7.dp)
-                )
-            }
+            Image(
+                painter = icon,
+                contentDescription = stringResource(R.string.arrow_left),
+                colorFilter = ColorFilter.tint(Theme.colors.brand.primary)
+            )
         }
 
         Text(
@@ -79,22 +70,25 @@ fun MessageInfoBox(
             text = description,
             style = Theme.textStyle.body.medium.medium,
             color = Theme.colors.shade.secondary,
-            modifier = Modifier.padding(bottom = 24.dp)
+            modifier = Modifier.padding(bottom = 24.dp),
+            textAlign = TextAlign.Center
         )
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            MovieButton(
-                buttonText = firstButtonText,
-                textColor = Theme.colors.button.onSecondary,
-                textStyle = Theme.textStyle.body.medium.medium,
-                onClick = onClickFirstButton,
-                buttonColor = Theme.colors.button.secondary,
-                modifier = Modifier
-                    .weight(1f)
-                    .padding(vertical = 14.5.dp)
-            )
+            if (showButtonsGroup) {
+                MovieButton(
+                    buttonText = firstButtonText,
+                    textColor = Theme.colors.button.onSecondary,
+                    textStyle = Theme.textStyle.body.medium.medium,
+                    onClick = onClickFirstButton,
+                    buttonColor = Theme.colors.button.secondary,
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(vertical = 14.dp)
+                )
+            }
             MovieButton(
                 buttonText = secondButtonText,
                 textColor = Theme.colors.button.onPrimary,
@@ -114,12 +108,14 @@ fun MessageInfoBox(
 fun MessageInfoBoxExample() {
     CineVerseTheme {
         MessageInfoBox(
-            title = "Alaa",
-            description = "alaa",
-            firstButtonText = "Button1",
-            secondButtonText = "Button2",
+            title = "No Collections Yet",
+            description = "Start building your personal library by saving movies or series you want to remember.",
+            firstButtonText = "Collecting",
+            secondButtonText = "Log In",
             onClickFirstButton = {},
             onClickSecondButton = {},
+            icon = painterResource(Theme.icons.dueTone.videoLibrary),
+            showButtonsGroup = true,
             modifier = Modifier
                 .padding(50.dp)
                 .background(Color.Black)

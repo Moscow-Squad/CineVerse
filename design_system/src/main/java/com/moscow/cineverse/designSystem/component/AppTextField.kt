@@ -78,7 +78,15 @@ fun AppTextField(
                 .fillMaxWidth()
                 .background(Theme.colors.background.card, RoundedCornerShape(Theme.radius.large)),
             textStyle = Theme.textStyle.body.medium.medium,
-            placeholder = placeholder?.let { { Text(it) } },
+            placeholder = placeholder?.let {
+                {
+                    Text(
+                        text = it,
+                        style = Theme.textStyle.body.medium.regular,
+                        color = Theme.colors.shade.tertiary
+                    )
+                }
+                                           },
             singleLine = singleLine,
             maxLines = maxLines,
             isError = isError,
