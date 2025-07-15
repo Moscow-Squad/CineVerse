@@ -14,14 +14,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
-/*@Composable
-fun MovieListSection(
+@Composable
+fun <T> MovieListSection(
     modifier: Modifier = Modifier,
     title: String,
-    movies: List<Movie>,
+    movies: List<T>,
     paddingHorizontal: Int = 16,
     onClickShowMore: () -> Unit = {},
-    onClickPoster: (Movie) -> Unit = {}
+    onClickPoster: (T) -> Unit = {},
+    movieCardContent: @Composable (T, Modifier, (T) -> Unit) -> Unit
 ) {
     Column(
         modifier = modifier,
@@ -40,77 +41,12 @@ fun MovieListSection(
             contentPadding = PaddingValues(horizontal = paddingHorizontal.dp)
         ) {
             itemsIndexed(movies) { index, movie ->
-                MoviePosterCard(
-                    modifier = Modifier
-                        .width(136.dp),
-                    movie = movies[index],
-                    viewMode = ViewMode.GRID,
-                    onMovieClick = { movie -> onClickPoster(movie) }
+                movieCardContent(
+                    movie,
+                    Modifier.width(136.dp),
+                    onClickPoster
                 )
-
             }
         }
     }
 }
-
-@Preview(showBackground = true, showSystemUi = true, name = "Movie List Section Preview")
-@Composable
-fun MovieListSectionPreview() {
-    val dummyMovies = listOf(
-        Movie(
-            id = 1,
-            title = "The Crimson Man",
-            posterUrl = "",
-            rating = 8.8f,
-            genres = listOf("Action", "Sci-Fi"),
-            duration = "2h 28m",
-            releaseDate = "2010-07-16"
-        ),
-        Movie(
-            id = 2,
-            title = "Interstellar",
-            posterUrl = "",
-            rating = 9.9f,
-            genres = listOf("Adventure", "Drama", "Sci-Fi"),
-            duration = "2h 49m",
-            releaseDate = "2014-11-07"
-        ),
-        Movie(
-            id = 4,
-            title = "PK",
-            posterUrl = "",
-            rating = 8.8f,
-            genres = listOf("Action", "Sci-Fi"),
-            duration = "2h 28m",
-            releaseDate = "2010-07-16"
-        ),
-        Movie(
-            id = 564,
-            title = "The Matrix",
-            posterUrl = "",
-            rating = 8.8f,
-            genres = listOf("Action", "Sci-Fi"),
-            duration = "2h 28m",
-            releaseDate = "2010-07-16"
-        ),
-        Movie(
-            id = 5454567,
-            title = "Toy Story",
-            posterUrl = "",
-            rating = 8.8f,
-            genres = listOf("Action", "Sci-Fi"),
-            duration = "2h 28m",
-            releaseDate = "2010-07-16"
-        ),
-    )
-
-    MaterialTheme {
-        MovieListSection(
-            title = "Matches your Vibe",
-            movies = dummyMovies,
-            onClickShowMore = {  },
-            onClickPoster = { }
-        )
-    }
-}
-*/
