@@ -35,4 +35,6 @@
     <string name="suggest_item_icon">suggest item icon</string>
     <string name="arrow_left_up">arrow left up</string>
     <string name="search_icon">search icon</string>
+    <string name="grid_view_selected">grid view selected</string>
+    <string name="list_view_active">list view active</string>
 </resources>

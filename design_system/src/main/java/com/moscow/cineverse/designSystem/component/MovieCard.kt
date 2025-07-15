@@ -1,9 +1,7 @@
 package com.moscow.cineverse.designSystem.component
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -29,13 +27,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import coil3.compose.AsyncImage
 import com.example.design_system.R
 import com.example.image_viewer.component.SafeImageViewer
 import com.moscow.cineverse.designSystem.theme.CineVerseTheme
@@ -48,10 +45,7 @@ fun <T> MovieCard(
     viewMode: ViewMode = ViewMode.GRID,
     showRating: Boolean = true,
     onMovieClick: (Int) -> Unit = {},
-    infoModifier: Modifier = Modifier,
     titleTextAlign: TextAlign = TextAlign.Start,
-    descriptionTextAlign: TextAlign = TextAlign.Start,
-    showGenres: Boolean = false,
     showTitle: Boolean = true,
     getId: (T) -> Int,
     getTitle: (T) -> String,
@@ -67,18 +61,12 @@ fun <T> MovieCard(
             showRating = showRating,
             onMovieClick = onMovieClick,
             modifier = modifier,
-            infoModifier = infoModifier,
             titleTextAlign = titleTextAlign,
-            descriptionTextAlign = descriptionTextAlign,
-            showGenres = showGenres,
             showTitle = showTitle,
             getId = getId,
             getTitle = getTitle,
             getPosterUrl = getPosterUrl,
             getRating = getRating,
-            getGenres = getGenres,
-            getDuration = getDuration,
-            getReleaseDate = getReleaseDate
         )
 
         ViewMode.LIST -> ListMovieCard(
@@ -128,23 +116,16 @@ private fun PlaceholderCard(
 private fun <T> GridMovieCard(
     modifier: Modifier = Modifier,
     movieData: T,
-    showGenres: Boolean = false,
     showTitle: Boolean = true,
     showRating: Boolean = true,
     onMovieClick: (Int) -> Unit,
-    infoModifier: Modifier = Modifier,
     titleTextAlign: TextAlign,
-    descriptionTextAlign: TextAlign,
     getId: (T) -> Int,
     getTitle: (T) -> String,
     getPosterUrl: (T) -> String,
     getRating: (T) -> Float,
-    getGenres: (T) -> List<String>,
-    getDuration: (T) -> String,
-    getReleaseDate: (T) -> String
 ) {
     Column {
-        val isPreview = LocalInspectionMode.current
         Card(
             modifier = modifier
                 .height(208.dp)
@@ -153,35 +134,17 @@ private fun <T> GridMovieCard(
         ) {
             Box {
                 val posterUrl = getPosterUrl(movieData)
-                if (posterUrl.isNotEmpty()) {
-                    if (isPreview) {
-                        Image(
-                            painter = painterResource(R.drawable.profile_image),
-                            contentDescription = "Image",
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .clip(RoundedCornerShape(Theme.radius.large)),
-                            contentScale = ContentScale.Crop
-                        )
-                    } else {
-                    SafeImageViewer(
-                        model = posterUrl,
-                        contentDescription = getTitle(movieData),
-                        placeholder = painterResource(id = R.drawable.due_tone_image),
-                        error = painterResource(id = R.drawable.due_tone_image),
-                        contentScale = ContentScale.Crop,
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .clip(RoundedCornerShape(Theme.radius.large))
-                    )
-                    }
-                } else {
-                    PlaceholderCard(
-                        modifier = Modifier.fillMaxSize(),
-                        cardColor = Theme.colors.background.card,
-                        iconSize = 32.dp
-                    )
-                }
+
+                LoadImageWithPlaceholder(
+                    posterUrl = posterUrl,
+                    contentDescription = getTitle(movieData),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .clip(RoundedCornerShape(Theme.radius.large)),
+                    placeholderModifier = Modifier.fillMaxSize(),
+                    placeholderCardColor = Theme.colors.background.card,
+                    placeholderIconSize = 32.dp
+                )
 
                 val rating = getRating(movieData)
                 if (showRating && rating > 0) {
@@ -215,15 +178,19 @@ private fun <T> GridMovieCard(
             }
         }
 
-        InfoSection(
-            title = getTitle(movieData),
-            showTitle = showTitle,
-            genres = getGenres(movieData),
-            showGenres = showGenres,
-            modifier = infoModifier.padding(top = 8.dp),
-            titleTextAlign = titleTextAlign,
-            descriptionTextAlign = descriptionTextAlign
-        )
+        val title = getTitle(movieData)
+        if (title.isNotEmpty() && showTitle) {
+            Text(
+                text = title,
+                color = Theme.colors.shade.secondary,
+                style = Theme.textStyle.body.medium.medium,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                textAlign = titleTextAlign,
+                modifier = Modifier.fillMaxWidth()
+                    .padding(top = 8.dp)
+            )
+        }
     }
 }
 
@@ -245,7 +212,7 @@ private fun <T> ListMovieCard(
             .fillMaxWidth()
             .height(88.dp)
             .clickable { onMovieClick(getId(movieData)) },
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
         shape = RoundedCornerShape(Theme.radius.large),
         colors = CardDefaults.cardColors(containerColor = Theme.colors.background.card)
     ) {
@@ -254,112 +221,51 @@ private fun <T> ListMovieCard(
             Row(modifier = Modifier.fillMaxSize()) {
 
                 val posterUrl = getPosterUrl(movieData)
-                if (posterUrl.isNotEmpty()) {
-                    AsyncImage(
-                        model = posterUrl,
-                        contentDescription = getTitle(movieData),
-                        placeholder = painterResource(id = R.drawable.due_tone_image),
-                        error = painterResource(id = R.drawable.due_tone_image),
-                        contentScale = ContentScale.Crop,
-                        modifier = Modifier
-                            .width(64.dp)
-                            .fillMaxHeight()
-                            .clip(RoundedCornerShape(Theme.radius.small))
-                    )
-                } else {
-                    PlaceholderCard(
-                        modifier = Modifier
-                            .width(64.dp)
-                            .fillMaxHeight(),
-                        cardColor = Theme.colors.brand.tertiary,
-                        iconSize = 24.dp
-                    )
-                }
+
+                LoadImageWithPlaceholder(
+                    posterUrl = posterUrl,
+                    contentDescription = getTitle(movieData),
+                    modifier = Modifier
+                        .width(64.dp)
+                        .fillMaxHeight()
+                        .clip(
+                            RoundedCornerShape(
+                                topStart = Theme.radius.large,
+                                topEnd = Theme.radius.large,
+                                bottomStart = Theme.radius.large
+                            )
+                        ),
+                    placeholderModifier = Modifier
+                        .width(64.dp)
+                        .fillMaxHeight(),
+                    placeholderCardColor = Theme.colors.brand.tertiary,
+                    placeholderIconSize = 24.dp
+                )
 
                 Column(
                     modifier = Modifier
                         .weight(1f)
-                        .padding(vertical = 12.dp, horizontal = 12.dp),
-                    verticalArrangement = Arrangement.SpaceBetween
+                        .padding(vertical = 12.5.dp, horizontal = 12.dp),
                 ) {
                     InfoSection(
                         title = getTitle(movieData),
                         genres = getGenres(movieData),
-                        paddingBetween = 4.dp
+                        paddingBetween = 4.dp,
+                        rating = getRating(movieData)
                     )
 
-                    Row(
-                        modifier = Modifier.padding(top = 8.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        val duration = getDuration(movieData)
-                        if (duration.isNotEmpty()) {
-                            Icon(
-                                painter = painterResource(R.drawable.due_tone_clock),
-                                contentDescription = "Duration",
-                                tint = Theme.colors.shade.secondary,
-                                modifier = Modifier.size(16.dp)
-                            )
-                            Text(
-                                text = duration,
-                                style = Theme.textStyle.label.medium.medium,
-                                color = Theme.colors.shade.secondary,
-                                modifier = Modifier.padding(start = 4.dp)
-                            )
-                        }
-
-                        val releaseDate = getReleaseDate(movieData)
-                        if (duration.isNotEmpty() && releaseDate.isNotEmpty()) {
-                            Spacer(modifier = Modifier.width(8.dp))
-                        }
-
-                        if (releaseDate.isNotEmpty()) {
-                            Icon(
-                                painter = painterResource(R.drawable.due_tone_calendar),
-                                contentDescription = "Release Date",
-                                tint = Theme.colors.shade.secondary,
-                                modifier = Modifier.size(16.dp)
-                            )
-                            Text(
-                                text = releaseDate,
-                                style = Theme.textStyle.label.medium.medium,
-                                color = Theme.colors.shade.secondary,
-                                modifier = Modifier.padding(start = 4.dp)
-                            )
-                        }
-                    }
-                }
-            }
-
-            val rating = getRating(movieData)
-            if (rating > 0) {
-                Row(
-                    modifier = Modifier
-                        .align(Alignment.TopEnd)
-                        .padding(6.dp)
-                        .padding(horizontal = 6.dp, vertical = 2.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = "%.1f".format(rating),
-                        color = Theme.colors.shade.primary,
-                        style = Theme.textStyle.label.medium.medium
+                    DurationAndDateSection(
+                        duration = getDuration(movieData),
+                        releaseDate = getReleaseDate(movieData)
                     )
-                    Icon(
-                        painter = painterResource(R.drawable.due_tone_star),
-                        contentDescription = "Rating",
-                        tint = Theme.colors.additional.primary.yellow,
-                        modifier = Modifier
-                            .size(16.dp)
-                            .padding(start = 2.dp)
-                    )
+
                 }
             }
         }
     }
 }
 
-data class MockMovieData(
+private data class MockMovieData(
     val id: Int,
     val title: String,
     val posterUrl: String,
@@ -368,6 +274,79 @@ data class MockMovieData(
     val duration: String,
     val releaseDate: String
 )
+
+@Composable
+fun LoadImageWithPlaceholder(
+    posterUrl: String,
+    contentDescription: String,
+    modifier: Modifier = Modifier,
+    placeholderModifier: Modifier = Modifier,
+    placeholderCardColor: Color,
+    placeholderIconSize: Dp
+) {
+    if (posterUrl.isNotEmpty()) {
+        SafeImageViewer(
+            model = posterUrl,
+            contentDescription = contentDescription,
+            placeholder = painterResource(id = R.drawable.due_tone_image),
+            error = painterResource(id = R.drawable.due_tone_image),
+            contentScale = ContentScale.Crop,
+            modifier = modifier
+        )
+    } else {
+        PlaceholderCard(
+            modifier = placeholderModifier,
+            cardColor = placeholderCardColor,
+            iconSize = placeholderIconSize
+        )
+    }
+}
+
+@Composable
+fun DurationAndDateSection(
+    modifier: Modifier = Modifier,
+    duration: String,
+    releaseDate: String
+) {
+    Row(
+        modifier = modifier.padding(top = 8.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        if (duration.isNotEmpty()) {
+            Icon(
+                painter = painterResource(R.drawable.due_tone_clock),
+                contentDescription = "Duration",
+                tint = Theme.colors.shade.secondary,
+                modifier = Modifier.size(16.dp)
+            )
+            Text(
+                text = duration,
+                style = Theme.textStyle.label.medium.medium,
+                color = Theme.colors.shade.secondary,
+                modifier = Modifier.padding(start = 4.dp)
+            )
+        }
+
+        if (duration.isNotEmpty() && releaseDate.isNotEmpty()) {
+            Spacer(modifier = Modifier.width(8.dp))
+        }
+
+        if (releaseDate.isNotEmpty()) {
+            Icon(
+                painter = painterResource(R.drawable.due_tone_calendar),
+                contentDescription = "Release Date",
+                tint = Theme.colors.shade.secondary,
+                modifier = Modifier.size(16.dp)
+            )
+            Text(
+                text = releaseDate,
+                style = Theme.textStyle.label.medium.medium,
+                color = Theme.colors.shade.secondary,
+                modifier = Modifier.padding(start = 4.dp)
+            )
+        }
+    }
+}
 
 @Preview(showBackground = true, name = "Grid View - Loading State")
 @Composable
