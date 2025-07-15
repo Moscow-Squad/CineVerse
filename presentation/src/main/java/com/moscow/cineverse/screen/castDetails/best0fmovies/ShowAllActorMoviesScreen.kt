@@ -1,6 +1,5 @@
-package com.moscow.cineverse.screen.cast_details_show_all
+package com.moscow.cineverse.screen.castDetails.best0fmovies
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -19,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import com.moscow.cineverse.designSystem.component.CineVersePreviews
 import com.moscow.cineverse.designSystem.component.MovieAppBar
 import com.moscow.cineverse.designSystem.component.MovieButton
@@ -32,13 +32,16 @@ import com.moscow.cineverse.screen.component.movie_poster_card.MediaItemUi
 import com.moscow.cineverse.screen.component.movie_poster_card.MoviePosterCard
 import com.moscow.cinverse.presentation.R
 import org.koin.androidx.compose.koinViewModel
+import org.koin.core.parameter.parametersOf
 
 @Composable
 fun ShowAllActorMoviesScreen(
+    navController: NavHostController,
+    actorId: Int,
+    title: String,
     modifier: Modifier = Modifier,
-    title: String
 ) {
-    val viewModel: ShowAllActorMoviesInteractionViewModel = koinViewModel()
+    val viewModel: ShowAllActorMoviesInteractionViewModel = koinViewModel(parameters = { parametersOf(actorId, title) })
     val uiState by viewModel.uiState.collectAsState()
 
     ShowAllActorMoviesContent(
@@ -62,9 +65,10 @@ fun ShowAllActorMoviesContent(
             when {
                 uiState.isLoading -> {
                     MovieCircularProgressBar(
+                        modifier = Modifier.align(Alignment.Center),
                         gradientColors = listOf(
-                            Theme.colors.shade.primary,
-                            Theme.colors.shade.tertiary
+                            Theme.colors.brand.primary,
+                            Theme.colors.brand.tertiary
                         )
                     )
                 }
@@ -83,7 +87,9 @@ fun ShowAllActorMoviesContent(
                             )
                             Spacer(modifier = Modifier.height(16.dp))
                             MovieButton(
-                                text = stringResource(R.string.retry),
+                                buttonText = stringResource(R.string.retry),
+                                textColor = Theme.colors.button.primary,
+                                textStyle = Theme.textStyle.title.small,
                                 onClick = interactionListener::onRefresh
                             )
                         }

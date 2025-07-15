@@ -5,13 +5,11 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
@@ -22,16 +20,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import coil3.compose.SubcomposeAsyncImage
-import com.android.domain.model.Actor
-import com.android.domain.model.Movie
-import com.example.design_system.R
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import com.moscow.cineverse.designSystem.component.InfoSection
 import com.moscow.cineverse.designSystem.component.MovieAppBar
 import com.moscow.cineverse.designSystem.component.MovieListSection
@@ -41,6 +35,9 @@ import com.moscow.cineverse.designSystem.component.ViewMode
 import com.moscow.cineverse.designSystem.component.cast_details.MainDetails
 import com.moscow.cineverse.designSystem.component.cast_details.GallerySection
 import com.moscow.cineverse.designSystem.theme.Theme
+import com.moscow.cineverse.navigation.routes.CastBestOfMovieRoute
+import com.moscow.cineverse.navigation.routes.CastDetailsRoute
+import com.moscow.cineverse.navigation.routes.CastGalleryRoute
 import com.moscow.cineverse.screen.component.movie_poster_card.MoviePosterCard
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
@@ -48,10 +45,11 @@ import com.moscow.cinverse.presentation.R as PresentationR
 
 @Composable
 fun CastDetailsScreen(
-    actor: Actor,
+    navController: NavHostController,
+    actorId: Int,
     onNavigateBack: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: CastDetailsViewModel = koinViewModel { parametersOf(actor, actor.id) }
+    viewModel: CastDetailsViewModel = koinViewModel (parameters = { parametersOf(actorId) })
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val context = LocalContext.current
@@ -76,11 +74,17 @@ fun CastDetailsScreen(
                 }
 
                 is CastDetailsEvent.NavigateToFullMovieList -> {
+                    navController.navigate(
+                        CastBestOfMovieRoute(event.actorId, event.actorName)
+                    )
                     // Handle navigation to full movie list
                     // onNavigateToFullMovieList(event.actorId)
                 }
 
                 is CastDetailsEvent.NavigateToFullGallery -> {
+                    navController.navigate(
+                        CastGalleryRoute(event.actorId, event.actorName)
+                    )
                     // Handle navigation to full gallery
                     // onNavigateToFullGallery(event.actorId)
                 }
@@ -92,7 +96,7 @@ fun CastDetailsScreen(
         modifier = modifier,
         movieAppBar = {
             MovieAppBar(
-                title = uiState.actorDetails?.name ?: actor.name,
+                title = uiState.actorDetails?.name ?: "",
                 backButtonClick = { viewModel.onBackPressed() },
                 showBackButton = true,
                 showAddButton = false,

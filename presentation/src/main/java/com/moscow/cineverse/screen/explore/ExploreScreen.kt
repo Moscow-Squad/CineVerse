@@ -29,6 +29,7 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -36,6 +37,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.moscow.cineverse.designSystem.component.PillLabel
 import com.moscow.cineverse.designSystem.component.ViewMode
 import com.moscow.cineverse.designSystem.component.ViewModeToggle
@@ -43,6 +47,7 @@ import com.moscow.cineverse.designSystem.component.search.SearchBar
 import com.moscow.cineverse.designSystem.component.tabs.ExploreTabs
 import com.moscow.cineverse.designSystem.component.tabs.ExploreTabsPages
 import com.moscow.cineverse.designSystem.theme.Theme
+import com.moscow.cineverse.navigation.routes.CastDetailsRoute
 import com.moscow.cineverse.screen.component.movie_poster_card.MediaItemUi
 import com.moscow.cineverse.screen.component.movie_poster_card.MoviePosterCard
 import com.moscow.cineverse.screen.explore.ExploreScreenState.GenreUi
@@ -53,16 +58,39 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun ExploreScreen(
+    navController: NavHostController = rememberNavController(),
     modifier: Modifier = Modifier,
     viewModel: ExploreViewModel = koinViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsState()
+
+    LaunchedEffect(Unit) {
+        viewModel.uiEvent.collect { event -> handleEffects(event, navController) }
+    }
 
     ExploreScreenContent(
         uiState = uiState,
         interactionListener = viewModel,
         modifier = modifier
     )
+}
+private fun handleEffects(
+    event: ExploreScreenEvents,
+    navController: NavHostController
+) {
+    when (event) {
+        is ExploreScreenEvents.ActorClicked -> {
+            navController.navigate(
+                CastDetailsRoute(event.actorId)
+            )
+        }
+        is ExploreScreenEvents.GenreSelected -> {}
+        ExploreScreenEvents.LoadData -> {}
+        is ExploreScreenEvents.MovieClicked -> {}
+        ExploreScreenEvents.RefreshRequested -> {}
+        is ExploreScreenEvents.TabSelected -> {}
+        is ExploreScreenEvents.ViewModeChanged -> {}
+    }
 }
 
 @Composable
@@ -184,6 +212,7 @@ private fun ExploreScreenContent(
                                             ActorPosterCard(
                                                 movie = item,
                                                 viewMode = uiState.viewMode,
+                                                onActorClicked = interactionListener::onActorClick
                                             )
                                         }
                                     }

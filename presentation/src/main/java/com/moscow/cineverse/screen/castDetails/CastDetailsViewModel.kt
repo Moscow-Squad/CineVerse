@@ -8,13 +8,14 @@ import com.android.domain.usecase.actordetails.GetActorDetails
 import com.android.domain.usecase.actordetails.GetActorGallery
 import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.cineverse.designSystem.component.cast_details.SocialMediaLinks
+import com.moscow.cineverse.screen.explore.ExploreScreenEvents
 import kotlinx.coroutines.launch
 
 class CastDetailsViewModel(
     private val getActorDetails: GetActorDetails,
     private val getActorGallery: GetActorGallery,
     private val getActorBestOfMovies: GetActorBestOfMovies,
-    private val actorId: Int
+    private val actorId: Int,
 ) : BaseViewModel<CastDetailsUiState, CastDetailsEvent>(CastDetailsUiState()),
     CastDetailsInteractionListener {
 
@@ -174,11 +175,13 @@ class CastDetailsViewModel(
     }
 
     override fun onShowMoreMovies() {
+        sendEvent(CastDetailsEvent.NavigateToFullMovieList(actorId, uiState.value.actorDetails?.name ?: ""))
         // Handle show more movies - you can add navigation to full movie list
         // For example: sendEvent(CastDetailsEvent.NavigateToFullMovieList(actorId))
     }
 
     override fun onShowMoreGallery() {
+        sendEvent(CastDetailsEvent.NavigateToFullGallery(actorId, uiState.value.actorDetails?.name ?: ""))
         // Handle show more gallery - you can add navigation to full gallery
         // For example: sendEvent(CastDetailsEvent.NavigateToFullGallery(actorId))
     }
