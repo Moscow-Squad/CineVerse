@@ -13,6 +13,7 @@ fun ActorPosterCard(
     modifier: Modifier = Modifier,
     viewMode: ViewMode = ViewMode.GRID,
     titleTextAlign: TextAlign = TextAlign.Start,
+    onActorClicked: (Int) -> Unit = {}
 ) {
     MovieCard(
         modifier = modifier,
@@ -25,6 +26,7 @@ fun ActorPosterCard(
         getRating = {0.0f},
         getGenres = {listOf()},
         getDuration = { "" },
-        getReleaseDate = {""}
+        getReleaseDate = {""},
+        onMovieClick = onActorClicked
     )
 }

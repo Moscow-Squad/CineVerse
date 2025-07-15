@@ -13,6 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import com.moscow.cineverse.designSystem.component.CineVersePreviews
 import com.moscow.cineverse.designSystem.component.MovieAppBar
 import com.moscow.cineverse.designSystem.component.MovieButton
@@ -27,6 +28,7 @@ import org.koin.core.parameter.parametersOf
 
 @Composable
 fun ActorGalleryScreen(
+    navController: NavHostController,
     actorId: Int,
     title: String,
     modifier: Modifier = Modifier,

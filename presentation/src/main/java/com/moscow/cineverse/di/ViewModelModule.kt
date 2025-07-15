@@ -10,7 +10,14 @@ import org.koin.dsl.module
 
 val viewModels = module{
     viewModelOf(::ExploreViewModel)
-    viewModelOf(::CastDetailsViewModel)
+    viewModel { (actorId: Int) ->
+        CastDetailsViewModel(
+            getActorBestOfMovies = get(),
+            getActorDetails = get(),
+            getActorGallery = get(),
+            actorId = actorId,
+        )
+    }
     viewModel { (actorId: Int, actorName: String) ->
         ShowAllActorMoviesInteractionViewModel(
             getActorBestOfMovies = get(),
