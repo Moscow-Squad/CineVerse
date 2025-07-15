@@ -2,9 +2,7 @@ package com.moscow.cineverse.designSystem.component.tabs
 
 import android.content.res.Configuration
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Tab
@@ -17,8 +15,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -41,7 +39,6 @@ fun ExploreTabs(
         else ExploreTabsPages.entries.take(2)
     }
 
-    val indicatorWidth = if (tabsToShow.size == 2) 158.dp else 101.dp
 
     TabRow(
         selectedTabIndex = tabsToShow.indexOf(selectedTab),
@@ -49,16 +46,17 @@ fun ExploreTabs(
         containerColor = Theme.colors.background.screen,
         modifier = modifier,
         indicator = { tabPositions ->
-            TabRowDefaults.PrimaryIndicator(
+            TabRowDefaults.SecondaryIndicator(
                 Modifier
-                    .tabIndicatorOffset(tabPositions[tabsToShow.indexOf(selectedTab)]),
+                    .tabIndicatorOffset(tabPositions[tabsToShow.indexOf(selectedTab)])
+                    .clip(
+                        RoundedCornerShape(
+                            topStart = Theme.radius.full,
+                            topEnd = Theme.radius.full
+                        )
+                    )
+                    .padding(horizontal = 16.dp),
                 color = selectedContentColor,
-                width = indicatorWidth,
-                height = 2.dp,
-                shape = RoundedCornerShape(
-                    topStart = Theme.radius.full,
-                    topEnd = Theme.radius.full
-                )
             )
         },
         divider = {
