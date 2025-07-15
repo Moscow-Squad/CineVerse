@@ -1,5 +1,6 @@
 package com.utils
 
+import com.android.domain.exception.CineVerseException
 import io.ktor.client.plugins.ClientRequestException
 import io.ktor.client.plugins.HttpRequestTimeoutException
 import io.ktor.client.plugins.ServerResponseException
@@ -12,7 +13,10 @@ abstract class BaseRepository {
     ): T {
         return try {
             function()
-        } catch (e: IOException) {
+        } catch (e: CineVerseException) {
+            throw e
+        }
+         catch (e: IOException) {
             throw CineVerseExceptions.IOException()
         } catch (e: ClientRequestException) {
             when (e.response.status.value) {
@@ -35,4 +39,5 @@ abstract class BaseRepository {
         } catch (e: Exception) {
             throw CineVerseExceptions.UnknownException(cause = e)
         }
-    }}
+    }
+}

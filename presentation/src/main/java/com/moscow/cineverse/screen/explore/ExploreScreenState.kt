@@ -2,6 +2,7 @@ package com.moscow.cineverse.screen.explore
 
 import com.moscow.cineverse.designSystem.component.ViewMode
 import com.moscow.cineverse.designSystem.component.tabs.ExploreTabsPages
+import com.moscow.cineverse.screen.component.movie_poster_card.MediaItemUi
 
 data class ExploreScreenState(
 
@@ -46,16 +47,6 @@ data class ExploreScreenState(
             else -> emptyList()
         }
     }
-
-    data class MediaItemUi(
-        val id: Int,
-        val title: String,
-        val imagePath: String,
-        val rating: Float,
-        val genres: List<String>,
-        val releaseDate: String,
-        val duration: String
-    )
 
     data class ActorUi(
         val title: String,

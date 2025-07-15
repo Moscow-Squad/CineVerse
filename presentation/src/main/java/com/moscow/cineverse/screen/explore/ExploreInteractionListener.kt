@@ -7,6 +7,7 @@ interface ExploreInteractionListener {
     fun onGenreSelected(genreId: Int)
     fun onViewModeChanged(viewMode: ViewMode)
     fun onMovieClick(movieId: Int)
+    fun onActorClick(actorId: Int)
     fun onTabSelected(tab: ExploreTabsPages)
     fun onRefresh()
     fun searchMovie(isHistory: Boolean = false)

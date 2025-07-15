@@ -392,6 +392,10 @@ class ExploreViewModel(
         sendEvent(ExploreScreenEvents.MovieClicked(movieId))
     }
 
+    override fun onActorClick(actorId: Int) {
+        sendEvent(ExploreScreenEvents.ActorClicked(actorId))
+    }
+
     override fun onTabSelected(tab: ExploreTabsPages) {
         if (uiState.value.selectedTab == tab) return
         updateState { it.copy(selectedTab = tab) }

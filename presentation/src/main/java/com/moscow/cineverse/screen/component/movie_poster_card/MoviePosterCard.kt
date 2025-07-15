@@ -1,11 +1,10 @@
-package com.moscow.cineverse.screen.explore
+package com.moscow.cineverse.screen.component.movie_poster_card
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import com.moscow.cineverse.designSystem.component.MovieCard
 import com.moscow.cineverse.designSystem.component.ViewMode
-import com.moscow.cineverse.screen.explore.ExploreScreenState.MediaItemUi
 
 @Composable
 fun MoviePosterCard(
@@ -15,7 +14,10 @@ fun MoviePosterCard(
     showRating: Boolean = true,
     onMovieClick: (Int) -> Unit = {},
     titleTextAlign: TextAlign = TextAlign.Start,
-    showTitle: Boolean = true
+    descriptionTextAlign: TextAlign = TextAlign.Start,
+    showGenres: Boolean = false,
+    showTitle: Boolean = true,
+    getTitleOverride: ((MediaItemUi) -> String)? = null,
 ) {
     MovieCard(
         modifier = modifier,
@@ -27,7 +29,7 @@ fun MoviePosterCard(
         showTitle = showTitle,
         getId = { it.id },
         getTitle = { it.title },
-        getPosterUrl = { it.imagePath },
+        getPosterUrl = { it.posterPath },
         getRating = { it.rating },
         getGenres = { it.genres },
         getDuration = { it.duration },
