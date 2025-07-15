@@ -265,7 +265,7 @@ private fun <T> ListMovieCard(
     }
 }
 
-private data class MockMovieData(
+data class MockMovieData(
     val id: Int,
     val title: String,
     val posterUrl: String,
