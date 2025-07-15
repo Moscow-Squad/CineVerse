@@ -1,7 +1,6 @@
 package com.moscow.cineverse.designSystem.component.search
 
 import androidx.annotation.DrawableRes
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -27,15 +26,17 @@ import com.moscow.cineverse.designSystem.theme.Theme
 fun SuggestItem(
     title: String,
     @DrawableRes icon: Int,
-    modifier : Modifier = Modifier,
-){
+    modifier: Modifier = Modifier,
+) {
     Column(
         modifier = modifier
             .fillMaxWidth()
             .height(48.dp)
     ) {
         Row(
-            modifier = Modifier.fillMaxWidth().height(47.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(47.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -43,7 +44,7 @@ fun SuggestItem(
                 modifier = Modifier.size(20.dp),
                 painter = painterResource(icon),
                 contentDescription = stringResource(R.string.suggest_item_icon),
-                tint = Theme.colors.shade.secondary
+                tint = Theme.colors.shade.tertiary
             )
             Text(
                 modifier = Modifier.weight(1f),
@@ -58,7 +59,7 @@ fun SuggestItem(
                 modifier = Modifier.size(20.dp),
                 painter = painterResource(Theme.icons.outline.arrowLeftUp),
                 contentDescription = stringResource(R.string.arrow_left_up),
-                tint = Theme.colors.shade.secondary
+                tint = Theme.colors.shade.tertiary
             )
         }
         HorizontalDivider(

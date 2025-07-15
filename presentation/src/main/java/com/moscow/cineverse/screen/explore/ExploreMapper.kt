@@ -18,7 +18,7 @@ fun Movie.toUi(genresList: List<GenreUi>): MediaItemUi =
         title = name,
         imagePath = posterPath,
         rating = rating,
-        genres = genreIds.map {it-> genresList.first { genre -> genre.id == it }.name },
+        genres = genreIds.map { it -> genresList.first { genre -> genre.id == it }.name },
         releaseDate = releaseDate.formatWith(YYYY_MMM_DD) ?: "",
         duration = ""
     )
@@ -29,7 +29,7 @@ fun Series.toUi(genresList: List<GenreUi>): MediaItemUi =
         title = name,
         imagePath = posterPath,
         rating = rating,
-        genres = genreIds.map {it-> genresList.first { genre -> genre.id == it }.name },
+        genres = genreIds.map { it -> genresList.first { genre -> genre.id == it }.name },
         releaseDate = firstAirDate.formatWith(YYYY_MMM_DD) ?: "",
         duration = ""
     )
@@ -47,8 +47,8 @@ fun Genre.toUi() =
         name = name
     )
 
-fun ExploreTabsPages.toTitle(): String{
-    return when(this){
+fun ExploreTabsPages.toTitle(): String {
+    return when (this) {
         ExploreTabsPages.MOVIES -> "Movies"
         ExploreTabsPages.SERIES -> "Series"
         ExploreTabsPages.ACTORS -> "Actors"
@@ -57,15 +57,33 @@ fun ExploreTabsPages.toTitle(): String{
 
 fun LocalDate.formatWith(pattern: String): String? {
     val day = dayOfMonth.toString().padStart(2, '0')
-    val month = monthNumber.toString().padStart(2, '0')
+    val month = getMonthName(monthNumber)
     val year = year.toString()
 
     return runCatching {
         pattern.replace("dd", day)
-            .replace("MM", month)
+            .replace("MMM", month)
             .replace("yyyy", year)
     }.getOrElse {
         it.printStackTrace()
         null
+    }
+}
+
+private fun getMonthName(monthNumber: Int): String {
+    return when (monthNumber) {
+        1 -> "Jan"
+        2 -> "Feb"
+        3 -> "Mar"
+        4 -> "Apr"
+        5 -> "May"
+        6 -> "Jun"
+        7 -> "Jul"
+        8 -> "Aug"
+        9 -> "Sep"
+        10 -> "Oct"
+        11 -> "Nov"
+        12 -> "Dec"
+        else -> "Unknown"
     }
 }
