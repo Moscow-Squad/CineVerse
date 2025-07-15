@@ -91,11 +91,6 @@ jobs:
           FIREBASE_SERVICE_ACCOUNT_KEY: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_KEY }}
         run: echo "$FIREBASE_SERVICE_ACCOUNT_KEY" > service-account-key.json
 
-      - name: Set Release Notes
-        id: set-release-notes
-        run: |
-          echo "RELEASE_NOTES=Push to develop: ${{ github.sha }}" >> $GITHUB_ENV
-
       - name: Distribute Debug APK to Firebase App Distribution
         run: ./gradlew appDistributionUploadDebug --stacktrace
         env:
