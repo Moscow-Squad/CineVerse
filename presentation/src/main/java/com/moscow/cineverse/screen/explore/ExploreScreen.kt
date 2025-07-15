@@ -1,5 +1,6 @@
 package com.moscow.cineverse.screen.explore
 
+import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
@@ -152,11 +153,17 @@ private fun ExploreScreenContent(
                         }
 
                         else -> {
-                            val gridColumns = remember(uiState.viewMode) {
-                                if (uiState.viewMode == ViewMode.GRID)
-                                    GridCells.Adaptive(minSize = 160.dp)
-                                else
+                            val gridColumns = remember(uiState.viewMode, uiState.selectedTab) {
+                                if (uiState.viewMode == ViewMode.GRID) {
+                                    when (uiState.selectedTab) {
+                                        ExploreTabsPages.ACTORS -> GridCells.Adaptive(minSize = 98.dp) // Smaller for actors
+                                        ExploreTabsPages.MOVIES, ExploreTabsPages.SERIES -> GridCells.Adaptive(
+                                            minSize = 160.dp
+                                        ) // Larger for movies/series
+                                    }
+                                } else {
                                     GridCells.Fixed(1)
+                                }
                             }
                             LazyVerticalGrid(
                                 columns = gridColumns,
@@ -171,6 +178,10 @@ private fun ExploreScreenContent(
                                 modifier = Modifier.fillMaxSize()
                             ) {
                                 items(uiState.contentList) { item ->
+                                    Log.e(
+                                        "jxjxjxxkx",
+                                        "ExploreScreenContent: ${uiState.contentList}"
+                                    )
                                     when (item) {
                                         is ExploreScreenState.MediaItemUi -> {
                                             MoviePosterCard(
@@ -182,8 +193,9 @@ private fun ExploreScreenContent(
 
                                         is ExploreScreenState.ActorUi -> {
                                             ActorPosterCard(
-                                                movie = item,
+                                                actor = item,
                                                 viewMode = uiState.viewMode,
+                                                modifier = Modifier.size(98.dp)
                                             )
                                         }
                                     }

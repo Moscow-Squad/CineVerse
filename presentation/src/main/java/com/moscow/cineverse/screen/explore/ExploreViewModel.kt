@@ -87,7 +87,7 @@ class ExploreViewModel(
     private fun onMovieSearchSuccess(items: List<Movie>) {
         updateState {
             it.copy(
-                searchResult = it.searchResult.plus(it.selectedTab.toTitle() to items.map {
+                searchResult = it.searchResult.plus(ExploreTabsPages.MOVIES.toTitle() to items.map {
                     it.toUi(
                         uiState.value.moviesGenres
                     )
@@ -101,7 +101,7 @@ class ExploreViewModel(
     private fun onSeriesSearchSuccess(items: List<Series>) {
         updateState {
             it.copy(
-                searchResult = it.searchResult.plus(it.selectedTab.toTitle() to items.map {
+                searchResult = it.searchResult.plus(ExploreTabsPages.SERIES.toTitle() to items.map {
                     it.toUi(
                         uiState.value.seriesGenres
                     )
@@ -112,10 +112,11 @@ class ExploreViewModel(
         updateContentList()
     }
 
-    private fun onActorSearchSuccess(items: List<Actor>) {
+    private fun onActorSearchSuccess(actors: List<Actor>) {
         updateState { state ->
+            Log.e("jxjxjxxkx", "onActorSearchSuccess: $actors")
             state.copy(
-                actorsSearchResult = state.actorsSearchResult + items.map { actor -> actor.toUi() },
+                searchResult = state.searchResult.plus(ExploreTabsPages.ACTORS.toTitle() to actors.map { it.toUi() }),
                 isLoading = false
             )
         }
@@ -194,6 +195,14 @@ class ExploreViewModel(
     }
 
     override fun onCancelButtonClicked() {
+        if (uiState.value.selectedTab == ExploreTabsPages.ACTORS) {
+            updateState {
+                it.copy(
+                    selectedTab = ExploreTabsPages.MOVIES
+                )
+            }
+        }
+
         updateState {
             it.copy(
                 searchKeyWord = "",
@@ -386,20 +395,7 @@ class ExploreViewModel(
     override fun onTabSelected(tab: ExploreTabsPages) {
         if (uiState.value.selectedTab == tab) return
         updateState { it.copy(selectedTab = tab) }
-        updateState {
-            it.copy(
-                contentList = when (tab) {
-                    ExploreTabsPages.MOVIES -> it.movies
-                    ExploreTabsPages.SERIES -> it.series
-                    ExploreTabsPages.ACTORS -> it.movies
-                },
-                genres = when (tab) {
-                    ExploreTabsPages.MOVIES -> it.moviesGenres
-                    ExploreTabsPages.SERIES -> it.seriesGenres
-                    ExploreTabsPages.ACTORS -> it.moviesGenres
-                }
-            )
-        }
+        updateContentList()
     }
 
     override fun onRefresh() {
@@ -462,7 +458,9 @@ class ExploreViewModel(
     }
 
     private fun updateContentList() {
-        if (uiState.value.searchResult.isNotEmpty())
+        if (uiState.value.searchResult.isNotEmpty() &&
+            uiState.value.searchResult.containsKey(uiState.value.selectedTab.toTitle())
+        )
             updateState {
                 it.copy(
                     contentList = it.searchResult.getOrDefault(
@@ -475,15 +473,21 @@ class ExploreViewModel(
         else {
             updateState {
                 it.copy(
+                    genres = if (it.selectedTab == ExploreTabsPages.MOVIES)
+                        it.moviesGenres
+                    else it.seriesGenres
+                )
+            }
+            updateState {
+                it.copy(
                     shouldShowGenres = true,
-                    contentList = when (it.selectedTab) {
-                        ExploreTabsPages.MOVIES -> it.movies
-                        ExploreTabsPages.SERIES -> it.series
-                        ExploreTabsPages.ACTORS -> it.movies
-                    },
+                    contentList = if (it.selectedTab == ExploreTabsPages.MOVIES)
+                        it.movies
+                    else
+                        it.series
+
                 )
             }
         }
     }
-
 }

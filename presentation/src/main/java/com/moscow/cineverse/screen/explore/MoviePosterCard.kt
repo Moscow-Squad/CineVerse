@@ -33,7 +33,7 @@ fun MoviePosterCard(
         showTitle = showTitle,
         getId = { it.id },
         getTitle = { it.title },
-        getPosterUrl = { it.posterPath },
+        getPosterUrl = { it.imagePath },
         getRating = { it.rating },
         getGenres = { it.genres },
         getDuration = { it.duration },
