@@ -9,22 +9,22 @@ import com.moscow.cineverse.screen.explore.ExploreScreenState
 
 @Composable
 fun ActorPosterCard(
-    movie: ExploreScreenState.ActorUi,
+    actor: ExploreScreenState.ActorUi,
     modifier: Modifier = Modifier,
     viewMode: ViewMode = ViewMode.GRID,
     titleTextAlign: TextAlign = TextAlign.Start,
 ) {
     MovieCard(
         modifier = modifier,
-        movieData = movie,
+        movieData = actor,
         viewMode = viewMode,
         titleTextAlign = titleTextAlign,
         getId = { it.id },
         getTitle = { it.title },
-        getPosterUrl = { it.icon },
-        getRating = {0.0f},
-        getGenres = {listOf()},
+        getPosterUrl = { it.profilePath },
+        getRating = { 0.0f },
+        getGenres = { listOf() },
         getDuration = { "" },
-        getReleaseDate = {""}
+        getReleaseDate = { "" }
     )
 }

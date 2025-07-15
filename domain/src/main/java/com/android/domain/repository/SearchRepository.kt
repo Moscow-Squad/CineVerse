@@ -14,7 +14,7 @@ interface SearchRepository {
 
     suspend fun getLocalSuggestions(): Flow<List<String>>
     suspend fun deleteSearchHistory(searchTerm: String)
-    suspend fun getRemoteSuggestions(keyWord: String, page: Int): Flow<List<String>>
+    suspend fun getRemoteSuggestions(keyWord: String, page: Int): List<String>
     suspend fun searchMulti(query: String): Flow<List<MultiSearch>>
     suspend fun searchMovie(query: String,isHistory: Boolean = false): Flow<List<Movie>>
     suspend fun searchSeries(query: String,isHistory: Boolean = false): Flow<List<Series>>

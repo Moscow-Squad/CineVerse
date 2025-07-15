@@ -16,7 +16,7 @@ interface ExploreInteractionListener {
     fun onSearchBarClickedOn()
     fun onCancelButtonClicked()
     fun onSearchValueChange(text: String)
-    fun onSearchWordDetected(searchKeyWords: List<String>)
+    fun onSearchWordDetected(searchKeyWord: List<String>)
     fun SuggestionList() : List<SuggestItemUiState>
     fun onClickSuggestion(suggestion: SuggestItemUiState)
     fun clearAllLocalSuggestions()
