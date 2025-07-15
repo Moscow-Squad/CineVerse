@@ -206,7 +206,9 @@ private fun <T> GridMovieCard(
             showTitle = showTitle,
             genres = getGenres(movieData),
             showGenres = showGenres,
-            modifier = infoModifier.padding(top = 8.dp),
+            modifier = infoModifier
+                .fillMaxWidth()
+                .padding(top = 8.dp),
             titleTextAlign = titleTextAlign,
             descriptionTextAlign = descriptionTextAlign
         )

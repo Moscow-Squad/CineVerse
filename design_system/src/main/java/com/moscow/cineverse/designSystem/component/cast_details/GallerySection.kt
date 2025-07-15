@@ -66,14 +66,6 @@ fun GallerySection(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        GalleryImage(
-            imageUrl = images[0],
-            modifier = Modifier
-                .weight(2f)
-                .height(280.dp)
-                .clip(RoundedCornerShape(Theme.radius.large))
-        )
-
         Column(
             modifier = Modifier
                 .weight(1f)
@@ -81,20 +73,28 @@ fun GallerySection(
             verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {
             GalleryImage(
-                imageUrl = images[1],
+                imageUrl = images[0],
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(134.dp)
                     .clip(RoundedCornerShape(Theme.radius.large))
             )
             GalleryImage(
-                imageUrl = images[2],
+                imageUrl = images[1],
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(134.dp)
                     .clip(RoundedCornerShape(Theme.radius.large))
             )
         }
+
+        GalleryImage(
+            imageUrl = images[2],
+            modifier = Modifier
+                .weight(2f)
+                .height(280.dp)
+                .clip(RoundedCornerShape(Theme.radius.large))
+        )
     }
 }
 
