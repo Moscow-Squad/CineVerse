@@ -18,7 +18,6 @@ fun MoviePosterCard(
     showGenres: Boolean = false,
     showTitle: Boolean = true,
     getTitleOverride: ((MediaItemUi) -> String)? = null,
-    showTitle: Boolean = true
 ) {
     MovieCard(
         modifier = modifier,
