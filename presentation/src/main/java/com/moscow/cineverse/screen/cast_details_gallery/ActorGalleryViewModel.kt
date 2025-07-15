@@ -9,18 +9,19 @@ class ActorGalleryViewModel(
     savedStateHandle: SavedStateHandle,
 ) : BaseViewModel<ShowAllActorMoviesState, ActorGalleryEvents>(ShowAllActorMoviesState()),
     ActorGalleryInteractionListener {
-    //todo enhance when make navigation
-    private val actorId = savedStateHandle.get<Int>("actorId") ?: 1
 
     init {
-        getActorPhotos()
+
     }
 
+    fun getActor(actorId: Int, actorName: String){
+        updateState { it.copy(actorId = actorId, actorName = actorName) }
+    }
 
-    private fun getActorPhotos() {
+    fun getActorPhotos() {
         launchWithFlow(
             flowAction = {
-                getActorGallery.getActorGallery(actorId)
+                getActorGallery.getActorGallery(uiState.value.actorId)
             },
             onSuccess = ::onGetActorPhotosSuccess,
             onError = ::onGetActorPhotosFailed,

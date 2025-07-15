@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -26,17 +27,23 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun ActorGalleryScreen(
+    actorId: Int,
+    title: String,
     modifier: Modifier = Modifier,
-    title: String
 ) {
     val viewModel: ActorGalleryViewModel = koinViewModel()
     val uiState by viewModel.uiState.collectAsState()
+
+    LaunchedEffect(true) {
+        viewModel.getActor(actorId, title)
+        viewModel.getActorPhotos()
+    }
 
     ActorGalleryContent(
         uiState = uiState,
         interactionListener = viewModel,
         modifier = modifier,
-        title = title
+        title = uiState.actorName
     )
 }
 
