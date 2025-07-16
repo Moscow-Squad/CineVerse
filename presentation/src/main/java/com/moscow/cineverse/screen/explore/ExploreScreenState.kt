@@ -2,14 +2,16 @@ package com.moscow.cineverse.screen.explore
 
 import com.moscow.cineverse.designSystem.component.ViewMode
 import com.moscow.cineverse.designSystem.component.tabs.ExploreTabsPages
+import com.moscow.cineverse.screen.component.movie_poster_card.MediaItemUi
 
 data class ExploreScreenState(
 
     val searchKeyWord: String = "",
 
-    val searchResult: Map<String, List<MediaItemUi>> = mutableMapOf(),
+    val searchResult: Map<String, List<Any>> = mutableMapOf(),
 
-    val actorsSearchResult: List<ActorUi> = emptyList(),
+//    val actorsSearchResult: List<ActorUi> = emptyList(),
+
     val remoteSuggestions:List<String> = emptyList(),
 
     val isSearchBarClickedOn : Boolean = false,
@@ -46,19 +48,9 @@ data class ExploreScreenState(
         }
     }
 
-    data class MediaItemUi(
-        val id: Int,
-        val title: String,
-        val posterPath: String,
-        val rating: Float,
-        val genres: List<String>,
-        val releaseDate: String,
-        val duration: String
-    )
-
     data class ActorUi(
         val title: String,
-        val icon: String,
+        val profilePath: String,
         val id: Int
     )
     data class GenreUi(

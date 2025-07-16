@@ -83,13 +83,18 @@ jobs:
       - name: Make gradlew executable
         run: chmod +x ./gradlew
 
-      - name: Build Debug APK
-        run: ./gradlew assembleDebug
+      - name: Create local.properties with TMDB_API_KEY
+        run: |
+            echo "sdk.dir=/usr/local/lib/android/sdk" > local.properties
+            echo "TMDB_API_KEY=${{ secrets.TMDB_API_KEY }}" >> local.properties
 
       - name: Save Service Account Key
         env:
           FIREBASE_SERVICE_ACCOUNT_KEY: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_KEY }}
         run: echo "$FIREBASE_SERVICE_ACCOUNT_KEY" > service-account-key.json
+
+      - name: Build Debug APK
+        run: ./gradlew assembleDebug
 
       - name: Distribute Debug APK to Firebase App Distribution
         run: ./gradlew appDistributionUploadDebug --stacktrace

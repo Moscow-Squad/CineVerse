@@ -17,8 +17,6 @@ import com.android.domain.usecase.SuggestionUseCase
 import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.cineverse.designSystem.component.ViewMode
 import com.moscow.cineverse.designSystem.component.tabs.ExploreTabsPages
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
@@ -40,6 +38,8 @@ class ExploreViewModel(
     ExploreInteractionListener {
 
     init {
+        getMoviesGenres()
+        getSeriesGenres()
         loadMovies()
         loadSeries()
         observeKeyword()
@@ -87,7 +87,7 @@ class ExploreViewModel(
     private fun onMovieSearchSuccess(items: List<Movie>) {
         updateState {
             it.copy(
-                searchResult = it.searchResult.plus(it.selectedTab.toTitle() to items.map {
+                searchResult = it.searchResult.plus(ExploreTabsPages.MOVIES.toTitle() to items.map {
                     it.toUi(
                         uiState.value.moviesGenres
                     )
@@ -101,7 +101,7 @@ class ExploreViewModel(
     private fun onSeriesSearchSuccess(items: List<Series>) {
         updateState {
             it.copy(
-                searchResult = it.searchResult.plus(it.selectedTab.toTitle() to items.map {
+                searchResult = it.searchResult.plus(ExploreTabsPages.SERIES.toTitle() to items.map {
                     it.toUi(
                         uiState.value.seriesGenres
                     )
@@ -112,10 +112,11 @@ class ExploreViewModel(
         updateContentList()
     }
 
-    private fun onActorSearchSuccess(items: List<Actor>) {
+    private fun onActorSearchSuccess(actors: List<Actor>) {
         updateState { state ->
+            Log.e("jxjxjxxkx", "onActorSearchSuccess: $actors")
             state.copy(
-                actorsSearchResult = state.actorsSearchResult + items.map { actor -> actor.toUi() },
+                searchResult = state.searchResult.plus(ExploreTabsPages.ACTORS.toTitle() to actors.map { it.toUi() }),
                 isLoading = false
             )
         }
@@ -163,11 +164,9 @@ class ExploreViewModel(
         )
     }
 
-    private fun onSuccessLoadingSuggestions(suggestion: Flow<List<String>>) {
+    private fun onSuccessLoadingSuggestions(suggestion: List<String>) {
         viewModelScope.launch {
-            suggestion.collect { s ->
-                updateState { it.copy(remoteSuggestions = s) }
-            }
+            updateState { it.copy(remoteSuggestions = suggestion) }
         }
     }
 
@@ -179,21 +178,31 @@ class ExploreViewModel(
     private fun getHistoryData() {
         launchWithFlow(
             flowAction = { getLocalSuggestions.localSuggestions() },
-            onSuccess = { history ->
-                val suggestions = history.map { SuggestItemUiState(it, isHistory = true) }
-                updateState { it.copy(localSuggestions = suggestions) }
-            },
-            onError = {},
-            onStart = {},
-            onFinally = {
-                if (uiState.value.localSuggestions.isNotEmpty()) {
-                    updateState { it.copy(showHistory = true) }
-                }
-            }
+            onSuccess = ::onGetHistoryDataSuccess,
+            onError = ::onGetHistoryDataFailed,
+            onStart = ::onLoading,
+            onFinally = {}
         )
     }
 
+    private fun onGetHistoryDataSuccess(suggestions: List<String>) {
+        val suggestions = suggestions.map { SuggestItemUiState(it, isHistory = true) }
+        updateState { it.copy(localSuggestions = suggestions, showHistory = true) }
+    }
+
+    private fun onGetHistoryDataFailed(e: Throwable) {
+
+    }
+
     override fun onCancelButtonClicked() {
+        if (uiState.value.selectedTab == ExploreTabsPages.ACTORS) {
+            updateState {
+                it.copy(
+                    selectedTab = ExploreTabsPages.MOVIES
+                )
+            }
+        }
+
         updateState {
             it.copy(
                 searchKeyWord = "",
@@ -230,7 +239,8 @@ class ExploreViewModel(
                 uiState.value.searchKeyWord,
                 ignoreCase = true
             )
-        } + uiState.value.remoteSuggestions.map { SuggestItemUiState(it, isHistory = false) })
+        } + uiState.value.remoteSuggestions.filter { remoteSuggestions -> remoteSuggestions !in uiState.value.localSuggestions.map { it.title } }
+            .map { SuggestItemUiState(it, isHistory = false) })
     }
 
     override fun onClickSuggestion(suggestion: SuggestItemUiState) {
@@ -239,11 +249,14 @@ class ExploreViewModel(
                 searchKeyWord = suggestion.title,
             )
         }
-        Log.d("Tag", "Clicked suggestion: ${suggestion}")
         if (suggestion.isHistory) {
             searchMovie(isHistory = true)
+            searchSeries(isHistory = true)
+            searchActor(isHistory = true)
         } else {
             searchMovie()
+            searchSeries()
+            searchActor()
         }
         updateState {
             it.copy(
@@ -270,6 +283,7 @@ class ExploreViewModel(
 
     private fun onMoviesGenresSuccess(genres: List<Genre>) {
         updateState { it.copy(moviesGenres = genres.map { it.toUi() }) }
+        updateState { it.copy(genres = it.moviesGenres) }
     }
 
     private fun onMoviesGenresFailed(e: Throwable) {
@@ -309,10 +323,6 @@ class ExploreViewModel(
         )
     }
 
-    private fun onGetMovieByGenreIdFailed(e: Throwable) {
-
-    }
-
     private fun onGetMovieByGenreIdSuccess(movies: List<Movie>) {
         updateState {
             it.copy(
@@ -320,6 +330,10 @@ class ExploreViewModel(
             )
         }
         updateContentList()
+    }
+
+    private fun onGetMovieByGenreIdFailed(e: Throwable) {
+
     }
 
     override fun getSeriesByGenreId(genreId: Int) {
@@ -335,11 +349,10 @@ class ExploreViewModel(
     private fun onGetSeriesByGenreIdSuccess(series: List<Series>) {
         updateState {
             it.copy(
-                series = series.map { movie -> movie.toUi(uiState.value.seriesGenres) }
+                series = series.map { serie -> serie.toUi(uiState.value.seriesGenres) }
 
             )
         }
-        updateContentList()
         updateContentList()
     }
 
@@ -349,8 +362,10 @@ class ExploreViewModel(
 
 
     override fun onGenreSelected(genreId: Int) {
-        updateState { it.copy(selectedGenre = genreId) }
 
+        if (uiState.value.selectedGenre == genreId) return
+
+        updateState { it.copy(selectedGenre = genreId) }
         when (uiState.value.selectedTab) {
             ExploreTabsPages.MOVIES -> {
                 if (genreId == 0)
@@ -367,7 +382,6 @@ class ExploreViewModel(
 
             ExploreTabsPages.ACTORS -> {}
         }
-
     }
 
     override fun onViewModeChanged(viewMode: ViewMode) {
@@ -378,72 +392,79 @@ class ExploreViewModel(
         sendEvent(ExploreScreenEvents.MovieClicked(movieId))
     }
 
+    override fun onActorClick(actorId: Int) {
+        sendEvent(ExploreScreenEvents.ActorClicked(actorId))
+    }
+
     override fun onTabSelected(tab: ExploreTabsPages) {
-        updateState {
-            it.copy(
-                selectedTab = tab, contentList = when (tab) {
-                    ExploreTabsPages.MOVIES -> it.movies
-                    ExploreTabsPages.SERIES -> it.series
-                    ExploreTabsPages.ACTORS -> it.movies
-                },
-                genres = when (tab) {
-                    ExploreTabsPages.MOVIES -> it.moviesGenres
-                    ExploreTabsPages.SERIES -> it.seriesGenres
-                    ExploreTabsPages.ACTORS -> it.moviesGenres
-                }
-            )
-        }
+        if (uiState.value.selectedTab == tab) return
+        updateState { it.copy(selectedTab = tab) }
+        updateContentList()
     }
 
     override fun onRefresh() {
     }
 
     private fun loadSeries() {
-        viewModelScope.launch {
-            combine(
-                flow = genreUseCase.getSeriesGenres(),
-                flow2 = getSeriesUseCase(),
-                transform = { seriesGenres, series ->
-                    Pair(seriesGenres, series)
-                }
-            ).collect { result ->
-                updateState {
-                    it.copy(
-                        seriesGenres = result.first.map { it.toUi() },
-                        series = result.second.map { series -> series.toUi(result.first.map { it.toUi() }) },
-                    )
-                }
-            }
+        launchWithFlow(
+            flowAction = { getSeriesUseCase() },
+            onSuccess = ::onLoadSeriesSuccess,
+            onError = ::onLoadSeriesFailed,
+            onStart = ::onLoading,
+            onFinally = ::onFinally
+        )
+    }
+
+    private fun onLoadSeriesSuccess(movie: List<Series>) {
+        updateState {
+            it.copy(
+                isLoading = false,
+                series = movie.map { movie -> movie.toUi(uiState.value.seriesGenres) },
+            )
+        }
+        updateContentList()
+    }
+
+    private fun onLoadSeriesFailed(e: Throwable) {
+        updateState {
+            it.copy(
+                isLoading = false,
+            )
         }
     }
 
     private fun loadMovies() {
-        viewModelScope.launch {
-            combine(
-                flow = genreUseCase.getMoviesGenres(),
-                flow2 = getMoviesUseCase(),
-                transform = { movieGenres, movies ->
-                    Pair(movieGenres, movies)
-                }
-            ).collect { result ->
-                updateState {
-                    it.copy(
-                        moviesGenres = result.first.map { it.toUi() },
-                        movies = result.second.map { movie -> movie.toUi(result.first.map { it.toUi() }) },
-                    )
-                }
-                if (uiState.value.contentList.isEmpty()) {
-                    updateState { it.copy(contentList = it.movies, selectedGenre = 0) }
-                }
-                if (uiState.value.genres.isEmpty()) {
-                    updateState { it.copy(genres = it.moviesGenres, selectedGenre = 0) }
-                }
-            }
+        launchWithFlow(
+            flowAction = { getMoviesUseCase() },
+            onSuccess = ::onLoadMoviesSuccess,
+            onError = ::onLoadMoviesFailed,
+            onStart = ::onLoading,
+            onFinally = ::onFinally
+        )
+    }
+
+    private fun onLoadMoviesSuccess(movie: List<Movie>) {
+        updateState {
+            it.copy(
+                isLoading = false,
+                movies = movie.map { movie -> movie.toUi(uiState.value.moviesGenres) },
+            )
+        }
+        updateContentList()
+    }
+
+    private fun onLoadMoviesFailed(e: Throwable) {
+        updateState {
+            it.copy(
+                isLoading = false,
+            )
         }
     }
 
     private fun updateContentList() {
-        if (uiState.value.searchResult.isNotEmpty())
+        if (uiState.value.searchResult.isNotEmpty() &&
+            uiState.value.searchResult.containsKey(uiState.value.selectedTab.toTitle())
+        )
             updateState {
                 it.copy(
                     contentList = it.searchResult.getOrDefault(
@@ -456,15 +477,21 @@ class ExploreViewModel(
         else {
             updateState {
                 it.copy(
+                    genres = if (it.selectedTab == ExploreTabsPages.MOVIES)
+                        it.moviesGenres
+                    else it.seriesGenres
+                )
+            }
+            updateState {
+                it.copy(
                     shouldShowGenres = true,
-                    contentList = when (it.selectedTab) {
-                        ExploreTabsPages.MOVIES -> it.movies
-                        ExploreTabsPages.SERIES -> it.series
-                        ExploreTabsPages.ACTORS -> it.movies
-                    },
+                    contentList = if (it.selectedTab == ExploreTabsPages.MOVIES)
+                        it.movies
+                    else
+                        it.series
+
                 )
             }
         }
     }
-
 }

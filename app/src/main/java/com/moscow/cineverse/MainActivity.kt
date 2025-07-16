@@ -4,11 +4,12 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.navigation.compose.rememberNavController
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.ktx.Firebase
 import com.moscow.cineverse.designSystem.theme.CineVerseTheme
-import com.moscow.cineverse.screen.explore.ExploreScreen
+import com.moscow.cineverse.navigation.CineVerseNavGraph
 
 class MainActivity : ComponentActivity() {
 
@@ -20,7 +21,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             CineVerseTheme {
-                ExploreScreen()
+                CineVerseNavGraph(rememberNavController())
             }
         }
     }

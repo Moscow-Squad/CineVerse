@@ -1,6 +1,7 @@
 package com.moscow.cineverse.designSystem.component.movieSeriesDetails
 
 import androidx.annotation.DrawableRes
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -21,6 +22,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
@@ -51,24 +54,43 @@ fun SeasonCard(
             horizontalArrangement = Arrangement.spacedBy(12.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-
-            SafeImageViewer(
-                model = season.posterUrl,
-                contentDescription = stringResource(R.string.season_poster),
-                fallback = painterResource(R.drawable.due_tone_image),
-                modifier = Modifier
-                    .width(48.dp)
-                    .heightIn(64.dp)
-                    .clip(
-                        RoundedCornerShape(
-                            topStart = Theme.radius.size5xl,
-                            topEnd = Theme.radius.size5xl,
-                            bottomStart = Theme.radius.extraSmall,
-                            bottomEnd = Theme.radius.extraSmall
-                        )
-                    )
-            )
-
+            val isPreview = LocalInspectionMode.current
+            if (isPreview) {
+                Image(
+                    painter = painterResource(R.drawable.profile_image),
+                    contentDescription = "Image",
+                    modifier = Modifier
+                        .width(48.dp)
+                        .heightIn(64.dp)
+                        .clip(
+                            RoundedCornerShape(
+                                topStart = Theme.radius.size5xl,
+                                topEnd = Theme.radius.size5xl,
+                                bottomStart = Theme.radius.extraSmall,
+                                bottomEnd = Theme.radius.extraSmall
+                            )
+                        ),
+                    contentScale = ContentScale.Crop
+                )
+            } else {
+                SafeImageViewer(
+                    model = season.posterUrl,
+                    contentDescription = stringResource(R.string.season_poster),
+                    fallback = painterResource(R.drawable.due_tone_image),
+                    modifier = Modifier
+                        .width(48.dp)
+                        .heightIn(64.dp)
+                        .clip(
+                            RoundedCornerShape(
+                                topStart = Theme.radius.size5xl,
+                                topEnd = Theme.radius.size5xl,
+                                bottomStart = Theme.radius.extraSmall,
+                                bottomEnd = Theme.radius.extraSmall
+                            )
+                        ),
+                    contentScale = ContentScale.Crop
+                )
+            }
             Column(
                 modifier = Modifier
                     .weight(1f),

@@ -11,4 +11,5 @@ sealed class ExploreScreenEvents {
     data class TabSelected(val tab: ExploreTabsPages) : ExploreScreenEvents()
     object RefreshRequested : ExploreScreenEvents()
     object LoadData : ExploreScreenEvents()
+    data class ActorClicked(val actorId: Int) : ExploreScreenEvents()
 }

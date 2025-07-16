@@ -19,7 +19,6 @@ import androidx.compose.ui.unit.dp
 import com.example.design_system.R
 import com.moscow.cineverse.designSystem.theme.CineVerseTheme
 import com.moscow.cineverse.designSystem.theme.Theme
-import com.moscow.cineverse.designSystem.theme.ThemeState
 
 @Composable
 fun MovieAppBar(
@@ -43,7 +42,7 @@ fun MovieAppBar(
         Row(
             modifier = modifier
                 .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 8.dp),
+                .padding(horizontal = 16.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
