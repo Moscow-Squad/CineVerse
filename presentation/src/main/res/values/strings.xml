@@ -12,4 +12,8 @@
     <string name="let_the_world_know_how_you_felt">Let the world know how you felt.</string>
     <string name="storyline">Storyline</string>
     <string name="top_reviews">Top Reviews</string>
+    <string name="add_to_collection">Add To Collection</string>
+    <string name="no_collections_yet">No Collections Yet</string>
+    <string name="create_a_new_collection_to_start_saving_your_favorite_movies_and_series">Create a new collection to start saving your favorite movies and series.</string>
+    <string name="create_collection">Create Collection</string>
 </resources>
