@@ -12,4 +12,13 @@
     <string name="let_the_world_know_how_you_felt">Let the world know how you felt.</string>
     <string name="storyline">Storyline</string>
     <string name="top_reviews">Top Reviews</string>
+    <string name="cine_verse_logo">cine verse logo</string>
+    <string name="welcome_back_to_cineverse">Welcome back to CineVerse!</string>
+    <string name="email_or_username">Email or Username</string>
+    <string name="enter_your_email_or_username">Enter your email or username</string>
+    <string name="password">Password</string>
+    <string name="enter_your_password">Enter your password</string>
+    <string name="login">Login</string>
+    <string name="join_as_guest">Join as Guest</string>
+    <string name="create_a_new_account">Create a New Account</string>
 </resources>

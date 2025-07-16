@@ -8,4 +8,13 @@
     <string name="suggestions_title">المقتراحات</string>
     <string name="no_content_available">لا يتوفر محتوى</string>
     <string name="retry">إعادة المحاولة</string>
+    <string name="cine_verse_logo">شعار سينيفيرس</string>
+    <string name="welcome_back_to_cineverse">مرحبًا بك مرة أخرى في CineVerse!</string>
+    <string name="email_or_username">الإيميل او اسم المستخدم</string>
+    <string name="enter_your_email_or_username">ادخل الإيميل او اسم المستخدم</string>
+    <string name="password">كلمة المرور</string>
+    <string name="enter_your_password">أدخل كلمة المرور</string>
+    <string name="login">تسجيل الدخول</string>
+    <string name="join_as_guest">انضم كضيف</string>
+    <string name="create_a_new_account">إنشاء حساب جديد</string>
 </resources>
