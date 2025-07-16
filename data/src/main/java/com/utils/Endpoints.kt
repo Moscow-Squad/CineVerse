@@ -17,3 +17,6 @@ const val ACTOR = "person/"
 const val POPULAR = "popular"
 
 const val REVIEWS = "/reviews"
+
+const val ACCOUNT = "account/"
+const val LIST = "/lists"

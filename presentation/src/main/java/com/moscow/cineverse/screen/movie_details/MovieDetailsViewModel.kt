@@ -11,11 +11,12 @@ import com.moscow.cineverse.base.BaseViewModel
 
 class MovieDetailsViewModel(
     private val getMovieDetailsUseCase: GetMovieDetailUseCase,
-    private val getReviewsPageUseCase: GetReviewsPageUseCase
+    private val getReviewsPageUseCase: GetReviewsPageUseCase,
 ) : BaseViewModel<MovieScreenState, MovieDetailsScreenEvents>(MovieScreenState()) {
 
     init{
         getMovieDetails(24428)
+
     }
     private fun getMovieDetails(movieID:Int) {
         launchWithResult(

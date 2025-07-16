@@ -1,10 +1,12 @@
 package com.di
 
 import com.android.domain.repository.ActorDetailsRepository
+import com.android.domain.repository.CollectionsRepository
 import com.android.domain.repository.DetailsRepository
 import com.android.domain.repository.ExploreRepository
 import com.android.domain.repository.SearchRepository
 import com.repository.actordetails.ActorDetailsRepositoryImpl
+import com.repository.collections.CollectionsRepositoryImpl
 import com.repository.details.DetailsRepositoryImpl
 import com.repository.explore.ExploreRepositoryImpl
 import com.repository.explore.search.SearchRepositoryImpl
@@ -39,6 +41,13 @@ val repositoryModule = module {
         ActorDetailsRepositoryImpl(
             actorDetailsRemoteDataSource = get(),
             ioDispatcher = get(qualifier = named("IO")),
+        )
+    }
+
+    single<CollectionsRepository> {
+        CollectionsRepositoryImpl(
+            ioDispatcher = get(qualifier = named("IO")),
+            collectionsDataSource = get(),
         )
     }
 }

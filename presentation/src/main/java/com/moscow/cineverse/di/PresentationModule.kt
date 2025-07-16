@@ -9,6 +9,7 @@ import com.android.domain.usecase.GetReviewsPageUseCase
 import com.android.domain.usecase.GetSeriesByGenreIdUseCase
 import com.android.domain.usecase.GetSeriesDetailUseCase
 import com.android.domain.usecase.GetSeriesUseCase
+import com.android.domain.usecase.GetUserCollectionsUseCase
 import com.android.domain.usecase.SearchUseCase
 import com.android.domain.usecase.SuggestionUseCase
 import com.android.domain.usecase.actordetails.GetActorBestOfMovies
@@ -31,6 +32,7 @@ val useCases = module {
     single { GetMovieDetailUseCase(get()) }
     single { GetSeriesDetailUseCase(get()) }
     single { GetReviewsPageUseCase(get()) }
+    single { GetUserCollectionsUseCase(get()) }
 }
 
 val presentationModule = viewModels + useCases
