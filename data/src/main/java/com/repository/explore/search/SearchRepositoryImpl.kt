@@ -25,7 +25,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import java.util.concurrent.TimeUnit
-import kotlin.collections.sortedWith
 
 class SearchRepositoryImpl(
     private val searchLocalDateSource: SearchLocalDateSource,
@@ -160,7 +159,7 @@ class SearchRepositoryImpl(
         }.flowOn(ioDispatcher)
 
     private suspend fun List<Movie>.sortMoviesByFavouriteGenre(): List<Movie>{
-        val favouriteGenres = searchLocalDateSource.getFavouriteGenre().toSortedGenres()
+        val favouriteGenres = searchLocalDateSource.getFavouriteGenres().toSortedGenres()
         if (favouriteGenres.isEmpty()) return this
         return this.sortedWith(compareBy(
             { movie ->
@@ -173,7 +172,7 @@ class SearchRepositoryImpl(
     }
 
     private suspend fun List<Series>.sortSeriesByFavouriteGenre(): List<Series>{
-        val favouriteGenres = searchLocalDateSource.getFavouriteGenre().toSortedGenres()
+        val favouriteGenres = searchLocalDateSource.getFavouriteGenres().toSortedGenres()
         if (favouriteGenres.isEmpty()) return this
         return this.sortedWith(compareBy(
             { series ->
