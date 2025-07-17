@@ -7,5 +7,4 @@ interface DetailsLocalDataSource {
     suspend fun insertFavouriteGenre(genreId: Int)
     suspend fun incrementGenreCount(genreId: Int)
     suspend fun getFavouriteGenres(): Flow<List<FavouriteGenreEntity>>
-    //suspend fun getTopThreeGenreIds(): List<Int>
 }

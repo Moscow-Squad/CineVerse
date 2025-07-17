@@ -16,6 +16,7 @@ import com.mapper.toModel
 import com.remote.source.SearchRemoteDataSource
 import com.repository.mapper.toDomain
 import com.repository.mapper.toEntity
+import com.repository.mapper.toSortedGenres
 import com.utils.BaseRepository
 import com.utils.DELETE_SEARCH_QUERY_HISTORY
 import com.utils.QUERY
@@ -24,6 +25,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import java.util.concurrent.TimeUnit
+import kotlin.collections.sortedWith
 
 class SearchRepositoryImpl(
     private val searchLocalDateSource: SearchLocalDateSource,
@@ -33,7 +35,10 @@ class SearchRepositoryImpl(
 ) : SearchRepository, BaseRepository(
 ) {
     override suspend fun getLocalMoviesBySearchTerm(searchTerm: String): List<Movie> {
-        return searchLocalDateSource.getMoviesBySearchTerm(searchTerm).toDomain()
+        return searchLocalDateSource
+            .getMoviesBySearchTerm(searchTerm)
+            .toDomain()
+            .sortMoviesByFavouriteGenre()
     }
 
     @Transaction
@@ -108,7 +113,7 @@ class SearchRepositoryImpl(
                 searchRemoteDataSource.searchMovie(query)
             }
             if (result.isNotEmpty()) {
-                emit(result.map { it.toDomain() })
+                emit(result.map { it.toDomain() }.sortMoviesByFavouriteGenre())
                 insertMovie(result.map { movie -> movie.toDomain() }, query)
             } else {
                 throw CineVerseException.NotFoundCineVerseException
@@ -118,14 +123,19 @@ class SearchRepositoryImpl(
     override suspend fun searchSeries(query: String, isHistory: Boolean): Flow<List<Series>> =
         flow {
             if (isHistory) {
-                emit(searchLocalDateSource.getSeriesBySearchTerm(query).toDomain())
+                emit(
+                    searchLocalDateSource
+                    .getSeriesBySearchTerm(query)
+                    .toDomain()
+                    .sortSeriesByFavouriteGenre()
+                )
                 return@flow
             }
             val result = tryToExecute {
                 searchRemoteDataSource.searchSeries(query)
             }
             if (result.isNotEmpty()) {
-                emit(result.map { it.toDomain() })
+                emit(result.map { it.toDomain() }.sortSeriesByFavouriteGenre())
                 insertSeries(result.map { series -> series.toDomain() }, query)
             } else {
                 throw CineVerseException.NotFoundCineVerseException
@@ -148,4 +158,30 @@ class SearchRepositoryImpl(
                 throw CineVerseException.NotFoundCineVerseException
             }
         }.flowOn(ioDispatcher)
+
+    private suspend fun List<Movie>.sortMoviesByFavouriteGenre(): List<Movie>{
+        val favouriteGenres = searchLocalDateSource.getFavouriteGenre().toSortedGenres()
+        if (favouriteGenres.isEmpty()) return this
+        return this.sortedWith(compareBy(
+            { movie ->
+                -movie.genreIds.count { genre -> genre in favouriteGenres }
+            },
+            { movie ->
+                movie.genreIds.mapNotNull { genre -> favouriteGenres.indexOf(genre).takeIf { it != -1 } }.minOrNull() ?: Int.MAX_VALUE
+            }
+        ))
+    }
+
+    private suspend fun List<Series>.sortSeriesByFavouriteGenre(): List<Series>{
+        val favouriteGenres = searchLocalDateSource.getFavouriteGenre().toSortedGenres()
+        if (favouriteGenres.isEmpty()) return this
+        return this.sortedWith(compareBy(
+            { series ->
+                -series.genreIds.count { genre -> genre in favouriteGenres }
+            },
+            { series ->
+                series.genreIds.mapNotNull { genre -> favouriteGenres.indexOf(genre).takeIf { it != -1 } }.minOrNull() ?: Int.MAX_VALUE
+            }
+        ))
+    }
 }

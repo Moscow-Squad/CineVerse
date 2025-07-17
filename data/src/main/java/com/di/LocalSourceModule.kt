@@ -38,3 +38,4 @@ val localSourceModule = module {
     singleOf(::SearchLocalDateSourceImpl) bind SearchLocalDateSource::class
     singleOf(::DetailsLocalDataSourceImpl) bind DetailsLocalDataSource::class
 }
+
