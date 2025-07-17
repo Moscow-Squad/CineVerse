@@ -25,5 +25,8 @@ interface SearchLocalDateSource {
 
     suspend fun getSeriesBySearchTerm(searchTerm: String): List<SeriesEntity>
 
-    fun getFavouriteGenre(): Flow<List<FavouriteGenreEntity>>
+    fun getFavouriteGenres(): Flow<List<FavouriteGenreEntity>>
+
+    suspend fun insertFavouriteGenre(genreId: Int)
+
 }
