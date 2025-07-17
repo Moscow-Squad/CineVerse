@@ -1,6 +1,5 @@
 package com.moscow.cineverse.screen.explore
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.android.domain.model.Actor
 import com.android.domain.model.Genre
@@ -174,7 +173,7 @@ class ExploreViewModel(
         viewModelScope.launch {
             updateState { it.copy(remoteSuggestions = suggestion) }
         }
-        updateDisplayedSuggestions()
+//        updateDisplayedSuggestions()
     }
 
     override fun onSearchBarClickedOn() {
@@ -194,7 +193,6 @@ class ExploreViewModel(
 
     private fun onGetHistoryDataSuccess(suggestions: List<String>) {
         val suggestions = suggestions.map { SuggestItemUiState(it, isHistory = true) }
-        Log.d("TAG", "onGetHistoryDataSuccess: $suggestions")
         updateState { it.copy(localSuggestions = suggestions, showHistory = true) }
     }
 
@@ -232,7 +230,7 @@ class ExploreViewModel(
                 remoteSuggestions = emptyList()
             )
         }
-        updateDisplayedSuggestions()
+//        updateDisplayedSuggestions()
     }
 
     override fun onSearchWordDetected(searchKeyWord: List<String>) {
@@ -244,25 +242,25 @@ class ExploreViewModel(
         }
     }
 
-    private fun updateDisplayedSuggestions() {
-        updateState { state ->
-            val filteredLocalSuggestions = state.localSuggestions
-                .filter { it.title.contains(state.searchKeyWord, ignoreCase = true) }
-
-            val mappedRemoteSuggestions = state.remoteSuggestions
-                .map { SuggestItemUiState(it, isHistory = false) }
-
-            state.copy(
-                displayedSuggestions = filteredLocalSuggestions + mappedRemoteSuggestions
-            )
-        }
-    }
+//    private fun updateDisplayedSuggestions() {
+//        updateState { state ->
+//            val filteredLocalSuggestions = state.localSuggestions
+//                .filter { it.title.contains(state.searchKeyWord, ignoreCase = true) }
+//
+//            val mappedRemoteSuggestions = state.remoteSuggestions
+//                .map { SuggestItemUiState(it, isHistory = false) }
+//
+//            state.copy(
+//                displayedSuggestions = filteredLocalSuggestions + mappedRemoteSuggestions
+//            )
+//        }
+//    }
 
     override fun onClickSuggestion(suggestion: SuggestItemUiState) {
         updateState {
             it.copy(
                 searchKeyWord = suggestion.title,
-                displayedSuggestions = emptyList(),
+                remoteSuggestions = emptyList(),
             )
         }
         viewModelScope.launch {
@@ -288,7 +286,6 @@ class ExploreViewModel(
             it.copy(
                 showHistory = false,
                 showSuggestions = false,
-                displayedSuggestions = emptyList(),
             )
         }
         launchAndForget(

@@ -14,7 +14,6 @@ data class ExploreScreenState(
 
     val remoteSuggestions: List<String> = emptyList(),
     val localSuggestions: List<SuggestItemUiState> = listOf(),
-    val displayedSuggestions: List<SuggestItemUiState> = emptyList(),
     val isSearchBarClickedOn: Boolean = false,
     val showHistory: Boolean = false,
     val showSuggestions: Boolean = false,
@@ -40,6 +39,18 @@ data class ExploreScreenState(
     val contentList: List<Any> = emptyList()
 
 ) {
+
+    val displayedSuggestions: List<SuggestItemUiState>
+        get() {
+            val filteredLocalSuggestions = localSuggestions
+                .filter { it.title.contains(searchKeyWord, ignoreCase = true) }
+
+            val mappedRemoteSuggestions = remoteSuggestions
+                .map { SuggestItemUiState(it, isHistory = false) }
+
+            return filteredLocalSuggestions + mappedRemoteSuggestions
+        }
+
     fun fromScreenState(selectedTab: ExploreTabsPages): List<MediaItemUi> {
         return when (selectedTab) {
             ExploreTabsPages.MOVIES -> movies
