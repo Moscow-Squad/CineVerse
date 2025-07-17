@@ -8,4 +8,12 @@
     <string name="suggestions_title">المقتراحات</string>
     <string name="no_content_available">لا يتوفر محتوى</string>
     <string name="retry">إعادة المحاولة</string>
+    <string name="give_it_stars">امنحه تقييماً بالنجوم!</string>
+    <string name="let_the_world_know_how_you_felt">دع العالم يعرف كيف شعرت.</string>
+    <string name="storyline">القصة</string>
+    <string name="top_reviews">أهم المراجعات</string>
+    <string name="movie">فيلم</string>
+    <string name="star_cast">طاقم التمثيل</string>
+    <string name="you_might_also_like">قد يعجبك أيضاً</string>
+
 </resources>

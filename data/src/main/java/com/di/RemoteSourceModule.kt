@@ -12,5 +12,5 @@ val remoteSourceModule = module {
     single{ SearchRemoteDataSource(get()) }
     single{ ExploreRemoteDataSource(get()) }
     single{ ActorDetailsRemoteDataSource(get()) }
-    single { DetailsRemoteDataSource(get()) }
+    single{ DetailsRemoteDataSource(get()) }
 }

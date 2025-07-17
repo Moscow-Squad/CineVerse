@@ -1,3 +1,4 @@
+/*
 package com.moscow.cineverse.screen.series_details
 
 import androidx.compose.foundation.background
@@ -153,7 +154,8 @@ fun SeriesDetailsScreen(
 
                 if (detail?.cast?.isNotEmpty() == true) {
                     item {
-                        StarCastSection(
+                       */
+/* StarCastSection(
                             modifier = Modifier
                                 .background(Theme.colors.background.screen)
                                 .padding(10.dp),
@@ -166,7 +168,8 @@ fun SeriesDetailsScreen(
                                 )
                             }
                         )
-                    }
+                    }*//*
+
                 }
 
                 if (detail?.creators?.isNotEmpty() == true) {
@@ -304,4 +307,4 @@ private fun SeriesDetailsScreenPreview() {
     CineVerseTheme {
         SeriesDetailsScreen(seriesId = 1396) // Breaking Bad ID for preview
     }
-}
+}*/

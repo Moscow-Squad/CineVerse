@@ -35,6 +35,7 @@ val repositoryModule = module {
             get()
         )
     }
+
     single<ActorDetailsRepository> {
         ActorDetailsRepositoryImpl(
             actorDetailsRemoteDataSource = get(),
