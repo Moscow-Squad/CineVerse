@@ -17,4 +17,6 @@
     <string name="login">تسجيل الدخول</string>
     <string name="join_as_guest">انضم كضيف</string>
     <string name="create_a_new_account">إنشاء حساب جديد</string>
+    <string name="usernames_can_only_4_32_letters_and_numbers">يجب أن تتكون أسماء المستخدمين من 4 إلى 32 حرفًا ورقمًا فقط</string>
+    <string name="password_can_only_4_100_characters">كلمة المرور يجب أن تتكون من 4 إلى 100 حرف فقط</string>
 </resources>

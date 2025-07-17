@@ -52,7 +52,7 @@ fun MovieButton(
         modifier = modifier
             .height(48.dp)
             .background(backgroundColor, RoundedCornerShape(cornerRadius))
-            .clickable{ if (enable) onClick()},
+            .clickable(enabled = enable, onClick = onClick),
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
     )

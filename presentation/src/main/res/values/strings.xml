@@ -21,4 +21,6 @@
     <string name="login">Login</string>
     <string name="join_as_guest">Join as Guest</string>
     <string name="create_a_new_account">Create a New Account</string>
+    <string name="usernames_can_only_4_32_letters_and_numbers">Usernames can only 4–32 letters and numbers</string>
+    <string name="password_can_only_4_100_characters">Password can only 4-100 characters</string>
 </resources>

@@ -8,8 +8,11 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -17,20 +20,37 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.focus.FocusDirection
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.navigation.NavHostController
 import com.example.design_system.R
 import com.moscow.cineverse.designSystem.component.AppTextField
 import com.moscow.cineverse.designSystem.component.MovieButton
 import com.moscow.cineverse.designSystem.theme.Theme
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun LoginScreen() {
-    LoginScreenContent()
+fun LoginScreen(
+    navController: NavHostController,
+    viewModel: LoginViewModel = koinViewModel()
+) {
+    val state by viewModel.uiState.collectAsState()
+    LoginScreenContent(
+        state = state,
+        interactionListener = viewModel
+    )
 }
 
 @Composable
-fun LoginScreenContent(
+private fun LoginScreenContent(
     modifier: Modifier = Modifier,
+    state: LoginScreenState,
+    interactionListener: LoginInteractionListener
 ) {
+    val focusManager = LocalFocusManager.current
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -59,27 +79,41 @@ fun LoginScreenContent(
                 .padding(top = 48.dp, start = 16.dp, end = 16.dp)
                 .align(Alignment.CenterHorizontally),
             label = stringResource(com.moscow.cinverse.presentation.R.string.email_or_username),
-            value = "",
-            onValueChange = {},
+            value = state.username,
+            onValueChange = interactionListener::onUsernameValueChanged,
             placeholder = stringResource(com.moscow.cinverse.presentation.R.string.enter_your_email_or_username),
             leadingIcon = R.drawable.outline_user,
             leadingIconTint = Theme.colors.shade.tertiary,
             maxLines = 1,
-            isError = true,
-            errorMessage = "Usernames can only include letters and numbers"
+            isError = state.usernameError != null,
+            errorMessage = state.usernameError,
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next
+            , keyboardType = KeyboardType.Text, autoCorrectEnabled = true),
+            keyboardActions = KeyboardActions(
+                onNext = { focusManager.moveFocus(FocusDirection.Down) }
+            )
         )
         AppTextField(
             modifier = Modifier
                 .padding(top = 16.dp, start = 16.dp, end = 16.dp)
                 .align(Alignment.CenterHorizontally),
             label = stringResource(com.moscow.cinverse.presentation.R.string.password),
-            value = "",
-            onValueChange = {},
+            value = state.password,
+            onValueChange = interactionListener::onPasswordValueChanged,
             isPassword = true,
             maxLines = 1,
             placeholder = stringResource(com.moscow.cinverse.presentation.R.string.enter_your_password),
             leadingIcon = R.drawable.outline_lock,
-            leadingIconTint = Theme.colors.shade.tertiary
+            leadingIconTint = Theme.colors.shade.tertiary,
+            isError = state.passwordError != null,
+            errorMessage = state.passwordError,
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done
+                , keyboardType = KeyboardType.Password, autoCorrectEnabled = false),
+            keyboardActions = KeyboardActions(
+                onDone = {
+                    focusManager.clearFocus()
+                }
+            )
         )
         MovieButton(
             modifier = Modifier
@@ -88,8 +122,10 @@ fun LoginScreenContent(
             buttonText = stringResource(com.moscow.cinverse.presentation.R.string.login),
             textColor = Theme.colors.button.onPrimary,
             textStyle = Theme.textStyle.body.medium.medium,
-            onClick = {},
+            onClick = interactionListener::onClickLogin,
             buttonColor = Theme.colors.button.primary,
+            isLoading = state.isLoading,
+            enable = state.usernameError == null && state.passwordError == null
         )
         MovieButton(
             modifier = Modifier
@@ -98,7 +134,7 @@ fun LoginScreenContent(
             buttonText = stringResource(com.moscow.cinverse.presentation.R.string.join_as_guest),
             textColor = Theme.colors.button.onSecondary,
             textStyle = Theme.textStyle.body.medium.medium,
-            onClick = {},
+            onClick = interactionListener::onClickJoinAsGuest,
             buttonColor = Theme.colors.button.secondary,
         )
         Spacer(modifier = Modifier.weight(1f))
@@ -110,14 +146,18 @@ fun LoginScreenContent(
             textColor = Theme.colors.button.onSecondary,
             textStyle = Theme.textStyle.body.medium.medium,
             textPadding = PaddingValues(horizontal = 16.dp),
-            onClick = {},
+            onClick = interactionListener::onClickCreateNewAccount,
             buttonColor = Theme.colors.button.secondary,
         )
     }
 }
 
+private fun userNameCheckFailed(){
+
+}
+
 @Preview()
 @Composable()
 fun LoginScreenPreview() {
-    LoginScreen()
+//    LoginScreen()
 }

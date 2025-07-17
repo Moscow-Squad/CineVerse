@@ -125,6 +125,7 @@ fun AppTextField(
             shape = RoundedCornerShape(Theme.radius.large),
             colors = OutlinedTextFieldDefaults.colors(
                 focusedTextColor = Theme.colors.shade.primary,
+                unfocusedTextColor = Theme.colors.shade.primary,
                 focusedBorderColor = Theme.colors.brand.primary,
                 unfocusedBorderColor = Theme.colors.stroke.primary,
                 errorBorderColor = Theme.colors.additional.primary.red,
