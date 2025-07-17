@@ -173,6 +173,7 @@ class ExploreViewModel(
         viewModelScope.launch {
             updateState { it.copy(remoteSuggestions = suggestion) }
         }
+        updateDisplayedSuggestions()
     }
 
     override fun onSearchBarClickedOn() {
