@@ -5,6 +5,7 @@ import com.local.dao.search.MovieDao
 import com.local.dao.search.SearchHistoryDao
 import com.local.dao.search.SeriesDao
 import com.local.entity.ActorEntity
+import com.local.entity.FavouriteGenreEntity
 import com.local.entity.MovieEntity
 import com.local.entity.SearchHistoryEntity
 import com.local.entity.SeriesEntity
@@ -54,5 +55,9 @@ class SearchLocalDateSourceImpl(
 
     override suspend fun getSeriesBySearchTerm(searchTerm: String): List<SeriesEntity> {
         return seriesDao.getSeriesBySearchTerm(searchTerm)
+    }
+
+    override fun getFavouriteGenre(): Flow<List<FavouriteGenreEntity>> {
+        TODO("Not yet implemented")
     }
 }

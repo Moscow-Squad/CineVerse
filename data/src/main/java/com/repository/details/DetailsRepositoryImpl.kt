@@ -11,9 +11,13 @@ import com.repository.mapper.toDomain
 
 class DetailsRepositoryImpl(
     private val detailsRemoteDataSource: DetailsRemoteDataSource,
+    private val detailsLocalDataSource: DetailsLocalDataSource
 ) : DetailsRepository {
-    override suspend fun getMoviesDetail(movieId: Int): MovieDetail =
-        detailsRemoteDataSource.getMovieDetails(movieId).toDomain()
+    override suspend fun getMoviesDetail(movieId: Int): MovieDetail {
+        val res = detailsRemoteDataSource.getMovieDetails(movieId).toDomain()
+        res.genres.forEach { detailsLocalDataSource.insertFavouriteGenre(it) }
+        return res
+    }
 
     override suspend fun getSeriesDetail(seriesId: Int): SeriesDetail =
         detailsRemoteDataSource.getSeriesDetails(seriesId).toDomain()
