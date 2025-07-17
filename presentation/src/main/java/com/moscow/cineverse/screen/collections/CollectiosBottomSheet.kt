@@ -1,4 +1,4 @@
-package com.moscow.cineverse.screen
+package com.moscow.cineverse.screen.collections
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -31,20 +31,21 @@ fun CollectionsBottomSheet(
     showProcessIndicator: Boolean,
     errorMessage: String,
     collections: List<Collection>,
-    onCollectionClick: () -> Unit,
+    onCollectionClicked: (collectionId: Int) -> Unit,
     onAddNewCollectionClick: () -> Unit,
     onDismissBottomSheet: () -> Unit,
     onCloseBottomSheet: () -> Unit,
+    onCreateCollectionClicked: () -> Unit
 ) {
-    when {
-
-        isLoading -> {
-            CineVerseBottomSheet(
-                title = "",
-                onClose = {},
-                onDismissRequest = onDismissBottomSheet,
-                showCancelIcon = false
-            ) {
+    CineVerseBottomSheet(
+        title = stringResource(R.string.add_to_collection),
+        onClose = onCloseBottomSheet,
+        onDismissRequest = onDismissBottomSheet,
+        showCancelIcon = collections.isEmpty(),
+        onAddNewCollectionClick = onAddNewCollectionClick
+    ) {
+        when {
+            isLoading -> {
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -60,15 +61,8 @@ fun CollectionsBottomSheet(
                     )
                 }
             }
-        }
 
-        errorMessage.isNotEmpty() -> {
-            CineVerseBottomSheet(
-                title = "",
-                onClose = {},
-                onDismissRequest = onDismissBottomSheet,
-                showCancelIcon = false
-            ) {
+            errorMessage.isNotEmpty() -> {
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -89,28 +83,18 @@ fun CollectionsBottomSheet(
                     )
                 }
             }
-        }
 
-        else -> {
-            CineVerseBottomSheet(
-                title = stringResource(R.string.add_to_collection),
-                onClose = onCloseBottomSheet,
-                onDismissRequest = onDismissBottomSheet,
-                showCancelIcon = collections.isEmpty(),
-                onAddNewCollectionClick = onAddNewCollectionClick
-            ) {
+            else -> {
                 if (collections.isEmpty()) {
                     MessageInfoBox(
-                        title = "No Collections Yet",
-                        description = "Create a new collection to start saving your favorite movies and series.",
+                        title = stringResource(R.string.no_collections_yet),
+                        description = stringResource(R.string.create_a_new_collection_to_start_saving_your_favorite_movies_and_series),
                         icon = painterResource(Theme.icons.dueTone.videoLibrary),
                         showButtonsGroup = false,
                         firstButtonText = "",
                         onClickFirstButton = {},
-                        secondButtonText = "Create Collection",
-                        onClickSecondButton = {
-                            /* TODO("should open new bottom sheet to login or to create new collection") */
-                        },
+                        secondButtonText = stringResource(R.string.create_collection),
+                        onClickSecondButton = onCreateCollectionClicked,
                         modifier = Modifier.padding(bottom = 16.dp)
                     )
                 } else {
@@ -123,7 +107,9 @@ fun CollectionsBottomSheet(
                             CollectionItem(
                                 collectionName = currentCollection.name,
                                 showProgressBars = showProcessIndicator,
-                                onItemClicked = onCollectionClick,
+                                onItemClicked = {
+                                    onCollectionClicked(currentCollection.id)
+                                },
                             )
                         }
                     }

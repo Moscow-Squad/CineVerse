@@ -1,15 +1,11 @@
-package com.moscow.cineverse.screen
+package com.moscow.cineverse.screen.collections
 
 interface CollectionsBottomSheetInteractionListener {
-    fun onShowCollectionsBottomSheet()
-
-    fun onDismissBottomSheet()
+    fun onShowCollectionsBottomSheet(show: Boolean)
 
     fun onAddNewCollectionClick()
 
     fun onCollectionClick()
 
     fun onRefresh()
-
-    fun onCloseBottomSheet()
 }

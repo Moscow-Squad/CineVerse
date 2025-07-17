@@ -1,4 +1,4 @@
-package com.moscow.cineverse.screen
+package com.moscow.cineverse.screen.collections
 
 import com.android.domain.model.Collection
 import com.android.domain.usecase.GetUserCollectionsUseCase
@@ -13,21 +13,11 @@ class CollectionsBottomSheetViewModel(
     init {
         loadUserCollections()
     }
-
-    override fun onShowCollectionsBottomSheet() {
-        updateState { it.copy(showBottomSheet = true) }
-    }
-
-    override fun onDismissBottomSheet() {
-        updateState { it.copy(showBottomSheet = false) }
-    }
-
     override fun onAddNewCollectionClick() {
         TODO("should open new bottom sheet to login or to create new collection")
     }
 
     override fun onCollectionClick() {
-        // TODO("show progress indicator that points to loading or request to add movie to this collection")
         updateState { it.copy(showProcessIndicator = true) }
     }
 
@@ -35,8 +25,8 @@ class CollectionsBottomSheetViewModel(
         loadUserCollections()
     }
 
-    override fun onCloseBottomSheet() {
-        updateState { it.copy(showBottomSheet = false) }
+    override fun onShowCollectionsBottomSheet(show: Boolean) {
+        updateState { it.copy(showBottomSheet = show) }
     }
 
     private fun loadUserCollections() {

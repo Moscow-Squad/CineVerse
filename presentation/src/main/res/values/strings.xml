@@ -16,4 +16,5 @@
     <string name="no_collections_yet">No Collections Yet</string>
     <string name="create_a_new_collection_to_start_saving_your_favorite_movies_and_series">Create a new collection to start saving your favorite movies and series.</string>
     <string name="create_collection">Create Collection</string>
+    <string name="my_collections">My Collections</string>
 </resources>
