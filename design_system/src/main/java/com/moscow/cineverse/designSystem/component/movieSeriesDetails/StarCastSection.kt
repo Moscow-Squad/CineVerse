@@ -1,12 +1,10 @@
 package com.moscow.cineverse.designSystem.component.movieSeriesDetails
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Text
@@ -16,19 +14,20 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.design_system.R
-import com.moscow.cineverse.designSystem.theme.CineVerseTheme
 import com.moscow.cineverse.designSystem.theme.Theme
 
 @Composable
-fun StarCastSection(
+fun <T> StarCastSection(
+    title: String,
+    cast: List<T>,
+    onSeeMoreClick: () -> Unit,
+    castContent: @Composable (T) -> Unit,
     modifier: Modifier = Modifier,
-    seeMore: () -> Unit,
-    cast: List<CastMember>
-) {
+    showMoreText: String = stringResource(R.string.show_more),
 
+) {
     Column(
-        modifier = modifier
-            .fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         Row(
@@ -36,27 +35,26 @@ fun StarCastSection(
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text(
-                text = stringResource(R.string.star_cast),
+                text = title,
                 style = Theme.textStyle.title.small,
                 color = Theme.colors.shade.primary,
             )
             Text(
-                text = stringResource(R.string.show_more),
+                text = showMoreText,
                 style = Theme.textStyle.body.medium.medium,
                 color = Theme.colors.brand.primary,
-                modifier = Modifier.clickable { seeMore() }
+                modifier = Modifier.clickable { onSeeMoreClick() }
             )
         }
+
         LazyRow(
             horizontalArrangement = Arrangement.spacedBy(12.dp),
             modifier = Modifier.fillMaxWidth()
         ) {
-            items(cast.chunked(2)) { rowCast ->
-                Column(
-                    verticalArrangement = Arrangement.spacedBy(12.dp)
-                ) {
-                    rowCast.forEach { castMember ->
-                        CastCard(castMember = castMember)
+            items(cast.chunked(2)) { rowItems ->
+                Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                    rowItems.forEach { item ->
+                        castContent(item)
                     }
                 }
             }
@@ -64,43 +62,9 @@ fun StarCastSection(
     }
 }
 
+
 @Preview
 @Composable
 private fun StarCastSectionPreview() {
-    CineVerseTheme {
-        StarCastSection(
-            modifier = Modifier
-                .background(Theme.colors.background.screen)
-                .padding(10.dp),
-            seeMore = {},
-            cast = listOf(
-                CastMember(
-                    realName = "John Doe",
-                    nameInMovie = "John",
-                    imageUrl = "https://wror.com/uploads/2025/05/GettyImages-1511406162.jpg?format=auto&optimize=high&width=1440"
-                ),
-                CastMember(
-                    realName = "Jane Smith",
-                    nameInMovie = "Jane",
-                    imageUrl = "https://wror.com/uploads/2025/05/GettyImages-1511406162.jpg?format=auto&optimize=high&width=1440"
-                ),
-                CastMember(
-                    realName = "Alice Johnson",
-                    nameInMovie = "Alice",
-                    imageUrl = "https://wror.com/uploads/2025/05/GettyImages-1511406162.jpg?format=auto&optimize=high&width=1440"
-                ),
-                CastMember(
-                    realName = "Bob Brown",
-                    nameInMovie = "Bob",
-                    imageUrl = null
-                ),
-                CastMember(
-                    realName = "Charlie White",
-                    nameInMovie = "Charlie",
-                    imageUrl = null
-                ),
 
-                )
-        )
-    }
 }

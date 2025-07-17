@@ -80,10 +80,11 @@ fun SeriesDetailsScreen(
 
                 item {
                     MovieCardDetails(
-                        posterUrl = detail?.posterPath?.let { "https://image.tmdb.org/t/p/w500$it" } ?: "",
+                        posterUrl = detail?.posterPath?.let { "https://image.tmdb.org/t/p/w500$it" }
+                            ?: "",
                         title = detail?.title ?: "Loading...",
                         genres = detail?.genres?.joinToString(", ") { it.name } ?: "",
-                        rating = detail?.rating?.toString() ?: "0.0",
+                        rating = String.format(Locale.getDefault(),"%.1f", detail?.rating) ?: "0.0",
                         duration = detail?.runtime ?: "N/A",
                         releaseDate = detail?.releaseDate?.let { formatDate(it) } ?: "",
                         type = detail?.type ?: "SERIES"
@@ -143,7 +144,8 @@ fun SeriesDetailsScreen(
                                 seasonNumber = detail.numberOfSeasons!!,
                                 episodeCount = detail.numberOfEpisodes ?: 0,
                                 airDate = detail.releaseDate?.substring(0, 4) ?: "N/A",
-                                posterUrl = detail.posterPath?.let { "https://image.tmdb.org/t/p/w500$it" } ?: "",
+                                posterUrl = detail.posterPath?.let { "https://image.tmdb.org/t/p/w500$it" }
+                                    ?: "",
                                 caption = "Season ${detail.numberOfSeasons} of the series",
                                 rate = detail.rating.toFloat()
                             )
@@ -154,11 +156,13 @@ fun SeriesDetailsScreen(
                 if (detail?.cast?.isNotEmpty() == true) {
                     item {
                         StarCastSection(
+                            title = "Star",
                             modifier = Modifier
                                 .background(Theme.colors.background.screen)
                                 .padding(10.dp),
-                            seeMore = {},
-                            cast = detail.cast.take(5).map { cast ->
+                            onSeeMoreClick = {},
+                            cast = detail.cast.take(5),
+                            castContent = { cast ->
                                 CastMember(
                                     realName = cast.name,
                                     nameInMovie = cast.character ?: "Unknown",

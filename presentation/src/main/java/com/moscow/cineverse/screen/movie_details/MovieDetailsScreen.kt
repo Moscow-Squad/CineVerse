@@ -46,10 +46,11 @@ fun MovieDetailsScreen(
         modifier
     )
 }
+
 @Composable
 fun MovieDetailsContent(
     uiState: MovieScreenState,
-    modifier: Modifier= Modifier
+    modifier: Modifier = Modifier
 ) {
     val textColor = Theme.colors.shade.secondary
     when {
@@ -103,10 +104,11 @@ fun MovieDetailsContent(
                 }
                 item {
                     StarCastSection(
+                        title = "Cast",
                         modifier = Modifier
                             .background(Theme.colors.background.screen)
                             .padding(top = 24.dp, start = 16.dp, end = 16.dp),
-                        seeMore = {},
+                        onSeeMoreClick = {},
                         cast = listOf(
                             CastMember(
                                 realName = "John Doe",
@@ -132,9 +134,15 @@ fun MovieDetailsContent(
                                 realName = "Charlie White",
                                 nameInMovie = "Charlie",
                                 imageUrl = null
-                            ),
-
                             )
+                        ),
+                        castContent = { cast ->
+                            CastMember(
+                                realName = cast.realName,
+                                nameInMovie = cast.nameInMovie,
+                                imageUrl = cast.imageUrl?.let { "https://image.tmdb.org/t/p/w500$it" }
+                            )
+                        }
                     )
                 }
                 item {
@@ -210,13 +218,13 @@ fun MovieDetailsContent(
                             top = 24.dp
                         )
                     )
-                    repeat(uiState.reviewsFlow?.size?:0){
+                    repeat(uiState.reviewsFlow?.size ?: 0) {
                         MovieReviewCard(
-                            uiState.reviewsFlow?.get(it)?.name?:"",
-                            uiState.reviewsFlow?.get(it)?.username?:"",
-                            uiState.reviewsFlow?.get(it)?.reviewContent?:"",
-                            uiState.reviewsFlow?.get(it)?.rate?:0,
-                            uiState.reviewsFlow?.get(it)?.date?:"",
+                            uiState.reviewsFlow?.get(it)?.name ?: "",
+                            uiState.reviewsFlow?.get(it)?.username ?: "",
+                            uiState.reviewsFlow?.get(it)?.reviewContent ?: "",
+                            uiState.reviewsFlow?.get(it)?.rate ?: 0,
+                            uiState.reviewsFlow?.get(it)?.date ?: "",
                             painterResource(R.drawable.outline_user),
                             modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 12.dp)
                         )
