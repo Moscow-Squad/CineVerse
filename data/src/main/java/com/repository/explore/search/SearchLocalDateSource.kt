@@ -18,11 +18,12 @@ interface SearchLocalDateSource {
     suspend fun getMoviesBySearchTerm(searchTerm: String): List<MovieEntity>
 
     suspend fun insertActors(actors: List<ActorEntity>, searchTerm: String)
+
     suspend fun getActorsBySearchTerm(searchTerm: String): List<ActorEntity>
 
     suspend fun insertSeries(series: List<SeriesEntity>, searchTerm: String)
+
     suspend fun getSeriesBySearchTerm(searchTerm: String): List<SeriesEntity>
 
     fun getFavouriteGenre(): Flow<List<FavouriteGenreEntity>>
-
 }

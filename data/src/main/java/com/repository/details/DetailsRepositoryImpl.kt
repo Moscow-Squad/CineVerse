@@ -14,14 +14,16 @@ class DetailsRepositoryImpl(
     private val detailsLocalDataSource: DetailsLocalDataSource
 ) : DetailsRepository {
     override suspend fun getMoviesDetail(movieId: Int): MovieDetail {
-        val res = detailsRemoteDataSource.getMovieDetails(movieId).toDomain()
-        res.genres.forEach { detailsLocalDataSource.insertFavouriteGenre(it) }
-        return res
+        val res = detailsRemoteDataSource.getMovieDetails(movieId)
+        res.genres.forEach { detailsLocalDataSource.insertFavouriteGenre(it.id) }
+        return res.toDomain()
     }
 
-    override suspend fun getSeriesDetail(seriesId: Int): SeriesDetail =
-        detailsRemoteDataSource.getSeriesDetails(seriesId).toDomain()
-
+    override suspend fun getSeriesDetail(seriesId: Int): SeriesDetail {
+        val res = detailsRemoteDataSource.getSeriesDetails(seriesId)
+        res.genres.forEach { detailsLocalDataSource.insertFavouriteGenre(it.id) }
+        return res.toDomain()
+    }
 
     override suspend fun getReviewsPage(id:Int, page: Int, isMovie: Boolean): List<Review> {
         val response = detailsRemoteDataSource.getReviews(id, page, isMovie)
