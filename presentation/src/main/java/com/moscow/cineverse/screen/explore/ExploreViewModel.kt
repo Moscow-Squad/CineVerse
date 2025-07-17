@@ -1,5 +1,6 @@
 package com.moscow.cineverse.screen.explore
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.android.domain.model.Actor
 import com.android.domain.model.Genre
@@ -193,6 +194,7 @@ class ExploreViewModel(
 
     private fun onGetHistoryDataSuccess(suggestions: List<String>) {
         val suggestions = suggestions.map { SuggestItemUiState(it, isHistory = true) }
+        Log.d("TAG", "onGetHistoryDataSuccess: $suggestions")
         updateState { it.copy(localSuggestions = suggestions, showHistory = true) }
     }
 
@@ -242,27 +244,25 @@ class ExploreViewModel(
         }
     }
 
-     private fun updateDisplayedSuggestions() {
+    private fun updateDisplayedSuggestions() {
         updateState { state ->
-            state.copy(
-                displayedSuggestions = uiState.value.localSuggestions.filter {
-                    it.title.contains(
-                        uiState.value.searchKeyWord,
-                        ignoreCase = true
-                    )
-                } + uiState.value.remoteSuggestions
-//            .filter { remoteSuggestions -> remoteSuggestions !in uiState.value.localSuggestions.map { it.title } }
-                    .map { SuggestItemUiState(it, isHistory = false) }
+            val filteredLocalSuggestions = state.localSuggestions
+                .filter { it.title.contains(state.searchKeyWord, ignoreCase = true) }
 
+            val mappedRemoteSuggestions = state.remoteSuggestions
+                .map { SuggestItemUiState(it, isHistory = false) }
+
+            state.copy(
+                displayedSuggestions = filteredLocalSuggestions + mappedRemoteSuggestions
             )
         }
-
     }
 
     override fun onClickSuggestion(suggestion: SuggestItemUiState) {
         updateState {
             it.copy(
                 searchKeyWord = suggestion.title,
+                displayedSuggestions = emptyList(),
             )
         }
         viewModelScope.launch {
@@ -279,22 +279,20 @@ class ExploreViewModel(
             it.copy(
                 showHistory = false,
                 showSuggestions = false,
-                remoteSuggestions = emptyList()
             )
         }
     }
 
     override fun onSearchQuery() {
+        updateState {
+            it.copy(
+                showHistory = false,
+                showSuggestions = false,
+                displayedSuggestions = emptyList(),
+            )
+        }
         launchAndForget(
             action = {
-                updateState {
-                    it.copy(
-                        showHistory = false,
-                        showSuggestions = false,
-                        remoteSuggestions = emptyList()
-                    )
-                }
-
                 uiState.value.localSuggestions.any { it.title == uiState.value.searchKeyWord }
                     .let { isQueryInHistory ->
                         if (!isQueryInHistory)
