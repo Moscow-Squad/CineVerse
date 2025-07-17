@@ -32,6 +32,10 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.android.domain.model.Creator
+import com.android.domain.model.Genre
+import com.android.domain.model.Review
+import com.android.domain.model.SeriesDetail
 import com.example.design_system.R
 import com.moscow.cineverse.designSystem.component.Movie
 import com.moscow.cineverse.designSystem.component.MovieAppBar
@@ -52,7 +56,6 @@ import org.koin.androidx.compose.koinViewModel
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun SeriesDetailsScreen(
     seriesId: Int,
@@ -64,17 +67,51 @@ fun SeriesDetailsScreen(
         viewModel.loadSeriesDetails(seriesId)
         viewModel.loadReviews(seriesId, page = 1)
     }
+    SeriesDetailsContent(
+        uiState
+    )
+}
 
+// Helper functions for date formatting
+private fun formatDate(dateString: String): String {
+    return try {
+        val inputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        val outputFormat = SimpleDateFormat("yyyy, MMM dd", Locale.getDefault())
+        val date = inputFormat.parse(dateString)
+        date?.let { outputFormat.format(it) } ?: dateString
+    } catch (e: Exception) {
+        dateString
+    }
+}
+
+private fun formatReviewDate(dateString: String): String {
+    return try {
+        val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
+        val outputFormat = SimpleDateFormat("MMM dd, yyyy", Locale.getDefault())
+        val date = inputFormat.parse(dateString)
+        date?.let { outputFormat.format(it) } ?: dateString
+    } catch (e: Exception) {
+        dateString
+    }
+}
+
+@OptIn(ExperimentalSharedTransitionApi::class)
+@Composable
+fun SeriesDetailsContent(
+    uiState: SeriesDetailsUiState,
+) {
     val detail = uiState.seriesDetail
     val reviews = uiState.reviews
     val isLoading = uiState.isLoading
     val error = uiState.error
-
+    val latestSeason = uiState.latestSeason
     Box(
         modifier = Modifier
             .fillMaxSize()
             .background(Theme.colors.background.screen)
-    ) {
+    )
+    {
+
         if (isLoading && detail == null) {
             CircularProgressIndicator(
                 modifier = Modifier.align(Alignment.Center),
@@ -154,23 +191,20 @@ fun SeriesDetailsScreen(
                             textAlign = TextAlign.Justify
                         )
                     }
-
-                    // Show season info if available
-                    if (detail?.numberOfSeasons != null && detail.numberOfSeasons!! > 0) {
-                        item {
-                            SectionTitle(
-                                title = "Latest Seasons",
-                                onClick = {},
-                                modifier = Modifier.padding(
-                                    start = 16.dp,
-                                    end = 16.dp,
-                                    bottom = 12.dp,
-                                    top = 24.dp
-                                )
+                    item {
+                        SectionTitle(
+                            title = "Latest Seasons",
+                            onClick = {},
+                            modifier = Modifier.padding(
+                                start = 16.dp,
+                                end = 16.dp,
+                                bottom = 12.dp,
+                                top = 24.dp
                             )
-                        }
-
-                        item {
+                        )
+                    }
+                    if (detail?.numberOfSeasons != null && detail.numberOfSeasons!! > 0) {
+                        items(latestSeason.size) {
                             SeasonCard(
                                 modifier = Modifier.padding(horizontal = 16.dp),
                                 season = Season(
@@ -185,25 +219,23 @@ fun SeriesDetailsScreen(
                             )
                         }
                     }
-
                     if (detail?.cast?.isNotEmpty() == true) {
-                        item {
+                        items(detail.cast) {
                             StarCastSection(
-                                modifier = Modifier
-                                    .background(Theme.colors.background.screen)
-                                    .padding(10.dp),
-                                seeMore = {},
+                                title = "Star Cast",
                                 cast = detail.cast.take(5).map { cast ->
                                     CastMember(
                                         realName = cast.name,
                                         nameInMovie = cast.character ?: "Unknown",
                                         imageUrl = cast.profilePath?.let { "https://image.tmdb.org/t/p/w500$it" }
+
                                     )
-                                }
+                                },
+                                onSeeMoreClick = {},
+                                castContent = { }
                             )
                         }
                     }
-
                     if (detail?.creators?.isNotEmpty() == true) {
                         item {
                             val staffInfo = mutableListOf<Pair<String, String>>()
@@ -254,8 +286,12 @@ fun SeriesDetailsScreen(
                             onClickShowMore = { },
                             onClickPoster = { },
                             modifier = Modifier.padding(top = 16.dp),
-                            movieCardContent = { movie, modifier, onClick ->
+                            movieCardContent = { movie, modifier, _ ->
+                                Box(modifier = modifier.padding(8.dp)) {
+                                    Text(text = movie.title)
+                                }
                             }
+
                         )
                     }
 
@@ -315,33 +351,82 @@ fun SeriesDetailsScreen(
     }
 }
 
-// Helper functions for date formatting
-private fun formatDate(dateString: String): String {
-    return try {
-        val inputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-        val outputFormat = SimpleDateFormat("yyyy, MMM dd", Locale.getDefault())
-        val date = inputFormat.parse(dateString)
-        date?.let { outputFormat.format(it) } ?: dateString
-    } catch (e: Exception) {
-        dateString
-    }
-}
-
-private fun formatReviewDate(dateString: String): String {
-    return try {
-        val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
-        val outputFormat = SimpleDateFormat("MMM dd, yyyy", Locale.getDefault())
-        val date = inputFormat.parse(dateString)
-        date?.let { outputFormat.format(it) } ?: dateString
-    } catch (e: Exception) {
-        dateString
-    }
-}
-
-@Preview
+@Preview(showBackground = true)
 @Composable
 private fun SeriesDetailsScreenPreview() {
     CineVerseTheme {
-        SeriesDetailsScreen(seriesId = 1396) // Breaking Bad ID for preview
+        SeriesDetailsContent(
+            uiState = SeriesDetailsUiState(
+                isLoading = false,
+                seriesDetail = SeriesDetail(
+                    id = 101,
+                    title = "The Great Adventure",
+                    posterPath = "",
+                    backdropPath = "",
+                    genres = listOf(
+                        Genre(id = 1, name = "Adventure"),
+                        Genre(id = 2, name = "Drama")
+                    ),
+                    rating = 8.5,
+                    voteCount = 1245,
+                    runtime = "45m per episode",
+                    releaseDate = "2021-09-15",
+                    type = "SERIES",
+                    overview = "A thrilling adventure series that explores the life of a young hero on a quest to save their world.",
+                    numberOfSeasons = 3,
+                    numberOfEpisodes = 30,
+                    cast = listOf(
+                        com.android.domain.model.CastMember(
+                            id = 1,
+                            name = "Emma Stone",
+                            character = "Hero",
+                            profilePath = null
+                        ),
+                        com.android.domain.model.CastMember(
+                            id = 2,
+                            name = "Ryan Gosling",
+                            character = "Mentor",
+                            profilePath = null
+                        )
+                    ),
+                    creators = listOf(
+                        Creator(
+                            id = 1,
+                            name = "John Doe",
+                            profilePath = null
+                        )
+                    ),
+                    tagline = "",
+                    status = "",
+                    lastAirDate = null,
+                    nextAirDate = null,
+                    lastEpisodeToAir = null,
+                    nextEpisodeToAir = null,
+                    seasons = emptyList(),
+                    similarSeries = emptyList(),
+                    reviews = emptyList()
+                ),
+                reviews = listOf(
+                    Review(
+                        id = "rev1",
+                        author = "FilmFan99",
+                        username = "filmfan99",
+                        content = "Absolutely amazing! The plot, the acting, everything was top-notch.",
+                        rating = 9.0,
+                        createdAt = "2024-03-05T15:23:01.000Z",
+                        avatarPath = "null"
+                    ),
+                    Review(
+                        id = "rev2",
+                        author = "MovieBuff88",
+                        username = "moviebuff88",
+                        content = "Great cinematography and storytelling. Can't wait for the next season!",
+                        rating = 8.0,
+                        createdAt = "2024-04-10T11:12:01.000Z",
+                        avatarPath = "null"
+                    )
+                )
+            )
+        )
     }
 }

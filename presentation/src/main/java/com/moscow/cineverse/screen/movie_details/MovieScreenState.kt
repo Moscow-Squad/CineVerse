@@ -1,11 +1,5 @@
 package com.moscow.cineverse.screen.movie_details
 
-import android.accessibilityservice.GestureDescription
-import androidx.paging.PagingData
-import com.moscow.cineverse.designSystem.component.ViewMode
-import com.moscow.cineverse.designSystem.component.tabs.ExploreTabsPages
-import com.moscow.cineverse.screen.explore.SuggestItemUiState
-import kotlinx.coroutines.flow.Flow
 
 data class MovieScreenState(
 

@@ -23,4 +23,9 @@ class DetailsRepositoryImpl(
         val response = detailsRemoteDataSource.getReviews(id, page, isMovie)
         return response.results.orEmpty().mapNotNull { it?.toDomain() }
     }
+
+    override suspend fun getLatestSeasons(): List<SeriesDetail> {
+        val response = detailsRemoteDataSource.getLatestSeasons()
+        return response.map { it.toDomain() }
+    }
 }

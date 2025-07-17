@@ -1,8 +1,9 @@
 package com.remote.source
 
-import com.remote.dto.MovieDetailDto
-import com.remote.dto.SeriesDetailDto
+import com.remote.dto.details.MovieDetailDto
+import com.remote.dto.details.SeriesDetailDto
 import com.remote.dto.review.ReviewDto
+import com.utils.LATEST
 import com.utils.MOVIE
 import com.utils.REVIEWS
 import com.utils.SERIES
@@ -34,5 +35,10 @@ class DetailsRemoteDataSource(
                     parameters.append("page", page.toString())
                 }
             }
+        )
+    suspend fun getLatestSeasons(): List<SeriesDetailDto> =
+        client.performCall<Unit, List<SeriesDetailDto>>(
+            method = HttpMethod.Get,
+            path = SERIES + LATEST
         )
 }

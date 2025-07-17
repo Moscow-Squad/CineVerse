@@ -33,13 +33,11 @@ import com.moscow.cineverse.designSystem.component.Movie
 import com.moscow.cineverse.designSystem.component.MovieAppBar
 import com.moscow.cineverse.designSystem.component.MovieListSection
 import com.moscow.cineverse.designSystem.component.SectionTitle
-import com.moscow.cineverse.designSystem.component.movieSeriesDetails.CastMember
 import com.moscow.cineverse.designSystem.component.movieSeriesDetails.MainMovieCard
 import com.moscow.cineverse.designSystem.component.movieSeriesDetails.MovieCardDetails
 import com.moscow.cineverse.designSystem.component.movieSeriesDetails.MovieReviewCard
 import com.moscow.cineverse.designSystem.component.movieSeriesDetails.RatingSection
 import com.moscow.cineverse.designSystem.component.movieSeriesDetails.StaffInfoSection
-import com.moscow.cineverse.designSystem.component.movieSeriesDetails.StarCastSection
 import com.moscow.cineverse.designSystem.theme.CineVerseTheme
 import com.moscow.cineverse.designSystem.theme.Theme
 import org.koin.androidx.compose.koinViewModel
@@ -137,42 +135,58 @@ fun MovieDetailsContent(
                             textAlign = TextAlign.Justify
                         )
                     }
-                    item {
-                        StarCastSection(
-                            modifier = Modifier
-                                .background(Theme.colors.background.screen)
-                                .padding(top = 24.dp, start = 16.dp, end = 16.dp),
-                            seeMore = {},
-                            cast = listOf(
-                                CastMember(
-                                    realName = "John Doe",
-                                    nameInMovie = "John",
-                                    imageUrl = "https://wror.com/uploads/2025/05/GettyImages-1511406162.jpg?format=auto&optimize=high&width=1440"
-                                ),
-                                CastMember(
-                                    realName = "Jane Smith",
-                                    nameInMovie = "Jane",
-                                    imageUrl = "https://wror.com/uploads/2025/05/GettyImages-1511406162.jpg?format=auto&optimize=high&width=1440"
-                                ),
-                                CastMember(
-                                    realName = "Alice Johnson",
-                                    nameInMovie = "Alice",
-                                    imageUrl = "https://wror.com/uploads/2025/05/GettyImages-1511406162.jpg?format=auto&optimize=high&width=1440"
-                                ),
-                                CastMember(
-                                    realName = "Bob Brown",
-                                    nameInMovie = "Bob",
-                                    imageUrl = null
-                                ),
-                                CastMember(
-                                    realName = "Charlie White",
-                                    nameInMovie = "Charlie",
-                                    imageUrl = null
-                                ),
-
-                                )
-                        )
-                    }
+//                    item {
+//                        StarCastSection(
+//                            modifier = Modifier
+//                                .background(Theme.colors.background.screen)
+//                                .padding(top = 24.dp, start = 16.dp, end = 16.dp),
+//                            seeMore = {},
+//                            cast = listOf(
+//                                CastMember(
+//                                    realName = "John Doe",
+//                                    nameInMovie = "John",
+//                                    imageUrl = "https://wror.com/uploads/2025/05/GettyImages-1511406162.jpg?format=auto&optimize=high&width=1440"
+//                                ),
+//                                CastMember(
+//                                    realName = "Jane Smith",
+//                                    nameInMovie = "Jane",
+//                                    imageUrl = "https://wror.com/uploads/2025/05/GettyImages-1511406162.jpg?format=auto&optimize=high&width=1440"
+//                                ),
+//                                CastMember(
+//                                    realName = "Alice Johnson",
+//                                    nameInMovie = "Alice",
+//                                    imageUrl = "https://wror.com/uploads/2025/05/GettyImages-1511406162.jpg?format=auto&optimize=high&width=1440"
+//                                ),
+//                                CastMember(
+//                                    realName = "Bob Brown",
+//                                    nameInMovie = "Bob",
+//                                    imageUrl = null
+//                                ),
+//                                CastMember(
+//                                    realName = "Charlie White",
+//                                    nameInMovie = "Charlie",
+//                                    imageUrl = null
+//                                ),
+//
+//                                )
+//                        )
+//                    }
+//                    item {
+//                        StarCastSection(
+//                            title = "Star Cast",
+//                            cast = detail.cast.take(5).map { cast ->
+//                                CastMember(
+//                                    realName = cast.name,
+//                                    nameInMovie = cast.character ?: "Unknown",
+//                                    imageUrl = cast.profilePath?.let { "https://image.tmdb.org/t/p/w500$it" }
+//
+//                                )
+//                            },
+//                            onSeeMoreClick = {},
+//                            castContent = { }
+//                        )
+//                    }
+//                }
                     item {
                         StaffInfoSection(
                             staffInfo = listOf(
