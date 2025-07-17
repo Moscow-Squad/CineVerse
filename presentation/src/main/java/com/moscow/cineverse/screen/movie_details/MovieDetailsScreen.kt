@@ -18,6 +18,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.design_system.R
@@ -31,7 +32,9 @@ import com.moscow.cineverse.designSystem.component.movieSeriesDetails.MovieRevie
 import com.moscow.cineverse.designSystem.component.movieSeriesDetails.RatingSection
 import com.moscow.cineverse.designSystem.component.movieSeriesDetails.StaffInfoSection
 import com.moscow.cineverse.designSystem.component.movieSeriesDetails.StarCastSection
+import com.moscow.cineverse.designSystem.theme.CineVerseTheme
 import com.moscow.cineverse.designSystem.theme.Theme
+import com.moscow.cineverse.screen.movie_details.MovieScreenState.MovieDetailsUi
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -46,10 +49,11 @@ fun MovieDetailsScreen(
         modifier
     )
 }
+
 @Composable
 fun MovieDetailsContent(
     uiState: MovieScreenState,
-    modifier: Modifier= Modifier
+    modifier: Modifier = Modifier
 ) {
     val textColor = Theme.colors.shade.secondary
     when {
@@ -210,13 +214,13 @@ fun MovieDetailsContent(
                             top = 24.dp
                         )
                     )
-                    repeat(uiState.reviewsFlow?.size?:0){
+                    repeat(uiState.reviewsFlow?.size ?: 0) {
                         MovieReviewCard(
-                            uiState.reviewsFlow?.get(it)?.name?:"",
-                            uiState.reviewsFlow?.get(it)?.username?:"",
-                            uiState.reviewsFlow?.get(it)?.reviewContent?:"",
-                            uiState.reviewsFlow?.get(it)?.rate?:0,
-                            uiState.reviewsFlow?.get(it)?.date?:"",
+                            uiState.reviewsFlow?.get(it)?.name ?: "",
+                            uiState.reviewsFlow?.get(it)?.username ?: "",
+                            uiState.reviewsFlow?.get(it)?.reviewContent ?: "",
+                            uiState.reviewsFlow?.get(it)?.rate ?: 0,
+                            uiState.reviewsFlow?.get(it)?.date ?: "",
                             painterResource(R.drawable.outline_user),
                             modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 12.dp)
                         )
@@ -229,12 +233,25 @@ fun MovieDetailsContent(
     }
 }
 
-/*
+
 @Preview(showBackground = true)
 @Composable
 private fun MovieDetailsScreenPreview() {
     CineVerseTheme {
-        MovieDetailsScreen()
+        MovieDetailsContent(
+            uiState = MovieScreenState(
+                movieDetailsUi = MovieDetailsUi(
+                    id = 12345,
+                    title = "Inception",
+                    posterPath = "/poster/inception.jpg",
+                    rating = 8.8,
+                    genres = listOf("Action", "Sci-Fi", "Thriller"),
+                    releaseDate = "2010-07-16",
+                    duration = "2h 28m",
+                    description = "A skilled thief is given a chance at redemption if he can successfully perform an inception — planting an idea in someone's mind."
+                )
+            ),
+        )
     }
 
-}*/
+}

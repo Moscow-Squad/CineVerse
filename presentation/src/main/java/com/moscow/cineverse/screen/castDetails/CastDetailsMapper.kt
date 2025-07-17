@@ -1,7 +1,7 @@
 package com.moscow.cineverse.screen.castDetails
 
 import com.android.domain.model.Movie
-import com.moscow.cineverse.screen.component.movie_poster_card.MediaItemUi
+import com.moscow.cineverse.screen.model.MediaItemUi
 import kotlinx.datetime.LocalDate
 
 fun LocalDate.toFormattedBirthDate(): String {

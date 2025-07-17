@@ -3,6 +3,7 @@ package com.moscow.cineverse.screen.collections
 import com.android.domain.model.Collection
 import com.android.domain.usecase.GetUserCollectionsUseCase
 import com.moscow.cineverse.base.BaseViewModel
+import com.moscow.cineverse.screen.model.CollectionUi
 
 class CollectionsBottomSheetViewModel(
     private val getUserCollections: GetUserCollectionsUseCase
@@ -40,7 +41,7 @@ class CollectionsBottomSheetViewModel(
     }
 
     private fun onLoadUserCollectionsSuccess(collections: List<Collection>) {
-        updateState { it.copy(collections = collections) }
+        updateState { it.copy(collections = listOf(CollectionUi(id = 0, name = "ddj"))) }
     }
 
     private fun onLoadUserCollectionsFailed(throwable: Throwable) {

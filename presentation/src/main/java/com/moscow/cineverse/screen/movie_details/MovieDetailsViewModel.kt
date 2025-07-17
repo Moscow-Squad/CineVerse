@@ -59,7 +59,4 @@ class MovieDetailsViewModel(
     private fun getReviewFailed(error: Throwable){
 
     }
-
-
-
 }
