@@ -20,6 +20,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import com.example.design_system.R
 import com.moscow.cineverse.designSystem.component.Movie
 import com.moscow.cineverse.designSystem.component.MovieAppBar
@@ -33,15 +35,17 @@ import com.moscow.cineverse.designSystem.component.movieSeriesDetails.StaffInfoS
 import com.moscow.cineverse.designSystem.component.movieSeriesDetails.StarCastSection
 import com.moscow.cineverse.designSystem.theme.Theme
 import org.koin.androidx.compose.koinViewModel
+import org.koin.core.parameter.parametersOf
 
 @Composable
 fun MovieDetailsScreen(
+    navController: NavHostController,
+    movieId: Int,
     modifier: Modifier = Modifier,
-    viewModel: MovieDetailsViewModel = koinViewModel()
+    viewModel: MovieDetailsViewModel = koinViewModel(parameters = { parametersOf(movieId) })
 ) {
     val uiState by viewModel.uiState.collectAsState()
     MovieDetailsContent(
-
         uiState,
         modifier
     )
