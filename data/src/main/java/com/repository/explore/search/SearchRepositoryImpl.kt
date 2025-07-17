@@ -78,9 +78,10 @@ class SearchRepositoryImpl(
             val result = tryToExecute {
                 searchRemoteDataSource.searchMovie(query)
             }
-            emit(result.map { it.toDomain() })
+            val mappedResult = result.map { it.toDomain() }
+            emit(mappedResult)
             if (result.isNotEmpty()) {
-                insertMovie(result.map { movie -> movie.toDomain() }, query)
+                insertMovie(mappedResult, query)
             }
         }.flowOn(ioDispatcher)
 
@@ -93,9 +94,10 @@ class SearchRepositoryImpl(
             val result = tryToExecute {
                 searchRemoteDataSource.searchSeries(query)
             }
-            emit(result.map { it.toDomain() })
+            val mappedResult = result.map { it.toDomain() }
+            emit(mappedResult)
             if (result.isNotEmpty()) {
-                insertSeries(result.map { series -> series.toDomain() }, query)
+                insertSeries(mappedResult, query)
             }
         }.flowOn(ioDispatcher)
 
@@ -108,9 +110,12 @@ class SearchRepositoryImpl(
             val result = tryToExecute {
                 searchRemoteDataSource.searchPearson(query)
             }
-            emit(result.map { it.toDomain() })
+            val mappedResult = result.map {
+                it.toDomain()
+            }
+            emit(mappedResult)
             if (result.isNotEmpty()) {
-                insertActors(result.map { actor -> actor.toDomain() }, query)
+                insertActors(mappedResult, query)
             }
         }.flowOn(ioDispatcher)
 
