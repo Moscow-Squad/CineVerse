@@ -8,7 +8,7 @@ import com.android.domain.model.Movie
 import com.android.domain.model.MultiSearch
 import com.android.domain.model.Series
 import com.android.domain.repository.SearchRepository
-import com.local.DeleteQueryWorker
+import com.local.DeleteHistoryQueryWorker
 import com.mapper.toDomain
 import com.mapper.toModel
 import com.remote.source.SearchRemoteDataSource
@@ -117,7 +117,7 @@ class SearchRepositoryImpl(
     override suspend fun cacheSearchQuery(query: String) {
         tryToExecute {
             searchLocalDateSource.insertSearchHistory(query)
-            val deleteWork = OneTimeWorkRequestBuilder<DeleteQueryWorker>()
+            val deleteWork = OneTimeWorkRequestBuilder<DeleteHistoryQueryWorker>()
                 .setInitialDelay(1, TimeUnit.HOURS)
                 .setInputData(workDataOf(QUERY to query))
                 .addTag(DELETE_SEARCH_QUERY_HISTORY)
