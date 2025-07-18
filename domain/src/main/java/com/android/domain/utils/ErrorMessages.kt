@@ -1,4 +1,4 @@
-package com.utils
+package com.android.domain.utils
 
 object ErrorMessages {
     const val RESOURCE_NOT_FOUND = "Resource not found"

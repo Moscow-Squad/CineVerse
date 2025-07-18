@@ -1,5 +1,7 @@
 package com.moscow.cineverse.di
 
+import com.android.domain.usecase.CacheSearchQueryUseCase
+import com.android.domain.usecase.ClearSearchHistoryUseCase
 import com.android.domain.usecase.GenreUseCase
 import com.android.domain.usecase.GetCreditsUseCase
 import com.android.domain.usecase.GetLocalSuggestions
@@ -18,6 +20,9 @@ import com.android.domain.usecase.actordetails.GetActorGallery
 import com.android.domain.usecase.seriesdetails.GetLatestSeasonsUseCase
 import com.android.domain.usecase.seriesdetails.GetListOfSeriesUseCase
 import com.android.domain.usecase.seriesdetails.GetSeriesDetailUseCase
+
+import org.koin.core.module.dsl.singleOf
+
 import org.koin.dsl.module
 
 val useCases = module {
@@ -39,6 +44,8 @@ val useCases = module {
     single { GetRecommendationsUseCase(get()) }
     single { GetLatestSeasonsUseCase(get()) }
     single { GetListOfSeriesUseCase(get()) }
+    singleOf(::CacheSearchQueryUseCase)
+    singleOf(::ClearSearchHistoryUseCase)
 
 }
 

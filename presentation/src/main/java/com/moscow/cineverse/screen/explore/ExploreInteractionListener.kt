@@ -18,8 +18,8 @@ interface ExploreInteractionListener {
     fun onCancelButtonClicked()
     fun onSearchValueChange(text: String)
     fun onSearchWordDetected(searchKeyWord: List<String>)
-    fun SuggestionList() : List<SuggestItemUiState>
     fun onClickSuggestion(suggestion: SuggestItemUiState)
+    fun onSearchQuery()
     fun clearAllLocalSuggestions()
     fun getMoviesGenres()
     fun getSeriesGenres()

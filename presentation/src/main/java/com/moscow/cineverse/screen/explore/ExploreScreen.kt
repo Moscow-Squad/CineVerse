@@ -1,6 +1,5 @@
 package com.moscow.cineverse.screen.explore
 
-import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
@@ -30,7 +29,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -38,10 +36,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavHostController
 import com.moscow.cineverse.designSystem.component.PillLabel
 import com.moscow.cineverse.designSystem.component.ViewMode
 import com.moscow.cineverse.designSystem.component.ViewModeToggle
@@ -49,6 +45,7 @@ import com.moscow.cineverse.designSystem.component.search.SearchBar
 import com.moscow.cineverse.designSystem.component.tabs.ExploreTabs
 import com.moscow.cineverse.designSystem.component.tabs.ExploreTabsPages
 import com.moscow.cineverse.designSystem.theme.Theme
+import com.moscow.cineverse.navigation.LocalNavController
 import com.moscow.cineverse.navigation.routes.CastDetailsRoute
 import com.moscow.cineverse.navigation.routes.MovieDetailsRoute
 import com.moscow.cineverse.screen.component.movie_poster_card.MediaItemUi
@@ -62,8 +59,8 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun ExploreScreen(
-    navController: NavHostController = rememberNavController(),
     modifier: Modifier = Modifier,
+    navController: NavHostController = LocalNavController.current,
     viewModel: ExploreViewModel = koinViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -119,10 +116,14 @@ private fun ExploreScreenContent(
                         .padding(top = 56.dp)
                         .padding(horizontal = 16.dp),
                     value = uiState.searchKeyWord,
-                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
+                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
                     keyboardActions = KeyboardActions(
                         onNext = {
                             interactionListener.onKeyboardClick()
+                        },
+                        onSearch = {
+                            interactionListener.onSearchQuery()
+
                         }
                     ),
                     onValueChange = { interactionListener.onSearchValueChange(it) },
@@ -213,10 +214,6 @@ private fun ExploreScreenContent(
                                 modifier = Modifier.fillMaxSize()
                             ) {
                                 items(uiState.contentList) { item ->
-                                    Log.e(
-                                        "jxjxjxxkx",
-                                        "ExploreScreenContent: ${uiState.contentList}"
-                                    )
                                     when (item) {
                                         is MediaItemUi -> {
                                             MoviePosterCard(
@@ -274,7 +271,7 @@ private fun ExploreScreenContent(
             ) {
                 SearchSuggestion(
                     modifier = Modifier.padding(top = 24.dp),
-                    suggestionList = interactionListener.SuggestionList(),
+                    suggestionList = uiState.displayedSuggestions,
                     isHistory = uiState.showHistory,
                     onClickSuggestion = interactionListener::onClickSuggestion,
                     onClearAllClicked = interactionListener::clearAllLocalSuggestions
