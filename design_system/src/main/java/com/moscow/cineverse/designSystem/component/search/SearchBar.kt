@@ -145,6 +145,7 @@ fun SearchBar(
                             .size(20.dp)
                             .noRibbleClick{
                                 onValueChange("")
+                                onCancelButtonClicked()
                             }
                     )
                 } else {
