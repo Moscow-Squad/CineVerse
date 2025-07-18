@@ -309,6 +309,7 @@ fun SeriesDetailsContent(
                             title = "Give it Stars!",
                             caption = "Let the world know how you felt.",
                             onClickArrow = onClickArrow,
+                            ratingStars = uiState.starsRating,
                             modifier = Modifier.padding(top = 24.dp, start = 16.dp, end = 16.dp)
                         )
                     }
