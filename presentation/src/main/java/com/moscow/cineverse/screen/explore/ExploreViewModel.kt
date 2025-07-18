@@ -263,8 +263,10 @@ class ExploreViewModel(
             val mappedRemoteSuggestions = state.remoteSuggestions
                 .map { SuggestItemUiState(it, isHistory = false) }
 
+
             state.copy(
-                displayedSuggestions = filteredLocalSuggestions + mappedRemoteSuggestions
+               localSuggestions = filteredLocalSuggestions ,
+                remoteSuggestions = mappedRemoteSuggestions.map { it.title }
             )
         }
     }
@@ -273,7 +275,6 @@ class ExploreViewModel(
         updateState {
             it.copy(
                 searchKeyWord = suggestion.title,
-                displayedSuggestions = emptyList(),
             )
         }
         viewModelScope.launch(Dispatchers.IO) {
@@ -299,7 +300,6 @@ class ExploreViewModel(
             it.copy(
                 showHistory = false,
                 showSuggestions = false,
-                displayedSuggestions = emptyList(),
             )
         }
         launchAndForget(
