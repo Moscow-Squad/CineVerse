@@ -277,15 +277,15 @@ fun MovieDetailsContent(
                                         top = 24.dp
                                     )
                                 )
-                                repeat(uiState.reviewsFlow?.size ?: 0) {
-                                    val userImage = uiState.reviewsFlow?.get(it)?.userImage
+                                repeat(uiState.reviewsFlow.size) {
+                                    val userImage = uiState.reviewsFlow[it].userImage
                                     MovieReviewCard(
-                                        uiState.reviewsFlow?.get(it)?.name ?: "",
-                                        uiState.reviewsFlow?.get(it)?.username ?: "",
-                                        uiState.reviewsFlow?.get(it)?.reviewContent ?: "",
-                                        uiState.reviewsFlow?.get(it)?.rate ?: 0,
-                                        uiState.reviewsFlow?.get(it)?.date ?: "",
-                                        if (userImage.isNullOrEmpty()) null else rememberAsyncImagePainter(
+                                        uiState.reviewsFlow[it].name ,
+                                        uiState.reviewsFlow[it].username ,
+                                        uiState.reviewsFlow[it].reviewContent ,
+                                        uiState.reviewsFlow[it].rate,
+                                        uiState.reviewsFlow[it].date ,
+                                        if (userImage.isEmpty()) null else rememberAsyncImagePainter(
                                             model = userImage
                                         ),
                                         modifier = Modifier.padding(
