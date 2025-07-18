@@ -17,6 +17,7 @@ fun NavGraphBuilder.MovieDetailsRoute(navController: NavHostController) {
         MovieDetailsScreen(
             navController = navController,
             movieId = args.movieId,
+            onNavigateBack = {navController.popBackStack()}
         )
     }
 }

@@ -45,13 +45,15 @@ import com.moscow.cineverse.designSystem.component.movieSeriesDetails.StarCastSe
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.screen.component.movie_poster_card.MoviePosterCard
 import org.koin.androidx.compose.koinViewModel
+import kotlin.Unit
 
 @Composable
 fun MovieDetailsScreen(
-     movieId:Int,
+    movieId: Int,
+    navController: NavHostController,
+    onNavigateBack: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: MovieDetailsViewModel = koinViewModel(),
-    navController: NavHostController = rememberNavController(),
 
     ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -65,20 +67,25 @@ fun MovieDetailsScreen(
         viewModel.uiEvent.collect { event ->
             when (event) {
                 is MovieDetailsScreenEvents.NavigateBack -> {
-
+                    onNavigateBack()
                 }
+
                 is MovieDetailsScreenEvents.ShowError -> {
                     // TODO: Show error (Snackbar, Toast, etc.)
                 }
+
                 is MovieDetailsScreenEvents.NavigateToFullMovieList -> {
                     // TODO: Implement intent to open social media link
                 }
+
                 is MovieDetailsScreenEvents.NavigateToFullActors -> {
                     //
                 }
+
                 is MovieDetailsScreenEvents.NavigateToFullCast -> {
                     //
                 }
+
                 is MovieDetailsScreenEvents.NavigateToFullReviews -> {
                     //
                 }
@@ -87,25 +94,28 @@ fun MovieDetailsScreen(
     }
     MovieDetailsContent(
         uiState,
-        modifier
+        onNavigateBack = onNavigateBack,
+        modifier,
     )
 }
+
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun MovieDetailsContent(
     uiState: MovieScreenState,
-    modifier: Modifier= Modifier
+    onNavigateBack: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     val textColor = Theme.colors.shade.secondary
 
     val scrollState = rememberLazyListState()
-            val isCollapsed by remember {
-                derivedStateOf {
-                    scrollState.firstVisibleItemScrollOffset > 10 || scrollState.firstVisibleItemIndex > 0
-                }
-            }
+    val isCollapsed by remember {
+        derivedStateOf {
+            scrollState.firstVisibleItemScrollOffset > 10 || scrollState.firstVisibleItemIndex > 0
+        }
+    }
     Column {
-        MovieAppBar()
+        MovieAppBar(backButtonClick = onNavigateBack, showBackButton = true)
         SharedTransitionLayout {
             AnimatedContent(
                 targetState = isCollapsed,
@@ -141,7 +151,7 @@ fun MovieDetailsContent(
             uiState.movieDetailsUi != null -> {
                 LazyColumn(
                     state = scrollState,
-                modifier = Modifier.background(Theme.colors.background.screen)
+                    modifier = Modifier.background(Theme.colors.background.screen)
                 )
                 {
                     item {
@@ -276,7 +286,7 @@ fun MovieDetailsContent(
                     }
                 }
             }
-            }
         }
+    }
 }
 
