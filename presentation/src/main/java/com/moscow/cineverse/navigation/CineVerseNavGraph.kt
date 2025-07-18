@@ -27,11 +27,13 @@ fun CineVerseNavGraph() {
     ) {
         NavHost(navController = navController, startDestination = ExploreRoute) {
             exploreRoute()
-            CastDetailsRoute(navController)
-            CastGalleryRoute(navController)
-            CastBestOfMovieRoute(navController)
-            MovieDetailsRoute(navController)
-            SeriesDetailsRoute(navController)
+            RecommendationsRoute()
+            ReviewsRoute()
+            CastDetailsRoute()
+            CastGalleryRoute()
+            CastBestOfMovieRoute()
+            MovieDetailsRoute()
+            SeriesDetailsRoute()
             collectionsBottomSheetRoute(
                 onAddNewCollectionClick = {},
                 onCreateCollectionClicked = {},

@@ -10,13 +10,13 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class CastDetailsRoute(val castId: Int)
 
-fun NavGraphBuilder.CastDetailsRoute(navController: NavHostController) {
+fun NavGraphBuilder.CastDetailsRoute() {
     composable<CastDetailsRoute>{
         val args = it.toRoute<CastDetailsRoute>()
         CastDetailsScreen(
-            navController = navController,
+
             actorId = args.castId,
-            onNavigateBack = {},
+
         )
     }
 }

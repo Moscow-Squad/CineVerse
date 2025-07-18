@@ -1,7 +1,6 @@
 package com.moscow.cineverse.navigation.routes
 
 import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import com.moscow.cineverse.screen.series_details.SeriesDetailsScreen
 import kotlinx.serialization.Serializable
@@ -13,10 +12,8 @@ data class SeriesDetailsRoute(val seriesId: Int) {
     }
 }
 
-fun NavGraphBuilder.SeriesDetailsRoute(navController: NavHostController) {
+fun NavGraphBuilder.SeriesDetailsRoute() {
     composable<SeriesDetailsRoute>{
-        SeriesDetailsScreen(
-            navController = navController,
-        )
+        SeriesDetailsScreen()
     }
 }

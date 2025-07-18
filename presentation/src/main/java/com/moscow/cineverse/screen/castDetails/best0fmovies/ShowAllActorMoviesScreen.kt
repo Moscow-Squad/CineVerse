@@ -19,7 +19,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.android.domain.model.MediaType
 import com.moscow.cineverse.designSystem.component.CineVersePreviews
 import com.moscow.cineverse.designSystem.component.MovieAppBar
 import com.moscow.cineverse.designSystem.component.MovieButton
@@ -29,19 +28,21 @@ import com.moscow.cineverse.designSystem.component.MovieText
 import com.moscow.cineverse.designSystem.component.ViewMode
 import com.moscow.cineverse.designSystem.component.ViewModeToggle
 import com.moscow.cineverse.designSystem.theme.Theme
+import com.moscow.cineverse.navigation.LocalNavController
+import com.moscow.cineverse.screen.component.movie_poster_card.MediaItemUi
 import com.moscow.cineverse.screen.component.movie_poster_card.MoviePosterCard
-import com.moscow.cineverse.screen.model.MediaItemUi
 import com.moscow.cinverse.presentation.R
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 
 @Composable
 fun ShowAllActorMoviesScreen(
-    navController: NavHostController,
     actorId: Int,
     title: String,
     modifier: Modifier = Modifier,
-) {
+    navController: NavHostController = LocalNavController.current,
+
+    ) {
     val viewModel: ShowAllActorMoviesInteractionViewModel = koinViewModel(parameters = { parametersOf(actorId, title) })
     val uiState by viewModel.uiState.collectAsState()
 
@@ -49,7 +50,8 @@ fun ShowAllActorMoviesScreen(
         uiState = uiState,
         interactionListener = viewModel,
         modifier = modifier,
-        title = title
+        title = title,
+        onNavigateBack = {navController.popBackStack()},
     )
 }
 
@@ -58,8 +60,9 @@ fun ShowAllActorMoviesScreen(
 fun ShowAllActorMoviesContent(
     uiState: ShowAllActorMoviesState,
     interactionListener: ShowAllActorMoviesInteractionListener,
+    title: String,
+    onNavigateBack : () -> Unit,
     modifier: Modifier = Modifier,
-    title: String
 ) {
     MovieScaffold {
         Box(modifier = modifier.fillMaxSize()) {
@@ -101,7 +104,7 @@ fun ShowAllActorMoviesContent(
                     Column(modifier = Modifier.fillMaxSize()) {
                         MovieAppBar(
                             title = title,
-                            backButtonClick = interactionListener::backButtonClick,
+                            backButtonClick = onNavigateBack,
                         )
                         LazyVerticalGrid(
                             columns = if (uiState.viewMode == ViewMode.GRID)
@@ -161,8 +164,7 @@ fun ShowAllActorMoviesPreview(modifier: Modifier = Modifier) {
                     rating = 7.5f,
                     genres = listOf("Action", "Adventure"),
                     duration = "2h 30m",
-                    releaseDate = "2023-10-01",
-                    mediaType = MediaType.Movie
+                    releaseDate = "2023-10-01"
                 )
             }
         ),
@@ -173,6 +175,7 @@ fun ShowAllActorMoviesPreview(modifier: Modifier = Modifier) {
             override fun backButtonClick() {}
         },
         modifier = modifier,
-        "sad"
+        title = "sad",
+        onNavigateBack = { },
     )
 }

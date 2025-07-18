@@ -49,6 +49,7 @@ firebaseCrashlyticsBuildtools = "3.0.4"
 junitJupiter = "5.8.1"
 junitJunit = "4.12"
 pagingCommonAndroid = "3.3.6"
+readMoreVersion = "1.6.3"
 
 [libraries]
 androidx-animation = { module = "androidx.compose.animation:animation", version.ref = "animation" }
@@ -92,6 +93,7 @@ truth = { module = "com.google.truth:truth", version.ref = "truth" }
 ui = { module = "androidx.compose.ui:ui", version.ref = "ui" }
 cloudy = { module = "com.github.skydoves:cloudy", version.ref = "cloudy" }
 androidx-ui-tooling-preview-android = { group = "androidx.compose.ui", name = "ui-tooling-preview-android", version.ref = "uiToolingPreviewAndroid" }
+readmore-material3 = { group = "com.webtoonscorp.android", name = "readmore-material3", version.ref = "readMoreVersion" }
 
 # Network
 ktor-android = { group = "io.ktor", name = "ktor-client-android", version.ref = "ktor" }

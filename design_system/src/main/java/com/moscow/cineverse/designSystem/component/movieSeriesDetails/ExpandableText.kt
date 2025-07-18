@@ -1,36 +1,49 @@
 package com.moscow.cineverse.designSystem.component.movieSeriesDetails
 
-import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.text.ClickableText
-import androidx.compose.material3.Text
+
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.text.withStyle
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
+import com.example.design_system.R
 import com.moscow.cineverse.designSystem.theme.Theme
+import com.webtoonscorp.android.readmore.foundation.ReadMoreTextOverflow
+import com.webtoonscorp.android.readmore.foundation.ToggleArea
+import com.webtoonscorp.android.readmore.material3.ReadMoreText
 
 @Composable
 fun ExpandableText(
     text: String,
-    minimizedMaxLines: Int = 4
-) {
-    var isExpanded by remember { mutableStateOf(false) }
-    var shouldShowToggle by remember { mutableStateOf(false) }
+    modifier: Modifier = Modifier,
+    maxLines: Int = 4,
+    readMoreText: String = stringResource(R.string.readmore),
+    readMoreColor:Color = Theme.colors.brand.primary,
+    textStyle: TextStyle = Theme.textStyle.body.medium.medium
 
-    Box(modifier = Modifier.fillMaxWidth()) {
+    ) {
+    val (isExpanded,onExpandedChange) = rememberSaveable { mutableStateOf(false) }
+
+    ReadMoreText(
+        text = text,
+        expanded = isExpanded,
+        onExpandedChange = onExpandedChange,
+        modifier = modifier
+            .clickable { onExpandedChange(!isExpanded)},
+        readMoreText = readMoreText,
+        readMoreColor = readMoreColor,
+        style = textStyle,
+        color = Theme.colors.shade.primary,
+        readMoreOverflow = ReadMoreTextOverflow.Ellipsis,
+        toggleArea = ToggleArea.More,
+        readMoreMaxLines = maxLines
+
+
+    )
+    /*Box(modifier = Modifier.fillMaxWidth()) {
         Text(
             text = text,
             maxLines = minimizedMaxLines,
@@ -97,5 +110,5 @@ fun ExpandableText(
                 )
             }
         }
-    }
+    }*/
 }

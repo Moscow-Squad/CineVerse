@@ -100,9 +100,9 @@ fun ActorDetailsDto.toDomain(youtubeLink: String, facebookLink: String, instagra
         name = name ?: throw CineVerseException.MappingToDomainException,
         birthDate = if (birthday == null) Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date else LocalDate.parse(birthday),
         placeOfBirth = placeOfBirth ?: "",
-        youtubeLink = youtubeLink,
-        facebookLink = facebookLink,
-        instagramLink = instagramLink,
+        youtubeLink = "https://www.youtube.com/user/$youtubeLink",
+        facebookLink = "https://www.facebook.com/$facebookLink",
+        instagramLink = "https://www.instagram.com/$instagramLink",
         biography = biography ?: "",
         profileImg = IMAGES_URL + (profilePath ?: "")
     )

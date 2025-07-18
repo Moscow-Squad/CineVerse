@@ -40,8 +40,9 @@ class DetailsRepositoryImpl(
         return response.toDomain()
     }
 
-    override suspend fun getRecommendations(id: Int, page: Int): List<Movie> {
-        val response = detailsRemoteDataSource.getRecommendations(id, page)
+
+    override suspend fun getRecommendations(id: Int,page:Int): List<Movie> {
+        val response = detailsRemoteDataSource.getRecommendations(id,page)
         return response.map { it.toDomain() }
     }
 

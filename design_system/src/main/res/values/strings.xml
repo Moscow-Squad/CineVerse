@@ -43,4 +43,5 @@
     <string name="rate_the_movie">Rate the Movie</string>
     <string name="remove_rating">Remove Rating</string>
     <string name="reviewer_image">Reviewer Image</string>
+    <string name="readmore">ReadMore</string>
 </resources>
