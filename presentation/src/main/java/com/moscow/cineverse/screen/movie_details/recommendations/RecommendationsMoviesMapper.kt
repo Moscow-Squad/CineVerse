@@ -4,9 +4,9 @@ package com.moscow.cineverse.screen.movie_details.recommendations
 
 import com.android.domain.model.Genre
 import com.android.domain.model.Movie
-import com.moscow.cineverse.screen.component.movie_poster_card.MediaItemUi
 import com.moscow.cineverse.screen.explore.YYYY_MMM_DD
 import com.moscow.cineverse.screen.explore.formatWith
+import com.moscow.cineverse.screen.model.MediaItemUi
 
 fun List<Movie>.toUi(
     genresList: List<GenreUi>

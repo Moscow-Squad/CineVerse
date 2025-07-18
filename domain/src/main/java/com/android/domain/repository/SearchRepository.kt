@@ -1,7 +1,6 @@
 package com.android.domain.repository
 
 import com.android.domain.model.Actor
-import com.android.domain.model.MediaItem
 import com.android.domain.model.Movie
 import com.android.domain.model.Series
 import kotlinx.coroutines.flow.Flow
@@ -15,10 +14,9 @@ interface SearchRepository {
     suspend fun getLocalSuggestions(): Flow<List<String>>
     suspend fun deleteSearchHistory(searchTerm: String)
     suspend fun getRemoteSuggestions(keyWord: String, page: Int): List<String>
-    suspend fun searchMulti(query: String): Flow<List<MediaItem>>
-    suspend fun searchMovie(query: String,isHistory: Boolean = false): Flow<List<Movie>>
-    suspend fun searchSeries(query: String,isHistory: Boolean = false): Flow<List<Series>>
-    suspend fun searchActor(query: String,isHistory: Boolean = false): Flow<List<Actor>>
+    suspend fun searchMovie(query: String, isHistory: Boolean = false): Flow<List<Movie>>
+    suspend fun searchSeries(query: String, isHistory: Boolean = false): Flow<List<Series>>
+    suspend fun searchActor(query: String, isHistory: Boolean = false): Flow<List<Actor>>
     suspend fun cacheSearchQuery(query: String)
     suspend fun clearSearchHistory()
 }

@@ -43,12 +43,13 @@ import com.moscow.cineverse.designSystem.component.movieSeriesDetails.RatingSect
 import com.moscow.cineverse.designSystem.component.movieSeriesDetails.StaffInfoSection
 import com.moscow.cineverse.designSystem.component.movieSeriesDetails.StarCastSection
 import com.moscow.cineverse.designSystem.theme.Theme
+import com.moscow.cineverse.navigation.routes.CollectionsBottomSheetRoute
 import com.moscow.cineverse.screen.component.movie_poster_card.MoviePosterCard
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun MovieDetailsScreen(
-     movieId:Int,
+    movieId: Int,
     modifier: Modifier = Modifier,
     viewModel: MovieDetailsViewModel = koinViewModel(),
     navController: NavHostController = rememberNavController(),
@@ -82,28 +83,34 @@ fun MovieDetailsScreen(
                 is MovieDetailsScreenEvents.NavigateToFullReviews -> {
                     //
                 }
+
+                is MovieDetailsScreenEvents.AddToCollection -> {
+                    navController.navigate(CollectionsBottomSheetRoute(event.movieId))
+                }
             }
         }
     }
     MovieDetailsContent(
         uiState,
-        modifier
+        modifier,
+        viewModel
     )
 }
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun MovieDetailsContent(
     uiState: MovieScreenState,
-    modifier: Modifier= Modifier
+    modifier: Modifier = Modifier,
+    interactionListener: MovieDetailsInteractionListener
 ) {
     val textColor = Theme.colors.shade.secondary
 
     val scrollState = rememberLazyListState()
-            val isCollapsed by remember {
-                derivedStateOf {
-                    scrollState.firstVisibleItemScrollOffset > 10 || scrollState.firstVisibleItemIndex > 0
-                }
-            }
+    val isCollapsed by remember {
+        derivedStateOf {
+            scrollState.firstVisibleItemScrollOffset > 10 || scrollState.firstVisibleItemIndex > 0
+        }
+    }
     Column {
         MovieAppBar()
         SharedTransitionLayout {
@@ -122,7 +129,8 @@ fun MovieDetailsContent(
                             rating = uiState.movieDetailsUi.rating.toString(),
                             duration = uiState.movieDetailsUi.duration.toHourMinuteFormat(),
                             releaseDate = uiState.movieDetailsUi.releaseDate.toFormattedReleasedDate(),
-                            type = stringResource(com.moscow.cinverse.presentation.R.string.movie)
+                            type = stringResource(com.moscow.cinverse.presentation.R.string.movie),
+                            onSaveClick = { interactionListener.onAddToCollection(uiState.movieDetailsUi.id) }
                         )
                     }
                 } else {
@@ -141,7 +149,7 @@ fun MovieDetailsContent(
             uiState.movieDetailsUi != null -> {
                 LazyColumn(
                     state = scrollState,
-                modifier = Modifier.background(Theme.colors.background.screen)
+                    modifier = Modifier.background(Theme.colors.background.screen)
                 )
                 {
                     item {
@@ -276,7 +284,6 @@ fun MovieDetailsContent(
                     }
                 }
             }
-            }
         }
+    }
 }
-

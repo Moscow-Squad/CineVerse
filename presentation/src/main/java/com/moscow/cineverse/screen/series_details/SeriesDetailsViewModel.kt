@@ -11,7 +11,8 @@ class SeriesDetailsViewModel(
     private val getReviewsPageUseCase: GetReviewsPageUseCase,
     private val getLatestSeasonsUseCase: GetLatestSeasonsUseCase,
     private val getListOfSeriesUseCase: GetListOfSeriesUseCase,
-) : BaseViewModel<SeriesDetailsUiState, Unit>(SeriesDetailsUiState()) {
+) : BaseViewModel<SeriesDetailsUiState, SeriesDetailsEvents>(SeriesDetailsUiState()),
+    SeriesInteractionListener {
 
     fun loadSeriesDetails(seriesId: Int) {
         updateState { it.copy(isLoading = true, error = null) }
@@ -63,5 +64,9 @@ class SeriesDetailsViewModel(
                 updateState { it.copy(error = error.message, isLoading = false) }
             }
         )
+    }
+
+    override fun addToCollection() {
+        uiState.value.seriesDetail?.let { sendEvent(SeriesDetailsEvents.AddToCollection(it.id)) }
     }
 }

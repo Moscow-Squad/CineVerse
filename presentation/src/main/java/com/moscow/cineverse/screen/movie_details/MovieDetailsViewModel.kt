@@ -135,5 +135,10 @@ class MovieDetailsViewModel(
             sendEvent(MovieDetailsScreenEvents.NavigateToFullReviews(movieId))
         }
 
+    override fun onAddToCollection(mediaItemId: Int) {
+        sendEvent(MovieDetailsScreenEvents.AddToCollection(mediaItemId))
+
+    }
+
 
 }

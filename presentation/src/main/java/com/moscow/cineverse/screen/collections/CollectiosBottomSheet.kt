@@ -1,5 +1,7 @@
 package com.moscow.cineverse.screen.collections
 
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -13,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -38,6 +41,7 @@ fun CollectionsBottomSheetScreen(
 
     val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
 
+    val context = LocalContext.current
     CollectionsBottomSheetContent(
         interactionListener = viewModel,
         onAddNewCollectionClick = onAddNewCollectionClick,
@@ -52,7 +56,9 @@ fun CollectionsBottomSheetScreen(
         viewModel.uiEvent.collect { event ->
             handleEvents(
                 event = event,
-                onCreateCollectionClicked = onCreateCollectionClicked // user already log in - navigate to collections screen
+                onCreateCollectionClicked = onCreateCollectionClicked,// user already log in - navigate to collections screen
+                navigateBack = navigateBack,
+                context = context
             )
         }
     }
@@ -62,10 +68,16 @@ fun CollectionsBottomSheetScreen(
 private fun handleEvents(
     event: CollectionsBottomSheetEvents,
     onCreateCollectionClicked: () -> Unit,
+    navigateBack: () -> Unit,
+    context: Context
 ) {
     when (event) {
         CollectionsBottomSheetEvents.OnCreateCollectionClicked -> onCreateCollectionClicked()
         CollectionsBottomSheetEvents.OnLoginClicked -> {}
+        is CollectionsBottomSheetEvents.OnMovieAddedSuccessfully -> {
+            Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
+            navigateBack()
+        }
     }
 
 }

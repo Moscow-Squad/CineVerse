@@ -1,6 +1,5 @@
 package com.moscow.cineverse.screen.collections
 
-import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import com.android.domain.model.Collection
 import com.android.domain.model.MediaType
@@ -24,7 +23,6 @@ class CollectionsBottomSheetViewModel(
     )
 
     init {
-        Log.e("dcccc", "mediaItemId: $mediaItemId")
         loadUserCollections()
     }
 
@@ -59,7 +57,7 @@ class CollectionsBottomSheetViewModel(
     }
 
     private fun onAddMediaItemToCollectionSuccess(message: String) {
-
+        sendEvent(CollectionsBottomSheetEvents.OnMovieAddedSuccessfully("Movie added successfully"))
     }
 
     private fun onAddMediaItemToCollectionFailed(e: Throwable) {

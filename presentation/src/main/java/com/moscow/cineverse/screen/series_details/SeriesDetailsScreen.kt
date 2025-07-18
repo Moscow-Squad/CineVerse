@@ -32,7 +32,9 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.android.domain.model.Genre
+import com.android.domain.model.MediaType
 import com.android.domain.model.Review
 import com.android.domain.model.details.Creator
 import com.android.domain.model.details.SeriesDetail
@@ -53,6 +55,7 @@ import com.moscow.cineverse.designSystem.component.movieSeriesDetails.StaffInfoS
 import com.moscow.cineverse.designSystem.component.movieSeriesDetails.StarCastSection
 import com.moscow.cineverse.designSystem.theme.CineVerseTheme
 import com.moscow.cineverse.designSystem.theme.Theme
+import com.moscow.cineverse.navigation.routes.CollectionsBottomSheetRoute
 import org.koin.androidx.compose.koinViewModel
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -60,13 +63,30 @@ import java.util.Locale
 @Composable
 fun SeriesDetailsScreen(
     seriesId: Int,
-    viewModel: SeriesDetailsViewModel = koinViewModel()
+    viewModel: SeriesDetailsViewModel = koinViewModel(),
+    navController: NavHostController
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
     LaunchedEffect(seriesId) {
         viewModel.loadSeriesDetails(seriesId)
         viewModel.loadReviews(seriesId, page = 1)
+    }
+
+    LaunchedEffect(viewModel) {
+        viewModel.uiEvent.collect { event ->
+            when (event) {
+                is SeriesDetailsEvents.AddToCollection -> {
+                    navController.navigate(
+                        CollectionsBottomSheetRoute(
+                            mediaItemId = event.seriesId,
+                            mediaType = MediaType.Tv.name
+                        )
+                    )
+
+                }
+            }
+        }
     }
     SeriesDetailsContent(
         uiState
@@ -115,50 +135,50 @@ fun SeriesDetailsContent(
         }
     }
 
-            Column {
-                MovieAppBar()
-                SharedTransitionLayout {
-                    AnimatedContent(
-                        targetState = isCollapsed,
-                        label = "basic_transition"
-                    ) { target ->
-                        if (!target) {
-                            MovieCardDetails(
-                                posterUrl = detail?.posterPath?.let { "https://image.tmdb.org/t/p/w500$it" }
-                                    ?: "",
-                                title = detail?.title ?: "Loading...",
-                                genres = detail?.genres?.joinToString(", ") { it.name } ?: "",
-                                rating = detail?.rating?.toString() ?: "0.0",
-                                duration = detail?.runtime ?: "N/A",
-                                releaseDate = detail?.releaseDate?.let { formatDate(it) } ?: "",
-                                type = detail?.type ?: "SERIES",
-                                animatedVisibilityScope = this@AnimatedContent,
-                                sharedTransitionScope = this@SharedTransitionLayout
-                            )
-                        } else {
-                            MainMovieCard(
-                                posterUrl = detail?.posterPath?.let { "https://image.tmdb.org/t/p/w500$it" }
-                                    ?: "",
-                                title = detail?.title ?: "Loading...",
-                                animatedVisibilityScope = this@AnimatedContent,
-                                sharedTransitionScope = this@SharedTransitionLayout
-                            )
-                        }
-                    }
+    Column {
+        MovieAppBar()
+        SharedTransitionLayout {
+            AnimatedContent(
+                targetState = isCollapsed,
+                label = "basic_transition"
+            ) { target ->
+                if (!target) {
+                    MovieCardDetails(
+                        posterUrl = detail?.posterPath?.let { "https://image.tmdb.org/t/p/w500$it" }
+                            ?: "",
+                        title = detail?.title ?: "Loading...",
+                        genres = detail?.genres?.joinToString(", ") { it.name } ?: "",
+                        rating = detail?.rating?.toString() ?: "0.0",
+                        duration = detail?.runtime ?: "N/A",
+                        releaseDate = detail?.releaseDate?.let { formatDate(it) } ?: "",
+                        type = detail?.type ?: "SERIES",
+                        animatedVisibilityScope = this@AnimatedContent,
+                        sharedTransitionScope = this@SharedTransitionLayout
+                    )
+                } else {
+                    MainMovieCard(
+                        posterUrl = detail?.posterPath?.let { "https://image.tmdb.org/t/p/w500$it" }
+                            ?: "",
+                        title = detail?.title ?: "Loading...",
+                        animatedVisibilityScope = this@AnimatedContent,
+                        sharedTransitionScope = this@SharedTransitionLayout
+                    )
                 }
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(Theme.colors.background.screen)
-                )
-                {
+            }
+        }
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Theme.colors.background.screen)
+        )
+        {
 
-                    if (isLoading && detail == null) {
-                        CircularProgressIndicator(
-                            modifier = Modifier.align(Alignment.Center),
-                            color = Theme.colors.brand.primary
-                        )
-                    } else {
+            if (isLoading && detail == null) {
+                CircularProgressIndicator(
+                    modifier = Modifier.align(Alignment.Center),
+                    color = Theme.colors.brand.primary
+                )
+            } else {
                 LazyColumn(
                     state = scrollState,
                     modifier = Modifier.background(Theme.colors.background.screen)

@@ -5,8 +5,6 @@ import com.remote.dto.MovieDto
 import com.remote.dto.details.ListOfSeriesDto
 import com.remote.dto.details.MovieDetailDto
 import com.remote.dto.details.SeriesDetailDto
-import com.remote.dto.MovieDetailDto
-import com.remote.dto.SeriesDetailDto
 import com.remote.dto.review.RatingRequestDto
 import com.remote.dto.review.ReviewDto
 import com.utils.ApiResponse
@@ -14,8 +12,8 @@ import com.utils.CREDITS
 import com.utils.LATEST
 import com.utils.LISTS
 import com.utils.MOVIE
-import com.utils.RECOMMENDATIONS
 import com.utils.RATING
+import com.utils.RECOMMENDATIONS
 import com.utils.REVIEWS
 import com.utils.SERIES
 import com.utils.SESSION_ID

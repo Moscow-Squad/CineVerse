@@ -18,7 +18,6 @@ import io.ktor.http.HttpMethod
 class CollectionsDataSource(
     private val httpClient: HttpClient,
 ) {
-
     suspend fun getMyCollections(accountId: Int, sessionId: String): List<CollectionDto> =
         httpClient.performCall<Unit, ApiResponse<CollectionDto>>(
             method = HttpMethod.Get,

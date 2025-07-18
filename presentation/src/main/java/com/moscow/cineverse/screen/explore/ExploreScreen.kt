@@ -40,8 +40,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavHostController
 import com.moscow.cineverse.designSystem.component.PillLabel
 import com.moscow.cineverse.designSystem.component.ViewMode
 import com.moscow.cineverse.designSystem.component.ViewModeToggle
@@ -52,11 +52,10 @@ import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.navigation.LocalNavController
 import com.moscow.cineverse.navigation.routes.CastDetailsRoute
 import com.moscow.cineverse.navigation.routes.MovieDetailsRoute
-import com.moscow.cineverse.screen.component.movie_poster_card.MediaItemUi
 import com.moscow.cineverse.screen.component.movie_poster_card.MoviePosterCard
 import com.moscow.cineverse.screen.explore.component.ActorPosterCard
 import com.moscow.cineverse.screen.explore.component.SearchSuggestion
-import com.moscow.cineverse.screen.movie_details.MovieDetailsScreen
+import com.moscow.cineverse.screen.model.MediaItemUi
 import com.moscow.cinverse.presentation.R
 import org.koin.androidx.compose.koinViewModel
 
