@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.android.domain.model.MediaType
 import com.moscow.cineverse.designSystem.component.CineVersePreviews
 import com.moscow.cineverse.designSystem.component.MovieAppBar
 import com.moscow.cineverse.designSystem.component.MovieButton
@@ -160,7 +161,8 @@ fun ShowAllActorMoviesPreview(modifier: Modifier = Modifier) {
                     rating = 7.5f,
                     genres = listOf("Action", "Adventure"),
                     duration = "2h 30m",
-                    releaseDate = "2023-10-01"
+                    releaseDate = "2023-10-01",
+                    mediaType = MediaType.Movie
                 )
             }
         ),

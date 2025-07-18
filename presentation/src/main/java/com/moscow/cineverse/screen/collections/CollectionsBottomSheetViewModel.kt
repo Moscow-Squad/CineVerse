@@ -23,7 +23,7 @@ class CollectionsBottomSheetViewModel(
     )
 
     init {
-        loadUserCollections()
+//        loadUserCollections()
     }
 
     override fun onAddNewCollectionClick() {

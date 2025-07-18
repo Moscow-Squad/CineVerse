@@ -52,6 +52,7 @@ import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.navigation.LocalNavController
 import com.moscow.cineverse.navigation.routes.CastDetailsRoute
 import com.moscow.cineverse.navigation.routes.MovieDetailsRoute
+import com.moscow.cineverse.navigation.routes.SeriesDetailsRoute
 import com.moscow.cineverse.screen.component.movie_poster_card.MoviePosterCard
 import com.moscow.cineverse.screen.explore.component.ActorPosterCard
 import com.moscow.cineverse.screen.explore.component.SearchSuggestion
@@ -96,9 +97,15 @@ private fun handleEffects(
                 MovieDetailsRoute(event.movieId)
             )
         }
+
         ExploreScreenEvents.RefreshRequested -> {}
         is ExploreScreenEvents.TabSelected -> {}
         is ExploreScreenEvents.ViewModeChanged -> {}
+        is ExploreScreenEvents.SeriesClicked -> {
+            navController.navigate(
+                SeriesDetailsRoute(event.seriesId)
+            )
+        }
     }
 }
 
@@ -160,7 +167,7 @@ private fun ExploreScreenContent(
                     trailingIcon = {
                         VoiceRecognitionIcon(
                             modifier = Modifier.size(20.dp),
-                            onResult = { interactionListener.onSearchValueChange(it.toString()) },
+                            onResult = { interactionListener.onSearchWordDetected(it) },
                             onError = {}
                         )
                     }
@@ -248,10 +255,13 @@ private fun ExploreScreenContent(
                                             MoviePosterCard(
                                                 movie = item,
                                                 viewMode = uiState.viewMode,
-                                                onMovieClick = interactionListener::onMovieClick
+                                                onMovieClick = {
+                                                    interactionListener.onMediaItemClicked(
+                                                        item
+                                                    )
+                                                }
                                             )
                                         }
-
                                         is ExploreScreenState.ActorUi -> {
                                             ActorPosterCard(
                                                 actor = item,

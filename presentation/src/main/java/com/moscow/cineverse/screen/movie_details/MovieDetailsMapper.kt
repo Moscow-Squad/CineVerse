@@ -3,6 +3,7 @@ package com.moscow.cineverse.screen.movie_details
 import com.android.domain.model.CastDetails
 import com.android.domain.model.CrewDetails
 import com.android.domain.model.Genre
+import com.android.domain.model.MediaType
 import com.android.domain.model.Movie
 import com.android.domain.model.Review
 import com.android.domain.model.details.MovieDetail
@@ -92,7 +93,8 @@ fun Movie.toMediaItemUi(): MediaItemUi {
         rating = this.rating,
         genres = emptyList(),
         releaseDate = this.releaseDate.toString(),
-        duration = ""
+        duration = "",
+        mediaType = MediaType.Movie
     )
 }
 

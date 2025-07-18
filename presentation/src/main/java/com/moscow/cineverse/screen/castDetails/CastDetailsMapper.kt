@@ -1,5 +1,6 @@
 package com.moscow.cineverse.screen.castDetails
 
+import com.android.domain.model.MediaType
 import com.android.domain.model.Movie
 import com.moscow.cineverse.screen.model.MediaItemUi
 import kotlinx.datetime.LocalDate
@@ -35,6 +36,7 @@ fun Movie.toMediaItemUi(): MediaItemUi {
         rating = this.rating,
         genres = emptyList(),
         releaseDate = this.releaseDate.toString(),
-        duration = ""
+        duration = "",
+        mediaType = MediaType.Movie
     )
 }

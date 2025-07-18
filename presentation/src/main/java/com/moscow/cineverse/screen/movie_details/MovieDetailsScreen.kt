@@ -53,7 +53,6 @@ fun MovieDetailsScreen(
     modifier: Modifier = Modifier,
     viewModel: MovieDetailsViewModel = koinViewModel(),
     navController: NavHostController = rememberNavController(),
-
     ) {
     val uiState by viewModel.uiState.collectAsState()
     LaunchedEffect(Unit) {

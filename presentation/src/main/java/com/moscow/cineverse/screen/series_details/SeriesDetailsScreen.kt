@@ -1,5 +1,6 @@
 package com.moscow.cineverse.screen.series_details
 
+import android.util.Log
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionLayout
@@ -29,15 +30,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import com.android.domain.model.Genre
-import com.android.domain.model.MediaType
-import com.android.domain.model.Review
-import com.android.domain.model.details.Creator
-import com.android.domain.model.details.SeriesDetail
 import com.example.design_system.R
 import com.moscow.cineverse.designSystem.component.MovieAppBar
 import com.moscow.cineverse.designSystem.component.MovieCard
@@ -53,7 +48,6 @@ import com.moscow.cineverse.designSystem.component.movieSeriesDetails.Season
 import com.moscow.cineverse.designSystem.component.movieSeriesDetails.SeasonCard
 import com.moscow.cineverse.designSystem.component.movieSeriesDetails.StaffInfoSection
 import com.moscow.cineverse.designSystem.component.movieSeriesDetails.StarCastSection
-import com.moscow.cineverse.designSystem.theme.CineVerseTheme
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.navigation.routes.CollectionsBottomSheetRoute
 import org.koin.androidx.compose.koinViewModel
@@ -62,34 +56,26 @@ import java.util.Locale
 
 @Composable
 fun SeriesDetailsScreen(
-    seriesId: Int,
     viewModel: SeriesDetailsViewModel = koinViewModel(),
     navController: NavHostController
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
-    LaunchedEffect(seriesId) {
-        viewModel.loadSeriesDetails(seriesId)
-        viewModel.loadReviews(seriesId, page = 1)
-    }
-
     LaunchedEffect(viewModel) {
         viewModel.uiEvent.collect { event ->
             when (event) {
                 is SeriesDetailsEvents.AddToCollection -> {
+                    Log.e("kllvmv", "SeriesDetailsScreen: ")
                     navController.navigate(
-                        CollectionsBottomSheetRoute(
-                            mediaItemId = event.seriesId,
-                            mediaType = MediaType.Tv.name
-                        )
+                        CollectionsBottomSheetRoute(mediaItemId = event.seriesId)
                     )
-
                 }
             }
         }
     }
     SeriesDetailsContent(
-        uiState
+        uiState = uiState,
+        interactionListener = viewModel
     )
 }
 
@@ -120,6 +106,7 @@ private fun formatReviewDate(dateString: String): String {
 @Composable
 fun SeriesDetailsContent(
     uiState: SeriesDetailsUiState,
+    interactionListener: SeriesInteractionListener
 ) {
     val detail = uiState.seriesDetail
     val reviews = uiState.reviews
@@ -143,25 +130,35 @@ fun SeriesDetailsContent(
                 label = "basic_transition"
             ) { target ->
                 if (!target) {
-                    MovieCardDetails(
-                        posterUrl = detail?.posterPath?.let { "https://image.tmdb.org/t/p/w500$it" }
-                            ?: "",
-                        title = detail?.title ?: "Loading...",
-                        genres = detail?.genres?.joinToString(", ") { it.name } ?: "",
-                        rating = detail?.rating?.toString() ?: "0.0",
-                        duration = detail?.runtime ?: "N/A",
-                        releaseDate = detail?.releaseDate?.let { formatDate(it) } ?: "",
-                        type = detail?.type ?: "SERIES",
-                        animatedVisibilityScope = this@AnimatedContent,
-                        sharedTransitionScope = this@SharedTransitionLayout
-                    )
+                    uiState.seriesDetail?.let { detail ->
+                        MovieCardDetails(
+                            posterUrl = detail.posterPath?.let { "https://image.tmdb.org/t/p/w500$it" }
+                                ?: "",
+                            title = detail.title,
+                            genres = detail.genres.joinToString(", ") { it.name },
+                            rating = detail.rating.toString(),
+                            duration = detail.runtime ?: "N/A",
+                            releaseDate = detail.releaseDate?.let { formatDate(it) } ?: "",
+                            type = detail.type,
+                            animatedVisibilityScope = this@AnimatedContent,
+                            sharedTransitionScope = this@SharedTransitionLayout,
+                            onSaveClick = {
+                                Log.e(
+                                    "kllvmv",
+                                    "addToCollection:",
+                                )
+
+                                interactionListener.addToCollection()
+                            }
+                        )
+                    }
                 } else {
                     MainMovieCard(
                         posterUrl = detail?.posterPath?.let { "https://image.tmdb.org/t/p/w500$it" }
                             ?: "",
                         title = detail?.title ?: "Loading...",
                         animatedVisibilityScope = this@AnimatedContent,
-                        sharedTransitionScope = this@SharedTransitionLayout
+                        sharedTransitionScope = this@SharedTransitionLayout,
                     )
                 }
             }
@@ -357,82 +354,82 @@ fun SeriesDetailsContent(
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-private fun SeriesDetailsScreenPreview() {
-    CineVerseTheme {
-        SeriesDetailsContent(
-            uiState = SeriesDetailsUiState(
-                isLoading = false,
-                seriesDetail = SeriesDetail(
-                    id = 101,
-                    title = "The Great Adventure",
-                    posterPath = "",
-                    backdropPath = "",
-                    genres = listOf(
-                        Genre(id = 1, name = "Adventure"),
-                        Genre(id = 2, name = "Drama")
-                    ),
-                    rating = 8.5,
-                    voteCount = 1245,
-                    runtime = "45m per episode",
-                    releaseDate = "2021-09-15",
-                    type = "SERIES",
-                    overview = "A thrilling adventure series that explores the life of a young hero on a quest to save their world.",
-                    numberOfSeasons = 3,
-                    numberOfEpisodes = 30,
-                    cast = listOf(
-                        com.android.domain.model.details.CastMember(
-                            id = 1,
-                            name = "Emma Stone",
-                            character = "Hero",
-                            profilePath = null
-                        ),
-                        com.android.domain.model.details.CastMember(
-                            id = 2,
-                            name = "Ryan Gosling",
-                            character = "Mentor",
-                            profilePath = null
-                        )
-                    ),
-                    creators = listOf(
-                        Creator(
-                            id = 1,
-                            name = "John Doe",
-                            profilePath = null
-                        )
-                    ),
-                    tagline = "",
-                    status = "",
-                    lastAirDate = null,
-                    nextAirDate = null,
-                    lastEpisodeToAir = null,
-                    nextEpisodeToAir = null,
-                    seasons = emptyList(),
-                    similarSeries = emptyList(),
-                    reviews = emptyList()
-                ),
-                reviews = listOf(
-                    Review(
-                        id = "rev1",
-                        author = "FilmFan99",
-                        username = "filmfan99",
-                        content = "Absolutely amazing! The plot, the acting, everything was top-notch.",
-                        rating = 9.0,
-                        createdAt = "2024-03-05T15:23:01.000Z",
-                        avatarPath = "null"
-                    ),
-                    Review(
-                        id = "rev2",
-                        author = "MovieBuff88",
-                        username = "moviebuff88",
-                        content = "Great cinematography and storytelling. Can't wait for the next season!",
-                        rating = 8.0,
-                        createdAt = "2024-04-10T11:12:01.000Z",
-                        avatarPath = "null"
-                    )
-                )
-            )
-        )
-    }
-}
+//@Preview(showBackground = true)
+//@Composable
+//private fun SeriesDetailsScreenPreview() {
+//    CineVerseTheme {
+//        SeriesDetailsContent(
+//            uiState = SeriesDetailsUiState(
+//                isLoading = false,
+//                seriesDetail = SeriesDetail(
+//                    id = 101,
+//                    title = "The Great Adventure",
+//                    posterPath = "",
+//                    backdropPath = "",
+//                    genres = listOf(
+//                        Genre(id = 1, name = "Adventure"),
+//                        Genre(id = 2, name = "Drama")
+//                    ),
+//                    rating = 8.5,
+//                    voteCount = 1245,
+//                    runtime = "45m per episode",
+//                    releaseDate = "2021-09-15",
+//                    type = "SERIES",
+//                    overview = "A thrilling adventure series that explores the life of a young hero on a quest to save their world.",
+//                    numberOfSeasons = 3,
+//                    numberOfEpisodes = 30,
+//                    cast = listOf(
+//                        com.android.domain.model.details.CastMember(
+//                            id = 1,
+//                            name = "Emma Stone",
+//                            character = "Hero",
+//                            profilePath = null
+//                        ),
+//                        com.android.domain.model.details.CastMember(
+//                            id = 2,
+//                            name = "Ryan Gosling",
+//                            character = "Mentor",
+//                            profilePath = null
+//                        )
+//                    ),
+//                    creators = listOf(
+//                        Creator(
+//                            id = 1,
+//                            name = "John Doe",
+//                            profilePath = null
+//                        )
+//                    ),
+//                    tagline = "",
+//                    status = "",
+//                    lastAirDate = null,
+//                    nextAirDate = null,
+//                    lastEpisodeToAir = null,
+//                    nextEpisodeToAir = null,
+//                    seasons = emptyList(),
+//                    similarSeries = emptyList(),
+//                    reviews = emptyList()
+//                ),
+//                reviews = listOf(
+//                    Review(
+//                        id = "rev1",
+//                        author = "FilmFan99",
+//                        username = "filmfan99",
+//                        content = "Absolutely amazing! The plot, the acting, everything was top-notch.",
+//                        rating = 9.0,
+//                        createdAt = "2024-03-05T15:23:01.000Z",
+//                        avatarPath = "null"
+//                    ),
+//                    Review(
+//                        id = "rev2",
+//                        author = "MovieBuff88",
+//                        username = "moviebuff88",
+//                        content = "Great cinematography and storytelling. Can't wait for the next season!",
+//                        rating = 8.0,
+//                        createdAt = "2024-04-10T11:12:01.000Z",
+//                        avatarPath = "null"
+//                    )
+//                )
+//            )
+//        )
+//    }
+//}
