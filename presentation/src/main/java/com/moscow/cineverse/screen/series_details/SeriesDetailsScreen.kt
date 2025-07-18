@@ -1,6 +1,5 @@
 package com.moscow.cineverse.screen.series_details
 
-import android.util.Log
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionLayout
@@ -32,7 +31,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.design_system.R
 import com.moscow.cineverse.designSystem.component.MovieAppBar
@@ -76,8 +74,7 @@ fun SeriesDetailsScreen(
     }
     SeriesDetailsContent(
         uiState = uiState,
-        interactionListener = viewModel
-        uiState,
+        interactionListener = viewModel,
         onClickArrow = viewModel::showRatingBottomSheet,
         onDismiss = viewModel::onDismissOrCancelRatingBottomSheet,
         onRatingSubmit = viewModel::onRatingSubmit
@@ -111,7 +108,7 @@ private fun formatReviewDate(dateString: String): String {
 @Composable
 fun SeriesDetailsContent(
     uiState: SeriesDetailsUiState,
-    interactionListener: SeriesInteractionListener
+    interactionListener: SeriesInteractionListener,
     onClickArrow: () -> Unit,
     onDismiss: () -> Unit,
     onRatingSubmit: (Int, Int) -> Unit
@@ -151,11 +148,6 @@ fun SeriesDetailsContent(
                             animatedVisibilityScope = this@AnimatedContent,
                             sharedTransitionScope = this@SharedTransitionLayout,
                             onSaveClick = {
-                                Log.e(
-                                    "kllvmv",
-                                    "addToCollection:",
-                                )
-
                                 interactionListener.addToCollection()
                             }
                         )

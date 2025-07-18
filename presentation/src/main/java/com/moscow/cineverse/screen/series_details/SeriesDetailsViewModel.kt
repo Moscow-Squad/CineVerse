@@ -14,7 +14,7 @@ class SeriesDetailsViewModel(
     private val getReviewsPageUseCase: GetReviewsPageUseCase,
     private val getLatestSeasonsUseCase: GetLatestSeasonsUseCase,
     private val getListOfSeriesUseCase: GetListOfSeriesUseCase,
-    private val savedStateHandle: SavedStateHandle
+    private val savedStateHandle: SavedStateHandle,
     private val rateSeriesUseCase : RateSeriesUseCase
 ) : BaseViewModel<SeriesDetailsUiState, SeriesDetailsEvents>(SeriesDetailsUiState()),
     SeriesInteractionListener {

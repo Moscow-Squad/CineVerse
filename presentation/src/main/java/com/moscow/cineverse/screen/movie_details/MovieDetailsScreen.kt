@@ -293,6 +293,7 @@ fun MovieDetailsContent(
                     onRatingRemove = { interactionListener.onRatingSubmit(0, uiState.movieDetailsUi.id) },
                     initialRating = uiState.starsRating,
                     hasExistingRating = uiState.starsRating != 0,
+                    isLoading = uiState.isLoading
                 )
             }
         }

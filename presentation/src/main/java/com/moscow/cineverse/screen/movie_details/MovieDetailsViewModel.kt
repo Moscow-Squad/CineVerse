@@ -157,19 +157,22 @@ class MovieDetailsViewModel(
             onSuccess = {
                 updateState { it.copy(
                     starsRating = rating,
-                    showRatingBottomSheet = false
+                    showRatingBottomSheet = false,
+                    isLoading = false
                 ) }
+            },
+            onStart = {
+                updateState { it.copy(isLoading = true) }
             },
             onError = {
                 updateState {
                     it.copy(
                         starsRating = rating,
-                        showRatingBottomSheet = false
+                        showRatingBottomSheet = false,
+                        isLoading = false
                     )
                 }
             },
         )
     }
-
-
 }
