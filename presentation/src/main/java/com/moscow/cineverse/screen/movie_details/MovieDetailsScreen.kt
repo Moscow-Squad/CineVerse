@@ -18,7 +18,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.design_system.R
@@ -32,28 +31,28 @@ import com.moscow.cineverse.designSystem.component.movieSeriesDetails.MovieRevie
 import com.moscow.cineverse.designSystem.component.movieSeriesDetails.RatingSection
 import com.moscow.cineverse.designSystem.component.movieSeriesDetails.StaffInfoSection
 import com.moscow.cineverse.designSystem.component.movieSeriesDetails.StarCastSection
-import com.moscow.cineverse.designSystem.theme.CineVerseTheme
 import com.moscow.cineverse.designSystem.theme.Theme
-import com.moscow.cineverse.screen.movie_details.MovieScreenState.MovieDetailsUi
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun MovieDetailsScreen(
     modifier: Modifier = Modifier,
-    viewModel: MovieDetailsViewModel = koinViewModel()
+    viewModel: MovieDetailsViewModel = koinViewModel(),
+    onAddToCollectionClick: (id: Int) -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsState()
     MovieDetailsContent(
-
         uiState,
-        modifier
+        modifier,
+        onAddToCollectionClick = onAddToCollectionClick
     )
 }
 
 @Composable
 fun MovieDetailsContent(
     uiState: MovieScreenState,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onAddToCollectionClick: (id: Int) -> Unit
 ) {
     val textColor = Theme.colors.shade.secondary
     when {
@@ -73,7 +72,8 @@ fun MovieDetailsContent(
                         rating = uiState.movieDetailsUi.rating.toString(),
                         duration = "2h 32m",
                         releaseDate = uiState.movieDetailsUi.releaseDate,
-                        type = "MOVIE"
+                        type = "MOVIE",
+                        onSaveClick = { onAddToCollectionClick(uiState.movieDetailsUi.id) }
                     )
                 }
                 item {
@@ -233,25 +233,25 @@ fun MovieDetailsContent(
     }
 }
 
-
-@Preview(showBackground = true)
-@Composable
-private fun MovieDetailsScreenPreview() {
-    CineVerseTheme {
-        MovieDetailsContent(
-            uiState = MovieScreenState(
-                movieDetailsUi = MovieDetailsUi(
-                    id = 12345,
-                    title = "Inception",
-                    posterPath = "/poster/inception.jpg",
-                    rating = 8.8,
-                    genres = listOf("Action", "Sci-Fi", "Thriller"),
-                    releaseDate = "2010-07-16",
-                    duration = "2h 28m",
-                    description = "A skilled thief is given a chance at redemption if he can successfully perform an inception — planting an idea in someone's mind."
-                )
-            ),
-        )
-    }
-
-}
+//
+//@Preview(showBackground = true)
+//@Composable
+//private fun MovieDetailsScreenPreview() {
+//    CineVerseTheme {
+//        MovieDetailsContent(
+//            uiState = MovieScreenState(
+//                movieDetailsUi = MovieDetailsUi(
+//                    id = 12345,
+//                    title = "Inception",
+//                    posterPath = "/poster/inception.jpg",
+//                    rating = 8.8,
+//                    genres = listOf("Action", "Sci-Fi", "Thriller"),
+//                    releaseDate = "2010-07-16",
+//                    duration = "2h 28m",
+//                    description = "A skilled thief is given a chance at redemption if he can successfully perform an inception — planting an idea in someone's mind."
+//                )
+//            ),
+//        )
+//    }
+//
+//}

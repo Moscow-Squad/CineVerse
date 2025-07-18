@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -39,21 +40,43 @@ fun CollectionsBottomSheetScreen(
 
     CollectionsBottomSheetContent(
         interactionListener = viewModel,
-        onCreateCollectionClicked = onCreateCollectionClicked,
         onAddNewCollectionClick = onAddNewCollectionClick,
         uiState = uiState,
         onDismissBottomSheet = navigateBack,
         onCloseBottomSheet = navigateBack,
+        onNotNow = navigateBack,
+        onLogIn = {}
     )
+
+    LaunchedEffect(Unit) {
+        viewModel.uiEvent.collect { event ->
+            handleEvents(
+                event = event,
+                onCreateCollectionClicked = onCreateCollectionClicked // user already log in - navigate to collections screen
+            )
+        }
+    }
+
+}
+
+private fun handleEvents(
+    event: CollectionsBottomSheetEvents,
+    onCreateCollectionClicked: () -> Unit,
+) {
+    when (event) {
+        CollectionsBottomSheetEvents.OnCreateCollectionClicked -> onCreateCollectionClicked()
+        CollectionsBottomSheetEvents.OnLoginClicked -> {}
+    }
 
 }
 
 @Composable
 private fun CollectionsBottomSheetContent(
     onAddNewCollectionClick: () -> Unit,
-    onCreateCollectionClicked: () -> Unit,
     onDismissBottomSheet: () -> Unit,
     onCloseBottomSheet: () -> Unit,
+    onNotNow: () -> Unit,
+    onLogIn: () -> Unit,
     uiState: CollectionsBottomSheetUiState,
     interactionListener: CollectionsBottomSheetInteractionListener
 ) {
@@ -65,6 +88,20 @@ private fun CollectionsBottomSheetContent(
         onAddNewCollectionClick = onAddNewCollectionClick
     ) {
         when {
+            uiState.createCollection -> {
+                MessageInfoBox(
+                    title = stringResource(R.string.you_re_almost_there),
+                    description = stringResource(R.string.log_in_to_save_movies_create_collections_and_get_personalized_recommendations),
+                    icon = painterResource(Theme.icons.dueTone.videoLibrary),
+                    showButtonsGroup = true,
+                    firstButtonText = stringResource(R.string.not_now),
+                    onClickFirstButton = onNotNow,
+                    secondButtonText = stringResource(R.string.log_in),
+                    onClickSecondButton = onLogIn,
+                    modifier = Modifier.padding(bottom = 16.dp)
+                )
+            }
+
             uiState.isLoading -> {
                 Column(
                     modifier = Modifier
@@ -96,7 +133,7 @@ private fun CollectionsBottomSheetContent(
                     )
                     Spacer(modifier = Modifier.height(16.dp))
                     MovieButton(
-                        buttonText = "Retry",
+                        buttonText = stringResource(R.string.retry),
                         textColor = Theme.colors.button.primary,
                         textStyle = Theme.textStyle.title.small,
                         onClick = { }
@@ -114,7 +151,7 @@ private fun CollectionsBottomSheetContent(
                         firstButtonText = "",
                         onClickFirstButton = {},
                         secondButtonText = stringResource(R.string.create_collection),
-                        onClickSecondButton = onCreateCollectionClicked,
+                        onClickSecondButton = { interactionListener.onCreateCollectionClicked() },
                         modifier = Modifier.padding(bottom = 16.dp)
                     )
                 } else {

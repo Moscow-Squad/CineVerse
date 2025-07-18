@@ -7,5 +7,7 @@ interface CollectionsBottomSheetInteractionListener {
 
     fun onCollectionClicked(collectionId: Int)
 
+    fun onCreateCollectionClicked()
+
     fun onRefresh()
 }

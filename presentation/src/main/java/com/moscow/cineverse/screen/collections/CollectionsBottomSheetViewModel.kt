@@ -12,7 +12,7 @@ class CollectionsBottomSheetViewModel(
 ), CollectionsBottomSheetInteractionListener {
 
     init {
-        loadUserCollections()
+//        loadUserCollections()
     }
     override fun onAddNewCollectionClick() {
         TODO("should open new bottom sheet to login or to create new collection")
@@ -20,6 +20,10 @@ class CollectionsBottomSheetViewModel(
 
     override fun onCollectionClicked(collectionId: Int) {
         updateState { it.copy(showProcessIndicator = true) }
+    }
+
+    override fun onCreateCollectionClicked() {
+        updateState { it.copy(createCollection = true) }
     }
 
     override fun onRefresh() {

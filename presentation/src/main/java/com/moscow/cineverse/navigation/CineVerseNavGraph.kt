@@ -23,7 +23,9 @@ fun CineVerseNavGraph(navController: NavHostController) {
         collectionsBottomSheetRoute(
             onAddNewCollectionClick = {},
             onCreateCollectionClicked = {},
-            navigateBack = {}
+            navigateBack = {
+                navController.popBackStack()
+            }
         )
     }
 }

@@ -39,7 +39,6 @@ val useCases = module {
     single { AddNewCollectionUseCase(get()) }
     single { AddMediaItemToCollectionUseCase(get()) }
     single { GetCollectionDetailsUseCase(get()) }
-
 }
 
 val presentationModule = viewModels + useCases

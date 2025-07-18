@@ -27,7 +27,7 @@ fun MovieDetail.toUi(): MovieScreenState.MovieDetailsUi =
 
 fun Review.toUi(): ReviewUi =
     ReviewUi(
-        id = id.toInt(),
+        id = id,
         username = username,
         name = author,
         userImage = avatarPath,

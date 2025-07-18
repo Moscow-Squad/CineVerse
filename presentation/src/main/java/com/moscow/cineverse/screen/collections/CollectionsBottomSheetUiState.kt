@@ -8,5 +8,6 @@ data class CollectionsBottomSheetUiState(
     val errorMessage: String = "",
     val showBottomSheet: Boolean = false,
     val collections: List<CollectionUi> = emptyList(),
+    val createCollection: Boolean = false,
     val showProcessIndicator: Boolean = false
 )
