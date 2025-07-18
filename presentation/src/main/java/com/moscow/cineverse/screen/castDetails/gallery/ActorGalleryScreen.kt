@@ -31,7 +31,6 @@ import org.koin.core.parameter.parametersOf
 fun ActorGalleryScreen(
     actorId: Int,
     title: String,
-    onNavigateBack: () -> Unit,
     modifier: Modifier = Modifier,
     navController: NavHostController = LocalNavController.current,
 
@@ -44,7 +43,7 @@ fun ActorGalleryScreen(
         modifier = modifier,
         uiState = uiState,
         interactionListener = viewModel,
-        onNavigateBack = onNavigateBack,
+        onNavigateBack = { navController.popBackStack() },
         title = uiState.actorName
     )
 }

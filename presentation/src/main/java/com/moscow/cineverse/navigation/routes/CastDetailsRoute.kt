@@ -16,7 +16,7 @@ fun NavGraphBuilder.CastDetailsRoute() {
         CastDetailsScreen(
 
             actorId = args.castId,
-            onNavigateBack = {navController.popBackStack()},
+
         )
     }
 }

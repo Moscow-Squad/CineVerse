@@ -32,6 +32,7 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.android.domain.model.Genre
 import com.android.domain.model.Review
 import com.android.domain.model.details.Creator
@@ -53,6 +54,7 @@ import com.moscow.cineverse.designSystem.component.movieSeriesDetails.StaffInfoS
 import com.moscow.cineverse.designSystem.component.movieSeriesDetails.StarCastSection
 import com.moscow.cineverse.designSystem.theme.CineVerseTheme
 import com.moscow.cineverse.designSystem.theme.Theme
+import com.moscow.cineverse.navigation.LocalNavController
 import org.koin.androidx.compose.koinViewModel
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -60,8 +62,10 @@ import java.util.Locale
 @Composable
 fun SeriesDetailsScreen(
     seriesId: Int,
-    viewModel: SeriesDetailsViewModel = koinViewModel()
-) {
+    viewModel: SeriesDetailsViewModel = koinViewModel(),
+     navController: NavHostController = LocalNavController.current,
+
+    ) {
     val uiState by viewModel.uiState.collectAsState()
 
     LaunchedEffect(seriesId) {

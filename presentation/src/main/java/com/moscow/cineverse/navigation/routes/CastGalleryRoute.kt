@@ -14,10 +14,9 @@ fun NavGraphBuilder.CastGalleryRoute() {
     composable<CastGalleryRoute>{
         val args = it.toRoute<CastGalleryRoute>()
         ActorGalleryScreen(
-
             actorId = args.castId,
             title = args.castName,
-            onNavigateBack = {navController.popBackStack()},
+
         )
     }
 }

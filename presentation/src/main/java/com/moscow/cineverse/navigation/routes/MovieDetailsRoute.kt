@@ -15,9 +15,7 @@ fun NavGraphBuilder.MovieDetailsRoute() {
     composable<MovieDetailsRoute>{
         val args = it.toRoute<MovieDetailsRoute>()
         MovieDetailsScreen(
-
             movieId = args.movieId,
-            onNavigateBack = {navController.popBackStack()}
         )
     }
 }

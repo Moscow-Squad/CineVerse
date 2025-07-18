@@ -39,7 +39,6 @@ import org.koin.core.parameter.parametersOf
 fun ShowAllActorMoviesScreen(
     actorId: Int,
     title: String,
-    onNavigateBack : () -> Unit,
     modifier: Modifier = Modifier,
     navController: NavHostController = LocalNavController.current,
 
@@ -52,7 +51,7 @@ fun ShowAllActorMoviesScreen(
         interactionListener = viewModel,
         modifier = modifier,
         title = title,
-        onNavigateBack = onNavigateBack,
+        onNavigateBack = {navController.popBackStack()},
     )
 }
 

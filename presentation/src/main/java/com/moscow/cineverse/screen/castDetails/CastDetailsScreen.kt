@@ -48,7 +48,6 @@ import androidx.core.net.toUri
 @Composable
 fun CastDetailsScreen(
     actorId: Int,
-    onNavigateBack: () -> Unit,
     modifier: Modifier = Modifier,
     navController: NavHostController = LocalNavController.current,
     viewModel: CastDetailsViewModel = koinViewModel(parameters = { parametersOf(actorId) })
@@ -58,7 +57,7 @@ fun CastDetailsScreen(
     LaunchedEffect(viewModel) {
         viewModel.uiEvent.collect { event ->
             when (event) {
-                is CastDetailsEvent.NavigateBack -> onNavigateBack()
+                is CastDetailsEvent.NavigateBack -> {navController.popBackStack()}
                 is CastDetailsEvent.ShowError -> {
                     // TODO: Show error (Snackbar, Toast, etc.)
                 }
@@ -83,7 +82,7 @@ fun CastDetailsScreen(
         CastDetailsContent(
             uiState = uiState,
             interactionListener = viewModel,
-            onBackPressed = { onNavigateBack() },
+            onBackPressed = { navController.popBackStack() },
             modifier = Modifier.fillMaxSize()
         )
     }

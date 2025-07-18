@@ -54,7 +54,6 @@ import kotlin.Unit
 @Composable
 fun MovieDetailsScreen(
     movieId: Int,
-    onNavigateBack: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: MovieDetailsViewModel = koinViewModel(),
     navController: NavHostController = LocalNavController.current,
@@ -72,7 +71,7 @@ fun MovieDetailsScreen(
         viewModel.uiEvent.collect { event ->
             when (event) {
                 is MovieDetailsScreenEvents.NavigateBack -> {
-                    onNavigateBack()
+                    navController.popBackStack()
                 }
 
                 is MovieDetailsScreenEvents.ShowError -> {
@@ -96,7 +95,7 @@ fun MovieDetailsScreen(
     }
     MovieDetailsContent(
         uiState,
-        onNavigateBack = onNavigateBack,
+        onNavigateBack = {navController.popBackStack()},
         viewModel,
         modifier,
     )
@@ -119,7 +118,7 @@ fun MovieDetailsContent(
         }
     }
     MovieScaffold {
-        Column(modifier) {
+        Column(modifier = Modifier.background(Theme.colors.background.screen)) {
             MovieAppBar(backButtonClick = onNavigateBack, showBackButton = true)
             SharedTransitionLayout {
                 AnimatedContent(
