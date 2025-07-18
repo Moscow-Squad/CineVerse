@@ -3,7 +3,7 @@ package com.remote.source
 import com.remote.dto.GenreDto
 import com.remote.dto.GenreResponse
 import com.remote.dto.MovieDto
-import com.remote.dto.SeriesDto
+import com.remote.dto.details.SeriesDto
 import com.utils.ApiResponse
 import com.utils.DISCOVER_MOVIE_LIST
 import com.utils.DISCOVER_SERIES_LIST

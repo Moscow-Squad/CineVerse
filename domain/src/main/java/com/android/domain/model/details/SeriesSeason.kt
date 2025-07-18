@@ -1,4 +1,4 @@
-package com.android.domain.model
+package com.android.domain.model.details
 
 import kotlinx.datetime.LocalDate
 
