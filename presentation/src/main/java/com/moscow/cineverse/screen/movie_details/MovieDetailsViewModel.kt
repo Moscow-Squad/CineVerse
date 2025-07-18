@@ -129,12 +129,12 @@ class MovieDetailsViewModel(
         sendEvent(MovieDetailsScreenEvents.NavigateToFullCast)
     }
 
-    override fun onShowMoreRecommendations() {
-        sendEvent(MovieDetailsScreenEvents.NavigateToFullMovieList(24428))
+    override fun onShowMoreRecommendations(movieId: Int, movieTitle:String) {
+        sendEvent(MovieDetailsScreenEvents.NavigateToFullMovieList(movieId, movieTitle))
     }
 
-    override fun onShowMoreReviews() {
-        sendEvent(MovieDetailsScreenEvents.NavigateToFullReviews(24428))
+    override fun onShowMoreReviews(movieId:Int) {
+        sendEvent(MovieDetailsScreenEvents.NavigateToFullReviews(movieId))
     }
 
 

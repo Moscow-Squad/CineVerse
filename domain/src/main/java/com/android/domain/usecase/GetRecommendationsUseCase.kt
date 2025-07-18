@@ -1,10 +1,10 @@
 package com.android.domain.usecase
 
-import com.android.domain.repository.DetailsRepository
+import com.android.domain.repository.RecommendationsMoviesRepository
 
 class GetRecommendationsUseCase(
-    private val detailsRepository: DetailsRepository
+    private val recommendationsMoviesRepository: RecommendationsMoviesRepository
 ) {
     suspend operator fun invoke(id:Int,page:Int) =
-        detailsRepository.getRecommendations(id,page)
+        recommendationsMoviesRepository.getRecommendationsMovies(id,page)
 }

@@ -15,5 +15,5 @@
     <string name="movie">فيلم</string>
     <string name="star_cast">طاقم التمثيل</string>
     <string name="you_might_also_like">قد يعجبك أيضاً</string>
-
+    <string name="because_you_watched">لأنك شاهدت</string>
 </resources>

@@ -36,7 +36,12 @@ import com.moscow.cineverse.designSystem.component.movieSeriesDetails.RatingSect
 import com.moscow.cineverse.designSystem.component.movieSeriesDetails.StaffInfoSection
 import com.moscow.cineverse.designSystem.component.movieSeriesDetails.StarCastSection
 import com.moscow.cineverse.designSystem.theme.Theme
+import com.moscow.cineverse.navigation.routes.RecommendationsRoute
+import com.moscow.cineverse.navigation.routes.ReviewsRoute
+import com.moscow.cineverse.screen.castDetails.CastDetailsInteractionListener
 import com.moscow.cineverse.screen.component.movie_poster_card.MoviePosterCard
+import com.moscow.cineverse.screen.movie_details.recommendations.RecommendationMoviesScreen
+import com.moscow.cineverse.screen.reviews.ReviewsScreen
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -64,7 +69,7 @@ fun MovieDetailsScreen(
                     // TODO: Show error (Snackbar, Toast, etc.)
                 }
                 is MovieDetailsScreenEvents.NavigateToFullMovieList -> {
-                    // TODO: Implement intent to open social media link
+                    navController.navigate(RecommendationsRoute(event.movieID , event.movieTitle))
                 }
                 is MovieDetailsScreenEvents.NavigateToFullActors -> {
                     //
@@ -73,19 +78,21 @@ fun MovieDetailsScreen(
                     //
                 }
                 is MovieDetailsScreenEvents.NavigateToFullReviews -> {
-                    //
+                    navController.navigate(ReviewsRoute(event.movieID,true))
                 }
             }
         }
     }
     MovieDetailsContent(
         uiState,
+        viewModel,
         modifier
     )
 }
 @Composable
 fun MovieDetailsContent(
     uiState: MovieScreenState,
+    interactionListener: MovieDetailsInteractionListener,
     modifier: Modifier= Modifier
 ) {
     val textColor = Theme.colors.shade.secondary
@@ -179,7 +186,12 @@ fun MovieDetailsContent(
                         MovieListSection(
                             title = stringResource(com.moscow.cinverse.presentation.R.string.you_might_also_like),
                             movies = uiState.recommendations,
-                            onClickShowMore = { },
+                            onClickShowMore = {
+                                interactionListener.onShowMoreRecommendations(
+                                    uiState.movieDetailsUi.id,
+                                    uiState.movieDetailsUi.title
+                                )
+                            },
                             onClickPoster = { movie -> },
                             modifier = Modifier.padding(top = 16.dp),
                             movieCardContent = { movie, modifier, onClick ->
@@ -207,11 +219,14 @@ fun MovieDetailsContent(
                     )
                 }
 
-                item {
+                if(uiState.reviewsFlow != null)
+                    item {
 
                     SectionTitle(
                         title = stringResource(com.moscow.cinverse.presentation.R.string.top_reviews),
-                        onClick = {},
+                        onClick = {
+                            interactionListener.onShowMoreReviews(uiState.movieDetailsUi.id)
+                        },
                         modifier = Modifier.padding(
                             start = 16.dp,
                             end = 16.dp,

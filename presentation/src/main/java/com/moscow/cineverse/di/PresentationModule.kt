@@ -35,6 +35,7 @@ val useCases = module {
     single { GetReviewsPageUseCase(get()) }
     single { GetCreditsUseCase(get()) }
     single { GetRecommendationsUseCase(get()) }
+
 }
 
 val presentationModule = viewModels + useCases
