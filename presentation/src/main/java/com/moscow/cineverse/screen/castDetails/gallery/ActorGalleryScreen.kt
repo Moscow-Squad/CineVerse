@@ -31,15 +31,18 @@ fun ActorGalleryScreen(
     navController: NavHostController,
     actorId: Int,
     title: String,
+    onNavigateBack: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val viewModel: ActorGalleryViewModel = koinViewModel(parameters = { parametersOf(actorId, title) })
+    val viewModel: ActorGalleryViewModel =
+        koinViewModel(parameters = { parametersOf(actorId, title) })
     val uiState by viewModel.uiState.collectAsState()
 
     ActorGalleryContent(
+        modifier = modifier,
         uiState = uiState,
         interactionListener = viewModel,
-        modifier = modifier,
+        onNavigateBack = onNavigateBack,
         title = uiState.actorName
     )
 }
@@ -48,8 +51,9 @@ fun ActorGalleryScreen(
 fun ActorGalleryContent(
     uiState: ShowAllActorMoviesState,
     interactionListener: ActorGalleryInteractionListener,
+    title: String,
+    onNavigateBack: () -> Unit,
     modifier: Modifier = Modifier,
-    title: String
 ) {
     MovieScaffold {
         Box(modifier = modifier.fillMaxSize()) {
@@ -91,19 +95,17 @@ fun ActorGalleryContent(
                     Column(modifier = Modifier.fillMaxSize()) {
                         MovieAppBar(
                             title = title,
-                            backButtonClick = interactionListener::backButtonClick,
+                            backButtonClick = onNavigateBack,
                         )
-                    CastGallery(
-                        images = uiState.photos,
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(horizontal = 16.dp),
-                    )
-                }
+                        CastGallery(
+                            images = uiState.photos,
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(horizontal = 16.dp),
+                        )
                     }
+                }
             }
-
-
         }
     }
 }
@@ -122,6 +124,7 @@ fun ActorGalleryPreview(modifier: Modifier = Modifier) {
             override fun backButtonClick() {}
         },
         modifier = modifier,
-        title = "Actor Gallery"
+        title = "Actor Gallery",
+        onNavigateBack = {}
     )
 }

@@ -1,5 +1,6 @@
 package com.moscow.cineverse.screen.castDetails
 
+import android.content.Intent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -20,6 +21,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -35,10 +37,12 @@ import com.moscow.cineverse.designSystem.component.cast_details.MainDetails
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.navigation.routes.CastBestOfMovieRoute
 import com.moscow.cineverse.navigation.routes.CastGalleryRoute
+import com.moscow.cineverse.navigation.routes.MovieDetailsRoute
 import com.moscow.cineverse.screen.component.movie_poster_card.MoviePosterCard
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 import com.moscow.cinverse.presentation.R as PresentationR
+import androidx.core.net.toUri
 
 @Composable
 fun CastDetailsScreen(
@@ -49,7 +53,7 @@ fun CastDetailsScreen(
     viewModel: CastDetailsViewModel = koinViewModel(parameters = { parametersOf(actorId) })
 ) {
     val uiState by viewModel.uiState.collectAsState()
-
+    val context = LocalContext.current
     LaunchedEffect(viewModel) {
         viewModel.uiEvent.collect { event ->
             when (event) {
@@ -58,10 +62,11 @@ fun CastDetailsScreen(
                     // TODO: Show error (Snackbar, Toast, etc.)
                 }
                 is CastDetailsEvent.OpenSocialMedia -> {
-                    // TODO: Implement intent to open social media link
+                    val intent = Intent(Intent.ACTION_VIEW, event.url.toUri())
+                    context.startActivity(intent)
                 }
                 is CastDetailsEvent.NavigateToMovie -> {
-                    // TODO: Navigate to movie details
+                    navController.navigate(MovieDetailsRoute(event.movieId))
                 }
                 is CastDetailsEvent.NavigateToFullMovieList -> {
                     navController.navigate(CastBestOfMovieRoute(event.actorId, event.actorName))
@@ -77,7 +82,7 @@ fun CastDetailsScreen(
         CastDetailsContent(
             uiState = uiState,
             interactionListener = viewModel,
-            onBackPressed = { viewModel.onBackPressed() },
+            onBackPressed = { onNavigateBack() },
             modifier = Modifier.fillMaxSize()
         )
     }
