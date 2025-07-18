@@ -28,7 +28,7 @@ fun MoviePosterCard(
         titleTextAlign = titleTextAlign,
         showTitle = showTitle,
         getId = { it.id },
-        getTitle = { it.title },
+        getTitle = { getTitleOverride?.invoke(it) ?: it.title },
         getPosterUrl = { it.posterPath },
         getRating = { it.rating },
         getGenres = { it.genres },

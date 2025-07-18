@@ -25,6 +25,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.core.net.toUri
 import androidx.navigation.NavHostController
 import com.moscow.cineverse.designSystem.component.InfoSection
 import com.moscow.cineverse.designSystem.component.MovieAppBar
@@ -42,7 +43,6 @@ import com.moscow.cineverse.screen.component.movie_poster_card.MoviePosterCard
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 import com.moscow.cinverse.presentation.R as PresentationR
-import androidx.core.net.toUri
 
 @Composable
 fun CastDetailsScreen(
@@ -256,8 +256,7 @@ private fun ActorDetailsContent(
                             onMovieClick = { movieId -> onMovieClick(movie) },
                             showGenres = false,
                             showTitle = true,
-                            modifier = cardModifier,
-                            getTitleOverride = { it.title.take(15) + if (it.title.length > 15) "…" else "" }
+                            modifier = cardModifier
                         )
                     },
                     modifier = Modifier.padding(top = 4.dp)
@@ -302,7 +301,7 @@ private fun ActorDetailsContent(
                             maxDescriptionLines = Int.MAX_VALUE,
                             paddingBetween = 8.dp,
                             modifier = Modifier.padding(16.dp),
-                            rating = 1.5f
+                            showRating = false
                         )
                     }
                 }
