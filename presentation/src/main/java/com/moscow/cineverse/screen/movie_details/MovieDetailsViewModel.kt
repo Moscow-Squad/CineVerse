@@ -2,6 +2,7 @@ package com.moscow.cineverse.screen.movie_details
 
 
 import android.util.Log
+import androidx.lifecycle.SavedStateHandle
 import com.android.domain.model.CreditsDetails
 import com.android.domain.model.Movie
 import com.android.domain.model.Review
@@ -12,6 +13,7 @@ import com.android.domain.usecase.GetRecommendationsUseCase
 import com.android.domain.usecase.GetReviewsPageUseCase
 import com.android.domain.usecase.RateMovieUseCase
 import com.moscow.cineverse.base.BaseViewModel
+import com.moscow.cineverse.navigation.routes.MovieDetailsRoute
 
 
 class MovieDetailsViewModel(
@@ -19,10 +21,19 @@ class MovieDetailsViewModel(
     private val getReviewsPageUseCase: GetReviewsPageUseCase,
     private val getCreditsUseCase: GetCreditsUseCase,
     private val getRecommendationsUseCase: GetRecommendationsUseCase,
-    private val rateMovieUseCase: RateMovieUseCase
+    private val rateMovieUseCase: RateMovieUseCase,
+    private val saveStateHandle: SavedStateHandle,
 ) : BaseViewModel<MovieScreenState, MovieDetailsScreenEvents>(MovieScreenState()),
     MovieDetailsInteractionListener {
 
+    private val movieId = saveStateHandle.get<Int>(MovieDetailsRoute.MOVIE_ID) ?: 0
+
+    init {
+        getMovieDetails(movieId)
+        getReviews(movieId)
+        getCredits(movieId)
+        getRecommendations(movieId)
+    }
     fun getMovieDetails(movieID: Int) {
         launchWithResult(
             action = { getMovieDetailsUseCase.invoke(movieID) },

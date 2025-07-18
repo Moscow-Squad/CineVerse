@@ -28,7 +28,6 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import coil3.compose.rememberAsyncImagePainter
 import com.example.design_system.R
 import com.moscow.cineverse.designSystem.component.MovieAppBar
@@ -54,21 +53,11 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun MovieDetailsScreen(
-    movieId: Int,
     modifier: Modifier = Modifier,
     viewModel: MovieDetailsViewModel = koinViewModel(),
     navController: NavHostController = LocalNavController.current,
-
-
-    navController: NavHostController = rememberNavController(),
     ) {
     val uiState by viewModel.uiState.collectAsState()
-    LaunchedEffect(Unit) {
-        viewModel.getMovieDetails(movieId)
-        viewModel.getReviews(movieId)
-        viewModel.getCredits(movieId)
-        viewModel.getRecommendations(movieId)
-    }
     LaunchedEffect(viewModel) {
         viewModel.uiEvent.collect { event ->
             when (event) {
@@ -96,6 +85,8 @@ fun MovieDetailsScreen(
                 is MovieDetailsScreenEvents.AddToCollection -> {
                     navController.navigate(CollectionsBottomSheetRoute(event.movieId))
                 }
+
+                MovieDetailsScreenEvents.NavigateToFullCast -> {}
             }
         }
     }
@@ -262,13 +253,13 @@ fun MovieDetailsContent(
                                 icon = R.drawable.due_tone_star,
                                 title = stringResource(com.moscow.cinverse.presentation.R.string.give_it_stars),
                                 caption = stringResource(com.moscow.cinverse.presentation.R.string.let_the_world_know_how_you_felt),
-                                onClickArrow = {interactionListener.showRatingBottomSheet()},
+                                onClickArrow = { interactionListener.showRatingBottomSheet() },
                                 modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 24.dp)
                             )
                         }
 
-                        if(!uiState.reviewsFlow.isNullOrEmpty()) {
-                        item {
+                        if (!uiState.reviewsFlow.isNullOrEmpty()) {
+                            item {
 
                                 SectionTitle(
                                     title = stringResource(com.moscow.cinverse.presentation.R.string.top_reviews),
@@ -285,11 +276,11 @@ fun MovieDetailsContent(
                                 repeat(uiState.reviewsFlow.size) {
                                     val userImage = uiState.reviewsFlow[it].userImage
                                     MovieReviewCard(
-                                        uiState.reviewsFlow[it].name ,
-                                        uiState.reviewsFlow[it].username ,
-                                        uiState.reviewsFlow[it].reviewContent ,
+                                        uiState.reviewsFlow[it].name,
+                                        uiState.reviewsFlow[it].username,
+                                        uiState.reviewsFlow[it].reviewContent,
                                         uiState.reviewsFlow[it].rate,
-                                        uiState.reviewsFlow[it].date ,
+                                        uiState.reviewsFlow[it].date,
                                         if (userImage.isEmpty()) null else rememberAsyncImagePainter(
                                             model = userImage
                                         ),
@@ -306,19 +297,26 @@ fun MovieDetailsContent(
                     }
 
 
-                MovieRatingBottomSheet(
-                    isVisible = uiState.showRatingBottomSheet,
-                    onDismiss = {interactionListener.onDismissOrCancelRatingBottomSheet()},
-                    onRatingSubmit = { rating->
-                        interactionListener.onRatingSubmit(rating, uiState.movieDetailsUi.id)
-                    },
-                    onRatingRemove = { interactionListener.onRatingSubmit(0, uiState.movieDetailsUi.id) },
-                    initialRating = uiState.starsRating,
-                    hasExistingRating = uiState.starsRating != 0,
-                    isLoading = uiState.isLoading
-                )
-            }
+                    MovieRatingBottomSheet(
+                        isVisible = uiState.showRatingBottomSheet,
+                        onDismiss = { interactionListener.onDismissOrCancelRatingBottomSheet() },
+                        onRatingSubmit = { rating ->
+                            interactionListener.onRatingSubmit(rating, uiState.movieDetailsUi.id)
+                        },
+                        onRatingRemove = {
+                            interactionListener.onRatingSubmit(
+                                0,
+                                uiState.movieDetailsUi.id
+                            )
+                        },
+                        initialRating = uiState.starsRating,
+                        hasExistingRating = uiState.starsRating != 0,
+                        isLoading = uiState.isLoading
+                    )
+
+                }
             }
         }
+    }
 }
 
