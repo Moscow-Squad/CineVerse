@@ -53,110 +53,87 @@ class MovieDetailsViewModel(
         updateState { it.copy(reviewsFlow = reviews.take(3).map { it.toUi() }) }
 
 
-    fun getCredits(movieID: Int) {
-        launchWithResult(
-            action = { getCreditsUseCase(movieID) },
-            onSuccess = ::onGetCreditsSuccess,
-            onError = ::getCreditsFailed,
-        )
-    }
-
-    private fun onGetCreditsSuccess(creditsDetails: CreditsDetails) {
-        val crew = creditsDetails.behindTheScene.map { it.toUi() }
-        updateState {
-            it.copy(
-                starCast = creditsDetails.actors.map { it.toUi() },
-                characters = crew.filter { it.job == "Characters" }.map { it.name },
-                director = crew.filter { it.job in (listOf("Director", "Screenplay", "Story")) }
-                    .map { it.name },
-                writer = crew.filter { it.job == "Producer" }.map { it.name },
-                produce = crew.filter { it.job == "Writer" }.map { it.name }
+        fun getCredits(movieID: Int) {
+            launchWithResult(
+                action = { getCreditsUseCase(movieID) },
+                onSuccess = ::onGetCreditsSuccess,
+                onError = ::getCreditsFailed,
             )
         }
     }
 
-    fun getRecommendations(movieID: Int) {
-        launchWithResult(
-            action = { getRecommendationsUseCase(movieID, 1) },
-            onSuccess = ::onGetRecommendationsSuccess,
-            onError = ::getRecommendationsFailed,
-        )
-    }
+        private fun onGetCreditsSuccess(creditsDetails: CreditsDetails) {
+            val crew = creditsDetails.behindTheScene.map { it.toUi() }
+            updateState {
+                it.copy(
+                    starCast = creditsDetails.actors.map { it.toUi() },
+                    characters = crew.filter { it.job == "Characters" }.map { it.name },
+                    director = crew.filter { it.job in (listOf("Director", "Screenplay", "Story")) }
+                        .map { it.name },
+                    writer = crew.filter { it.job == "Producer" }.map { it.name },
+                    produce = crew.filter { it.job == "Writer" }.map { it.name }
+                )
+            }
+        }
 
-    private fun onGetRecommendationsSuccess(recommendations: List<Movie>) {
-        updateState {
-            it.copy(
-                recommendations = recommendations.take(6).map { it.toMediaItemUi() }
+        fun getRecommendations(movieID: Int) {
+            launchWithResult(
+                action = { getRecommendationsUseCase(movieID, 1) },
+                onSuccess = ::onGetRecommendationsSuccess,
+                onError = ::getRecommendationsFailed,
             )
         }
-    }
+
+        private fun onGetRecommendationsSuccess(recommendations: List<Movie>) {
+            updateState {
+                it.copy(
+                    recommendations = recommendations.take(6).map { it.toMediaItemUi() }
+                )
+            }
+        }
 
 
-    private fun onLoading() {
-        updateState { it.copy(isLoading = true) }
-    }
+        private fun onLoading() {
+            updateState { it.copy(isLoading = true) }
+        }
 
-    private fun onFinally() {
-        updateState { it.copy(isLoading = false) }
-    }
+        private fun onFinally() {
+            updateState { it.copy(isLoading = false) }
+        }
 
-    private fun getMovieDetailsFailed(error: Throwable) {
-        updateState { it.copy(errorMessage = error.message.toString()) }
-    }
+        private fun getMovieDetailsFailed(error: Throwable) {
+            updateState { it.copy(errorMessage = error.message.toString()) }
+        }
 
-    private fun getReviewFailed(error: Throwable) {
-        updateState { it.copy(errorMessage = error.message.toString()) }
-    }
+        private fun getReviewFailed(error: Throwable) {
+            updateState { it.copy(errorMessage = error.message.toString()) }
+        }
 
-    private fun getCreditsFailed(error: Throwable) {
-        updateState { it.copy(errorMessage = error.message.toString()) }
-    }
+        private fun getCreditsFailed(error: Throwable) {
+            updateState { it.copy(errorMessage = error.message.toString()) }
+        }
 
-    private fun getRecommendationsFailed(error: Throwable) {
-        updateState { it.copy(errorMessage = error.message.toString()) }
-    }
-
-    private fun getRecommendationsFailed(error: Throwable) {
-        updateState { it.copy(errorMessage = error.message.toString()) }
-    }
+        private fun getRecommendationsFailed(error: Throwable) {
+            updateState { it.copy(errorMessage = error.message.toString()) }
+        }
 
 
-    override fun onBackPressed() {
-        sendEvent(MovieDetailsScreenEvents.NavigateBack)
-    }
-
-
-    override fun onShowMoreCast() {
-        sendEvent(MovieDetailsScreenEvents.NavigateToFullActors)
-    }
-
-    override fun onShowMoreCrew() {
-        sendEvent(MovieDetailsScreenEvents.NavigateToFullCast)
-    }
-
-    override fun onShowMoreRecommendations() {
-        sendEvent(MovieDetailsScreenEvents.NavigateToFullMovieList(24428))
-    }
-
-    override fun onShowMoreReviews() {
-        sendEvent(MovieDetailsScreenEvents.NavigateToFullReviews(24428))
-    }
+        override fun onBackPressed() {
+            sendEvent(MovieDetailsScreenEvents.NavigateBack)
+        }
 
     override fun onShowMoreCast() {
-        sendEvent(MovieDetailsScreenEvents.NavigateToFullActors)
+        //TODO:send event when user clicked on show more star cast
     }
 
-    override fun onShowMoreCrew() {
-        sendEvent(MovieDetailsScreenEvents.NavigateToFullCast)
-    }
 
-    override fun onShowMoreRecommendations(movieId: Int, movieTitle:String) {
-        sendEvent(MovieDetailsScreenEvents.NavigateToFullMovieList(movieId, movieTitle))
-    }
+    override fun onShowMoreRecommendations(movieId: Int, movieTitle: String) {
+            sendEvent(MovieDetailsScreenEvents.NavigateToFullMovieList(movieId, movieTitle))
+        }
 
-    override fun onShowMoreReviews(movieId:Int) {
-        sendEvent(MovieDetailsScreenEvents.NavigateToFullReviews(movieId))
-    }
+        override fun onShowMoreReviews(movieId: Int) {
+            sendEvent(MovieDetailsScreenEvents.NavigateToFullReviews(movieId))
+        }
 
 
 }
