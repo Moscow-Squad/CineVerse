@@ -1,17 +1,15 @@
 package com.remote.source
 
 import com.remote.dto.CreditsDetailsDto
+import com.remote.dto.MovieDto
 import com.remote.dto.details.ListOfSeriesDto
 import com.remote.dto.details.MovieDetailDto
-import com.remote.dto.MovieDto
 import com.remote.dto.details.SeriesDetailDto
 import com.remote.dto.review.ReviewDto
 import com.utils.ApiResponse
 import com.utils.CREDITS
 import com.utils.LATEST
 import com.utils.LISTS
-import com.remote.dto.CreditsDetailsDto
-import com.utils.CREDITS
 import com.utils.MOVIE
 import com.utils.RECOMMENDATIONS
 import com.utils.REVIEWS

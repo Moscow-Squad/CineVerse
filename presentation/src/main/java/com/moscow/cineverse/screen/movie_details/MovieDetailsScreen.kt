@@ -1,11 +1,11 @@
 package com.moscow.cineverse.screen.movie_details
 
-import android.util.Log
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -36,6 +36,7 @@ import com.moscow.cineverse.designSystem.component.MovieListSection
 import com.moscow.cineverse.designSystem.component.SectionTitle
 import com.moscow.cineverse.designSystem.component.ViewMode
 import com.moscow.cineverse.designSystem.component.movieSeriesDetails.CastCard
+import com.moscow.cineverse.designSystem.component.movieSeriesDetails.MainMovieCard
 import com.moscow.cineverse.designSystem.component.movieSeriesDetails.MovieCardDetails
 import com.moscow.cineverse.designSystem.component.movieSeriesDetails.MovieReviewCard
 import com.moscow.cineverse.designSystem.component.movieSeriesDetails.RatingSection
@@ -96,43 +97,53 @@ fun MovieDetailsContent(
     modifier: Modifier= Modifier
 ) {
     val textColor = Theme.colors.shade.secondary
-    when {
-        uiState.movieDetailsUi != null -> {
 
-            Log.d("TAG", "MovieDetailsContent:${uiState.movieDetailsUi} ")
-            val scrollState = rememberLazyListState()
+    val scrollState = rememberLazyListState()
             val isCollapsed by remember {
                 derivedStateOf {
                     scrollState.firstVisibleItemScrollOffset > 10 || scrollState.firstVisibleItemIndex > 0
                 }
             }
-            LazyColumn(
-                modifier = Modifier.background(Theme.colors.background.screen)
-            ) {
-                item { MovieAppBar() }
-                item {
-
-                    SharedTransitionLayout {
-                        AnimatedContent(
-                            targetState = isCollapsed,
-                            label = "basic_transition"
-                        ) { target ->
-                            if (!target) {
-                                MovieCardDetails(
-                                    animatedVisibilityScope = this@AnimatedContent,
-                                    sharedTransitionScope = this@SharedTransitionLayout,
-                                    posterUrl = uiState.movieDetailsUi.posterPath,
-                                    title = uiState.movieDetailsUi.title,
-                                    genres = uiState.movieDetailsUi.genres.joinToString(","),
-                                    rating = uiState.movieDetailsUi.rating.toString(),
-                                    duration = uiState.movieDetailsUi.duration.toHourMinuteFormat(),
-                                    releaseDate = uiState.movieDetailsUi.releaseDate.toFormattedReleasedDate(),
-                                    type = stringResource(com.moscow.cinverse.presentation.R.string.movie)
-                                )
-                            }
-                        }
+    Column {
+        MovieAppBar()
+        SharedTransitionLayout {
+            AnimatedContent(
+                targetState = isCollapsed,
+                label = "basic_transition"
+            ) { target ->
+                if (!target) {
+                    uiState.movieDetailsUi?.let {
+                        MovieCardDetails(
+                            animatedVisibilityScope = this@AnimatedContent,
+                            sharedTransitionScope = this@SharedTransitionLayout,
+                            posterUrl = it.posterPath,
+                            title = uiState.movieDetailsUi.title,
+                            genres = uiState.movieDetailsUi.genres.joinToString(","),
+                            rating = uiState.movieDetailsUi.rating.toString(),
+                            duration = uiState.movieDetailsUi.duration.toHourMinuteFormat(),
+                            releaseDate = uiState.movieDetailsUi.releaseDate.toFormattedReleasedDate(),
+                            type = stringResource(com.moscow.cinverse.presentation.R.string.movie)
+                        )
+                    }
+                } else {
+                    uiState.movieDetailsUi?.let {
+                        MainMovieCard(
+                            posterUrl = it.posterPath,
+                            title = uiState.movieDetailsUi.title,
+                            animatedVisibilityScope = this@AnimatedContent,
+                            sharedTransitionScope = this@SharedTransitionLayout
+                        )
                     }
                 }
+            }
+        }
+        when {
+            uiState.movieDetailsUi != null -> {
+                LazyColumn(
+                    state = scrollState,
+                modifier = Modifier.background(Theme.colors.background.screen)
+                )
+                {
                     item {
                         Text(
                             text = stringResource(com.moscow.cinverse.presentation.R.string.storyline),
@@ -264,6 +275,7 @@ fun MovieDetailsContent(
                         }
                     }
                 }
+            }
             }
         }
 }

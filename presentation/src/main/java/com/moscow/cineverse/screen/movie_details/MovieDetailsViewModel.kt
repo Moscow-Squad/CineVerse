@@ -52,7 +52,7 @@ class MovieDetailsViewModel(
     private fun onGetReviewSuccess(reviews: List<Review>) {
         updateState { it.copy(reviewsFlow = reviews.take(3).map { it.toUi() }) }
 
-
+    }
         fun getCredits(movieID: Int) {
             launchWithResult(
                 action = { getCreditsUseCase(movieID) },
@@ -60,9 +60,9 @@ class MovieDetailsViewModel(
                 onError = ::getCreditsFailed,
             )
         }
-    }
 
-        private fun onGetCreditsSuccess(creditsDetails: CreditsDetails) {
+
+    private fun onGetCreditsSuccess(creditsDetails: CreditsDetails) {
             val crew = creditsDetails.behindTheScene.map { it.toUi() }
             updateState {
                 it.copy(

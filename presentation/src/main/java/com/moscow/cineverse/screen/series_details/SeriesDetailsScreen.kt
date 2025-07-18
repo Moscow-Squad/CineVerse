@@ -107,26 +107,14 @@ fun SeriesDetailsContent(
     val error = uiState.error
     val latestSeason = uiState.latestSeason
     val listOfSeries = uiState.listOfSeries
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Theme.colors.background.screen)
-    )
-    {
+    val textColor = Theme.colors.shade.secondary
+    val scrollState = rememberLazyListState()
+    val isCollapsed by remember {
+        derivedStateOf {
+            scrollState.firstVisibleItemScrollOffset > 10 || scrollState.firstVisibleItemIndex > 0
+        }
+    }
 
-        if (isLoading && detail == null) {
-            CircularProgressIndicator(
-                modifier = Modifier.align(Alignment.Center),
-                color = Theme.colors.brand.primary
-            )
-        } else {
-            val textColor = Theme.colors.shade.secondary
-            val scrollState = rememberLazyListState()
-            val isCollapsed by remember {
-                derivedStateOf {
-                    scrollState.firstVisibleItemScrollOffset > 10 || scrollState.firstVisibleItemIndex > 0
-                }
-            }
             Column {
                 MovieAppBar()
                 SharedTransitionLayout {
@@ -158,8 +146,21 @@ fun SeriesDetailsContent(
                         }
                     }
                 }
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(Theme.colors.background.screen)
+                )
+                {
 
+                    if (isLoading && detail == null) {
+                        CircularProgressIndicator(
+                            modifier = Modifier.align(Alignment.Center),
+                            color = Theme.colors.brand.primary
+                        )
+                    } else {
                 LazyColumn(
+                    state = scrollState,
                     modifier = Modifier.background(Theme.colors.background.screen)
                 ) {
 
