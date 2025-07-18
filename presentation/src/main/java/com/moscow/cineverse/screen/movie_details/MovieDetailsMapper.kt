@@ -2,8 +2,8 @@ package com.moscow.cineverse.screen.movie_details
 
 import com.android.domain.model.Actor
 import com.android.domain.model.Genre
-import com.android.domain.model.MovieDetail
 import com.android.domain.model.Review
+import com.android.domain.model.details.MovieDetail
 import com.moscow.cineverse.screen.explore.ExploreScreenState.ActorUi
 import com.moscow.cineverse.screen.explore.ExploreScreenState.GenreUi
 import com.moscow.cineverse.screen.movie_details.MovieScreenState.ReviewUi

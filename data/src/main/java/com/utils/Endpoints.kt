@@ -15,5 +15,6 @@ const val MOVIE = "movie/"
 const val SERIES = "tv/"
 const val ACTOR = "person/"
 const val POPULAR = "popular"
-
 const val REVIEWS = "/reviews"
+const val LATEST = "/latest"
+const val LISTS = "/lists"

@@ -1,11 +1,11 @@
-package com.remote.dto
+package com.remote.dto.details
 
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class NetworkDto(
+data class ProductionCompanyDto(
     @SerialName("id") val id: Int,
     @SerialName("logo_path") val logoPath: String? = null,
     @SerialName("name") val name: String,
