@@ -7,7 +7,6 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -144,20 +143,25 @@ fun SearchBar(
                         tint = Theme.colors.shade.tertiary,
                         modifier = Modifier
                             .size(20.dp)
-                            .clickable(onClick = {
-                                focusManager.clearFocus(force = true)
-                                focusRequester.freeFocus()
-                                isFocused = false
-                                blockRefocus = true
-                                onCancelButtonClicked()
-                            })
+                            .noRibbleClick{
+                                onValueChange("")
+                            }
                     )
                 } else {
                     trailingIcon()
                 }
             },
             keyboardOptions = keyboardOptions,
-            keyboardActions = keyboardActions,
+            keyboardActions = KeyboardActions (
+                onSearch = {
+                    keyboardActions.onSearch?.let { it() }
+                    isFocused = false
+                },
+                onDone = {
+                    keyboardActions.onDone?.let { it() }
+                    isFocused = false
+                }
+            ),
             shape = RoundedCornerShape(Theme.radius.large),
             colors = OutlinedTextFieldDefaults.colors(
                 focusedTextColor = Theme.colors.shade.primary,

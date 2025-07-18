@@ -1,5 +1,7 @@
 package com.moscow.cineverse.di
 
+import com.android.domain.usecase.CacheSearchQueryUseCase
+import com.android.domain.usecase.ClearSearchHistoryUseCase
 import com.android.domain.usecase.GenreUseCase
 import com.android.domain.usecase.GetLocalSuggestions
 import com.android.domain.usecase.GetMovieByGenreIdUseCase
@@ -14,6 +16,7 @@ import com.android.domain.usecase.SuggestionUseCase
 import com.android.domain.usecase.actordetails.GetActorBestOfMovies
 import com.android.domain.usecase.actordetails.GetActorDetails
 import com.android.domain.usecase.actordetails.GetActorGallery
+import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 
 val useCases = module {
@@ -31,6 +34,8 @@ val useCases = module {
     single { GetMovieDetailUseCase(get()) }
     single { GetSeriesDetailUseCase(get()) }
     single { GetReviewsPageUseCase(get()) }
+    singleOf(::CacheSearchQueryUseCase)
+    singleOf(::ClearSearchHistoryUseCase)
 }
 
 val presentationModule = viewModels + useCases

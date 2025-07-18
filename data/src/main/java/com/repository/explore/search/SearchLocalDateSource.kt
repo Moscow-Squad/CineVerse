@@ -12,6 +12,7 @@ interface SearchLocalDateSource {
     suspend fun insertSearchHistory(searchTerm: String)
 
     suspend fun deleteSearchHistory(searchTerm: String)
+    suspend fun deleteAllSearchHistory()
 
     suspend fun insertMovie(moviesEntity: List<MovieEntity>, searchTerm: String)
 
