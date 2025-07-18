@@ -15,7 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.android.domain.model.Collection
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.moscow.cineverse.designSystem.component.MessageInfoBox
 import com.moscow.cineverse.designSystem.component.MovieButton
 import com.moscow.cineverse.designSystem.component.MovieCircularProgressBar
@@ -24,28 +24,48 @@ import com.moscow.cineverse.designSystem.component.bottomsheet.CineVerseBottomSh
 import com.moscow.cineverse.designSystem.component.movieSeriesDetails.CollectionItem
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cinverse.presentation.R
+import org.koin.androidx.compose.koinViewModel
+
 
 @Composable
-fun CollectionsBottomSheet(
-    isLoading: Boolean,
-    showProcessIndicator: Boolean,
-    errorMessage: String,
-    collections: List<Collection>,
-    onCollectionClicked: (collectionId: Int) -> Unit,
+fun CollectionsBottomSheetScreen(
+    viewModel: CollectionsBottomSheetViewModel = koinViewModel(),
     onAddNewCollectionClick: () -> Unit,
+    onCreateCollectionClicked: () -> Unit,
+    navigateBack: () -> Unit
+) {
+
+    val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
+
+    CollectionsBottomSheetContent(
+        interactionListener = viewModel,
+        onCreateCollectionClicked = onCreateCollectionClicked,
+        onAddNewCollectionClick = onAddNewCollectionClick,
+        uiState = uiState,
+        onDismissBottomSheet = navigateBack,
+        onCloseBottomSheet = navigateBack,
+    )
+
+}
+
+@Composable
+private fun CollectionsBottomSheetContent(
+    onAddNewCollectionClick: () -> Unit,
+    onCreateCollectionClicked: () -> Unit,
     onDismissBottomSheet: () -> Unit,
     onCloseBottomSheet: () -> Unit,
-    onCreateCollectionClicked: () -> Unit
+    uiState: CollectionsBottomSheetUiState,
+    interactionListener: CollectionsBottomSheetInteractionListener
 ) {
     CineVerseBottomSheet(
         title = stringResource(R.string.add_to_collection),
         onClose = onCloseBottomSheet,
         onDismissRequest = onDismissBottomSheet,
-        showCancelIcon = collections.isEmpty(),
+        showCancelIcon = uiState.collections.isEmpty(),
         onAddNewCollectionClick = onAddNewCollectionClick
     ) {
         when {
-            isLoading -> {
+            uiState.isLoading -> {
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -62,7 +82,7 @@ fun CollectionsBottomSheet(
                 }
             }
 
-            errorMessage.isNotEmpty() -> {
+            uiState.errorMessage.isNotEmpty() -> {
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -85,7 +105,7 @@ fun CollectionsBottomSheet(
             }
 
             else -> {
-                if (collections.isEmpty()) {
+                if (uiState.collections.isEmpty()) {
                     MessageInfoBox(
                         title = stringResource(R.string.no_collections_yet),
                         description = stringResource(R.string.create_a_new_collection_to_start_saving_your_favorite_movies_and_series),
@@ -103,12 +123,12 @@ fun CollectionsBottomSheet(
                         verticalArrangement = Arrangement.spacedBy(8.dp),
                         contentPadding = PaddingValues(bottom = 16.dp)
                     ) {
-                        items(collections) { currentCollection ->
+                        items(uiState.collections) { currentCollection ->
                             CollectionItem(
                                 collectionName = currentCollection.name,
-                                showProgressBars = showProcessIndicator,
+                                showProgressBars = currentCollection.isLoading,
                                 onItemClicked = {
-                                    onCollectionClicked(currentCollection.id)
+                                    interactionListener.onCollectionClicked(currentCollection.id)
                                 },
                             )
                         }

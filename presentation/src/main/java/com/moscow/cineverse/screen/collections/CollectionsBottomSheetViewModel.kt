@@ -18,7 +18,7 @@ class CollectionsBottomSheetViewModel(
         TODO("should open new bottom sheet to login or to create new collection")
     }
 
-    override fun onCollectionClick() {
+    override fun onCollectionClicked(collectionId: Int) {
         updateState { it.copy(showProcessIndicator = true) }
     }
 
