@@ -1,6 +1,6 @@
 package com.android.domain.usecase
 
-import com.android.domain.model.MovieDetail
+import com.android.domain.model.details.MovieDetail
 import com.android.domain.repository.DetailsRepository
 
 class GetMovieDetailUseCase(

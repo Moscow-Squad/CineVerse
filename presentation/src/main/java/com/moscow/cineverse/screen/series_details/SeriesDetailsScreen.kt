@@ -32,15 +32,16 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.android.domain.model.Creator
 import com.android.domain.model.Genre
 import com.android.domain.model.Review
-import com.android.domain.model.SeriesDetail
+import com.android.domain.model.details.Creator
+import com.android.domain.model.details.SeriesDetail
 import com.example.design_system.R
-import com.moscow.cineverse.designSystem.component.Movie
 import com.moscow.cineverse.designSystem.component.MovieAppBar
+import com.moscow.cineverse.designSystem.component.MovieCard
 import com.moscow.cineverse.designSystem.component.MovieListSection
 import com.moscow.cineverse.designSystem.component.SectionTitle
+import com.moscow.cineverse.designSystem.component.ViewMode
 import com.moscow.cineverse.designSystem.component.movieSeriesDetails.CastMember
 import com.moscow.cineverse.designSystem.component.movieSeriesDetails.MainMovieCard
 import com.moscow.cineverse.designSystem.component.movieSeriesDetails.MovieCardDetails
@@ -105,6 +106,7 @@ fun SeriesDetailsContent(
     val isLoading = uiState.isLoading
     val error = uiState.error
     val latestSeason = uiState.latestSeason
+    val listOfSeries = uiState.listOfSeries
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -251,48 +253,31 @@ fun SeriesDetailsContent(
                     }
 
                     // Since recommendations are not in the new model, using hardcoded data as in original
-                    item {
+                    items(listOfSeries.size) {
                         MovieListSection(
                             title = "You Might Also Like",
-                            movies = listOf(
-                                Movie(
-                                    id = 1,
-                                    title = "The Crimson Man",
-                                    posterUrl = "",
-                                    rating = 8.8f,
-                                    genres = listOf("Action", "Sci-Fi"),
-                                    duration = "2h 28m",
-                                    releaseDate = "2010-07-16"
-                                ),
-                                Movie(
-                                    id = 2,
-                                    title = "Interstellar",
-                                    posterUrl = "",
-                                    rating = 9.9f,
-                                    genres = listOf("Adventure", "Drama", "Sci-Fi"),
-                                    duration = "2h 49m",
-                                    releaseDate = "2014-11-07"
-                                ),
-                                Movie(
-                                    id = 4,
-                                    title = "PK",
-                                    posterUrl = "",
-                                    rating = 8.8f,
-                                    genres = listOf("Action", "Sci-Fi"),
-                                    duration = "2h 28m",
-                                    releaseDate = "2010-07-16"
-                                ),
-                            ),
+                            movies = listOfSeries,
                             onClickShowMore = { },
                             onClickPoster = { },
                             modifier = Modifier.padding(top = 16.dp),
-                            movieCardContent = { movie, modifier, _ ->
-                                Box(modifier = modifier.padding(8.dp)) {
-                                    Text(text = movie.title)
-                                }
+                            movieCardContent = { movie, _, onClick ->
+                                MovieCard(
+                                    movieData = movie,
+                                    viewMode = ViewMode.GRID,
+                                    onMovieClick = { onClick(movie) },
+                                    getId = { it.id },
+                                    getTitle = { it.title },
+                                    getPosterUrl = { it.posterPath.toString() },
+                                    getRating = { it.rating.toFloat() },
+                                    getGenres = { listOf() },
+                                    getDuration = { it.runtime ?: "" },
+                                    getReleaseDate = {
+                                        it.releaseDate?.let { date -> formatDate(date) } ?: ""
+                                    }
+                                )
                             }
-
                         )
+
                     }
 
                     item {
@@ -376,13 +361,13 @@ private fun SeriesDetailsScreenPreview() {
                     numberOfSeasons = 3,
                     numberOfEpisodes = 30,
                     cast = listOf(
-                        com.android.domain.model.CastMember(
+                        com.android.domain.model.details.CastMember(
                             id = 1,
                             name = "Emma Stone",
                             character = "Hero",
                             profilePath = null
                         ),
-                        com.android.domain.model.CastMember(
+                        com.android.domain.model.details.CastMember(
                             id = 2,
                             name = "Ryan Gosling",
                             character = "Mentor",

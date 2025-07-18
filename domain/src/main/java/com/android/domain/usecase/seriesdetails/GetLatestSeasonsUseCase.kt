@@ -1,6 +1,6 @@
-package com.android.domain.usecase
+package com.android.domain.usecase.seriesdetails
 
-import com.android.domain.model.SeriesDetail
+import com.android.domain.model.details.SeriesDetail
 import com.android.domain.repository.DetailsRepository
 
 class GetLatestSeasonsUseCase(

@@ -1,4 +1,7 @@
-package com.android.domain.model
+package com.android.domain.model.details
+
+import com.android.domain.model.Genre
+import com.android.domain.model.Review
 
 data class SeriesDetail(
     val id: Int,

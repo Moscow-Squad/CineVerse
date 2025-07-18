@@ -1,7 +1,7 @@
 package com.mapper
 
 
-import com.android.domain.model.MovieDetail
+import com.android.domain.model.details.MovieDetail
 import com.remote.dto.details.MovieDetailDto
 
 fun MovieDetailDto.toDomain(): MovieDetail {

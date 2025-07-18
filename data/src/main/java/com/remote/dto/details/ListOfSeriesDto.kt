@@ -11,7 +11,7 @@ data class ListOfSeriesDto(
     @SerialName("page")
     val page: Int,
     @SerialName("results")
-    val results: List<Result>,
+    val results: List<SeriesItemDto>,
     @SerialName("total_pages")
     val totalPages: Int,
     @SerialName("total_results")
@@ -19,7 +19,7 @@ data class ListOfSeriesDto(
 )
 
 @Serializable
-data class Result(
+data class SeriesItemDto(
     @SerialName("description")
     val description: String,
     @SerialName("favorite_count")

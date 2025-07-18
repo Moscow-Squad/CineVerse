@@ -1,15 +1,19 @@
 package com.repository.mapper
 
-import com.android.domain.model.Creator
-import com.android.domain.model.Episode
 import com.android.domain.model.Genre
-import com.android.domain.model.Season
-import com.android.domain.model.SeriesDetail
+import com.android.domain.model.details.Creator
+import com.android.domain.model.details.Episode
+import com.android.domain.model.details.ListOfSeries
+import com.android.domain.model.details.Season
+import com.android.domain.model.details.SeriesDetail
+import com.android.domain.model.details.SeriesItem
 import com.remote.dto.GenreDto
 import com.remote.dto.details.CreatedByDto
 import com.remote.dto.details.LastEpisodeToAirDto
+import com.remote.dto.details.ListOfSeriesDto
 import com.remote.dto.details.SeasonDto
 import com.remote.dto.details.SeriesDetailDto
+import com.remote.dto.details.SeriesItemDto
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -74,6 +78,30 @@ private fun SeasonDto.toDomain(): Season {
         name = name,
         airDate = airDate,
         episodeCount = episodeCount,
+        posterPath = posterPath
+    )
+}
+
+
+fun ListOfSeriesDto.toDomain(): ListOfSeries {
+    return ListOfSeries(
+        id = id,
+        page = page,
+        results = results.map { it.toDomain() },
+        totalPages = totalPages,
+        totalResults = totalResults
+    )
+}
+
+fun SeriesItemDto.toDomain(): SeriesItem {
+    return SeriesItem(
+        id = id,
+        name = name,
+        description = description,
+        favoriteCount = favoriteCount,
+        itemCount = itemCount,
+        iso6391 = iso6391,
+        iso31661 = iso31661,
         posterPath = posterPath
     )
 }
