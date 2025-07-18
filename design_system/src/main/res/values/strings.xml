@@ -37,4 +37,5 @@
     <string name="search_icon">search icon</string>
     <string name="grid_view_selected">grid view selected</string>
     <string name="list_view_active">list view active</string>
+    <string name="reviewer_image">Reviewer Image</string>
 </resources>

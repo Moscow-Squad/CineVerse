@@ -56,6 +56,7 @@ import com.moscow.cineverse.screen.component.movie_poster_card.MediaItemUi
 import com.moscow.cineverse.screen.component.movie_poster_card.MoviePosterCard
 import com.moscow.cineverse.screen.explore.component.ActorPosterCard
 import com.moscow.cineverse.screen.explore.component.SearchSuggestion
+import com.moscow.cineverse.screen.movie_details.MovieDetailsScreen
 import com.moscow.cinverse.presentation.R
 import org.koin.androidx.compose.koinViewModel
 

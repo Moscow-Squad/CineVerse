@@ -11,6 +11,8 @@ import com.moscow.cineverse.navigation.routes.CastDetailsRoute
 import com.moscow.cineverse.navigation.routes.CastGalleryRoute
 import com.moscow.cineverse.navigation.routes.ExploreRoute
 import com.moscow.cineverse.navigation.routes.MovieDetailsRoute
+import com.moscow.cineverse.navigation.routes.RecommendationsRoute
+import com.moscow.cineverse.navigation.routes.ReviewsRoute
 import com.moscow.cineverse.navigation.routes.SeriesDetailsRoute
 import com.moscow.cineverse.navigation.routes.exploreRoute
 
@@ -18,6 +20,7 @@ val LocalNavController =
     staticCompositionLocalOf<NavHostController> { error("No NavController provided") }
 
 @Composable
+
 fun CineVerseNavGraph() {
     val navController = rememberNavController()
     CompositionLocalProvider(

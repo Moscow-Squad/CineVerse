@@ -10,14 +10,14 @@ import com.android.domain.model.Movie
 import com.android.domain.model.MultiSearch
 import com.android.domain.model.Series
 import com.remote.dto.ActorBestOfMoviesAsCastDto
-import com.remote.dto.ActorDetailsDto
 import com.remote.dto.ActorBestOfMoviesAsCrewDto
 import com.remote.dto.ActorDto
 import com.remote.dto.ActorImagesDto
 import com.remote.dto.GenreDto
 import com.remote.dto.MovieDto
 import com.remote.dto.MultiSearchDto
-import com.remote.dto.SeriesDto
+import com.remote.dto.details.ActorDetailsDto
+import com.remote.dto.details.SeriesDto
 import com.utils.IMAGES_URL
 import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDate
