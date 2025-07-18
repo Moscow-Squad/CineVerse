@@ -11,7 +11,6 @@ import io.ktor.client.request.parameter
 import io.ktor.client.request.request
 import io.ktor.client.request.setBody
 import io.ktor.client.request.url
-import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpMethod
 
@@ -21,7 +20,6 @@ suspend inline fun <reified Request, reified Response> HttpClient.performCall(
     baseUrl: String = BASE_URL,
     path: String,
     body: Request? = null,
-    contentType: ContentType = ContentType.Application.Json,
     noinline requestBuilder: HttpRequestBuilder.() -> Unit = { },
 ): Response {
     val response =

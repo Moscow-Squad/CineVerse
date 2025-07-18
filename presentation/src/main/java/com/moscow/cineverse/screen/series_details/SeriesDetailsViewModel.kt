@@ -1,18 +1,30 @@
 package com.moscow.cineverse.screen.series_details
 
+import androidx.lifecycle.SavedStateHandle
 import com.android.domain.usecase.GetReviewsPageUseCase
+import com.android.domain.usecase.RateSeriesUseCase
 import com.android.domain.usecase.seriesdetails.GetLatestSeasonsUseCase
 import com.android.domain.usecase.seriesdetails.GetListOfSeriesUseCase
 import com.android.domain.usecase.seriesdetails.GetSeriesDetailUseCase
 import com.moscow.cineverse.base.BaseViewModel
+import com.moscow.cineverse.navigation.routes.SeriesDetailsRoute
 
 class SeriesDetailsViewModel(
     private val getSeriesDetailUseCase: GetSeriesDetailUseCase,
     private val getReviewsPageUseCase: GetReviewsPageUseCase,
     private val getLatestSeasonsUseCase: GetLatestSeasonsUseCase,
     private val getListOfSeriesUseCase: GetListOfSeriesUseCase,
-) : BaseViewModel<SeriesDetailsUiState, Unit>(SeriesDetailsUiState()) {
+    private val savedStateHandle: SavedStateHandle,
+    private val rateSeriesUseCase : RateSeriesUseCase
+) : BaseViewModel<SeriesDetailsUiState, SeriesDetailsEvents>(SeriesDetailsUiState()),
+    SeriesInteractionListener {
 
+    val seriesId = savedStateHandle.get<Int>(SeriesDetailsRoute.SERIES_ID) ?: 0
+
+    init {
+        loadSeriesDetails(seriesId)
+        loadReviews(seriesId, page = 1)
+    }
     fun loadSeriesDetails(seriesId: Int) {
         updateState { it.copy(isLoading = true, error = null) }
         launchWithResult(
@@ -63,5 +75,38 @@ class SeriesDetailsViewModel(
                 updateState { it.copy(error = error.message, isLoading = false) }
             }
         )
+    }
+
+    fun showRatingBottomSheet() {
+        updateState { it.copy(showRatingBottomSheet = true) }
+    }
+
+    fun onDismissOrCancelRatingBottomSheet() {
+        updateState { it.copy(showRatingBottomSheet = false) }
+    }
+
+    fun onRatingSubmit(rating: Int, seriesId: Int) {
+       launchWithFlow(
+           flowAction = { rateSeriesUseCase.rateSeriesUse(rating.toFloat(), seriesId) },
+           onSuccess = {
+               updateState { it.copy(
+                   starsRating = rating,
+                   showRatingBottomSheet = false
+               ) }
+           },
+           onError = {
+               updateState {
+                   it.copy(
+                   starsRating = rating,
+                   showRatingBottomSheet = false
+                   )
+               }
+           },
+       )
+    }
+
+
+    override fun addToCollection() {
+        uiState.value.seriesDetail?.let { sendEvent(SeriesDetailsEvents.AddToCollection(it.id)) }
     }
 }

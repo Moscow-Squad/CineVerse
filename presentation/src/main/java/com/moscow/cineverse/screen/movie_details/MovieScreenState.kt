@@ -1,6 +1,6 @@
 package com.moscow.cineverse.screen.movie_details
 
-import com.moscow.cineverse.screen.component.movie_poster_card.MediaItemUi
+import com.moscow.cineverse.screen.model.MediaItemUi
 import kotlinx.datetime.LocalDate
 
 
@@ -20,6 +20,9 @@ data class MovieScreenState(
     val shouldShowLoading: Boolean = false,
     val shouldShowError: Boolean = false,
     val errorMessage: String = "",
+
+    val showRatingBottomSheet: Boolean = false,
+    val starsRating: Int = 0
 
     ) {
 

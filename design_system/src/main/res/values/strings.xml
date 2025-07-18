@@ -37,6 +37,11 @@
     <string name="search_icon">search icon</string>
     <string name="grid_view_selected">grid view selected</string>
     <string name="list_view_active">list view active</string>
+    <string name="new_collection">New Collection</string>
+    <string name="change_rating">Change Rating</string>
+    <string name="add_rating">Add Rating</string>
+    <string name="rate_the_movie">Rate the Movie</string>
+    <string name="remove_rating">Remove Rating</string>
     <string name="reviewer_image">Reviewer Image</string>
     <string name="readmore">ReadMore</string>
 </resources>

@@ -9,13 +9,20 @@ import com.android.domain.model.details.MovieDetail
 import com.android.domain.model.details.SeriesDetail
 import com.android.domain.repository.DetailsRepository
 import com.mapper.toDomain
+import com.remote.dto.review.RatingRequestDto
 import com.remote.source.DetailsRemoteDataSource
 import com.repository.mapper.toDomain
+import com.utils.BaseRepository
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 
 class DetailsRepositoryImpl(
     private val detailsRemoteDataSource: DetailsRemoteDataSource,
-    private val detailsLocalDataSource: DetailsLocalDataSource
-) : DetailsRepository {
+    private val detailsLocalDataSource: DetailsLocalDataSource,
+    private val ioDispatcher: CoroutineDispatcher
+) : DetailsRepository, BaseRepository() {
     override suspend fun getMoviesDetail(movieId: Int): MovieDetail {
         val res = detailsRemoteDataSource.getMovieDetails(movieId)
         res.genres?.forEach { detailsLocalDataSource.insertFavouriteGenre(it.id) }
@@ -49,4 +56,31 @@ class DetailsRepositoryImpl(
         val response = detailsRemoteDataSource.getListOfSeries(id, page)
         return listOf(response.toDomain())
     }
+
+    override suspend fun getReviewsPage(id: Int, page: Int, isMovie: Boolean): List<Review> {
+        val response = detailsRemoteDataSource.getReviews(id, page, isMovie)
+        return response.results.orEmpty().mapNotNull { it?.toDomain() }
+    }
+
+    override suspend fun rateMovie(
+        rating: Float,
+        movieId: Int
+    ): Flow<Unit> = tryToExecute {
+        flow {
+            val request = RatingRequestDto(value = rating)
+            emit(detailsRemoteDataSource.rateMovie(rating = request, movieId = movieId))
+        }.flowOn(ioDispatcher)
+    }
+
+    override suspend fun rateSeries(
+        rating: Float,
+        seriesId: Int
+    ): Flow<Unit> = tryToExecute {
+        flow {
+            val request = RatingRequestDto(value = rating)
+            emit(detailsRemoteDataSource.rateSeries(rating = request, seriesId = seriesId))
+        }.flowOn(ioDispatcher)
+    }
+
+
 }

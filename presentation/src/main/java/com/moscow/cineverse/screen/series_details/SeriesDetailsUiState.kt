@@ -11,4 +11,7 @@ data class SeriesDetailsUiState(
     val error: String? = null,
     val latestSeason: List<SeriesDetail> = emptyList(),
     val listOfSeries: List<SeriesDetail> = emptyList(),
+
+    val showRatingBottomSheet: Boolean = false,
+    val starsRating: Int = 0
 )

@@ -5,6 +5,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import com.moscow.cineverse.designSystem.component.MovieCard
 import com.moscow.cineverse.designSystem.component.ViewMode
+import com.moscow.cineverse.screen.model.MediaItemUi
 
 @Composable
 fun MoviePosterCard(
