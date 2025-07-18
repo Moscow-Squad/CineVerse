@@ -14,6 +14,7 @@ import com.mapper.toModel
 import com.remote.source.SearchRemoteDataSource
 import com.repository.mapper.toDomain
 import com.repository.mapper.toEntity
+import com.repository.mapper.toSortedGenres
 import com.utils.BaseRepository
 import com.utils.DELETE_SEARCH_QUERY_HISTORY
 import com.utils.QUERY
@@ -31,7 +32,10 @@ class SearchRepositoryImpl(
 ) : SearchRepository, BaseRepository(
 ) {
     override suspend fun getLocalMoviesBySearchTerm(searchTerm: String): List<Movie> {
-        return searchLocalDateSource.getMoviesBySearchTerm(searchTerm).toDomain()
+        return searchLocalDateSource
+            .getMoviesBySearchTerm(searchTerm)
+            .toDomain()
+            .sortByFavouriteGenres{it.genreIds}
     }
 
     override suspend fun insertMovie(movies: List<Movie>, searchTerm: String) {
@@ -78,7 +82,7 @@ class SearchRepositoryImpl(
             val result = tryToExecute {
                 searchRemoteDataSource.searchMovie(query)
             }
-            emit(result.map { it.toDomain() })
+            emit(result.map { it.toDomain() }.sortByFavouriteGenres{it.genreIds})
             if (result.isNotEmpty()) {
                 insertMovie(result.map { movie -> movie.toDomain() }, query)
             }
@@ -87,13 +91,18 @@ class SearchRepositoryImpl(
     override suspend fun searchSeries(query: String, isHistory: Boolean): Flow<List<Series>> =
         flow {
             if (isHistory) {
-                emit(searchLocalDateSource.getSeriesBySearchTerm(query).toDomain())
+                emit(
+                    searchLocalDateSource
+                    .getSeriesBySearchTerm(query)
+                    .toDomain()
+                    .sortByFavouriteGenres{it.genreIds}
+                )
                 return@flow
             }
             val result = tryToExecute {
                 searchRemoteDataSource.searchSeries(query)
             }
-            emit(result.map { it.toDomain() })
+            emit(result.map { it.toDomain() }.sortByFavouriteGenres{it.genreIds})
             if (result.isNotEmpty()) {
                 insertSeries(result.map { series -> series.toDomain() }, query)
             }
@@ -128,5 +137,23 @@ class SearchRepositoryImpl(
 
     override suspend fun clearSearchHistory() = tryToExecute {
         searchLocalDateSource.deleteAllSearchHistory()
+    }
+
+    private suspend fun <T> List<T>.sortByFavouriteGenres(
+        getGenreIds: (T) -> List<Int>
+    ): List<T> {
+        val favouriteGenres = searchLocalDateSource.getFavouriteGenres().toSortedGenres()
+        if (favouriteGenres.isEmpty()) return this
+
+        return this.sortedWith(compareBy(
+            { item ->
+                -getGenreIds(item).count { genre -> genre in favouriteGenres }
+            },
+            { item ->
+                getGenreIds(item)
+                    .mapNotNull { genre -> favouriteGenres.indexOf(genre).takeIf { it != -1 } }
+                    .minOrNull() ?: Int.MAX_VALUE
+            }
+        ))
     }
 }
