@@ -266,12 +266,10 @@ private fun ExploreScreenContent(
                                             ActorPosterCard(
                                                 actor = item,
                                                 viewMode = uiState.viewMode,
-                                                onActorClicked = interactionListener::onActorClick,
-                                                modifier = Modifier.size(98.dp)
+                                                onActorClicked = interactionListener::onActorClick
                                             )
                                         }
                                     }
-
                                 }
                             }
                         }
