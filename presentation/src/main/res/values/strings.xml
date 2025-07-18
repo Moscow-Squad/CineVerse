@@ -16,4 +16,7 @@
     <string name="star_cast">Star Cast</string>
     <string name="you_might_also_like">You Might Also Like</string>
     <string name="because_you_watched">Because You Watched</string>
+    <string name="try_again">Try Again</string>
+    <string name="oops_no_internet">Oops! No Internet</string>
+    <string name="offline_reconnect">Looks like you\'re offline. Let\'s reconnect so you don\'t miss out!</string>
 </resources>

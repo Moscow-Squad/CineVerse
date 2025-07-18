@@ -4,6 +4,7 @@ import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -13,6 +14,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
@@ -24,19 +26,19 @@ import com.moscow.cineverse.designSystem.theme.Theme
 
 @Composable
 fun MovieButton(
-    buttonText:String,
+    buttonText: String,
     textColor: Color,
     textStyle: TextStyle,
-    onClick:()->Unit,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier,
     buttonColor: Color = Color.Transparent,
     cornerRadius: Dp = Theme.radius.large,
-    enable:Boolean = true,
+    enable: Boolean = true,
     isLoading: Boolean = false
 ) {
-    val color by animateColorAsState(if(!enable) Theme.colors.button.onDisabled else textColor)
+    val color by animateColorAsState(if (!enable) Theme.colors.button.onDisabled else textColor)
     val backgroundColor by animateColorAsState(
-        if(buttonColor != Color.Transparent)
+        if (buttonColor != Color.Transparent)
             if (enable) buttonColor else Theme.colors.button.disabled
         else
             buttonColor
@@ -45,21 +47,22 @@ fun MovieButton(
     Row(
         modifier = Modifier
             .background(backgroundColor, RoundedCornerShape(cornerRadius))
-            .clickable{ if (enable) onClick()}
-            .then(modifier)
-
+            .clickable { if (enable) onClick() }
+            .then(modifier),
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically
     )
     {
 
         AnimatedContent(isLoading) { state ->
-            if(state == false )
+            if (state == false)
                 Text(
                     text = buttonText,
-                    color =color,
+                    color = color,
                     style = textStyle
-                    )
+                )
 
-                // TODO:should show circular progress bar when isLoading is true
+            // TODO:should show circular progress bar when isLoading is true
         }
     }
 }
@@ -80,7 +83,7 @@ private fun PreviewButton() {
                 isEnabled = !isEnabled
 
             },
-          //  buttonColor = Theme.colors.button.primary,
+            //  buttonColor = Theme.colors.button.primary,
             modifier = Modifier
                 .padding(horizontal = 24.dp, vertical = 16.dp)
         )
