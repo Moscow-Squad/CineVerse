@@ -22,7 +22,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             CineVerseTheme {
-                SeriesDetailsScreen(93405)
+                CineVerseNavGraph(rememberNavController())
             }
         }
     }
