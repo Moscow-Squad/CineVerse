@@ -53,7 +53,6 @@ import com.moscow.cineverse.navigation.LocalNavController
 import com.moscow.cineverse.navigation.routes.CastDetailsRoute
 import com.moscow.cineverse.navigation.routes.MovieDetailsRoute
 import com.moscow.cineverse.navigation.routes.SeriesDetailsRoute
-import com.moscow.cineverse.screen.component.movie_poster_card.MediaItemUi
 import com.moscow.cineverse.screen.component.movie_poster_card.MoviePosterCard
 import com.moscow.cineverse.screen.explore.component.ActorPosterCard
 import com.moscow.cineverse.screen.explore.component.SearchSuggestion
