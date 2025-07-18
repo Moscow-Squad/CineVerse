@@ -46,6 +46,7 @@ import com.moscow.cineverse.designSystem.component.ViewMode
 import com.moscow.cineverse.designSystem.component.movieSeriesDetails.CastMember
 import com.moscow.cineverse.designSystem.component.movieSeriesDetails.MainMovieCard
 import com.moscow.cineverse.designSystem.component.movieSeriesDetails.MovieCardDetails
+import com.moscow.cineverse.designSystem.component.movieSeriesDetails.MovieRatingBottomSheet
 import com.moscow.cineverse.designSystem.component.movieSeriesDetails.MovieReviewCard
 import com.moscow.cineverse.designSystem.component.movieSeriesDetails.RatingSection
 import com.moscow.cineverse.designSystem.component.movieSeriesDetails.Season
@@ -55,25 +56,35 @@ import com.moscow.cineverse.designSystem.component.movieSeriesDetails.StarCastSe
 import com.moscow.cineverse.designSystem.theme.CineVerseTheme
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.navigation.LocalNavController
+import com.moscow.cineverse.navigation.routes.CollectionsBottomSheetRoute
 import org.koin.androidx.compose.koinViewModel
 import java.text.SimpleDateFormat
 import java.util.Locale
 
 @Composable
 fun SeriesDetailsScreen(
-    seriesId: Int,
     viewModel: SeriesDetailsViewModel = koinViewModel(),
-     navController: NavHostController = LocalNavController.current,
-
-    ) {
+    navController: NavHostController = LocalNavController.current
+) {
     val uiState by viewModel.uiState.collectAsState()
 
-    LaunchedEffect(seriesId) {
-        viewModel.loadSeriesDetails(seriesId)
-        viewModel.loadReviews(seriesId, page = 1)
+    LaunchedEffect(viewModel) {
+        viewModel.uiEvent.collect { event ->
+            when (event) {
+                is SeriesDetailsEvents.AddToCollection -> {
+                    navController.navigate(
+                        CollectionsBottomSheetRoute(mediaItemId = event.seriesId)
+                    )
+                }
+            }
+        }
     }
     SeriesDetailsContent(
-        uiState
+        uiState = uiState,
+        interactionListener = viewModel,
+        onClickArrow = viewModel::showRatingBottomSheet,
+        onDismiss = viewModel::onDismissOrCancelRatingBottomSheet,
+        onRatingSubmit = viewModel::onRatingSubmit
     )
 }
 
@@ -104,6 +115,10 @@ private fun formatReviewDate(dateString: String): String {
 @Composable
 fun SeriesDetailsContent(
     uiState: SeriesDetailsUiState,
+    interactionListener: SeriesInteractionListener,
+    onClickArrow: () -> Unit,
+    onDismiss: () -> Unit,
+    onRatingSubmit: (Int, Int) -> Unit
 ) {
     val detail = uiState.seriesDetail
     val reviews = uiState.reviews
@@ -119,50 +134,53 @@ fun SeriesDetailsContent(
         }
     }
 
-            Column {
-                MovieAppBar()
-                SharedTransitionLayout {
-                    AnimatedContent(
-                        targetState = isCollapsed,
-                        label = "basic_transition"
-                    ) { target ->
-                        if (!target) {
-                            MovieCardDetails(
-                                posterUrl = detail?.posterPath?.let { "https://image.tmdb.org/t/p/w500$it" }
-                                    ?: "",
-                                title = detail?.title ?: "Loading...",
-                                genres = detail?.genres?.joinToString(", ") { it.name } ?: "",
-                                rating = detail?.rating?.toString() ?: "0.0",
-                                duration = detail?.runtime ?: "N/A",
-                                releaseDate = detail?.releaseDate?.let { formatDate(it) } ?: "",
-                                type = detail?.type ?: "SERIES",
-                                animatedVisibilityScope = this@AnimatedContent,
-                                sharedTransitionScope = this@SharedTransitionLayout
-                            )
-                        } else {
-                            MainMovieCard(
-                                posterUrl = detail?.posterPath?.let { "https://image.tmdb.org/t/p/w500$it" }
-                                    ?: "",
-                                title = detail?.title ?: "Loading...",
-                                animatedVisibilityScope = this@AnimatedContent,
-                                sharedTransitionScope = this@SharedTransitionLayout
-                            )
+    Column {
+        MovieAppBar()
+        SharedTransitionLayout {
+            AnimatedContent(
+                targetState = isCollapsed,
+                label = "basic_transition"
+            ) { target ->
+                if (!target) {
+                    MovieCardDetails(
+                        posterUrl = detail?.posterPath?.let { "https://image.tmdb.org/t/p/w500$it" }
+                            ?: "",
+                        title = detail?.title ?: "Loading...",
+                        genres = detail?.genres?.joinToString(", ") { it.name } ?: "",
+                        rating = detail?.rating?.toString() ?: "0.0",
+                        duration = detail?.runtime ?: "N/A",
+                        releaseDate = detail?.releaseDate?.let { formatDate(it) } ?: "",
+                        type = detail?.type ?: "SERIES",
+                        animatedVisibilityScope = this@AnimatedContent,
+                        sharedTransitionScope = this@SharedTransitionLayout,
+                        onSaveClick = {
+                            interactionListener.addToCollection()
                         }
-                    }
+                    )
+                } else {
+                    MainMovieCard(
+                        posterUrl = detail?.posterPath?.let { "https://image.tmdb.org/t/p/w500$it" }
+                            ?: "",
+                        title = detail?.title ?: "Loading...",
+                        animatedVisibilityScope = this@AnimatedContent,
+                        sharedTransitionScope = this@SharedTransitionLayout
+                    )
                 }
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(Theme.colors.background.screen)
-                )
-                {
+            }
+        }
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Theme.colors.background.screen)
+        )
+        {
 
-                    if (isLoading && detail == null) {
-                        CircularProgressIndicator(
-                            modifier = Modifier.align(Alignment.Center),
-                            color = Theme.colors.brand.primary
-                        )
-                    } else {
+            if (isLoading && detail == null) {
+                CircularProgressIndicator(
+                    modifier = Modifier.align(Alignment.Center),
+                    color = Theme.colors.brand.primary
+                )
+            } else {
                 LazyColumn(
                     state = scrollState,
                     modifier = Modifier.background(Theme.colors.background.screen)
@@ -290,7 +308,8 @@ fun SeriesDetailsContent(
                             icon = R.drawable.due_tone_star,
                             title = "Give it Stars!",
                             caption = "Let the world know how you felt.",
-                            onClickArrow = {},
+                            onClickArrow = onClickArrow,
+                            ratingStars = uiState.starsRating,
                             modifier = Modifier.padding(top = 24.dp, start = 16.dp, end = 16.dp)
                         )
                     }
@@ -336,6 +355,21 @@ fun SeriesDetailsContent(
                         }
                     }
                 }
+
+                MovieRatingBottomSheet(
+                    isVisible = uiState.showRatingBottomSheet,
+                    onDismiss = onDismiss,
+                    onRatingSubmit = { rating ->
+                        onRatingSubmit(rating, detail?.id ?: 0)
+                    },
+                    onRatingRemove = {
+                        onRatingSubmit(0, detail?.id ?: 0)
+                    },
+                    initialRating = uiState.starsRating,
+                    hasExistingRating = uiState.starsRating != 0,
+                )
+
+
             }
         }
     }
@@ -416,7 +450,11 @@ private fun SeriesDetailsScreenPreview() {
                         avatarPath = "null"
                     )
                 )
-            )
+            ),
+            interactionListener = TODO(),
+            onClickArrow = TODO(),
+            onDismiss = TODO(),
+            onRatingSubmit = TODO()
         )
     }
 }

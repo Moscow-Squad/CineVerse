@@ -125,10 +125,13 @@ private fun <T> GridMovieCard(
     getPosterUrl: (T) -> String,
     getRating: (T) -> Float,
 ) {
-    Column {
+    Column(
+        modifier = modifier
+    ) {
         Card(
-            modifier = modifier
+            modifier = Modifier
                 .height(208.dp)
+                .fillMaxWidth()
                 .clip(RoundedCornerShape(Theme.radius.large))
                 .clickable { onMovieClick(getId(movieData)) },
             shape = RoundedCornerShape(Theme.radius.large)

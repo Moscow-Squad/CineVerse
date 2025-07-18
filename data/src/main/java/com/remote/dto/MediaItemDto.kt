@@ -4,7 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class MultiSearchDto(
+data class MediaItemDto(
     @SerialName("adult") val adult: Boolean? = null,
     @SerialName("backdrop_path") val backdropPath: String? = null,
     @SerialName("first_air_date") val firstAirDate: String? = null,

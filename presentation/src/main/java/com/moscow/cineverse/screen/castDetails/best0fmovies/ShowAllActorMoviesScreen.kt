@@ -20,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.android.domain.model.MediaType
 import com.moscow.cineverse.designSystem.component.CineVersePreviews
 import com.moscow.cineverse.designSystem.component.MovieAppBar
 import com.moscow.cineverse.designSystem.component.MovieButton
@@ -33,6 +34,7 @@ import com.moscow.cineverse.navigation.LocalNavController
 import com.moscow.cineverse.navigation.routes.MovieDetailsRoute
 import com.moscow.cineverse.screen.component.movie_poster_card.MediaItemUi
 import com.moscow.cineverse.screen.component.movie_poster_card.MoviePosterCard
+import com.moscow.cineverse.screen.model.MediaItemUi
 import com.moscow.cinverse.presentation.R
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
@@ -174,7 +176,8 @@ fun ShowAllActorMoviesPreview(modifier: Modifier = Modifier) {
                     rating = 7.5f,
                     genres = listOf("Action", "Adventure"),
                     duration = "2h 30m",
-                    releaseDate = "2023-10-01"
+                    releaseDate = "2023-10-01",
+                    mediaType = MediaType.Movie
                 )
             }
         ),

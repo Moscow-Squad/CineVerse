@@ -12,7 +12,7 @@ fun ActorPosterCard(
     actor: ExploreScreenState.ActorUi,
     modifier: Modifier = Modifier,
     viewMode: ViewMode = ViewMode.GRID,
-    titleTextAlign: TextAlign = TextAlign.Start,
+    titleTextAlign: TextAlign = TextAlign.Center,
     onActorClicked: (Int) -> Unit = {}
 ) {
     MovieCard(
@@ -20,6 +20,7 @@ fun ActorPosterCard(
         movieData = actor,
         viewMode = viewMode,
         titleTextAlign = titleTextAlign,
+        showRating = false,
         getId = { it.id },
         getTitle = { it.title },
         getPosterUrl = { it.profilePath },

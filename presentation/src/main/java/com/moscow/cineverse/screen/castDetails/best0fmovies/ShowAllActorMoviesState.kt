@@ -1,7 +1,7 @@
 package com.moscow.cineverse.screen.castDetails.best0fmovies
 
 import com.moscow.cineverse.designSystem.component.ViewMode
-import com.moscow.cineverse.screen.component.movie_poster_card.MediaItemUi
+import com.moscow.cineverse.screen.model.MediaItemUi
 
 data class ShowAllActorMoviesState(
     val actorId: Int = 0,

@@ -17,6 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.design_system.R
@@ -29,8 +30,13 @@ fun RatingSection(
     title: String,
     caption: String,
     onClickArrow: () -> Unit,
+    ratingStars : Int,
     modifier: Modifier = Modifier
 ) {
+
+    val rateTitle = stringResource(R.string.you_rated_it)
+    val rateCaption = stringResource(R.string.tap_to_change_your_rating)
+
     Column(
         verticalArrangement = Arrangement.spacedBy(12.dp),
         modifier = modifier
@@ -67,13 +73,24 @@ fun RatingSection(
                 modifier = Modifier.weight(1f),
                 verticalArrangement = Arrangement.spacedBy(4.dp)
             ) {
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ){
+                    Text(
+                        text = if(ratingStars == 0) title else rateTitle,
+                        style = Theme.textStyle.title.small,
+                        color = Theme.colors.shade.primary
+                    )
+                    if(ratingStars != 0){
+                        MovieRatingBar(
+                            rating = ratingStars,
+                            onRatingChanged =  {_ ->}
+                        )
+                    }
+                }
                 Text(
-                    text = title,
-                    style = Theme.textStyle.title.small,
-                    color = Theme.colors.shade.primary
-                )
-                Text(
-                    text = caption,
+                    text = if(ratingStars == 0) caption else rateCaption,
                     style = Theme.textStyle.body.small.medium,
                     color = Theme.colors.shade.secondary
                 )
@@ -96,9 +113,10 @@ private fun RatingSectionPreview() {
     CineVerseTheme {
         RatingSection(
             icon = R.drawable.due_tone_magic_stick,
-            title = "Title",
-            caption = "Caption",
-            onClickArrow = {}
+            title = "Give it Stars!",
+            caption = "Let the world know how you felt.",
+            onClickArrow = {},
+            ratingStars = 4
         )
     }
 }
