@@ -22,27 +22,28 @@ import com.moscow.cineverse.designSystem.component.MovieScaffold
 import com.moscow.cineverse.designSystem.component.MovieText
 import com.moscow.cineverse.designSystem.component.cast_details.CastGallery
 import com.moscow.cineverse.designSystem.theme.Theme
+import com.moscow.cineverse.navigation.LocalNavController
 import com.moscow.cinverse.presentation.R
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 
 @Composable
 fun ActorGalleryScreen(
-    navController: NavHostController,
     actorId: Int,
     title: String,
-    onNavigateBack: () -> Unit,
     modifier: Modifier = Modifier,
-) {
-    val viewModel: ActorGalleryViewModel =
-        koinViewModel(parameters = { parametersOf(actorId, title) })
+    navController: NavHostController = LocalNavController.current,
+
+    ) {
+    val viewModel: ActorGalleryViewModel = koinViewModel(parameters = { parametersOf(actorId, title) })
+
     val uiState by viewModel.uiState.collectAsState()
 
     ActorGalleryContent(
         modifier = modifier,
         uiState = uiState,
         interactionListener = viewModel,
-        onNavigateBack = onNavigateBack,
+        onNavigateBack = { navController.popBackStack() },
         title = uiState.actorName
     )
 }
@@ -51,9 +52,9 @@ fun ActorGalleryScreen(
 fun ActorGalleryContent(
     uiState: ShowAllActorMoviesState,
     interactionListener: ActorGalleryInteractionListener,
-    title: String,
     onNavigateBack: () -> Unit,
     modifier: Modifier = Modifier,
+    title: String
 ) {
     MovieScaffold {
         Box(modifier = modifier.fillMaxSize()) {

@@ -3,6 +3,7 @@ package com.moscow.cineverse.screen.explore
 import androidx.lifecycle.viewModelScope
 import com.android.domain.model.Actor
 import com.android.domain.model.Genre
+import com.android.domain.model.MediaType
 import com.android.domain.model.Movie
 import com.android.domain.model.Series
 import com.android.domain.usecase.CacheSearchQueryUseCase
@@ -18,6 +19,7 @@ import com.android.domain.usecase.SuggestionUseCase
 import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.cineverse.designSystem.component.ViewMode
 import com.moscow.cineverse.designSystem.component.tabs.ExploreTabsPages
+import com.moscow.cineverse.screen.model.MediaItemUi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.debounce
@@ -265,7 +267,7 @@ class ExploreViewModel(
 
 
             state.copy(
-               localSuggestions = filteredLocalSuggestions ,
+                localSuggestions = filteredLocalSuggestions,
                 remoteSuggestions = mappedRemoteSuggestions.map { it.title }
             )
         }
@@ -455,8 +457,11 @@ class ExploreViewModel(
         updateState { it.copy(viewMode = viewMode) }
     }
 
-    override fun onMovieClick(movieId: Int) {
-        sendEvent(ExploreScreenEvents.MovieClicked(movieId))
+    override fun onMediaItemClicked(mediaItemUi: MediaItemUi) {
+        if (mediaItemUi.mediaType == MediaType.Movie)
+            sendEvent(ExploreScreenEvents.MovieClicked(mediaItemUi.id))
+        else
+            sendEvent(ExploreScreenEvents.SeriesClicked(mediaItemUi.id))
     }
 
     override fun onActorClick(actorId: Int) {

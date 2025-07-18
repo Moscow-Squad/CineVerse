@@ -12,11 +12,10 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class RecommendationsRoute(val id: Int , val movieTitle:String)
 
-fun NavGraphBuilder.RecommendationsRoute(navController: NavHostController) {
+fun NavGraphBuilder.RecommendationsRoute() {
     composable<RecommendationsRoute> {
         val args = it.toRoute<RecommendationsRoute>()
         RecommendationMoviesScreen(
-            navController = navController,
             movieId = args.id,
             title = args.movieTitle
         )

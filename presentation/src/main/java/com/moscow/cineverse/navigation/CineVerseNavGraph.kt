@@ -14,6 +14,7 @@ import com.moscow.cineverse.navigation.routes.MovieDetailsRoute
 import com.moscow.cineverse.navigation.routes.RecommendationsRoute
 import com.moscow.cineverse.navigation.routes.ReviewsRoute
 import com.moscow.cineverse.navigation.routes.SeriesDetailsRoute
+import com.moscow.cineverse.navigation.routes.collectionsBottomSheetRoute
 import com.moscow.cineverse.navigation.routes.exploreRoute
 
 val LocalNavController =
@@ -28,11 +29,20 @@ fun CineVerseNavGraph() {
     ) {
         NavHost(navController = navController, startDestination = ExploreRoute) {
             exploreRoute()
-            CastDetailsRoute(navController)
-            CastGalleryRoute(navController)
-            CastBestOfMovieRoute(navController)
-            MovieDetailsRoute(navController)
-            SeriesDetailsRoute(navController)
+            RecommendationsRoute()
+            ReviewsRoute()
+            CastDetailsRoute()
+            CastGalleryRoute()
+            CastBestOfMovieRoute()
+            MovieDetailsRoute()
+            SeriesDetailsRoute()
+            collectionsBottomSheetRoute(
+                onAddNewCollectionClick = {},
+                onCreateCollectionClicked = {},
+                navigateBack = {
+                    navController.popBackStack()
+                }
+            )
         }
     }
 }

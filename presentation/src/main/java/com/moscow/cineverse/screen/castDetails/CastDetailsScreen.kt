@@ -36,6 +36,7 @@ import com.moscow.cineverse.designSystem.component.ViewMode
 import com.moscow.cineverse.designSystem.component.cast_details.GallerySection
 import com.moscow.cineverse.designSystem.component.cast_details.MainDetails
 import com.moscow.cineverse.designSystem.theme.Theme
+import com.moscow.cineverse.navigation.LocalNavController
 import com.moscow.cineverse.navigation.routes.CastBestOfMovieRoute
 import com.moscow.cineverse.navigation.routes.CastGalleryRoute
 import com.moscow.cineverse.navigation.routes.MovieDetailsRoute
@@ -46,10 +47,9 @@ import com.moscow.cinverse.presentation.R as PresentationR
 
 @Composable
 fun CastDetailsScreen(
-    navController: NavHostController,
     actorId: Int,
-    onNavigateBack: () -> Unit,
     modifier: Modifier = Modifier,
+    navController: NavHostController = LocalNavController.current,
     viewModel: CastDetailsViewModel = koinViewModel(parameters = { parametersOf(actorId) })
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -57,7 +57,7 @@ fun CastDetailsScreen(
     LaunchedEffect(viewModel) {
         viewModel.uiEvent.collect { event ->
             when (event) {
-                is CastDetailsEvent.NavigateBack -> onNavigateBack()
+                is CastDetailsEvent.NavigateBack -> {navController.popBackStack()}
                 is CastDetailsEvent.ShowError -> {
                     // TODO: Show error (Snackbar, Toast, etc.)
                 }
@@ -82,7 +82,7 @@ fun CastDetailsScreen(
         CastDetailsContent(
             uiState = uiState,
             interactionListener = viewModel,
-            onBackPressed = { onNavigateBack() },
+            onBackPressed = { navController.popBackStack() },
             modifier = Modifier.fillMaxSize()
         )
     }

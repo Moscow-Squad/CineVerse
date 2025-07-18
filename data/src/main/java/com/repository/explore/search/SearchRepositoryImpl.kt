@@ -5,7 +5,6 @@ import androidx.work.WorkManager
 import androidx.work.workDataOf
 import com.android.domain.model.Actor
 import com.android.domain.model.Movie
-import com.android.domain.model.MultiSearch
 import com.android.domain.model.Series
 import com.android.domain.repository.SearchRepository
 import com.local.DeleteHistoryQueryWorker
@@ -64,14 +63,6 @@ class SearchRepositoryImpl(
             searchRemoteDataSource.getSuggestions(keyWord, page)
         }.map { it.toModel() }
 
-    override suspend fun searchMulti(query: String): Flow<List<MultiSearch>> =
-        flow {
-            emit(
-                tryToExecute {
-                    searchRemoteDataSource.searchMulti(query)
-                }.map { it.toDomain() }
-            )
-        }.flowOn(ioDispatcher)
 
     override suspend fun searchMovie(query: String, isHistory: Boolean): Flow<List<Movie>> =
         flow {

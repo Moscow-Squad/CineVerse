@@ -1,5 +1,6 @@
 package com.moscow.cineverse.designSystem.component.movieSeriesDetails
 
+import android.content.res.Configuration
 import android.util.Log
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
@@ -59,7 +60,7 @@ fun MovieReviewCard(
 
     Column(modifier
         .fillMaxWidth()
-        .background(color = Color.White, shape = RoundedCornerShape(Theme.radius.large))
+        .background(color = Theme.colors.background.card, shape = RoundedCornerShape(Theme.radius.large))
         .padding(12.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)) {
 
@@ -70,7 +71,6 @@ fun MovieReviewCard(
         )
 
         ExpandableText(
-
             text = reviewText
         )
 
@@ -132,12 +132,11 @@ private fun UserInfo(
 
 }
 
-@Preview(showBackground = true, backgroundColor = 1)
+@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES, backgroundColor = 1)
 @Composable
 private fun PreviewMovieReviewCard() {
 
     CineVerseTheme {
-
         MovieReviewCard(
             "Shrouk Mohamed",
             "@ShroukMohamed16",
