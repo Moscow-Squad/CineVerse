@@ -10,6 +10,12 @@ import io.ktor.client.engine.okhttp.OkHttp
 import org.koin.dsl.module
 
 val remoteSourceModule = module {
+
+    single{ HttpClientFactory.create(OkHttp.create()) }
+    single{ SearchRemoteDataSource(get()) }
+    single{ ExploreRemoteDataSource(get()) }
+    single{ ActorDetailsRemoteDataSource(get()) }
+    single{ DetailsRemoteDataSource(get()) }
     single { HttpClientFactory.create(OkHttp.create()) }
     single { SearchRemoteDataSource(get()) }
     single { ExploreRemoteDataSource(get()) }
@@ -17,4 +23,5 @@ val remoteSourceModule = module {
     single { DetailsRemoteDataSource(get()) }
     single { ReviewsRemoteDataSource(get()) }
     single { RecommendationsMoviesRemoteDataSource(get()) }
+
 }

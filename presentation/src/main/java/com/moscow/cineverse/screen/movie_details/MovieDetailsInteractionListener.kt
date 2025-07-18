@@ -8,4 +8,5 @@ interface MovieDetailsInteractionListener {
     fun onShowMoreCrew()
     fun onShowMoreRecommendations( movieId:Int,  movieTitle:String)
     fun onShowMoreReviews(movieId:Int)
+
 }

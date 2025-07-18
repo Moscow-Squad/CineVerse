@@ -4,16 +4,17 @@ package com.mapper
 import com.android.domain.model.CastDetails
 import com.android.domain.model.CreditsDetails
 import com.android.domain.model.CrewDetails
+
+import com.android.domain.model.details.MovieDetail
 import com.remote.dto.CastDetailsDto
 import com.remote.dto.CreditsDetailsDto
 import com.remote.dto.CrewDetailsDto
+import com.remote.dto.details.MovieDetailDto
 import com.utils.IMAGES_URL
 import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
-import com.android.domain.model.details.MovieDetail
-import com.remote.dto.details.MovieDetailDto
 
 fun MovieDetailDto.toDomain(): MovieDetail {
     return MovieDetail(

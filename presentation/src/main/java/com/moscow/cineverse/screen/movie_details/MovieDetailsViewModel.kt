@@ -51,7 +51,7 @@ class MovieDetailsViewModel(
 
     private fun onGetReviewSuccess(reviews: List<Review>) {
         updateState { it.copy(reviewsFlow = reviews.take(3).map { it.toUi() }) }
-    }
+
 
     fun getCredits(movieID: Int) {
         launchWithResult(
@@ -116,10 +116,31 @@ class MovieDetailsViewModel(
         updateState { it.copy(errorMessage = error.message.toString()) }
     }
 
+    private fun getRecommendationsFailed(error: Throwable) {
+        updateState { it.copy(errorMessage = error.message.toString()) }
+    }
+
+
     override fun onBackPressed() {
         sendEvent(MovieDetailsScreenEvents.NavigateBack)
     }
 
+
+    override fun onShowMoreCast() {
+        sendEvent(MovieDetailsScreenEvents.NavigateToFullActors)
+    }
+
+    override fun onShowMoreCrew() {
+        sendEvent(MovieDetailsScreenEvents.NavigateToFullCast)
+    }
+
+    override fun onShowMoreRecommendations() {
+        sendEvent(MovieDetailsScreenEvents.NavigateToFullMovieList(24428))
+    }
+
+    override fun onShowMoreReviews() {
+        sendEvent(MovieDetailsScreenEvents.NavigateToFullReviews(24428))
+    }
 
     override fun onShowMoreCast() {
         sendEvent(MovieDetailsScreenEvents.NavigateToFullActors)

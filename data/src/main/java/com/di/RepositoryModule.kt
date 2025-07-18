@@ -39,6 +39,7 @@ val repositoryModule = module {
             get()
         )
     }
+
     single<ReviewsRepository> {
         ReviewsRepositoryImpl(
             reviewsRemoteDataSource =  get() ,
