@@ -4,6 +4,7 @@ package com.mapper
 import com.android.domain.model.CastDetails
 import com.android.domain.model.CreditsDetails
 import com.android.domain.model.CrewDetails
+
 import com.android.domain.model.details.MovieDetail
 import com.remote.dto.CastDetailsDto
 import com.remote.dto.CreditsDetailsDto

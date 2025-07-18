@@ -1,5 +1,7 @@
 package com.utils
 
+import com.android.domain.utils.ErrorMessages
+
 sealed class CineVerseExceptions(message: String? = null) : Exception(message) {
     class NotFoundCineVerseException : CineVerseExceptions(ErrorMessages.RESOURCE_NOT_FOUND) {
     }

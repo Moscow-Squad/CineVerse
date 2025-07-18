@@ -4,8 +4,8 @@ package com.moscow.cineverse.screen.movie_details
 import android.util.Log
 import com.android.domain.model.CreditsDetails
 import com.android.domain.model.Movie
-import com.android.domain.model.details.MovieDetail
 import com.android.domain.model.Review
+import com.android.domain.model.details.MovieDetail
 import com.android.domain.usecase.GetCreditsUseCase
 import com.android.domain.usecase.GetMovieDetailUseCase
 import com.android.domain.usecase.GetRecommendationsUseCase
@@ -51,7 +51,7 @@ class MovieDetailsViewModel(
 
     private fun onGetReviewSuccess(reviews: List<Review>) {
         updateState { it.copy(reviewsFlow = reviews.take(3).map { it.toUi() }) }
-    }
+
 
     fun getCredits(movieID: Int) {
         launchWithResult(
@@ -116,6 +116,11 @@ class MovieDetailsViewModel(
         updateState { it.copy(errorMessage = error.message.toString()) }
     }
 
+    private fun getRecommendationsFailed(error: Throwable) {
+        updateState { it.copy(errorMessage = error.message.toString()) }
+    }
+
+
     override fun onBackPressed() {
         sendEvent(MovieDetailsScreenEvents.NavigateBack)
     }
@@ -135,6 +140,22 @@ class MovieDetailsViewModel(
 
     override fun onShowMoreReviews() {
         sendEvent(MovieDetailsScreenEvents.NavigateToFullReviews(24428))
+    }
+
+    override fun onShowMoreCast() {
+        sendEvent(MovieDetailsScreenEvents.NavigateToFullActors)
+    }
+
+    override fun onShowMoreCrew() {
+        sendEvent(MovieDetailsScreenEvents.NavigateToFullCast)
+    }
+
+    override fun onShowMoreRecommendations(movieId: Int, movieTitle:String) {
+        sendEvent(MovieDetailsScreenEvents.NavigateToFullMovieList(movieId, movieTitle))
+    }
+
+    override fun onShowMoreReviews(movieId:Int) {
+        sendEvent(MovieDetailsScreenEvents.NavigateToFullReviews(movieId))
     }
 
 

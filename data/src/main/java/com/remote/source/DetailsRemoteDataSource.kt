@@ -10,6 +10,8 @@ import com.utils.ApiResponse
 import com.utils.CREDITS
 import com.utils.LATEST
 import com.utils.LISTS
+import com.remote.dto.CreditsDetailsDto
+import com.utils.CREDITS
 import com.utils.MOVIE
 import com.utils.RECOMMENDATIONS
 import com.utils.REVIEWS
@@ -38,6 +40,7 @@ class DetailsRemoteDataSource(
             method = HttpMethod.Get,
             path = MOVIE + movieID + CREDITS
         )
+
 
     suspend fun getReviews(id: Int, page: Int, isMovie: Boolean): ReviewDto =
         client.performCall<Unit, ReviewDto>(

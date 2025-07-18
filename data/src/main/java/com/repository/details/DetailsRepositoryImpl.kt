@@ -22,9 +22,9 @@ class DetailsRepositoryImpl(
         detailsRemoteDataSource.getSeriesDetails(seriesId).toDomain()
 
 
-    override suspend fun getReviewsPage(id:Int, page: Int, isMovie: Boolean): List<Review> {
-        val response = detailsRemoteDataSource.getReviews(id, page, isMovie)
-        return response.results.orEmpty().mapNotNull { it?.toDomain() }
+    override suspend fun getCreditsDetails(id: Int): CreditsDetails {
+        val response = detailsRemoteDataSource.getCredits(id)
+        return response.toDomain()
     }
 
     override suspend fun getCreditsDetails(id: Int): CreditsDetails {

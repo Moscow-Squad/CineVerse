@@ -6,6 +6,7 @@ interface MovieDetailsInteractionListener {
     fun onBackPressed()
     fun onShowMoreCast()
     fun onShowMoreCrew()
-    fun onShowMoreRecommendations()
-    fun onShowMoreReviews()
+    fun onShowMoreRecommendations( movieId:Int,  movieTitle:String)
+    fun onShowMoreReviews(movieId:Int)
+
 }
