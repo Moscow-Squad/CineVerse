@@ -5,7 +5,7 @@ import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.android.domain.repository.SearchRepository
 
-class DeleteQueryWorker(
+class DeleteHistoryQueryWorker(
     appContext: Context,
     workerParams: WorkerParameters,
     private val searchRepository: SearchRepository

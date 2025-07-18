@@ -1,5 +1,6 @@
 package com.moscow.cineverse.screen.explore
 
+import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
@@ -20,7 +21,9 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
@@ -33,6 +36,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
@@ -50,7 +54,6 @@ import com.moscow.cineverse.navigation.routes.CastDetailsRoute
 import com.moscow.cineverse.navigation.routes.MovieDetailsRoute
 import com.moscow.cineverse.screen.component.movie_poster_card.MediaItemUi
 import com.moscow.cineverse.screen.component.movie_poster_card.MoviePosterCard
-import com.moscow.cineverse.screen.explore.ExploreScreenState.GenreUi
 import com.moscow.cineverse.screen.explore.component.ActorPosterCard
 import com.moscow.cineverse.screen.explore.component.SearchSuggestion
 import com.moscow.cinverse.presentation.R
@@ -74,6 +77,7 @@ fun ExploreScreen(
         modifier = modifier
     )
 }
+
 private fun handleEffects(
     event: ExploreScreenEvents,
     navController: NavHostController
@@ -84,6 +88,7 @@ private fun handleEffects(
                 CastDetailsRoute(event.actorId)
             )
         }
+
         is ExploreScreenEvents.GenreSelected -> {}
         ExploreScreenEvents.LoadData -> {}
         is ExploreScreenEvents.MovieClicked -> {
@@ -103,6 +108,24 @@ private fun ExploreScreenContent(
     interactionListener: ExploreInteractionListener,
     modifier: Modifier = Modifier
 ) {
+    val context = LocalContext.current
+    val gridState = rememberLazyGridState()
+    val genresState = rememberLazyListState()
+
+    LaunchedEffect(uiState.selectedTab) {
+        gridState.animateScrollToItem(0)
+        val genreIdToFind = if (uiState.selectedTab == ExploreTabsPages.MOVIES)
+            uiState.selectedMovieGenre
+        else
+            uiState.selectedSeriesGenre
+
+        val targetIndex = uiState.genres.indexOfFirst { it.id == genreIdToFind }
+        if (targetIndex >= 0) {
+            genresState.animateScrollToItem(targetIndex)
+        }
+    }
+
+
     Surface(
         modifier = modifier.fillMaxSize(),
         color = Theme.colors.background.screen
@@ -121,8 +144,14 @@ private fun ExploreScreenContent(
                             interactionListener.onKeyboardClick()
                         },
                         onSearch = {
-                            interactionListener.onSearchQuery()
-
+                            if (uiState.searchKeyWord.isBlank())
+                                Toast.makeText(
+                                    context,
+                                    "Search can't be empty!",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            else
+                                interactionListener.onSearchQuery()
                         }
                     ),
                     onValueChange = { interactionListener.onSearchValueChange(it) },
@@ -201,6 +230,7 @@ private fun ExploreScreenContent(
                                 }
                             }
                             LazyVerticalGrid(
+                                state = gridState,
                                 columns = gridColumns,
                                 contentPadding = PaddingValues(
                                     top = 56.dp,
@@ -236,9 +266,9 @@ private fun ExploreScreenContent(
                             }
                         }
                     }
-
                     if (uiState.shouldShowGenres) {
                         LazyRow(
+                            state = genresState,
                             horizontalArrangement = Arrangement.spacedBy(12.dp),
                             contentPadding = PaddingValues(horizontal = 16.dp),
                             modifier = Modifier
@@ -246,11 +276,18 @@ private fun ExploreScreenContent(
                                 .align(Alignment.TopCenter)
                                 .padding(top = 12.dp)
                         ) {
-                            items(listOf(GenreUi(id = 0, name = "All")) + uiState.genres) { genre ->
+                            val selectedGenre =
+                                if (uiState.selectedTab == ExploreTabsPages.MOVIES) uiState.selectedMovieGenre else uiState.selectedSeriesGenre
+                            items(uiState.genres) { genre ->
                                 PillLabel(
                                     text = genre.name,
-                                    isActive = uiState.selectedGenre == genre.id,
-                                    onClick = { interactionListener.onGenreSelected(genre.id) }
+                                    isActive = selectedGenre == genre.id,
+                                    onClick = {
+                                        if (uiState.selectedTab == ExploreTabsPages.SERIES)
+                                            interactionListener.onSeriesGenreSelected(genre.id)
+                                        else
+                                            interactionListener.onMovieGenreSelected(genre.id)
+                                    }
                                 )
                             }
                         }
