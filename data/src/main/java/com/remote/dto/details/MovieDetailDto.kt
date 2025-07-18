@@ -1,6 +1,8 @@
-package com.remote.dto
+package com.remote.dto.details
 
 
+import com.remote.dto.BelongsToCollection
+import com.remote.dto.GenreDto
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 

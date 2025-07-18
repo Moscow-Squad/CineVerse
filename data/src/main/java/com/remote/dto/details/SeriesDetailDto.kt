@@ -1,5 +1,7 @@
-package com.remote.dto
+package com.remote.dto.details
 
+import com.remote.dto.GenreDto
+import com.remote.dto.review.ReviewDto
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -69,13 +71,7 @@ data class SeriesDetailDto(
     val voteAverage: Double,
     @SerialName("vote_count")
     val voteCount: Int,
+    @SerialName("reviews")
+    val reviews: List<ReviewDto> = emptyList(),
 )
 
-@Serializable
-data class CreatedByDto(
-    @SerialName("id") val id: Int,
-    @SerialName("credit_id") val creditId: String,
-    @SerialName("name") val name: String,
-    @SerialName("gender") val gender: Int,
-    @SerialName("profile_path") val profilePath: String? = null,
-)

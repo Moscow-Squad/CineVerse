@@ -1,5 +1,12 @@
 package com.moscow.cineverse.designSystem.component.movieSeriesDetails
 
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -8,7 +15,9 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -27,6 +36,7 @@ import com.example.image_viewer.component.SafeImageViewer
 import com.moscow.cineverse.designSystem.component.MovieFloatingButton
 import com.moscow.cineverse.designSystem.theme.Theme
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun MovieCardDetails(
     modifier: Modifier = Modifier,
@@ -38,46 +48,58 @@ fun MovieCardDetails(
     posterUrl: String,
     type: String,
     onSaveClick: () -> Unit = {},
-    onPlayClick: () -> Unit = {}
+    onPlayClick: () -> Unit = {},
+    sharedTransitionScope: SharedTransitionScope,
+    animatedVisibilityScope: AnimatedVisibilityScope
 ) {
-    Column(
-        modifier = Modifier.padding(horizontal = 16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(16.dp)
-    ) {
-        val isPreview = LocalInspectionMode.current
-        if (isPreview) {
-            Image(
-                painter = painterResource(R.drawable.profile_image),
-                contentDescription = "Image",
-                modifier = Modifier
-                    .height(289.dp)
-                    .width(216.dp)
-                    .clip(RoundedCornerShape(Theme.radius.extraLarge)),
-                contentScale = ContentScale.Crop
-            )
-        } else {
-            SafeImageViewer(
-                model = posterUrl,
-                contentDescription = "Image",
-                modifier = Modifier
-                    .height(289.dp)
-                    .width(216.dp)
-                    .clip(RoundedCornerShape(Theme.radius.extraLarge)),
-                contentScale = ContentScale.Crop
+    with(sharedTransitionScope) {
+        Column(
+            modifier = Modifier
+                .padding(horizontal = 16.dp)
+                .sharedBounds(
+                    rememberSharedContentState(key = "Movie Card Details"),
+                    animatedVisibilityScope = animatedVisibilityScope,
+                    enter = fadeIn() + scaleIn(),
+                    exit = fadeOut() + scaleOut(),
+                    resizeMode = SharedTransitionScope.ResizeMode.ScaleToBounds()
+                ),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            val isPreview = LocalInspectionMode.current
+            if (isPreview) {
+                Image(
+                    painter = painterResource(R.drawable.profile_image),
+                    contentDescription = "Image",
+                    modifier = Modifier
+                        .height(289.dp)
+                        .width(216.dp)
+                        .clip(RoundedCornerShape(Theme.radius.extraLarge)),
+                    contentScale = ContentScale.Crop
+                )
+            } else {
+                SafeImageViewer(
+                    model = posterUrl,
+                    contentDescription = "Image",
+                    modifier = Modifier
+                        .height(289.dp)
+                        .width(216.dp)
+                        .clip(RoundedCornerShape(Theme.radius.extraLarge)),
+                    contentScale = ContentScale.Crop
+                )
+            }
+            DetailCard(
+                modifier,
+                title,
+                genres,
+                rating,
+                duration,
+                releaseDate,
+                type,
+                onSaveClick,
+                onPlayClick
             )
         }
-        DetailCard(
-            modifier,
-            title,
-            genres,
-            rating,
-            duration,
-            releaseDate,
-            type,
-            onSaveClick,
-            onPlayClick
-        )
     }
 }
 
@@ -91,7 +113,7 @@ fun DetailCard(
     releaseDate: String,
     type: String,
     onSaveClick: () -> Unit = {},
-    onPlayClick: () -> Unit = {}
+    onPlayClick: () -> Unit = {},
 ) {
 
     Row(
@@ -183,6 +205,72 @@ fun InfoTextWithIcon(icon: Int, text: String, tint: Color) {
     }
 }
 
+@OptIn(ExperimentalSharedTransitionApi::class)
+@Composable
+fun MainMovieCard(
+    posterUrl: String,
+    title: String,
+    onSaveClick: () -> Unit = {},
+    onPlayClick: () -> Unit = {},
+    sharedTransitionScope: SharedTransitionScope,
+    animatedVisibilityScope: AnimatedVisibilityScope
+) {
+    with(sharedTransitionScope) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .padding(horizontal = 16.dp)
+                .sharedBounds(
+                    rememberSharedContentState(key = "Main Movie Card"),
+                    animatedVisibilityScope = animatedVisibilityScope,
+                    enter = fadeIn() + scaleIn(),
+                    exit = fadeOut() + scaleOut(),
+                    resizeMode = SharedTransitionScope.ResizeMode.ScaleToBounds()
+                )
+        ) {
+            val isPreview = LocalInspectionMode.current
+            if (isPreview) {
+                Image(
+                    painter = painterResource(R.drawable.profile_image),
+                    contentDescription = "Image",
+                    modifier = Modifier
+                        .clip(CircleShape)
+                        .size(40.dp),
+                    contentScale = ContentScale.FillBounds
+                )
+            } else {
+                SafeImageViewer(
+                    model = posterUrl,
+                    contentDescription = "Image",
+                    modifier = Modifier
+                        .clip(CircleShape),
+                    contentScale = ContentScale.Crop
+                )
+            }
+            Text(
+                text = title,
+                style = Theme.textStyle.title.medium,
+                color = Theme.colors.shade.primary,
+                modifier = Modifier
+                    .padding(start = 12.dp)
+                    .weight(1f)
+            )
+            MovieFloatingButton(
+                R.drawable.due_tone_play,
+                { onPlayClick() },
+                Theme.colors.button.primary,
+                Theme.colors.brand.tertiary,
+                modifier = Modifier.padding(end = 8.dp)
+            )
+            MovieFloatingButton(
+                R.drawable.due_tone_add,
+                { onSaveClick() },
+                Theme.colors.button.secondary,
+                Theme.colors.shade.primary,
+            )
+        }
+    }
+}
 
 @Preview(showBackground = true)
 @Composable
@@ -194,22 +282,9 @@ fun DetailCardPreview() {
         duration = "2h 32m",
         releaseDate = "2008, Jul 18",
         type = "SERIES",
-        )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun MovieCardPreview() {
-    MovieCardDetails(
-        posterUrl = "https://image.tmdb.org/t/p/w500/qJ2tW6WMUDux911r6m7haRef0WH.jpg",
-        title = "Supernatural",
-        genres = "Drama, Mystery, Sci-Fi & Fantasy",
-        rating = "8.5",
-        duration = "2h 32m",
-        releaseDate = "2008, Jul 18",
-        type = "SERIES"
     )
 }
+
 
 
 

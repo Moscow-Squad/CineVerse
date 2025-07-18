@@ -14,6 +14,8 @@ import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
+import com.android.domain.model.details.MovieDetail
+import com.remote.dto.details.MovieDetailDto
 
 fun MovieDetailDto.toDomain(): MovieDetail {
     return MovieDetail(

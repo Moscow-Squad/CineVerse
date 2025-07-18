@@ -5,7 +5,9 @@ import com.android.domain.model.CreditsDetails
 import com.android.domain.model.Movie
 import com.android.domain.model.MovieDetail
 import com.android.domain.model.Review
-import com.android.domain.model.SeriesDetail
+import com.android.domain.model.details.ListOfSeries
+import com.android.domain.model.details.MovieDetail
+import com.android.domain.model.details.SeriesDetail
 import com.android.domain.repository.DetailsRepository
 import com.mapper.toDomain
 import com.remote.source.DetailsRemoteDataSource
@@ -21,12 +23,20 @@ class DetailsRepositoryImpl(
         detailsRemoteDataSource.getSeriesDetails(seriesId).toDomain()
 
 
-
-
     override suspend fun getCreditsDetails(id: Int): CreditsDetails {
         val response = detailsRemoteDataSource.getCredits(id)
         return response.toDomain()
     }
 
 
+
+    override suspend fun getLatestSeasons(): List<SeriesDetail> {
+        val response = detailsRemoteDataSource.getLatestSeasons()
+        return response.map { it.toDomain() }
+    }
+
+    override suspend fun getListOfSeries(id: Int, page: Int): List<ListOfSeries> {
+        val response = detailsRemoteDataSource.getListOfSeries(id, page)
+        return listOf(response.toDomain())
+    }
 }

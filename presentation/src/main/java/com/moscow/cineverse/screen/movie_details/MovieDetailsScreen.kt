@@ -1,16 +1,20 @@
 package com.moscow.cineverse.screen.movie_details
 
 import android.util.Log
-import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.ParagraphStyle
 import androidx.compose.ui.text.SpanStyle
@@ -99,6 +103,13 @@ fun MovieDetailsContent(
     when {
         uiState.movieDetailsUi != null -> {
 
+            val textColor = Theme.colors.shade.secondary
+            val scrollState = rememberLazyListState()
+            val isCollapsed by remember {
+                derivedStateOf {
+                    scrollState.firstVisibleItemScrollOffset > 10 || scrollState.firstVisibleItemIndex > 0
+                }
+            }
             Log.d("TAG", "MovieDetailsContent:${uiState.movieDetailsUi} ")
             LazyColumn(
                 modifier = Modifier.background(Theme.colors.background.screen)
@@ -106,16 +117,23 @@ fun MovieDetailsContent(
             ) {
                 item { MovieAppBar() }
                 item {
+                    SharedTransitionLayout {
+                        AnimatedContent(
+                            targetState = isCollapsed,
+                            label = "basic_transition"
+                        ) { target ->
+                            if (!target) {
                     MovieCardDetails(
                         posterUrl = uiState.movieDetailsUi.posterPath,
                         title = uiState.movieDetailsUi.title,
-                        genres = uiState.movieDetailsUi.genres.joinToString(","),
+                        genres = "Drama, Mystery, Sci-Fi & Fantasy",
                         rating = uiState.movieDetailsUi.rating.toString(),
-                        duration = uiState.movieDetailsUi.duration.toHourMinuteFormat(),
-                        releaseDate = uiState.movieDetailsUi.releaseDate.toFormattedReleasedDate(),
-                        type = stringResource(com.moscow.cinverse.presentation.R.string.movie)
+                        duration = "2h 32m",
+                        releaseDate = uiState.movieDetailsUi.releaseDate,
+                        type = "MOVIE"
                     )
                 }
+                            }
                 item {
                     Text(
                         text = stringResource(com.moscow.cinverse.presentation.R.string.storyline),
@@ -251,6 +269,7 @@ fun MovieDetailsContent(
             }
         }
 
+        }
     }
 }
 
