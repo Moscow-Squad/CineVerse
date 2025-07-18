@@ -35,7 +35,12 @@ android {
         }
         debug {
             isDebuggable = true
-            isMinifyEnabled = false
+            isMinifyEnabled = true
+            isShrinkResources = true
+            proguardFiles(
+                getDefaultProguardFile("proguard-android.txt"),
+                "proguard-rules.pro"
+            )
             enableAndroidTestCoverage = true
             enableUnitTestCoverage = true
         }
