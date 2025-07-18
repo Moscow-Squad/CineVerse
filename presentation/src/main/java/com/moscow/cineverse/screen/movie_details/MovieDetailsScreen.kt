@@ -2,6 +2,8 @@ package com.moscow.cineverse.screen.movie_details
 
 import android.util.Log
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.padding
@@ -9,6 +11,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -72,15 +75,19 @@ fun MovieDetailsScreen(
                 is MovieDetailsScreenEvents.ShowError -> {
                     // TODO: Show error (Snackbar, Toast, etc.)
                 }
+
                 is MovieDetailsScreenEvents.NavigateToFullMovieList -> {
-                    navController.navigate(RecommendationsRoute(event.movieID , event.movieTitle))
+                    navController.navigate(RecommendationsRoute(event.movieID, event.movieTitle))
                 }
+
                 is MovieDetailsScreenEvents.NavigateToFullActors -> {
                     //
                 }
+
                 is MovieDetailsScreenEvents.NavigateToFullCast -> {
                     //
                 }
+
                 is MovieDetailsScreenEvents.NavigateToFullReviews -> {
                     navController.navigate(ReviewsRoute(event.movieID,true))
                 }
@@ -93,6 +100,7 @@ fun MovieDetailsScreen(
         modifier
     )
 }
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun MovieDetailsContent(
     uiState: MovieScreenState,
@@ -123,17 +131,21 @@ fun MovieDetailsContent(
                             label = "basic_transition"
                         ) { target ->
                             if (!target) {
-                    MovieCardDetails(
-                        posterUrl = uiState.movieDetailsUi.posterPath,
-                        title = uiState.movieDetailsUi.title,
-                        genres = "Drama, Mystery, Sci-Fi & Fantasy",
-                        rating = uiState.movieDetailsUi.rating.toString(),
-                        duration = "2h 32m",
-                        releaseDate = uiState.movieDetailsUi.releaseDate,
-                        type = "MOVIE"
-                    )
-                }
+                                MovieCardDetails(
+                                    sharedTransitionScope = this@SharedTransitionLayout,
+                                    animatedVisibilityScope = this@AnimatedContent,
+                                    posterUrl = uiState.movieDetailsUi.posterPath,
+                                    title = uiState.movieDetailsUi.title,
+                                    genres = "Drama, Mystery, Sci-Fi & Fantasy",
+                                    rating = uiState.movieDetailsUi.rating.toString(),
+                                    duration = "2h 32m",
+                                    releaseDate = uiState.movieDetailsUi.releaseDate.toFormattedReleasedDate(),
+                                    type = "MOVIE"
+                                )
                             }
+                        }
+                    }
+                }
                 item {
                     Text(
                         text = stringResource(com.moscow.cinverse.presentation.R.string.storyline),
@@ -237,7 +249,7 @@ fun MovieDetailsContent(
                     )
                 }
 
-                if(uiState.reviewsFlow != null)
+                if(!uiState.reviewsFlow.isNullOrEmpty())
                     item {
 
                     SectionTitle(
@@ -252,24 +264,23 @@ fun MovieDetailsContent(
                             top = 24.dp
                         )
                     )
-                    repeat(uiState.reviewsFlow?.size?:0){
+                    repeat(uiState.reviewsFlow?.size?:0) {
                         val userImage = uiState.reviewsFlow?.get(it)?.userImage
                         MovieReviewCard(
-                            uiState.reviewsFlow?.get(it)?.name?:"",
-                            uiState.reviewsFlow?.get(it)?.username?:"",
-                            uiState.reviewsFlow?.get(it)?.reviewContent?:"",
-                            uiState.reviewsFlow?.get(it)?.rate?:0,
-                            uiState.reviewsFlow?.get(it)?.date?:"",
-                            if(userImage.isNullOrEmpty()) null else rememberAsyncImagePainter(model =userImage),
+                            uiState.reviewsFlow?.get(it)?.name ?: "",
+                            uiState.reviewsFlow?.get(it)?.username ?: "",
+                            uiState.reviewsFlow?.get(it)?.reviewContent ?: "",
+                            uiState.reviewsFlow?.get(it)?.rate ?: 0,
+                            uiState.reviewsFlow?.get(it)?.date ?: "",
+                            if (userImage.isNullOrEmpty()) null else rememberAsyncImagePainter(model = userImage),
                             modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 12.dp)
                         )
+                    }
 
                     }
                 }
             }
-        }
 
-        }
     }
 }
 

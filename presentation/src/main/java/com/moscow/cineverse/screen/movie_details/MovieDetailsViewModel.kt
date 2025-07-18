@@ -4,8 +4,8 @@ package com.moscow.cineverse.screen.movie_details
 import android.util.Log
 import com.android.domain.model.CreditsDetails
 import com.android.domain.model.Movie
-import com.android.domain.model.MovieDetail
 import com.android.domain.model.Review
+import com.android.domain.model.details.MovieDetail
 import com.android.domain.usecase.GetCreditsUseCase
 import com.android.domain.usecase.GetMovieDetailUseCase
 import com.android.domain.usecase.GetRecommendationsUseCase

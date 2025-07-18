@@ -5,10 +5,9 @@ import com.android.domain.model.CastDetails
 import com.android.domain.model.CrewDetails
 import com.android.domain.model.Genre
 import com.android.domain.model.Movie
-import com.android.domain.model.MovieDetail
 import com.android.domain.model.Review
+import com.android.domain.model.details.MovieDetail
 import com.moscow.cineverse.screen.component.movie_poster_card.MediaItemUi
-import com.moscow.cineverse.screen.explore.ExploreScreenState.ActorUi
 import com.moscow.cineverse.screen.explore.ExploreScreenState.GenreUi
 import com.moscow.cineverse.screen.movie_details.MovieScreenState.ReviewUi
 import com.moscow.cineverse.screen.movie_details.MovieScreenState.StarCastUi

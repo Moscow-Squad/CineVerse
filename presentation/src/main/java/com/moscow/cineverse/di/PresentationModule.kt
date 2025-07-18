@@ -15,6 +15,8 @@ import com.android.domain.usecase.SuggestionUseCase
 import com.android.domain.usecase.actordetails.GetActorBestOfMovies
 import com.android.domain.usecase.actordetails.GetActorDetails
 import com.android.domain.usecase.actordetails.GetActorGallery
+import com.android.domain.usecase.seriesdetails.GetLatestSeasonsUseCase
+import com.android.domain.usecase.seriesdetails.GetListOfSeriesUseCase
 import com.android.domain.usecase.seriesdetails.GetSeriesDetailUseCase
 import org.koin.dsl.module
 
@@ -35,6 +37,8 @@ val useCases = module {
     single { GetReviewsPageUseCase(get()) }
     single { GetCreditsUseCase(get()) }
     single { GetRecommendationsUseCase(get()) }
+    single { GetLatestSeasonsUseCase(get()) }
+    single { GetListOfSeriesUseCase(get()) }
 
 }
 
