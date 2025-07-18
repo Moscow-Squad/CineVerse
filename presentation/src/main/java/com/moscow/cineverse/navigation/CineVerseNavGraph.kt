@@ -51,7 +51,7 @@ fun CineVerseNavGraph(
     CompositionLocalProvider(
         LocalNavController provides navController
     ) {
-        NavHost(navController = navController, startDestination = ExploreRoute) {
+        NavHost(navController = navController, startDestination = startDestination) {
             exploreRoute()
             CastDetailsRoute(navController)
             CastGalleryRoute(navController)
