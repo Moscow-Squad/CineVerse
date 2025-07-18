@@ -23,4 +23,6 @@
     <string name="create_a_new_account">Create a New Account</string>
     <string name="usernames_can_only_4_32_letters_and_numbers">Usernames can only 4–32 letters and numbers</string>
     <string name="password_can_only_4_100_characters">Password can only 4-100 characters</string>
+    <string name="sorry_we_cannot_check_your_information_now">Sorry, we cannot check your information now</string>
+    <string name="sorry_you_cannot_enter_as_a_guest_now_try_to_create_a_new_account">Sorry, you cannot enter as a guest now, try to create a new account</string>
 </resources>

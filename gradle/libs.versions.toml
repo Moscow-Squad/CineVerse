@@ -49,6 +49,7 @@ firebaseCrashlyticsBuildtools = "3.0.4"
 junitJupiter = "5.8.1"
 junitJunit = "4.12"
 pagingCommonAndroid = "3.3.6"
+datastore = "1.1.7"
 
 [libraries]
 androidx-animation = { module = "androidx.compose.animation:animation", version.ref = "animation" }
@@ -114,7 +115,8 @@ firebase-crashlytics-buildtools = { group = "com.google.firebase", name = "fireb
 junit-jupiter = { group = "org.junit.jupiter", name = "junit-jupiter", version.ref = "junitJupiter" }
 junit-junit = { group = "junit", name = "junit", version.ref = "junitJunit" }
 androidx-paging-common-android = { group = "androidx.paging", name = "paging-common-android", version.ref = "pagingCommonAndroid" }
-
+androidx-datastore-preferences = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastore" }
+androidx-datastore-core = { group = "androidx.datastore", name = "datastore-core", version.ref = "datastore" }
 
 [plugins]
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }

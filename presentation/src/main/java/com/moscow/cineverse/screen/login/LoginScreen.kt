@@ -1,5 +1,6 @@
 package com.moscow.cineverse.screen.login
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -12,6 +13,7 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -22,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.focus.FocusDirection
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -30,6 +33,8 @@ import com.example.design_system.R
 import com.moscow.cineverse.designSystem.component.AppTextField
 import com.moscow.cineverse.designSystem.component.MovieButton
 import com.moscow.cineverse.designSystem.theme.Theme
+import com.moscow.cineverse.navigation.routes.ExploreRoute
+import com.moscow.cineverse.navigation.routes.LoginRoute
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -38,6 +43,24 @@ fun LoginScreen(
     viewModel: LoginViewModel = koinViewModel()
 ) {
     val state by viewModel.uiState.collectAsState()
+    val context = LocalContext.current
+
+    LaunchedEffect(viewModel) {
+        viewModel.uiEvent.collect { event ->
+            when (event) {
+                is LoginScreenEvents.ShowError -> {
+                    Toast.makeText(context, event.message, Toast.LENGTH_LONG).show()
+                }
+
+                is LoginScreenEvents.NavigateToExplore -> {
+                    navController.navigate(ExploreRoute) {
+                        popUpTo(LoginRoute) { inclusive = true }
+                    }
+                }
+            }
+        }
+    }
+
     LoginScreenContent(
         state = state,
         interactionListener = viewModel
@@ -87,8 +110,11 @@ private fun LoginScreenContent(
             maxLines = 1,
             isError = state.usernameError != null,
             errorMessage = state.usernameError,
-            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next
-            , keyboardType = KeyboardType.Text, autoCorrectEnabled = true),
+            keyboardOptions = KeyboardOptions(
+                imeAction = ImeAction.Next,
+                keyboardType = KeyboardType.Text,
+                autoCorrectEnabled = true
+            ),
             keyboardActions = KeyboardActions(
                 onNext = { focusManager.moveFocus(FocusDirection.Down) }
             )
@@ -107,8 +133,11 @@ private fun LoginScreenContent(
             leadingIconTint = Theme.colors.shade.tertiary,
             isError = state.passwordError != null,
             errorMessage = state.passwordError,
-            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done
-                , keyboardType = KeyboardType.Password, autoCorrectEnabled = false),
+            keyboardOptions = KeyboardOptions(
+                imeAction = ImeAction.Done,
+                keyboardType = KeyboardType.Password,
+                autoCorrectEnabled = false
+            ),
             keyboardActions = KeyboardActions(
                 onDone = {
                     focusManager.clearFocus()
@@ -150,10 +179,6 @@ private fun LoginScreenContent(
             buttonColor = Theme.colors.button.secondary,
         )
     }
-}
-
-private fun userNameCheckFailed(){
-
 }
 
 @Preview()

@@ -19,4 +19,6 @@
     <string name="create_a_new_account">إنشاء حساب جديد</string>
     <string name="usernames_can_only_4_32_letters_and_numbers">يجب أن تتكون أسماء المستخدمين من 4 إلى 32 حرفًا ورقمًا فقط</string>
     <string name="password_can_only_4_100_characters">كلمة المرور يجب أن تتكون من 4 إلى 100 حرف فقط</string>
+    <string name="sorry_we_cannot_check_your_information_now">عذرا ، لا يمكننا التحقق من معلوماتك الان</string>
+    <string name="sorry_you_cannot_enter_as_a_guest_now_try_to_create_a_new_account">عذرا ، لا يمكنك الدخول كضيف الان ، حاول إنشاء حساب جديد</string>
 </resources>

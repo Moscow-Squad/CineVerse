@@ -17,7 +17,11 @@ val viewModels = module{
     viewModelOf(::MovieDetailsViewModel)
     viewModelOf(::SeriesDetailsViewModel)
     viewModel {
-        LoginViewModel(androidContext())
+        LoginViewModel(
+            context = androidContext(),
+            loginWithUsernameAndPasswordUseCase = get(),
+            loginAsGuestUseCase = get()
+        )
     }
     viewModel { (actorId: Int) ->
         CastDetailsViewModel(

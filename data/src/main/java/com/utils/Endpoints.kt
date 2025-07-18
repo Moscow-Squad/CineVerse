@@ -1,6 +1,16 @@
 package com.utils
 
 const val SEARCH = "search/"
+const val AUTHENTICATION = "authentication/"
+const val ACCOUNT = "account"
+const val NEW_TOKEN = "${AUTHENTICATION}token/new"
+const val LOGIN = "${AUTHENTICATION}token/validate_with_login"
+const val NEW_SESSION = "${AUTHENTICATION}session/new"
+const val USERNAME = "username="
+const val PASSWORD = "password="
+const val REQUEST_TOKEN = "request_token="
+const val NEW_GUEST_SESSION = "${AUTHENTICATION}guest_session/new"
+const val SESSION_ID = "session_id="
 const val SEARCH_MOVIE = "${SEARCH}movie"
 const val SEARCH_SERIES = "${SEARCH}tv"
 const val SEARCH_ACTOR ="${SEARCH}person"

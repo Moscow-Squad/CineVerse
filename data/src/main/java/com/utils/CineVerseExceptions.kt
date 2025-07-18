@@ -1,6 +1,7 @@
 package com.utils
 
 sealed class CineVerseExceptions(message: String? = null) : Exception(message) {
+
     class NotFoundCineVerseException : CineVerseExceptions(ErrorMessages.RESOURCE_NOT_FOUND) {
     }
 
@@ -13,6 +14,9 @@ sealed class CineVerseExceptions(message: String? = null) : Exception(message) {
         CineVerseExceptions(message)
 
     class UnauthorizedException(message: String = ErrorMessages.UNAUTHORIZED) :
+        CineVerseExceptions(message)
+
+    class AuthenticationException(message: String = ErrorMessages.UNAUTHORIZED) :
         CineVerseExceptions(message)
 
     class NotFoundException(message: String = ErrorMessages.NOT_FOUND) :
