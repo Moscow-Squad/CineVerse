@@ -254,7 +254,8 @@ fun MovieDetailsContent(
                                 title = stringResource(com.moscow.cinverse.presentation.R.string.give_it_stars),
                                 caption = stringResource(com.moscow.cinverse.presentation.R.string.let_the_world_know_how_you_felt),
                                 onClickArrow = { interactionListener.showRatingBottomSheet() },
-                                modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 24.dp)
+                                ratingStars = uiState.starsRating,
+                                modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 24.dp),
                             )
                         }
 
