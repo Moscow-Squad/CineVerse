@@ -49,10 +49,12 @@ import com.moscow.cineverse.navigation.routes.RecommendationsRoute
 import com.moscow.cineverse.navigation.routes.ReviewsRoute
 import com.moscow.cineverse.screen.component.movie_poster_card.MoviePosterCard
 import org.koin.androidx.compose.koinViewModel
+import kotlin.Unit
 
 @Composable
 fun MovieDetailsScreen(
     movieId: Int,
+    onNavigateBack: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: MovieDetailsViewModel = koinViewModel(),
     navController: NavHostController = LocalNavController.current,
@@ -70,7 +72,7 @@ fun MovieDetailsScreen(
         viewModel.uiEvent.collect { event ->
             when (event) {
                 is MovieDetailsScreenEvents.NavigateBack -> {
-                    navController.popBackStack()
+                    onNavigateBack()
                 }
 
                 is MovieDetailsScreenEvents.ShowError -> {
@@ -94,8 +96,9 @@ fun MovieDetailsScreen(
     }
     MovieDetailsContent(
         uiState,
+        onNavigateBack = onNavigateBack,
         viewModel,
-        modifier
+        modifier,
     )
 }
 
@@ -103,6 +106,7 @@ fun MovieDetailsScreen(
 @Composable
 fun MovieDetailsContent(
     uiState: MovieScreenState,
+    onNavigateBack: () -> Unit,
     interactionListener: MovieDetailsInteractionListener,
     modifier: Modifier = Modifier
 ) {
@@ -116,7 +120,7 @@ fun MovieDetailsContent(
     }
     MovieScaffold {
         Column(modifier) {
-            MovieAppBar()
+            MovieAppBar(backButtonClick = onNavigateBack, showBackButton = true)
             SharedTransitionLayout {
                 AnimatedContent(
                     targetState = isCollapsed,

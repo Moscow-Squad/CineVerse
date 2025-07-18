@@ -17,6 +17,7 @@ fun NavGraphBuilder.CastGalleryRoute() {
 
             actorId = args.castId,
             title = args.castName,
+            onNavigateBack = {navController.popBackStack()},
         )
     }
 }
