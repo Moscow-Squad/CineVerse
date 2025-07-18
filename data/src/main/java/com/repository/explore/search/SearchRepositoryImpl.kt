@@ -37,7 +37,7 @@ class SearchRepositoryImpl(
         return searchLocalDateSource
             .getMoviesBySearchTerm(searchTerm)
             .toDomain()
-            .sortMoviesByFavouriteGenre()
+            .sortByFavouriteGenres{it.genreIds}
     }
 
     @Transaction
@@ -112,7 +112,8 @@ class SearchRepositoryImpl(
                 searchRemoteDataSource.searchMovie(query)
             }
             if (result.isNotEmpty()) {
-                emit(result.map { it.toDomain() }.sortMoviesByFavouriteGenre())
+                emit(
+                    result.map { it.toDomain() }.sortByFavouriteGenres{it.genreIds})
                 insertMovie(result.map { movie -> movie.toDomain() }, query)
             } else {
                 throw CineVerseException.NotFoundCineVerseException
@@ -126,7 +127,7 @@ class SearchRepositoryImpl(
                     searchLocalDateSource
                     .getSeriesBySearchTerm(query)
                     .toDomain()
-                    .sortSeriesByFavouriteGenre()
+                    .sortByFavouriteGenres{it.genreIds}
                 )
                 return@flow
             }
@@ -134,7 +135,7 @@ class SearchRepositoryImpl(
                 searchRemoteDataSource.searchSeries(query)
             }
             if (result.isNotEmpty()) {
-                emit(result.map { it.toDomain() }.sortSeriesByFavouriteGenre())
+                emit(result.map { it.toDomain() }.sortByFavouriteGenres{it.genreIds})
                 insertSeries(result.map { series -> series.toDomain() }, query)
             } else {
                 throw CineVerseException.NotFoundCineVerseException
@@ -158,28 +159,20 @@ class SearchRepositoryImpl(
             }
         }.flowOn(ioDispatcher)
 
-    private suspend fun List<Movie>.sortMoviesByFavouriteGenre(): List<Movie>{
+    private suspend fun <T> List<T>.sortByFavouriteGenres(
+        getGenreIds: (T) -> List<Int>
+    ): List<T> {
         val favouriteGenres = searchLocalDateSource.getFavouriteGenres().toSortedGenres()
         if (favouriteGenres.isEmpty()) return this
-        return this.sortedWith(compareBy(
-            { movie ->
-                -movie.genreIds.count { genre -> genre in favouriteGenres }
-            },
-            { movie ->
-                movie.genreIds.mapNotNull { genre -> favouriteGenres.indexOf(genre).takeIf { it != -1 } }.minOrNull() ?: Int.MAX_VALUE
-            }
-        ))
-    }
 
-    private suspend fun List<Series>.sortSeriesByFavouriteGenre(): List<Series>{
-        val favouriteGenres = searchLocalDateSource.getFavouriteGenres().toSortedGenres()
-        if (favouriteGenres.isEmpty()) return this
         return this.sortedWith(compareBy(
-            { series ->
-                -series.genreIds.count { genre -> genre in favouriteGenres }
+            { item ->
+                -getGenreIds(item).count { genre -> genre in favouriteGenres }
             },
-            { series ->
-                series.genreIds.mapNotNull { genre -> favouriteGenres.indexOf(genre).takeIf { it != -1 } }.minOrNull() ?: Int.MAX_VALUE
+            { item ->
+                getGenreIds(item)
+                    .mapNotNull { genre -> favouriteGenres.indexOf(genre).takeIf { it != -1 } }
+                    .minOrNull() ?: Int.MAX_VALUE
             }
         ))
     }
