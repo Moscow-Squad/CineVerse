@@ -25,34 +25,28 @@ class LoginViewModel(
         updateState { it.copy(username = username) }
         usernameValidationJob?.cancel()
 
-        usernameValidationJob = viewModelScope.launch {
-            delay(500)
-            val trimmedUsername = username.trim()
-            val isValid =
-                trimmedUsername.length in 4..32
-            updateState {
-                it.copy(
-                    usernameError = if (!isValid && uiState.value.username.isNotEmpty())
-                        context.getString(R.string.usernames_can_only_4_32_letters_and_numbers) else null
-                )
-            }
-        }
+        usernameValidationJob = validateInputWithDelay(
+            input = username,
+            isValid = { it.length in 4..32 && it.all(Char::isLetterOrDigit) },
+            onResult = { error ->
+                updateState { it.copy(usernameError = error) }
+            },
+            errorMessage = context.getString(R.string.usernames_can_only_4_32_letters_and_numbers)
+        )
     }
 
     override fun onPasswordValueChanged(password: String) {
         updateState { it.copy(password = password) }
         passwordValidationJob?.cancel()
 
-        passwordValidationJob = viewModelScope.launch {
-            delay(500)
-            val isValid = password.length in 4..100
-            updateState {
-                it.copy(
-                    passwordError = if (!isValid && uiState.value.password.isNotEmpty())
-                        context.getString(R.string.password_can_only_4_100_characters) else null
-                )
-            }
-        }
+        passwordValidationJob = validateInputWithDelay(
+            input = password,
+            isValid = { it.length in 4..100 },
+            onResult = { error ->
+                updateState { it.copy(passwordError = error) }
+            },
+            errorMessage = context.getString(R.string.password_can_only_4_100_characters)
+        )
     }
 
     override fun onClickLogin() {
@@ -115,7 +109,23 @@ class LoginViewModel(
     }
 
     override fun onClickCreateNewAccount() {
-        TODO("Not yet implemented")
+    }
+
+    private fun validateInputWithDelay(
+        input: String,
+        delayMillis: Long = 500,
+        isValid: (String) -> Boolean,
+        onResult: (String?) -> Unit,
+        errorMessage: String
+    ): Job {
+        return viewModelScope.launch {
+            delay(delayMillis)
+            val trimmedInput = input.trim()
+            val isInputValid = isValid(trimmedInput)
+
+            val error = if (!isInputValid && trimmedInput.isNotEmpty()) errorMessage else null
+            onResult(error)
+        }
     }
 
 }

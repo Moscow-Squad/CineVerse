@@ -29,6 +29,7 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.design_system.R
 import com.moscow.cineverse.designSystem.component.AppTextField
 import com.moscow.cineverse.designSystem.component.MovieButton
@@ -53,8 +54,13 @@ fun LoginScreen(
                 }
 
                 is LoginScreenEvents.NavigateToExplore -> {
-                    navController.navigate(ExploreRoute) {
-                        popUpTo(LoginRoute) { inclusive = true }
+                    val canGoBack = navController.previousBackStackEntry != null
+                    if (canGoBack) {
+                        navController.popBackStack()
+                    } else {
+                        navController.navigate(ExploreRoute) {
+                            popUpTo(LoginRoute) { inclusive = true }
+                        }
                     }
                 }
             }
@@ -184,5 +190,6 @@ private fun LoginScreenContent(
 @Preview()
 @Composable()
 fun LoginScreenPreview() {
-//    LoginScreen()
+    val nav = rememberNavController()
+    LoginScreen(nav)
 }
