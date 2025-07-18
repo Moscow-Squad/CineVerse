@@ -6,6 +6,8 @@ import com.moscow.cineverse.screen.movie_details.MovieDetailsViewModel
 import com.moscow.cineverse.screen.series_details.SeriesDetailsViewModel
 import com.moscow.cineverse.screen.castDetails.best0fmovies.ShowAllActorMoviesInteractionViewModel
 import com.moscow.cineverse.screen.castDetails.gallery.ActorGalleryViewModel
+import com.moscow.cineverse.screen.movie_details.recommendations.RecommendationsMoviesViewModel
+import com.moscow.cineverse.screen.reviews.ReviewsViewModel
 import org.koin.core.module.dsl.viewModel
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
@@ -14,6 +16,8 @@ val viewModels = module{
     viewModelOf(::ExploreViewModel)
     viewModelOf(::MovieDetailsViewModel)
     viewModelOf(::SeriesDetailsViewModel)
+    viewModelOf(::ReviewsViewModel)
+    viewModelOf(::RecommendationsMoviesViewModel)
     viewModel { (actorId: Int) ->
         CastDetailsViewModel(
             getActorBestOfMovies = get(),

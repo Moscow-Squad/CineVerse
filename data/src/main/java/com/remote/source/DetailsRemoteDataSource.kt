@@ -6,6 +6,8 @@ import com.remote.dto.details.SeriesDetailDto
 import com.remote.dto.review.ReviewDto
 import com.utils.LATEST
 import com.utils.LISTS
+import com.remote.dto.CreditsDetailsDto
+import com.utils.CREDITS
 import com.utils.MOVIE
 import com.utils.REVIEWS
 import com.utils.SERIES
@@ -27,6 +29,13 @@ class DetailsRemoteDataSource(
             method = HttpMethod.Get,
             path = SERIES + id
         )
+
+    suspend fun getCredits(movieID:Int): CreditsDetailsDto =
+        client.performCall<Unit, CreditsDetailsDto>(
+            method = HttpMethod.Get,
+            path = MOVIE + movieID + CREDITS
+        )
+
 
     suspend fun getReviews(id: Int, page: Int, isMovie: Boolean): ReviewDto =
         client.performCall<Unit, ReviewDto>(
@@ -53,4 +62,5 @@ class DetailsRemoteDataSource(
                 }
             }
         )
+
 }
