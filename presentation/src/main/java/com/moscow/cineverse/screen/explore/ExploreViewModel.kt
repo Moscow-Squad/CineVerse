@@ -6,6 +6,8 @@ import com.android.domain.model.Actor
 import com.android.domain.model.Genre
 import com.android.domain.model.Movie
 import com.android.domain.model.Series
+import com.android.domain.usecase.CacheSearchQueryUseCase
+import com.android.domain.usecase.ClearSearchHistoryUseCase
 import com.android.domain.usecase.GenreUseCase
 import com.android.domain.usecase.GetLocalSuggestions
 import com.android.domain.usecase.GetMovieByGenreIdUseCase
@@ -34,6 +36,8 @@ class ExploreViewModel(
     val genreUseCase: GenreUseCase,
     private val getMovieByGenreIdUseCase: GetMovieByGenreIdUseCase,
     private val getSeriesByGenreIdUseCase: GetSeriesByGenreIdUseCase,
+    private val cacheSearchQueryUseCase: CacheSearchQueryUseCase,
+    private val clearSearchHistoryUseCase: ClearSearchHistoryUseCase,
 ) : BaseViewModel<ExploreScreenState, ExploreScreenEvents>(ExploreScreenState()),
     ExploreInteractionListener {
 
@@ -114,7 +118,6 @@ class ExploreViewModel(
 
     private fun onActorSearchSuccess(actors: List<Actor>) {
         updateState { state ->
-            Log.e("jxjxjxxkx", "onActorSearchSuccess: $actors")
             state.copy(
                 searchResult = state.searchResult.plus(ExploreTabsPages.ACTORS.toTitle() to actors.map { it.toUi() }),
                 isLoading = false
@@ -124,12 +127,15 @@ class ExploreViewModel(
     }
 
     private fun onMovieSearchFailed(e: Throwable) {
+        updateState { it.copy(isLoading = false, error = e.message) }
     }
 
     private fun onSeriesSearchFailed(e: Throwable) {
+        updateState { it.copy(isLoading = false, error = e.message) }
     }
 
     private fun onActorsSearchFailed(e: Throwable) {
+        updateState { it.copy(isLoading = false, error = e.message) }
     }
 
     private fun onLoading() {
@@ -168,6 +174,7 @@ class ExploreViewModel(
         viewModelScope.launch {
             updateState { it.copy(remoteSuggestions = suggestion) }
         }
+        updateDisplayedSuggestions()
     }
 
     override fun onSearchBarClickedOn() {
@@ -187,6 +194,7 @@ class ExploreViewModel(
 
     private fun onGetHistoryDataSuccess(suggestions: List<String>) {
         val suggestions = suggestions.map { SuggestItemUiState(it, isHistory = true) }
+        Log.d("TAG", "onGetHistoryDataSuccess: $suggestions")
         updateState { it.copy(localSuggestions = suggestions, showHistory = true) }
     }
 
@@ -220,8 +228,11 @@ class ExploreViewModel(
             it.copy(
                 searchKeyWord = text,
                 showSuggestions = true,
+                showHistory = text.isBlank(),
+                remoteSuggestions = emptyList()
             )
         }
+        updateDisplayedSuggestions()
     }
 
     override fun onSearchWordDetected(searchKeyWord: List<String>) {
@@ -233,42 +244,81 @@ class ExploreViewModel(
         }
     }
 
-    override fun SuggestionList(): List<SuggestItemUiState> {
-        return (uiState.value.localSuggestions.filter {
-            it.title.contains(
-                uiState.value.searchKeyWord,
-                ignoreCase = true
+    private fun updateDisplayedSuggestions() {
+        updateState { state ->
+            val filteredLocalSuggestions = state.localSuggestions
+                .filter { it.title.contains(state.searchKeyWord, ignoreCase = true) }
+
+            val mappedRemoteSuggestions = state.remoteSuggestions
+                .map { SuggestItemUiState(it, isHistory = false) }
+
+            state.copy(
+                displayedSuggestions = filteredLocalSuggestions + mappedRemoteSuggestions
             )
-        } + uiState.value.remoteSuggestions.filter { remoteSuggestions -> remoteSuggestions !in uiState.value.localSuggestions.map { it.title } }
-            .map { SuggestItemUiState(it, isHistory = false) })
+        }
     }
 
     override fun onClickSuggestion(suggestion: SuggestItemUiState) {
         updateState {
             it.copy(
                 searchKeyWord = suggestion.title,
+                displayedSuggestions = emptyList(),
             )
         }
-        if (suggestion.isHistory) {
-            searchMovie(isHistory = true)
-            searchSeries(isHistory = true)
-            searchActor(isHistory = true)
-        } else {
-            searchMovie()
-            searchSeries()
-            searchActor()
+        viewModelScope.launch {
+            suggestion.isHistory.let {
+                if (!it) {
+                    cacheSearchQueryUseCase.cacheSearchQuery(suggestion.title)
+                }
+                searchMovie(it)
+                searchSeries(it)
+                searchActor(it)
+            }
         }
         updateState {
             it.copy(
                 showHistory = false,
                 showSuggestions = false,
-                remoteSuggestions = emptyList()
             )
         }
     }
 
+    override fun onSearchQuery() {
+        updateState {
+            it.copy(
+                showHistory = false,
+                showSuggestions = false,
+                displayedSuggestions = emptyList(),
+            )
+        }
+        launchAndForget(
+            action = {
+                uiState.value.localSuggestions.any { it.title == uiState.value.searchKeyWord }
+                    .let { isQueryInHistory ->
+                        if (!isQueryInHistory)
+                            cacheSearchQueryUseCase.cacheSearchQuery(uiState.value.searchKeyWord)
+                        searchMovie(isQueryInHistory)
+                        searchSeries(isQueryInHistory)
+                        searchActor(isQueryInHistory)
+                    }
+            },
+            onError = ::onSearchQueryError
+        )
+    }
+
+    private fun onSearchQueryError(e: Throwable) {
+        updateState { it.copy(error = e.message) }
+    }
+
     override fun clearAllLocalSuggestions() {
-        Log.d("dddddddddddddddd", "Clear allllllllllllllllll")
+        launchAndForget(
+            action = clearSearchHistoryUseCase::clearSearchHistory,
+            onError = ::onClearSearchHistoryError
+        )
+    }
+
+    private fun onClearSearchHistoryError(e: Throwable) {
+        updateState { it.copy(showHistory = false, error = e.message) }
     }
 
     override fun getMoviesGenres() {
@@ -484,7 +534,7 @@ class ExploreViewModel(
             }
             updateState {
                 it.copy(
-                    shouldShowGenres = true,
+                    shouldShowGenres = it.selectedTab != ExploreTabsPages.ACTORS,
                     contentList = if (it.selectedTab == ExploreTabsPages.MOVIES)
                         it.movies
                     else

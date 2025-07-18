@@ -49,13 +49,14 @@ fun ExploreTabs(
             TabRowDefaults.SecondaryIndicator(
                 Modifier
                     .tabIndicatorOffset(tabPositions[tabsToShow.indexOf(selectedTab)])
+                    .padding(horizontal = 16.dp)
                     .clip(
                         RoundedCornerShape(
                             topStart = Theme.radius.full,
                             topEnd = Theme.radius.full
                         )
                     )
-                    .padding(horizontal = 16.dp),
+                ,
                 color = selectedContentColor,
             )
         },
