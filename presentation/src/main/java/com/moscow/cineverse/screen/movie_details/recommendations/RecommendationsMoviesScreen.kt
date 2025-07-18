@@ -29,15 +29,16 @@ import com.moscow.cineverse.screen.component.movie_poster_card.MoviePosterCard
 import org.koin.androidx.compose.koinViewModel
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.res.stringResource
+import com.moscow.cineverse.navigation.LocalNavController
 import com.moscow.cinverse.presentation.R
 
 
 @Composable
 fun RecommendationMoviesScreen(
-    navController: NavHostController,
     movieId: Int,
     title: String,
     modifier: Modifier = Modifier,
+    navController: NavHostController = LocalNavController.current,
     viewModel: RecommendationsMoviesViewModel = koinViewModel(),
 ) {
     val recommendations = viewModel.getRecommendations(movieId).collectAsLazyPagingItems()

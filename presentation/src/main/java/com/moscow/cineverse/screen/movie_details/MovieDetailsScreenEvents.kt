@@ -11,7 +11,6 @@ sealed class MovieDetailsScreenEvents {
     data class NavigateToFullMovieList(val movieID:Int, val movieTitle:String) : MovieDetailsScreenEvents()
     data class NavigateToFullReviews(val movieID: Int) : MovieDetailsScreenEvents()
     data object NavigateToFullActors: MovieDetailsScreenEvents()
-    data object NavigateToFullCast : MovieDetailsScreenEvents()
 
 }
 
