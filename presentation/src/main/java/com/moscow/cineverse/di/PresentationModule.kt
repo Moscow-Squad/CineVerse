@@ -13,6 +13,8 @@ import com.android.domain.usecase.GetSeriesByGenreIdUseCase
 import com.android.domain.usecase.GetSeriesDetailUseCase
 import com.android.domain.usecase.GetSeriesUseCase
 import com.android.domain.usecase.GetUserCollectionsUseCase
+import com.android.domain.usecase.RateMovieUseCase
+import com.android.domain.usecase.RateSeriesUseCase
 import com.android.domain.usecase.SearchUseCase
 import com.android.domain.usecase.SuggestionUseCase
 import com.android.domain.usecase.actordetails.GetActorBestOfMovies
@@ -39,6 +41,8 @@ val useCases = module {
     single { AddNewCollectionUseCase(get()) }
     single { AddMediaItemToCollectionUseCase(get()) }
     single { GetCollectionDetailsUseCase(get()) }
+    single { RateMovieUseCase(get()) }
+    single { RateSeriesUseCase(get()) }
 }
 
 val presentationModule = viewModels + useCases

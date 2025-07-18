@@ -6,7 +6,15 @@ import com.moscow.cineverse.screen.collections.CollectionsBottomSheetScreen
 import kotlinx.serialization.Serializable
 
 @Serializable
-data object CollectionsBottomSheetRoute
+data class CollectionsBottomSheetRoute(
+    val mediaItemId: Int,
+    val mediaType: String = "movie"
+) {
+    companion object {
+        const val MEDIA_ITEM_ID = "mediaItemId"
+        const val MEDIA_TYPE = "mediaType"
+    }
+}
 
 fun NavGraphBuilder.collectionsBottomSheetRoute(
     onAddNewCollectionClick: () -> Unit,

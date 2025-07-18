@@ -15,7 +15,7 @@ fun NavGraphBuilder.MovieDetailsRoute(navController: NavHostController) {
         val args = it.toRoute<MovieDetailsRoute>()
         MovieDetailsScreen(
             onAddToCollectionClick = { id ->
-                navController.navigate(CollectionsBottomSheetRoute)
+                navController.navigate(CollectionsBottomSheetRoute(id))
             }
         )
     }
