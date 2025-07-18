@@ -18,6 +18,9 @@ import com.remote.dto.GenreDto
 import com.remote.dto.MediaItemDto
 import com.remote.dto.MovieDto
 import com.remote.dto.SeriesDto
+import com.remote.dto.MultiSearchDto
+import com.remote.dto.details.ActorDetailsDto
+import com.remote.dto.details.SeriesDto
 import com.utils.IMAGES_URL
 import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDate
@@ -58,7 +61,7 @@ fun MovieDto.toDomain() =
         id = id ?: 0,
         name = title.orEmpty(),
         video = video == true,
-        poster = "",
+        poster = posterPath.orEmpty(),
     )
 fun SeriesDto.toDomain() =
     Series(
@@ -84,8 +87,8 @@ fun ActorDto.toDomain() =
     Actor(
         id = id ?: 0,
         name = name.orEmpty(),
-        gender = if (gender == 0) Gender.MALE else Gender.FEMALE,
-        profileImg = profilePath.orEmpty(),
+        gender = if (gender == Gender.MALE.value) Gender.MALE else Gender.FEMALE,
+        profileImg = IMAGES_URL + profilePath.orEmpty(),
     )
 
 fun GenreDto.toDomain() =
@@ -110,7 +113,7 @@ fun ActorDetailsDto.toDomain(youtubeLink: String, facebookLink: String, instagra
 fun ActorImagesDto.toDomain() =
     IMAGES_URL + (filePath ?: throw CineVerseException.MappingToDomainException)
 
-fun ActorBestOfMoviesAsCrewDto.toDomain() = 
+fun ActorBestOfMoviesAsCrewDto.toDomain() =
     Movie(
         id = id ?: throw CineVerseException.MappingToDomainException,
         name = title ?: throw CineVerseException.MappingToDomainException,

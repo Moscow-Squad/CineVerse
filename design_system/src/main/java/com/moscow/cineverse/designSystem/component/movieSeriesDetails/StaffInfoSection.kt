@@ -41,12 +41,7 @@ fun StaffInfoSection(
                 style = Theme.textStyle.title.small,
                 color = Theme.colors.shade.primary,
             )
-            Text(
-                text = stringResource(R.string.show_more),
-                style = Theme.textStyle.body.medium.medium,
-                color = Theme.colors.brand.primary,
-                modifier = Modifier.padding(start = 8.dp)
-            )
+
         }
 
         Column(

@@ -1,10 +1,10 @@
 package com.remote.source
 
 import com.remote.dto.ActorBestOfMoviesDto
-import com.remote.dto.ActorDetailsDto
 import com.remote.dto.ActorImagesDto
 import com.remote.dto.ActorImagesResponse
 import com.remote.dto.ActorSocialMediaDto
+import com.remote.dto.details.ActorDetailsDto
 import com.utils.ACTOR
 import com.utils.performCall
 import io.ktor.client.HttpClient

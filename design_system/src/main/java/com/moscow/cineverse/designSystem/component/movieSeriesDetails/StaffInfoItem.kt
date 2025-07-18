@@ -44,7 +44,8 @@ fun StaffInfoItem(
             Text(
                 text = name,
                 style = Theme.textStyle.body.medium.medium,
-                color = Theme.colors.shade.primary
+                color = Theme.colors.shade.primary,
+                modifier = Modifier.weight(1f)
             )
         }
         if (isDividerVisible){

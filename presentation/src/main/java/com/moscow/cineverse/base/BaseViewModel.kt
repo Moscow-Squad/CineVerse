@@ -2,6 +2,7 @@ package com.moscow.cineverse.base
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -38,13 +39,21 @@ abstract class BaseViewModel<T, E>(
         onStart: () -> Unit = {},
         onFinally: () -> Unit = {}
     ) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             onStart()
             runCatching { action() }
                 .onSuccess(onSuccess)
                 .onFailure(onError)
             onFinally()
         }
+    }
+
+    protected fun launchAndForget(
+        action: suspend () -> Unit,
+        onError: (Throwable) -> Unit,
+    ) = viewModelScope.launch(Dispatchers.IO) {
+        runCatching { action() }
+            .onFailure(onError)
     }
 
     protected fun <R> launchWithFlow(
@@ -54,7 +63,7 @@ abstract class BaseViewModel<T, E>(
         onStart: () -> Unit = {},
         onFinally: () -> Unit = {}
     ) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             onStart()
             try {
                 flowAction().collect { result ->

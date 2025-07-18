@@ -1,10 +1,10 @@
 package com.remote.source
 
 import com.remote.dto.ActorDto
-import com.remote.dto.MediaItemDto
 import com.remote.dto.MovieDto
-import com.remote.dto.SeriesDto
+import com.remote.dto.MultiSearchDto
 import com.remote.dto.SuggestionDto
+import com.remote.dto.details.SeriesDto
 import com.utils.ApiResponse
 import com.utils.INCLUDE_ADULT
 import com.utils.PAGE
@@ -22,8 +22,8 @@ import io.ktor.http.HttpMethod
 class SearchRemoteDataSource(
     private val client: HttpClient
 ) {
-    suspend fun searchMulti(query: String): List<MediaItemDto> =
-        client.performCall<Unit, ApiResponse<MediaItemDto>>(
+    suspend fun searchMulti(query: String): List<MultiSearchDto> =
+        client.performCall<Unit, ApiResponse<MultiSearchDto>>(
             method = HttpMethod.Get,
             path = SEARCH_MULTI,
             requestBuilder = {

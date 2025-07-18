@@ -8,10 +8,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
 @Composable
@@ -40,7 +38,7 @@ fun <T> MovieListSection(
             horizontalArrangement = Arrangement.spacedBy(12.dp),
             contentPadding = PaddingValues(horizontal = paddingHorizontal.dp)
         ) {
-            itemsIndexed(movies) { index, movie ->
+            itemsIndexed(movies) { _, movie ->
                 movieCardContent(
                     movie,
                     Modifier.width(136.dp),

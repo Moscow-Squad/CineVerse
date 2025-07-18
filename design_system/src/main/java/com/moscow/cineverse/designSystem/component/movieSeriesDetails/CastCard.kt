@@ -25,9 +25,12 @@ import com.moscow.cineverse.designSystem.theme.CineVerseTheme
 import com.moscow.cineverse.designSystem.theme.Theme
 
 @Composable
-fun CastCard(
+fun <T> CastCard(
     modifier: Modifier = Modifier,
-    castMember: CastMember
+    castMember: T,
+    getOriginalName:(T) -> String,
+    getCharacterName:(T) -> String,
+    getProfileImage:(T) -> String
 ) {
     val isPreview = LocalInspectionMode.current
     Row(
@@ -53,7 +56,7 @@ fun CastCard(
             )
         } else {
             SafeImageViewer(
-                model = castMember.imageUrl,
+                model = getProfileImage(castMember),
                 contentDescription = stringResource(R.string.cast_member_image),
                 placeholder = painterResource(R.drawable.due_tone_profile),
                 fallback = painterResource(R.drawable.due_tone_profile),
@@ -74,17 +77,17 @@ fun CastCard(
             verticalArrangement = Arrangement.spacedBy(4.dp)
         ) {
             Text(
-                text = castMember.realName,
+                text = getOriginalName(castMember),
                 style = Theme.textStyle.body.medium.medium,
                 color = Theme.colors.shade.primary,
-                maxLines = 2
+                maxLines = 1
             )
 
             Text(
-                text = castMember.nameInMovie,
+                text = getCharacterName(castMember),
                 style = Theme.textStyle.body.small.regular,
                 color = Theme.colors.shade.secondary,
-                maxLines = 2
+                maxLines = 1
             )
         }
 
@@ -101,7 +104,7 @@ private fun CastCardPreview() {
                 .padding(10.dp),
             verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
-            CastCard(
+            /*CastCard(
                 castMember = CastMember(
                     realName = "Tom Cruise",
                     nameInMovie = "Ethan Hunt",
@@ -114,7 +117,7 @@ private fun CastCardPreview() {
                     nameInMovie = "Ethan Hunt",
                     imageUrl = null
                 )
-            )
+            )*/
         }
     }
 }
