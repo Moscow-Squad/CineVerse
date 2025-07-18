@@ -39,6 +39,7 @@ fun ShowAllActorMoviesScreen(
     navController: NavHostController,
     actorId: Int,
     title: String,
+    onNavigateBack : () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val viewModel: ShowAllActorMoviesInteractionViewModel = koinViewModel(parameters = { parametersOf(actorId, title) })
@@ -48,7 +49,8 @@ fun ShowAllActorMoviesScreen(
         uiState = uiState,
         interactionListener = viewModel,
         modifier = modifier,
-        title = title
+        title = title,
+        onNavigateBack = onNavigateBack,
     )
 }
 
@@ -57,8 +59,9 @@ fun ShowAllActorMoviesScreen(
 fun ShowAllActorMoviesContent(
     uiState: ShowAllActorMoviesState,
     interactionListener: ShowAllActorMoviesInteractionListener,
+    title: String,
+    onNavigateBack : () -> Unit,
     modifier: Modifier = Modifier,
-    title: String
 ) {
     MovieScaffold {
         Box(modifier = modifier.fillMaxSize()) {
@@ -100,7 +103,7 @@ fun ShowAllActorMoviesContent(
                     Column(modifier = Modifier.fillMaxSize()) {
                         MovieAppBar(
                             title = title,
-                            backButtonClick = interactionListener::backButtonClick,
+                            backButtonClick = onNavigateBack,
                         )
                         LazyVerticalGrid(
                             columns = if (uiState.viewMode == ViewMode.GRID)
@@ -171,6 +174,7 @@ fun ShowAllActorMoviesPreview(modifier: Modifier = Modifier) {
             override fun backButtonClick() {}
         },
         modifier = modifier,
-        "sad"
+        title = "sad",
+        onNavigateBack = { },
     )
 }

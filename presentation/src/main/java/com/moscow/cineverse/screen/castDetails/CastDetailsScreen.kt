@@ -82,7 +82,7 @@ fun CastDetailsScreen(
         CastDetailsContent(
             uiState = uiState,
             interactionListener = viewModel,
-            onBackPressed = { viewModel.onBackPressed() },
+            onBackPressed = { onNavigateBack() },
             modifier = Modifier.fillMaxSize()
         )
     }
