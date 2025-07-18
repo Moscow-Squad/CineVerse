@@ -28,6 +28,7 @@ import com.moscow.cineverse.designSystem.component.MovieText
 import com.moscow.cineverse.designSystem.component.ViewMode
 import com.moscow.cineverse.designSystem.component.ViewModeToggle
 import com.moscow.cineverse.designSystem.theme.Theme
+import com.moscow.cineverse.navigation.LocalNavController
 import com.moscow.cineverse.screen.component.movie_poster_card.MediaItemUi
 import com.moscow.cineverse.screen.component.movie_poster_card.MoviePosterCard
 import com.moscow.cinverse.presentation.R
@@ -36,11 +37,12 @@ import org.koin.core.parameter.parametersOf
 
 @Composable
 fun ShowAllActorMoviesScreen(
-    navController: NavHostController,
     actorId: Int,
     title: String,
     modifier: Modifier = Modifier,
-) {
+    navController: NavHostController = LocalNavController.current,
+
+    ) {
     val viewModel: ShowAllActorMoviesInteractionViewModel = koinViewModel(parameters = { parametersOf(actorId, title) })
     val uiState by viewModel.uiState.collectAsState()
 

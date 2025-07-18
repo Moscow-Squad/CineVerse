@@ -33,6 +33,7 @@ import com.moscow.cineverse.designSystem.component.ViewMode
 import com.moscow.cineverse.designSystem.component.cast_details.GallerySection
 import com.moscow.cineverse.designSystem.component.cast_details.MainDetails
 import com.moscow.cineverse.designSystem.theme.Theme
+import com.moscow.cineverse.navigation.LocalNavController
 import com.moscow.cineverse.navigation.routes.CastBestOfMovieRoute
 import com.moscow.cineverse.navigation.routes.CastGalleryRoute
 import com.moscow.cineverse.screen.component.movie_poster_card.MoviePosterCard
@@ -42,10 +43,10 @@ import com.moscow.cinverse.presentation.R as PresentationR
 
 @Composable
 fun CastDetailsScreen(
-    navController: NavHostController,
     actorId: Int,
     onNavigateBack: () -> Unit,
     modifier: Modifier = Modifier,
+    navController: NavHostController = LocalNavController.current,
     viewModel: CastDetailsViewModel = koinViewModel(parameters = { parametersOf(actorId) })
 ) {
     val uiState by viewModel.uiState.collectAsState()

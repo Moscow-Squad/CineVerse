@@ -10,11 +10,11 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class CastBestOfMovieRoute(val castId: Int, val castName: String)
 
-fun NavGraphBuilder.CastBestOfMovieRoute(navController: NavHostController) {
+fun NavGraphBuilder.CastBestOfMovieRoute() {
     composable<CastBestOfMovieRoute>{
         val args = it.toRoute<CastBestOfMovieRoute>()
         ShowAllActorMoviesScreen(
-            navController = navController,
+
             actorId = args.castId,
             title = args.castName,
         )
