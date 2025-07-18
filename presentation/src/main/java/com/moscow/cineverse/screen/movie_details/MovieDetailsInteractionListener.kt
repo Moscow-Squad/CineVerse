@@ -7,5 +7,5 @@ interface MovieDetailsInteractionListener {
     fun onShowMoreCast()
     fun onShowMoreRecommendations( movieId:Int,  movieTitle:String)
     fun onShowMoreReviews(movieId:Int)
-
+    fun onActorClicked(actorId: Int)
 }

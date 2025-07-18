@@ -5,6 +5,7 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -45,9 +46,11 @@ import com.moscow.cineverse.designSystem.component.movieSeriesDetails.StaffInfoS
 import com.moscow.cineverse.designSystem.component.movieSeriesDetails.StarCastSection
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.navigation.LocalNavController
+import com.moscow.cineverse.navigation.routes.CastDetailsRoute
 import com.moscow.cineverse.navigation.routes.RecommendationsRoute
 import com.moscow.cineverse.navigation.routes.ReviewsRoute
 import com.moscow.cineverse.screen.component.movie_poster_card.MoviePosterCard
+import com.moscow.cineverse.screen.movie_details.MovieScreenState.StarCastUi
 import org.koin.androidx.compose.koinViewModel
 import kotlin.Unit
 
@@ -88,7 +91,10 @@ fun MovieDetailsScreen(
 
                 is MovieDetailsScreenEvents.NavigateToFullReviews -> {
                     navController.navigate(ReviewsRoute(event.movieID, true))
+                }
 
+                is MovieDetailsScreenEvents.NavigateCastDetails -> {
+                    navController.navigate(CastDetailsRoute(event.castId))
                 }
             }
         }
@@ -198,16 +204,15 @@ fun MovieDetailsContent(
                                         .padding(top = 24.dp, start = 16.dp, end = 16.dp),
                                     onSeeMoreClick = {},
                                     cast = uiState.starCast?.take(6) ?: emptyList(),
-                                    castContent = { actor ->
+                                    castContent = { actor->
                                         CastCard(
+                                            modifier = Modifier.clickable{interactionListener.onActorClicked(actor.id)},
                                             castMember = actor,
                                             getOriginalName = { it.originalName },
                                             getCharacterName = { it.characterName },
                                             getProfileImage = { it.profileImage }
                                         )
                                     }
-
-
                                 )
                             }
                         }

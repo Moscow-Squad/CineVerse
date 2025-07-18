@@ -135,5 +135,9 @@ class MovieDetailsViewModel(
             sendEvent(MovieDetailsScreenEvents.NavigateToFullReviews(movieId))
         }
 
+    override fun onActorClicked(actorId: Int) {
+        sendEvent(MovieDetailsScreenEvents.NavigateCastDetails(actorId))
+    }
+
 
 }
