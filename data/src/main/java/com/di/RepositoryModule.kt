@@ -34,7 +34,8 @@ val repositoryModule = module {
     }
     single<DetailsRepository> {
         DetailsRepositoryImpl(
-            get()
+            detailsRemoteDataSource = get(),
+            ioDispatcher = get(qualifier = named("IO")),
         )
     }
     single<ActorDetailsRepository> {

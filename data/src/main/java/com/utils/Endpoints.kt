@@ -19,4 +19,7 @@ const val POPULAR = "popular"
 const val REVIEWS = "/reviews"
 
 const val ACCOUNT = "account/"
-const val LIST = "/lists"
+const val LISTS = "/lists"
+const val LIST = "list"
+const val ADD_ITEM = "add_item"
+const val RATING = "/rating"

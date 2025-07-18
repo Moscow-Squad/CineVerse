@@ -1,6 +1,9 @@
 package com.moscow.cineverse.di
 
+import com.android.domain.usecase.AddMediaItemToCollectionUseCase
+import com.android.domain.usecase.AddNewCollectionUseCase
 import com.android.domain.usecase.GenreUseCase
+import com.android.domain.usecase.GetCollectionDetailsUseCase
 import com.android.domain.usecase.GetLocalSuggestions
 import com.android.domain.usecase.GetMovieByGenreIdUseCase
 import com.android.domain.usecase.GetMovieDetailUseCase
@@ -10,6 +13,8 @@ import com.android.domain.usecase.GetSeriesByGenreIdUseCase
 import com.android.domain.usecase.GetSeriesDetailUseCase
 import com.android.domain.usecase.GetSeriesUseCase
 import com.android.domain.usecase.GetUserCollectionsUseCase
+import com.android.domain.usecase.RateMovieUseCase
+import com.android.domain.usecase.RateSeriesUseCase
 import com.android.domain.usecase.SearchUseCase
 import com.android.domain.usecase.SuggestionUseCase
 import com.android.domain.usecase.actordetails.GetActorBestOfMovies
@@ -33,6 +38,11 @@ val useCases = module {
     single { GetSeriesDetailUseCase(get()) }
     single { GetReviewsPageUseCase(get()) }
     single { GetUserCollectionsUseCase(get()) }
+    single { AddNewCollectionUseCase(get()) }
+    single { AddMediaItemToCollectionUseCase(get()) }
+    single { GetCollectionDetailsUseCase(get()) }
+    single { RateMovieUseCase(get()) }
+    single { RateSeriesUseCase(get()) }
 }
 
 val presentationModule = viewModels + useCases

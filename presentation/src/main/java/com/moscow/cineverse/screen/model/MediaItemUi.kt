@@ -1,4 +1,4 @@
-package com.moscow.cineverse.screen.component.movie_poster_card
+package com.moscow.cineverse.screen.model
 
 data class MediaItemUi(
     val id: Int,

@@ -6,8 +6,8 @@ import androidx.work.WorkManager
 import androidx.work.workDataOf
 import com.android.domain.exception.CineVerseException
 import com.android.domain.model.Actor
+import com.android.domain.model.MediaItem
 import com.android.domain.model.Movie
-import com.android.domain.model.MultiSearch
 import com.android.domain.model.Series
 import com.android.domain.repository.SearchRepository
 import com.local.DeleteQueryWorker
@@ -86,7 +86,7 @@ class SearchRepositoryImpl(
             searchRemoteDataSource.getSuggestions(keyWord, page)
         }.map { it.toModel() }
 
-    override suspend fun searchMulti(query: String): Flow<List<MultiSearch>> =
+    override suspend fun searchMulti(query: String): Flow<List<MediaItem>> =
         flow {
             val result = tryToExecute {
                 searchRemoteDataSource.searchMulti(query)

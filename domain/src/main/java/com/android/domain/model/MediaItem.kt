@@ -1,6 +1,6 @@
 package com.android.domain.model
 
-data class MultiSearch(
+data class MediaItem(
     val adult: Boolean,
     val backdropPath: String,
     val firstAirDate: String,

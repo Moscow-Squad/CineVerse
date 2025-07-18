@@ -1,11 +1,12 @@
 package com.moscow.cineverse.di
 
 import com.moscow.cineverse.screen.castDetails.CastDetailsViewModel
+import com.moscow.cineverse.screen.castDetails.best0fmovies.ShowAllActorMoviesInteractionViewModel
+import com.moscow.cineverse.screen.castDetails.gallery.ActorGalleryViewModel
+import com.moscow.cineverse.screen.collections.CollectionsBottomSheetViewModel
 import com.moscow.cineverse.screen.explore.ExploreViewModel
 import com.moscow.cineverse.screen.movie_details.MovieDetailsViewModel
 import com.moscow.cineverse.screen.series_details.SeriesDetailsViewModel
-import com.moscow.cineverse.screen.castDetails.best0fmovies.ShowAllActorMoviesInteractionViewModel
-import com.moscow.cineverse.screen.castDetails.gallery.ActorGalleryViewModel
 import org.koin.core.module.dsl.viewModel
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
@@ -14,6 +15,7 @@ val viewModels = module{
     viewModelOf(::ExploreViewModel)
     viewModelOf(::MovieDetailsViewModel)
     viewModelOf(::SeriesDetailsViewModel)
+    viewModelOf(::CollectionsBottomSheetViewModel)
     viewModel { (actorId: Int) ->
         CastDetailsViewModel(
             getActorBestOfMovies = get(),

@@ -37,19 +37,22 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun MovieDetailsScreen(
     modifier: Modifier = Modifier,
-    viewModel: MovieDetailsViewModel = koinViewModel()
+    viewModel: MovieDetailsViewModel = koinViewModel(),
+    onAddToCollectionClick: (id: Int) -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsState()
     MovieDetailsContent(
-
         uiState,
-        modifier
+        modifier,
+        onAddToCollectionClick = onAddToCollectionClick
     )
 }
+
 @Composable
 fun MovieDetailsContent(
     uiState: MovieScreenState,
-    modifier: Modifier= Modifier
+    modifier: Modifier = Modifier,
+    onAddToCollectionClick: (id: Int) -> Unit
 ) {
     val textColor = Theme.colors.shade.secondary
     when {
@@ -69,7 +72,8 @@ fun MovieDetailsContent(
                         rating = uiState.movieDetailsUi.rating.toString(),
                         duration = "2h 32m",
                         releaseDate = uiState.movieDetailsUi.releaseDate,
-                        type = "MOVIE"
+                        type = "MOVIE",
+                        onSaveClick = { onAddToCollectionClick(uiState.movieDetailsUi.id) }
                     )
                 }
                 item {
@@ -210,13 +214,13 @@ fun MovieDetailsContent(
                             top = 24.dp
                         )
                     )
-                    repeat(uiState.reviewsFlow?.size?:0){
+                    repeat(uiState.reviewsFlow?.size ?: 0) {
                         MovieReviewCard(
-                            uiState.reviewsFlow?.get(it)?.name?:"",
-                            uiState.reviewsFlow?.get(it)?.username?:"",
-                            uiState.reviewsFlow?.get(it)?.reviewContent?:"",
-                            uiState.reviewsFlow?.get(it)?.rate?:0,
-                            uiState.reviewsFlow?.get(it)?.date?:"",
+                            uiState.reviewsFlow?.get(it)?.name ?: "",
+                            uiState.reviewsFlow?.get(it)?.username ?: "",
+                            uiState.reviewsFlow?.get(it)?.reviewContent ?: "",
+                            uiState.reviewsFlow?.get(it)?.rate ?: 0,
+                            uiState.reviewsFlow?.get(it)?.date ?: "",
                             painterResource(R.drawable.outline_user),
                             modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 12.dp)
                         )
@@ -229,12 +233,25 @@ fun MovieDetailsContent(
     }
 }
 
-/*
-@Preview(showBackground = true)
-@Composable
-private fun MovieDetailsScreenPreview() {
-    CineVerseTheme {
-        MovieDetailsScreen()
-    }
-
-}*/
+//
+//@Preview(showBackground = true)
+//@Composable
+//private fun MovieDetailsScreenPreview() {
+//    CineVerseTheme {
+//        MovieDetailsContent(
+//            uiState = MovieScreenState(
+//                movieDetailsUi = MovieDetailsUi(
+//                    id = 12345,
+//                    title = "Inception",
+//                    posterPath = "/poster/inception.jpg",
+//                    rating = 8.8,
+//                    genres = listOf("Action", "Sci-Fi", "Thriller"),
+//                    releaseDate = "2010-07-16",
+//                    duration = "2h 28m",
+//                    description = "A skilled thief is given a chance at redemption if he can successfully perform an inception — planting an idea in someone's mind."
+//                )
+//            ),
+//        )
+//    }
+//
+//}

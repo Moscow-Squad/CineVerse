@@ -28,8 +28,8 @@ import com.moscow.cineverse.designSystem.component.MovieText
 import com.moscow.cineverse.designSystem.component.ViewMode
 import com.moscow.cineverse.designSystem.component.ViewModeToggle
 import com.moscow.cineverse.designSystem.theme.Theme
-import com.moscow.cineverse.screen.component.movie_poster_card.MediaItemUi
 import com.moscow.cineverse.screen.component.movie_poster_card.MoviePosterCard
+import com.moscow.cineverse.screen.model.MediaItemUi
 import com.moscow.cinverse.presentation.R
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
