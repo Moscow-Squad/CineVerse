@@ -32,6 +32,7 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.android.domain.model.Genre
 import com.android.domain.model.MediaType
@@ -47,6 +48,7 @@ import com.moscow.cineverse.designSystem.component.ViewMode
 import com.moscow.cineverse.designSystem.component.movieSeriesDetails.CastMember
 import com.moscow.cineverse.designSystem.component.movieSeriesDetails.MainMovieCard
 import com.moscow.cineverse.designSystem.component.movieSeriesDetails.MovieCardDetails
+import com.moscow.cineverse.designSystem.component.movieSeriesDetails.MovieRatingBottomSheet
 import com.moscow.cineverse.designSystem.component.movieSeriesDetails.MovieReviewCard
 import com.moscow.cineverse.designSystem.component.movieSeriesDetails.RatingSection
 import com.moscow.cineverse.designSystem.component.movieSeriesDetails.Season
@@ -89,7 +91,10 @@ fun SeriesDetailsScreen(
         }
     }
     SeriesDetailsContent(
-        uiState
+        uiState,
+        onClickArrow = viewModel::showRatingBottomSheet,
+        onDismiss = viewModel::onDismissOrCancelRatingBottomSheet,
+        onRatingSubmit = viewModel::onRatingSubmit
     )
 }
 
@@ -120,6 +125,9 @@ private fun formatReviewDate(dateString: String): String {
 @Composable
 fun SeriesDetailsContent(
     uiState: SeriesDetailsUiState,
+    onClickArrow: () -> Unit,
+    onDismiss: () -> Unit,
+    onRatingSubmit: (Int, Int) -> Unit
 ) {
     val detail = uiState.seriesDetail
     val reviews = uiState.reviews
@@ -304,9 +312,9 @@ fun SeriesDetailsContent(
                     item {
                         RatingSection(
                             icon = R.drawable.due_tone_star,
-                            title = "Give it Stars!",
+                            title = "Give it Stars! ",
                             caption = "Let the world know how you felt.",
-                            onClickArrow = {},
+                            onClickArrow = onClickArrow,
                             modifier = Modifier.padding(top = 24.dp, start = 16.dp, end = 16.dp)
                         )
                     }
@@ -352,6 +360,21 @@ fun SeriesDetailsContent(
                         }
                     }
                 }
+
+                MovieRatingBottomSheet(
+                    isVisible = uiState.showRatingBottomSheet,
+                    onDismiss = onDismiss,
+                    onRatingSubmit = { rating ->
+                        onRatingSubmit(rating, detail?.id ?: 0)
+                    },
+                    onRatingRemove = {
+                        onRatingSubmit(0, detail?.id ?: 0)
+                    },
+                    initialRating = uiState.starsRating,
+                    hasExistingRating = uiState.starsRating != 0,
+                )
+
+
             }
         }
     }
@@ -360,6 +383,7 @@ fun SeriesDetailsContent(
 @Preview(showBackground = true)
 @Composable
 private fun SeriesDetailsScreenPreview() {
+
     CineVerseTheme {
         SeriesDetailsContent(
             uiState = SeriesDetailsUiState(
@@ -431,8 +455,12 @@ private fun SeriesDetailsScreenPreview() {
                         createdAt = "2024-04-10T11:12:01.000Z",
                         avatarPath = "null"
                     )
-                )
-            )
+                ),
+            ),
+            onClickArrow = {},
+            onDismiss = {},
+            onRatingSubmit = {_,_ ->},
+//            onRemoveRating = {}
         )
     }
 }

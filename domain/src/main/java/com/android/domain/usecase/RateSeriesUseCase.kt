@@ -5,7 +5,7 @@ import com.android.domain.repository.DetailsRepository
 class RateSeriesUseCase(
     private val repository: DetailsRepository
 ) {
-    suspend fun rateMovieUse(
+    suspend fun rateSeriesUse(
         rating: Float,
         seriesId: Int
     ) =

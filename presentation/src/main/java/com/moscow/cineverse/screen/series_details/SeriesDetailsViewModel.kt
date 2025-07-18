@@ -1,6 +1,8 @@
 package com.moscow.cineverse.screen.series_details
 
+import android.R.attr.rating
 import com.android.domain.usecase.GetReviewsPageUseCase
+import com.android.domain.usecase.RateSeriesUseCase
 import com.android.domain.usecase.seriesdetails.GetLatestSeasonsUseCase
 import com.android.domain.usecase.seriesdetails.GetListOfSeriesUseCase
 import com.android.domain.usecase.seriesdetails.GetSeriesDetailUseCase
@@ -11,6 +13,7 @@ class SeriesDetailsViewModel(
     private val getReviewsPageUseCase: GetReviewsPageUseCase,
     private val getLatestSeasonsUseCase: GetLatestSeasonsUseCase,
     private val getListOfSeriesUseCase: GetListOfSeriesUseCase,
+    private val rateSeriesUseCase : RateSeriesUseCase
 ) : BaseViewModel<SeriesDetailsUiState, SeriesDetailsEvents>(SeriesDetailsUiState()),
     SeriesInteractionListener {
 
@@ -65,6 +68,35 @@ class SeriesDetailsViewModel(
             }
         )
     }
+
+    fun showRatingBottomSheet() {
+        updateState { it.copy(showRatingBottomSheet = true) }
+    }
+
+    fun onDismissOrCancelRatingBottomSheet() {
+        updateState { it.copy(showRatingBottomSheet = false) }
+    }
+
+    fun onRatingSubmit(rating: Int, seriesId: Int) {
+       launchWithFlow(
+           flowAction = { rateSeriesUseCase.rateSeriesUse(rating.toFloat(), seriesId) },
+           onSuccess = {
+               updateState { it.copy(
+                   starsRating = rating,
+                   showRatingBottomSheet = false
+               ) }
+           },
+           onError = {
+               updateState {
+                   it.copy(
+                   starsRating = rating,
+                   showRatingBottomSheet = false
+                   )
+               }
+           },
+       )
+    }
+
 
     override fun addToCollection() {
         uiState.value.seriesDetail?.let { sendEvent(SeriesDetailsEvents.AddToCollection(it.id)) }

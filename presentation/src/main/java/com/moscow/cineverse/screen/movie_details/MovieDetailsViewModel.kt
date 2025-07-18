@@ -10,6 +10,7 @@ import com.android.domain.usecase.GetCreditsUseCase
 import com.android.domain.usecase.GetMovieDetailUseCase
 import com.android.domain.usecase.GetRecommendationsUseCase
 import com.android.domain.usecase.GetReviewsPageUseCase
+import com.android.domain.usecase.RateMovieUseCase
 import com.moscow.cineverse.base.BaseViewModel
 
 
@@ -17,7 +18,8 @@ class MovieDetailsViewModel(
     private val getMovieDetailsUseCase: GetMovieDetailUseCase,
     private val getReviewsPageUseCase: GetReviewsPageUseCase,
     private val getCreditsUseCase: GetCreditsUseCase,
-    private val getRecommendationsUseCase: GetRecommendationsUseCase
+    private val getRecommendationsUseCase: GetRecommendationsUseCase,
+    private val rateMovieUseCase: RateMovieUseCase
 ) : BaseViewModel<MovieScreenState, MovieDetailsScreenEvents>(MovieScreenState()),
     MovieDetailsInteractionListener {
 
@@ -118,6 +120,7 @@ class MovieDetailsViewModel(
         }
 
 
+
         override fun onBackPressed() {
             sendEvent(MovieDetailsScreenEvents.NavigateBack)
         }
@@ -138,6 +141,34 @@ class MovieDetailsViewModel(
     override fun onAddToCollection(mediaItemId: Int) {
         sendEvent(MovieDetailsScreenEvents.AddToCollection(mediaItemId))
 
+    }
+
+    override fun showRatingBottomSheet() {
+        updateState { it.copy(showRatingBottomSheet = true) }
+    }
+
+    override fun onDismissOrCancelRatingBottomSheet() {
+        updateState { it.copy(showRatingBottomSheet = false) }
+    }
+
+    override fun onRatingSubmit(rating: Int, movieId: Int) {
+        launchWithFlow(
+            flowAction = { rateMovieUseCase.rateMovie(rating.toFloat(), movieId) },
+            onSuccess = {
+                updateState { it.copy(
+                    starsRating = rating,
+                    showRatingBottomSheet = false
+                ) }
+            },
+            onError = {
+                updateState {
+                    it.copy(
+                        starsRating = rating,
+                        showRatingBottomSheet = false
+                    )
+                }
+            },
+        )
     }
 
 
