@@ -32,6 +32,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.design_system.R
 import com.moscow.cineverse.designSystem.component.MovieAppBar
@@ -42,6 +43,7 @@ import com.moscow.cineverse.designSystem.component.ViewMode
 import com.moscow.cineverse.designSystem.component.movieSeriesDetails.CastMember
 import com.moscow.cineverse.designSystem.component.movieSeriesDetails.MainMovieCard
 import com.moscow.cineverse.designSystem.component.movieSeriesDetails.MovieCardDetails
+import com.moscow.cineverse.designSystem.component.movieSeriesDetails.MovieRatingBottomSheet
 import com.moscow.cineverse.designSystem.component.movieSeriesDetails.MovieReviewCard
 import com.moscow.cineverse.designSystem.component.movieSeriesDetails.RatingSection
 import com.moscow.cineverse.designSystem.component.movieSeriesDetails.Season
@@ -65,7 +67,6 @@ fun SeriesDetailsScreen(
         viewModel.uiEvent.collect { event ->
             when (event) {
                 is SeriesDetailsEvents.AddToCollection -> {
-                    Log.e("kllvmv", "SeriesDetailsScreen: ")
                     navController.navigate(
                         CollectionsBottomSheetRoute(mediaItemId = event.seriesId)
                     )
@@ -76,6 +77,10 @@ fun SeriesDetailsScreen(
     SeriesDetailsContent(
         uiState = uiState,
         interactionListener = viewModel
+        uiState,
+        onClickArrow = viewModel::showRatingBottomSheet,
+        onDismiss = viewModel::onDismissOrCancelRatingBottomSheet,
+        onRatingSubmit = viewModel::onRatingSubmit
     )
 }
 
@@ -107,6 +112,9 @@ private fun formatReviewDate(dateString: String): String {
 fun SeriesDetailsContent(
     uiState: SeriesDetailsUiState,
     interactionListener: SeriesInteractionListener
+    onClickArrow: () -> Unit,
+    onDismiss: () -> Unit,
+    onRatingSubmit: (Int, Int) -> Unit
 ) {
     val detail = uiState.seriesDetail
     val reviews = uiState.reviews
@@ -301,9 +309,9 @@ fun SeriesDetailsContent(
                     item {
                         RatingSection(
                             icon = R.drawable.due_tone_star,
-                            title = "Give it Stars!",
+                            title = "Give it Stars! ",
                             caption = "Let the world know how you felt.",
-                            onClickArrow = {},
+                            onClickArrow = onClickArrow,
                             modifier = Modifier.padding(top = 24.dp, start = 16.dp, end = 16.dp)
                         )
                     }
@@ -349,6 +357,21 @@ fun SeriesDetailsContent(
                         }
                     }
                 }
+
+                MovieRatingBottomSheet(
+                    isVisible = uiState.showRatingBottomSheet,
+                    onDismiss = onDismiss,
+                    onRatingSubmit = { rating ->
+                        onRatingSubmit(rating, detail?.id ?: 0)
+                    },
+                    onRatingRemove = {
+                        onRatingSubmit(0, detail?.id ?: 0)
+                    },
+                    initialRating = uiState.starsRating,
+                    hasExistingRating = uiState.starsRating != 0,
+                )
+
+
             }
         }
     }

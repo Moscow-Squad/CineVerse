@@ -21,6 +21,9 @@ data class MovieScreenState(
     val shouldShowError: Boolean = false,
     val errorMessage: String = "",
 
+    val showRatingBottomSheet: Boolean = false,
+    val starsRating: Int = 0
+
     ) {
 
     data class MovieDetailsUi(

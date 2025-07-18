@@ -38,6 +38,7 @@ import com.moscow.cineverse.designSystem.component.ViewMode
 import com.moscow.cineverse.designSystem.component.movieSeriesDetails.CastCard
 import com.moscow.cineverse.designSystem.component.movieSeriesDetails.MainMovieCard
 import com.moscow.cineverse.designSystem.component.movieSeriesDetails.MovieCardDetails
+import com.moscow.cineverse.designSystem.component.movieSeriesDetails.MovieRatingBottomSheet
 import com.moscow.cineverse.designSystem.component.movieSeriesDetails.MovieReviewCard
 import com.moscow.cineverse.designSystem.component.movieSeriesDetails.RatingSection
 import com.moscow.cineverse.designSystem.component.movieSeriesDetails.StaffInfoSection
@@ -244,7 +245,7 @@ fun MovieDetailsContent(
                             icon = R.drawable.due_tone_star,
                             title = stringResource(com.moscow.cinverse.presentation.R.string.give_it_stars),
                             caption = stringResource(com.moscow.cinverse.presentation.R.string.let_the_world_know_how_you_felt),
-                            onClickArrow = {},
+                            onClickArrow = {interactionListener.showRatingBottomSheet()},
                             modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 24.dp)
                         )
                     }
@@ -282,6 +283,17 @@ fun MovieDetailsContent(
                         }
                     }
                 }
+
+                MovieRatingBottomSheet(
+                    isVisible = uiState.showRatingBottomSheet,
+                    onDismiss = {interactionListener.onDismissOrCancelRatingBottomSheet()},
+                    onRatingSubmit = { rating->
+                        interactionListener.onRatingSubmit(rating, uiState.movieDetailsUi.id)
+                    },
+                    onRatingRemove = { interactionListener.onRatingSubmit(0, uiState.movieDetailsUi.id) },
+                    initialRating = uiState.starsRating,
+                    hasExistingRating = uiState.starsRating != 0,
+                )
             }
         }
     }
