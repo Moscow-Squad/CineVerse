@@ -32,7 +32,7 @@ val repositoryModule = module {
     }
     single<DetailsRepository> {
         DetailsRepositoryImpl(
-            get()
+            get(), get()
         )
     }
     single<ActorDetailsRepository> {

@@ -2,10 +2,12 @@ package com.local
 
 import android.util.Log
 import com.local.dao.search.ActorDao
+import com.local.dao.search.FavouriteGenreDao
 import com.local.dao.search.MovieDao
 import com.local.dao.search.SearchHistoryDao
 import com.local.dao.search.SeriesDao
 import com.local.entity.ActorEntity
+import com.local.entity.FavouriteGenreEntity
 import com.local.entity.MovieEntity
 import com.local.entity.SearchHistoryEntity
 import com.local.entity.SeriesEntity
@@ -16,11 +18,12 @@ class SearchLocalDateSourceImpl(
     private val searchHistoryDao: SearchHistoryDao,
     private val movieDao: MovieDao,
     private val actorDao: ActorDao,
-    private val seriesDao: SeriesDao
+    private val seriesDao: SeriesDao,
+    private val favouriteGenreDao: FavouriteGenreDao
 ) : SearchLocalDateSource {
+
     override suspend fun getAllSearchHistory(): Flow<List<String>> =
         searchHistoryDao.getAllSearchHistory()
-
 
     override suspend fun insertSearchHistory(searchTerm: String) {
         searchHistoryDao.insertSearchHistory(SearchHistoryEntity(searchTerm))
@@ -62,5 +65,20 @@ class SearchLocalDateSourceImpl(
 
     override suspend fun getSeriesBySearchTerm(searchTerm: String): List<SeriesEntity> {
         return seriesDao.getSeriesBySearchTerm(searchTerm)
+    }
+
+    override fun getFavouriteGenres(): Flow<List<FavouriteGenreEntity>> {
+        return favouriteGenreDao.getFavouriteGenres()
+    }
+
+    override suspend fun insertFavouriteGenre(genreId: Int) {
+        val existingGenre = favouriteGenreDao.getGenreById(genreId)
+        if (existingGenre != null) {
+            favouriteGenreDao.incrementGenreCount(genreId)
+        } else {
+            favouriteGenreDao.insertOrUpdateFavouriteGenre(
+                FavouriteGenreEntity(genreId = genreId, count = 1)
+            )
+        }
     }
 }
