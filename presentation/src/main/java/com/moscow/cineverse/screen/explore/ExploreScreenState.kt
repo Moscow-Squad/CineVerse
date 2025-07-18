@@ -8,16 +8,16 @@ data class ExploreScreenState(
 
     val searchKeyWord: String = "",
 
-    val searchResult: Map<String, List<Any>> = mutableMapOf(),
+    val searchResult: Map<String, List<Any>> = mutableMapOf(
 
-//    val actorsSearchResult: List<ActorUi> = emptyList(),
+    ),
 
-    val remoteSuggestions:List<String> = emptyList(),
-
-    val isSearchBarClickedOn : Boolean = false,
-    val showHistory : Boolean = false,
-    val showSuggestions : Boolean = false,
+    val remoteSuggestions: List<String> = emptyList(),
     val localSuggestions: List<SuggestItemUiState> = listOf(),
+    val displayedSuggestions: List<SuggestItemUiState> = emptyList(),
+    val isSearchBarClickedOn: Boolean = false,
+    val showHistory: Boolean = false,
+    val showSuggestions: Boolean = false,
 
     val genres: List<GenreUi> = emptyList(),
 
@@ -53,6 +53,7 @@ data class ExploreScreenState(
         val profilePath: String,
         val id: Int
     )
+
     data class GenreUi(
         val id: Int,
         val name: String

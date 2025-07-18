@@ -47,6 +47,14 @@ abstract class BaseViewModel<T, E>(
         }
     }
 
+    protected fun launchAndForget(
+        action: suspend () -> Unit,
+        onError: (Throwable) -> Unit,
+    ) = viewModelScope.launch {
+        runCatching { action() }
+            .onFailure(onError)
+    }
+
     protected fun <R> launchWithFlow(
         flowAction: suspend () -> Flow<R>,
         onSuccess: (R) -> Unit,

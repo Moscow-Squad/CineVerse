@@ -19,4 +19,6 @@ interface SearchRepository {
     suspend fun searchMovie(query: String,isHistory: Boolean = false): Flow<List<Movie>>
     suspend fun searchSeries(query: String,isHistory: Boolean = false): Flow<List<Series>>
     suspend fun searchActor(query: String,isHistory: Boolean = false): Flow<List<Actor>>
+    suspend fun cacheSearchQuery(query: String)
+    suspend fun clearSearchHistory()
 }

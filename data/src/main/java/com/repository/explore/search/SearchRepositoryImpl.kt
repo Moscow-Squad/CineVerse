@@ -1,10 +1,8 @@
 package com.repository.explore.search
 
-import androidx.room.Transaction
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.workDataOf
-import com.android.domain.exception.CineVerseException
 import com.android.domain.model.Actor
 import com.android.domain.model.Movie
 import com.android.domain.model.MultiSearch
@@ -36,41 +34,17 @@ class SearchRepositoryImpl(
         return searchLocalDateSource.getMoviesBySearchTerm(searchTerm).toDomain()
     }
 
-    @Transaction
     override suspend fun insertMovie(movies: List<Movie>, searchTerm: String) {
-        searchLocalDateSource.insertSearchHistory(searchTerm)
         searchLocalDateSource.insertMovie(movies.toEntity(searchTerm), searchTerm)
-        val deleteWork = OneTimeWorkRequestBuilder<DeleteQueryWorker>()
-            .setInitialDelay(1, TimeUnit.HOURS)
-            .setInputData(workDataOf(QUERY to searchTerm))
-            .addTag(DELETE_SEARCH_QUERY_HISTORY)
-            .build()
 
-        workManager.enqueue(deleteWork)
     }
 
     override suspend fun insertActors(actors: List<Actor>, searchTerm: String) {
-        searchLocalDateSource.insertSearchHistory(searchTerm)
         searchLocalDateSource.insertActors(actors.toEntity(searchTerm), searchTerm)
-        val deleteWork = OneTimeWorkRequestBuilder<DeleteQueryWorker>()
-            .setInitialDelay(1, TimeUnit.HOURS)
-            .setInputData(workDataOf(QUERY to searchTerm))
-            .addTag(DELETE_SEARCH_QUERY_HISTORY)
-            .build()
-
-        workManager.enqueue(deleteWork)
     }
 
     override suspend fun insertSeries(series: List<Series>, searchTerm: String) {
-        searchLocalDateSource.insertSearchHistory(searchTerm)
         searchLocalDateSource.insertSeries(series.toEntity(searchTerm), searchTerm)
-        val deleteWork = OneTimeWorkRequestBuilder<DeleteQueryWorker>()
-            .setInitialDelay(1, TimeUnit.HOURS)
-            .setInputData(workDataOf(QUERY to searchTerm))
-            .addTag(DELETE_SEARCH_QUERY_HISTORY)
-            .build()
-
-        workManager.enqueue(deleteWork)
     }
 
     override suspend fun getLocalSuggestions(): Flow<List<String>> {
@@ -88,14 +62,11 @@ class SearchRepositoryImpl(
 
     override suspend fun searchMulti(query: String): Flow<List<MultiSearch>> =
         flow {
-            val result = tryToExecute {
-                searchRemoteDataSource.searchMulti(query)
-            }
-            if (result.isNotEmpty()) {
-                emit(result.map { it.toDomain() })
-            } else {
-                throw CineVerseException.NotFoundCineVerseException
-            }
+            emit(
+                tryToExecute {
+                    searchRemoteDataSource.searchMulti(query)
+                }.map { it.toDomain() }
+            )
         }.flowOn(ioDispatcher)
 
     override suspend fun searchMovie(query: String, isHistory: Boolean): Flow<List<Movie>> =
@@ -107,11 +78,9 @@ class SearchRepositoryImpl(
             val result = tryToExecute {
                 searchRemoteDataSource.searchMovie(query)
             }
+            emit(result.map { it.toDomain() })
             if (result.isNotEmpty()) {
-                emit(result.map { it.toDomain() })
                 insertMovie(result.map { movie -> movie.toDomain() }, query)
-            } else {
-                throw CineVerseException.NotFoundCineVerseException
             }
         }.flowOn(ioDispatcher)
 
@@ -124,11 +93,9 @@ class SearchRepositoryImpl(
             val result = tryToExecute {
                 searchRemoteDataSource.searchSeries(query)
             }
+            emit(result.map { it.toDomain() })
             if (result.isNotEmpty()) {
-                emit(result.map { it.toDomain() })
                 insertSeries(result.map { series -> series.toDomain() }, query)
-            } else {
-                throw CineVerseException.NotFoundCineVerseException
             }
         }.flowOn(ioDispatcher)
 
@@ -141,11 +108,25 @@ class SearchRepositoryImpl(
             val result = tryToExecute {
                 searchRemoteDataSource.searchPearson(query)
             }
+            emit(result.map { it.toDomain() })
             if (result.isNotEmpty()) {
-                emit(result.map { it.toDomain() })
                 insertActors(result.map { actor -> actor.toDomain() }, query)
-            } else {
-                throw CineVerseException.NotFoundCineVerseException
             }
         }.flowOn(ioDispatcher)
+
+    override suspend fun cacheSearchQuery(query: String) {
+        tryToExecute {
+            searchLocalDateSource.insertSearchHistory(query)
+            val deleteWork = OneTimeWorkRequestBuilder<DeleteQueryWorker>()
+                .setInitialDelay(1, TimeUnit.HOURS)
+                .setInputData(workDataOf(QUERY to query))
+                .addTag(DELETE_SEARCH_QUERY_HISTORY)
+                .build()
+            workManager.enqueue(deleteWork)
+        }
+    }
+
+    override suspend fun clearSearchHistory() = tryToExecute {
+        searchLocalDateSource.deleteAllSearchHistory()
+    }
 }
