@@ -1,0 +1,23 @@
+package com.moscow.cineverse.navigation.routes
+
+import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.composable
+import androidx.navigation.toRoute
+import com.moscow.cineverse.screen.castDetails.best0fmovies.ShowAllActorMoviesScreen
+import com.moscow.cineverse.screen.reviews.ReviewsScreen
+import kotlinx.serialization.Serializable
+
+@Serializable
+data class ReviewsRoute(val id: Int, val isMovie: Boolean)
+
+fun NavGraphBuilder.ReviewsRoute(navController: NavHostController) {
+    composable<ReviewsRoute>{
+        val args = it.toRoute<ReviewsRoute>()
+        ReviewsScreen(
+            navController = navController,
+            movieId = args.id,
+            isMovie = args.isMovie,
+        )
+    }
+}

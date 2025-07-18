@@ -29,7 +29,7 @@ fun SearchSuggestion(
     val title = if (isHistory)
         stringResource(R.string.history)
     else
-        stringResource(R.string.suggestions_title)
+        stringResource(R.string.search_suggestions)
     val actionTitle = if (isHistory)
         stringResource(R.string.clear_all_history)
     else

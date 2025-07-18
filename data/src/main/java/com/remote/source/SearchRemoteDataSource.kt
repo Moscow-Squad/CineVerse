@@ -3,8 +3,8 @@ package com.remote.source
 import com.remote.dto.ActorDto
 import com.remote.dto.MovieDto
 import com.remote.dto.MultiSearchDto
-import com.remote.dto.SeriesDto
 import com.remote.dto.SuggestionDto
+import com.remote.dto.details.SeriesDto
 import com.utils.ApiResponse
 import com.utils.INCLUDE_ADULT
 import com.utils.PAGE

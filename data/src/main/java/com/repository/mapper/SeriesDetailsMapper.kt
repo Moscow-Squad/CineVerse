@@ -1,14 +1,21 @@
 package com.repository.mapper
 
-import com.android.domain.model.Creator
 import com.android.domain.model.Genre
-import com.android.domain.model.SeriesDetail
-import com.remote.dto.CreatedByDto
+import com.android.domain.model.details.Creator
+import com.android.domain.model.details.Episode
+import com.android.domain.model.details.ListOfSeries
+import com.android.domain.model.details.Season
+import com.android.domain.model.details.SeriesDetail
+import com.android.domain.model.details.SeriesItem
 import com.remote.dto.GenreDto
-import com.remote.dto.SeriesDetailDto
+import com.remote.dto.details.CreatedByDto
+import com.remote.dto.details.LastEpisodeToAirDto
+import com.remote.dto.details.ListOfSeriesDto
+import com.remote.dto.details.SeasonDto
+import com.remote.dto.details.SeriesDetailDto
+import com.remote.dto.details.SeriesItemDto
 import java.text.SimpleDateFormat
 import java.util.Locale
-
 
 fun SeriesDetailDto.toDomain(): SeriesDetail {
     return SeriesDetail(
@@ -22,13 +29,20 @@ fun SeriesDetailDto.toDomain(): SeriesDetail {
         voteCount = voteCount,
         runtime = formatRuntime(episodeRunTime),
         releaseDate = formatDate(firstAirDate),
-        type = if (numberOfSeasons > 0) "Series" else "Movie",
-        cast = emptyList(), // Cast would come from a separate API call
+        type = type,
+        cast = emptyList(),
         creators = createdBy.map { it.toDomain() },
         tagline = tagline,
         status = status,
-        numberOfSeasons = if (numberOfSeasons > 0) numberOfSeasons else null,
-        numberOfEpisodes = if (numberOfEpisodes > 0) numberOfEpisodes else null
+        numberOfSeasons = numberOfSeasons,
+        numberOfEpisodes = numberOfEpisodes,
+        lastAirDate = lastAirDate,
+        nextAirDate = nextEpisodeToAir,
+        lastEpisodeToAir = lastEpisodeToAir?.toDomain(),
+        nextEpisodeToAir = null,
+        reviews = emptyList(),
+        similarSeries = emptyList(),
+        seasons = seasons.map { it.toDomain() }
     )
 }
 
@@ -47,9 +61,53 @@ private fun CreatedByDto.toDomain(): Creator {
     )
 }
 
+private fun LastEpisodeToAirDto.toDomain(): Episode {
+    return Episode(
+        id = id,
+        name = name,
+        overview = overview,
+        airDate = airDate,
+        episodeNumber = episodeNumber,
+        seasonNumber = seasonNumber
+    )
+}
+
+private fun SeasonDto.toDomain(): Season {
+    return Season(
+        id = id,
+        name = name,
+        airDate = airDate,
+        episodeCount = episodeCount,
+        posterPath = posterPath
+    )
+}
+
+
+fun ListOfSeriesDto.toDomain(): ListOfSeries {
+    return ListOfSeries(
+        id = id,
+        page = page,
+        results = results.map { it.toDomain() },
+        totalPages = totalPages,
+        totalResults = totalResults
+    )
+}
+
+fun SeriesItemDto.toDomain(): SeriesItem {
+    return SeriesItem(
+        id = id,
+        name = name,
+        description = description,
+        favoriteCount = favoriteCount,
+        itemCount = itemCount,
+        iso6391 = iso6391,
+        iso31661 = iso31661,
+        posterPath = posterPath
+    )
+}
+
 private fun formatRuntime(runtimeMinutes: List<Int>): String? {
     if (runtimeMinutes.isEmpty()) return null
-
     val totalMinutes = runtimeMinutes.firstOrNull() ?: return null
     val hours = totalMinutes / 60
     val minutes = totalMinutes % 60
@@ -63,7 +121,6 @@ private fun formatRuntime(runtimeMinutes: List<Int>): String? {
 
 private fun formatDate(dateString: String?): String? {
     if (dateString.isNullOrEmpty()) return null
-
     return try {
         val inputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
         val outputFormat = SimpleDateFormat("yyyy, MMM dd", Locale.getDefault())

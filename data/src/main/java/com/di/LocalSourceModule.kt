@@ -6,12 +6,15 @@ import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStoreFile
 import androidx.room.Room
+import com.local.DetailsLocalDataSourceImpl
 import com.local.SearchLocalDateSourceImpl
 import com.local.dao.search.ActorDao
+import com.local.dao.search.FavouriteGenreDao
 import com.local.dao.search.MovieDao
 import com.local.dao.search.SearchHistoryDao
 import com.local.dao.search.SeriesDao
 import com.local.database.CineVerseDataBase
+import com.repository.details.DetailsLocalDataSource
 import com.repository.explore.search.SearchLocalDateSource
 import org.koin.android.ext.koin.androidApplication
 import org.koin.android.ext.koin.androidContext
@@ -28,7 +31,7 @@ val localSourceModule = module {
             CineVerseDataBase::class.java,
             CINE_VERSE_DATABASE
         )
-            .fallbackToDestructiveMigration(false)
+            .fallbackToDestructiveMigration(true)
             .build()
     }
 
@@ -36,8 +39,10 @@ val localSourceModule = module {
     single<SearchHistoryDao> { get<CineVerseDataBase>().searchHistoryDao() }
     single<ActorDao> { get<CineVerseDataBase>().actorDao() }
     single<SeriesDao> { get<CineVerseDataBase>().seriesDao() }
+    single<FavouriteGenreDao> { get<CineVerseDataBase>().favouriteGenreDao() }
 
     singleOf(::SearchLocalDateSourceImpl) bind SearchLocalDateSource::class
+    singleOf(::DetailsLocalDataSourceImpl) bind DetailsLocalDataSource::class
 
     single<Context> {
         androidApplication()

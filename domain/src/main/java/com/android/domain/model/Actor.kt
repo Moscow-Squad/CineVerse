@@ -7,7 +7,7 @@ data class Actor(
     val profileImg: String,
 )
 
-enum class Gender{
-    MALE,
-    FEMALE
+enum class Gender(val value: Int){
+    MALE(0),
+    FEMALE(1)
 }

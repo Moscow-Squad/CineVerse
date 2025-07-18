@@ -39,7 +39,7 @@ import com.moscow.cineverse.designSystem.theme.CineVerseTheme
 import com.moscow.cineverse.designSystem.theme.Theme
 
 @Composable
-fun <T> MovieCard(
+fun <T : Any> MovieCard(
     modifier: Modifier = Modifier,
     movieData: T,
     viewMode: ViewMode = ViewMode.GRID,
@@ -53,7 +53,7 @@ fun <T> MovieCard(
     getRating: (T) -> Float,
     getGenres: (T) -> List<String>,
     getDuration: (T) -> String,
-    getReleaseDate: (T) -> String
+    getReleaseDate: (T) -> String,
 ) {
     when (viewMode) {
         ViewMode.GRID -> GridMovieCard(
@@ -188,7 +188,8 @@ private fun <T> GridMovieCard(
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
                 textAlign = titleTextAlign,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
                     .padding(top = 8.dp)
             )
         }

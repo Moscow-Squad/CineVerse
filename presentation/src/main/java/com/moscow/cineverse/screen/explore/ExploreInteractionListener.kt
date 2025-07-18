@@ -4,7 +4,8 @@ import com.moscow.cineverse.designSystem.component.ViewMode
 import com.moscow.cineverse.designSystem.component.tabs.ExploreTabsPages
 
 interface ExploreInteractionListener {
-    fun onGenreSelected(genreId: Int)
+    fun onMovieGenreSelected(genreId: Int)
+    fun onSeriesGenreSelected(genreId: Int)
     fun onViewModeChanged(viewMode: ViewMode)
     fun onMovieClick(movieId: Int)
     fun onActorClick(actorId: Int)
@@ -18,12 +19,12 @@ interface ExploreInteractionListener {
     fun onCancelButtonClicked()
     fun onSearchValueChange(text: String)
     fun onSearchWordDetected(searchKeyWord: List<String>)
-    fun SuggestionList() : List<SuggestItemUiState>
     fun onClickSuggestion(suggestion: SuggestItemUiState)
+    fun onSearchQuery()
     fun clearAllLocalSuggestions()
     fun getMoviesGenres()
     fun getSeriesGenres()
     fun getMoviesByGenreId(genreId: Int)
     fun getSeriesByGenreId(genreId: Int)
     fun onKeyboardClick()
-}
+    fun <T> checkEmptySearchResult(list: List<T>)}

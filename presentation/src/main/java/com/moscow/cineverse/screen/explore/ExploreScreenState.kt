@@ -1,23 +1,24 @@
 package com.moscow.cineverse.screen.explore
 
+import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.Stable
 import com.moscow.cineverse.designSystem.component.ViewMode
 import com.moscow.cineverse.designSystem.component.tabs.ExploreTabsPages
 import com.moscow.cineverse.screen.component.movie_poster_card.MediaItemUi
 
+@Immutable
+@Stable
 data class ExploreScreenState(
 
     val searchKeyWord: String = "",
 
     val searchResult: Map<String, List<Any>> = mutableMapOf(),
 
-//    val actorsSearchResult: List<ActorUi> = emptyList(),
-
-    val remoteSuggestions:List<String> = emptyList(),
-
-    val isSearchBarClickedOn : Boolean = false,
-    val showHistory : Boolean = false,
-    val showSuggestions : Boolean = false,
+    val remoteSuggestions: List<String> = emptyList(),
     val localSuggestions: List<SuggestItemUiState> = listOf(),
+    val isSearchBarClickedOn: Boolean = false,
+    val showHistory: Boolean = false,
+    val showSuggestions: Boolean = false,
 
     val genres: List<GenreUi> = emptyList(),
 
@@ -27,7 +28,9 @@ data class ExploreScreenState(
     val movies: List<MediaItemUi> = emptyList(),
     val series: List<MediaItemUi> = emptyList(),
 
-    val selectedGenre: Int = 0,
+    val selectedMovieGenre: Int = 0,
+    val selectedSeriesGenre: Int = 0,
+
     val selectedTab: ExploreTabsPages = ExploreTabsPages.MOVIES,
     val viewMode: ViewMode = ViewMode.GRID,
     val isLoading: Boolean = false,
@@ -40,6 +43,18 @@ data class ExploreScreenState(
     val contentList: List<Any> = emptyList()
 
 ) {
+
+    val displayedSuggestions: List<SuggestItemUiState>
+        get() {
+            val filteredLocalSuggestions = localSuggestions
+                .filter { it.title.contains(searchKeyWord, ignoreCase = true) }
+
+            val mappedRemoteSuggestions = remoteSuggestions
+                .map { SuggestItemUiState(it, isHistory = false) }
+
+            return filteredLocalSuggestions + mappedRemoteSuggestions
+        }
+
     fun fromScreenState(selectedTab: ExploreTabsPages): List<MediaItemUi> {
         return when (selectedTab) {
             ExploreTabsPages.MOVIES -> movies
@@ -53,6 +68,7 @@ data class ExploreScreenState(
         val profilePath: String,
         val id: Int
     )
+
     data class GenreUi(
         val id: Int,
         val name: String
