@@ -16,4 +16,16 @@
     <string name="star_cast">طاقم التمثيل</string>
     <string name="you_might_also_like">قد يعجبك أيضاً</string>
     <string name="because_you_watched">لأنك شاهدت</string>
+    <string name="add_to_collection">أضف إلى المجموعة</string>
+    <string name="no_collections_yet">لا توجد مجموعات حتى الآن</string>
+    <string name="create_a_new_collection_to_start_saving_your_favorite_movies_and_series">أنشئ مجموعة جديدة لبدء حفظ أفلامك ومسلسلاتك المفضلة.</string>
+    <string name="create_collection">إنشاء مجموعة</string>
+    <string name="my_collections">مجموعاتي</string>
+    <string name="you_re_almost_there">أنت على وشك الوصول!</string>
+    <string name="log_in_to_save_movies_create_collections_and_get_personalized_recommendations">سجّل الدخول لحفظ الأفلام، وإنشاء المجموعات، والحصول على توصيات مخصصة.</string>
+    <string name="log_in">تسجيل الدخول</string>
+    <string name="not_now">ليس الآن</string>
+    <string name="nothing_found">لم يتم العثور على شيء</string>
+    <string name="we_searched_the_entire_universe_but_found_nothing_matching_your_query_try_something_else">بحثنا في الكون كله... لكن لم نجد ما يطابق بحثك. هل تود تجربة شيء آخر؟</string>
+
 </resources>
