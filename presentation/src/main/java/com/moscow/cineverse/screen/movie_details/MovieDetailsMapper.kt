@@ -12,6 +12,8 @@ import com.moscow.cineverse.screen.model.MediaItemUi
 import com.moscow.cineverse.screen.movie_details.MovieScreenState.ReviewUi
 import com.moscow.cineverse.screen.movie_details.MovieScreenState.StarCastUi
 import kotlinx.datetime.LocalDate
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 
 fun MovieDetail.toUi(): MovieScreenState.MovieDetailsUi =
@@ -82,6 +84,16 @@ fun LocalDate.toFormattedReleasedDate(): String {
         " ${this.year}, $monthName ${this.dayOfMonth}"
     } catch (e: Exception) {
         "$this"
+    }
+}
+fun formatReviewDate(dateString: String): String {
+    return try {
+        val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
+        val outputFormat = SimpleDateFormat("MMM dd, yyyy", Locale.getDefault())
+        val date = inputFormat.parse(dateString)
+        date?.let { outputFormat.format(it) } ?: dateString
+    } catch (e: Exception) {
+        dateString
     }
 }
 
