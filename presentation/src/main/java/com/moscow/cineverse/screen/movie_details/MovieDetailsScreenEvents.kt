@@ -8,6 +8,6 @@ sealed class MovieDetailsScreenEvents {
     data object NavigateToFullActors: MovieDetailsScreenEvents()
     data object NavigateToFullCast : MovieDetailsScreenEvents()
     data class AddToCollection(val movieId: Int) : MovieDetailsScreenEvents()
-
+    data class NavigateCastDetails(val castId: Int) : MovieDetailsScreenEvents()
 }
 

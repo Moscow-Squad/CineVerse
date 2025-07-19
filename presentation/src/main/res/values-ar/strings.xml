@@ -16,4 +16,16 @@
     <string name="star_cast">طاقم التمثيل</string>
     <string name="you_might_also_like">قد يعجبك أيضاً</string>
     <string name="because_you_watched">لأنك شاهدت</string>
+    <string name="add_to_collection">اضف الى المجموعة</string>
+    <string name="no_collections_yet">لا يوجد مجموعة حاليا</string>
+    <string name="create_a_new_collection_to_start_saving_your_favorite_movies_and_series">اضف مجموعة جديدة لحفظ افلامك و مسلسلاتك المفضلة.</string>
+    <string name="create_collection">انشأ مجموعة</string>
+    <string name="my_collections">مجموعتي</string>
+    <string name="you_re_almost_there">لقد اقتربت !</string>
+    <string name="log_in_to_save_movies_create_collections_and_get_personalized_recommendations">سجل الدخول لحفظ الافلام, و انشاء مجموعات و توصيات شخصية.</string>
+    <string name="log_in">تسجيل الدخول</string>
+    <string name="not_now">ليس الان</string>
+    <string name="try_again">حاول مرة اخرى</string>
+    <string name="oops_no_internet">ياللهول! لا يوجد نت كافي</string>
+    <string name="offline_reconnect">يبدو انك بدون نت. حاول التقاط نت حتى لا تفوتك المتعة.</string>
 </resources>
