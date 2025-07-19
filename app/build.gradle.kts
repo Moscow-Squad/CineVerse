@@ -30,15 +30,25 @@ android {
             localeFilters.addAll(listOf("en", "ar"))
         }
     }
-
+    splits {
+        abi {
+            isEnable = true
+            reset()
+            include("armeabi-v7a", "arm64-v8a", "x86", "x86_64")
+        }
+    }
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
+                getDefaultProguardFile("proguard-android.txt"),
                 "proguard-rules.pro"
             )
+            enableAndroidTestCoverage = true
+            enableUnitTestCoverage = true
+            signingConfig = signingConfigs.getByName("debug")
         }
         debug {
             isDebuggable = true
