@@ -96,7 +96,7 @@ jobs:
       - name: Build Release APK
         run: ./gradlew assembleRelease
 
-      - name: Distribute Debug APK to Firebase App Distribution
-        run: ./gradlew appDistributionUploadDebug --stacktrace
+      - name: Distribute Release APK to Firebase App Distribution
+        run: ./gradlew appDistributionUploadRelease --stacktrace
         env:
           FIREBASE_APP_ID: ${{ secrets.FIREBASE_APP_ID }}
