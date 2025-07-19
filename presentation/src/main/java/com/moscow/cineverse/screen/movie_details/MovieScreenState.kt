@@ -54,7 +54,7 @@ data class MovieScreenState(
         val username:String,
         val rate:Int,
         val reviewContent:String,
-        val date:String,
+        val date: String,
         val userImage:String
     )
 

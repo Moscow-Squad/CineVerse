@@ -115,19 +115,19 @@ class MovieDetailsViewModel(
         }
 
         private fun getMovieDetailsFailed(error: Throwable) {
-            updateState { it.copy(errorMessage = error.message.toString()) }
+            updateState { it.copy(errorMessage = error.message.toString(), shouldShowError = true) }
         }
 
         private fun getReviewFailed(error: Throwable) {
-            updateState { it.copy(errorMessage = error.message.toString()) }
+            updateState { it.copy(errorMessage = error.message.toString(), shouldShowError = true) }
         }
 
         private fun getCreditsFailed(error: Throwable) {
-            updateState { it.copy(errorMessage = error.message.toString()) }
+            updateState { it.copy(errorMessage = error.message.toString(), shouldShowError = true) }
         }
 
         private fun getRecommendationsFailed(error: Throwable) {
-            updateState { it.copy(errorMessage = error.message.toString()) }
+            updateState { it.copy(errorMessage = error.message.toString(), shouldShowError = true) }
         }
 
         override fun onBackPressed() {

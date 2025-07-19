@@ -33,11 +33,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
+import com.moscow.cineverse.designSystem.component.EmptyState
 import com.moscow.cineverse.designSystem.component.MovieCircularProgressBar
 import com.moscow.cineverse.designSystem.component.PillLabel
 import com.moscow.cineverse.designSystem.component.ViewMode
@@ -206,9 +208,10 @@ private fun ExploreScreenContent(
                                 modifier = Modifier.fillMaxSize(),
                                 contentAlignment = Alignment.Center
                             ) {
-                                Text(
-                                    text = stringResource(R.string.no_content_available),
-                                    color = Theme.colors.shade.primary
+                                EmptyState(
+                                icon = painterResource(Theme.icons.dueTone.search),
+                                title = stringResource(R.string.nothing_found),
+                                description = stringResource(R.string.we_searched_the_entire_universe_but_found_nothing_matching_your_query_try_something_else)
                                 )
                             }
                         }

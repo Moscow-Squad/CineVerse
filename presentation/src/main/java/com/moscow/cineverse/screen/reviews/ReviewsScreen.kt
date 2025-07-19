@@ -21,6 +21,8 @@ import com.moscow.cineverse.designSystem.component.MovieScaffold
 import com.moscow.cineverse.designSystem.component.movieSeriesDetails.MovieReviewCard
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.navigation.LocalNavController
+import com.moscow.cineverse.screen.castDetails.toFormattedBirthDate
+import com.moscow.cineverse.screen.movie_details.formatReviewDate
 import com.moscow.cinverse.presentation.R
 import org.koin.androidx.compose.koinViewModel
 
@@ -77,7 +79,7 @@ fun ReviewsContent(
                             username = review.username,
                             reviewText = review.reviewContent,
                             rating = review.rate,
-                            date = review.date,
+                            date = formatReviewDate(review.date),
                             avatar = if (review.userImage.isEmpty()) null else rememberAsyncImagePainter(
                                 model = review.userImage
                             ),

@@ -46,4 +46,5 @@
     <string name="readmore">ReadMore</string>
     <string name="you_rated_it">You rated it</string>
     <string name="tap_to_change_your_rating">Tap to change your rating</string>
+    <string name="empty_state_icon">empty state icon</string>
 </resources>
