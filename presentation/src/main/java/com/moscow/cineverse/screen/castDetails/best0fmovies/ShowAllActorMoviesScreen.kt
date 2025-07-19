@@ -12,6 +12,7 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -30,6 +31,7 @@ import com.moscow.cineverse.designSystem.component.ViewMode
 import com.moscow.cineverse.designSystem.component.ViewModeToggle
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.navigation.LocalNavController
+import com.moscow.cineverse.navigation.routes.MovieDetailsRoute
 import com.moscow.cineverse.screen.component.movie_poster_card.MoviePosterCard
 import com.moscow.cineverse.screen.model.MediaItemUi
 import com.moscow.cinverse.presentation.R
@@ -46,6 +48,16 @@ fun ShowAllActorMoviesScreen(
     ) {
     val viewModel: ShowAllActorMoviesInteractionViewModel = koinViewModel(parameters = { parametersOf(actorId, title) })
     val uiState by viewModel.uiState.collectAsState()
+
+    LaunchedEffect(viewModel) {
+        viewModel.uiEvent.collect { event ->
+            when (event) {
+                is ShowAllActorMoviesEvents.NavigateMovieDetails -> {
+                    navController.navigate(MovieDetailsRoute(event.movieId))
+                }
+            }
+        }
+    }
 
     ShowAllActorMoviesContent(
         uiState = uiState,
@@ -126,8 +138,6 @@ fun ShowAllActorMoviesContent(
                                     viewMode = uiState.viewMode,
                                     onMovieClick = interactionListener::onMovieClick
                                 )
-
-
                             }
                         }
                     }

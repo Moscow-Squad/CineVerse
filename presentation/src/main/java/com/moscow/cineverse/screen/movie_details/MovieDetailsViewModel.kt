@@ -130,8 +130,6 @@ class MovieDetailsViewModel(
             updateState { it.copy(errorMessage = error.message.toString()) }
         }
 
-
-
         override fun onBackPressed() {
             sendEvent(MovieDetailsScreenEvents.NavigateBack)
         }
@@ -139,7 +137,6 @@ class MovieDetailsViewModel(
     override fun onShowMoreCast() {
         //TODO:send event when user clicked on show more star cast
     }
-
 
     override fun onShowMoreRecommendations(movieId: Int, movieTitle: String) {
             sendEvent(MovieDetailsScreenEvents.NavigateToFullMovieList(movieId, movieTitle))
@@ -152,6 +149,9 @@ class MovieDetailsViewModel(
     override fun onAddToCollection(mediaItemId: Int) {
         sendEvent(MovieDetailsScreenEvents.AddToCollection(mediaItemId))
 
+    }
+    override fun onActorClicked(actorId: Int) {
+        sendEvent(MovieDetailsScreenEvents.NavigateCastDetails(actorId))
     }
 
     override fun showRatingBottomSheet() {

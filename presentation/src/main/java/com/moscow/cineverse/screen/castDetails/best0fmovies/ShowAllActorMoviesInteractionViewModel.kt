@@ -62,7 +62,7 @@ ShowAllActorMoviesInteractionListener {
     }
 
     override fun onMovieClick(movieId: Int) {
-
+        sendEvent(ShowAllActorMoviesEvents.NavigateMovieDetails(movieId))
     }
 
     override fun backButtonClick() {
