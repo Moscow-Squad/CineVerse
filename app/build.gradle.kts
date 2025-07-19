@@ -36,6 +36,12 @@ android {
             reset()
             include("armeabi-v7a", "arm64-v8a", "x86", "x86_64")
         }
+        density {
+            isEnable = true
+            reset()
+            exclude("ldpi", "xxhdpi", "xxxhdpi")
+            compatibleScreens("small", "normal", "large", "xlarge")
+        }
     }
 
     buildTypes {
@@ -43,7 +49,7 @@ android {
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFiles(
-                getDefaultProguardFile("proguard-android.txt"),
+                getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
             enableAndroidTestCoverage = true
