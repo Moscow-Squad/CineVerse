@@ -93,8 +93,8 @@ jobs:
           FIREBASE_SERVICE_ACCOUNT_KEY: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_KEY }}
         run: echo "$FIREBASE_SERVICE_ACCOUNT_KEY" > service-account-key.json
 
-      - name: Build Release APK
-        run: ./gradlew assembleRelease
+      - name: Build Debug APK
+        run: ./gradlew assembleDebug
 
       - name: Distribute Debug APK to Firebase App Distribution
         run: ./gradlew appDistributionUploadDebug --stacktrace
