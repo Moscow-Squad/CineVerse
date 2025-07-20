@@ -89,7 +89,7 @@ private fun CollectionsBottomSheetContent(
     onCloseBottomSheet: () -> Unit,
     onNotNow: () -> Unit,
     onLogIn: () -> Unit,
-    uiState: CollectionsBottomSheetUiState,
+    uiState: CollectionsBottomSheetScreenState,
     interactionListener: CollectionsBottomSheetInteractionListener
 ) {
     CineVerseBottomSheet(

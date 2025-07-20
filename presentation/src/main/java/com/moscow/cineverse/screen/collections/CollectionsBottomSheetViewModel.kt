@@ -13,8 +13,8 @@ class CollectionsBottomSheetViewModel(
     private val getUserCollections: GetUserCollectionsUseCase,
     private val addMediaItemToCollectionUseCase: AddMediaItemToCollectionUseCase,
     private val savedStateHandle: SavedStateHandle
-) : BaseViewModel<CollectionsBottomSheetUiState, CollectionsBottomSheetEvents>(
-    CollectionsBottomSheetUiState()
+) : BaseViewModel<CollectionsBottomSheetScreenState, CollectionsBottomSheetEvents>(
+    CollectionsBottomSheetScreenState()
 ), CollectionsBottomSheetInteractionListener {
 
     val mediaItemId: Int = savedStateHandle.get<Int>(CollectionsBottomSheetRoute.MEDIA_ITEM_ID) ?: 0

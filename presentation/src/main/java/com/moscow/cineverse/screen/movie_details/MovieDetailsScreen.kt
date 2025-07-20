@@ -307,7 +307,6 @@ fun MovieDetailsContent(
                                             viewMode = ViewMode.GRID,
                                             showRating = true,
                                             onMovieClick = {},
-                                            showGenres = false,
                                             showTitle = true,
                                             modifier = modifier,
                                             getTitleOverride = { it.title.take(15) + if (it.title.length > 15) "…" else "" }
