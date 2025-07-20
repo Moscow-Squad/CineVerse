@@ -13,6 +13,12 @@ import io.ktor.client.request.setBody
 import io.ktor.client.request.url
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpMethod
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
+import retrofit2.HttpException
+import retrofit2.Response
 
 @SuppressWarnings("kotlin:S6312")
 suspend inline fun <reified Request, reified Response> HttpClient.performCall(
@@ -57,3 +63,23 @@ private suspend fun HttpRequestBuilder.addDefaultsHeaders() {
 private suspend fun HttpRequestBuilder.addDefaultParameters() {
     parameter(API_KEY, BuildConfig.TMDB_API_KEY)
 }
+
+
+suspend inline fun <T : Any> handleApi(
+    crossinline execute: suspend () -> Response<T>
+): T {
+        try {
+            val response = execute()
+            val body = response.body()
+            if (response.isSuccessful && body != null) {
+                return body
+            } else {
+                val errorBody = response.errorBody()?.string()
+            }
+        } catch (e: HttpException) {
+            e.
+            emit(DataState.Error(e.code(), e.message()))
+        } catch (e: Throwable) {
+            emit(DataState.Error(0, e.message ?: "Unknown Error"))
+        }
+    }

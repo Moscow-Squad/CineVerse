@@ -1,10 +1,6 @@
 package com.utils
 
 import com.android.domain.exception.CineVerseException
-import io.ktor.client.plugins.ClientRequestException
-import io.ktor.client.plugins.HttpRequestTimeoutException
-import io.ktor.client.plugins.ServerResponseException
-import kotlinx.io.IOException
 
 
 abstract class BaseRepository {

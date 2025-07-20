@@ -9,4 +9,5 @@ plugins {
     alias(libs.plugins.google.firebase.firebase.perf) apply false
     alias(libs.plugins.google.firebase.appdistribution) apply false
     alias(libs.plugins.jetbrains.kotlin.jvm) apply false
+    alias(libs.plugins.kotlin.serialization) apply false
 }
