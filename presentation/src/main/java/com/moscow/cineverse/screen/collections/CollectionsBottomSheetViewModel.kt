@@ -7,7 +7,6 @@ import com.android.domain.usecase.AddMediaItemToCollectionUseCase
 import com.android.domain.usecase.GetUserCollectionsUseCase
 import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.cineverse.navigation.routes.CollectionsBottomSheetRoute
-import com.moscow.cineverse.screen.model.toUi
 
 class CollectionsBottomSheetViewModel(
     private val getUserCollections: GetUserCollectionsUseCase,

@@ -19,7 +19,7 @@ import com.android.domain.usecase.SuggestionUseCase
 import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.cineverse.designSystem.component.ViewMode
 import com.moscow.cineverse.designSystem.component.tabs.ExploreTabsPages
-import com.moscow.cineverse.screen.model.MediaItemUi
+import com.moscow.cineverse.common_ui_state.MediaItemUiState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.debounce
@@ -454,11 +454,11 @@ class ExploreViewModel(
         updateState { it.copy(viewMode = viewMode) }
     }
 
-    override fun onMediaItemClicked(mediaItemUi: MediaItemUi) {
-        if (mediaItemUi.mediaType == MediaType.Movie)
-            sendEvent(ExploreScreenEvents.MovieClicked(mediaItemUi.id))
+    override fun onMediaItemClicked(mediaItemUiState: MediaItemUiState) {
+        if (mediaItemUiState.mediaType == MediaType.Movie)
+            sendEvent(ExploreScreenEvents.MovieClicked(mediaItemUiState.id))
         else
-            sendEvent(ExploreScreenEvents.SeriesClicked(mediaItemUi.id))
+            sendEvent(ExploreScreenEvents.SeriesClicked(mediaItemUiState.id))
     }
 
     override fun onActorClick(actorId: Int) {

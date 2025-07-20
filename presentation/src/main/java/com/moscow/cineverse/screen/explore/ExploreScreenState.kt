@@ -4,7 +4,7 @@ import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.Stable
 import com.moscow.cineverse.designSystem.component.ViewMode
 import com.moscow.cineverse.designSystem.component.tabs.ExploreTabsPages
-import com.moscow.cineverse.screen.model.MediaItemUi
+import com.moscow.cineverse.common_ui_state.MediaItemUiState
 
 @Immutable
 @Stable
@@ -25,8 +25,8 @@ data class ExploreScreenState(
     val moviesGenres: List<GenreUi> = emptyList(),
     val seriesGenres: List<GenreUi> = emptyList(),
 
-    val movies: List<MediaItemUi> = emptyList(),
-    val series: List<MediaItemUi> = emptyList(),
+    val movies: List<MediaItemUiState> = emptyList(),
+    val series: List<MediaItemUiState> = emptyList(),
 
     val selectedMovieGenre: Int = 0,
     val selectedSeriesGenre: Int = 0,
@@ -55,7 +55,7 @@ data class ExploreScreenState(
             return filteredLocalSuggestions + mappedRemoteSuggestions
         }
 
-    fun fromScreenState(selectedTab: ExploreTabsPages): List<MediaItemUi> {
+    fun fromScreenState(selectedTab: ExploreTabsPages): List<MediaItemUiState> {
         return when (selectedTab) {
             ExploreTabsPages.MOVIES -> movies
             ExploreTabsPages.SERIES -> series

@@ -8,13 +8,13 @@ import com.android.domain.model.Series
 import com.moscow.cineverse.designSystem.component.tabs.ExploreTabsPages
 import com.moscow.cineverse.screen.explore.ExploreScreenState.ActorUi
 import com.moscow.cineverse.screen.explore.ExploreScreenState.GenreUi
-import com.moscow.cineverse.screen.model.MediaItemUi
+import com.moscow.cineverse.common_ui_state.MediaItemUiState
 import kotlinx.datetime.LocalDate
 
 const val YYYY_MMM_DD = "yyyy, MMM dd"
 
-fun Movie.toUi(genresList: List<GenreUi>): MediaItemUi =
-    MediaItemUi(
+fun Movie.toUi(genresList: List<GenreUi>): MediaItemUiState =
+    MediaItemUiState(
         id = id.toInt(),
         title = name,
         posterPath = posterPath,
@@ -25,8 +25,8 @@ fun Movie.toUi(genresList: List<GenreUi>): MediaItemUi =
         mediaType = MediaType.Movie
     )
 
-fun Series.toUi(genresList: List<GenreUi>): MediaItemUi =
-    MediaItemUi(
+fun Series.toUi(genresList: List<GenreUi>): MediaItemUiState =
+    MediaItemUiState(
         id = id,
         title = name,
         posterPath = posterPath,

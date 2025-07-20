@@ -1,6 +1,6 @@
 package com.moscow.cineverse.screen.movie_details
 
-import com.moscow.cineverse.screen.model.MediaItemUi
+import com.moscow.cineverse.common_ui_state.MediaItemUiState
 import kotlinx.datetime.LocalDate
 
 
@@ -13,7 +13,7 @@ data class MovieScreenState(
     val director:List<String> = emptyList(),
     val produce: List<String> = emptyList(),
     val writer: List<String> = emptyList(),
-    val recommendations:List<MediaItemUi> = emptyList(),
+    val recommendations:List<MediaItemUiState> = emptyList(),
     val isLoading: Boolean = false,
     val error: String? = null,
     val isReviewEmpty: Boolean = false,

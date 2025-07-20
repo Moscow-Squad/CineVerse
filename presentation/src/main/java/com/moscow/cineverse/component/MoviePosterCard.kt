@@ -5,18 +5,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import com.moscow.cineverse.designSystem.component.MovieCard
 import com.moscow.cineverse.designSystem.component.ViewMode
-import com.moscow.cineverse.screen.model.MediaItemUi
+import com.moscow.cineverse.common_ui_state.MediaItemUiState
 
 @Composable
 fun MoviePosterCard(
     modifier: Modifier = Modifier,
-    movie: MediaItemUi,
+    movie: MediaItemUiState,
     viewMode: ViewMode = ViewMode.GRID,
     showRating: Boolean = true,
     onMovieClick: (Int) -> Unit = {},
     titleTextAlign: TextAlign = TextAlign.Start,
     showTitle: Boolean = true,
-    getTitleOverride: ((MediaItemUi) -> String)? = null,
+    getTitleOverride: ((MediaItemUiState) -> String)? = null,
 ) {
     MovieCard(
         modifier = modifier,

@@ -33,7 +33,7 @@ import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.navigation.LocalNavController
 import com.moscow.cineverse.navigation.routes.MovieDetailsRoute
 import com.moscow.cineverse.component.MoviePosterCard
-import com.moscow.cineverse.screen.model.MediaItemUi
+import com.moscow.cineverse.common_ui_state.MediaItemUiState
 import com.moscow.cinverse.presentation.R
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
@@ -168,7 +168,7 @@ fun ShowAllActorMoviesPreview(modifier: Modifier = Modifier) {
             error = null,
             viewMode = ViewMode.GRID,
             movies = List(20) { index ->
-                MediaItemUi(
+                MediaItemUiState(
                     id = index,
                     title = "Movie $index",
                     posterPath = "https://example.com/poster_$index.jpg",

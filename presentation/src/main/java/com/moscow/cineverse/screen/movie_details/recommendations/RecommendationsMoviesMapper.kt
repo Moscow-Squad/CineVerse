@@ -7,13 +7,13 @@ import com.android.domain.model.MediaType
 import com.android.domain.model.Movie
 import com.moscow.cineverse.screen.explore.YYYY_MMM_DD
 import com.moscow.cineverse.screen.explore.formatWith
-import com.moscow.cineverse.screen.model.MediaItemUi
+import com.moscow.cineverse.common_ui_state.MediaItemUiState
 
 fun List<Movie>.toUi(
     genresList: List<GenreUi>
-): List<MediaItemUi> {
+): List<MediaItemUiState> {
     return this.map { movie ->
-        MediaItemUi(
+        MediaItemUiState(
             id = movie.id,
             title = movie.name,
             posterPath = movie.posterPath,

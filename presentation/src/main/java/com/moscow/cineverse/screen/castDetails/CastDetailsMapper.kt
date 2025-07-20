@@ -2,7 +2,7 @@ package com.moscow.cineverse.screen.castDetails
 
 import com.android.domain.model.MediaType
 import com.android.domain.model.Movie
-import com.moscow.cineverse.screen.model.MediaItemUi
+import com.moscow.cineverse.common_ui_state.MediaItemUiState
 import kotlinx.datetime.LocalDate
 
 fun LocalDate.toFormattedBirthDate(): String {
@@ -28,8 +28,8 @@ fun LocalDate.toFormattedBirthDate(): String {
     }
 }
 
-fun Movie.toMediaItemUi(): MediaItemUi {
-    return MediaItemUi(
+fun Movie.toMediaItemUi(): MediaItemUiState {
+    return MediaItemUiState(
         id = this.id,
         title = this.name,
         posterPath = this.posterPath,

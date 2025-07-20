@@ -55,7 +55,7 @@ import com.moscow.cineverse.component.MoviePosterCard
 import com.moscow.cineverse.component.NoInternetScreen
 import com.moscow.cineverse.screen.explore.component.ActorPosterCard
 import com.moscow.cineverse.screen.explore.component.SearchSuggestion
-import com.moscow.cineverse.screen.model.MediaItemUi
+import com.moscow.cineverse.common_ui_state.MediaItemUiState
 import com.moscow.cinverse.presentation.R
 import org.koin.androidx.compose.koinViewModel
 
@@ -243,7 +243,7 @@ private fun ExploreScreenContent(
                             ) {
                                 items(uiState.contentList) { item ->
                                     when (item) {
-                                        is MediaItemUi -> {
+                                        is MediaItemUiState -> {
                                             MoviePosterCard(
                                                 movie = item,
                                                 viewMode = uiState.viewMode,

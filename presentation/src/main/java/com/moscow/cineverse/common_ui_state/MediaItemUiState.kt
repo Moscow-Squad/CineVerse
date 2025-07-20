@@ -1,8 +1,8 @@
-package com.moscow.cineverse.screen.model
+package com.moscow.cineverse.common_ui_state
 
 import com.android.domain.model.MediaType
 
-data class MediaItemUi(
+data class MediaItemUiState(
     val id: Int,
     val title: String,
     val posterPath: String,
