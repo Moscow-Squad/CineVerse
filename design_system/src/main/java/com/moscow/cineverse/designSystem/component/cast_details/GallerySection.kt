@@ -1,6 +1,7 @@
 package com.moscow.cineverse.designSystem.component.cast_details
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -23,8 +24,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import coil3.compose.SubcomposeAsyncImage
 import com.example.design_system.R
+import com.example.image_viewer.component.SafeImageViewer
 import com.moscow.cineverse.designSystem.theme.Theme
 
 @Composable
@@ -50,14 +51,14 @@ fun GallerySection(
         imageUrl: String,
         modifier: Modifier
     ) {
-        SubcomposeAsyncImage(
+        SafeImageViewer(
             model = imageUrl,
             contentDescription = stringResource(R.string.cast_image),
             contentScale = ContentScale.Crop,
             modifier = modifier.then(imageFlipModifier),
-            loading = {
-                PlaceholderCard(modifier = Modifier.matchParentSize())
-            }
+            onLoading = { it.painter },
+            fallback = painterResource(if (isSystemInDarkTheme()) R.drawable.loading_dark else R.drawable.loading_light),
+            placeholder = painterResource(if (isSystemInDarkTheme()) R.drawable.loading_dark else R.drawable.loading_light)
         )
     }
 

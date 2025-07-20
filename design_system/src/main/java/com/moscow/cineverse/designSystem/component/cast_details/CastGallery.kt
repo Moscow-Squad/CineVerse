@@ -27,8 +27,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import coil3.compose.SubcomposeAsyncImage
 import com.example.design_system.R
+import com.example.image_viewer.component.SafeImageViewer
 import com.moscow.cineverse.designSystem.theme.CineVerseTheme
 import com.moscow.cineverse.designSystem.theme.Theme
 
@@ -78,14 +78,14 @@ fun CastGalleryItem(
         imageUrl: String,
         modifier: Modifier
     ) {
-        SubcomposeAsyncImage(
+        SafeImageViewer(
             model = imageUrl,
             contentDescription = stringResource(R.string.cast_image),
             contentScale = ContentScale.Crop,
             modifier = modifier.then(imageFlipModifier),
-            loading = {
-                PlaceholderCard(modifier = Modifier.matchParentSize())
-            }
+            onLoading = { it.painter },
+            fallback = painterResource(R.drawable.due_tone_image),
+            placeholder = painterResource(R.drawable.due_tone_image)
         )
     }
 
@@ -156,7 +156,6 @@ fun CastGalleryItem(
         }
     }
 }
-
 
 
 @Composable
