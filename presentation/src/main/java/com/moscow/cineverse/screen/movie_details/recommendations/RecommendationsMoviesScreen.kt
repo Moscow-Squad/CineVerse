@@ -25,7 +25,7 @@ import com.moscow.cineverse.designSystem.component.MovieScaffold
 import com.moscow.cineverse.designSystem.component.ViewMode
 import com.moscow.cineverse.designSystem.component.ViewModeToggle
 import com.moscow.cineverse.screen.castDetails.toMediaItemUi
-import com.moscow.cineverse.screen.component.movie_poster_card.MoviePosterCard
+import com.moscow.cineverse.component.MoviePosterCard
 import org.koin.androidx.compose.koinViewModel
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.res.stringResource

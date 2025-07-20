@@ -1,4 +1,4 @@
-package com.moscow.cineverse.screen.component.movie_poster_card
+package com.moscow.cineverse.component
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -15,8 +15,6 @@ fun MoviePosterCard(
     showRating: Boolean = true,
     onMovieClick: (Int) -> Unit = {},
     titleTextAlign: TextAlign = TextAlign.Start,
-    descriptionTextAlign: TextAlign = TextAlign.Start,
-    showGenres: Boolean = false,
     showTitle: Boolean = true,
     getTitleOverride: ((MediaItemUi) -> String)? = null,
 ) {

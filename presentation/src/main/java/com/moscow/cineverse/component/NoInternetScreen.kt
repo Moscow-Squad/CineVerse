@@ -1,4 +1,4 @@
-package com.moscow.cineverse.screen.component.nointernet
+package com.moscow.cineverse.component
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

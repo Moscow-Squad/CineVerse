@@ -25,7 +25,6 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -52,8 +51,8 @@ import com.moscow.cineverse.navigation.LocalNavController
 import com.moscow.cineverse.navigation.routes.CastDetailsRoute
 import com.moscow.cineverse.navigation.routes.MovieDetailsRoute
 import com.moscow.cineverse.navigation.routes.SeriesDetailsRoute
-import com.moscow.cineverse.screen.component.movie_poster_card.MoviePosterCard
-import com.moscow.cineverse.screen.component.nointernet.NoInternetScreen
+import com.moscow.cineverse.component.MoviePosterCard
+import com.moscow.cineverse.component.NoInternetScreen
 import com.moscow.cineverse.screen.explore.component.ActorPosterCard
 import com.moscow.cineverse.screen.explore.component.SearchSuggestion
 import com.moscow.cineverse.screen.model.MediaItemUi

@@ -60,10 +60,8 @@ import com.moscow.cineverse.navigation.routes.CollectionsBottomSheetRoute
 import com.moscow.cineverse.navigation.routes.CastDetailsRoute
 import com.moscow.cineverse.navigation.routes.RecommendationsRoute
 import com.moscow.cineverse.navigation.routes.ReviewsRoute
-import com.moscow.cineverse.screen.castDetails.toFormattedBirthDate
 
-import com.moscow.cineverse.screen.component.movie_poster_card.MoviePosterCard
-import com.moscow.cineverse.screen.movie_details.MovieScreenState.StarCastUi
+import com.moscow.cineverse.component.MoviePosterCard
 import org.koin.androidx.compose.koinViewModel
 
 @Composable

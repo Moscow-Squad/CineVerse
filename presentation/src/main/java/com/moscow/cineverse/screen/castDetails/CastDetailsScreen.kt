@@ -40,7 +40,7 @@ import com.moscow.cineverse.navigation.LocalNavController
 import com.moscow.cineverse.navigation.routes.CastBestOfMovieRoute
 import com.moscow.cineverse.navigation.routes.CastGalleryRoute
 import com.moscow.cineverse.navigation.routes.MovieDetailsRoute
-import com.moscow.cineverse.screen.component.movie_poster_card.MoviePosterCard
+import com.moscow.cineverse.component.MoviePosterCard
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 import com.moscow.cinverse.presentation.R as PresentationR
@@ -254,7 +254,6 @@ private fun ActorDetailsContent(
                             viewMode = ViewMode.GRID,
                             showRating = true,
                             onMovieClick = { movieId -> onMovieClick(movie) },
-                            showGenres = false,
                             showTitle = true,
                             modifier = cardModifier
                         )

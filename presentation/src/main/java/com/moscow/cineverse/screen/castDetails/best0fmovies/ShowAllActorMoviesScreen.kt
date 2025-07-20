@@ -32,7 +32,7 @@ import com.moscow.cineverse.designSystem.component.ViewModeToggle
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.navigation.LocalNavController
 import com.moscow.cineverse.navigation.routes.MovieDetailsRoute
-import com.moscow.cineverse.screen.component.movie_poster_card.MoviePosterCard
+import com.moscow.cineverse.component.MoviePosterCard
 import com.moscow.cineverse.screen.model.MediaItemUi
 import com.moscow.cinverse.presentation.R
 import org.koin.androidx.compose.koinViewModel
