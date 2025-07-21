@@ -37,11 +37,13 @@ interface ExploreService {
 
     @GET(DISCOVER_SERIES_LIST)
     suspend fun getSeriesByGenreId(
-        @Query(WITH_GENRES) genreId: Int
+        @Query(WITH_GENRES) genreId: Int,
+        @Query(PAGE) page: Int = 1
     ): Response<ApiResponse<SeriesDto>>
 
     @GET(DISCOVER_MOVIE_LIST)
     suspend fun getMoviesByGenreId(
-        @Query(WITH_GENRES) genreId: Int
+        @Query(WITH_GENRES) genreId: Int,
+        @Query(PAGE) page: Int = 1
     ): Response<ApiResponse<MovieDto>>
 }

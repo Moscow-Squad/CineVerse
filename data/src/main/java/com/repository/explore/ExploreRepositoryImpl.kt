@@ -1,42 +1,42 @@
 package com.repository.explore
 
-import com.android.domain.model.Genre
-import com.android.domain.model.Movie
-import com.android.domain.model.Series
+
 import com.android.domain.repository.ExploreRepository
 import com.mapper.toDomain
 import com.remote.source.ExploreRemoteDataSource
 import com.utils.BaseRepository
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
 
 class ExploreRepositoryImpl(
     private val exploreRemoteDataSource: ExploreRemoteDataSource,
-    private val ioDispatcher: CoroutineDispatcher,
 ) : ExploreRepository, BaseRepository() {
-    override suspend fun getSeriesGenres(): Flow<List<Genre>> = flow {
-        emit(tryToExecute { exploreRemoteDataSource.getSeriesGenres() }.map { it.toDomain() })
-    }.flowOn(ioDispatcher)
 
-    override suspend fun getMoviesGenres(): Flow<List<Genre>> = flow {
-        emit(tryToExecute { exploreRemoteDataSource.getMoviesGenres() }.map { it.toDomain() })
-    }.flowOn(ioDispatcher)
+    override suspend fun getSeriesGenres() =
+      tryToExecute {
+          exploreRemoteDataSource.getSeriesGenres()
+      }.genres.map { it.toDomain() }
 
-    override suspend fun geMovies(): Flow<List<Movie>> = flow {
-        emit(tryToExecute { exploreRemoteDataSource.getMovies() }.map { it.toDomain() })
-    }.flowOn(ioDispatcher)
 
-    override suspend fun getSeries(): Flow<List<Series>> = flow {
-        emit(tryToExecute { exploreRemoteDataSource.getSeries() }.map { it.toDomain() })
-    }.flowOn(ioDispatcher)
+    override suspend fun getMoviesGenres() = tryToExecute {
+        exploreRemoteDataSource.getMoviesGenres()
+    }.genres.map { it.toDomain() }
 
-    override suspend fun getMoviesByGenreId(genreId: Int): Flow<List<Movie>> = flow {
-        emit(tryToExecute { exploreRemoteDataSource.getMoviesByGenreId(genreId) }.map { it.toDomain() })
-    }.flowOn(ioDispatcher)
 
-    override suspend fun getSeriesByGenreId(genreId: Int): Flow<List<Series>> = flow {
-        emit(tryToExecute { exploreRemoteDataSource.getSeriesByGenreId(genreId) }.map { it.toDomain() })
-    }.flowOn(ioDispatcher)
+    override suspend fun geMovies(page:Int) = tryToExecute {
+        exploreRemoteDataSource.getMovies(page = page)
+    }.results.map { it.toDomain() }
+
+
+    override suspend fun getSeries(page: Int) = tryToExecute {
+        exploreRemoteDataSource.getSeries(page)
+    }.results.map { it.toDomain() }
+
+
+    override suspend fun getMoviesByGenreId(genreId: Int, page:Int) = tryToExecute {
+        exploreRemoteDataSource.getMoviesByGenreId(genreId,page)
+    }.results.map { it.toDomain() }
+
+    override suspend fun getSeriesByGenreId(genreId: Int, page: Int) = tryToExecute {
+        exploreRemoteDataSource.getSeriesByGenreId(genreId , page)
+    }.results.map { it.toDomain() }
+
 }

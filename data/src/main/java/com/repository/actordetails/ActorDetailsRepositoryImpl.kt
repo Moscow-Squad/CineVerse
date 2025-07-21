@@ -6,39 +6,29 @@ import com.android.domain.repository.ActorDetailsRepository
 import com.mapper.toDomain
 import com.remote.source.ActorDetailsRemoteDataSource
 import com.utils.BaseRepository
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
 
 class ActorDetailsRepositoryImpl(
     private val actorDetailsRemoteDataSource: ActorDetailsRemoteDataSource,
-    private val ioDispatcher: CoroutineDispatcher,
 ) : ActorDetailsRepository, BaseRepository() {
-    override suspend fun getActorDetails(actorId: Int): ActorDetails =
-        tryToExecute {
+
+    override suspend fun getActorDetails(actorId: Int) = tryToExecute {
             val socialMedia = actorDetailsRemoteDataSource.getSocialMedia(actorId)
             actorDetailsRemoteDataSource.getActorDetails(actorId).toDomain(
                 youtubeLink = socialMedia.youtubeId ?: "",
                 facebookLink = socialMedia.facebookId ?: "",
                 instagramLink = socialMedia.instagramId ?: ""
             )
-        }
+    }
 
-    override suspend fun getGallery(actorId: Int): Flow<List<String>> =
-        tryToExecute {
-            flow {
-                emit(actorDetailsRemoteDataSource.getGallery(actorId).map { it.toDomain() })
-            }.flowOn(ioDispatcher)
-        }
+    override suspend fun getGallery(actorId: Int) =  tryToExecute {
+              actorDetailsRemoteDataSource.getGallery(actorId).profiles.map { it.toDomain() }
+    }
 
-    override suspend fun getBestOfMovies(actorId: Int): Flow<List<Movie>> =
-        tryToExecute {
-            flow {
-                val bestMovies = actorDetailsRemoteDataSource.getBestOfMovies(actorId)
-                val bestAsCast = bestMovies.cast.mapNotNull { runCatching { it.toDomain() }.getOrNull() }
-                val bestAsCrew = bestMovies.crew .mapNotNull { runCatching { it.toDomain() }.getOrNull() }
-                emit((bestAsCast + bestAsCrew).sortedByDescending { it.rating })
-            }.flowOn(ioDispatcher)
-        }
+    override suspend fun getBestOfMovies(actorId: Int): List<Movie>  =  tryToExecute {
+
+        val bestMovies = actorDetailsRemoteDataSource.getBestOfMovies(actorId)
+        val bestAsCast = bestMovies.cast.mapNotNull { runCatching { it.toDomain() }.getOrNull() }
+        val bestAsCrew = bestMovies.crew.mapNotNull { runCatching { it.toDomain() }.getOrNull() }
+        (bestAsCast + bestAsCrew).sortedByDescending { it.rating }
+    }
 }

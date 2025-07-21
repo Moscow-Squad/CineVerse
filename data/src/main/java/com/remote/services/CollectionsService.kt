@@ -2,6 +2,7 @@ package com.remote.services
 
 import retrofit2.http.*
 import com.remote.dto.*
+import com.remote.dto.repeated_dto.MediaItemDto
 import com.utils.ACCOUNT
 import com.utils.ADD_ITEM
 import com.utils.ApiResponse

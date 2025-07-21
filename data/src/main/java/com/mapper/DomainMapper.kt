@@ -13,7 +13,7 @@ import com.remote.dto.ActorBestOfMoviesAsCrewDto
 import com.remote.dto.ActorDto
 import com.remote.dto.ActorImagesDto
 import com.remote.dto.GenreDto
-import com.remote.dto.MediaItemDto
+import com.remote.dto.repeated_dto.MediaItemDto
 import com.remote.dto.MovieDto
 import com.remote.dto.details.ActorDetailsDto
 import com.remote.dto.details.SeriesDto

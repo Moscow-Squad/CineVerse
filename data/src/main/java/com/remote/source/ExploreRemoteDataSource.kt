@@ -29,13 +29,13 @@ class ExploreRemoteDataSource(
         exploreService.getSeries(page)
     }
 
-    suspend fun getSeriesByGenreId(genreId: Int): ApiResponse<SeriesDto> = handleApi {
-        exploreService.getSeriesByGenreId(genreId)
+    suspend fun getSeriesByGenreId(genreId: Int,page:Int): ApiResponse<SeriesDto> = handleApi {
+        exploreService.getSeriesByGenreId(genreId,page)
     }
 
 
-    suspend fun getMoviesByGenreId(genreId: Int): ApiResponse<MovieDto> = handleApi {
-        exploreService.getMoviesByGenreId(genreId)
+    suspend fun getMoviesByGenreId(genreId: Int,page: Int): ApiResponse<MovieDto> = handleApi {
+        exploreService.getMoviesByGenreId(genreId,page)
     }
 
 }

@@ -12,11 +12,9 @@ import com.repository.collections.CollectionsRepositoryImpl
 import com.repository.details.DetailsRepositoryImpl
 import com.repository.explore.ExploreRepositoryImpl
 import com.repository.explore.search.SearchRepositoryImpl
-import com.repository.recommendations.RecommendationsMoviesRepositoryImpl
+import com.repository.recommendations.RecommendationRepositoryImpl
 import com.repository.reviews.ReviewsRepositoryImpl
-import kotlinx.coroutines.Dispatchers
 import org.koin.core.module.dsl.singleOf
-import org.koin.core.qualifier.named
 import org.koin.dsl.bind
 import org.koin.dsl.module
 
@@ -26,7 +24,7 @@ val repositoryModule = module {
     singleOf(::SearchRepositoryImpl) bind SearchRepository::class
     singleOf(::DetailsRepositoryImpl) bind DetailsRepository::class
     singleOf(::ReviewsRepositoryImpl) bind ReviewsRepository::class
-    singleOf(::RecommendationsMoviesRepositoryImpl) bind RecommendationsMoviesRepository::class
+    singleOf(::RecommendationRepositoryImpl) bind RecommendationsMoviesRepository::class
     singleOf(::ActorDetailsRepositoryImpl) bind ActorDetailsRepository::class
     singleOf(::CollectionsRepositoryImpl) bind CollectionsRepository::class
 

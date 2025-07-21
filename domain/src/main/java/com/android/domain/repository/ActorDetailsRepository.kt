@@ -6,6 +6,6 @@ import kotlinx.coroutines.flow.Flow
 
 interface ActorDetailsRepository {
     suspend fun getActorDetails(actorId: Int): ActorDetails
-    suspend fun getGallery(actorId: Int): Flow<List<String>>
-    suspend fun getBestOfMovies(actorId: Int): Flow<List<Movie>>
+    suspend fun getGallery(actorId: Int): List<String>
+    suspend fun getBestOfMovies(actorId: Int): List<Movie>
 }
