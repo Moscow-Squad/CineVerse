@@ -14,12 +14,8 @@ data class SeriesDetail(
     val releaseDate: LocalDate,
     val type: String,
     val creators: List<Creator>,
-    val tagline: String,
-    val status: String,
     val numberOfSeasons: Int,
     val numberOfEpisodes: Int,
-    val lastAirDate: String,
-    val nextAirDate: String,
     val seasons: List<Season>,
 )
 

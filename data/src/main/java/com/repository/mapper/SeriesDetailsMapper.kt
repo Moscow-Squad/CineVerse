@@ -38,12 +38,8 @@ fun SeriesDetailDto.toDomain(): SeriesDetail {
         },
         type = type,
         creators = createdBy.map { it.toDomain() },
-        tagline = tagline?: "",
-        status = status,
         numberOfSeasons = numberOfSeasons,
         numberOfEpisodes = numberOfEpisodes,
-        lastAirDate = lastAirDate?: "",
-        nextAirDate = nextEpisodeToAir?: "",
         seasons = seasons.map { it.toDomain() }
     )
 }

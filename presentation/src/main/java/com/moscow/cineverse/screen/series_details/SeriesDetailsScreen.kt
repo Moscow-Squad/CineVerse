@@ -154,7 +154,6 @@ fun SeriesDetailsContent(
                 .background(Theme.colors.background.screen)
         )
         {
-
             if (isLoading) {
                 CircularProgressIndicator(
                     modifier = Modifier.align(Alignment.Center),
@@ -165,7 +164,6 @@ fun SeriesDetailsContent(
                     state = scrollState,
                     modifier = Modifier.background(Theme.colors.background.screen)
                 ) {
-
                     item {
                         Text(
                             text = "Storyline",
