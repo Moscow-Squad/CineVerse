@@ -1,21 +1,17 @@
 package com.mapper
 
-import com.android.domain.model.Genre
 import com.android.domain.model.details.Creator
 import com.android.domain.model.details.Episode
 import com.android.domain.model.details.ListOfSeries
 import com.android.domain.model.details.Season
 import com.android.domain.model.details.SeriesDetail
 import com.android.domain.model.details.SeriesItem
-import com.remote.dto.GenreDto
 import com.remote.dto.details.CreatedByDto
 import com.remote.dto.details.LastEpisodeToAirDto
 import com.remote.dto.details.ListOfSeriesDto
 import com.remote.dto.details.SeasonDto
 import com.remote.dto.details.SeriesDetailDto
 import com.remote.dto.details.SeriesItemDto
-import java.text.SimpleDateFormat
-import java.util.Locale
 
 fun SeriesDetailDto.toDomain(): SeriesDetail {
     return SeriesDetail(
@@ -27,8 +23,7 @@ fun SeriesDetailDto.toDomain(): SeriesDetail {
         genres = genres?.map { it.toDomain() }?:emptyList(),
         rating = voteAverage,
         voteCount = voteCount,
-        runtime = formatRuntime(episodeRunTime?:emptyList()),
-        releaseDate = formatDate(firstAirDate),
+        releaseDate = firstAirDate,
         type = type,
         cast = emptyList(),
         creators = createdBy?.map { it.toDomain() }?:emptyList(),
@@ -46,12 +41,7 @@ fun SeriesDetailDto.toDomain(): SeriesDetail {
     )
 }
 
-private fun GenreDto.toDomain(): Genre {
-    return Genre(
-        id = id,
-        name = name
-    )
-}
+
 
 private fun CreatedByDto.toDomain(): Creator {
     return Creator(
@@ -72,7 +62,7 @@ private fun LastEpisodeToAirDto.toDomain(): Episode {
     )
 }
 
-private fun SeasonDto.toDomain(): Season {
+internal fun SeasonDto.toDomain(): Season {
     return Season(
         id = id,
         name = name,
@@ -106,27 +96,3 @@ fun SeriesItemDto.toDomain(): SeriesItem {
     )
 }
 
-private fun formatRuntime(runtimeMinutes: List<Int>): String? {
-    if (runtimeMinutes.isEmpty()) return null
-    val totalMinutes = runtimeMinutes.firstOrNull() ?: return null
-    val hours = totalMinutes / 60
-    val minutes = totalMinutes % 60
-
-    return when {
-        hours > 0 && minutes > 0 -> "${hours}h ${minutes}m"
-        hours > 0 -> "${hours}h"
-        else -> "${minutes}m"
-    }
-}
-
-private fun formatDate(dateString: String?): String? {
-    if (dateString.isNullOrEmpty()) return null
-    return try {
-        val inputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-        val outputFormat = SimpleDateFormat("yyyy, MMM dd", Locale.getDefault())
-        val date = inputFormat.parse(dateString)
-        date?.let { outputFormat.format(it) }
-    } catch (e: Exception) {
-        dateString
-    }
-}

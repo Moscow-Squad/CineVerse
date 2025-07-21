@@ -1,6 +1,6 @@
 package com.remote.dto
 
-import com.remote.dto.repeated_dto.KnownFor
+import com.remote.dto.KnownFor
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 

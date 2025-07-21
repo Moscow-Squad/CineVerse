@@ -385,6 +385,7 @@ private fun SeriesDetailsScreenPreview() {
                 seriesDetail = SeriesDetail(
                     id = 101,
                     title = "The Great Adventure",
+                    overview = "A thrilling adventure series that explores the life of a young hero on a quest to save their world.",
                     posterPath = "",
                     backdropPath = "",
                     genres = listOf(
@@ -393,12 +394,8 @@ private fun SeriesDetailsScreenPreview() {
                     ),
                     rating = 8.5,
                     voteCount = 1245,
-                    runtime = "45m per episode",
                     releaseDate = "2021-09-15",
                     type = "SERIES",
-                    overview = "A thrilling adventure series that explores the life of a young hero on a quest to save their world.",
-                    numberOfSeasons = 3,
-                    numberOfEpisodes = 30,
                     cast = listOf(
                         com.android.domain.model.details.CastMember(
                             id = 1,
@@ -422,13 +419,15 @@ private fun SeriesDetailsScreenPreview() {
                     ),
                     tagline = "",
                     status = "",
+                    numberOfSeasons = 3,
+                    numberOfEpisodes = 30,
                     lastAirDate = null,
                     nextAirDate = null,
                     lastEpisodeToAir = null,
                     nextEpisodeToAir = null,
-                    seasons = emptyList(),
+                    reviews = emptyList(),
                     similarSeries = emptyList(),
-                    reviews = emptyList()
+                    seasons = emptyList()
                 ),
                 reviews = listOf(
                     Review(
