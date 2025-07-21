@@ -28,13 +28,11 @@ val localSourceModule = module {
             .fallbackToDestructiveMigration(true)
             .build()
     }
-
-    single<MovieDao> { get<CineVerseDataBase>().movieDao() }
-    single<SearchHistoryDao> { get<CineVerseDataBase>().searchHistoryDao() }
-    single<ActorDao> { get<CineVerseDataBase>().actorDao() }
-    single<SeriesDao> { get<CineVerseDataBase>().seriesDao() }
-    single<FavouriteGenreDao> { get<CineVerseDataBase>().favouriteGenreDao() }
-
+    singleOf(CineVerseDataBase::movieDao)
+    singleOf(CineVerseDataBase::searchHistoryDao)
+    singleOf(CineVerseDataBase::actorDao)
+    singleOf(CineVerseDataBase::seriesDao)
+    singleOf(CineVerseDataBase::favouriteGenreDao)
     singleOf(::SearchLocalDateSourceImpl) bind SearchLocalDateSource::class
     singleOf(::DetailsLocalDataSourceImpl) bind DetailsLocalDataSource::class
 }

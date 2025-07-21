@@ -15,57 +15,19 @@ import com.repository.explore.search.SearchRepositoryImpl
 import com.repository.recommendations.RecommendationsMoviesRepositoryImpl
 import com.repository.reviews.ReviewsRepositoryImpl
 import kotlinx.coroutines.Dispatchers
+import org.koin.core.module.dsl.singleOf
 import org.koin.core.qualifier.named
+import org.koin.dsl.bind
 import org.koin.dsl.module
 
 val repositoryModule = module {
 
-    single<ExploreRepository> {
-        ExploreRepositoryImpl(
-            ioDispatcher = get(qualifier = named("IO")),
-            exploreRemoteDataSource = get()
-        )
-    }
-    single(named("IO")) { Dispatchers.IO }
+    singleOf(::ExploreRepositoryImpl) bind ExploreRepository::class
+    singleOf(::SearchRepositoryImpl) bind SearchRepository::class
+    singleOf(::DetailsRepositoryImpl) bind DetailsRepository::class
+    singleOf(::ReviewsRepositoryImpl) bind ReviewsRepository::class
+    singleOf(::RecommendationsMoviesRepositoryImpl) bind RecommendationsMoviesRepository::class
+    singleOf(::ActorDetailsRepositoryImpl) bind ActorDetailsRepository::class
+    singleOf(::CollectionsRepositoryImpl) bind CollectionsRepository::class
 
-    single<SearchRepository> {
-        SearchRepositoryImpl(
-            searchRemoteDataSource = get(),
-            ioDispatcher = get(qualifier = named("IO")),
-            searchLocalDateSource = get(),
-            workManager = get()
-        )
-    }
-    single<DetailsRepository> {
-        DetailsRepositoryImpl(
-            detailsRemoteDataSource = get(),
-            detailsLocalDataSource = get(),
-            ioDispatcher = get(qualifier = named("IO")),
-        )
-    }
-
-    single<ReviewsRepository> {
-        ReviewsRepositoryImpl(
-            reviewsRemoteDataSource =  get() ,
-        )
-    }
-    single<RecommendationsMoviesRepository> {
-        RecommendationsMoviesRepositoryImpl(
-            get() ,
-        )
-    }
-
-    single<ActorDetailsRepository> {
-        ActorDetailsRepositoryImpl(
-            actorDetailsRemoteDataSource = get(),
-            ioDispatcher = get(qualifier = named("IO")),
-        )
-    }
-
-    single<CollectionsRepository> {
-        CollectionsRepositoryImpl(
-            ioDispatcher = get(qualifier = named("IO")),
-            collectionsDataSource = get(),
-        )
-    }
 }

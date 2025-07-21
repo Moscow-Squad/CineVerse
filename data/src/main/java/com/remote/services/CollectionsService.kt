@@ -1,4 +1,4 @@
-package com.services
+package com.remote.services
 
 import retrofit2.http.*
 import com.remote.dto.*
@@ -11,6 +11,7 @@ import com.utils.SESSION_ID
 import retrofit2.Response
 
 interface CollectionsService {
+
     @GET("$ACCOUNT{accountId}$LISTS")
     suspend fun getMyCollections(
         @Path("accountId") accountId: Int,
@@ -28,11 +29,11 @@ interface CollectionsService {
         @Body item: AddMediaItemToCollectionRequestDto,
         @Path("collectionId") collectionId: Int,
         @Query(SESSION_ID) sessionId: String
-    ): ApiResponse<Unit>
+    ): Response<ApiResponse<Unit>>
 
     @GET("$LIST/{collectionId}")
     suspend fun getCollectionDetails(
         @Path("collectionId") collectionId: Int,
         @Query(SESSION_ID) sessionId: String
-    ): ApiResponse<MediaItemDto>
+    ): Response<ApiResponse<MediaItemDto>>
 }

@@ -11,7 +11,6 @@ import com.android.domain.repository.DetailsRepository
 import com.mapper.toDomain
 import com.remote.dto.review.RatingRequestDto
 import com.remote.source.DetailsRemoteDataSource
-import com.repository.mapper.toDomain
 import com.utils.BaseRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow

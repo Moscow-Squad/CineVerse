@@ -1,4 +1,4 @@
-package com.repository.mapper
+package com.mapper
 
 import com.local.entity.FavouriteGenreEntity
 import kotlinx.coroutines.flow.Flow

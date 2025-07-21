@@ -1,4 +1,4 @@
-package com.services
+package com.remote.services
 
 import retrofit2.http.*
 import com.remote.dto.*
@@ -13,49 +13,49 @@ import com.utils.RATING
 import com.utils.RECOMMENDATIONS
 import com.utils.SERIES
 import com.utils.SESSION_ID
+import retrofit2.Response
 
 interface DetailsService {
+
     @GET("$MOVIE{id}")
-    suspend fun getMovieDetails(@Path("id") id: Int): MovieDetailDto
+    suspend fun getMovieDetails(
+        @Path("id") id: Int
+    ): Response<MovieDetailDto>
 
     @GET("$SERIES{id}")
-    suspend fun getSeriesDetails(@Path("id") id: Int): SeriesDetailDto
+    suspend fun getSeriesDetails(
+        @Path("id") id: Int
+    ): Response<SeriesDetailDto>
 
     @GET("$MOVIE{movieID}$CREDITS")
-    suspend fun getCredits(@Path("movieID") movieID: Int): CreditsDetailsDto
+    suspend fun getCredits(
+        @Path("movieID") movieID: Int
+    ): Response<CreditsDetailsDto>
 
-    @GET
-    suspend fun getReviews(
-        @Url url: String,
-        @Query("page") page: Int
-    ): ReviewDto
 
     @POST("$MOVIE{movieId}$RATING")
     suspend fun rateMovie(
         @Path("movieId") movieId: Int,
         @Query(SESSION_ID) sessionId: String,
         @Body rating: RatingRequestDto
-    ): Unit
+    ): Response<Unit>
 
     @POST("$SERIES{seriesId}$RATING")
     suspend fun rateSeries(
         @Path("seriesId") seriesId: Int,
         @Query(SESSION_ID) sessionId: String,
         @Body rating: RatingRequestDto
-    ): Unit
+    ): Response<Unit>
 
     @GET("$SERIES$LATEST")
-    suspend fun getLatestSeasons(): List<SeriesDetailDto>
+    suspend fun getLatestSeasons()
+    : Response<SeriesDetailDto>
 
     @GET("$SERIES{id}$LISTS")
     suspend fun getListOfSeries(
         @Path("id") id: Int,
         @Query("page") page: Int
-    ): ListOfSeriesDto
+    ): Response<ListOfSeriesDto>
 
-    @GET("$MOVIE{movieID}$RECOMMENDATIONS")
-    suspend fun getRecommendations(
-        @Path("movieID") movieID: Int,
-        @Query("page") page: Int
-    ): ApiResponse<MovieDto>
+
 }

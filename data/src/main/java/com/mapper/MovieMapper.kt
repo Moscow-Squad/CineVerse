@@ -1,4 +1,4 @@
-package com.repository.mapper
+package com.mapper
 
 import com.android.domain.model.Movie
 import com.local.entity.MovieEntity

@@ -75,11 +75,11 @@ suspend inline fun <T : Any> handleApi(
                 return body
             } else {
                 val errorBody = response.errorBody()?.string()
+                throw CineVerseExceptions(errorBody)
             }
         } catch (e: HttpException) {
-            e.
-            emit(DataState.Error(e.code(), e.message()))
+            throw CineVerseExceptions(e.code())
         } catch (e: Throwable) {
-            emit(DataState.Error(0, e.message ?: "Unknown Error"))
+            throw CineVerseExceptions()
         }
     }

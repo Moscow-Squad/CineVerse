@@ -1,4 +1,4 @@
-package com.repository.mapper
+package com.mapper
 
 import com.android.domain.model.Actor
 import com.local.entity.ActorEntity

@@ -1,12 +1,8 @@
-package com.repository.mapper
+package com.mapper
 
 import com.android.domain.model.Review
 import com.remote.dto.review.Result
 import com.utils.IMAGES_URL
-import kotlinx.datetime.Clock
-import kotlinx.datetime.LocalDate
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toLocalDateTime
 
 fun Result.toDomain(): Review {
     return Review(

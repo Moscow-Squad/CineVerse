@@ -1,4 +1,4 @@
-package com.repository.mapper
+package com.mapper
 
 import com.android.domain.model.Series
 import com.local.entity.SeriesEntity

@@ -5,7 +5,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class Result(
+data class ReviewDto(
     @SerialName("author")
     val author: String?,
     @SerialName("author_details")

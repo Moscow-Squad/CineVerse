@@ -1,4 +1,4 @@
-package com.repository.mapper
+package com.mapper
 
 import com.android.domain.model.Genre
 import com.android.domain.model.details.Creator
@@ -24,14 +24,14 @@ fun SeriesDetailDto.toDomain(): SeriesDetail {
         overview = overview,
         posterPath = posterPath,
         backdropPath = backdropPath,
-        genres = genres.map { it.toDomain() },
+        genres = genres?.map { it.toDomain() }?:emptyList(),
         rating = voteAverage,
         voteCount = voteCount,
-        runtime = formatRuntime(episodeRunTime),
+        runtime = formatRuntime(episodeRunTime?:emptyList()),
         releaseDate = formatDate(firstAirDate),
         type = type,
         cast = emptyList(),
-        creators = createdBy.map { it.toDomain() },
+        creators = createdBy?.map { it.toDomain() }?:emptyList(),
         tagline = tagline,
         status = status,
         numberOfSeasons = numberOfSeasons,
@@ -42,7 +42,7 @@ fun SeriesDetailDto.toDomain(): SeriesDetail {
         nextEpisodeToAir = null,
         reviews = emptyList(),
         similarSeries = emptyList(),
-        seasons = seasons.map { it.toDomain() }
+        seasons = seasons?.map { it.toDomain() }?:emptyList()
     )
 }
 

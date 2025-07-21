@@ -1,75 +1,41 @@
 package com.remote.source
 
-import com.remote.dto.GenreDto
 import com.remote.dto.GenreResponse
 import com.remote.dto.MovieDto
 import com.remote.dto.details.SeriesDto
+import com.remote.services.ExploreService
 import com.utils.ApiResponse
-import com.utils.DISCOVER_MOVIE_LIST
-import com.utils.DISCOVER_SERIES_LIST
-import com.utils.GENRE_MOVIE_LIST
-import com.utils.GENRE_SERIES_LIST
-import com.utils.MOVIE
-import com.utils.PAGE
-import com.utils.POPULAR
-import com.utils.SERIES
-import com.utils.WITH_GENRES
-import com.utils.performCall
-import io.ktor.client.HttpClient
-import io.ktor.client.request.parameter
-import io.ktor.http.HttpMethod
+import com.utils.handleApi
+
 
 class ExploreRemoteDataSource(
-    private val client: HttpClient
+    private val exploreService: ExploreService
 ) {
-    suspend fun getMoviesGenres(): List<GenreDto> =
-        client.performCall<Unit, GenreResponse>(
-            method = HttpMethod.Companion.Get,
-            path = GENRE_MOVIE_LIST
-        ).genres
+    suspend fun getMoviesGenres(): GenreResponse = handleApi {
+        exploreService.getMoviesGenres()
+    }
 
 
-    suspend fun getSeriesGenres(): List<GenreDto> =
-        client.performCall<Unit, GenreResponse>(
-            method = HttpMethod.Companion.Get,
-            path = GENRE_SERIES_LIST
-        ).genres
+    suspend fun getSeriesGenres(): GenreResponse = handleApi {
+        exploreService.getSeriesGenres()
+    }
 
 
-    suspend fun getMovies(): List<MovieDto> =
-        client.performCall<Unit, ApiResponse<MovieDto>>(
-            method = HttpMethod.Get,
-            path = MOVIE + POPULAR
-        ) {
-            parameter(PAGE, 1)
-        }.results
+    suspend fun getMovies(page:Int): ApiResponse<MovieDto> = handleApi {
+        exploreService.getMovies(page)
+    }
+
+    suspend fun getSeries(page:Int): ApiResponse<SeriesDto> = handleApi {
+        exploreService.getSeries(page)
+    }
+
+    suspend fun getSeriesByGenreId(genreId: Int): ApiResponse<SeriesDto> = handleApi {
+        exploreService.getSeriesByGenreId(genreId)
+    }
 
 
-    suspend fun getSeries(): List<SeriesDto> =
-        client.performCall<Unit, ApiResponse<SeriesDto>>(
-            method = HttpMethod.Get,
-            path = SERIES + POPULAR
-        ) {
-            parameter(PAGE, 1)
-        }.results
-
-    suspend fun getSeriesByGenreId(genreId: Int): List<SeriesDto> =
-        client.performCall<Unit, ApiResponse<SeriesDto>>(
-            method = HttpMethod.Companion.Get,
-            path = DISCOVER_SERIES_LIST,
-            requestBuilder = {
-                parameter(WITH_GENRES, genreId)
-            }
-        ).results
-
-
-    suspend fun getMoviesByGenreId(genreId: Int): List<MovieDto> =
-        client.performCall<Unit, ApiResponse<MovieDto>>(
-            method = HttpMethod.Companion.Get,
-            path = DISCOVER_MOVIE_LIST,
-            requestBuilder = {
-                parameter(WITH_GENRES, genreId)
-            }
-        ).results
+    suspend fun getMoviesByGenreId(genreId: Int): ApiResponse<MovieDto> = handleApi {
+        exploreService.getMoviesByGenreId(genreId)
+    }
 
 }

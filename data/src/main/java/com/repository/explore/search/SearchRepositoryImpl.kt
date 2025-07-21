@@ -11,9 +11,8 @@ import com.local.DeleteHistoryQueryWorker
 import com.mapper.toDomain
 import com.mapper.toModel
 import com.remote.source.SearchRemoteDataSource
-import com.repository.mapper.toDomain
-import com.repository.mapper.toEntity
-import com.repository.mapper.toSortedGenres
+import com.mapper.toEntity
+import com.mapper.toSortedGenres
 import com.utils.BaseRepository
 import com.utils.DELETE_SEARCH_QUERY_HISTORY
 import com.utils.QUERY
