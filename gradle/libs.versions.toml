@@ -1,4 +1,5 @@
 [versions]
+accompanistWebview = "0.36.0"
 agp = "8.10.1"
 animation = "1.8.3"
 coilNetworkOkhttp = "3.2.0"
@@ -53,6 +54,7 @@ datastore = "1.1.7"
 readMoreVersion = "1.6.3"
 
 [libraries]
+accompanist-webview = { module = "com.google.accompanist:accompanist-webview", version.ref = "accompanistWebview" }
 androidx-animation = { module = "androidx.compose.animation:animation", version.ref = "animation" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
