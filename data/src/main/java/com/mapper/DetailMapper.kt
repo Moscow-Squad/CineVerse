@@ -18,36 +18,39 @@ import kotlinx.datetime.toLocalDateTime
 
 fun MovieDetailDto.toDomain(): MovieDetail {
     return MovieDetail(
-        id = id?:0,
-        title = title?:"",
-        overview = overview?:"",
+        id = id ?: 0,
+        title = title ?: "",
+        overview = overview ?: "",
         posterPath = IMAGES_URL + posterPath,
-        releaseDate = if (releaseDate == null) Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date else LocalDate.parse(releaseDate),
-        voteAverage = voteAverage?:0.0,
-        genres = genres?.map { it.name }?:emptyList(),
-        duration = runtime?:0
+        releaseDate = if (releaseDate == null) Clock.System.now()
+            .toLocalDateTime(TimeZone.currentSystemDefault()).date else LocalDate.parse(releaseDate),
+        voteAverage = voteAverage ?: 0.0,
+        genres = genres?.map { it.name } ?: emptyList(),
+        duration = runtime ?: 0
     )
 }
+
 fun CreditsDetailsDto.toDomain(): CreditsDetails =
     CreditsDetails(
         actors =
-            cast?.mapNotNull { it?.toDomain() }?:emptyList(),
+            cast?.mapNotNull { it?.toDomain() } ?: emptyList(),
         behindTheScene =
-            crew?.mapNotNull { it?.toDomain() }?:emptyList()
+            crew?.mapNotNull { it?.toDomain() } ?: emptyList()
 
     )
+
 fun CastDetailsDto.toDomain(): CastDetails =
     CastDetails(
-        id = id?:0,
-        originalName = name?:"",
-        characterName = character?:"",
-        profileImg =  profilePath?.let { IMAGES_URL + it } ?: ""
+        id = id ?: 0,
+        originalName = name ?: "",
+        characterName = character ?: "",
+        profileImg = profilePath?.let { IMAGES_URL + it } ?: ""
     )
 
-fun CrewDetailsDto.toDomain() : CrewDetails =
+fun CrewDetailsDto.toDomain(): CrewDetails =
     CrewDetails(
-        id = id?:0,
-        name = originalName?:"",
-        job = job?:"",
-        profileImage =  profilePath?.let { IMAGES_URL + it } ?: ""
+        id = id ?: 0,
+        name = originalName ?: "",
+        job = job ?: "",
+        profileImage = profilePath?.let { IMAGES_URL + it } ?: ""
     )

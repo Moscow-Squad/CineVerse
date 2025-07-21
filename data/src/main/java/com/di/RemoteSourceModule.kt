@@ -2,18 +2,14 @@ package com.di
 
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import com.remote.interceptors.CineverseInterceptor
-import com.remote.source.ActorDetailsRemoteDataSource
-import com.remote.source.CollectionsDataSource
-import com.remote.source.DetailsRemoteDataSource
-import com.remote.source.ExploreRemoteDataSource
-import com.remote.source.RecommendationsMoviesRemoteDataSource
-import com.remote.source.ReviewsRemoteDataSource
-import com.remote.source.SearchRemoteDataSource
+import com.remote.services.*
+import com.remote.source.*
 import com.utils.BASE_URL
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import org.koin.core.module.Module
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 import retrofit2.Retrofit
@@ -22,13 +18,14 @@ import java.util.concurrent.TimeUnit
 private const val TIMEOUT = 20L
 private val contentType = "application/json".toMediaType()
 
-val dataSourceModule = module {
-    single {
-        HttpLoggingInterceptor().apply {
-            level = HttpLoggingInterceptor.Level.BODY
-        }
-    }
+inline fun <reified T> Module.bindService() {
+    single { get<Retrofit>().create(T::class.java) }
+}
 
+val dataSourceModule = module {
+
+    // Networking
+    single { HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BODY } }
     singleOf(::CineverseInterceptor)
 
     single {
@@ -41,29 +38,35 @@ val dataSourceModule = module {
             .build()
     }
 
+    // Serialization
     single {
-        Json {
-            ignoreUnknownKeys = true
-        }
+        Json { ignoreUnknownKeys = true }
     }
 
+    // Retrofit
     single {
         Retrofit.Builder()
             .baseUrl(BASE_URL)
             .addConverterFactory(get<Json>().asConverterFactory(contentType))
-            .client(get<OkHttpClient>())
+            .client(get())
             .build()
     }
 
-    single {
-        get<Retrofit>().create<>()
-    }
+    // Retrofit Services
+    bindService<ActorDetailsService>()
+    bindService<ExploreService>()
+    bindService<CollectionsService>()
+    bindService<DetailsService>()
+    bindService<RecommendationsService>()
+    bindService<ReviewsService>()
+    bindService<SearchService>()
 
+    // Remote Data Sources
     singleOf(::SearchRemoteDataSource)
     singleOf(::ExploreRemoteDataSource)
     singleOf(::ActorDetailsRemoteDataSource)
     singleOf(::DetailsRemoteDataSource)
     singleOf(::CollectionsDataSource)
     singleOf(::ReviewsRemoteDataSource)
-    singleOf(::RecommendationsMoviesRemoteDataSource)
+    singleOf(::RecommendationsRemoteDataSource)
 }

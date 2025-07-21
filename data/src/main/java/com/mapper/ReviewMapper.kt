@@ -1,10 +1,10 @@
 package com.mapper
 
 import com.android.domain.model.Review
-import com.remote.dto.review.Result
+import com.remote.dto.review.ReviewDto
 import com.utils.IMAGES_URL
 
-fun Result.toDomain(): Review {
+fun ReviewDto.toDomain(): Review {
     return Review(
         id = this.id ?: "",
         author = this.author ?: "",
