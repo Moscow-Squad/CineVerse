@@ -1,5 +1,6 @@
 package com.moscow.cineverse.screen.series_details
 
+import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import com.android.domain.usecase.GetReviewsPageUseCase
 import com.android.domain.usecase.RateSeriesUseCase
@@ -16,7 +17,7 @@ class SeriesDetailsViewModel(
     private val getListOfSeriesUseCase: GetListOfSeriesUseCase,
     private val savedStateHandle: SavedStateHandle,
     private val rateSeriesUseCase : RateSeriesUseCase
-) : BaseViewModel<SeriesDetailsUiState, SeriesDetailsEvents>(SeriesDetailsUiState()),
+) : BaseViewModel<SeriesDetailsScreenState, SeriesDetailsEvents>(SeriesDetailsScreenState()),
     SeriesInteractionListener {
 
     val seriesId = savedStateHandle.get<Int>(SeriesDetailsRoute.SERIES_ID) ?: 0
@@ -30,7 +31,8 @@ class SeriesDetailsViewModel(
         launchWithResult(
             action = { getSeriesDetailUseCase(seriesId) },
             onSuccess = { detail ->
-                updateState { it.copy(seriesDetail = detail, isLoading = false) }
+                Log.d("ddddd", detail.toString())
+                updateState { it.copy(seriesDetail = detail.ui(), isLoading = false) }
             },
             onError = { error ->
                 updateState { it.copy(error = error.message, isLoading = false) }

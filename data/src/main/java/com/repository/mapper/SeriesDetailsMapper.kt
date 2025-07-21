@@ -14,6 +14,11 @@ import com.remote.dto.details.ListOfSeriesDto
 import com.remote.dto.details.SeasonDto
 import com.remote.dto.details.SeriesDetailDto
 import com.remote.dto.details.SeriesItemDto
+import com.utils.IMAGES_URL
+import kotlinx.datetime.Clock
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -22,26 +27,23 @@ fun SeriesDetailDto.toDomain(): SeriesDetail {
         id = id,
         title = name,
         overview = overview,
-        posterPath = posterPath,
-        backdropPath = backdropPath,
+        posterPath = IMAGES_URL + posterPath.orEmpty(),
         genres = genres.map { it.toDomain() },
-        rating = voteAverage,
-        voteCount = voteCount,
-        runtime = formatRuntime(episodeRunTime),
-        releaseDate = formatDate(firstAirDate),
+        rating = voteAverage.toFloat(),
+        runtime = formatRuntime(episodeRunTime).toString(),
+        releaseDate = if (firstAirDate != null){
+            LocalDate.parse(firstAirDate)
+        } else  {
+            Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
+        },
         type = type,
-        cast = emptyList(),
         creators = createdBy.map { it.toDomain() },
-        tagline = tagline,
+        tagline = tagline?: "",
         status = status,
         numberOfSeasons = numberOfSeasons,
         numberOfEpisodes = numberOfEpisodes,
-        lastAirDate = lastAirDate,
-        nextAirDate = nextEpisodeToAir,
-        lastEpisodeToAir = lastEpisodeToAir?.toDomain(),
-        nextEpisodeToAir = null,
-        reviews = emptyList(),
-        similarSeries = emptyList(),
+        lastAirDate = lastAirDate?: "",
+        nextAirDate = nextEpisodeToAir?: "",
         seasons = seasons.map { it.toDomain() }
     )
 }
@@ -76,9 +78,11 @@ private fun SeasonDto.toDomain(): Season {
     return Season(
         id = id,
         name = name,
-        airDate = airDate,
+        airDate = airDate ?: "",
         episodeCount = episodeCount,
-        posterPath = posterPath
+        posterPath = IMAGES_URL + posterPath.orEmpty(),
+        overview = overview,
+        rate = voteAverage.toFloat()
     )
 }
 

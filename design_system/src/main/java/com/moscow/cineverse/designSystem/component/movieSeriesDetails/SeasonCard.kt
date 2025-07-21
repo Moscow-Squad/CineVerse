@@ -97,7 +97,7 @@ fun SeasonCard(
                 verticalArrangement = Arrangement.spacedBy(4.dp)
             ) {
                 Text(
-                    text = stringResource(R.string.season, season.seasonNumber),
+                    text = season.seasonNumber,
                     style = Theme.textStyle.body.medium.medium,
                     color = Theme.colors.shade.primary
                 )
@@ -127,7 +127,7 @@ fun SeasonCard(
                 icon = R.drawable.due_tone_star,
                 iconTint = Theme.colors.additional.primary.yellow,
                 iconDescription = stringResource(R.string.rate_icon),
-                title = season.rate.toString()
+                title = season.rate
             )
             SeasonInfo(
                 icon = R.drawable.due_tone_video_library,
@@ -184,12 +184,12 @@ private fun SeasonCardPreview() {
         ) {
             SeasonCard(
                 season = Season(
-                    seasonNumber = 1,
+                    seasonNumber = "Season 1",
                     episodeCount = 10,
                     airDate = "2019",
                     posterUrl = "https://www.dreamworks.com/storage/cms-uploads/the-wild-robot-poster4.jpg",
                     caption = "Season 1 of the series",
-                    rate = 8.5f
+                    rate = "8.5"
                 )
             )
         }

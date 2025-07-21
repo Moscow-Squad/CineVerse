@@ -31,7 +31,7 @@ class DetailsRepositoryImpl(
 
     override suspend fun getSeriesDetail(seriesId: Int): SeriesDetail {
         val res = detailsRemoteDataSource.getSeriesDetails(seriesId)
-        res.genres?.forEach { detailsLocalDataSource.insertFavouriteGenre(it.id) }
+        res.genres.forEach { detailsLocalDataSource.insertFavouriteGenre(it.id) }
         return res.toDomain()
     }
 
