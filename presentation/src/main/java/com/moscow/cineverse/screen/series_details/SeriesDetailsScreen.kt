@@ -22,6 +22,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.ParagraphStyle
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -117,7 +118,7 @@ fun SeriesDetailsContent(
         }
     }
     Column {
-        MovieAppBar()
+        MovieAppBar(backButtonClick = {}, showBackButton = true)
         SharedTransitionLayout {
             AnimatedContent(
                 targetState = isCollapsed,
@@ -134,9 +135,7 @@ fun SeriesDetailsContent(
                         type = detail.type,
                         animatedVisibilityScope = this@AnimatedContent,
                         sharedTransitionScope = this@SharedTransitionLayout,
-                        onSaveClick = {
-                            interactionListener.addToCollection()
-                        }
+                        onSaveClick = { interactionListener.addToCollection() }
                     )
                 } else {
                     MainMovieCard(
@@ -296,7 +295,6 @@ fun SeriesDetailsContent(
                                 )
                             )
                         }
-
                         items(reviews) { review ->
                             MovieReviewCard(
                                 review.author,

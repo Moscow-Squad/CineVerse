@@ -79,7 +79,7 @@ class SeriesDetailsViewModel(
         )
     }
 
-    fun showRatingBottomSheet() {
+    override fun showRatingBottomSheet() {
         updateState { it.copy(showRatingBottomSheet = true) }
     }
 
@@ -107,8 +107,7 @@ class SeriesDetailsViewModel(
        )
     }
 
-
     override fun addToCollection() {
-        uiState.value.seriesDetail?.let { sendEvent(SeriesDetailsEvents.AddToCollection(it.id)) }
+        uiState.value.seriesDetail.let { sendEvent(SeriesDetailsEvents.AddToCollection(it.id)) }
     }
 }
