@@ -43,4 +43,8 @@
     <string name="password_can_only_4_100_characters">كلمة المرور يجب أن تتكون من 4 إلى 100 حرف فقط</string>
     <string name="sorry_we_cannot_check_your_information_now">عذرا ، لا يمكننا التحقق من معلوماتك الان</string>
     <string name="sorry_you_cannot_enter_as_a_guest_now_try_to_create_a_new_account">عذرا ، لا يمكنك الدخول كضيف الان ، حاول إنشاء حساب جديد</string>
+    <string name="let_s_get_you_set_up_we_ll_take_you_to_the_website_to_create_your_account">هيا بنا لتكون جاهز! سننقلك إلى الموقع الإلكتروني لإنشاء حسابك.</string>
+    <string name="go_to_website">الذهاب الى الموقع</string>
+    <string name="cancel">إلغاء</string>
+    <string name="join_cineverse">CineVerse انضم الى</string>
 </resources>

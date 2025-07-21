@@ -109,6 +109,11 @@ class LoginViewModel(
     }
 
     override fun onClickCreateNewAccount() {
+        updateState { it.copy(showSignUpBottomSheet = true) }
+    }
+
+    override fun onDismissOrCancelSignUpBottomSheet() {
+        updateState { it.copy(showSignUpBottomSheet = false) }
     }
 
     private fun validateInputWithDelay(

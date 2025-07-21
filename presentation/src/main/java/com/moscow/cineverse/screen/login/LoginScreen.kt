@@ -1,6 +1,7 @@
 package com.moscow.cineverse.screen.login
 
 import android.widget.Toast
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -32,7 +33,9 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.design_system.R
 import com.moscow.cineverse.designSystem.component.AppTextField
+import com.moscow.cineverse.designSystem.component.MessageInfoBox
 import com.moscow.cineverse.designSystem.component.MovieButton
+import com.moscow.cineverse.designSystem.component.bottomsheet.CineVerseBottomSheet
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.navigation.LocalNavController
 import com.moscow.cineverse.navigation.routes.ExploreRoute
@@ -184,6 +187,30 @@ private fun LoginScreenContent(
             textPadding = PaddingValues(horizontal = 16.dp),
             onClick = interactionListener::onClickCreateNewAccount,
             buttonColor = Theme.colors.button.secondary,
+        )
+        AnimatedVisibility(state.showSignUpBottomSheet) {
+            SignUpBottomSheet(interactionListener)
+        }
+    }
+}
+
+@Composable
+fun SignUpBottomSheet(interactionListener: LoginInteractionListener){
+    CineVerseBottomSheet(
+        onClose = interactionListener::onDismissOrCancelSignUpBottomSheet,
+        expanded = false,
+        onDismissRequest = interactionListener::onDismissOrCancelSignUpBottomSheet,
+        showCancelIcon = false,
+    ) {
+        MessageInfoBox(
+            title = stringResource(com.moscow.cinverse.presentation.R.string.join_cineverse),
+            description = stringResource(com.moscow.cinverse.presentation.R.string.let_s_get_you_set_up_we_ll_take_you_to_the_website_to_create_your_account),
+            icon = painterResource(R.drawable.due_tone_link_minimalistic),
+            showButtonsGroup = true,
+            firstButtonText = stringResource(com.moscow.cinverse.presentation.R.string.cancel),
+            onClickFirstButton = interactionListener::onDismissOrCancelSignUpBottomSheet,
+            secondButtonText = stringResource(com.moscow.cinverse.presentation.R.string.go_to_website),
+            onClickSecondButton = {}
         )
     }
 }

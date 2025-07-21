@@ -6,4 +6,5 @@ data class LoginScreenState(
     val usernameError: String? = null,
     val passwordError: String? = null,
     val isLoading: Boolean = false,
+    val showSignUpBottomSheet: Boolean = false
 )

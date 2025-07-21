@@ -6,4 +6,5 @@ interface LoginInteractionListener {
     fun onClickLogin()
     fun onClickJoinAsGuest()
     fun onClickCreateNewAccount()
+    fun onDismissOrCancelSignUpBottomSheet()
 }
