@@ -14,7 +14,7 @@ import com.utils.NEW_SESSION
 import com.utils.NEW_TOKEN
 import com.utils.PASSWORD
 import com.utils.REQUEST_TOKEN
-import com.utils.SESSION_ID
+import com.utils.SESSION_ID_WITH_EQUAL
 import com.utils.USERNAME
 import com.utils.performCall
 import io.ktor.client.HttpClient
@@ -72,7 +72,7 @@ class LoginRemoteDataSource(
     suspend fun getUserId(sessionId: String): Long{
         val response = client.performCall<Unit, AccountDto>(
             method = HttpMethod.Companion.Get,
-            path = "$ACCOUNT?$SESSION_ID$sessionId"
+            path = "$ACCOUNT?$SESSION_ID_WITH_EQUAL$sessionId"
         )
         if (response.success == false){
             throw CineVerseExceptions.AuthenticationException(response.statusMessage ?: "")

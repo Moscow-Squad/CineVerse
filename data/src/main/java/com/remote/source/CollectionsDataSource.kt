@@ -4,7 +4,7 @@ import com.remote.dto.AddMediaItemToCollectionRequestDto
 import com.remote.dto.CollectionDto
 import com.remote.dto.CreateCollectionDto
 import com.remote.dto.MediaItemDto
-import com.utils.ACCOUNT
+import com.utils.ACCOUNT_WITH_SLASH
 import com.utils.ADD_ITEM
 import com.utils.ApiResponse
 import com.utils.LIST
@@ -21,7 +21,7 @@ class CollectionsDataSource(
     suspend fun getMyCollections(accountId: Int, sessionId: String): List<CollectionDto> =
         httpClient.performCall<Unit, ApiResponse<CollectionDto>>(
             method = HttpMethod.Get,
-            path = "$ACCOUNT${accountId}$LISTS",
+            path = "$ACCOUNT_WITH_SLASH${accountId}$LISTS",
             requestBuilder = {
                 parameter(SESSION_ID, sessionId)
             }
