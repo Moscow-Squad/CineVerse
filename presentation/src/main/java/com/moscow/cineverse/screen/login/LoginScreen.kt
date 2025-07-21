@@ -34,13 +34,14 @@ import com.example.design_system.R
 import com.moscow.cineverse.designSystem.component.AppTextField
 import com.moscow.cineverse.designSystem.component.MovieButton
 import com.moscow.cineverse.designSystem.theme.Theme
+import com.moscow.cineverse.navigation.LocalNavController
 import com.moscow.cineverse.navigation.routes.ExploreRoute
 import com.moscow.cineverse.navigation.routes.LoginRoute
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun LoginScreen(
-    navController: NavHostController,
+    navController: NavHostController = LocalNavController.current,
     viewModel: LoginViewModel = koinViewModel()
 ) {
     val state by viewModel.uiState.collectAsState()

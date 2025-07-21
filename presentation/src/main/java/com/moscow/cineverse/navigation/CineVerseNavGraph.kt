@@ -8,11 +8,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.staticCompositionLocalOf
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
@@ -54,6 +49,7 @@ fun CineVerseNavGraph(
     ) {
         NavHost(navController = navController, startDestination = startDestination) {
             exploreRoute()
+            loginRoute()
             RecommendationsRoute()
             ReviewsRoute()
             CastDetailsRoute()
