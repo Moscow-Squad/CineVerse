@@ -11,10 +11,8 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
@@ -26,8 +24,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.Button
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -37,11 +33,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavHostController
+import com.moscow.cineverse.designSystem.component.EmptyState
+import com.moscow.cineverse.designSystem.component.MovieCircularProgressBar
 import com.moscow.cineverse.designSystem.component.PillLabel
 import com.moscow.cineverse.designSystem.component.ViewMode
 import com.moscow.cineverse.designSystem.component.ViewModeToggle
@@ -52,11 +51,12 @@ import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.navigation.LocalNavController
 import com.moscow.cineverse.navigation.routes.CastDetailsRoute
 import com.moscow.cineverse.navigation.routes.MovieDetailsRoute
-import com.moscow.cineverse.screen.component.movie_poster_card.MediaItemUi
+import com.moscow.cineverse.navigation.routes.SeriesDetailsRoute
 import com.moscow.cineverse.screen.component.movie_poster_card.MoviePosterCard
+import com.moscow.cineverse.screen.component.nointernet.NoInternetScreen
 import com.moscow.cineverse.screen.explore.component.ActorPosterCard
 import com.moscow.cineverse.screen.explore.component.SearchSuggestion
-import com.moscow.cineverse.screen.movie_details.MovieDetailsScreen
+import com.moscow.cineverse.screen.model.MediaItemUi
 import com.moscow.cinverse.presentation.R
 import org.koin.androidx.compose.koinViewModel
 
@@ -97,9 +97,15 @@ private fun handleEffects(
                 MovieDetailsRoute(event.movieId)
             )
         }
+
         ExploreScreenEvents.RefreshRequested -> {}
         is ExploreScreenEvents.TabSelected -> {}
         is ExploreScreenEvents.ViewModeChanged -> {}
+        is ExploreScreenEvents.SeriesClicked -> {
+            navController.navigate(
+                SeriesDetailsRoute(event.seriesId)
+            )
+        }
     }
 }
 
@@ -161,7 +167,7 @@ private fun ExploreScreenContent(
                     trailingIcon = {
                         VoiceRecognitionIcon(
                             modifier = Modifier.size(20.dp),
-                            onResult = { interactionListener.onSearchValueChange(it.toString()) },
+                            onResult = { interactionListener.onSearchWordDetected(it) },
                             onError = {}
                         )
                     }
@@ -179,7 +185,12 @@ private fun ExploreScreenContent(
                                 modifier = Modifier.fillMaxSize(),
                                 contentAlignment = Alignment.Center
                             ) {
-                                CircularProgressIndicator()
+                                MovieCircularProgressBar(
+                                    gradientColors = listOf(
+                                        Theme.colors.brand.primary,
+                                        Theme.colors.brand.tertiary
+                                    )
+                                )
                             }
                         }
 
@@ -188,20 +199,7 @@ private fun ExploreScreenContent(
                                 modifier = Modifier.fillMaxSize(),
                                 contentAlignment = Alignment.Center
                             ) {
-                                Column(
-                                    horizontalAlignment = Alignment.CenterHorizontally
-                                ) {
-                                    Text(
-                                        text = uiState.errorMessage,
-                                        color = Theme.colors.shade.primary
-                                    )
-                                    Spacer(modifier = Modifier.height(16.dp))
-                                    Button(
-                                        onClick = interactionListener::onRefresh
-                                    ) {
-                                        Text(stringResource(R.string.retry))
-                                    }
-                                }
+                                NoInternetScreen(onRetry = interactionListener::onRefresh)
                             }
                         }
 
@@ -210,9 +208,10 @@ private fun ExploreScreenContent(
                                 modifier = Modifier.fillMaxSize(),
                                 contentAlignment = Alignment.Center
                             ) {
-                                Text(
-                                    text = stringResource(R.string.no_content_available),
-                                    color = Theme.colors.shade.primary
+                                EmptyState(
+                                icon = painterResource(Theme.icons.dueTone.search),
+                                title = stringResource(R.string.nothing_found),
+                                description = stringResource(R.string.we_searched_the_entire_universe_but_found_nothing_matching_your_query_try_something_else)
                                 )
                             }
                         }
@@ -249,20 +248,21 @@ private fun ExploreScreenContent(
                                             MoviePosterCard(
                                                 movie = item,
                                                 viewMode = uiState.viewMode,
-                                                onMovieClick = interactionListener::onMovieClick
+                                                onMovieClick = {
+                                                    interactionListener.onMediaItemClicked(
+                                                        item
+                                                    )
+                                                }
                                             )
                                         }
-
                                         is ExploreScreenState.ActorUi -> {
                                             ActorPosterCard(
                                                 actor = item,
                                                 viewMode = uiState.viewMode,
-                                                onActorClicked = interactionListener::onActorClick,
-                                                modifier = Modifier.size(98.dp)
+                                                onActorClicked = interactionListener::onActorClick
                                             )
                                         }
                                     }
-
                                 }
                             }
                         }

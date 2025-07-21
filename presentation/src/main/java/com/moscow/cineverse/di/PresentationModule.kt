@@ -1,8 +1,11 @@
 package com.moscow.cineverse.di
 
+import com.android.domain.usecase.AddMediaItemToCollectionUseCase
+import com.android.domain.usecase.AddNewCollectionUseCase
 import com.android.domain.usecase.CacheSearchQueryUseCase
 import com.android.domain.usecase.ClearSearchHistoryUseCase
 import com.android.domain.usecase.GenreUseCase
+import com.android.domain.usecase.GetCollectionDetailsUseCase
 import com.android.domain.usecase.GetCreditsUseCase
 import com.android.domain.usecase.GetLocalSuggestions
 import com.android.domain.usecase.GetMovieByGenreIdUseCase
@@ -12,6 +15,9 @@ import com.android.domain.usecase.GetRecommendationsUseCase
 import com.android.domain.usecase.GetReviewsPageUseCase
 import com.android.domain.usecase.GetSeriesByGenreIdUseCase
 import com.android.domain.usecase.GetSeriesUseCase
+import com.android.domain.usecase.GetUserCollectionsUseCase
+import com.android.domain.usecase.RateMovieUseCase
+import com.android.domain.usecase.RateSeriesUseCase
 import com.android.domain.usecase.SearchUseCase
 import com.android.domain.usecase.SuggestionUseCase
 import com.android.domain.usecase.actordetails.GetActorBestOfMovies
@@ -49,6 +55,12 @@ val useCases = module {
     singleOf(::CacheSearchQueryUseCase)
     singleOf(::ClearSearchHistoryUseCase)
 
+    single { GetUserCollectionsUseCase(get()) }
+    single { AddNewCollectionUseCase(get()) }
+    single { AddMediaItemToCollectionUseCase(get()) }
+    single { GetCollectionDetailsUseCase(get()) }
+    single { RateMovieUseCase(get()) }
+    single { RateSeriesUseCase(get()) }
     single { LoginWithUsernameAndPasswordUseCase(get()) }
     single { LoginAsGuestUseCase(get()) }
 }

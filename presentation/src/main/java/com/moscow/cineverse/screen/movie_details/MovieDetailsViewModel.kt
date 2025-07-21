@@ -2,6 +2,7 @@ package com.moscow.cineverse.screen.movie_details
 
 
 import android.util.Log
+import androidx.lifecycle.SavedStateHandle
 import com.android.domain.model.CreditsDetails
 import com.android.domain.model.Movie
 import com.android.domain.model.Review
@@ -10,17 +11,29 @@ import com.android.domain.usecase.GetCreditsUseCase
 import com.android.domain.usecase.GetMovieDetailUseCase
 import com.android.domain.usecase.GetRecommendationsUseCase
 import com.android.domain.usecase.GetReviewsPageUseCase
+import com.android.domain.usecase.RateMovieUseCase
 import com.moscow.cineverse.base.BaseViewModel
+import com.moscow.cineverse.navigation.routes.MovieDetailsRoute
 
 
 class MovieDetailsViewModel(
     private val getMovieDetailsUseCase: GetMovieDetailUseCase,
     private val getReviewsPageUseCase: GetReviewsPageUseCase,
     private val getCreditsUseCase: GetCreditsUseCase,
-    private val getRecommendationsUseCase: GetRecommendationsUseCase
+    private val getRecommendationsUseCase: GetRecommendationsUseCase,
+    private val rateMovieUseCase: RateMovieUseCase,
+    private val saveStateHandle: SavedStateHandle,
 ) : BaseViewModel<MovieScreenState, MovieDetailsScreenEvents>(MovieScreenState()),
     MovieDetailsInteractionListener {
 
+    private val movieId = saveStateHandle.get<Int>(MovieDetailsRoute.MOVIE_ID) ?: 0
+
+    init {
+        getMovieDetails(movieId)
+        getReviews(movieId)
+        getCredits(movieId)
+        getRecommendations(movieId)
+    }
     fun getMovieDetails(movieID: Int) {
         launchWithResult(
             action = { getMovieDetailsUseCase.invoke(movieID) },
@@ -102,21 +115,20 @@ class MovieDetailsViewModel(
         }
 
         private fun getMovieDetailsFailed(error: Throwable) {
-            updateState { it.copy(errorMessage = error.message.toString()) }
+            updateState { it.copy(errorMessage = error.message.toString(), shouldShowError = true) }
         }
 
         private fun getReviewFailed(error: Throwable) {
-            updateState { it.copy(errorMessage = error.message.toString()) }
+            updateState { it.copy(errorMessage = error.message.toString(), shouldShowError = true) }
         }
 
         private fun getCreditsFailed(error: Throwable) {
-            updateState { it.copy(errorMessage = error.message.toString()) }
+            updateState { it.copy(errorMessage = error.message.toString(), shouldShowError = true) }
         }
 
         private fun getRecommendationsFailed(error: Throwable) {
-            updateState { it.copy(errorMessage = error.message.toString()) }
+            updateState { it.copy(errorMessage = error.message.toString(), shouldShowError = true) }
         }
-
 
         override fun onBackPressed() {
             sendEvent(MovieDetailsScreenEvents.NavigateBack)
@@ -126,7 +138,6 @@ class MovieDetailsViewModel(
         //TODO:send event when user clicked on show more star cast
     }
 
-
     override fun onShowMoreRecommendations(movieId: Int, movieTitle: String) {
             sendEvent(MovieDetailsScreenEvents.NavigateToFullMovieList(movieId, movieTitle))
         }
@@ -135,5 +146,44 @@ class MovieDetailsViewModel(
             sendEvent(MovieDetailsScreenEvents.NavigateToFullReviews(movieId))
         }
 
+    override fun onAddToCollection(mediaItemId: Int) {
+        sendEvent(MovieDetailsScreenEvents.AddToCollection(mediaItemId))
 
+    }
+    override fun onActorClicked(actorId: Int) {
+        sendEvent(MovieDetailsScreenEvents.NavigateCastDetails(actorId))
+    }
+
+    override fun showRatingBottomSheet() {
+        updateState { it.copy(showRatingBottomSheet = true) }
+    }
+
+    override fun onDismissOrCancelRatingBottomSheet() {
+        updateState { it.copy(showRatingBottomSheet = false) }
+    }
+
+    override fun onRatingSubmit(rating: Int, movieId: Int) {
+        launchWithFlow(
+            flowAction = { rateMovieUseCase.rateMovie(rating.toFloat(), movieId) },
+            onSuccess = {
+                updateState { it.copy(
+                    starsRating = rating,
+                    showRatingBottomSheet = false,
+                    isLoading = false
+                ) }
+            },
+            onStart = {
+                updateState { it.copy(isLoading = true) }
+            },
+            onError = {
+                updateState {
+                    it.copy(
+                        starsRating = rating,
+                        showRatingBottomSheet = false,
+                        isLoading = false
+                    )
+                }
+            },
+        )
+    }
 }

@@ -8,6 +8,7 @@ sealed class ExploreScreenEvents {
     data class GenreSelected(val genre: Genre) : ExploreScreenEvents()
     data class ViewModeChanged(val viewMode: ViewMode) : ExploreScreenEvents()
     data class MovieClicked(val movieId: Int) : ExploreScreenEvents()
+    data class SeriesClicked(val seriesId: Int) : ExploreScreenEvents()
     data class TabSelected(val tab: ExploreTabsPages) : ExploreScreenEvents()
     object RefreshRequested : ExploreScreenEvents()
     object LoadData : ExploreScreenEvents()

@@ -1,18 +1,19 @@
 package com.moscow.cineverse.screen.movie_details
 
-import com.android.domain.model.Actor
 import com.android.domain.model.CastDetails
 import com.android.domain.model.CrewDetails
 import com.android.domain.model.Genre
+import com.android.domain.model.MediaType
 import com.android.domain.model.Movie
 import com.android.domain.model.Review
 import com.android.domain.model.details.MovieDetail
-import com.moscow.cineverse.screen.component.movie_poster_card.MediaItemUi
 import com.moscow.cineverse.screen.explore.ExploreScreenState.GenreUi
+import com.moscow.cineverse.screen.model.MediaItemUi
 import com.moscow.cineverse.screen.movie_details.MovieScreenState.ReviewUi
 import com.moscow.cineverse.screen.movie_details.MovieScreenState.StarCastUi
 import kotlinx.datetime.LocalDate
-import kotlinx.datetime.toLocalDate
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 
 fun MovieDetail.toUi(): MovieScreenState.MovieDetailsUi =
@@ -85,6 +86,16 @@ fun LocalDate.toFormattedReleasedDate(): String {
         "$this"
     }
 }
+fun formatReviewDate(dateString: String): String {
+    return try {
+        val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
+        val outputFormat = SimpleDateFormat("MMM dd, yyyy", Locale.getDefault())
+        val date = inputFormat.parse(dateString)
+        date?.let { outputFormat.format(it) } ?: dateString
+    } catch (e: Exception) {
+        dateString
+    }
+}
 
 fun Movie.toMediaItemUi(): MediaItemUi {
     return MediaItemUi(
@@ -94,7 +105,8 @@ fun Movie.toMediaItemUi(): MediaItemUi {
         rating = this.rating,
         genres = emptyList(),
         releaseDate = this.releaseDate.toString(),
-        duration = ""
+        duration = "",
+        mediaType = MediaType.Movie
     )
 }
 

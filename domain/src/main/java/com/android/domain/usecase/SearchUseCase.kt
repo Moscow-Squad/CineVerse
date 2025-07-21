@@ -5,10 +5,6 @@ import com.android.domain.repository.SearchRepository
 class SearchUseCase(
     private val searchRepository: SearchRepository,
 ) {
-    suspend fun searchMulti(
-        query: String,
-    ) = searchRepository.searchMulti(query)
-
     suspend fun searchMovie(
         query: String,
         isHistory: Boolean = false

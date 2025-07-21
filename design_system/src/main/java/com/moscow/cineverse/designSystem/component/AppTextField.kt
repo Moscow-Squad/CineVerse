@@ -54,8 +54,8 @@ fun AppTextField(
     enabled: Boolean = true,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
-    label : String? = null,
-    forgotPasswordClick : (() -> Unit)? = null
+    label: String? = null,
+    forgotPasswordClick: (() -> Unit)? = null
 ) {
     var passwordVisible by remember { mutableStateOf(true) }
 
@@ -66,7 +66,7 @@ fun AppTextField(
         Row(
             horizontalArrangement = Arrangement.Start,
             modifier = Modifier.fillMaxWidth()
-        ){
+        ) {
             if (label != null) {
                 Text(
                     text = label,
@@ -83,13 +83,20 @@ fun AppTextField(
                 .fillMaxWidth()
                 .background(Theme.colors.background.card, RoundedCornerShape(Theme.radius.large)),
             textStyle = Theme.textStyle.body.medium.medium,
-            placeholder = placeholder?.let { { Text(it, color = Theme.colors.shade.tertiary
-            , style = Theme.textStyle.body.medium.regular) } },
+            placeholder = placeholder?.let {
+                {
+                    Text(
+                        text = it,
+                        style = Theme.textStyle.body.medium.regular,
+                        color = Theme.colors.shade.tertiary
+                    )
+                }
+            },
             singleLine = singleLine,
             maxLines = maxLines,
             isError = isError,
             enabled = enabled,
-            leadingIcon ={
+            leadingIcon = {
                 Icon(
                     modifier = Modifier.size(20.dp),
                     painter = painterResource(leadingIcon) ,
@@ -100,13 +107,17 @@ fun AppTextField(
             trailingIcon = {
                 when {
                     isPassword -> {
-                        val image = if (passwordVisible) painterResource(R.drawable.outline_eye_opened) else painterResource(R.drawable.outline_eye_closed)
+                        val image =
+                            if (passwordVisible) painterResource(R.drawable.outline_eye_opened) else painterResource(
+                                R.drawable.outline_eye_closed
+                            )
                         IconButton(onClick = { passwordVisible = !passwordVisible }) {
                             Icon(painter = image, contentDescription = "Toggle password visibility"
                             , modifier = Modifier.size(20.dp))
                         }
                     }
-                    isError ->{
+
+                    isError -> {
                         Icon(
                             modifier = Modifier.size(20.dp),
                             painter = painterResource(R.drawable.outline_danger_triangle),
@@ -114,6 +125,7 @@ fun AppTextField(
                             tint = Theme.colors.additional.primary.red
                         )
                     }
+
                     trailingIcon != null -> trailingIcon()
                 }
             },
@@ -141,11 +153,11 @@ fun AppTextField(
                 style = Theme.textStyle.body.small.regular,
             )
         }
-        if (isPassword ){
+        if (isPassword) {
             Row(
                 horizontalArrangement = Arrangement.End,
                 modifier = Modifier.fillMaxWidth()
-            ){
+            ) {
                 Text(
                     text = stringResource(R.string.forgot_password),
                     textDecoration = TextDecoration.Underline,
@@ -162,8 +174,8 @@ fun AppTextField(
     }
 }
 
-@Preview(showBackground = true,uiMode = UI_MODE_NIGHT_NO,name = "Light Mode")
-@Preview(showBackground = true,uiMode = UI_MODE_NIGHT_YES,name = "Dark Mode")
+@Preview(showBackground = true, uiMode = UI_MODE_NIGHT_NO, name = "Light Mode")
+@Preview(showBackground = true, uiMode = UI_MODE_NIGHT_YES, name = "Dark Mode")
 @Composable
 private fun PreviewBasicAppTextField() {
     CineVerseTheme {
@@ -179,8 +191,8 @@ private fun PreviewBasicAppTextField() {
     }
 }
 
-@Preview(showBackground = true,uiMode = UI_MODE_NIGHT_NO)
-@Preview(showBackground = true,uiMode = UI_MODE_NIGHT_YES)
+@Preview(showBackground = true, uiMode = UI_MODE_NIGHT_NO)
+@Preview(showBackground = true, uiMode = UI_MODE_NIGHT_YES)
 @Composable
 private fun PreviewPasswordAppTextField() {
     CineVerseTheme {
@@ -197,8 +209,8 @@ private fun PreviewPasswordAppTextField() {
     }
 }
 
-@Preview(showBackground = true,uiMode = UI_MODE_NIGHT_NO)
-@Preview(showBackground = true,uiMode = UI_MODE_NIGHT_YES)
+@Preview(showBackground = true, uiMode = UI_MODE_NIGHT_NO)
+@Preview(showBackground = true, uiMode = UI_MODE_NIGHT_YES)
 @Composable
 private fun PreviewErrorAppTextField() {
     CineVerseTheme {

@@ -26,6 +26,7 @@ import com.moscow.cineverse.navigation.routes.MovieDetailsRoute
 import com.moscow.cineverse.navigation.routes.RecommendationsRoute
 import com.moscow.cineverse.navigation.routes.ReviewsRoute
 import com.moscow.cineverse.navigation.routes.SeriesDetailsRoute
+import com.moscow.cineverse.navigation.routes.collectionsBottomSheetRoute
 import com.moscow.cineverse.navigation.routes.exploreRoute
 import com.moscow.cineverse.navigation.routes.loginRoute
 import org.koin.compose.getKoin
@@ -53,12 +54,20 @@ fun CineVerseNavGraph(
     ) {
         NavHost(navController = navController, startDestination = startDestination) {
             exploreRoute()
-            CastDetailsRoute(navController)
-            CastGalleryRoute(navController)
-            CastBestOfMovieRoute(navController)
-            MovieDetailsRoute(navController)
-            SeriesDetailsRoute(navController)
-            loginRoute(navController)
+            RecommendationsRoute()
+            ReviewsRoute()
+            CastDetailsRoute()
+            CastGalleryRoute()
+            CastBestOfMovieRoute()
+            MovieDetailsRoute()
+            SeriesDetailsRoute()
+            collectionsBottomSheetRoute(
+                onAddNewCollectionClick = {},
+                onCreateCollectionClicked = {},
+                navigateBack = {
+                    navController.popBackStack()
+                }
+            )
         }
     }
 }

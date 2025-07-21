@@ -22,24 +22,28 @@ import com.moscow.cineverse.designSystem.component.MovieScaffold
 import com.moscow.cineverse.designSystem.component.MovieText
 import com.moscow.cineverse.designSystem.component.cast_details.CastGallery
 import com.moscow.cineverse.designSystem.theme.Theme
+import com.moscow.cineverse.navigation.LocalNavController
 import com.moscow.cinverse.presentation.R
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 
 @Composable
 fun ActorGalleryScreen(
-    navController: NavHostController,
     actorId: Int,
     title: String,
     modifier: Modifier = Modifier,
-) {
+    navController: NavHostController = LocalNavController.current,
+
+    ) {
     val viewModel: ActorGalleryViewModel = koinViewModel(parameters = { parametersOf(actorId, title) })
+
     val uiState by viewModel.uiState.collectAsState()
 
     ActorGalleryContent(
+        modifier = modifier,
         uiState = uiState,
         interactionListener = viewModel,
-        modifier = modifier,
+        onNavigateBack = { navController.popBackStack() },
         title = uiState.actorName
     )
 }
@@ -48,6 +52,7 @@ fun ActorGalleryScreen(
 fun ActorGalleryContent(
     uiState: ShowAllActorMoviesState,
     interactionListener: ActorGalleryInteractionListener,
+    onNavigateBack: () -> Unit,
     modifier: Modifier = Modifier,
     title: String
 ) {
@@ -91,19 +96,17 @@ fun ActorGalleryContent(
                     Column(modifier = Modifier.fillMaxSize()) {
                         MovieAppBar(
                             title = title,
-                            backButtonClick = interactionListener::backButtonClick,
+                            backButtonClick = onNavigateBack,
                         )
-                    CastGallery(
-                        images = uiState.photos,
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(horizontal = 16.dp),
-                    )
-                }
+                        CastGallery(
+                            images = uiState.photos,
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(horizontal = 16.dp),
+                        )
                     }
+                }
             }
-
-
         }
     }
 }
@@ -122,6 +125,7 @@ fun ActorGalleryPreview(modifier: Modifier = Modifier) {
             override fun backButtonClick() {}
         },
         modifier = modifier,
-        title = "Actor Gallery"
+        title = "Actor Gallery",
+        onNavigateBack = {}
     )
 }

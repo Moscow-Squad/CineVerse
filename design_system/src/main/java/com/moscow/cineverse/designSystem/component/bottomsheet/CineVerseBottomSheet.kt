@@ -28,15 +28,17 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.design_system.R
+import com.moscow.cineverse.designSystem.component.MessageInfoBox
+import com.moscow.cineverse.designSystem.component.MovieText
 import com.moscow.cineverse.designSystem.theme.CineVerseTheme
 import com.moscow.cineverse.designSystem.theme.Theme
+import com.moscow.cineverse.designSystem.theme.ThemeState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -49,6 +51,8 @@ fun CineVerseBottomSheet(
     contentHorizontalAlignment: Alignment.Horizontal = Alignment.CenterHorizontally,
     onDismissRequest: (() -> Unit)?,
     scrimColor: Color = Theme.colors.background.bottomSheetContainer,
+    showCancelIcon: Boolean = true,
+    onAddNewCollectionClick: () -> Unit = {},
     content: @Composable ColumnScope.() -> Unit,
 ) {
 
@@ -100,14 +104,23 @@ fun CineVerseBottomSheet(
                     style = Theme.textStyle.title.small,
                     color = Theme.colors.shade.primary
                 )
-                Icon(
-                    painter = painterResource(R.drawable.outline_x),
-                    contentDescription = stringResource(R.string.close_bottom_sheet),
-                    tint = Theme.colors.shade.secondary,
-                    modifier = Modifier
-                        .size(20.dp)
-                        .clickable { onClose() }
-                )
+                if (showCancelIcon) {
+                    Icon(
+                        painter = painterResource(R.drawable.outline_x),
+                        contentDescription = stringResource(R.string.close_bottom_sheet),
+                        tint = Theme.colors.shade.secondary,
+                        modifier = Modifier
+                            .size(20.dp)
+                            .clickable { onClose() }
+                    )
+                } else if (title.isNotEmpty()) {
+                    MovieText(
+                        text = stringResource(R.string.new_collection),
+                        style = Theme.textStyle.body.medium.medium,
+                        color = Theme.colors.brand.primary,
+                        modifier = Modifier.clickable { onAddNewCollectionClick }
+                    )
+                }
             }
             content()
         }
@@ -134,23 +147,29 @@ private fun CineVerseBottomSheetPreview() {
             }
 
             if (show) {
-                CineVerseBottomSheet(
-                    title = "Title",
-                    onClose = { show = false },
-                    onDismissRequest = { show = false },
-                    content = {
-                        Column(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(200.dp)
-                                .clip(RoundedCornerShape(Theme.radius.large))
-                                .background(Theme.colors.background.bottomSheetCard),
-                            verticalArrangement = Arrangement.spacedBy(5.dp)
-                        ) {
-
+                CineVerseTheme(state = ThemeState(isDark = true, {})) {
+                    CineVerseBottomSheet(
+                        title = "Add to Collection",
+                        onClose = { show = false },
+                        onDismissRequest = { show = false },
+                        showCancelIcon = true,
+                        content = {
+                            MessageInfoBox(
+                                title = "No Collections Yet",
+                                description = "Create a new collection to start saving your favorite movies and series.",
+                                icon = painterResource(Theme.icons.dueTone.videoLibrary),
+                                showButtonsGroup = false,
+                                firstButtonText = "",
+                                onClickFirstButton = {},
+                                secondButtonText = "Create Collection",
+                                onClickSecondButton = {
+                                    /* TODO("should open new bottom sheet to login or to create new collection") */
+                                },
+                                modifier = Modifier.padding(bottom = 16.dp)
+                            )
                         }
-                    }
-                )
+                    )
+                }
             }
         }
     }

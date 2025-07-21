@@ -10,13 +10,13 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class CastGalleryRoute(val castId: Int, val castName: String)
 
-fun NavGraphBuilder.CastGalleryRoute(navController: NavHostController) {
+fun NavGraphBuilder.CastGalleryRoute() {
     composable<CastGalleryRoute>{
         val args = it.toRoute<CastGalleryRoute>()
         ActorGalleryScreen(
-            navController = navController,
             actorId = args.castId,
             title = args.castName,
+
         )
     }
 }

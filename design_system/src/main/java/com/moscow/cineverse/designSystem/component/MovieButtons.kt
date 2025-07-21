@@ -29,20 +29,20 @@ import com.moscow.cineverse.designSystem.theme.Theme
 
 @Composable
 fun MovieButton(
-    buttonText:String,
+    buttonText: String,
     textColor: Color,
     textStyle: TextStyle,
+    onClick: () -> Unit,
     textPadding: PaddingValues = PaddingValues(),
-    onClick:()->Unit,
     modifier: Modifier = Modifier,
     buttonColor: Color = Color.Transparent,
     cornerRadius: Dp = Theme.radius.large,
-    enable:Boolean = true,
+    enable: Boolean = true,
     isLoading: Boolean = false
 ) {
-    val color by animateColorAsState(if(!enable) Theme.colors.button.onDisabled else textColor)
+    val color by animateColorAsState(if (!enable) Theme.colors.button.onDisabled else textColor)
     val backgroundColor by animateColorAsState(
-        if(buttonColor != Color.Transparent)
+        if (buttonColor != Color.Transparent)
             if (enable) buttonColor else Theme.colors.button.disabled
         else
             buttonColor
@@ -63,7 +63,7 @@ fun MovieButton(
                 Text(
                     modifier = Modifier.padding(textPadding),
                     text = buttonText,
-                    color =color,
+                    color = color,
                     style = textStyle
                 )
             }else{
@@ -97,7 +97,7 @@ private fun PreviewButton() {
                 isEnabled = !isEnabled
 
             },
-          //  buttonColor = Theme.colors.button.primary,
+            //  buttonColor = Theme.colors.button.primary,
             modifier = Modifier
                 .padding(horizontal = 24.dp, vertical = 16.dp)
         )

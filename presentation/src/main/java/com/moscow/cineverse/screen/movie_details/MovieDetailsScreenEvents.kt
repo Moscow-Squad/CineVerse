@@ -1,10 +1,5 @@
 package com.moscow.cineverse.screen.movie_details
 
-import com.android.domain.model.Genre
-import com.moscow.cineverse.designSystem.component.ViewMode
-import com.moscow.cineverse.designSystem.component.tabs.ExploreTabsPages
-import com.moscow.cineverse.screen.castDetails.CastDetailsEvent
-
 sealed class MovieDetailsScreenEvents {
     data object NavigateBack : MovieDetailsScreenEvents()
     data class ShowError(val message: String) : MovieDetailsScreenEvents()
@@ -12,6 +7,7 @@ sealed class MovieDetailsScreenEvents {
     data class NavigateToFullReviews(val movieID: Int) : MovieDetailsScreenEvents()
     data object NavigateToFullActors: MovieDetailsScreenEvents()
     data object NavigateToFullCast : MovieDetailsScreenEvents()
-
+    data class AddToCollection(val movieId: Int) : MovieDetailsScreenEvents()
+    data class NavigateCastDetails(val castId: Int) : MovieDetailsScreenEvents()
 }
 

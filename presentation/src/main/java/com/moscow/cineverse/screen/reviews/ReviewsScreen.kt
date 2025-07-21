@@ -17,8 +17,12 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import coil3.compose.rememberAsyncImagePainter
 import com.android.domain.model.Review
 import com.moscow.cineverse.designSystem.component.MovieAppBar
+import com.moscow.cineverse.designSystem.component.MovieScaffold
 import com.moscow.cineverse.designSystem.component.movieSeriesDetails.MovieReviewCard
 import com.moscow.cineverse.designSystem.theme.Theme
+import com.moscow.cineverse.navigation.LocalNavController
+import com.moscow.cineverse.screen.castDetails.toFormattedBirthDate
+import com.moscow.cineverse.screen.movie_details.formatReviewDate
 import com.moscow.cinverse.presentation.R
 import org.koin.androidx.compose.koinViewModel
 
@@ -28,7 +32,8 @@ fun ReviewsScreen(
     isMovie: Boolean,
     modifier: Modifier = Modifier,
     viewModel: ReviewsViewModel = koinViewModel(),
-    navController: NavHostController = rememberNavController(),
+    navController: NavHostController = LocalNavController.current,
+
 
     ) {
     val reviewsFlow = viewModel.getPagedReviews(movieId, isMovie).collectAsLazyPagingItems()
@@ -56,57 +61,59 @@ fun ReviewsContent(
     interactionListener: ReviewsInteractionListener,
     modifier: Modifier = Modifier
 ) {
-    Column(
-        modifier = modifier.background(Theme.colors.background.screen)
-    ) {
-        MovieAppBar(
-            backButtonClick = { interactionListener.onBackPressed() },
-            title = stringResource(R.string.top_reviews)
-        )
+    MovieScaffold {
+        Column(
+            modifier = modifier.background(Theme.colors.background.screen)
+        ) {
+            MovieAppBar(
+                backButtonClick = { interactionListener.onBackPressed() },
+                title = stringResource(R.string.top_reviews)
+            )
 
-        LazyColumn {
-            items(reviewsFlow.itemCount) { index ->
-                val review = reviewsFlow[index]?.toUi()
-                if (review != null) {
-                    MovieReviewCard(
-                        name = review.name,
-                        username = review.username,
-                        reviewText = review.reviewContent,
-                        rating = review.rate,
-                        date = review.date,
-                        avatar = if (review.userImage.isEmpty()) null else rememberAsyncImagePainter(
-                            model = review.userImage
-                        ),
-                        modifier = Modifier.padding(
-                            start = 16.dp,
-                            end = 16.dp,
-                            bottom = 12.dp
-                        )
-                    )
-                }
-            }
-
-            when (reviewsFlow.loadState.append) {
-                is androidx.paging.LoadState.Loading -> {
-                    item {
-                        Text(
-                            "Loading more...",
-                            modifier = Modifier.padding(16.dp)
+            LazyColumn {
+                items(reviewsFlow.itemCount) { index ->
+                    val review = reviewsFlow[index]?.toUi()
+                    if (review != null) {
+                        MovieReviewCard(
+                            name = review.name,
+                            username = review.username,
+                            reviewText = review.reviewContent,
+                            rating = review.rate,
+                            date = formatReviewDate(review.date),
+                            avatar = if (review.userImage.isEmpty()) null else rememberAsyncImagePainter(
+                                model = review.userImage
+                            ),
+                            modifier = Modifier.padding(
+                                start = 16.dp,
+                                end = 16.dp,
+                                bottom = 12.dp
+                            )
                         )
                     }
                 }
 
-                is androidx.paging.LoadState.Error -> {
-                    item {
-                        Text(
-                            "Error loading more data.",
-                            modifier = Modifier.padding(16.dp),
-
-                        )
+                when (reviewsFlow.loadState.append) {
+                    is androidx.paging.LoadState.Loading -> {
+                        item {
+                            Text(
+                                "Loading more...",
+                                modifier = Modifier.padding(16.dp)
+                            )
+                        }
                     }
-                }
 
-                else -> {}
+                    is androidx.paging.LoadState.Error -> {
+                        item {
+                            Text(
+                                "Error loading more data.",
+                                modifier = Modifier.padding(16.dp),
+
+                                )
+                        }
+                    }
+
+                    else -> {}
+                }
             }
         }
     }

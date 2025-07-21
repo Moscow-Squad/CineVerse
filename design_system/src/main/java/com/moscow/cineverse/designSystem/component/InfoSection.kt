@@ -29,10 +29,11 @@ fun InfoSection(
     modifier: Modifier = Modifier,
     genres: List<String> = emptyList(),
     description: String? = null,
-    rating: Float,
+    rating: Float? = null,
     paddingBetween: Dp = 2.dp,
     showGenres: Boolean = true,
     showTitle: Boolean = true,
+    showRating: Boolean = true,
     maxDescriptionLines: Int = 3,
     titleTextAlign: TextAlign = TextAlign.Start,
     descriptionTextAlign: TextAlign = TextAlign.Start
@@ -50,7 +51,7 @@ fun InfoSection(
                     modifier = Modifier.weight(1f)
                 )
             }
-            if (rating > 0) {
+            if (rating != null && rating > 0 && showRating) {
                 Row(
                     modifier = Modifier,
                     verticalAlignment = Alignment.CenterVertically
@@ -150,6 +151,20 @@ fun MovieInfoCustomPreview() {
                 title = "Interstellar",
                 description = "A team of explorers travel through a wormhole in space.",
                 rating = 4f
+            )
+        }
+    }
+}
+
+@Preview(showBackground = true, name = "Movie Info - No Rating")
+@Composable
+fun MovieInfoNoRatingPreview() {
+    MaterialTheme {
+        Column(modifier = Modifier.padding(16.dp)) {
+            InfoSection(
+                title = "Unknown Movie",
+                genres = listOf("Mystery", "Thriller"),
+                showRating = false // No rating provided
             )
         }
     }

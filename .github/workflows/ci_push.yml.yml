@@ -85,8 +85,8 @@ jobs:
 
       - name: Create local.properties with TMDB_API_KEY
         run: |
-            echo "sdk.dir=/usr/local/lib/android/sdk" > local.properties
-            echo "TMDB_API_KEY=${{ secrets.TMDB_API_KEY }}" >> local.properties
+          echo "sdk.dir=/usr/local/lib/android/sdk" > local.properties
+          echo "TMDB_API_KEY=${{ secrets.TMDB_API_KEY }}" >> local.properties
 
       - name: Save Service Account Key
         env:

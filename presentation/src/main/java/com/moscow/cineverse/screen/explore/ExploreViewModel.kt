@@ -3,6 +3,7 @@ package com.moscow.cineverse.screen.explore
 import androidx.lifecycle.viewModelScope
 import com.android.domain.model.Actor
 import com.android.domain.model.Genre
+import com.android.domain.model.MediaType
 import com.android.domain.model.Movie
 import com.android.domain.model.Series
 import com.android.domain.usecase.CacheSearchQueryUseCase
@@ -18,6 +19,7 @@ import com.android.domain.usecase.SuggestionUseCase
 import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.cineverse.designSystem.component.ViewMode
 import com.moscow.cineverse.designSystem.component.tabs.ExploreTabsPages
+import com.moscow.cineverse.screen.model.MediaItemUi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.debounce
@@ -150,7 +152,6 @@ class ExploreViewModel(
         updateState { it.copy(isLoading = false) }
     }
 
-
     @OptIn(FlowPreview::class)
     private fun observeKeyword() {
         uiState
@@ -265,7 +266,7 @@ class ExploreViewModel(
 
 
             state.copy(
-               localSuggestions = filteredLocalSuggestions ,
+                localSuggestions = filteredLocalSuggestions,
                 remoteSuggestions = mappedRemoteSuggestions.map { it.title }
             )
         }
@@ -318,7 +319,7 @@ class ExploreViewModel(
     }
 
     private fun onSearchQueryError(e: Throwable) {
-        updateState { it.copy(error = e.message) }
+        updateState { it.copy(shouldShowError = true, isLoading = false, error = e.message) }
     }
 
     override fun clearAllLocalSuggestions() {
@@ -356,9 +357,8 @@ class ExploreViewModel(
     }
 
     private fun onMoviesGenresFailed(e: Throwable) {
-
+        updateState { it.copy(shouldShowError = true, isLoading = false, error = e.message) }
     }
-
 
     override fun getSeriesGenres() {
         launchWithFlow(
@@ -387,7 +387,7 @@ class ExploreViewModel(
     }
 
     private fun onSeriesGenresFailed(e: Throwable) {
-
+        updateState { it.copy(shouldShowError = true, isLoading = false, error = e.message) }
     }
 
     override fun getMoviesByGenreId(genreId: Int) {
@@ -411,7 +411,7 @@ class ExploreViewModel(
     }
 
     private fun onGetMovieByGenreIdFailed(e: Throwable) {
-
+        updateState { it.copy(shouldShowError = true, isLoading = false, error = e.message) }
     }
 
     override fun getSeriesByGenreId(genreId: Int) {
@@ -428,7 +428,6 @@ class ExploreViewModel(
         updateState {
             it.copy(
                 series = series.map { series -> series.toUi(uiState.value.seriesGenres) }
-
             )
         }
         checkEmptySearchResult(series)
@@ -436,7 +435,7 @@ class ExploreViewModel(
     }
 
     private fun onGetSeriesByGenreIdFailed(e: Throwable) {
-
+        updateState { it.copy(shouldShowError = true, isLoading = false, error = e.message) }
     }
 
     override fun onMovieGenreSelected(genreId: Int) {
@@ -455,8 +454,11 @@ class ExploreViewModel(
         updateState { it.copy(viewMode = viewMode) }
     }
 
-    override fun onMovieClick(movieId: Int) {
-        sendEvent(ExploreScreenEvents.MovieClicked(movieId))
+    override fun onMediaItemClicked(mediaItemUi: MediaItemUi) {
+        if (mediaItemUi.mediaType == MediaType.Movie)
+            sendEvent(ExploreScreenEvents.MovieClicked(mediaItemUi.id))
+        else
+            sendEvent(ExploreScreenEvents.SeriesClicked(mediaItemUi.id))
     }
 
     override fun onActorClick(actorId: Int) {
@@ -470,6 +472,21 @@ class ExploreViewModel(
     }
 
     override fun onRefresh() {
+        updateState {
+            it.copy(
+                isLoading = true,
+                shouldShowError = false,
+                errorMessage = ""
+            )
+        }
+        if (uiState.value.searchKeyWord != ""){
+            onSearchQuery()
+        }else{
+            getMoviesGenres()
+            getSeriesGenres()
+            loadMovies()
+            loadSeries()
+        }
     }
 
     private fun loadSeries() {
@@ -494,11 +511,7 @@ class ExploreViewModel(
     }
 
     private fun onLoadSeriesFailed(e: Throwable) {
-        updateState {
-            it.copy(
-                isLoading = false,
-            )
-        }
+        updateState { it.copy(shouldShowError = true, isLoading = false, error = e.message) }
     }
 
     private fun loadMovies() {
@@ -523,11 +536,7 @@ class ExploreViewModel(
     }
 
     private fun onLoadMoviesFailed(e: Throwable) {
-        updateState {
-            it.copy(
-                isLoading = false,
-            )
-        }
+        updateState { it.copy(shouldShowError = true, isLoading = false, error = e.message) }
     }
 
     private fun updateContentList() {

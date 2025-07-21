@@ -170,6 +170,7 @@ class CastDetailsViewModel(
 
     // Additional methods for handling interactions
     override fun onMovieClick(movie: Movie) {
+        sendEvent(CastDetailsEvent.NavigateToMovie(movie.id))
         // Handle movie click - you can add navigation or other actions
         // For example: sendEvent(CastDetailsEvent.NavigateToMovie(movie.id))
     }

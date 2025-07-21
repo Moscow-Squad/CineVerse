@@ -243,7 +243,8 @@ fun MainMovieCard(
                     model = posterUrl,
                     contentDescription = "Image",
                     modifier = Modifier
-                        .clip(CircleShape),
+                        .clip(CircleShape)
+                        .size(40.dp),
                     contentScale = ContentScale.Crop
                 )
             }

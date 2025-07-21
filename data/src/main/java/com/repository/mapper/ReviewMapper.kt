@@ -3,6 +3,10 @@ package com.repository.mapper
 import com.android.domain.model.Review
 import com.remote.dto.review.Result
 import com.utils.IMAGES_URL
+import kotlinx.datetime.Clock
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 
 fun Result.toDomain(): Review {
     return Review(
@@ -12,6 +16,6 @@ fun Result.toDomain(): Review {
         avatarPath = if(this.authorDetails?.avatarPath.isNullOrEmpty()) "" else IMAGES_URL + this.authorDetails.avatarPath ,
         rating = this.authorDetails?.rating ?: 0.0,
         content = this.content ?: "",
-        createdAt = this.createdAt ?: ""
+        createdAt = createdAt?:""
     )
 }
