@@ -13,7 +13,7 @@ import com.remote.dto.ActorBestOfMoviesAsCrewDto
 import com.remote.dto.ActorDto
 import com.remote.dto.ActorImagesDto
 import com.remote.dto.GenreDto
-import com.remote.dto.repeated_dto.MediaItemDto
+import com.remote.dto.MediaItemDto
 import com.remote.dto.MovieDto
 import com.remote.dto.details.ActorDetailsDto
 import com.remote.dto.details.SeriesDto
@@ -118,20 +118,20 @@ fun ActorBestOfMoviesAsCrewDto.toDomain() =
     Movie(
         id = id ?: 0,
         name = title.orEmpty(),
-        genreIds = genreIds ?: emptyList(),
+        genreIds = genreIds,
         rating = voteAverage?.toFloat() ?: 0f,
-        releaseDate = if (releaseDate.isNullOrEmpty()) {
+        releaseDate = if (releaseDate.isEmpty()) {
             Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
         } else {
             LocalDate.parse(releaseDate)
         },
-        adult = adult ?: false,
+        adult = adult == true,
         backdropPath = backdropPath.orEmpty(),
         originalLanguage = originalLanguage.orEmpty(),
         originalTitle = originalTitle.orEmpty(),
         overview = overview.orEmpty(),
         posterPath = IMAGES_URL + posterPath.orEmpty(),
-        video = video ?: false,
+        video = video == true,
         poster = IMAGES_URL + posterPath.orEmpty()
     )
 
@@ -139,19 +139,19 @@ fun ActorBestOfMoviesAsCastDto.toDomain() =
     Movie(
         id = id ?: 0,
         name = title.orEmpty(),
-        genreIds = genreIds ?: emptyList(),
+        genreIds = genreIds,
         rating = voteAverage?.toFloat() ?: 0f,
-        releaseDate = if (releaseDate.isNullOrEmpty()) {
+        releaseDate = if (releaseDate.isEmpty()) {
             Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
         } else {
             LocalDate.parse(releaseDate)
         },
-        adult = adult ?: false,
+        adult = adult == true,
         backdropPath = backdropPath.orEmpty(),
         originalLanguage = originalLanguage.orEmpty(),
         originalTitle = originalTitle.orEmpty(),
         overview = overview.orEmpty(),
         posterPath = IMAGES_URL + posterPath.orEmpty(),
-        video = video ?: false,
+        video = video == true,
         poster = IMAGES_URL + posterPath.orEmpty()
     )

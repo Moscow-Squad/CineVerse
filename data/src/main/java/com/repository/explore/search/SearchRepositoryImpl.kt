@@ -13,10 +13,9 @@ import com.mapper.toModel
 import com.remote.source.SearchRemoteDataSource
 import com.mapper.toEntity
 import com.mapper.toSortedGenres
-import com.utils.BaseRepository
 import com.utils.DELETE_SEARCH_QUERY_HISTORY
 import com.utils.QUERY
-import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
@@ -25,15 +24,13 @@ import java.util.concurrent.TimeUnit
 class SearchRepositoryImpl(
     private val searchLocalDateSource: SearchLocalDateSource,
     private val searchRemoteDataSource: SearchRemoteDataSource,
-    private val ioDispatcher: CoroutineDispatcher,
     private val workManager: WorkManager
-) : SearchRepository, BaseRepository(
-) {
+) : SearchRepository {
     override suspend fun getLocalMoviesBySearchTerm(searchTerm: String): List<Movie> {
         return searchLocalDateSource
             .getMoviesBySearchTerm(searchTerm)
+            .sortByFavouriteGenres { it.genresId }
             .toDomain()
-            .sortByFavouriteGenres{it.genreIds}
     }
 
     override suspend fun insertMovie(movies: List<Movie>, searchTerm: String) {
@@ -57,10 +54,13 @@ class SearchRepositoryImpl(
         searchLocalDateSource.deleteSearchHistory(searchTerm)
     }
 
-    override suspend fun getRemoteSuggestions(keyWord: String, page: Int): List<String> =
-        tryToExecute {
-            searchRemoteDataSource.getSuggestions(keyWord, page)
-        }.map { it.toModel() }
+    override suspend fun getRemoteSuggestions(keyWord: String, page: Int): List<String> {
+        return searchRemoteDataSource.getSuggestions(
+            keyWord,
+            page,
+            false
+        ).results.map { it.toModel() }
+    }
 
 
     override suspend fun searchMovie(query: String, isHistory: Boolean): Flow<List<Movie>> =
@@ -69,36 +69,37 @@ class SearchRepositoryImpl(
                 emit(getLocalMoviesBySearchTerm(query))
                 return@flow
             }
-            val result = tryToExecute {
-                searchRemoteDataSource.searchMovie(query)
-            }
-            val mappedResult = result.map { it.toDomain() }.sortByFavouriteGenres{it.genreIds}
+            val result = searchRemoteDataSource.searchMovie(query, 1, false)
+
+            val mappedResult = result.results.sortByFavouriteGenres { it.genreIds ?: emptyList() }
+                .map { it.toDomain() }
             emit(mappedResult)
-            if (result.isNotEmpty()) {
+            if (mappedResult.isNotEmpty()) {
                 insertMovie(mappedResult, query)
             }
-        }.flowOn(ioDispatcher)
+        }.flowOn(Dispatchers.IO)
 
     override suspend fun searchSeries(query: String, isHistory: Boolean): Flow<List<Series>> =
         flow {
             if (isHistory) {
                 emit(
                     searchLocalDateSource
-                    .getSeriesBySearchTerm(query)
-                    .toDomain()
-                    .sortByFavouriteGenres{it.genreIds}
+                        .getSeriesBySearchTerm(query)
+                        .sortByFavouriteGenres { it.genresId }
+                        .toDomain()
+
                 )
                 return@flow
             }
-            val result = tryToExecute {
-                searchRemoteDataSource.searchSeries(query)
-            }
-            val mappedResult = result.map { it.toDomain() }.sortByFavouriteGenres{it.genreIds}
+            val result = searchRemoteDataSource.searchSeries(query, 1, false)
+
+            val mappedResult = result.results.sortByFavouriteGenres { it.genreIds ?: emptyList() }
+                .map { it.toDomain() }
             emit(mappedResult)
-            if (result.isNotEmpty()) {
+            if (mappedResult.isNotEmpty()) {
                 insertSeries(mappedResult, query)
             }
-        }.flowOn(ioDispatcher)
+        }.flowOn(Dispatchers.IO)
 
     override suspend fun searchActor(query: String, isHistory: Boolean): Flow<List<Actor>> =
         flow {
@@ -106,31 +107,26 @@ class SearchRepositoryImpl(
                 emit(searchLocalDateSource.getActorsBySearchTerm(query).toDomain())
                 return@flow
             }
-            val result = tryToExecute {
-                searchRemoteDataSource.searchPearson(query)
-            }
-            val mappedResult = result.map {
-                it.toDomain()
-            }
+            val result = searchRemoteDataSource.searchActor(query, 1, false)
+
+            val mappedResult = result.results.map { it.toDomain() }
             emit(mappedResult)
-            if (result.isNotEmpty()) {
+            if (mappedResult.isNotEmpty()) {
                 insertActors(mappedResult, query)
             }
-        }.flowOn(ioDispatcher)
+        }.flowOn(Dispatchers.IO)
 
     override suspend fun cacheSearchQuery(query: String) {
-        tryToExecute {
-            searchLocalDateSource.insertSearchHistory(query)
-            val deleteWork = OneTimeWorkRequestBuilder<DeleteHistoryQueryWorker>()
-                .setInitialDelay(1, TimeUnit.HOURS)
-                .setInputData(workDataOf(QUERY to query))
-                .addTag(DELETE_SEARCH_QUERY_HISTORY)
-                .build()
-            workManager.enqueue(deleteWork)
-        }
+        searchLocalDateSource.insertSearchHistory(query)
+        val deleteWork = OneTimeWorkRequestBuilder<DeleteHistoryQueryWorker>()
+            .setInitialDelay(1, TimeUnit.HOURS)
+            .setInputData(workDataOf(QUERY to query))
+            .addTag(DELETE_SEARCH_QUERY_HISTORY)
+            .build()
+        workManager.enqueue(deleteWork)
     }
 
-    override suspend fun clearSearchHistory() = tryToExecute {
+    override suspend fun clearSearchHistory() {
         searchLocalDateSource.deleteAllSearchHistory()
     }
 
@@ -140,15 +136,16 @@ class SearchRepositoryImpl(
         val favouriteGenres = searchLocalDateSource.getFavouriteGenres().toSortedGenres()
         if (favouriteGenres.isEmpty()) return this
 
-        return this.sortedWith(compareBy(
-            { item ->
-                -getGenreIds(item).count { genre -> genre in favouriteGenres }
-            },
-            { item ->
-                getGenreIds(item)
-                    .mapNotNull { genre -> favouriteGenres.indexOf(genre).takeIf { it != -1 } }
-                    .minOrNull() ?: Int.MAX_VALUE
-            }
-        ))
+        return this.sortedWith(
+            compareBy(
+                { item ->
+                    -getGenreIds(item).count { genre -> genre in favouriteGenres }
+                },
+                { item ->
+                    getGenreIds(item)
+                        .mapNotNull { genre -> favouriteGenres.indexOf(genre).takeIf { it != -1 } }
+                        .minOrNull() ?: Int.MAX_VALUE
+                }
+            ))
     }
 }

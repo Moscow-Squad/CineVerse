@@ -15,8 +15,8 @@ class SearchRemoteDataSource(private val searchService: SearchService) {
          searchService.searchSeries(query, page, includeAdult)
      }
 
-     suspend fun searchPerson(query: String, page: Int, includeAdult: Boolean) = handleApi {
-         searchService.searchPearson(query, page, includeAdult)
+     suspend fun searchActor(query: String, page: Int, includeAdult: Boolean) = handleApi {
+         searchService.searchActor(query, page, includeAdult)
     }
 
      suspend fun getSuggestions(keyword: String, page: Int, includeAdult: Boolean) = handleApi {

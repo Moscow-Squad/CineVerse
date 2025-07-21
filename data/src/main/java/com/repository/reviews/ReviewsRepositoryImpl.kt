@@ -4,16 +4,16 @@ import com.android.domain.model.Review
 import com.android.domain.repository.ReviewsRepository
 import com.mapper.toDomain
 import com.remote.source.ReviewsRemoteDataSource
-import com.utils.BaseRepository
 
 class ReviewsRepositoryImpl(
     private val reviewsRemoteDataSource: ReviewsRemoteDataSource,
-) : ReviewsRepository , BaseRepository(){
+) : ReviewsRepository {
 
-    override suspend fun getReviewsPage(id:Int, page: Int, isMovie: Boolean):List<Review> =  tryToExecute {
+    override suspend fun getReviewsPage(id: Int, page: Int, isMovie: Boolean): List<Review> {
 
-            val reviews = reviewsRemoteDataSource.getReviews(id, page, isMovie)
-            reviews.results.mapNotNull { runCatching { it.toDomain() }.getOrNull() }
+        val reviews = reviewsRemoteDataSource.getReviews(id, page, isMovie)
+        return reviews.results.mapNotNull { runCatching { it.toDomain() }.getOrNull() }
     }
+
 
 }

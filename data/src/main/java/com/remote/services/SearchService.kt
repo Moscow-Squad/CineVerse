@@ -26,7 +26,7 @@ interface SearchService {
     ): Response<ApiResponse<SeriesDto>>
 
     @GET(SEARCH_ACTOR)
-    suspend fun searchPearson(
+    suspend fun searchActor(
         @Query(QUERY) query: String,
         @Query(PAGE) page: Int = 1,
         @Query(INCLUDE_ADULT) includeAdult: Boolean = false
