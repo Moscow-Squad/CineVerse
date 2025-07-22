@@ -1,11 +1,11 @@
 package com.moscow.cineverse.screen.series_details
 
-import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import com.android.domain.usecase.GetReviewsPageUseCase
 import com.android.domain.usecase.RateSeriesUseCase
 import com.android.domain.usecase.seriesdetails.GetLatestSeasonsUseCase
 import com.android.domain.usecase.seriesdetails.GetListOfSeriesUseCase
+import com.android.domain.usecase.seriesdetails.GetSeriesCreditsDetailsUseCase
 import com.android.domain.usecase.seriesdetails.GetSeriesDetailUseCase
 import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.cineverse.navigation.routes.SeriesDetailsRoute
@@ -13,10 +13,11 @@ import com.moscow.cineverse.navigation.routes.SeriesDetailsRoute
 class SeriesDetailsViewModel(
     private val getSeriesDetailUseCase: GetSeriesDetailUseCase,
     private val getReviewsPageUseCase: GetReviewsPageUseCase,
+    private val rateSeriesUseCase : RateSeriesUseCase,
+    private val getSeriesCreditsDetailsUseCase: GetSeriesCreditsDetailsUseCase,
     private val getLatestSeasonsUseCase: GetLatestSeasonsUseCase,
     private val getListOfSeriesUseCase: GetListOfSeriesUseCase,
     private val savedStateHandle: SavedStateHandle,
-    private val rateSeriesUseCase : RateSeriesUseCase
 ) : BaseViewModel<SeriesDetailsScreenState, SeriesDetailsEvents>(SeriesDetailsScreenState()),
     SeriesInteractionListener {
 
@@ -24,6 +25,7 @@ class SeriesDetailsViewModel(
 
     init {
         loadSeriesDetails(seriesId)
+        loadSeriesCredits(seriesId)
         loadReviews(seriesId, page = 1)
     }
     fun loadSeriesDetails(seriesId: Int) {
@@ -31,8 +33,26 @@ class SeriesDetailsViewModel(
         launchWithResult(
             action = { getSeriesDetailUseCase(seriesId) },
             onSuccess = { detail ->
-                Log.d("ddddd", detail.toString())
                 updateState { it.copy(seriesDetail = detail.ui(), isLoading = false) }
+            },
+            onError = { error ->
+                updateState { it.copy(error = error.message, isLoading = false) }
+            }
+        )
+    }
+
+    fun loadSeriesCredits(seriesId: Int) {
+        updateState { it.copy(isLoading = true, error = null) }
+        launchWithResult(
+            action = { getSeriesCreditsDetailsUseCase(seriesId) },
+            onSuccess = { credits ->
+                updateState {
+                    it.copy(
+                    cast = credits.actors.map{it.ui()},
+                    crew = credits.behindTheScene.map{it.ui()},
+                    isLoading = false
+                    )
+                }
             },
             onError = { error ->
                 updateState { it.copy(error = error.message, isLoading = false) }

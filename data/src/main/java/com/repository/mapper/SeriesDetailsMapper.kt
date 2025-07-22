@@ -1,5 +1,8 @@
 package com.repository.mapper
 
+import com.android.domain.model.CastDetails
+import com.android.domain.model.CreditsDetails
+import com.android.domain.model.CrewDetails
 import com.android.domain.model.Genre
 import com.android.domain.model.details.Creator
 import com.android.domain.model.details.Episode
@@ -12,6 +15,9 @@ import com.remote.dto.details.CreatedByDto
 import com.remote.dto.details.LastEpisodeToAirDto
 import com.remote.dto.details.ListOfSeriesDto
 import com.remote.dto.details.SeasonDto
+import com.remote.dto.details.SeriesCastDto
+import com.remote.dto.details.SeriesCreditDto
+import com.remote.dto.details.SeriesCrewDto
 import com.remote.dto.details.SeriesDetailDto
 import com.remote.dto.details.SeriesItemDto
 import com.utils.IMAGES_URL
@@ -105,6 +111,24 @@ fun SeriesItemDto.toDomain(): SeriesItem {
         posterPath = posterPath
     )
 }
+
+fun SeriesCreditDto.toDomain() = CreditsDetails(
+    actors = cast.map { it.toDomain() },
+    behindTheScene = crew.map { it.toDomain() }
+)
+
+fun SeriesCastDto.toDomain() = CastDetails(
+    id = id,
+    originalName = originalName ?: "",
+    characterName = roles.firstOrNull()?.character ?: "",
+    profileImg = IMAGES_URL + profilePath
+)
+fun SeriesCrewDto.toDomain() = CrewDetails(
+    id = id,
+    name = originalName ?: "",
+    job = jobs.firstOrNull()?.job ?: "",
+    profileImage = IMAGES_URL + profilePath
+)
 
 private fun formatRuntime(runtimeMinutes: List<Int>): String? {
     if (runtimeMinutes.isEmpty()) return null

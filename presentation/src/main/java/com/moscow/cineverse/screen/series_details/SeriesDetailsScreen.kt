@@ -4,6 +4,7 @@ import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -39,6 +40,7 @@ import com.moscow.cineverse.designSystem.component.MovieCard
 import com.moscow.cineverse.designSystem.component.MovieListSection
 import com.moscow.cineverse.designSystem.component.SectionTitle
 import com.moscow.cineverse.designSystem.component.ViewMode
+import com.moscow.cineverse.designSystem.component.movieSeriesDetails.CastCard
 import com.moscow.cineverse.designSystem.component.movieSeriesDetails.CastMember
 import com.moscow.cineverse.designSystem.component.movieSeriesDetails.MainMovieCard
 import com.moscow.cineverse.designSystem.component.movieSeriesDetails.MovieCardDetails
@@ -218,19 +220,24 @@ fun SeriesDetailsContent(
                             )
                         )
                     }
-                    if (cast.isNotEmpty() == true) {
-                        items(cast) {
+                    if (cast.isNotEmpty()) {
+                        item {
                             StarCastSection(
-                                title = "Star Cast",
-                                cast = cast.take(5).map { cast ->
-                                    CastMember(
-                                        realName = cast.name,
-                                        nameInMovie = cast.character ,
-                                        imageUrl = cast.profilePath
-                                    )
-                                },
+                                title = stringResource(com.moscow.cinverse.presentation.R.string.star_cast),
+                                modifier = Modifier
+                                    .background(Theme.colors.background.screen)
+                                    .padding(top = 24.dp, start = 16.dp, end = 16.dp),
+                                cast = cast.take(6),
                                 onSeeMoreClick = {},
-                                castContent = { }
+                                castContent = {actor->
+                                    CastCard(
+                                        modifier = Modifier.clickable{},
+                                        castMember = actor,
+                                        getOriginalName = { it.name },
+                                        getCharacterName = { it.characterName },
+                                        getProfileImage = { it.profilePath}
+                                    )
+                                }
                             )
                         }
                     }
@@ -285,7 +292,7 @@ fun SeriesDetailsContent(
                     if (reviews.isNotEmpty()) {
                         item {
                             SectionTitle(
-                                title = "Top Reviews",
+                                title = stringResource(com.moscow.cinverse.presentation.R.string.top_reviews),
                                 onClick = {},
                                 modifier = Modifier.padding(
                                     start = 16.dp,
@@ -295,7 +302,7 @@ fun SeriesDetailsContent(
                                 )
                             )
                         }
-                        items(reviews) { review ->
+                        items(reviews.take(3)) { review ->
                             MovieReviewCard(
                                 review.author,
                                 "@${review.username}",

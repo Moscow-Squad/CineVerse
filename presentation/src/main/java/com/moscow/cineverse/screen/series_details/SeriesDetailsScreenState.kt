@@ -1,6 +1,8 @@
 package com.moscow.cineverse.screen.series_details
 
 
+import com.android.domain.model.CastDetails
+import com.android.domain.model.CrewDetails
 import com.android.domain.model.Review
 import com.android.domain.model.details.CastMember
 import com.android.domain.model.details.Creator
@@ -11,10 +13,11 @@ data class SeriesDetailsScreenState(
     val isLoading: Boolean = false,
     val seriesDetail: SeriesDetailsUiState = SeriesDetailsUiState(),
     val reviews: List<Review> = emptyList(),
+    val cast: List<CastUiState> = emptyList(),
+    val crew: List<CrewUiState> = emptyList(),
     val error: String? = null,
     val latestSeason: List<SeriesDetail> = emptyList(),
     val listOfSeries: List<SeriesDetail> = emptyList(),
-    val cast: List<CastMember> = emptyList(),
     val showRatingBottomSheet: Boolean = false,
     val starsRating: Int = 0
 )
@@ -31,7 +34,7 @@ data class SeriesDetailsUiState(
     val numberOfSeasons: Int = 0,
     val numberOfEpisodes: Int = 0,
     val seasons: List<SeasonUiState> = emptyList(),
-    val creators: List<CreatorUiState> = emptyList()
+    val creators: List<CrewUiState> = emptyList()
 )
 data class SeasonUiState(
     val id: Int = 0,
@@ -43,10 +46,18 @@ data class SeasonUiState(
     val rate: String,
 )
 
-data class CreatorUiState(
+data class CrewUiState(
     val id: Int = 0,
     val name: String = "",
-    val profilePath: String = ""
+    val profilePath: String = "",
+    val job: String = "",
+)
+
+data class CastUiState(
+    val id: Int = 0,
+    val name: String = "",
+    val profilePath: String = "",
+    val characterName: String = "",
 )
 
 fun SeriesDetail.ui() = SeriesDetailsUiState(
@@ -74,8 +85,23 @@ fun Season.ui() = SeasonUiState(
     rate = rate.toString()
 )
 
-fun Creator.ui() = CreatorUiState(
+fun Creator.ui() = CrewUiState(
     id = id,
     name = name,
-    profilePath = profilePath
+    profilePath = profilePath,
+    job = "Creator"
+)
+
+fun CastDetails.ui() = CastUiState(
+    id = id,
+    name = originalName,
+    profilePath = profileImg,
+    characterName = characterName
+)
+
+fun CrewDetails.ui() = CrewUiState(
+    id = id,
+    name = name,
+    profilePath = profileImage,
+    job = job
 )
