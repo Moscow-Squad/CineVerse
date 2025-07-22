@@ -11,7 +11,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import coil3.compose.rememberAsyncImagePainter
@@ -21,7 +20,6 @@ import com.moscow.cineverse.designSystem.component.MovieScaffold
 import com.moscow.cineverse.designSystem.component.movieSeriesDetails.MovieReviewCard
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.navigation.LocalNavController
-import com.moscow.cineverse.screen.castDetails.toFormattedBirthDate
 import com.moscow.cineverse.screen.movie_details.formatReviewDate
 import com.moscow.cinverse.presentation.R
 import org.koin.androidx.compose.koinViewModel
@@ -41,10 +39,10 @@ fun ReviewsScreen(
     LaunchedEffect(viewModel) {
         viewModel.uiEvent.collect { event ->
             when(event){
-                ReviewsScreenEvents.NavigateBack -> {
+                ReviewsEffect.NavigateBack -> {
                     navController.popBackStack()
                 }
-                is ReviewsScreenEvents.ShowError -> {}
+                is ReviewsEffect.ShowError -> {}
             }
 
         }
