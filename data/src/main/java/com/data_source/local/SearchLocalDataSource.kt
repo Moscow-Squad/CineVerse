@@ -1,4 +1,4 @@
-package com.repository.explore.search
+package com.data_source.local
 
 import com.local.entity.ActorEntity
 import com.local.entity.FavouriteGenreEntity
@@ -6,7 +6,7 @@ import com.local.entity.MovieEntity
 import com.local.entity.SeriesEntity
 import kotlinx.coroutines.flow.Flow
 
-interface SearchLocalDateSource {
+interface SearchLocalDataSource {
     suspend fun getAllSearchHistory(): Flow<List<String>>
 
     suspend fun insertSearchHistory(searchTerm: String)

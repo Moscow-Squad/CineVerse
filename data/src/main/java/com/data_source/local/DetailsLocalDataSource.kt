@@ -1,4 +1,4 @@
-package com.repository.details
+package com.data_source.local
 
 import com.local.entity.FavouriteGenreEntity
 import kotlinx.coroutines.flow.Flow

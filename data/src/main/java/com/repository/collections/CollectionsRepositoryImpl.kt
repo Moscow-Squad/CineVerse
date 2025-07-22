@@ -8,19 +8,19 @@ import com.mapper.toDomain
 import com.remote.dto.AddMediaItemToCollectionRequestDto
 import com.remote.dto.CreateCollectionDto
 import com.remote.dto.toDomain
-import com.remote.source.CollectionsDataSource
+import com.remote.data_source.CollectionsDataSourceImpl
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 
 class CollectionsRepositoryImpl(
-    private val collectionsDataSource: CollectionsDataSource
+    private val collectionsDataSourceImpl: CollectionsDataSourceImpl
 ) : CollectionsRepository {
     override suspend fun getCollections(): Flow<List<Collection>> =
 
         flow {
-            val response = collectionsDataSource.getMyCollections(
+            val response = collectionsDataSourceImpl.getMyCollections(
                 accountId = 22117857,
                 sessionId = "31044f799b3ccf5e970b994ca0022ef8865c1e35"
             )
@@ -36,7 +36,7 @@ class CollectionsRepositoryImpl(
         flow {
             val collection =
                 CreateCollectionDto(name = collectionName, description = collectionDescription)
-            val response = collectionsDataSource.addNewCollection(
+            val response = collectionsDataSourceImpl.addNewCollection(
                 collection = collection,
                 sessionId = "31044f799b3ccf5e970b994ca0022ef8865c1e35"
             )
@@ -56,7 +56,7 @@ class CollectionsRepositoryImpl(
                     mediaId = mediaItemId,
                     mediaType = mediaItemType.name
                 )
-            val response = collectionsDataSource.addMediaItemToCollection(
+            val response = collectionsDataSourceImpl.addMediaItemToCollection(
                 item = item,
                 collectionId = collectionId,
                 sessionId = "31044f799b3ccf5e970b994ca0022ef8865c1e35"
@@ -68,7 +68,7 @@ class CollectionsRepositoryImpl(
     override suspend fun getCollectionDetails(collectionId: Int): Flow<List<MediaItem>> =
 
         flow {
-            val response = collectionsDataSource.getCollectionDetails(
+            val response = collectionsDataSourceImpl.getCollectionDetails(
                 collectionId = collectionId,
                 sessionId = "31044f799b3ccf5e970b994ca0022ef8865c1e35"
             )

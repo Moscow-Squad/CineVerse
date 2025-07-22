@@ -1,15 +1,16 @@
-package com.remote.source
+package com.remote.data_source
 
+import com.data_source.remote.CollectionsDataSource
 import com.remote.dto.AddMediaItemToCollectionRequestDto
 import com.remote.dto.CreateCollectionDto
 import com.remote.services.CollectionsService
 import com.utils.handleApi
 
 
-class CollectionsDataSource(
+class CollectionsDataSourceImpl(
     private val collectionsService: CollectionsService
-) {
-    suspend fun getMyCollections(
+) : CollectionsDataSource {
+    override suspend fun getMyCollections(
         accountId: Int,
         sessionId: String
     ) = handleApi {
@@ -19,7 +20,7 @@ class CollectionsDataSource(
         )
     }
 
-    suspend fun addNewCollection(
+    override suspend fun addNewCollection(
         collection: CreateCollectionDto,
         sessionId: String
     ) = handleApi {
@@ -29,7 +30,7 @@ class CollectionsDataSource(
         )
     }
 
-    suspend fun addMediaItemToCollection(
+    override suspend fun addMediaItemToCollection(
         item: AddMediaItemToCollectionRequestDto,
         collectionId: Int,
         sessionId: String
@@ -38,15 +39,15 @@ class CollectionsDataSource(
             item,
             collectionId,
             sessionId
-            )
+        )
     }
 
-    suspend fun getCollectionDetails(
+    override suspend fun getCollectionDetails(
         collectionId: Int,
         sessionId: String
     ) = handleApi {
         collectionsService.getCollectionDetails(
-            collectionId ,
+            collectionId,
             sessionId
         )
     }

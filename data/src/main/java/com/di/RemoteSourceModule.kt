@@ -3,7 +3,7 @@ package com.di
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import com.remote.interceptors.CineverseInterceptor
 import com.remote.services.*
-import com.remote.source.*
+import com.remote.data_source.*
 import com.utils.BASE_URL
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
@@ -62,11 +62,11 @@ val dataSourceModule = module {
     bindService<SearchService>()
 
     // Remote Data Sources
-    singleOf(::SearchRemoteDataSource)
-    singleOf(::ExploreRemoteDataSource)
-    singleOf(::ActorDetailsRemoteDataSource)
-    singleOf(::DetailsRemoteDataSource)
-    singleOf(::CollectionsDataSource)
-    singleOf(::ReviewsRemoteDataSource)
-    singleOf(::RecommendationsRemoteDataSource)
+    singleOf(::SearchRemoteDataSourceImpl)
+    singleOf(::ExploreRemoteDataSourceImpl)
+    singleOf(::ActorDetailsRemoteDataSourceImpl)
+    singleOf(::DetailsRemoteDataSourceImpl)
+    singleOf(::CollectionsDataSourceImpl)
+    singleOf(::ReviewsRemoteDataSourceImpl)
+    singleOf(::RecommendationsRemoteDataSourceImpl)
 }

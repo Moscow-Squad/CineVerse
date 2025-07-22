@@ -11,16 +11,16 @@ import com.local.entity.FavouriteGenreEntity
 import com.local.entity.MovieEntity
 import com.local.entity.SearchHistoryEntity
 import com.local.entity.SeriesEntity
-import com.repository.explore.search.SearchLocalDateSource
+import com.data_source.local.SearchLocalDataSource
 import kotlinx.coroutines.flow.Flow
 
-class SearchLocalDateSourceImpl(
+class SearchLocalDataSourceImpl(
     private val searchHistoryDao: SearchHistoryDao,
     private val movieDao: MovieDao,
     private val actorDao: ActorDao,
     private val seriesDao: SeriesDao,
     private val favouriteGenreDao: FavouriteGenreDao
-) : SearchLocalDateSource {
+) : SearchLocalDataSource {
 
     override suspend fun getAllSearchHistory(): Flow<List<String>> =
         searchHistoryDao.getAllSearchHistory()

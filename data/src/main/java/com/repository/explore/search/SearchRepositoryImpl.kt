@@ -7,10 +7,11 @@ import com.android.domain.model.Actor
 import com.android.domain.model.Movie
 import com.android.domain.model.Series
 import com.android.domain.repository.SearchRepository
+import com.data_source.local.SearchLocalDataSource
 import com.local.DeleteHistoryQueryWorker
 import com.mapper.toDomain
 import com.mapper.toModel
-import com.remote.source.SearchRemoteDataSource
+import com.remote.data_source.SearchRemoteDataSourceImpl
 import com.mapper.toEntity
 import com.mapper.toSortedGenres
 import com.utils.DELETE_SEARCH_QUERY_HISTORY
@@ -22,40 +23,40 @@ import kotlinx.coroutines.flow.flowOn
 import java.util.concurrent.TimeUnit
 
 class SearchRepositoryImpl(
-    private val searchLocalDateSource: SearchLocalDateSource,
-    private val searchRemoteDataSource: SearchRemoteDataSource,
+    private val searchLocalDataSource: SearchLocalDataSource,
+    private val searchRemoteDataSourceImpl: SearchRemoteDataSourceImpl,
     private val workManager: WorkManager
 ) : SearchRepository {
     override suspend fun getLocalMoviesBySearchTerm(searchTerm: String): List<Movie> {
-        return searchLocalDateSource
+        return searchLocalDataSource
             .getMoviesBySearchTerm(searchTerm)
             .sortByFavouriteGenres { it.genresId }
             .toDomain()
     }
 
     override suspend fun insertMovie(movies: List<Movie>, searchTerm: String) {
-        searchLocalDateSource.insertMovie(movies.toEntity(searchTerm), searchTerm)
+        searchLocalDataSource.insertMovie(movies.toEntity(searchTerm), searchTerm)
 
     }
 
     override suspend fun insertActors(actors: List<Actor>, searchTerm: String) {
-        searchLocalDateSource.insertActors(actors.toEntity(searchTerm), searchTerm)
+        searchLocalDataSource.insertActors(actors.toEntity(searchTerm), searchTerm)
     }
 
     override suspend fun insertSeries(series: List<Series>, searchTerm: String) {
-        searchLocalDateSource.insertSeries(series.toEntity(searchTerm), searchTerm)
+        searchLocalDataSource.insertSeries(series.toEntity(searchTerm), searchTerm)
     }
 
     override suspend fun getLocalSuggestions(): Flow<List<String>> {
-        return searchLocalDateSource.getAllSearchHistory()
+        return searchLocalDataSource.getAllSearchHistory()
     }
 
     override suspend fun deleteSearchHistory(searchTerm: String) {
-        searchLocalDateSource.deleteSearchHistory(searchTerm)
+        searchLocalDataSource.deleteSearchHistory(searchTerm)
     }
 
     override suspend fun getRemoteSuggestions(keyWord: String, page: Int): List<String> {
-        return searchRemoteDataSource.getSuggestions(
+        return searchRemoteDataSourceImpl.getSuggestions(
             keyWord,
             page,
             false
@@ -69,7 +70,7 @@ class SearchRepositoryImpl(
                 emit(getLocalMoviesBySearchTerm(query))
                 return@flow
             }
-            val result = searchRemoteDataSource.searchMovie(query, 1, false)
+            val result = searchRemoteDataSourceImpl.searchMovie(query, 1, false)
 
             val mappedResult = result.results.sortByFavouriteGenres { it.genreIds ?: emptyList() }
                 .map { it.toDomain() }
@@ -83,7 +84,7 @@ class SearchRepositoryImpl(
         flow {
             if (isHistory) {
                 emit(
-                    searchLocalDateSource
+                    searchLocalDataSource
                         .getSeriesBySearchTerm(query)
                         .sortByFavouriteGenres { it.genresId }
                         .toDomain()
@@ -91,7 +92,7 @@ class SearchRepositoryImpl(
                 )
                 return@flow
             }
-            val result = searchRemoteDataSource.searchSeries(query, 1, false)
+            val result = searchRemoteDataSourceImpl.searchSeries(query, 1, false)
 
             val mappedResult = result.results.sortByFavouriteGenres { it.genreIds ?: emptyList() }
                 .map { it.toDomain() }
@@ -104,10 +105,10 @@ class SearchRepositoryImpl(
     override suspend fun searchActor(query: String, isHistory: Boolean): Flow<List<Actor>> =
         flow {
             if (isHistory) {
-                emit(searchLocalDateSource.getActorsBySearchTerm(query).toDomain())
+                emit(searchLocalDataSource.getActorsBySearchTerm(query).toDomain())
                 return@flow
             }
-            val result = searchRemoteDataSource.searchActor(query, 1, false)
+            val result = searchRemoteDataSourceImpl.searchActor(query, 1, false)
 
             val mappedResult = result.results.map { it.toDomain() }
             emit(mappedResult)
@@ -117,7 +118,7 @@ class SearchRepositoryImpl(
         }.flowOn(Dispatchers.IO)
 
     override suspend fun cacheSearchQuery(query: String) {
-        searchLocalDateSource.insertSearchHistory(query)
+        searchLocalDataSource.insertSearchHistory(query)
         val deleteWork = OneTimeWorkRequestBuilder<DeleteHistoryQueryWorker>()
             .setInitialDelay(1, TimeUnit.HOURS)
             .setInputData(workDataOf(QUERY to query))
@@ -127,13 +128,13 @@ class SearchRepositoryImpl(
     }
 
     override suspend fun clearSearchHistory() {
-        searchLocalDateSource.deleteAllSearchHistory()
+        searchLocalDataSource.deleteAllSearchHistory()
     }
 
     private suspend fun <T> List<T>.sortByFavouriteGenres(
         getGenreIds: (T) -> List<Int>
     ): List<T> {
-        val favouriteGenres = searchLocalDateSource.getFavouriteGenres().toSortedGenres()
+        val favouriteGenres = searchLocalDataSource.getFavouriteGenres().toSortedGenres()
         if (favouriteGenres.isEmpty()) return this
 
         return this.sortedWith(

@@ -1,5 +1,6 @@
-package com.remote.source
+package com.remote.data_source
 
+import com.data_source.remote.DetailsRemoteDataSource
 import com.remote.dto.CreditsDetailsDto
 import com.remote.dto.series.ListOfSeriesDto
 import com.remote.dto.details.MovieDetailDto
@@ -8,22 +9,22 @@ import com.remote.dto.review.RatingRequestDto
 import com.remote.services.DetailsService
 import com.utils.handleApi
 
-class DetailsRemoteDataSource(
+class DetailsRemoteDataSourceImpl(
     private val detailsService: DetailsService
-) {
-    suspend fun getMovieDetails(id: Int): MovieDetailDto = handleApi {
+): DetailsRemoteDataSource {
+    override suspend fun getMovieDetails(id: Int): MovieDetailDto = handleApi {
         detailsService.getMovieDetails(id)
     }
 
-    suspend fun getSeriesDetails(id: Int): SeriesDetailDto = handleApi {
+    override suspend fun getSeriesDetails(id: Int): SeriesDetailDto = handleApi {
         detailsService.getSeriesDetails(id)
     }
 
-    suspend fun getCredits(id:Int): CreditsDetailsDto = handleApi {
+    override suspend fun getCredits(id:Int): CreditsDetailsDto = handleApi {
         detailsService.getCredits(id)
     }
 
-    suspend fun rateMovie(rating: RatingRequestDto, movieId: Int) {
+    override suspend fun rateMovie(rating: RatingRequestDto, movieId: Int) {
         handleApi {
             detailsService.rateMovie(
                 movieId,
@@ -33,7 +34,7 @@ class DetailsRemoteDataSource(
         }
     }
 
-    suspend fun rateSeries(rating: RatingRequestDto, seriesId: Int) = handleApi {
+    override suspend fun rateSeries(rating: RatingRequestDto, seriesId: Int) = handleApi {
         detailsService.rateSeries(
             seriesId,
             "31044f799b3ccf5e970b994ca0022ef8865c1e35",
@@ -41,11 +42,11 @@ class DetailsRemoteDataSource(
         )
     }
 
-    suspend fun getLatestSeasons(): SeriesDetailDto = handleApi {
+    override suspend fun getLatestSeasons(): SeriesDetailDto = handleApi {
         detailsService.getLatestSeasons()
     }
 
-    suspend fun getListOfSeries(id: Int, page: Int): ListOfSeriesDto = handleApi {
+    override suspend fun getListOfSeries(id: Int, page: Int): ListOfSeriesDto = handleApi {
         detailsService.getListOfSeries(
             id,
             page

@@ -1,0 +1,28 @@
+package com.remote.data_source
+
+
+import com.data_source.remote.SearchRemoteDataSource
+import com.remote.services.SearchService
+import com.utils.handleApi
+
+
+class SearchRemoteDataSourceImpl(
+    private val searchService: SearchService
+): SearchRemoteDataSource {
+
+     override suspend fun searchMovie(query: String, page: Int, includeAdult: Boolean) = handleApi {
+         searchService.searchMovie(query, page, includeAdult)
+     }
+
+     override suspend fun searchSeries(query: String, page: Int, includeAdult: Boolean) = handleApi {
+         searchService.searchSeries(query, page, includeAdult)
+     }
+
+     override suspend fun searchActor(query: String, page: Int, includeAdult: Boolean) = handleApi {
+         searchService.searchActor(query, page, includeAdult)
+    }
+
+     override suspend fun getSuggestions(keyword: String, page: Int, includeAdult: Boolean) = handleApi {
+         searchService.getSuggestions(keyword, page, includeAdult)
+    }
+}
