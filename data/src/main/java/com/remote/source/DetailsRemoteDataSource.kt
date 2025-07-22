@@ -4,7 +4,6 @@ import com.remote.dto.CreditsDetailsDto
 import com.remote.dto.MovieDto
 import com.remote.dto.details.ListOfSeriesDto
 import com.remote.dto.details.MovieDetailDto
-import com.remote.dto.details.SeriesCastDto
 import com.remote.dto.details.SeriesCreditDto
 import com.remote.dto.details.SeriesDetailDto
 import com.remote.dto.review.RatingRequestDto

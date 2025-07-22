@@ -41,7 +41,6 @@ import com.moscow.cineverse.designSystem.component.MovieListSection
 import com.moscow.cineverse.designSystem.component.SectionTitle
 import com.moscow.cineverse.designSystem.component.ViewMode
 import com.moscow.cineverse.designSystem.component.movieSeriesDetails.CastCard
-import com.moscow.cineverse.designSystem.component.movieSeriesDetails.CastMember
 import com.moscow.cineverse.designSystem.component.movieSeriesDetails.MainMovieCard
 import com.moscow.cineverse.designSystem.component.movieSeriesDetails.MovieCardDetails
 import com.moscow.cineverse.designSystem.component.movieSeriesDetails.MovieRatingBottomSheet
@@ -207,7 +206,7 @@ fun SeriesDetailsContent(
                             )
                         )
                     }
-                    items(detail.seasons) { season ->
+                    items(detail.seasons.take(3)) { season ->
                         SeasonCard(
                             modifier = Modifier.padding(horizontal = 16.dp),
                             season = Season(

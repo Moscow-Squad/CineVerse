@@ -4,7 +4,6 @@ package com.moscow.cineverse.screen.series_details
 import com.android.domain.model.CastDetails
 import com.android.domain.model.CrewDetails
 import com.android.domain.model.Review
-import com.android.domain.model.details.CastMember
 import com.android.domain.model.details.Creator
 import com.android.domain.model.details.Season
 import com.android.domain.model.details.SeriesDetail
@@ -71,7 +70,7 @@ fun SeriesDetail.ui() = SeriesDetailsUiState(
     posterPath = posterPath,
     numberOfSeasons = numberOfSeasons,
     numberOfEpisodes = numberOfEpisodes,
-    seasons = seasons.map { it.ui() },
+    seasons = seasons.map { it.ui() }.reversed(),
     creators = creators.map { it.ui() }
 )
 
