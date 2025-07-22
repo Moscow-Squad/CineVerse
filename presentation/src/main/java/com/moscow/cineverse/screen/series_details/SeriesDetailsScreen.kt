@@ -240,12 +240,18 @@ fun SeriesDetailsContent(
                             )
                         }
                     }
-                    if (detail.creators.isNotEmpty()) {
+                    if (uiState.crew.isNotEmpty() || detail.creators.isNotEmpty()) {
                         item {
                             val staffInfo = mutableListOf<Pair<String, String>>()
+
                             detail.creators.forEach { creator ->
-                                staffInfo.add("Creator" to creator.name)
+                                staffInfo.add(creator.job to creator.name)
                             }
+                            uiState.crew.groupBy { it.job }
+                                .mapValues { it.value.map { member -> member.name } }
+                                .forEach { (job, names) ->
+                                    staffInfo.add(job to names.joinToString(", "))
+                                }
                             StaffInfoSection(
                                 staffInfo = staffInfo,
                                 modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 24.dp)
