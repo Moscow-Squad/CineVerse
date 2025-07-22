@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -34,7 +33,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import coil3.compose.rememberAsyncImagePainter
-import com.example.design_system.R
 import com.moscow.cineverse.component.MoviePosterCard
 import com.moscow.cineverse.designSystem.component.MovieAppBar
 import com.moscow.cineverse.designSystem.component.MovieCircularProgressBar
@@ -58,6 +56,7 @@ import com.moscow.cineverse.navigation.routes.ReviewsRoute
 import com.moscow.cineverse.navigation.routes.SeriesRecommendationRoute
 import com.moscow.cineverse.navigation.routes.SeriesSeasonsRoute
 import com.moscow.cineverse.screen.movie_details.formatReviewDate
+import com.moscow.cinverse.presentation.R
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -81,14 +80,13 @@ fun SeriesDetailsScreen(
                 is SeriesDetailsScreenEvents.NavigateToReviewsScreen -> {
                     navController.navigate(ReviewsRoute(event.seriesId, false))
                 }
-
                 is SeriesDetailsScreenEvents.NavigateToSeriesSeasonsScreen -> {
                     navController.navigate(SeriesSeasonsRoute(event.seriesId))
                 }
             }
         }
     }
-    SeriesDetailsContent(uiState = uiState, interactionListener = viewModel,)
+    SeriesDetailsContent(uiState = uiState, interactionListener = viewModel)
 }
 
 @OptIn(ExperimentalSharedTransitionApi::class)
@@ -216,19 +214,18 @@ fun SeriesDetailsContent(
                     if (uiState.cast.isNotEmpty()) {
                         item {
                             StarCastSection(
-                                title = stringResource(com.moscow.cinverse.presentation.R.string.star_cast),
+                                title = stringResource(R.string.star_cast),
                                 modifier = Modifier
                                     .background(Theme.colors.background.screen)
                                     .padding(top = 24.dp, start = 16.dp, end = 16.dp),
-                                cast = uiState.cast.take(6),
-                                onSeeMoreClick = {},
+                                cast = uiState.cast.take(10),
                                 castContent = {actor->
                                     CastCard(
                                         modifier = Modifier.clickable{},
                                         castMember = actor,
                                         getOriginalName = { it.name },
                                         getCharacterName = { it.characterName },
-                                        getProfileImage = { it.profilePath}
+                                        getProfileImage = { it.profilePath }
                                     )
                                 }
                             )
@@ -255,7 +252,7 @@ fun SeriesDetailsContent(
                     if (uiState.recommendation.isNotEmpty()){
                         item {
                             MovieListSection(
-                                title = stringResource(com.moscow.cinverse.presentation.R.string.you_might_also_like),
+                                title = stringResource(R.string.you_might_also_like),
                                 movies = uiState.recommendation.take(6),
                                 onClickShowMore = {interactionListener.onShowMoreRecommendationsClicked(uiState.seriesDetail.id)},
                                 onClickPoster = { series -> },
@@ -276,9 +273,9 @@ fun SeriesDetailsContent(
                     }
                     item {
                         RatingSection(
-                            icon = R.drawable.due_tone_star,
-                            title = stringResource(com.moscow.cinverse.presentation.R.string.give_it_stars),
-                            caption = stringResource(com.moscow.cinverse.presentation.R.string.let_the_world_know_how_you_felt),
+                            icon = Theme.icons.dueTone.star,
+                            title = stringResource(R.string.give_it_stars),
+                            caption = stringResource(R.string.let_the_world_know_how_you_felt),
                             onClickArrow = interactionListener::showRatingBottomSheet,
                             ratingStars = uiState.starsRating,
                             modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 24.dp),
@@ -287,7 +284,7 @@ fun SeriesDetailsContent(
                     if (uiState.reviews.isNotEmpty()) {
                         item {
                             SectionTitle(
-                                title = stringResource(com.moscow.cinverse.presentation.R.string.top_reviews),
+                                title = stringResource(R.string.top_reviews),
                                 onClick = {interactionListener.onShowMoreReviewsClicked(uiState.seriesDetail.id)},
                                 modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 12.dp, top = 24.dp)
                             )
