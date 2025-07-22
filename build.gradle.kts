@@ -1,3 +1,5 @@
+import org.gradle.internal.impldep.org.junit.experimental.categories.Categories.CategoryFilter.include
+
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 plugins {
     alias(libs.plugins.android.application) apply false
@@ -10,4 +12,47 @@ plugins {
     alias(libs.plugins.google.firebase.appdistribution) apply false
     alias(libs.plugins.jetbrains.kotlin.jvm) apply false
     alias(libs.plugins.kotlin.serialization) apply false
+    alias(libs.plugins.ksp) apply false
+    alias(libs.plugins.kover) apply false
+}
+
+val excludedPackages = listOf(
+    "*.R",
+    "*.R_*",
+    "**.di.**",
+    "**.logging.**",
+    "*.BuildConfig*",
+    "*.Manifest*",
+    "*.ComposableSingletons*",
+    "*.MainActivity*",
+    "*.CineVerseApp*",
+    "com.example.image_viewer.*",
+    "com.example.design_system.*",
+    "entity.**",
+    "**.dao.**",
+    "**.dto.**",
+    "**.response.**",
+    "exceptions.**",
+)
+allprojects {
+    apply(plugin = "org.jetbrains.kotlinx.kover")
+    kover {
+        reports {
+            filters {
+                excludes { classes(excludedPackages) }
+            }
+            total {
+                verify {
+                    rule { bound { minValue = 80 } }
+                }
+            }
+        }
+    }
+}
+
+dependencies {
+    kover(projects.app)
+    kover(projects.data)
+    kover(projects.domain)
+    kover(projects.presentation)
 }
