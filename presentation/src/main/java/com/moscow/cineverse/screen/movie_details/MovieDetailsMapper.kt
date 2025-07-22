@@ -7,7 +7,7 @@ import com.android.domain.model.MediaType
 import com.android.domain.model.Movie
 import com.android.domain.model.Review
 import com.android.domain.model.details.MovieDetail
-import com.moscow.cineverse.screen.explore.ExploreScreenState.GenreUi
+import com.moscow.cineverse.screen.explore.ExploreScreenState.GenreUiState
 import com.moscow.cineverse.common_ui_state.MediaItemUiState
 import com.moscow.cineverse.screen.movie_details.MovieScreenState.ReviewUi
 import com.moscow.cineverse.screen.movie_details.MovieScreenState.StarCastUi
@@ -58,7 +58,7 @@ fun CrewDetails.toUi(): MovieScreenState.CrewUi =
     )
 
 fun Genre.toUi() =
-    GenreUi(
+    GenreUiState(
         id = id,
         name = name
     )

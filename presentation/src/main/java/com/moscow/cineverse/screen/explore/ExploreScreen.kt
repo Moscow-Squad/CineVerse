@@ -56,6 +56,7 @@ import com.moscow.cineverse.component.NoInternetScreen
 import com.moscow.cineverse.screen.explore.component.ActorPosterCard
 import com.moscow.cineverse.screen.explore.component.SearchSuggestion
 import com.moscow.cineverse.common_ui_state.MediaItemUiState
+import com.moscow.cineverse.screen.explore.component.VoiceRecognitionIcon
 import com.moscow.cinverse.presentation.R
 import org.koin.androidx.compose.koinViewModel
 
@@ -254,7 +255,7 @@ private fun ExploreScreenContent(
                                                 }
                                             )
                                         }
-                                        is ExploreScreenState.ActorUi -> {
+                                        is ExploreScreenState.ActorUiState -> {
                                             ActorPosterCard(
                                                 actor = item,
                                                 viewMode = uiState.viewMode,

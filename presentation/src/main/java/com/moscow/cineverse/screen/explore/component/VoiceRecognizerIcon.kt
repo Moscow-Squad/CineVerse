@@ -1,4 +1,4 @@
-package com.moscow.cineverse.screen.explore
+package com.moscow.cineverse.screen.explore.component
 
 import android.app.Activity
 import android.content.Intent

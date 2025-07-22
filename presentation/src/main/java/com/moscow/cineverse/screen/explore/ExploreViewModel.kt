@@ -347,7 +347,7 @@ class ExploreViewModel(
         updateState {
             it.copy(
                 moviesGenres = listOf(
-                    ExploreScreenState.GenreUi(
+                    ExploreScreenState.GenreUiState(
                         id = 0,
                         name = "All"
                     )
@@ -378,7 +378,7 @@ class ExploreViewModel(
         updateState {
             it.copy(
                 seriesGenres = listOf(
-                    ExploreScreenState.GenreUi(
+                    ExploreScreenState.GenreUiState(
                         id = 0,
                         name = "All"
                     )

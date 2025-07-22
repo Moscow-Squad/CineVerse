@@ -20,10 +20,10 @@ data class ExploreScreenState(
     val showHistory: Boolean = false,
     val showSuggestions: Boolean = false,
 
-    val genres: List<GenreUi> = emptyList(),
+    val genres: List<GenreUiState> = emptyList(),
 
-    val moviesGenres: List<GenreUi> = emptyList(),
-    val seriesGenres: List<GenreUi> = emptyList(),
+    val moviesGenres: List<GenreUiState> = emptyList(),
+    val seriesGenres: List<GenreUiState> = emptyList(),
 
     val movies: List<MediaItemUiState> = emptyList(),
     val series: List<MediaItemUiState> = emptyList(),
@@ -63,13 +63,13 @@ data class ExploreScreenState(
         }
     }
 
-    data class ActorUi(
+    data class ActorUiState(
         val title: String,
         val profilePath: String,
         val id: Int
     )
 
-    data class GenreUi(
+    data class GenreUiState(
         val id: Int,
         val name: String
     )
