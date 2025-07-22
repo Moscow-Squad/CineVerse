@@ -1,9 +1,7 @@
 package com.moscow.cineverse.screen.reviews
 
-
 import com.android.domain.model.Review
 import com.moscow.cineverse.screen.movie_details.MovieScreenState.ReviewUi
-
 
 fun Review.toUi(): ReviewUi =
     ReviewUi(
@@ -13,6 +11,5 @@ fun Review.toUi(): ReviewUi =
         userImage = avatarPath,
         rate = rating.toInt(),
         reviewContent = content,
-        date=createdAt,
-
+        date=createdAt
     )
