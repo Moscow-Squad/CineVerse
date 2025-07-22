@@ -8,7 +8,6 @@ import com.android.domain.usecase.actordetails.GetActorDetails
 import com.android.domain.usecase.actordetails.GetActorGallery
 import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.cineverse.designSystem.component.cast_details.SocialMediaLinks
-import com.moscow.cineverse.screen.explore.ExploreScreenEvents
 import kotlinx.coroutines.launch
 
 class CastDetailsViewModel(
@@ -16,7 +15,7 @@ class CastDetailsViewModel(
     private val getActorGallery: GetActorGallery,
     private val getActorBestOfMovies: GetActorBestOfMovies,
     private val actorId: Int,
-) : BaseViewModel<CastDetailsUiState, CastDetailsEvent>(CastDetailsUiState()),
+) : BaseViewModel<CastDetailsUiState, CastDetailsEffect>(CastDetailsUiState()),
     CastDetailsInteractionListener {
 
     init {
@@ -117,7 +116,7 @@ class CastDetailsViewModel(
                 isContentEmpty = false
             )
         }
-        sendEvent(CastDetailsEvent.ShowError(throwable.message ?: "Failed to load actor details"))
+        sendEvent(CastDetailsEffect.ShowError(throwable.message ?: "Failed to load actor details"))
     }
 
     private fun onLoading() {
@@ -137,7 +136,7 @@ class CastDetailsViewModel(
     }
 
     override fun onBackPressed() {
-        sendEvent(CastDetailsEvent.NavigateBack)
+        sendEvent(CastDetailsEffect.NavigateBack)
     }
 
     override fun onSocialMediaClick(platform: String, url: String) {
@@ -148,7 +147,7 @@ class CastDetailsViewModel(
             "instagram" -> socialMediaLinks.instagram ?: url
             else -> url
         }
-        sendEvent(CastDetailsEvent.OpenSocialMedia(platform, targetUrl))
+        sendEvent(CastDetailsEffect.OpenSocialMedia(platform, targetUrl))
     }
 
     override fun onRefresh() {
@@ -170,19 +169,29 @@ class CastDetailsViewModel(
 
     // Additional methods for handling interactions
     override fun onMovieClick(movie: Movie) {
-        sendEvent(CastDetailsEvent.NavigateToMovie(movie.id))
+        sendEvent(CastDetailsEffect.NavigateToMovie(movie.id))
         // Handle movie click - you can add navigation or other actions
         // For example: sendEvent(CastDetailsEvent.NavigateToMovie(movie.id))
     }
 
     override fun onShowMoreMovies() {
-        sendEvent(CastDetailsEvent.NavigateToFullMovieList(actorId, uiState.value.actorDetails?.name ?: ""))
+        sendEvent(
+            CastDetailsEffect.NavigateToFullMovieList(
+                actorId,
+                uiState.value.actorDetails?.name ?: ""
+            )
+        )
         // Handle show more movies - you can add navigation to full movie list
         // For example: sendEvent(CastDetailsEvent.NavigateToFullMovieList(actorId))
     }
 
     override fun onShowMoreGallery() {
-        sendEvent(CastDetailsEvent.NavigateToFullGallery(actorId, uiState.value.actorDetails?.name ?: ""))
+        sendEvent(
+            CastDetailsEffect.NavigateToFullGallery(
+                actorId,
+                uiState.value.actorDetails?.name ?: ""
+            )
+        )
         // Handle show more gallery - you can add navigation to full gallery
         // For example: sendEvent(CastDetailsEvent.NavigateToFullGallery(actorId))
     }
