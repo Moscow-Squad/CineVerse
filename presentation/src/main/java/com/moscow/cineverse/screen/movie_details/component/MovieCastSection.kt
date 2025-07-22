@@ -1,0 +1,99 @@
+package com.moscow.cineverse.screen.movie_details.component
+
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.padding
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
+import com.moscow.cineverse.component.MoviePosterCard
+import com.moscow.cineverse.designSystem.component.MovieListSection
+import com.moscow.cineverse.designSystem.component.ViewMode
+import com.moscow.cineverse.designSystem.component.movieSeriesDetails.CastCard
+import com.moscow.cineverse.designSystem.component.movieSeriesDetails.StaffInfoSection
+import com.moscow.cineverse.designSystem.component.movieSeriesDetails.StarCastSection
+import com.moscow.cineverse.designSystem.theme.Theme
+import com.moscow.cineverse.screen.movie_details.MovieDetailsInteractionListener
+import com.moscow.cineverse.screen.movie_details.MovieScreenState
+
+@Composable
+fun MovieCastSection(
+    uiState: MovieScreenState,
+    interactionListener: MovieDetailsInteractionListener,
+    modifier: Modifier = Modifier
+) {
+    AnimatedVisibility(!uiState.starCast.isNullOrEmpty()) {
+        StarCastSection(
+            title = stringResource(com.moscow.cinverse.presentation.R.string.star_cast),
+            modifier = modifier
+                .background(Theme.colors.background.screen)
+                .padding(top = 24.dp, start = 16.dp, end = 16.dp),
+            onSeeMoreClick = {},
+            cast = uiState.starCast?.take(6) ?: emptyList(),
+            castContent = { actor ->
+                CastCard(
+                    modifier = Modifier.clickable {
+                        interactionListener.onActorClicked(actor.id)
+                    },
+                    castMember = actor,
+                    getOriginalName = { it.originalName },
+                    getCharacterName = { it.characterName },
+                    getProfileImage = { it.profileImage }
+                )
+            }
+        )
+    }
+}
+
+@Composable
+fun MovieStaffInfoSection(
+    uiState: MovieScreenState,
+    modifier: Modifier = Modifier
+) {
+    StaffInfoSection(
+        staffInfo = listOf(
+            "Characters" to uiState.characters.joinToString(","),
+            "Director, Screenplay, Story" to uiState.director.joinToString(","),
+            "Producer" to uiState.produce.joinToString(","),
+            "Writer" to uiState.writer.joinToString(",")
+        ),
+        modifier = modifier.padding(top = 24.dp, start = 16.dp, end = 16.dp)
+    )
+}
+
+@Composable
+fun MovieRecommendationsSection(
+    uiState: MovieScreenState,
+    interactionListener: MovieDetailsInteractionListener,
+    modifier: Modifier = Modifier
+) {
+    uiState.movieDetailsUi?.let { movieDetails ->
+        AnimatedVisibility(uiState.recommendations.isNotEmpty()) {
+            MovieListSection(
+                title = stringResource(com.moscow.cinverse.presentation.R.string.you_might_also_like),
+                movies = uiState.recommendations,
+                onClickShowMore = {
+                    interactionListener.onShowMoreRecommendations(
+                        movieDetails.id,
+                        movieDetails.title
+                    )
+                },
+                onClickPoster = { movie -> },
+                modifier = modifier.padding(top = 16.dp),
+                movieCardContent = { movie, cardModifier, onClick ->
+                    MoviePosterCard(
+                        movie = movie,
+                        viewMode = ViewMode.GRID,
+                        showRating = true,
+                        onMovieClick = {},
+                        showTitle = true,
+                        modifier = cardModifier,
+                        getTitleOverride = { it.title.take(15) + if (it.title.length > 15) "…" else "" }
+                    )
+                }
+            )
+        }
+    }
+}

@@ -38,6 +38,9 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
+import com.moscow.cineverse.common_ui_state.MediaItemUiState
+import com.moscow.cineverse.component.MoviePosterCard
+import com.moscow.cineverse.component.NoInternetScreen
 import com.moscow.cineverse.designSystem.component.EmptyState
 import com.moscow.cineverse.designSystem.component.MovieCircularProgressBar
 import com.moscow.cineverse.designSystem.component.PillLabel
@@ -51,11 +54,8 @@ import com.moscow.cineverse.navigation.LocalNavController
 import com.moscow.cineverse.navigation.routes.CastDetailsRoute
 import com.moscow.cineverse.navigation.routes.MovieDetailsRoute
 import com.moscow.cineverse.navigation.routes.SeriesDetailsRoute
-import com.moscow.cineverse.component.MoviePosterCard
-import com.moscow.cineverse.component.NoInternetScreen
 import com.moscow.cineverse.screen.explore.component.ActorPosterCard
 import com.moscow.cineverse.screen.explore.component.SearchSuggestion
-import com.moscow.cineverse.common_ui_state.MediaItemUiState
 import com.moscow.cinverse.presentation.R
 import org.koin.androidx.compose.koinViewModel
 
@@ -68,7 +68,7 @@ fun ExploreScreen(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
-        viewModel.uiEvent.collect { event -> handleEffects(event, navController) }
+        viewModel.uiEffect.collect { event -> handleEffects(event, navController) }
     }
 
     ExploreScreenContent(

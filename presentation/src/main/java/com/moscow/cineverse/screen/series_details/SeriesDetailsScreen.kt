@@ -69,7 +69,7 @@ fun SeriesDetailsScreen(
     val uiState by viewModel.uiState.collectAsState()
 
     LaunchedEffect(viewModel) {
-        viewModel.uiEvent.collect { event ->
+        viewModel.uiEffect.collect { event ->
             when (event) {
                 is SeriesDetailsEvents.AddToCollection -> {
                     navController.navigate(

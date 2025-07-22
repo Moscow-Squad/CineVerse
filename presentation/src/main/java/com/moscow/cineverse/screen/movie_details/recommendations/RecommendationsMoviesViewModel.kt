@@ -12,12 +12,11 @@ import com.moscow.cineverse.designSystem.component.ViewMode
 import com.moscow.cineverse.paging.RecommendationsMoviesPagingSource
 import kotlinx.coroutines.flow.Flow
 
-class RecommendationsMoviesViewModel (
-    private val getRecommendationsUseCase: GetRecommendationsUseCase,
-
-): BaseViewModel<RecommendationsMoviesState, RecommendationMoviesEvents>(RecommendationsMoviesState()),
+class RecommendationsMoviesViewModel(
+    private val getRecommendationsUseCase: GetRecommendationsUseCase
+) : BaseViewModel<RecommendationsMoviesState,
+        RecommendationMoviesEffect>(RecommendationsMoviesState()),
     RecommendationsMoviesInteractionListener {
-
 
     fun getRecommendations(id: Int): Flow<PagingData<Movie>> {
         return Pager(
@@ -29,11 +28,11 @@ class RecommendationsMoviesViewModel (
             }
         ).flow.cachedIn(viewModelScope)
     }
+
     override fun onViewModeChanged(viewMode: ViewMode) {
         updateState {
             it.copy(viewMode = viewMode)
         }
-
     }
 
     override fun onMovieClick(movieId: Int) {
@@ -41,9 +40,6 @@ class RecommendationsMoviesViewModel (
     }
 
     override fun backButtonClick() {
-        sendEvent(RecommendationMoviesEvents.NavigateBack)
-
+        sendEvent(RecommendationMoviesEffect.NavigateBack)
     }
-
-
 }

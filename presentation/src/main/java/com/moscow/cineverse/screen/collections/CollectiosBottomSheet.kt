@@ -53,7 +53,7 @@ fun CollectionsBottomSheetScreen(
     )
 
     LaunchedEffect(Unit) {
-        viewModel.uiEvent.collect { event ->
+        viewModel.uiEffect.collect { event ->
             handleEvents(
                 event = event,
                 onCreateCollectionClicked = onCreateCollectionClicked,// user already log in - navigate to collections screen
@@ -66,15 +66,15 @@ fun CollectionsBottomSheetScreen(
 }
 
 private fun handleEvents(
-    event: CollectionsBottomSheetEvents,
+    event: CollectionsBottomSheetEffect,
     onCreateCollectionClicked: () -> Unit,
     navigateBack: () -> Unit,
     context: Context
 ) {
     when (event) {
-        CollectionsBottomSheetEvents.OnCreateCollectionClicked -> onCreateCollectionClicked()
-        CollectionsBottomSheetEvents.OnLoginClicked -> {}
-        is CollectionsBottomSheetEvents.OnMovieAddedSuccessfully -> {
+        CollectionsBottomSheetEffect.OnCreateCollectionClicked -> onCreateCollectionClicked()
+        CollectionsBottomSheetEffect.OnLoginClicked -> {}
+        is CollectionsBottomSheetEffect.OnMovieAddedSuccessfully -> {
             Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
             navigateBack()
         }
