@@ -3,7 +3,7 @@ package com.utils
 import retrofit2.HttpException
 import retrofit2.Response
 
-suspend inline fun <reified T > handleApi(
+suspend inline fun <T> handleApi(
     crossinline execute: suspend () -> Response<T>
 ): T {
     try {

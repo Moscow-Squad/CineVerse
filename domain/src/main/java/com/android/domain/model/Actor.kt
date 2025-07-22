@@ -8,6 +8,6 @@ data class Actor(
 )
 
 enum class Gender(val value: Int){
-    MALE(0),
-    FEMALE(1)
+    FEMALE(1),
+    MALE(2)
 }

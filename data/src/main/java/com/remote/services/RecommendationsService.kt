@@ -8,15 +8,15 @@ import retrofit2.Response
 
 interface RecommendationsService {
 
-    @GET("$MOVIE{movieID}$RECOMMENDATIONS")
+    @GET("$MOVIE{movie_id}$RECOMMENDATIONS")
     suspend fun getMoviesRecommendations(
-        @Path("movieID") movieID: Int,
+        @Path("movie_id") movieId: Int,
         @Query("page") page: Int
     ): Response<ApiResponse<MovieDto>>
 
-    @GET("$SERIES{seriesID}$RECOMMENDATIONS")
+    @GET("$SERIES{series_id}$RECOMMENDATIONS")
     suspend fun getSeriesRecommendations(
-        @Path("seriesID") movieID: Int,
+        @Path("series_id") movieId: Int,
         @Query("page") page: Int
     ): Response<ApiResponse<SeriesDto>>
 }

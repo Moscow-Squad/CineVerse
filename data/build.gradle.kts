@@ -25,7 +25,7 @@ android {
         val properties = Properties()
         properties.load(keystoreFile.inputStream())
 
-        buildConfigField("String", "TMDB_API_KEY", "\"${properties.getProperty("TMDB_API_KEY")}\"")
+        buildConfigField("String", "BearerToken", "\"${properties.getProperty("BearerToken")}\"")
 
     }
 

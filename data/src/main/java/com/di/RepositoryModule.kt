@@ -19,7 +19,6 @@ import org.koin.dsl.bind
 import org.koin.dsl.module
 
 val repositoryModule = module {
-
     singleOf(::ExploreRepositoryImpl) bind ExploreRepository::class
     singleOf(::SearchRepositoryImpl) bind SearchRepository::class
     singleOf(::DetailsRepositoryImpl) bind DetailsRepository::class
@@ -27,5 +26,4 @@ val repositoryModule = module {
     singleOf(::RecommendationRepositoryImpl) bind RecommendationsMoviesRepository::class
     singleOf(::ActorDetailsRepositoryImpl) bind ActorDetailsRepository::class
     singleOf(::CollectionsRepositoryImpl) bind CollectionsRepository::class
-
 }

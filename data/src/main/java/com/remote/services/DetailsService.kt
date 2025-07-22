@@ -27,25 +27,25 @@ interface DetailsService {
         @Path("id") id: Int
     ): Response<SeriesDetailDto>
 
-    @GET("$MOVIE{movieID}$CREDITS")
+    @GET("$MOVIE{movie_id}$CREDITS")
     suspend fun getCredits(
-        @Path("movieID") movieID: Int
+        @Path("movie_id") movieID: Int
     ): Response<CreditsDetailsDto>
 
 
-    @POST("$MOVIE{movieId}$RATING")
+    @POST("$MOVIE{movie_id}$RATING")
     suspend fun rateMovie(
-        @Path("movieId") movieId: Int,
+        @Path("movie_id") movieId: Int,
         @Query(SESSION_ID) sessionId: String,
         @Body rating: RatingRequestDto
-    ): Response<Unit>
+    ): Response<Nothing>
 
-    @POST("$SERIES{seriesId}$RATING")
+    @POST("$SERIES{series_id}$RATING")
     suspend fun rateSeries(
-        @Path("seriesId") seriesId: Int,
+        @Path("series_id") seriesId: Int,
         @Query(SESSION_ID) sessionId: String,
         @Body rating: RatingRequestDto
-    ): Response<Unit>
+    ): Response<Nothing>
 
     @GET("$SERIES$LATEST")
     suspend fun getLatestSeasons()
@@ -56,6 +56,4 @@ interface DetailsService {
         @Path("id") id: Int,
         @Query("page") page: Int
     ): Response<ListOfSeriesDto>
-
-
 }

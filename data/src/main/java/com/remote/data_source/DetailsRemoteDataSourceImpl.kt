@@ -2,16 +2,16 @@ package com.remote.data_source
 
 import com.data_source.remote.DetailsRemoteDataSource
 import com.remote.dto.CreditsDetailsDto
-import com.remote.dto.series.ListOfSeriesDto
 import com.remote.dto.details.MovieDetailDto
-import com.remote.dto.series.SeriesDetailDto
 import com.remote.dto.review.RatingRequestDto
+import com.remote.dto.series.ListOfSeriesDto
+import com.remote.dto.series.SeriesDetailDto
 import com.remote.services.DetailsService
 import com.utils.handleApi
 
 class DetailsRemoteDataSourceImpl(
     private val detailsService: DetailsService
-): DetailsRemoteDataSource {
+) : DetailsRemoteDataSource {
     override suspend fun getMovieDetails(id: Int): MovieDetailDto = handleApi {
         detailsService.getMovieDetails(id)
     }
@@ -20,11 +20,11 @@ class DetailsRemoteDataSourceImpl(
         detailsService.getSeriesDetails(id)
     }
 
-    override suspend fun getCredits(id:Int): CreditsDetailsDto = handleApi {
+    override suspend fun getCredits(id: Int): CreditsDetailsDto = handleApi {
         detailsService.getCredits(id)
     }
 
-    override suspend fun rateMovie(rating: RatingRequestDto, movieId: Int) {
+    override suspend fun rateMovie(rating: RatingRequestDto, movieId: Int) =
         handleApi {
             detailsService.rateMovie(
                 movieId,
@@ -32,7 +32,6 @@ class DetailsRemoteDataSourceImpl(
                 rating
             )
         }
-    }
 
     override suspend fun rateSeries(rating: RatingRequestDto, seriesId: Int) = handleApi {
         detailsService.rateSeries(

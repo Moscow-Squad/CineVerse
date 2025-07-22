@@ -14,21 +14,21 @@ interface SearchService {
     @GET(SEARCH_MOVIE)
     suspend fun searchMovie(
         @Query(QUERY) query: String,
-        @Query(PAGE) page: Int = 1,
+        @Query(PAGE) page: Int,
         @Query(INCLUDE_ADULT) includeAdult: Boolean = false
     ): Response<ApiResponse<MovieDto>>
 
     @GET(SEARCH_SERIES)
     suspend fun searchSeries(
         @Query(QUERY) query: String,
-        @Query(PAGE) page: Int = 1,
+        @Query(PAGE) page: Int,
         @Query(INCLUDE_ADULT) includeAdult: Boolean = false
     ): Response<ApiResponse<SeriesDto>>
 
     @GET(SEARCH_ACTOR)
     suspend fun searchActor(
         @Query(QUERY) query: String,
-        @Query(PAGE) page: Int = 1,
+        @Query(PAGE) page: Int,
         @Query(INCLUDE_ADULT) includeAdult: Boolean = false
     ): Response<ApiResponse<ActorDto>>
 

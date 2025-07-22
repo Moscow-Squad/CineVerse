@@ -10,13 +10,10 @@ class CineverseInterceptor : Interceptor {
         val originalRequest = chain.request()
         val originalUrl = originalRequest.url
 
-        val newUrl = originalUrl.newBuilder()
-            .addQueryParameter("api_key", BuildConfig.TMDB_API_KEY)
-            .build()
-
         val newRequest = originalRequest.newBuilder()
-            .url(newUrl)
+            .url(originalUrl)
             .header("Accept-Language", Locale.getDefault().language)
+            .header("Authorization", "Bearer ${BuildConfig.BearerToken}")
             .build()
 
         return chain.proceed(newRequest)

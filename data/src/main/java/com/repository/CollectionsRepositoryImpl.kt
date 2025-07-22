@@ -9,72 +9,59 @@ import com.mapper.toDomain
 import com.remote.dto.AddMediaItemToCollectionRequestDto
 import com.remote.dto.CreateCollectionDto
 import com.remote.dto.toDomain
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
 
 class CollectionsRepositoryImpl(
     private val collectionsDataSource: CollectionsDataSource
 ) : CollectionsRepository {
-    override suspend fun getCollections(): Flow<List<Collection>> =
-
-        flow {
-            val response = collectionsDataSource.getMyCollections(
-                accountId = 22117857,
-                sessionId = "31044f799b3ccf5e970b994ca0022ef8865c1e35",
-                page = 1
-            )
-            emit(response.results?.map { it.toDomain() } ?: emptyList())
-        }.flowOn(Dispatchers.IO)
+    override suspend fun getCollections(page: Int): List<Collection> {
+        val response = collectionsDataSource.getMyCollections(
+            accountId = 22117857,
+            sessionId = "31044f799b3ccf5e970b994ca0022ef8865c1e35",
+            page = 1
+        )
+        return response.results?.map { it.toDomain() } ?: emptyList()
+    }
 
 
     override suspend fun addNewCollection(
         collectionName: String,
         collectionDescription: String?
-    ): Flow<String> =
+    ): String {
+        val collection =
+            CreateCollectionDto(name = collectionName, description = collectionDescription)
+        val response = collectionsDataSource.addNewCollection(
+            collection = collection,
+            sessionId = "31044f799b3ccf5e970b994ca0022ef8865c1e35"
+        )
+        return response.statusMessage ?: "Unexpected Error happened"
+    }
 
-        flow {
-            val collection =
-                CreateCollectionDto(name = collectionName, description = collectionDescription)
-            val response = collectionsDataSource.addNewCollection(
-                collection = collection,
-                sessionId = "31044f799b3ccf5e970b994ca0022ef8865c1e35"
-            )
-            response.statusMessage?.let { emit(it) }
-        }.flowOn(Dispatchers.IO)
 
     override suspend fun addMediaItemToCollection(
         mediaItemId: Int,
         mediaItemType: MediaType,
         collectionId: Int
-    ): Flow<String> =
-
-
-        flow {
-            val item =
-                AddMediaItemToCollectionRequestDto(
-                    mediaId = mediaItemId,
-                    mediaType = mediaItemType.name
-                )
-            val response = collectionsDataSource.addMediaItemToCollection(
-                item = item,
-                collectionId = collectionId,
-                sessionId = "31044f799b3ccf5e970b994ca0022ef8865c1e35"
+    ): String {
+        val item =
+            AddMediaItemToCollectionRequestDto(
+                mediaId = mediaItemId,
+                mediaType = mediaItemType.name
             )
-            response.statusMessage?.let { emit(it) }
-        }.flowOn(Dispatchers.IO)
+        val response = collectionsDataSource.addMediaItemToCollection(
+            item = item,
+            collectionId = collectionId,
+            sessionId = "31044f799b3ccf5e970b994ca0022ef8865c1e35"
+        )
+        return response.statusMessage ?: "Unexpected Error happened"
+    }
 
 
-    override suspend fun getCollectionDetails(collectionId: Int): Flow<List<MediaItem>> =
-
-        flow {
-            val response = collectionsDataSource.getCollectionDetails(
-                collectionId = collectionId,
-                sessionId = "31044f799b3ccf5e970b994ca0022ef8865c1e35"
-            )
-            emit(response.results?.map { it.toDomain() } ?: emptyList())
-        }.flowOn(Dispatchers.IO)
-
+    override suspend fun getCollectionDetails(collectionId: Int): List<MediaItem> {
+        val response = collectionsDataSource.getCollectionDetails(
+            collectionId = collectionId,
+            sessionId = "31044f799b3ccf5e970b994ca0022ef8865c1e35"
+        )
+        return response.results?.map { it.toDomain() } ?: emptyList()
+    }
 }
 

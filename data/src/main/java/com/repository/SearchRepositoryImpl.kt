@@ -63,13 +63,13 @@ class SearchRepositoryImpl(
         ).results?.map { it.toModel() } ?: emptyList()
     }
 
-    override suspend fun searchMovie(query: String, isHistory: Boolean): Flow<List<Movie>> =
+    override suspend fun searchMovie(query: String, page: Int, isHistory: Boolean): Flow<List<Movie>> =
         flow {
             if (isHistory) {
                 emit(getLocalMoviesBySearchTerm(query))
                 return@flow
             }
-            val result = searchRemoteDataSource.searchMovie(query, 1, false)
+            val result = searchRemoteDataSource.searchMovie(query, page, false)
 
             val mappedResult = result.results?.sortByFavouriteGenres { it.genreIds ?: emptyList() }
                 ?.map { it.toDomain() } ?: emptyList()
@@ -79,7 +79,7 @@ class SearchRepositoryImpl(
             }
         }.flowOn(Dispatchers.IO)
 
-    override suspend fun searchSeries(query: String, isHistory: Boolean): Flow<List<Series>> =
+    override suspend fun searchSeries(query: String, page: Int, isHistory: Boolean): Flow<List<Series>> =
         flow {
             if (isHistory) {
                 emit(
@@ -91,7 +91,7 @@ class SearchRepositoryImpl(
                 )
                 return@flow
             }
-            val result = searchRemoteDataSource.searchSeries(query, 1, false)
+            val result = searchRemoteDataSource.searchSeries(query, page, false)
 
             val mappedResult = result.results?.sortByFavouriteGenres { it.genreIds ?: emptyList() }
                 ?.map { it.toDomain() } ?: emptyList()
@@ -101,13 +101,13 @@ class SearchRepositoryImpl(
             }
         }.flowOn(Dispatchers.IO)
 
-    override suspend fun searchActor(query: String, isHistory: Boolean): Flow<List<Actor>> =
+    override suspend fun searchActor(query: String, page: Int, isHistory: Boolean): Flow<List<Actor>> =
         flow {
             if (isHistory) {
                 emit(searchLocalDataSource.getActorsBySearchTerm(query).toDomain())
                 return@flow
             }
-            val result = searchRemoteDataSource.searchActor(query, 1, false)
+            val result = searchRemoteDataSource.searchActor(query, page, false)
 
             val mappedResult = result.results?.map { it.toDomain() } ?: emptyList()
             emit(mappedResult)

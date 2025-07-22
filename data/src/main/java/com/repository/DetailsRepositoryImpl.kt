@@ -11,10 +11,6 @@ import com.data_source.local.DetailsLocalDataSource
 import com.data_source.remote.DetailsRemoteDataSource
 import com.mapper.toDomain
 import com.remote.dto.review.RatingRequestDto
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
 
 class DetailsRepositoryImpl(
     private val detailsRemoteDataSource: DetailsRemoteDataSource,
@@ -52,21 +48,21 @@ class DetailsRepositoryImpl(
     override suspend fun rateMovie(
         rating: Float,
         movieId: Int
-    ): Flow<Unit> =
-        flow {
-            val request = RatingRequestDto(value = rating)
-            emit(detailsRemoteDataSource.rateMovie(rating = request, movieId = movieId))
-        }.flowOn(Dispatchers.IO)
-
+    ) {
+        detailsRemoteDataSource.rateMovie(
+            rating = RatingRequestDto(value = rating),
+            movieId = movieId
+        )
+    }
 
     override suspend fun rateSeries(
         rating: Float,
         seriesId: Int
-    ): Flow<Unit> =
-        flow {
-            val request = RatingRequestDto(value = rating)
-            emit(detailsRemoteDataSource.rateSeries(rating = request, seriesId = seriesId))
-        }.flowOn(Dispatchers.IO)
-
+    ) {
+        detailsRemoteDataSource.rateSeries(
+            rating = RatingRequestDto(value = rating),
+            seriesId = seriesId
+        )
+    }
 
 }
