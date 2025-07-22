@@ -11,7 +11,7 @@ import com.moscow.cineverse.navigation.routes.CollectionsBottomSheetRoute
 class CollectionsBottomSheetViewModel(
     private val getUserCollections: GetUserCollectionsUseCase,
     private val addMediaItemToCollectionUseCase: AddMediaItemToCollectionUseCase,
-    private val savedStateHandle: SavedStateHandle
+    savedStateHandle: SavedStateHandle
 ) : BaseViewModel<CollectionsBottomSheetScreenState, CollectionsBottomSheetEffect>(
     CollectionsBottomSheetScreenState()
 ), CollectionsBottomSheetInteractionListener {
