@@ -61,6 +61,7 @@ class ExploreViewModel(
             flowAction = {
                 searchUseCase.searchMovie(
                     uiState.value.searchKeyWord,
+                    page = 1,
                     isHistory = isHistory
                 )
             },
@@ -73,7 +74,13 @@ class ExploreViewModel(
 
     override fun searchSeries(isHistory: Boolean) {
         launchWithFlow(
-            flowAction = { searchUseCase.searchSeries(uiState.value.searchKeyWord, isHistory) },
+            flowAction = {
+                searchUseCase.searchSeries(
+                    uiState.value.searchKeyWord,
+                    page = 1,
+                    isHistory
+                )
+            },
             onSuccess = ::onSeriesSearchSuccess,
             onError = ::onSeriesSearchFailed,
             onStart = ::onLoading,
@@ -83,7 +90,13 @@ class ExploreViewModel(
 
     override fun searchActor(isHistory: Boolean) {
         launchWithFlow(
-            flowAction = { searchUseCase.searchActor(uiState.value.searchKeyWord, isHistory) },
+            flowAction = {
+                searchUseCase.searchActor(
+                    uiState.value.searchKeyWord,
+                    page = 1,
+                    isHistory
+                )
+            },
             onSuccess = ::onActorSearchSuccess,
             onError = ::onActorsSearchFailed,
             onStart = ::onLoading,
@@ -479,9 +492,9 @@ class ExploreViewModel(
                 errorMessage = ""
             )
         }
-        if (uiState.value.searchKeyWord != ""){
+        if (uiState.value.searchKeyWord != "") {
             onSearchQuery()
-        }else{
+        } else {
             getMoviesGenres()
             getSeriesGenres()
             loadMovies()
