@@ -37,7 +37,6 @@ import coil3.compose.rememberAsyncImagePainter
 import com.example.design_system.R
 import com.moscow.cineverse.component.MoviePosterCard
 import com.moscow.cineverse.designSystem.component.MovieAppBar
-import com.moscow.cineverse.designSystem.component.MovieCard
 import com.moscow.cineverse.designSystem.component.MovieListSection
 import com.moscow.cineverse.designSystem.component.SectionTitle
 import com.moscow.cineverse.designSystem.component.ViewMode
@@ -54,6 +53,7 @@ import com.moscow.cineverse.designSystem.component.movieSeriesDetails.StarCastSe
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.navigation.LocalNavController
 import com.moscow.cineverse.navigation.routes.CollectionsBottomSheetRoute
+import com.moscow.cineverse.navigation.routes.ReviewsRoute
 import com.moscow.cineverse.screen.movie_details.formatReviewDate
 import org.koin.androidx.compose.koinViewModel
 
@@ -67,10 +67,14 @@ fun SeriesDetailsScreen(
     LaunchedEffect(viewModel) {
         viewModel.uiEvent.collect { event ->
             when (event) {
-                is SeriesDetailsEvents.AddToCollection -> {
+                is SeriesDetailsScreenEvents.AddToCollection -> {
                     navController.navigate(
                         CollectionsBottomSheetRoute(mediaItemId = event.seriesId)
                     )
+                }
+                is SeriesDetailsScreenEvents.NavigateToRecommendationSeries -> TODO()
+                is SeriesDetailsScreenEvents.NavigateToReviewsScreen -> {
+                    navController.navigate(ReviewsRoute(event.seriesId, false))
                 }
             }
         }
@@ -268,7 +272,7 @@ fun SeriesDetailsContent(
                         item {
                             SectionTitle(
                                 title = stringResource(com.moscow.cinverse.presentation.R.string.top_reviews),
-                                onClick = {},
+                                onClick = {interactionListener.onShowMoreReviewsClicked(uiState.seriesDetail.id)},
                                 modifier = Modifier.padding(
                                     start = 16.dp,
                                     end = 16.dp,

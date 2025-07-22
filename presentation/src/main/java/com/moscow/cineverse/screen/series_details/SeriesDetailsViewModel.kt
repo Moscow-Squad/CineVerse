@@ -18,7 +18,7 @@ class SeriesDetailsViewModel(
     private val getSeriesCreditsDetailsUseCase: GetSeriesCreditsDetailsUseCase,
     private val getSeriesRecommendationsUseCase: GetSeriesRecommendationsUseCase,
     private val savedStateHandle: SavedStateHandle,
-) : BaseViewModel<SeriesDetailsScreenState, SeriesDetailsEvents>(SeriesDetailsScreenState()),
+) : BaseViewModel<SeriesDetailsScreenState, SeriesDetailsScreenEvents>(SeriesDetailsScreenState()),
     SeriesInteractionListener {
 
     val seriesId = savedStateHandle.get<Int>(SeriesDetailsRoute.SERIES_ID) ?: 0
@@ -26,7 +26,7 @@ class SeriesDetailsViewModel(
     init {
         loadSeriesDetails(seriesId)
         loadSeriesCredits(seriesId)
-        getSeriesRecommendations(seriesId)
+        getSeriesRecommendations(seriesId, page = 1)
         loadReviews(seriesId, page = 1)
     }
 
@@ -75,9 +75,9 @@ class SeriesDetailsViewModel(
         )
     }
 
-    fun getSeriesRecommendations(seriesId: Int) {
+    fun getSeriesRecommendations(seriesId: Int, page: Int) {
         launchWithResult(
-            action = { getSeriesRecommendationsUseCase(seriesId, 1) },
+            action = { getSeriesRecommendationsUseCase(seriesId, page) },
             onSuccess = ::onGetRecommendationsSuccess,
             onError = ::getRecommendationsFailed,
         )
@@ -101,26 +101,20 @@ class SeriesDetailsViewModel(
     override fun onRatingSubmit(rating: Int, seriesId: Int) {
         launchWithFlow(
             flowAction = { rateSeriesUseCase.rateSeriesUse(rating.toFloat(), seriesId) },
-            onSuccess = {
-                updateState {
-                    it.copy(
-                        starsRating = rating,
-                        showRatingBottomSheet = false
-                    )
-                }
-            },
-            onError = {
-                updateState {
-                    it.copy(
-                        starsRating = rating,
-                        showRatingBottomSheet = false
-                    )
-                }
-            },
+            onSuccess = { updateState { it.copy(starsRating = rating, showRatingBottomSheet = false) } },
+            onError = { updateState { it.copy(starsRating = rating, showRatingBottomSheet = false) } },
         )
     }
 
+    override fun onShowMoreRecommendationsClicked(seriesId: Int, seriesTitle: String) {
+        sendEvent(SeriesDetailsScreenEvents.NavigateToRecommendationSeries(seriesId, seriesTitle))
+    }
+
+    override fun onShowMoreReviewsClicked(seriesId: Int) {
+        sendEvent(SeriesDetailsScreenEvents.NavigateToReviewsScreen(seriesId))
+    }
+
     override fun addToCollection() {
-        uiState.value.seriesDetail.let { sendEvent(SeriesDetailsEvents.AddToCollection(it.id)) }
+        uiState.value.seriesDetail.let { sendEvent(SeriesDetailsScreenEvents.AddToCollection(it.id)) }
     }
 }
