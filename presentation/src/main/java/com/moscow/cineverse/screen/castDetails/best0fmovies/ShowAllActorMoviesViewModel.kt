@@ -5,7 +5,7 @@ import com.android.domain.usecase.GenreUseCase
 import com.android.domain.usecase.actordetails.GetActorBestOfMovies
 import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.cineverse.designSystem.component.ViewMode
-import com.moscow.cineverse.screen.mapper.toUi
+import com.moscow.cineverse.mapper.toUi
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flatMapConcat
 

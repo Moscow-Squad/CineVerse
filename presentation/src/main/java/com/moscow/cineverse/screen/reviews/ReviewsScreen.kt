@@ -20,7 +20,8 @@ import com.moscow.cineverse.designSystem.component.MovieScaffold
 import com.moscow.cineverse.designSystem.component.movieSeriesDetails.MovieReviewCard
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.navigation.LocalNavController
-import com.moscow.cineverse.screen.mapper.formatReviewDate
+import com.moscow.cineverse.mapper.formatReviewDate
+import com.moscow.cineverse.mapper.toUi
 import com.moscow.cinverse.presentation.R
 import org.koin.androidx.compose.koinViewModel
 
@@ -30,19 +31,17 @@ fun ReviewsScreen(
     isMovie: Boolean,
     modifier: Modifier = Modifier,
     viewModel: ReviewsViewModel = koinViewModel(),
-    navController: NavHostController = LocalNavController.current,
-
-
+    navController: NavHostController = LocalNavController.current
     ) {
     val reviewsFlow = viewModel.getPagedReviews(movieId, isMovie).collectAsLazyPagingItems()
 
     LaunchedEffect(viewModel) {
         viewModel.uiEffect.collect { event ->
             when(event){
-                ReviewsScreenEvents.NavigateBack -> {
+                ReviewsEffect.NavigateBack -> {
                     navController.popBackStack()
                 }
-                is ReviewsScreenEvents.ShowError -> {}
+                is ReviewsEffect.ShowError -> {}
             }
 
         }

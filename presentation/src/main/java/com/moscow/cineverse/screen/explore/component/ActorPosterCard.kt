@@ -9,7 +9,7 @@ import com.moscow.cineverse.screen.explore.ExploreScreenState
 
 @Composable
 fun ActorPosterCard(
-    actor: ExploreScreenState.ActorUi,
+    actor: ExploreScreenState.ActorUiState,
     modifier: Modifier = Modifier,
     viewMode: ViewMode = ViewMode.GRID,
     titleTextAlign: TextAlign = TextAlign.Center,

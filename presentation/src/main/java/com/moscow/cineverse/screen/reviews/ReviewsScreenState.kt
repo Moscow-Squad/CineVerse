@@ -1,21 +1,16 @@
 package com.moscow.cineverse.screen.reviews
 
-
-
 data class ReviewsScreenState(
-
-
-    val reviewsFlow: List<ReviewUi>? = null,
+    val reviewsFlow: List<ReviewUiState>? = null,
     val isLoading: Boolean = false,
     val error: String? = null,
     val isReviewEmpty: Boolean = false,
     val shouldShowLoading: Boolean = false,
     val shouldShowError: Boolean = false,
-    val errorMessage: String = "",
+    val errorMessage: String = ""
+    )
 
-    ) {
-
-    data class ReviewUi(
+    data class ReviewUiState(
         val id: String,
         val name:String,
         val username:String,
@@ -25,5 +20,5 @@ data class ReviewsScreenState(
         val userImage:String
     )
 
-}
+
 

@@ -65,7 +65,7 @@ private fun MovieDetailsContent(
 ) {
     MovieScaffold {
         when {
-            uiState.movieDetailsUi == null -> {
+            uiState.movieDetailsUiState == null -> {
                 LoadingContent(modifier = modifier)
             }
 

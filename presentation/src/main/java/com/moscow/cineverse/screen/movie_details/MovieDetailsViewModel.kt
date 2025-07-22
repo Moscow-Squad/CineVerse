@@ -14,8 +14,8 @@ import com.android.domain.usecase.GetReviewsPageUseCase
 import com.android.domain.usecase.RateMovieUseCase
 import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.cineverse.navigation.routes.MovieDetailsRoute
-import com.moscow.cineverse.screen.mapper.toMediaItemUi
-import com.moscow.cineverse.screen.mapper.toUi
+import com.moscow.cineverse.mapper.toMediaItemUi
+import com.moscow.cineverse.mapper.toUi
 
 
 class MovieDetailsViewModel(
@@ -49,7 +49,7 @@ class MovieDetailsViewModel(
     }
 
     private fun onGetMovieDetailsSuccess(movieDetails: MovieDetail) {
-        updateState { it.copy(movieDetailsUi = movieDetails.toUi()) }
+        updateState { it.copy(movieDetailsUiState = movieDetails.toUi()) }
         Log.d("TAG", "onGetMovieDetailsSuccess: ${uiState}")
     }
 

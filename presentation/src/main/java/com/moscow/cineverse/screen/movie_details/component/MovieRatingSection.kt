@@ -11,7 +11,7 @@ import com.moscow.cineverse.designSystem.component.SectionTitle
 import com.moscow.cineverse.designSystem.component.movieSeriesDetails.MovieRatingBottomSheet
 import com.moscow.cineverse.designSystem.component.movieSeriesDetails.MovieReviewCard
 import com.moscow.cineverse.designSystem.component.movieSeriesDetails.RatingSection
-import com.moscow.cineverse.screen.mapper.formatReviewDate
+import com.moscow.cineverse.mapper.formatReviewDate
 import com.moscow.cineverse.screen.movie_details.MovieDetailsInteractionListener
 import com.moscow.cineverse.screen.movie_details.MovieScreenState
 
@@ -41,7 +41,7 @@ fun MovieReviewsSection(
         SectionTitle(
             title = stringResource(com.moscow.cinverse.presentation.R.string.top_reviews),
             onClick = {
-                uiState.movieDetailsUi?.let { movieDetails ->
+                uiState.movieDetailsUiState?.let { movieDetails ->
                     interactionListener.onShowMoreReviews(movieDetails.id)
                 }
             },
@@ -80,7 +80,7 @@ fun MovieRatingBottomSheetSection(
     interactionListener: MovieDetailsInteractionListener,
     modifier: Modifier = Modifier
 ) {
-    uiState.movieDetailsUi?.let { movieDetails ->
+    uiState.movieDetailsUiState?.let { movieDetails ->
         MovieRatingBottomSheet(
             isVisible = uiState.showRatingBottomSheet,
             onDismiss = { interactionListener.onDismissOrCancelRatingBottomSheet() },

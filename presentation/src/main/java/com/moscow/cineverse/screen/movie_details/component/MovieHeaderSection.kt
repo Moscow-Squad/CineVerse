@@ -20,8 +20,8 @@ import androidx.compose.ui.unit.sp
 import com.moscow.cineverse.designSystem.component.movieSeriesDetails.MainMovieCard
 import com.moscow.cineverse.designSystem.component.movieSeriesDetails.MovieCardDetails
 import com.moscow.cineverse.designSystem.theme.Theme
-import com.moscow.cineverse.screen.mapper.toFormattedReleasedDate
-import com.moscow.cineverse.screen.mapper.toHourMinuteFormat
+import com.moscow.cineverse.mapper.toFormattedReleasedDate
+import com.moscow.cineverse.mapper.toHourMinuteFormat
 import com.moscow.cineverse.screen.movie_details.MovieDetailsInteractionListener
 import com.moscow.cineverse.screen.movie_details.MovieScreenState
 
@@ -34,7 +34,7 @@ fun MovieHeaderSection(
     sharedTransitionScope: SharedTransitionScope,
     modifier: Modifier = Modifier
 ) {
-    uiState.movieDetailsUi?.let {
+    uiState.movieDetailsUiState?.let {
         MovieCardDetails(
             animatedVisibilityScope = animatedVisibilityScope,
             sharedTransitionScope = sharedTransitionScope,
@@ -60,7 +60,7 @@ fun MovieCollapsedHeaderSection(
     animatedVisibilityScope: AnimatedVisibilityScope,
     sharedTransitionScope: SharedTransitionScope
 ) {
-    uiState.movieDetailsUi?.let {
+    uiState.movieDetailsUiState?.let {
         MainMovieCard(
             posterUrl = it.posterPath,
             title = it.title,
@@ -77,7 +77,7 @@ fun MovieStorylineSection(
 ) {
     val textColor = Theme.colors.shade.secondary
 
-    uiState.movieDetailsUi?.let { movieDetails ->
+    uiState.movieDetailsUiState?.let { movieDetails ->
         Text(
             text = stringResource(com.moscow.cinverse.presentation.R.string.storyline),
             style = Theme.textStyle.title.small,
