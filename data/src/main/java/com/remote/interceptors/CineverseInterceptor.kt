@@ -1,6 +1,6 @@
 package com.remote.interceptors
 
-import com.moscow.cineverse.BuildConfig
+import com.moscow.cineverse.data.BuildConfig
 import okhttp3.Interceptor
 import okhttp3.Response
 import java.util.Locale

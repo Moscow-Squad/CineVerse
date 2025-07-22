@@ -1,5 +1,4 @@
-import java.io.FileInputStream
-import java.util.Properties
+
 
 plugins {
     alias(libs.plugins.android.application)
@@ -11,9 +10,6 @@ plugins {
     alias(libs.plugins.google.firebase.appdistribution)
     alias(libs.plugins.kover)
 }
-
-val localProperties = Properties()
-localProperties.load(FileInputStream(rootProject.file("keys.properties")))
 
 android {
     namespace = libs.versions.namespace.get()
@@ -40,8 +36,6 @@ android {
             localeFilters.addAll(listOf("en", "ar"))
         }
 
-        val bearerToken = localProperties["BEARER_TOKEN"].toString()
-        buildConfigField("String", "BEARER_TOKEN", "\"${bearerToken.trim()}\"")
     }
 
     buildTypes {
@@ -72,12 +66,6 @@ android {
 
     kotlinOptions {
         jvmTarget = libs.versions.javaVersion.get()
-    }
-
-    buildFeatures {
-        compose = true
-        buildConfig = true
-        mlModelBinding = true
     }
 }
 

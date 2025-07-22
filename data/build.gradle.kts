@@ -12,7 +12,7 @@ val localProperties = Properties()
 localProperties.load(FileInputStream(rootProject.file("keys.properties")))
 
 android {
-    namespace = libs.versions.namespace.get()
+    namespace = "com.moscow.cineverse.data"
     compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
@@ -24,11 +24,9 @@ android {
         val bearerToken = localProperties["BEARER_TOKEN"].toString()
         buildConfigField("String", "BEARER_TOKEN", "\"${bearerToken.trim()}\"")
     }
-
     buildFeatures {
         buildConfig = true
     }
-
     buildTypes {
         release {
             isMinifyEnabled = false
