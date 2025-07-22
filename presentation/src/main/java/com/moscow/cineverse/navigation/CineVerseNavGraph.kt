@@ -14,6 +14,7 @@ import com.moscow.cineverse.navigation.routes.MovieDetailsRoute
 import com.moscow.cineverse.navigation.routes.RecommendationsRoute
 import com.moscow.cineverse.navigation.routes.ReviewsRoute
 import com.moscow.cineverse.navigation.routes.SeriesDetailsRoute
+import com.moscow.cineverse.navigation.routes.SeriesRecommendationRoute
 import com.moscow.cineverse.navigation.routes.collectionsBottomSheetRoute
 import com.moscow.cineverse.navigation.routes.exploreRoute
 
@@ -36,6 +37,7 @@ fun CineVerseNavGraph() {
             CastBestOfMovieRoute()
             MovieDetailsRoute()
             SeriesDetailsRoute()
+            SeriesRecommendationRoute()
             collectionsBottomSheetRoute(
                 onAddNewCollectionClick = {},
                 onCreateCollectionClicked = {},

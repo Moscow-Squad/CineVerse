@@ -54,6 +54,7 @@ import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.navigation.LocalNavController
 import com.moscow.cineverse.navigation.routes.CollectionsBottomSheetRoute
 import com.moscow.cineverse.navigation.routes.ReviewsRoute
+import com.moscow.cineverse.navigation.routes.SeriesRecommendationRoute
 import com.moscow.cineverse.screen.movie_details.formatReviewDate
 import org.koin.androidx.compose.koinViewModel
 
@@ -72,7 +73,9 @@ fun SeriesDetailsScreen(
                         CollectionsBottomSheetRoute(mediaItemId = event.seriesId)
                     )
                 }
-                is SeriesDetailsScreenEvents.NavigateToRecommendationSeries -> TODO()
+                is SeriesDetailsScreenEvents.NavigateToRecommendationSeries -> {
+                    navController.navigate(SeriesRecommendationRoute(event.seriesId))
+                }
                 is SeriesDetailsScreenEvents.NavigateToReviewsScreen -> {
                     navController.navigate(ReviewsRoute(event.seriesId, false))
                 }
@@ -240,8 +243,8 @@ fun SeriesDetailsContent(
                         item {
                             MovieListSection(
                                 title = stringResource(com.moscow.cinverse.presentation.R.string.you_might_also_like),
-                                movies = uiState.recommendation,
-                                onClickShowMore = {},
+                                movies = uiState.recommendation.take(6),
+                                onClickShowMore = {interactionListener.onShowMoreRecommendationsClicked(uiState.seriesDetail.id)},
                                 onClickPoster = { series -> },
                                 modifier = Modifier.padding(top = 16.dp),
                                 movieCardContent = { series, modifier, onClick ->

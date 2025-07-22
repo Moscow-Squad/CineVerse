@@ -8,6 +8,7 @@ import com.android.domain.usecase.seriesdetails.GetSeriesCreditsDetailsUseCase
 import com.android.domain.usecase.seriesdetails.GetSeriesDetailUseCase
 import com.android.domain.usecase.seriesdetails.GetSeriesRecommendationsUseCase
 import com.moscow.cineverse.base.BaseViewModel
+import com.moscow.cineverse.designSystem.component.ViewMode
 import com.moscow.cineverse.navigation.routes.SeriesDetailsRoute
 import com.moscow.cineverse.screen.movie_details.toUi
 
@@ -84,7 +85,7 @@ class SeriesDetailsViewModel(
     }
 
     private fun onGetRecommendationsSuccess(recommendations: List<Series>) {
-        updateState { it.copy(recommendation = recommendations.take(6).map { it.ui() }) }
+        updateState { it.copy(recommendation = recommendations.map { it.ui() }) }
     }
 
     private fun getRecommendationsFailed(error: Throwable) {
@@ -106,8 +107,8 @@ class SeriesDetailsViewModel(
         )
     }
 
-    override fun onShowMoreRecommendationsClicked(seriesId: Int, seriesTitle: String) {
-        sendEvent(SeriesDetailsScreenEvents.NavigateToRecommendationSeries(seriesId, seriesTitle))
+    override fun onShowMoreRecommendationsClicked(seriesId: Int) {
+        sendEvent(SeriesDetailsScreenEvents.NavigateToRecommendationSeries(seriesId))
     }
 
     override fun onShowMoreReviewsClicked(seriesId: Int) {
@@ -116,5 +117,12 @@ class SeriesDetailsViewModel(
 
     override fun addToCollection() {
         uiState.value.seriesDetail.let { sendEvent(SeriesDetailsScreenEvents.AddToCollection(it.id)) }
+    }
+
+    override fun onViewModeChanged(viewMode: ViewMode) {
+        updateState {
+            it.copy(viewMode = viewMode)
+        }
+
     }
 }

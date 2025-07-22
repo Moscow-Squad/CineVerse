@@ -4,12 +4,12 @@ package com.moscow.cineverse.screen.series_details
 import com.android.domain.model.CastDetails
 import com.android.domain.model.CrewDetails
 import com.android.domain.model.MediaType
-import com.android.domain.model.Review
 import com.android.domain.model.Series
 import com.android.domain.model.details.Creator
 import com.android.domain.model.details.Season
 import com.android.domain.model.details.SeriesDetail
 import com.moscow.cineverse.common_ui_state.MediaItemUiState
+import com.moscow.cineverse.designSystem.component.ViewMode
 import com.moscow.cineverse.screen.movie_details.MovieScreenState.ReviewUi
 
 data class SeriesDetailsScreenState(
@@ -21,8 +21,7 @@ data class SeriesDetailsScreenState(
     val recommendation: List<MediaItemUiState> = emptyList(),
     val shouldShowError: Boolean = false,
     val errorMessage: String = "",
-    val latestSeason: List<SeriesDetail> = emptyList(),
-    val listOfSeries: List<SeriesDetail> = emptyList(),
+    val viewMode: ViewMode = ViewMode.GRID,
     val showRatingBottomSheet: Boolean = false,
     val starsRating: Int = 0
 )
