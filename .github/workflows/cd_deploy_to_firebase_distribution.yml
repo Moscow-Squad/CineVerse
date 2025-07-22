@@ -12,7 +12,7 @@ concurrency:
 
 jobs:
   build:
-    name: 🏗️ Build ABI-split Release APKs
+    name: Build ABI-split Release APKs
     if: github.event.pull_request.merged == true || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
 
@@ -98,8 +98,8 @@ jobs:
           groups: testers
           file: apks/app-${{ matrix.abi }}-release.apk
           releaseNotes: |
-            📦 Split APK Build
-            🔧 ABI: ${{ matrix.abi }}
-            🆕 PR #${{ needs.build.outputs.pr_number }}: ${{ needs.build.outputs.pr_title }}
-            🔀 Branch: ${{ needs.build.outputs.ref_name }}
-            🔗 Commit: ${{ needs.build.outputs.sha }}
+            Split APK Build
+            ABI: ${{ matrix.abi }}
+            PR #${{ needs.build.outputs.pr_number }}: ${{ needs.build.outputs.pr_title }}
+            Branch: ${{ needs.build.outputs.ref_name }}
+            Commit: ${{ needs.build.outputs.sha }}
