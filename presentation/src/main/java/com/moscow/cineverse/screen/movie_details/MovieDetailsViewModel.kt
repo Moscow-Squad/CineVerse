@@ -14,6 +14,8 @@ import com.android.domain.usecase.GetReviewsPageUseCase
 import com.android.domain.usecase.RateMovieUseCase
 import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.cineverse.navigation.routes.MovieDetailsRoute
+import com.moscow.cineverse.screen.mapper.toMediaItemUi
+import com.moscow.cineverse.screen.mapper.toUi
 
 
 class MovieDetailsViewModel(
@@ -23,7 +25,7 @@ class MovieDetailsViewModel(
     private val getRecommendationsUseCase: GetRecommendationsUseCase,
     private val rateMovieUseCase: RateMovieUseCase,
     private val saveStateHandle: SavedStateHandle,
-) : BaseViewModel<MovieScreenState, MovieDetailsScreenEvents>(MovieScreenState()),
+) : BaseViewModel<MovieScreenState, MovieDetailsScreenEffect>(MovieScreenState()),
     MovieDetailsInteractionListener {
 
     private val movieId = saveStateHandle.get<Int>(MovieDetailsRoute.MOVIE_ID) ?: 0
@@ -131,7 +133,7 @@ class MovieDetailsViewModel(
         }
 
         override fun onBackPressed() {
-            sendEvent(MovieDetailsScreenEvents.NavigateBack)
+            sendEvent(MovieDetailsScreenEffect.NavigateBack)
         }
 
     override fun onShowMoreCast() {
@@ -139,19 +141,19 @@ class MovieDetailsViewModel(
     }
 
     override fun onShowMoreRecommendations(movieId: Int, movieTitle: String) {
-            sendEvent(MovieDetailsScreenEvents.NavigateToFullMovieList(movieId, movieTitle))
+        sendEvent(MovieDetailsScreenEffect.NavigateToFullMovieList(movieId, movieTitle))
         }
 
         override fun onShowMoreReviews(movieId: Int) {
-            sendEvent(MovieDetailsScreenEvents.NavigateToFullReviews(movieId))
+            sendEvent(MovieDetailsScreenEffect.NavigateToFullReviews(movieId))
         }
 
     override fun onAddToCollection(mediaItemId: Int) {
-        sendEvent(MovieDetailsScreenEvents.AddToCollection(mediaItemId))
+        sendEvent(MovieDetailsScreenEffect.AddToCollection(mediaItemId))
 
     }
     override fun onActorClicked(actorId: Int) {
-        sendEvent(MovieDetailsScreenEvents.NavigateCastDetails(actorId))
+        sendEvent(MovieDetailsScreenEffect.NavigateCastDetails(actorId))
     }
 
     override fun showRatingBottomSheet() {
