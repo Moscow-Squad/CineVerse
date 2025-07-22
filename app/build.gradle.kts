@@ -1,3 +1,6 @@
+import java.io.FileInputStream
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -8,6 +11,9 @@ plugins {
     alias(libs.plugins.google.firebase.appdistribution)
     alias(libs.plugins.kover)
 }
+
+val localProperties = Properties()
+localProperties.load(FileInputStream(rootProject.file("keys.properties")))
 
 android {
     namespace = libs.versions.namespace.get()
@@ -32,6 +38,10 @@ android {
         androidResources {
             localeFilters.addAll(listOf("en", "ar"))
         }
+
+        val apiKey = localProperties["TMDB_API_KEY"].toString()
+        buildConfigField("String", "TMDB_API_KEY", "\"${apiKey.trim()}\"")
+        buildConfigField("String", "TMDB_URL", "\"https://api.themoviedb.org/3/\"")
     }
 
     buildTypes {
@@ -79,10 +89,10 @@ firebaseAppDistribution {
 }
 
 dependencies {
-    implementation(project(":design_system"))
-    implementation(project(":presentation"))
-    implementation(project(":data"))
-    implementation(project(":domain"))
+    implementation(projects.designSystem)
+    implementation(projects.presentation)
+    implementation(projects.data)
+    implementation(projects.domain)
 
     implementation(platform(libs.koin.bom))
     implementation(libs.bundles.koin)
