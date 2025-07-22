@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
 class GetActorBestOfMovies(private val actorDetailsRepository: ActorDetailsRepository) {
-    suspend fun getActorBestOfMovies(actorId: Int): Flow<List<Movie>> {
-        return flow { actorDetailsRepository.getBestOfMovies(actorId) }
+    suspend fun getActorBestOfMovies(actorId: Int): List<Movie> {
+        return actorDetailsRepository.getBestOfMovies(actorId)
     }
 }

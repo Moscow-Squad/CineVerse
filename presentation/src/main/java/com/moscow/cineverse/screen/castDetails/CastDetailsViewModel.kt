@@ -88,13 +88,12 @@ class CastDetailsViewModel(
 
         viewModelScope.launch {
             try {
-                getActorBestOfMovies.getActorBestOfMovies(actorId).collect { movies ->
-                    updateState { currentState ->
-                        currentState.copy(
-                            movies = movies,
-                            isLoadingMovies = false
-                        )
-                    }
+                val movies = getActorBestOfMovies.getActorBestOfMovies(actorId)
+                updateState { currentState ->
+                    currentState.copy(
+                        movies = movies,
+                        isLoadingMovies = false
+                    )
                 }
             } catch (e: Exception) {
                 updateState { currentState ->

@@ -72,7 +72,7 @@ class SearchRepositoryImpl(
             val result = searchRemoteDataSource.searchMovie(query, 1, false)
 
             val mappedResult = result.results?.sortByFavouriteGenres { it.genreIds ?: emptyList() }
-                .map { it.toDomain() }
+                ?.map { it.toDomain() } ?: emptyList()
             emit(mappedResult)
             if (mappedResult.isNotEmpty()) {
                 insertMovie(mappedResult, query)
@@ -94,14 +94,14 @@ class SearchRepositoryImpl(
             val result = searchRemoteDataSource.searchSeries(query, 1, false)
 
             val mappedResult = result.results?.sortByFavouriteGenres { it.genreIds ?: emptyList() }
-                .map { it.toDomain() }
+                ?.map { it.toDomain() } ?: emptyList()
             emit(mappedResult)
             if (mappedResult.isNotEmpty()) {
                 insertSeries(mappedResult, query)
             }
         }.flowOn(Dispatchers.IO)
 
-    override suspend fun searchActor(query: String, isHistory: Boolean): Flow<List<Actor>?> =
+    override suspend fun searchActor(query: String, isHistory: Boolean): Flow<List<Actor>> =
         flow {
             if (isHistory) {
                 emit(searchLocalDataSource.getActorsBySearchTerm(query).toDomain())
@@ -109,7 +109,7 @@ class SearchRepositoryImpl(
             }
             val result = searchRemoteDataSource.searchActor(query, 1, false)
 
-            val mappedResult = result.results?.map { it.toDomain() }
+            val mappedResult = result.results?.map { it.toDomain() } ?: emptyList()
             emit(mappedResult)
             if (mappedResult.isNotEmpty()) {
                 insertActors(mappedResult, query)
