@@ -30,9 +30,7 @@ fun ReviewsScreen(
     isMovie: Boolean,
     modifier: Modifier = Modifier,
     viewModel: ReviewsViewModel = koinViewModel(),
-    navController: NavHostController = LocalNavController.current,
-
-
+    navController: NavHostController = LocalNavController.current
     ) {
     val reviewsFlow = viewModel.getPagedReviews(movieId, isMovie).collectAsLazyPagingItems()
 
