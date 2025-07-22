@@ -49,7 +49,7 @@ class MovieDetailsViewModel(
     }
 
     private fun onGetMovieDetailsSuccess(movieDetails: MovieDetail) {
-        updateState { it.copy(movieDetailsUi = movieDetails.toUi()) }
+        updateState { it.copy(movieDetailsUiState = movieDetails.toUi()) }
         Log.d("TAG", "onGetMovieDetailsSuccess: ${uiState}")
     }
 

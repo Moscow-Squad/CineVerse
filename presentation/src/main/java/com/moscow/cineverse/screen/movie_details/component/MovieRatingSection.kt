@@ -41,7 +41,7 @@ fun MovieReviewsSection(
         SectionTitle(
             title = stringResource(com.moscow.cinverse.presentation.R.string.top_reviews),
             onClick = {
-                uiState.movieDetailsUi?.let { movieDetails ->
+                uiState.movieDetailsUiState?.let { movieDetails ->
                     interactionListener.onShowMoreReviews(movieDetails.id)
                 }
             },
@@ -80,7 +80,7 @@ fun MovieRatingBottomSheetSection(
     interactionListener: MovieDetailsInteractionListener,
     modifier: Modifier = Modifier
 ) {
-    uiState.movieDetailsUi?.let { movieDetails ->
+    uiState.movieDetailsUiState?.let { movieDetails ->
         MovieRatingBottomSheet(
             isVisible = uiState.showRatingBottomSheet,
             onDismiss = { interactionListener.onDismissOrCancelRatingBottomSheet() },

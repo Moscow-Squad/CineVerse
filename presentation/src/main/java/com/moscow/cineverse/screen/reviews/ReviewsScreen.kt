@@ -21,6 +21,7 @@ import com.moscow.cineverse.designSystem.component.movieSeriesDetails.MovieRevie
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.navigation.LocalNavController
 import com.moscow.cineverse.mapper.formatReviewDate
+import com.moscow.cineverse.mapper.toUi
 import com.moscow.cinverse.presentation.R
 import org.koin.androidx.compose.koinViewModel
 

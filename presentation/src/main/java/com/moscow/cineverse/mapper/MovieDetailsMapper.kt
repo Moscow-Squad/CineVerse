@@ -5,15 +5,15 @@ import com.android.domain.model.CrewDetails
 import com.android.domain.model.Review
 import com.android.domain.model.details.MovieDetail
 import com.moscow.cineverse.screen.movie_details.MovieScreenState
-import com.moscow.cineverse.screen.movie_details.MovieScreenState.ReviewUi
-import com.moscow.cineverse.screen.movie_details.MovieScreenState.StarCastUi
+import com.moscow.cineverse.screen.movie_details.MovieScreenState.ReviewUiState
+import com.moscow.cineverse.screen.movie_details.MovieScreenState.StarCastUiState
 import kotlinx.datetime.LocalDate
 import java.text.SimpleDateFormat
 import java.util.Locale
 
 
-fun MovieDetail.toUi(): MovieScreenState.MovieDetailsUi =
-    MovieScreenState.MovieDetailsUi(
+fun MovieDetail.toUi(): MovieScreenState.MovieDetailsUiState =
+    MovieScreenState.MovieDetailsUiState(
         id = id,
         title = title,
         posterPath = posterPath,
@@ -25,8 +25,8 @@ fun MovieDetail.toUi(): MovieScreenState.MovieDetailsUi =
     )
 
 
-fun Review.toUi(): ReviewUi =
-    ReviewUi(
+fun Review.toUi(): ReviewUiState =
+    ReviewUiState(
         id = id,
         username = username,
         name = author,
@@ -37,16 +37,16 @@ fun Review.toUi(): ReviewUi =
 
         )
 
-fun CastDetails.toUi(): StarCastUi =
-    StarCastUi(
+fun CastDetails.toUi(): StarCastUiState =
+    StarCastUiState(
         id = id,
         originalName = originalName,
         characterName = characterName,
         profileImage = profileImg
     )
 
-fun CrewDetails.toUi(): MovieScreenState.CrewUi =
-    MovieScreenState.CrewUi(
+fun CrewDetails.toUi(): MovieScreenState.CrewUiState =
+    MovieScreenState.CrewUiState(
         id = id,
         name = name,
         job = job,

@@ -69,7 +69,7 @@ fun MovieRecommendationsSection(
     interactionListener: MovieDetailsInteractionListener,
     modifier: Modifier = Modifier
 ) {
-    uiState.movieDetailsUi?.let { movieDetails ->
+    uiState.movieDetailsUiState?.let { movieDetails ->
         AnimatedVisibility(uiState.recommendations.isNotEmpty()) {
             MovieListSection(
                 title = stringResource(com.moscow.cinverse.presentation.R.string.you_might_also_like),
