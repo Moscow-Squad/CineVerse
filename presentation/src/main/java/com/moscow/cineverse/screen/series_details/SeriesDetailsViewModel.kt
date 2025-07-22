@@ -4,13 +4,12 @@ import androidx.lifecycle.SavedStateHandle
 import com.android.domain.model.Series
 import com.android.domain.usecase.GetReviewsPageUseCase
 import com.android.domain.usecase.RateSeriesUseCase
-import com.android.domain.usecase.seriesdetails.GetLatestSeasonsUseCase
-import com.android.domain.usecase.seriesdetails.GetListOfSeriesUseCase
 import com.android.domain.usecase.seriesdetails.GetSeriesCreditsDetailsUseCase
 import com.android.domain.usecase.seriesdetails.GetSeriesDetailUseCase
 import com.android.domain.usecase.seriesdetails.GetSeriesRecommendationsUseCase
 import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.cineverse.navigation.routes.SeriesDetailsRoute
+import com.moscow.cineverse.screen.movie_details.toUi
 
 class SeriesDetailsViewModel(
     private val getSeriesDetailUseCase: GetSeriesDetailUseCase,
@@ -18,8 +17,6 @@ class SeriesDetailsViewModel(
     private val rateSeriesUseCase: RateSeriesUseCase,
     private val getSeriesCreditsDetailsUseCase: GetSeriesCreditsDetailsUseCase,
     private val getSeriesRecommendationsUseCase: GetSeriesRecommendationsUseCase,
-    private val getLatestSeasonsUseCase: GetLatestSeasonsUseCase,
-    private val getListOfSeriesUseCase: GetListOfSeriesUseCase,
     private val savedStateHandle: SavedStateHandle,
 ) : BaseViewModel<SeriesDetailsScreenState, SeriesDetailsEvents>(SeriesDetailsScreenState()),
     SeriesInteractionListener {
@@ -34,20 +31,20 @@ class SeriesDetailsViewModel(
     }
 
     fun loadSeriesDetails(seriesId: Int) {
-        updateState { it.copy(isLoading = true, error = null) }
+        updateState { it.copy(isLoading = true, errorMessage = "") }
         launchWithResult(
             action = { getSeriesDetailUseCase(seriesId) },
             onSuccess = { detail ->
                 updateState { it.copy(seriesDetail = detail.ui(), isLoading = false) }
             },
             onError = { error ->
-                updateState { it.copy(error = error.message, isLoading = false) }
+                updateState { it.copy(errorMessage = error.message.toString(), isLoading = false) }
             }
         )
     }
 
     fun loadSeriesCredits(seriesId: Int) {
-        updateState { it.copy(isLoading = true, error = null) }
+        updateState { it.copy(isLoading = true, errorMessage = "") }
         launchWithResult(
             action = { getSeriesCreditsDetailsUseCase(seriesId) },
             onSuccess = { credits ->
@@ -60,20 +57,20 @@ class SeriesDetailsViewModel(
                 }
             },
             onError = { error ->
-                updateState { it.copy(error = error.message, isLoading = false) }
+                updateState { it.copy(errorMessage = error.message.toString(), isLoading = false) }
             }
         )
     }
 
     fun loadReviews(seriesId: Int, page: Int) {
-        updateState { it.copy(isLoading = true, error = null) }
+        updateState { it.copy(isLoading = true, errorMessage = "") }
         launchWithResult(
             action = { getReviewsPageUseCase(seriesId, page, isMovie = false) },
             onSuccess = { reviews ->
-                updateState { it.copy(reviews = reviews, isLoading = false) }
+                updateState { it.copy(reviews = reviews.map { it.toUi() }, isLoading = false) }
             },
             onError = { error ->
-                updateState { it.copy(error = error.message, isLoading = false) }
+                updateState { it.copy(errorMessage = error.message.toString(), isLoading = false) }
             }
         )
     }
@@ -93,43 +90,15 @@ class SeriesDetailsViewModel(
     private fun getRecommendationsFailed(error: Throwable) {
         updateState { it.copy(errorMessage = error.message.toString(), shouldShowError = true) }
     }
-
-    fun latestSeasons() {
-        updateState { it.copy(isLoading = true, error = null) }
-        launchWithResult(
-            action = { getLatestSeasonsUseCase() },
-            onSuccess = { _ ->
-                updateState { it.copy(isLoading = false) }
-            },
-            onError = { error ->
-                updateState { it.copy(error = error.message, isLoading = false) }
-            }
-        )
-
-    }
-
-    fun listOfSeries(id: Int, page: Int) {
-        updateState { it.copy(isLoading = true, error = null) }
-        launchWithResult(
-            action = { getListOfSeriesUseCase(id, page) },
-            onSuccess = { _ ->
-                updateState { it.copy(isLoading = false) }
-            },
-            onError = { error ->
-                updateState { it.copy(error = error.message, isLoading = false) }
-            }
-        )
-    }
-
     override fun showRatingBottomSheet() {
         updateState { it.copy(showRatingBottomSheet = true) }
     }
 
-    fun onDismissOrCancelRatingBottomSheet() {
+    override fun onDismissOrCancelRatingBottomSheet() {
         updateState { it.copy(showRatingBottomSheet = false) }
     }
 
-    fun onRatingSubmit(rating: Int, seriesId: Int) {
+    override fun onRatingSubmit(rating: Int, seriesId: Int) {
         launchWithFlow(
             flowAction = { rateSeriesUseCase.rateSeriesUse(rating.toFloat(), seriesId) },
             onSuccess = {

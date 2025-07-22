@@ -1,7 +1,6 @@
 package com.moscow.cineverse.screen.series_details
 
 import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.foundation.background
@@ -23,7 +22,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.ParagraphStyle
 import androidx.compose.ui.text.SpanStyle
@@ -35,6 +33,7 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import coil3.compose.rememberAsyncImagePainter
 import com.example.design_system.R
 import com.moscow.cineverse.component.MoviePosterCard
 import com.moscow.cineverse.designSystem.component.MovieAppBar
@@ -55,9 +54,8 @@ import com.moscow.cineverse.designSystem.component.movieSeriesDetails.StarCastSe
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.navigation.LocalNavController
 import com.moscow.cineverse.navigation.routes.CollectionsBottomSheetRoute
+import com.moscow.cineverse.screen.movie_details.formatReviewDate
 import org.koin.androidx.compose.koinViewModel
-import java.text.SimpleDateFormat
-import java.util.Locale
 
 @Composable
 fun SeriesDetailsScreen(
@@ -77,24 +75,7 @@ fun SeriesDetailsScreen(
             }
         }
     }
-    SeriesDetailsContent(
-        uiState = uiState,
-        interactionListener = viewModel,
-        onClickArrow = viewModel::showRatingBottomSheet,
-        onDismiss = viewModel::onDismissOrCancelRatingBottomSheet,
-        onRatingSubmit = viewModel::onRatingSubmit
-    )
-}
-
-private fun formatReviewDate(dateString: String): String {
-    return try {
-        val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
-        val outputFormat = SimpleDateFormat("MMM dd, yyyy", Locale.getDefault())
-        val date = inputFormat.parse(dateString)
-        date?.let { outputFormat.format(it) } ?: dateString
-    } catch (e: Exception) {
-        dateString
-    }
+    SeriesDetailsContent(uiState = uiState, interactionListener = viewModel,)
 }
 
 @OptIn(ExperimentalSharedTransitionApi::class)
@@ -102,17 +83,8 @@ private fun formatReviewDate(dateString: String): String {
 fun SeriesDetailsContent(
     uiState: SeriesDetailsScreenState,
     interactionListener: SeriesInteractionListener,
-    onClickArrow: () -> Unit,
-    onDismiss: () -> Unit,
-    onRatingSubmit: (Int, Int) -> Unit
 ) {
     val detail = uiState.seriesDetail
-    val cast = uiState.cast
-    val reviews = uiState.reviews
-    val isLoading = uiState.isLoading
-    val error = uiState.error
-    val latestSeason = uiState.latestSeason
-    val listOfSeries = uiState.listOfSeries
     val textColor = Theme.colors.shade.secondary
     val scrollState = rememberLazyListState()
     val isCollapsed by remember {
@@ -156,12 +128,13 @@ fun SeriesDetailsContent(
                 .background(Theme.colors.background.screen)
         )
         {
-            if (isLoading) {
+            if (uiState.isLoading) {
                 CircularProgressIndicator(
                     modifier = Modifier.align(Alignment.Center),
                     color = Theme.colors.brand.primary
                 )
-            } else {
+            }
+            else {
                 LazyColumn(
                     state = scrollState,
                     modifier = Modifier.background(Theme.colors.background.screen)
@@ -174,7 +147,6 @@ fun SeriesDetailsContent(
                             modifier = Modifier.padding(16.dp, top = 24.dp, bottom = 8.dp),
                         )
                     }
-
                     item {
                         Text(
                             modifier = Modifier.padding(horizontal = 16.dp),
@@ -221,14 +193,14 @@ fun SeriesDetailsContent(
                             )
                         )
                     }
-                    if (cast.isNotEmpty()) {
+                    if (uiState.cast.isNotEmpty()) {
                         item {
                             StarCastSection(
                                 title = stringResource(com.moscow.cinverse.presentation.R.string.star_cast),
                                 modifier = Modifier
                                     .background(Theme.colors.background.screen)
                                     .padding(top = 24.dp, start = 16.dp, end = 16.dp),
-                                cast = cast.take(6),
+                                cast = uiState.cast.take(6),
                                 onSeeMoreClick = {},
                                 castContent = {actor->
                                     CastCard(
@@ -282,19 +254,17 @@ fun SeriesDetailsContent(
                             )
                         }
                     }
-
                     item {
                         RatingSection(
                             icon = R.drawable.due_tone_star,
-                            title = "Give it Stars!",
-                            caption = "Let the world know how you felt.",
-                            onClickArrow = onClickArrow,
+                            title = stringResource(com.moscow.cinverse.presentation.R.string.give_it_stars),
+                            caption = stringResource(com.moscow.cinverse.presentation.R.string.let_the_world_know_how_you_felt),
+                            onClickArrow = interactionListener::showRatingBottomSheet,
                             ratingStars = uiState.starsRating,
-                            modifier = Modifier.padding(top = 24.dp, start = 16.dp, end = 16.dp)
+                            modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 24.dp),
                         )
                     }
-
-                    if (reviews.isNotEmpty()) {
+                    if (uiState.reviews.isNotEmpty()) {
                         item {
                             SectionTitle(
                                 title = stringResource(com.moscow.cinverse.presentation.R.string.top_reviews),
@@ -307,14 +277,16 @@ fun SeriesDetailsContent(
                                 )
                             )
                         }
-                        items(reviews.take(3)) { review ->
+                        items(uiState.reviews.take(3)) { review ->
                             MovieReviewCard(
-                                review.author,
-                                "@${review.username}",
-                                review.content,
-                                review.rating.toInt(),
-                                formatReviewDate(review.createdAt),
-                                painterResource(R.drawable.outline_user),
+                                name = review.username,
+                                username = "@${review.username}",
+                                reviewText = review.reviewContent,
+                                rating = review.rate.toInt(),
+                                date = formatReviewDate(review.date),
+                                avatar =  if (review.userImage.isEmpty()) null else rememberAsyncImagePainter(
+                                    model = review.userImage
+                                ),
                                 modifier = Modifier.padding(
                                     start = 16.dp,
                                     end = 16.dp,
@@ -323,23 +295,12 @@ fun SeriesDetailsContent(
                             )
                         }
                     }
-
-                    if (error != null) {
-                        item {
-                            Text(
-                                "Error: $error",
-                                color = Theme.colors.brand.secondary,
-                                modifier = Modifier.padding(16.dp)
-                            )
-                        }
-                    }
                 }
-
                 MovieRatingBottomSheet(
                     isVisible = uiState.showRatingBottomSheet,
-                    onDismiss = onDismiss,
-                    onRatingSubmit = { rating -> onRatingSubmit(rating, detail.id) },
-                    onRatingRemove = { onRatingSubmit(0, detail.id) },
+                    onDismiss = interactionListener::onDismissOrCancelRatingBottomSheet,
+                    onRatingSubmit = { rating -> interactionListener.onRatingSubmit(rating, detail.id) },
+                    onRatingRemove = { interactionListener.onRatingSubmit(0, detail.id) },
                     initialRating = uiState.starsRating,
                     hasExistingRating = uiState.starsRating != 0,
                 )
@@ -347,87 +308,3 @@ fun SeriesDetailsContent(
         }
     }
 }
-//
-//@Preview(showBackground = true)
-//@Composable
-//private fun SeriesDetailsScreenPreview() {
-//    CineVerseTheme {
-//        SeriesDetailsContent(
-//            uiState = SeriesDetailsUiState(
-//                isLoading = false,
-//                seriesDetail = SeriesDetail(
-//                    id = 101,
-//                    title = "The Great Adventure",
-//                    posterPath = "",
-//                    backdropPath = "",
-//                    genres = listOf(
-//                        Genre(id = 1, name = "Adventure"),
-//                        Genre(id = 2, name = "Drama")
-//                    ),
-//                    rating = 8.5,
-//                    voteCount = 1245,
-//                    runtime = "45m per episode",
-//                    releaseDate = "2021-09-15",
-//                    type = "SERIES",
-//                    overview = "A thrilling adventure series that explores the life of a young hero on a quest to save their world.",
-//                    numberOfSeasons = 3,
-//                    numberOfEpisodes = 30,
-//                    cast = listOf(
-//                        com.android.domain.model.details.CastMember(
-//                            id = 1,
-//                            name = "Emma Stone",
-//                            character = "Hero",
-//                            profilePath = null
-//                        ),
-//                        com.android.domain.model.details.CastMember(
-//                            id = 2,
-//                            name = "Ryan Gosling",
-//                            character = "Mentor",
-//                            profilePath = null
-//                        )
-//                    ),
-//                    creators = listOf(
-//                        Creator(
-//                            id = 1,
-//                            name = "John Doe",
-//                            profilePath = null
-//                        )
-//                    ),
-//                    tagline = "",
-//                    status = "",
-//                    lastAirDate = null,
-//                    nextAirDate = null,
-//                    lastEpisodeToAir = null,
-//                    nextEpisodeToAir = null,
-//                    seasons = emptyList(),
-//                    similarSeries = emptyList(),
-//                    reviews = emptyList()
-//                ),
-//                reviews = listOf(
-//                    Review(
-//                        id = "rev1",
-//                        author = "FilmFan99",
-//                        username = "filmfan99",
-//                        content = "Absolutely amazing! The plot, the acting, everything was top-notch.",
-//                        rating = 9.0,
-//                        createdAt = "2024-03-05T15:23:01.000Z",
-//                        avatarPath = "null"
-//                    ),
-//                    Review(
-//                        id = "rev2",
-//                        author = "MovieBuff88",
-//                        username = "moviebuff88",
-//                        content = "Great cinematography and storytelling. Can't wait for the next season!",
-//                        rating = 8.0,
-//                        createdAt = "2024-04-10T11:12:01.000Z",
-//                        avatarPath = "null"
-//                    )
-//                )
-//            ),
-//            interactionListener = TODO(),
-//            onClickArrow = TODO(),
-//            onDismiss = TODO(),
-//            onRatingSubmit = TODO()
-//        )
-//    }
-//}

@@ -10,17 +10,17 @@ import com.android.domain.model.details.Creator
 import com.android.domain.model.details.Season
 import com.android.domain.model.details.SeriesDetail
 import com.moscow.cineverse.common_ui_state.MediaItemUiState
+import com.moscow.cineverse.screen.movie_details.MovieScreenState.ReviewUi
 
 data class SeriesDetailsScreenState(
     val isLoading: Boolean = false,
     val seriesDetail: SeriesDetailsUiState = SeriesDetailsUiState(),
-    val reviews: List<Review> = emptyList(),
+    val reviews: List<ReviewUi> = emptyList(),
     val cast: List<CastUiState> = emptyList(),
     val crew: List<CrewUiState> = emptyList(),
     val recommendation: List<MediaItemUiState> = emptyList(),
     val shouldShowError: Boolean = false,
     val errorMessage: String = "",
-    val error: String? = null,
     val latestSeason: List<SeriesDetail> = emptyList(),
     val listOfSeries: List<SeriesDetail> = emptyList(),
     val showRatingBottomSheet: Boolean = false,
