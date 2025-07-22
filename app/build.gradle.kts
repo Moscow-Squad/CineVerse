@@ -32,16 +32,16 @@ android {
         versionName = ciName ?: libs.versions.versionName.get()
 
         ndk {
-            abiFilters += listOf("arm64-v8a", "armeabi-v7a")
+            abiFilters += listOf("arm64-v8a", "armeabi-v7a", "x86_64")
         }
 
+        @Suppress("UnstableApiUsage")
         androidResources {
             localeFilters.addAll(listOf("en", "ar"))
         }
 
-        val apiKey = localProperties["TMDB_API_KEY"].toString()
-        buildConfigField("String", "TMDB_API_KEY", "\"${apiKey.trim()}\"")
-        buildConfigField("String", "TMDB_URL", "\"https://api.themoviedb.org/3/\"")
+        val bearerToken = localProperties["BEARER_TOKEN"].toString()
+        buildConfigField("String", "BEARER_TOKEN", "\"${bearerToken.trim()}\"")
     }
 
     buildTypes {

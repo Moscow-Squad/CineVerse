@@ -1,6 +1,6 @@
 package com.remote.interceptors
 
-import com.moscow.cineverse.data.BuildConfig
+import com.moscow.cineverse.BuildConfig
 import okhttp3.Interceptor
 import okhttp3.Response
 import java.util.Locale
@@ -13,7 +13,7 @@ class CineverseInterceptor : Interceptor {
         val newRequest = originalRequest.newBuilder()
             .url(originalUrl)
             .header("Accept-Language", Locale.getDefault().language)
-            .header("Authorization", "Bearer ${BuildConfig.BearerToken}")
+            .header("Authorization", "Bearer ${BuildConfig.BEARER_TOKEN}")
             .build()
 
         return chain.proceed(newRequest)
