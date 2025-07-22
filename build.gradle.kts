@@ -9,4 +9,44 @@ plugins {
     alias(libs.plugins.google.firebase.firebase.perf) apply false
     alias(libs.plugins.google.firebase.appdistribution) apply false
     alias(libs.plugins.jetbrains.kotlin.jvm) apply false
+    alias(libs.plugins.ksp) apply false
+    alias(libs.plugins.kover)
+}
+
+val excludedPackages = listOf(
+    "*.R",
+    "*.R_*",
+    "**.di.**",
+    "**.logging.**",
+    "*.BuildConfig*",
+    "*.Manifest*",
+    "*.ComposableSingletons*",
+    "*.MainActivity*",
+    "*.CineVerseApp*",
+    "com.example.image_viewer.*",
+    "com.example.design_system.*",
+    "entity.**",
+    "**.dao.**",
+    "**.dto.**",
+    "**.response.**",
+    "exceptions.**",
+)
+allprojects {
+    apply(plugin = "org.jetbrains.kotlinx.kover")
+    kover {
+        reports {
+            filters {
+                excludes { classes(excludedPackages) }
+            }
+            total {
+                verify {
+                    rule { bound { minValue = 80 } }
+                }
+            }
+        }
+    }
+}
+
+dependencies {
+
 }
