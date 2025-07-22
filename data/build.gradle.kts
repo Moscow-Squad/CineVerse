@@ -21,7 +21,7 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
 
-        val keystoreFile = project.rootProject.file("local.properties")
+        val keystoreFile = project.rootProject.file("keys.properties")
         val properties = Properties()
         properties.load(keystoreFile.inputStream())
 
