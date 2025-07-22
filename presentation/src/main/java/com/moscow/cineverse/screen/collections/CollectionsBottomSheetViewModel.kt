@@ -12,7 +12,7 @@ class CollectionsBottomSheetViewModel(
     private val getUserCollections: GetUserCollectionsUseCase,
     private val addMediaItemToCollectionUseCase: AddMediaItemToCollectionUseCase,
     private val savedStateHandle: SavedStateHandle
-) : BaseViewModel<CollectionsBottomSheetScreenState, CollectionsBottomSheetEvents>(
+) : BaseViewModel<CollectionsBottomSheetScreenState, CollectionsBottomSheetEffect>(
     CollectionsBottomSheetScreenState()
 ), CollectionsBottomSheetInteractionListener {
 
@@ -56,7 +56,7 @@ class CollectionsBottomSheetViewModel(
     }
 
     private fun onAddMediaItemToCollectionSuccess(message: String) {
-        sendEvent(CollectionsBottomSheetEvents.OnMovieAddedSuccessfully("Movie added successfully"))
+        sendEvent(CollectionsBottomSheetEffect.OnMovieAddedSuccessfully("Movie added successfully"))
     }
 
     private fun onAddMediaItemToCollectionFailed(e: Throwable) {
@@ -114,5 +114,4 @@ class CollectionsBottomSheetViewModel(
     private fun onFinally() {
         updateState { it.copy(isLoading = false) }
     }
-
 }
