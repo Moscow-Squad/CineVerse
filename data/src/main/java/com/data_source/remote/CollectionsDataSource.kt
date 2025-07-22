@@ -16,13 +16,13 @@ interface CollectionsDataSource {
     suspend fun addNewCollection(
         collection: CreateCollectionDto,
         sessionId: String
-    ): ApiResponse<Unit>
+    ): ApiResponse<Nothing>
 
     suspend fun addMediaItemToCollection(
         item: AddMediaItemToCollectionRequestDto,
         collectionId: Int,
         sessionId: String
-    ): ApiResponse<Unit>
+    ): ApiResponse<Nothing>
 
     suspend fun getCollectionDetails(
         collectionId: Int,
