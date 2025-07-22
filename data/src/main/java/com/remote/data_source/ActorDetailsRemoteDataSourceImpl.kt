@@ -2,7 +2,7 @@ package com.remote.data_source
 
 import com.data_source.remote.ActorDetailsRemoteDataSource
 import com.remote.dto.actor.ActorBestOfMoviesDto
-import com.remote.dto.actor.ActorImagesResponse
+import com.remote.dto.actor.ActorImagesDto
 import com.remote.dto.actor.ActorSocialMediaDto
 import com.remote.dto.details.ActorDetailsDto
 import com.remote.services.ActorDetailsService
@@ -16,12 +16,12 @@ class ActorDetailsRemoteDataSourceImpl(private val actorDetailsService: ActorDet
     }
 
 
-    override suspend fun getGallery(actorId: Int): ActorImagesResponse = handleApi {
+    override suspend fun getGallery(actorId: Int): ActorImagesDto = handleApi {
         actorDetailsService.getGallery(actorId)
     }
 
     override suspend fun getBestOfMovies(actorId: Int): ActorBestOfMoviesDto = handleApi {
-        actorDetailsService.getBestOfMovies(actorId)
+        actorDetailsService.getActorBestMovies(actorId)
     }
 
     override suspend fun getSocialMedia(actorId: Int): ActorSocialMediaDto = handleApi {

@@ -1,4 +1,4 @@
-package com.repository.details
+package com.repository
 
 
 import com.android.domain.model.CreditsDetails
@@ -8,43 +8,43 @@ import com.android.domain.model.details.Season
 import com.android.domain.model.details.SeriesDetail
 import com.android.domain.repository.DetailsRepository
 import com.data_source.local.DetailsLocalDataSource
+import com.data_source.remote.DetailsRemoteDataSource
 import com.mapper.toDomain
 import com.remote.dto.review.RatingRequestDto
-import com.remote.data_source.DetailsRemoteDataSourceImpl
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 
 class DetailsRepositoryImpl(
-    private val detailsRemoteDataSourceImpl: DetailsRemoteDataSourceImpl,
+    private val detailsRemoteDataSource: DetailsRemoteDataSource,
     private val detailsLocalDataSource: DetailsLocalDataSource,
 ) : DetailsRepository {
     override suspend fun getMoviesDetail(movieId: Int): MovieDetail {
-        val res = detailsRemoteDataSourceImpl.getMovieDetails(movieId)
+        val res = detailsRemoteDataSource.getMovieDetails(movieId)
         res.genres?.forEach { detailsLocalDataSource.insertFavouriteGenre(it.id) }
         return res.toDomain()
     }
 
     override suspend fun getSeriesDetail(seriesId: Int): SeriesDetail {
-        val res = detailsRemoteDataSourceImpl.getSeriesDetails(seriesId)
+        val res = detailsRemoteDataSource.getSeriesDetails(seriesId)
         res.genres?.forEach { detailsLocalDataSource.insertFavouriteGenre(it.id) }
         return res.toDomain()
     }
 
     override suspend fun getCreditsDetails(id: Int): CreditsDetails {
-        val response = detailsRemoteDataSourceImpl.getCredits(id)
+        val response = detailsRemoteDataSource.getCredits(id)
         return response.toDomain()
     }
 
 
     override suspend fun getLatestSeasons(): List<Season> {
-        val response = detailsRemoteDataSourceImpl.getLatestSeasons()
+        val response = detailsRemoteDataSource.getLatestSeasons()
         return response.seasons?.map { it.toDomain() } ?: emptyList()
     }
 
     override suspend fun getListOfSeries(id: Int, page: Int): List<ListOfSeries> {
-        val response = detailsRemoteDataSourceImpl.getListOfSeries(id, page)
+        val response = detailsRemoteDataSource.getListOfSeries(id, page)
         return listOf(response.toDomain())
     }
 
@@ -55,7 +55,7 @@ class DetailsRepositoryImpl(
     ): Flow<Unit> =
         flow {
             val request = RatingRequestDto(value = rating)
-            emit(detailsRemoteDataSourceImpl.rateMovie(rating = request, movieId = movieId))
+            emit(detailsRemoteDataSource.rateMovie(rating = request, movieId = movieId))
         }.flowOn(Dispatchers.IO)
 
 
@@ -65,7 +65,7 @@ class DetailsRepositoryImpl(
     ): Flow<Unit> =
         flow {
             val request = RatingRequestDto(value = rating)
-            emit(detailsRemoteDataSourceImpl.rateSeries(rating = request, seriesId = seriesId))
+            emit(detailsRemoteDataSource.rateSeries(rating = request, seriesId = seriesId))
         }.flowOn(Dispatchers.IO)
 
 

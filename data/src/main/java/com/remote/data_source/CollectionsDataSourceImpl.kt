@@ -2,8 +2,10 @@ package com.remote.data_source
 
 import com.data_source.remote.CollectionsDataSource
 import com.remote.dto.AddMediaItemToCollectionRequestDto
+import com.remote.dto.CollectionDto
 import com.remote.dto.CreateCollectionDto
 import com.remote.services.CollectionsService
+import com.utils.ApiResponse
 import com.utils.handleApi
 
 
@@ -12,10 +14,12 @@ class CollectionsDataSourceImpl(
 ) : CollectionsDataSource {
     override suspend fun getMyCollections(
         accountId: Int,
-        sessionId: String
-    ) = handleApi {
+        sessionId: String,
+        page: Int
+    ): ApiResponse<CollectionDto> = handleApi {
         collectionsService.getMyCollections(
             accountId,
+            page,
             sessionId
         )
     }

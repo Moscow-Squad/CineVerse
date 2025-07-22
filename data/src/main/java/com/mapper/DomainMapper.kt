@@ -8,13 +8,12 @@ import com.android.domain.model.MediaItem
 import com.android.domain.model.MediaType
 import com.android.domain.model.Movie
 import com.android.domain.model.Series
-import com.remote.dto.actor.ActorBestOfMoviesAsCastDto
-import com.remote.dto.actor.ActorBestOfMoviesAsCrewDto
 import com.remote.dto.actor.ActorDto
-import com.remote.dto.actor.ActorImagesDto
 import com.remote.dto.GenreDto
 import com.remote.dto.MediaItemDto
 import com.remote.dto.MovieDto
+import com.remote.dto.actor.ActorBestOfMoviesDto
+import com.remote.dto.actor.ActorImagesDto
 import com.remote.dto.details.ActorDetailsDto
 import com.remote.dto.series.SeriesDto
 import com.utils.IMAGES_URL
@@ -111,10 +110,10 @@ fun ActorDetailsDto.toDomain(youtubeLink: String, facebookLink: String, instagra
         profileImg = IMAGES_URL + profilePath.orEmpty()
     )
 
-fun ActorImagesDto.toDomain() =
+fun ActorImagesDto.ActorImageDetails.toDomain() =
     IMAGES_URL + filePath.orEmpty()
 
-fun ActorBestOfMoviesAsCrewDto.toDomain() =
+fun ActorBestOfMoviesDto.ActorBestOfMoviesAsCrew.toDomain() =
     Movie(
         id = id ?: 0,
         name = title.orEmpty(),
@@ -135,7 +134,7 @@ fun ActorBestOfMoviesAsCrewDto.toDomain() =
         poster = IMAGES_URL + posterPath.orEmpty()
     )
 
-fun ActorBestOfMoviesAsCastDto.toDomain() =
+fun ActorBestOfMoviesDto.ActorBestOfMoviesAsCast.toDomain() =
     Movie(
         id = id ?: 0,
         name = title.orEmpty(),

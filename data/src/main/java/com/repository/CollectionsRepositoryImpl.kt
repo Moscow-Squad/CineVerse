@@ -1,30 +1,31 @@
-package com.repository.collections
+package com.repository
 
 import com.android.domain.model.Collection
 import com.android.domain.model.MediaItem
 import com.android.domain.model.MediaType
 import com.android.domain.repository.CollectionsRepository
+import com.data_source.remote.CollectionsDataSource
 import com.mapper.toDomain
 import com.remote.dto.AddMediaItemToCollectionRequestDto
 import com.remote.dto.CreateCollectionDto
 import com.remote.dto.toDomain
-import com.remote.data_source.CollectionsDataSourceImpl
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 
 class CollectionsRepositoryImpl(
-    private val collectionsDataSourceImpl: CollectionsDataSourceImpl
+    private val collectionsDataSource: CollectionsDataSource
 ) : CollectionsRepository {
     override suspend fun getCollections(): Flow<List<Collection>> =
 
         flow {
-            val response = collectionsDataSourceImpl.getMyCollections(
+            val response = collectionsDataSource.getMyCollections(
                 accountId = 22117857,
-                sessionId = "31044f799b3ccf5e970b994ca0022ef8865c1e35"
+                sessionId = "31044f799b3ccf5e970b994ca0022ef8865c1e35",
+                page = 1
             )
-            emit(response.results.map { it.toDomain() })
+            emit(response.results?.map { it.toDomain() } ?: emptyList())
         }.flowOn(Dispatchers.IO)
 
 
@@ -36,7 +37,7 @@ class CollectionsRepositoryImpl(
         flow {
             val collection =
                 CreateCollectionDto(name = collectionName, description = collectionDescription)
-            val response = collectionsDataSourceImpl.addNewCollection(
+            val response = collectionsDataSource.addNewCollection(
                 collection = collection,
                 sessionId = "31044f799b3ccf5e970b994ca0022ef8865c1e35"
             )
@@ -56,7 +57,7 @@ class CollectionsRepositoryImpl(
                     mediaId = mediaItemId,
                     mediaType = mediaItemType.name
                 )
-            val response = collectionsDataSourceImpl.addMediaItemToCollection(
+            val response = collectionsDataSource.addMediaItemToCollection(
                 item = item,
                 collectionId = collectionId,
                 sessionId = "31044f799b3ccf5e970b994ca0022ef8865c1e35"
@@ -68,11 +69,11 @@ class CollectionsRepositoryImpl(
     override suspend fun getCollectionDetails(collectionId: Int): Flow<List<MediaItem>> =
 
         flow {
-            val response = collectionsDataSourceImpl.getCollectionDetails(
+            val response = collectionsDataSource.getCollectionDetails(
                 collectionId = collectionId,
                 sessionId = "31044f799b3ccf5e970b994ca0022ef8865c1e35"
             )
-            emit(response.results.map { it.toDomain() })
+            emit(response.results?.map { it.toDomain() } ?: emptyList())
         }.flowOn(Dispatchers.IO)
 
 }

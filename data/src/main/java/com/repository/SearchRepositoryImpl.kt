@@ -1,4 +1,4 @@
-package com.repository.explore.search
+package com.repository
 
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
@@ -8,11 +8,11 @@ import com.android.domain.model.Movie
 import com.android.domain.model.Series
 import com.android.domain.repository.SearchRepository
 import com.data_source.local.SearchLocalDataSource
+import com.data_source.remote.SearchRemoteDataSource
 import com.local.DeleteHistoryQueryWorker
 import com.mapper.toDomain
-import com.mapper.toModel
-import com.remote.data_source.SearchRemoteDataSourceImpl
 import com.mapper.toEntity
+import com.mapper.toModel
 import com.mapper.toSortedGenres
 import com.utils.DELETE_SEARCH_QUERY_HISTORY
 import com.utils.QUERY
@@ -24,7 +24,7 @@ import java.util.concurrent.TimeUnit
 
 class SearchRepositoryImpl(
     private val searchLocalDataSource: SearchLocalDataSource,
-    private val searchRemoteDataSourceImpl: SearchRemoteDataSourceImpl,
+    private val searchRemoteDataSource: SearchRemoteDataSource,
     private val workManager: WorkManager
 ) : SearchRepository {
     override suspend fun getLocalMoviesBySearchTerm(searchTerm: String): List<Movie> {
@@ -56,13 +56,12 @@ class SearchRepositoryImpl(
     }
 
     override suspend fun getRemoteSuggestions(keyWord: String, page: Int): List<String> {
-        return searchRemoteDataSourceImpl.getSuggestions(
+        return searchRemoteDataSource.getSuggestions(
             keyWord,
             page,
             false
-        ).results.map { it.toModel() }
+        ).results?.map { it.toModel() } ?: emptyList()
     }
-
 
     override suspend fun searchMovie(query: String, isHistory: Boolean): Flow<List<Movie>> =
         flow {
@@ -70,9 +69,9 @@ class SearchRepositoryImpl(
                 emit(getLocalMoviesBySearchTerm(query))
                 return@flow
             }
-            val result = searchRemoteDataSourceImpl.searchMovie(query, 1, false)
+            val result = searchRemoteDataSource.searchMovie(query, 1, false)
 
-            val mappedResult = result.results.sortByFavouriteGenres { it.genreIds ?: emptyList() }
+            val mappedResult = result.results?.sortByFavouriteGenres { it.genreIds ?: emptyList() }
                 .map { it.toDomain() }
             emit(mappedResult)
             if (mappedResult.isNotEmpty()) {
@@ -92,9 +91,9 @@ class SearchRepositoryImpl(
                 )
                 return@flow
             }
-            val result = searchRemoteDataSourceImpl.searchSeries(query, 1, false)
+            val result = searchRemoteDataSource.searchSeries(query, 1, false)
 
-            val mappedResult = result.results.sortByFavouriteGenres { it.genreIds ?: emptyList() }
+            val mappedResult = result.results?.sortByFavouriteGenres { it.genreIds ?: emptyList() }
                 .map { it.toDomain() }
             emit(mappedResult)
             if (mappedResult.isNotEmpty()) {
@@ -102,15 +101,15 @@ class SearchRepositoryImpl(
             }
         }.flowOn(Dispatchers.IO)
 
-    override suspend fun searchActor(query: String, isHistory: Boolean): Flow<List<Actor>> =
+    override suspend fun searchActor(query: String, isHistory: Boolean): Flow<List<Actor>?> =
         flow {
             if (isHistory) {
                 emit(searchLocalDataSource.getActorsBySearchTerm(query).toDomain())
                 return@flow
             }
-            val result = searchRemoteDataSourceImpl.searchActor(query, 1, false)
+            val result = searchRemoteDataSource.searchActor(query, 1, false)
 
-            val mappedResult = result.results.map { it.toDomain() }
+            val mappedResult = result.results?.map { it.toDomain() }
             emit(mappedResult)
             if (mappedResult.isNotEmpty()) {
                 insertActors(mappedResult, query)
@@ -147,6 +146,7 @@ class SearchRepositoryImpl(
                         .mapNotNull { genre -> favouriteGenres.indexOf(genre).takeIf { it != -1 } }
                         .minOrNull() ?: Int.MAX_VALUE
                 }
-            ))
+            )
+        )
     }
 }

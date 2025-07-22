@@ -1,3 +1,3 @@
 package com.utils
 
-class CineVerseExceptions(code: Int, message: String) : Exception()
+data class CineVerseExceptions(val code: Int, override val message: String) : Exception()
