@@ -4,13 +4,13 @@ import retrofit2.http.*
 import com.remote.dto.*
 import com.remote.dto.details.*
 import com.remote.dto.review.*
-import com.utils.ApiResponse
+import com.remote.dto.series.ListOfSeriesDto
+import com.remote.dto.series.SeriesDetailDto
 import com.utils.CREDITS
 import com.utils.LATEST
 import com.utils.LISTS
 import com.utils.MOVIE
 import com.utils.RATING
-import com.utils.RECOMMENDATIONS
 import com.utils.SERIES
 import com.utils.SESSION_ID
 import retrofit2.Response

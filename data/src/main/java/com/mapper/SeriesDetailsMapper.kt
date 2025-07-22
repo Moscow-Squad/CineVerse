@@ -8,10 +8,10 @@ import com.android.domain.model.details.SeriesDetail
 import com.android.domain.model.details.SeriesItem
 import com.remote.dto.details.CreatedByDto
 import com.remote.dto.details.LastEpisodeToAirDto
-import com.remote.dto.details.ListOfSeriesDto
-import com.remote.dto.details.SeasonDto
-import com.remote.dto.details.SeriesDetailDto
-import com.remote.dto.details.SeriesItemDto
+import com.remote.dto.series.ListOfSeriesDto
+import com.remote.dto.series.SeasonDto
+import com.remote.dto.series.SeriesDetailDto
+import com.remote.dto.series.SeriesItemDto
 
 fun SeriesDetailDto.toDomain(): SeriesDetail {
     return SeriesDetail(

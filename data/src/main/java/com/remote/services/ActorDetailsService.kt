@@ -1,7 +1,9 @@
 package com.remote.services
 
 import retrofit2.http.*
-import com.remote.dto.*
+import com.remote.dto.actor.ActorBestOfMoviesDto
+import com.remote.dto.actor.ActorImagesResponse
+import com.remote.dto.actor.ActorSocialMediaDto
 import com.remote.dto.details.*
 import com.utils.ACTOR
 import retrofit2.Response

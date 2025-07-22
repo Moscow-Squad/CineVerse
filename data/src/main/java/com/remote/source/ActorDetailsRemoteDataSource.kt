@@ -1,8 +1,8 @@
 package com.remote.source
 
-import com.remote.dto.ActorBestOfMoviesDto
-import com.remote.dto.ActorImagesResponse
-import com.remote.dto.ActorSocialMediaDto
+import com.remote.dto.actor.ActorBestOfMoviesDto
+import com.remote.dto.actor.ActorImagesResponse
+import com.remote.dto.actor.ActorSocialMediaDto
 import com.remote.dto.details.ActorDetailsDto
 import com.remote.services.ActorDetailsService
 import com.utils.handleApi

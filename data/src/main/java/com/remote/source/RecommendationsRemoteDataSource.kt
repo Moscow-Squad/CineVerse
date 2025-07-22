@@ -1,7 +1,7 @@
 package com.remote.source
 
 import com.remote.dto.MovieDto
-import com.remote.dto.details.SeriesDto
+import com.remote.dto.series.SeriesDto
 import com.remote.services.RecommendationsService
 import com.utils.ApiResponse
 import com.utils.handleApi

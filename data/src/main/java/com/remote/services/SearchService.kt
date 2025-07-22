@@ -3,9 +3,9 @@ package com.remote.services
 import retrofit2.http.GET
 import retrofit2.http.Query
 import com.remote.dto.MovieDto
-import com.remote.dto.ActorDto
-import com.remote.dto.SuggestionDto
-import com.remote.dto.details.SeriesDto
+import com.remote.dto.actor.ActorDto
+import com.remote.dto.suggestion.SuggestionDto
+import com.remote.dto.series.SeriesDto
 import com.utils.*
 import retrofit2.Response
 

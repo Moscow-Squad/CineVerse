@@ -56,6 +56,7 @@ junitJunit = "4.12"
 pagingCommonAndroid = "3.3.6"
 readMoreVersion = "1.6.3"
 
+serializationKotlin = "2.0.0"
 [libraries]
 androidx-animation = { module = "androidx.compose.animation:animation", version.ref = "animation" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -141,7 +142,7 @@ google-firebase-appdistribution = { id = "com.google.firebase.appdistribution", 
 android-secrets = { id = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin", version.ref = "secretsGradlePlugin" }
 jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrainsKotlinJvm" }
 #serialization
-kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "serializationKotlin" }
 
 [bundles]
 koin = [

@@ -2,7 +2,7 @@ package com.remote.services
 
 import retrofit2.http.*
 import com.remote.dto.*
-import com.remote.dto.details.*
+import com.remote.dto.series.SeriesDto
 import com.utils.ApiResponse
 import com.utils.DISCOVER_MOVIE_LIST
 import com.utils.DISCOVER_SERIES_LIST

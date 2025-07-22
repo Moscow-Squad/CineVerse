@@ -1,4 +1,4 @@
-package com.remote.dto.details
+package com.remote.dto.series
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

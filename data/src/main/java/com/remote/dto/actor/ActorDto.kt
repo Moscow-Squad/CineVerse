@@ -1,4 +1,4 @@
-package com.remote.dto
+package com.remote.dto.actor
 
 import com.remote.dto.KnownFor
 import kotlinx.serialization.SerialName

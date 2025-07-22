@@ -1,6 +1,6 @@
 package com.mapper
 
-import com.remote.dto.SuggestionDto
+import com.remote.dto.suggestion.SuggestionDto
 
 
 fun SuggestionDto.toModel(): String {

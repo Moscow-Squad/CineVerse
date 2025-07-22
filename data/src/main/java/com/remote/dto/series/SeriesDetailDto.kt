@@ -1,6 +1,12 @@
-package com.remote.dto.details
+package com.remote.dto.series
 
 import com.remote.dto.GenreDto
+import com.remote.dto.details.CreatedByDto
+import com.remote.dto.details.LastEpisodeToAirDto
+import com.remote.dto.details.NetworkDto
+import com.remote.dto.details.ProductionCompanyDto
+import com.remote.dto.details.ProductionCountryDto
+import com.remote.dto.details.SpokenLanguageDto
 import com.remote.dto.review.ReviewDto
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
