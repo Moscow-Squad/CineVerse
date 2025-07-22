@@ -4,15 +4,16 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.moscow.cineverse.screen.series_details.SeriesDetailsViewModel
 import com.moscow.cineverse.screen.series_details.series_recommendation.SeriesRecommendationScreen
+import com.moscow.cineverse.screen.series_details.series_seasons.SeriesSeasonsScreen
 import kotlinx.serialization.Serializable
 import org.koin.androidx.compose.koinViewModel
 
 @Serializable
-data class SeriesRecommendationRoute(val seriesId: Int)
+data class SeriesSeasonsRoute(val seriesId: Int)
 
-fun NavGraphBuilder.SeriesRecommendationRoute() {
-    composable<SeriesRecommendationRoute>{
+fun NavGraphBuilder.SeriesSeasonsRoute() {
+    composable<SeriesSeasonsRoute>{
         val viewModel: SeriesDetailsViewModel = koinViewModel()
-        SeriesRecommendationScreen(viewModel = viewModel)
+        SeriesSeasonsScreen(viewModel = viewModel)
     }
 }

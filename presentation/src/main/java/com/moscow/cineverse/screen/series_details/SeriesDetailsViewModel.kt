@@ -115,6 +115,10 @@ class SeriesDetailsViewModel(
         sendEvent(SeriesDetailsScreenEvents.NavigateToReviewsScreen(seriesId))
     }
 
+    override fun onShowMoreSeasonsClicked(seriesId: Int) {
+        sendEvent(SeriesDetailsScreenEvents.NavigateToSeriesSeasonsScreen(seriesId))
+    }
+
     override fun addToCollection() {
         uiState.value.seriesDetail.let { sendEvent(SeriesDetailsScreenEvents.AddToCollection(it.id)) }
     }

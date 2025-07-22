@@ -9,5 +9,6 @@ interface SeriesInteractionListener {
     fun onRatingSubmit(rating: Int, seriesId: Int)
     fun onShowMoreRecommendationsClicked(seriesId: Int)
     fun onShowMoreReviewsClicked(seriesId: Int)
+    fun onShowMoreSeasonsClicked(seriesId: Int)
     fun onViewModeChanged(viewMode: ViewMode)
 }

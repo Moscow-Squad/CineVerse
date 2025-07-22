@@ -82,7 +82,7 @@ fun SeriesDetail.ui() = SeriesDetailsUiState(
     posterPath = posterPath,
     numberOfSeasons = numberOfSeasons,
     numberOfEpisodes = numberOfEpisodes,
-    seasons = seasons.map { it.ui() }.reversed(),
+    seasons = seasons.map { it.ui() },
     creators = creators.map { it.ui() }
 )
 

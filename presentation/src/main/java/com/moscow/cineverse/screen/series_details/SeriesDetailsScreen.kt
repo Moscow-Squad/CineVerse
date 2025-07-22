@@ -37,6 +37,7 @@ import coil3.compose.rememberAsyncImagePainter
 import com.example.design_system.R
 import com.moscow.cineverse.component.MoviePosterCard
 import com.moscow.cineverse.designSystem.component.MovieAppBar
+import com.moscow.cineverse.designSystem.component.MovieCircularProgressBar
 import com.moscow.cineverse.designSystem.component.MovieListSection
 import com.moscow.cineverse.designSystem.component.SectionTitle
 import com.moscow.cineverse.designSystem.component.ViewMode
@@ -55,6 +56,7 @@ import com.moscow.cineverse.navigation.LocalNavController
 import com.moscow.cineverse.navigation.routes.CollectionsBottomSheetRoute
 import com.moscow.cineverse.navigation.routes.ReviewsRoute
 import com.moscow.cineverse.navigation.routes.SeriesRecommendationRoute
+import com.moscow.cineverse.navigation.routes.SeriesSeasonsRoute
 import com.moscow.cineverse.screen.movie_details.formatReviewDate
 import org.koin.androidx.compose.koinViewModel
 
@@ -79,6 +81,10 @@ fun SeriesDetailsScreen(
                 is SeriesDetailsScreenEvents.NavigateToReviewsScreen -> {
                     navController.navigate(ReviewsRoute(event.seriesId, false))
                 }
+
+                is SeriesDetailsScreenEvents.NavigateToSeriesSeasonsScreen -> {
+                    navController.navigate(SeriesSeasonsRoute(event.seriesId))
+                }
             }
         }
     }
@@ -99,7 +105,7 @@ fun SeriesDetailsContent(
             scrollState.firstVisibleItemScrollOffset > 10 || scrollState.firstVisibleItemIndex > 0
         }
     }
-    Column {
+    Column(modifier = Modifier.background(Theme.colors.background.screen)) {
         MovieAppBar(backButtonClick = {}, showBackButton = true)
         SharedTransitionLayout {
             AnimatedContent(
@@ -136,10 +142,17 @@ fun SeriesDetailsContent(
         )
         {
             if (uiState.isLoading) {
-                CircularProgressIndicator(
-                    modifier = Modifier.align(Alignment.Center),
-                    color = Theme.colors.brand.primary
-                )
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    MovieCircularProgressBar(
+                        gradientColors = listOf(
+                            Theme.colors.brand.primary,
+                            Theme.colors.brand.tertiary
+                        )
+                    )
+                }
             }
             else {
                 LazyColumn(
@@ -178,7 +191,7 @@ fun SeriesDetailsContent(
                     item {
                         SectionTitle(
                             title = "Latest Seasons",
-                            onClick = {},
+                            onClick = {interactionListener.onShowMoreSeasonsClicked(uiState.seriesDetail.id)},
                             modifier = Modifier.padding(
                                 start = 16.dp,
                                 end = 16.dp,
@@ -187,7 +200,7 @@ fun SeriesDetailsContent(
                             )
                         )
                     }
-                    items(detail.seasons.take(3)) { season ->
+                    items(detail.seasons.reversed().take(3)) { season ->
                         SeasonCard(
                             modifier = Modifier.padding(horizontal = 16.dp),
                             season = Season(
@@ -276,12 +289,7 @@ fun SeriesDetailsContent(
                             SectionTitle(
                                 title = stringResource(com.moscow.cinverse.presentation.R.string.top_reviews),
                                 onClick = {interactionListener.onShowMoreReviewsClicked(uiState.seriesDetail.id)},
-                                modifier = Modifier.padding(
-                                    start = 16.dp,
-                                    end = 16.dp,
-                                    bottom = 12.dp,
-                                    top = 24.dp
-                                )
+                                modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 12.dp, top = 24.dp)
                             )
                         }
                         items(uiState.reviews.take(3)) { review ->
