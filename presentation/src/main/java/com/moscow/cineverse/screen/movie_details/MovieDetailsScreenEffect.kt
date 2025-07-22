@@ -12,4 +12,3 @@ sealed class MovieDetailsScreenEffect {
     data class AddToCollection(val movieId: Int) : MovieDetailsScreenEffect()
     data class NavigateCastDetails(val castId: Int) : MovieDetailsScreenEffect()
 }
-

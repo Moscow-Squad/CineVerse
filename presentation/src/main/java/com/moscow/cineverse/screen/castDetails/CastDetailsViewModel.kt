@@ -167,11 +167,9 @@ class CastDetailsViewModel(
         loadActorDetails()
     }
 
-    // Additional methods for handling interactions
+
     override fun onMovieClick(movie: Movie) {
         sendEvent(CastDetailsEffect.NavigateToMovie(movie.id))
-        // Handle movie click - you can add navigation or other actions
-        // For example: sendEvent(CastDetailsEvent.NavigateToMovie(movie.id))
     }
 
     override fun onShowMoreMovies() {
@@ -181,8 +179,6 @@ class CastDetailsViewModel(
                 uiState.value.actorDetails?.name ?: ""
             )
         )
-        // Handle show more movies - you can add navigation to full movie list
-        // For example: sendEvent(CastDetailsEvent.NavigateToFullMovieList(actorId))
     }
 
     override fun onShowMoreGallery() {
@@ -192,7 +188,5 @@ class CastDetailsViewModel(
                 uiState.value.actorDetails?.name ?: ""
             )
         )
-        // Handle show more gallery - you can add navigation to full gallery
-        // For example: sendEvent(CastDetailsEvent.NavigateToFullGallery(actorId))
     }
 }

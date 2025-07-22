@@ -9,7 +9,7 @@ import com.moscow.cineverse.screen.mapper.toUi
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flatMapConcat
 
-class ShowAllActorMoviesInteractionViewModel(
+class ShowAllActorMoviesViewModel(
     private val getActorBestOfMovies: GetActorBestOfMovies,
     actorId: Int,
     private val genreUseCase: GenreUseCase

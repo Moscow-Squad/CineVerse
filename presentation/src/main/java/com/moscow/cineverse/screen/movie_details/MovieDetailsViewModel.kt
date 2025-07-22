@@ -24,7 +24,7 @@ class MovieDetailsViewModel(
     private val getCreditsUseCase: GetCreditsUseCase,
     private val getRecommendationsUseCase: GetRecommendationsUseCase,
     private val rateMovieUseCase: RateMovieUseCase,
-    private val saveStateHandle: SavedStateHandle,
+    saveStateHandle: SavedStateHandle,
 ) : BaseViewModel<MovieScreenState, MovieDetailsScreenEffect>(MovieScreenState()),
     MovieDetailsInteractionListener {
 
@@ -185,7 +185,7 @@ class MovieDetailsViewModel(
                         isLoading = false
                     )
                 }
-            },
+            }
         )
     }
 }

@@ -36,12 +36,14 @@ data class MovieScreenState(
         val duration: Int,
         val description: String
     )
+
     data class StarCastUi(
         val id:Int,
         val originalName:String,
         val characterName:String,
         val profileImage:String
     )
+
     data class CrewUi(
         val id:Int,
         val name:String,
@@ -57,16 +59,4 @@ data class MovieScreenState(
         val date: String,
         val userImage:String
     )
-
-    data class GenreUi(
-        val id: Int,
-        val name: String
-    )
-
-    data class MovieUi(
-        val id:Int,
-        val name:String,
-        val poster:String
-    )
 }
-

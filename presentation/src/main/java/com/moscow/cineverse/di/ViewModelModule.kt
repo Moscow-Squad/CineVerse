@@ -1,7 +1,7 @@
 package com.moscow.cineverse.di
 
 import com.moscow.cineverse.screen.castDetails.CastDetailsViewModel
-import com.moscow.cineverse.screen.castDetails.best0fmovies.ShowAllActorMoviesInteractionViewModel
+import com.moscow.cineverse.screen.castDetails.best0fmovies.ShowAllActorMoviesViewModel
 import com.moscow.cineverse.screen.castDetails.gallery.ActorGalleryViewModel
 import com.moscow.cineverse.screen.collections.CollectionsBottomSheetViewModel
 import com.moscow.cineverse.screen.explore.ExploreViewModel
@@ -29,7 +29,7 @@ val viewModels = module{
         )
     }
     viewModel { (actorId: Int, actorName: String) ->
-        ShowAllActorMoviesInteractionViewModel(
+        ShowAllActorMoviesViewModel(
             getActorBestOfMovies = get(),
             genreUseCase = get(),
             actorId   = actorId,
