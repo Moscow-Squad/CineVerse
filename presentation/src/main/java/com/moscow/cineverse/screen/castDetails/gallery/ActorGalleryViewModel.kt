@@ -20,8 +20,8 @@ class ActorGalleryViewModel(
     }
 
     fun getActorPhotos() {
-        launchWithFlow(
-            flowAction = {
+        launchWithResult(
+            action = {
                 getActorGallery.getActorGallery(uiState.value.actorId)
             },
             onSuccess = ::onGetActorPhotosSuccess,

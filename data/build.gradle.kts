@@ -5,7 +5,7 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.ksp)
-    alias(libs.plugins.serialization)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 val localProperties = Properties()
@@ -21,9 +21,8 @@ android {
         testInstrumentationRunner = libs.versions.testRunner.get()
         consumerProguardFiles("consumer-rules.pro")
 
-        val apiKey = localProperties["TMDB_API_KEY"].toString()
-        buildConfigField("String", "TMDB_API_KEY", "\"${apiKey.trim()}\"")
-        buildConfigField("String", "TMDB_URL", "\"https://api.themoviedb.org/3/\"")
+        val bearerToken = localProperties["BEARER_TOKEN"].toString()
+        buildConfigField("String", "BEARER_TOKEN", "\"${bearerToken.trim()}\"")
     }
 
     buildFeatures {
@@ -63,12 +62,20 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
-    /** Koin */
+    // Koin
     implementation(platform(libs.koin.bom))
     implementation(libs.bundles.koin)
 
-    /** Ktor */
-    api(libs.bundles.ktor)
+    // Retrofit
+    implementation(libs.retrofit)
+
+    // OkHttp
+    implementation(libs.okhttp)
+    implementation(libs.logging.interceptor)
+
+    // Kotlinx Serialization
+    implementation(libs.kotlinx.serialization.json)
+    implementation(libs.retrofit2.kotlinx.serialization.converter)
 
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)

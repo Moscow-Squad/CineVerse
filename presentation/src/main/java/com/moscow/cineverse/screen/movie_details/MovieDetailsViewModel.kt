@@ -22,7 +22,7 @@ class MovieDetailsViewModel(
     private val getCreditsUseCase: GetCreditsUseCase,
     private val getRecommendationsUseCase: GetRecommendationsUseCase,
     private val rateMovieUseCase: RateMovieUseCase,
-    private val saveStateHandle: SavedStateHandle,
+    saveStateHandle: SavedStateHandle,
 ) : BaseViewModel<MovieScreenState, MovieDetailsScreenEvents>(MovieScreenState()),
     MovieDetailsInteractionListener {
 
@@ -163,8 +163,8 @@ class MovieDetailsViewModel(
     }
 
     override fun onRatingSubmit(rating: Int, movieId: Int) {
-        launchWithFlow(
-            flowAction = { rateMovieUseCase.rateMovie(rating.toFloat(), movieId) },
+        launchWithResult(
+            action = { rateMovieUseCase.rateMovie(rating.toFloat(), movieId) },
             onSuccess = {
                 updateState { it.copy(
                     starsRating = rating,

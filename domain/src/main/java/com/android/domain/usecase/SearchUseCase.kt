@@ -7,17 +7,20 @@ class SearchUseCase(
 ) {
     suspend fun searchMovie(
         query: String,
+        page: Int,
         isHistory: Boolean = false
-    ) = searchRepository.searchMovie(query,isHistory)
+    ) = searchRepository.searchMovie(query, page, isHistory)
 
     suspend fun searchSeries(
         query: String,
+        page: Int,
         isHistory: Boolean = false
-    ) = searchRepository.searchSeries(query,isHistory)
+    ) = searchRepository.searchSeries(query, page, isHistory)
 
     suspend fun searchActor(
         query: String,
+        page: Int,
         isHistory: Boolean = false
-    ) = searchRepository.searchActor(query,isHistory)
+    ) = searchRepository.searchActor(query, page, isHistory)
 
 }
