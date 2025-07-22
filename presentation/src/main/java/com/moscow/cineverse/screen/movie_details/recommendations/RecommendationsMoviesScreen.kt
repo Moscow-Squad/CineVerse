@@ -27,7 +27,7 @@ import com.moscow.cineverse.designSystem.component.MovieScaffold
 import com.moscow.cineverse.designSystem.component.ViewMode
 import com.moscow.cineverse.designSystem.component.ViewModeToggle
 import com.moscow.cineverse.navigation.LocalNavController
-import com.moscow.cineverse.screen.mapper.toMediaItemUi
+import com.moscow.cineverse.mapper.toMediaItemUi
 import com.moscow.cinverse.presentation.R
 import org.koin.androidx.compose.koinViewModel
 

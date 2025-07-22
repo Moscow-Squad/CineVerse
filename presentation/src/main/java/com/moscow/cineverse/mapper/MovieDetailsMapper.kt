@@ -1,4 +1,4 @@
-package com.moscow.cineverse.screen.mapper
+package com.moscow.cineverse.mapper
 
 import com.android.domain.model.CastDetails
 import com.android.domain.model.CrewDetails

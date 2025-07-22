@@ -17,8 +17,8 @@ import com.moscow.cineverse.designSystem.component.cast_details.GallerySection
 import com.moscow.cineverse.designSystem.component.cast_details.MainDetails
 import com.moscow.cineverse.screen.castDetails.CastDetailsInteractionListener
 import com.moscow.cineverse.screen.castDetails.CastDetailsUiState
-import com.moscow.cineverse.screen.mapper.toFormattedBirthDate
-import com.moscow.cineverse.screen.mapper.toMediaItemUi
+import com.moscow.cineverse.mapper.toFormattedBirthDate
+import com.moscow.cineverse.mapper.toMediaItemUi
 
 @Composable
 fun ActorMainDetailsSection(

@@ -20,8 +20,8 @@ import androidx.compose.ui.unit.sp
 import com.moscow.cineverse.designSystem.component.movieSeriesDetails.MainMovieCard
 import com.moscow.cineverse.designSystem.component.movieSeriesDetails.MovieCardDetails
 import com.moscow.cineverse.designSystem.theme.Theme
-import com.moscow.cineverse.screen.mapper.toFormattedReleasedDate
-import com.moscow.cineverse.screen.mapper.toHourMinuteFormat
+import com.moscow.cineverse.mapper.toFormattedReleasedDate
+import com.moscow.cineverse.mapper.toHourMinuteFormat
 import com.moscow.cineverse.screen.movie_details.MovieDetailsInteractionListener
 import com.moscow.cineverse.screen.movie_details.MovieScreenState
 
