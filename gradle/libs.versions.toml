@@ -1,5 +1,16 @@
 [versions]
 accompanistWebview = "0.36.0"
+
+namespace = "com.moscow.cineverse"
+applicationId = "com.moscow.cineverse"
+compileSdk = "36"
+minSdk = "26"
+targetSdk = "36"
+versionCode = "1"
+versionName = "1.0"
+javaVersion = "11"
+testRunner = "androidx.test.runner.AndroidJUnitRunner"
+
 agp = "8.10.1"
 animation = "1.8.3"
 coilNetworkOkhttp = "3.2.0"
@@ -40,6 +51,7 @@ ui = "1.8.3"
 ksp = "2.0.21-1.0.25"
 secretsGradlePlugin = "2.0.1"
 kotlinxDatetime = "0.3.3"
+kover = "0.9.1"
 # DI
 koin-bom = "4.1.0"
 # Network
@@ -119,10 +131,12 @@ firebase-crashlytics-buildtools = { group = "com.google.firebase", name = "fireb
 junit-jupiter = { group = "org.junit.jupiter", name = "junit-jupiter", version.ref = "junitJupiter" }
 junit-junit = { group = "junit", name = "junit", version.ref = "junitJunit" }
 androidx-paging-common-android = { group = "androidx.paging", name = "paging-common-android", version.ref = "pagingCommonAndroid" }
+
 androidx-datastore-preferences = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastore" }
 androidx-datastore-core = { group = "androidx.datastore", name = "datastore-core", version.ref = "datastore" }
 
 [plugins]
+kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
