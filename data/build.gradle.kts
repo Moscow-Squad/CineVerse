@@ -21,16 +21,13 @@ android {
         testInstrumentationRunner = libs.versions.testRunner.get()
         consumerProguardFiles("consumer-rules.pro")
 
-        val apiKey = localProperties["TMDB_API_KEY"].toString()
-        buildConfigField("String", "TMDB_API_KEY", "\"${apiKey.trim()}\"")
-        buildConfigField("String", "TMDB_URL", "\"https://api.themoviedb.org/3/\"")
+        val bearerToken = localProperties["BEARER_TOKEN"].toString()
+        buildConfigField("String", "BEARER_TOKEN", "\"${bearerToken.trim()}\"")
     }
 
     buildFeatures {
         buildConfig = true
     }
-
-    buildConfigField("String", "BearerToken", "\"${properties.getProperty("BearerToken")}\"")
 
     buildTypes {
         release {
