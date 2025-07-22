@@ -1,7 +1,5 @@
 package com.moscow.cineverse.screen.reviews
 
-
-
 data class ReviewsScreenState(
     val reviewsFlow: List<ReviewUiState>? = null,
     val isLoading: Boolean = false,
