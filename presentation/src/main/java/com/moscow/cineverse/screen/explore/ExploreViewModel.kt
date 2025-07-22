@@ -41,7 +41,7 @@ class ExploreViewModel(
     private val getSeriesByGenreIdUseCase: GetSeriesByGenreIdUseCase,
     private val cacheSearchQueryUseCase: CacheSearchQueryUseCase,
     private val clearSearchHistoryUseCase: ClearSearchHistoryUseCase,
-) : BaseViewModel<ExploreScreenState, ExploreScreenEvents>(ExploreScreenState()),
+) : BaseViewModel<ExploreScreenState, ExploreScreenEffects>(ExploreScreenState()),
     ExploreInteractionListener {
 
     init {
@@ -456,13 +456,13 @@ class ExploreViewModel(
 
     override fun onMediaItemClicked(mediaItemUiState: MediaItemUiState) {
         if (mediaItemUiState.mediaType == MediaType.Movie)
-            sendEvent(ExploreScreenEvents.MovieClicked(mediaItemUiState.id))
+            sendEvent(ExploreScreenEffects.MovieClicked(mediaItemUiState.id))
         else
-            sendEvent(ExploreScreenEvents.SeriesClicked(mediaItemUiState.id))
+            sendEvent(ExploreScreenEffects.SeriesClicked(mediaItemUiState.id))
     }
 
     override fun onActorClick(actorId: Int) {
-        sendEvent(ExploreScreenEvents.ActorClicked(actorId))
+        sendEvent(ExploreScreenEffects.ActorClicked(actorId))
     }
 
     override fun onTabSelected(tab: ExploreTabsPages) {

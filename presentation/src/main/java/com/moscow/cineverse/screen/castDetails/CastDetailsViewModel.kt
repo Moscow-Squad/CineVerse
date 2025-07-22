@@ -8,7 +8,6 @@ import com.android.domain.usecase.actordetails.GetActorDetails
 import com.android.domain.usecase.actordetails.GetActorGallery
 import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.cineverse.designSystem.component.cast_details.SocialMediaLinks
-import com.moscow.cineverse.screen.explore.ExploreScreenEvents
 import kotlinx.coroutines.launch
 
 class CastDetailsViewModel(

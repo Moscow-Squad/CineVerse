@@ -80,28 +80,28 @@ fun ExploreScreen(
 }
 
 private fun handleEffects(
-    event: ExploreScreenEvents,
+    event: ExploreScreenEffects,
     navController: NavHostController
 ) {
     when (event) {
-        is ExploreScreenEvents.ActorClicked -> {
+        is ExploreScreenEffects.ActorClicked -> {
             navController.navigate(
                 CastDetailsRoute(event.actorId)
             )
         }
 
-        is ExploreScreenEvents.GenreSelected -> {}
-        ExploreScreenEvents.LoadData -> {}
-        is ExploreScreenEvents.MovieClicked -> {
+        is ExploreScreenEffects.GenreSelected -> {}
+        ExploreScreenEffects.LoadData -> {}
+        is ExploreScreenEffects.MovieClicked -> {
             navController.navigate(
                 MovieDetailsRoute(event.movieId)
             )
         }
 
-        ExploreScreenEvents.RefreshRequested -> {}
-        is ExploreScreenEvents.TabSelected -> {}
-        is ExploreScreenEvents.ViewModeChanged -> {}
-        is ExploreScreenEvents.SeriesClicked -> {
+        ExploreScreenEffects.RefreshRequested -> {}
+        is ExploreScreenEffects.TabSelected -> {}
+        is ExploreScreenEffects.ViewModeChanged -> {}
+        is ExploreScreenEffects.SeriesClicked -> {
             navController.navigate(
                 SeriesDetailsRoute(event.seriesId)
             )
