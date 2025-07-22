@@ -16,6 +16,8 @@ import com.moscow.cineverse.navigation.routes.ReviewsRoute
 import com.moscow.cineverse.navigation.routes.SeriesDetailsRoute
 import com.moscow.cineverse.navigation.routes.collectionsBottomSheetRoute
 import com.moscow.cineverse.navigation.routes.exploreRoute
+import com.moscow.cineverse.screen.home.HomeRoute
+import com.moscow.cineverse.screen.home.homeScreen
 
 val LocalNavController =
     staticCompositionLocalOf<NavHostController> { error("No NavController provided") }
@@ -27,7 +29,7 @@ fun CineVerseNavGraph() {
     CompositionLocalProvider(
         LocalNavController provides navController
     ) {
-        NavHost(navController = navController, startDestination = ExploreRoute) {
+        NavHost(navController = navController, startDestination = HomeRoute) {
             exploreRoute()
             RecommendationsRoute()
             ReviewsRoute()
@@ -43,6 +45,7 @@ fun CineVerseNavGraph() {
                     navController.popBackStack()
                 }
             )
+            homeScreen()
         }
     }
 }

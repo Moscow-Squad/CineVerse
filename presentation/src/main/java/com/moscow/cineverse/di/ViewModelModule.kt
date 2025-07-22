@@ -5,6 +5,7 @@ import com.moscow.cineverse.screen.castDetails.best0fmovies.ShowAllActorMoviesIn
 import com.moscow.cineverse.screen.castDetails.gallery.ActorGalleryViewModel
 import com.moscow.cineverse.screen.collections.CollectionsBottomSheetViewModel
 import com.moscow.cineverse.screen.explore.ExploreViewModel
+import com.moscow.cineverse.screen.home.HomeViewModel
 import com.moscow.cineverse.screen.movie_details.MovieDetailsViewModel
 import com.moscow.cineverse.screen.movie_details.recommendations.RecommendationsMoviesViewModel
 import com.moscow.cineverse.screen.reviews.ReviewsViewModel
@@ -20,6 +21,7 @@ val viewModels = module{
     viewModelOf(::CollectionsBottomSheetViewModel)
     viewModelOf(::ReviewsViewModel)
     viewModelOf(::RecommendationsMoviesViewModel)
+    viewModelOf(::HomeViewModel)
     viewModel { (actorId: Int) ->
         CastDetailsViewModel(
             getActorBestOfMovies = get(),

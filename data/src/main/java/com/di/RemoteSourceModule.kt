@@ -4,10 +4,12 @@ import com.remote.source.ActorDetailsRemoteDataSource
 import com.remote.source.CollectionsDataSource
 import com.remote.source.DetailsRemoteDataSource
 import com.remote.source.ExploreRemoteDataSource
+import com.remote.source.HomeRemoteDataSource
 import com.remote.source.RecommendationsMoviesRemoteDataSource
 import com.remote.source.ReviewsRemoteDataSource
 import com.remote.source.SearchRemoteDataSource
 import io.ktor.client.engine.okhttp.OkHttp
+import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 
 val remoteSourceModule = module {
@@ -25,5 +27,6 @@ val remoteSourceModule = module {
     single { CollectionsDataSource(get()) }
     single { ReviewsRemoteDataSource(get()) }
     single { RecommendationsMoviesRemoteDataSource(get()) }
+    singleOf(::HomeRemoteDataSource)
 
 }

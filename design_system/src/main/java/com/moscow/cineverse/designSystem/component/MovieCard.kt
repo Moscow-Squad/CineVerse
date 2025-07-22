@@ -152,32 +152,11 @@ private fun <T> GridMovieCard(
 
                 val rating = getRating(movieData)
                 if (showRating && rating > 0) {
-                    Surface(
+                    RatingDisplaySection(
+                        rating = rating,
                         modifier = Modifier
                             .align(Alignment.TopEnd)
-                            .padding(8.dp),
-                        shape = CircleShape,
-                        color = Theme.colors.background.card
-                    ) {
-                        Row(
-                            modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Text(
-                                text = "%.1f".format(rating),
-                                color = Theme.colors.shade.primary,
-                                style = Theme.textStyle.label.medium.medium
-                            )
-                            Icon(
-                                painter = painterResource(R.drawable.due_tone_star),
-                                contentDescription = "Rating",
-                                tint = Theme.colors.additional.primary.yellow,
-                                modifier = Modifier
-                                    .size(16.dp)
-                                    .padding(start = 4.dp)
-                            )
-                        }
-                    }
+                    )
                 }
             }
         }

@@ -30,4 +30,6 @@
     <string name="try_again">حاول مرة اخرى</string>
     <string name="oops_no_internet">ياللهول! لا يوجد نت كافي</string>
     <string name="offline_reconnect">يبدو انك بدون نت. حاول التقاط نت حتى لا تفوتك المتعة.</string>
+    <string name="welcome">welcome</string>
+    <string name="show_more">Show More</string>
 </resources>
