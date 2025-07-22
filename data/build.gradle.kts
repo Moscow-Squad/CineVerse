@@ -1,3 +1,4 @@
+import java.io.FileInputStream
 import java.util.Properties
 
 plugins {
@@ -7,26 +8,26 @@ plugins {
     alias(libs.plugins.serialization)
 }
 
+val localProperties = Properties()
+localProperties.load(FileInputStream(rootProject.file("keys.properties")))
+
 android {
-    namespace = "com.moscow.cineverse.data"
-    compileSdk = 36
+    namespace = libs.versions.namespace.get()
+    compileSdk = libs.versions.compileSdk.get().toInt()
+
+    defaultConfig {
+        minSdk = libs.versions.minSdk.get().toInt()
+
+        testInstrumentationRunner = libs.versions.testRunner.get()
+        consumerProguardFiles("consumer-rules.pro")
+
+        val apiKey = localProperties["TMDB_API_KEY"].toString()
+        buildConfigField("String", "TMDB_API_KEY", "\"${apiKey.trim()}\"")
+        buildConfigField("String", "TMDB_URL", "\"https://api.themoviedb.org/3/\"")
+    }
 
     buildFeatures {
         buildConfig = true
-    }
-
-    defaultConfig {
-        minSdk = 26
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFiles("consumer-rules.pro")
-
-        val keystoreFile = project.rootProject.file("local.properties")
-        val properties = Properties()
-        properties.load(keystoreFile.inputStream())
-
-        buildConfigField("String", "TMDB_API_KEY", "\"${properties.getProperty("TMDB_API_KEY")}\"")
-
     }
 
     buildTypes {
@@ -38,19 +39,21 @@ android {
             )
         }
     }
+
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
-    }
-    kotlinOptions {
-        jvmTarget = "11"
+        val javaVer = JavaVersion.toVersion(libs.versions.javaVersion.get())
+        sourceCompatibility = javaVer
+        targetCompatibility = javaVer
     }
 
+    kotlinOptions {
+        jvmTarget = libs.versions.javaVersion.get()
+    }
 
 }
 
 dependencies {
-    implementation(project(":domain"))
+    implementation(projects.domain)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
