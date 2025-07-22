@@ -7,7 +7,7 @@ class ActorGalleryViewModel(
     private val getActorGallery: GetActorGallery,
     actorId: Int,
     actorName: String,
-) : BaseViewModel<ShowAllActorMoviesState, ActorGalleryEvents>(ShowAllActorMoviesState()),
+) : BaseViewModel<ShowAllActorMoviesState, ActorGalleryEffect>(ShowAllActorMoviesState()),
     ActorGalleryInteractionListener {
 
     init {
@@ -56,10 +56,7 @@ class ActorGalleryViewModel(
         getActorPhotos()
     }
 
-
     override fun backButtonClick() {
-//todo enhance when make navigation
+        //todo enhance when make navigation
     }
-
-
 }

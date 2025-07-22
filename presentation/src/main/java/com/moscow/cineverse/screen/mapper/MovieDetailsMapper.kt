@@ -1,14 +1,10 @@
-package com.moscow.cineverse.screen.movie_details
+package com.moscow.cineverse.screen.mapper
 
 import com.android.domain.model.CastDetails
 import com.android.domain.model.CrewDetails
-import com.android.domain.model.Genre
-import com.android.domain.model.MediaType
-import com.android.domain.model.Movie
 import com.android.domain.model.Review
 import com.android.domain.model.details.MovieDetail
-import com.moscow.cineverse.screen.explore.ExploreScreenState.GenreUiState
-import com.moscow.cineverse.common_ui_state.MediaItemUiState
+import com.moscow.cineverse.screen.movie_details.MovieScreenState
 import com.moscow.cineverse.screen.movie_details.MovieScreenState.ReviewUi
 import com.moscow.cineverse.screen.movie_details.MovieScreenState.StarCastUi
 import kotlinx.datetime.LocalDate
@@ -37,9 +33,9 @@ fun Review.toUi(): ReviewUi =
         userImage = avatarPath,
         rate = rating.toInt(),
         reviewContent = content,
-        date=createdAt,
+        date = createdAt,
 
-    )
+        )
 
 fun CastDetails.toUi(): StarCastUi =
     StarCastUi(
@@ -55,14 +51,7 @@ fun CrewDetails.toUi(): MovieScreenState.CrewUi =
         name = name,
         job = job,
 
-    )
-
-fun Genre.toUi() =
-    GenreUiState(
-        id = id,
-        name = name
-    )
-
+        )
 
 fun LocalDate.toFormattedReleasedDate(): String {
     return try {
@@ -86,6 +75,7 @@ fun LocalDate.toFormattedReleasedDate(): String {
         "$this"
     }
 }
+
 fun formatReviewDate(dateString: String): String {
     return try {
         val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
@@ -95,19 +85,6 @@ fun formatReviewDate(dateString: String): String {
     } catch (e: Exception) {
         dateString
     }
-}
-
-fun Movie.toMediaItemUi(): MediaItemUiState {
-    return MediaItemUiState(
-        id = this.id,
-        title = this.name,
-        posterPath = this.posterPath,
-        rating = this.rating,
-        genres = emptyList(),
-        releaseDate = this.releaseDate.toString(),
-        duration = "",
-        mediaType = MediaType.Movie
-    )
 }
 
 fun Int.toHourMinuteFormat(): String {

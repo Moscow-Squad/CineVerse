@@ -35,7 +35,7 @@ fun ReviewsScreen(
     val reviewsFlow = viewModel.getPagedReviews(movieId, isMovie).collectAsLazyPagingItems()
 
     LaunchedEffect(viewModel) {
-        viewModel.uiEvent.collect { event ->
+        viewModel.uiEffect.collect { event ->
             when(event){
                 ReviewsEffect.NavigateBack -> {
                     navController.popBackStack()

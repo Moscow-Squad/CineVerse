@@ -1,4 +1,4 @@
-package com.moscow.cineverse.screen.castDetails
+package com.moscow.cineverse.screen.mapper
 
 import com.android.domain.model.MediaType
 import com.android.domain.model.Movie

@@ -38,7 +38,7 @@ fun ExploreScreen(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
-        viewModel.uiEvent.collect { event -> handleEffects(event, navController) }
+        viewModel.uiEffect.collect { event -> handleEffects(event, navController) }
     }
 
     ExploreScreenContent(
