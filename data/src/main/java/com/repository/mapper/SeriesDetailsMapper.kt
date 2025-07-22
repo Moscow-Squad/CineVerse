@@ -4,6 +4,7 @@ import com.android.domain.model.CastDetails
 import com.android.domain.model.CreditsDetails
 import com.android.domain.model.CrewDetails
 import com.android.domain.model.Genre
+import com.android.domain.model.Series
 import com.android.domain.model.details.Creator
 import com.android.domain.model.details.Episode
 import com.android.domain.model.details.ListOfSeries
@@ -20,13 +21,12 @@ import com.remote.dto.details.SeriesCreditDto
 import com.remote.dto.details.SeriesCrewDto
 import com.remote.dto.details.SeriesDetailDto
 import com.remote.dto.details.SeriesItemDto
+import com.remote.dto.details.SeriesRecommendationDto
 import com.utils.IMAGES_URL
 import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
-import java.text.SimpleDateFormat
-import java.util.Locale
 
 fun SeriesDetailDto.toDomain(): SeriesDetail {
     return SeriesDetail(
@@ -130,6 +130,25 @@ fun SeriesCrewDto.toDomain() = CrewDetails(
     profileImage = IMAGES_URL + profilePath
 )
 
+fun SeriesRecommendationDto.toDomain() = Series(
+    id = id,
+    name = name ?: "",
+    rating = voteAverage?.toFloat() ?: 0f,
+    adult = adult ?: false,
+    backdropPath = IMAGES_URL + backdropPath.orEmpty(),
+    firstAirDate = if (firstAirDate != null){
+        LocalDate.parse(firstAirDate)
+    } else  {
+        Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
+    },
+    genreIds = genreIds,
+    originCountry = originCountry,
+    originalLanguage = originalLanguage ?: "",
+    originalName = originalName ?: "",
+    overview = overview ?: "",
+    posterPath = IMAGES_URL + posterPath.orEmpty()
+)
+
 private fun formatRuntime(runtimeMinutes: List<Int>): String? {
     if (runtimeMinutes.isEmpty()) return null
     val totalMinutes = runtimeMinutes.firstOrNull() ?: return null
@@ -140,17 +159,5 @@ private fun formatRuntime(runtimeMinutes: List<Int>): String? {
         hours > 0 && minutes > 0 -> "${hours}h ${minutes}m"
         hours > 0 -> "${hours}h"
         else -> "${minutes}m"
-    }
-}
-
-private fun formatDate(dateString: String?): String? {
-    if (dateString.isNullOrEmpty()) return null
-    return try {
-        val inputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-        val outputFormat = SimpleDateFormat("yyyy, MMM dd", Locale.getDefault())
-        val date = inputFormat.parse(dateString)
-        date?.let { outputFormat.format(it) }
-    } catch (e: Exception) {
-        dateString
     }
 }

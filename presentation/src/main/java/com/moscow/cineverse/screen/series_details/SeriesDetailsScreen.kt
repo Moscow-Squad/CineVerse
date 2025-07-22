@@ -1,6 +1,7 @@
 package com.moscow.cineverse.screen.series_details
 
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.foundation.background
@@ -35,6 +36,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.design_system.R
+import com.moscow.cineverse.component.MoviePosterCard
 import com.moscow.cineverse.designSystem.component.MovieAppBar
 import com.moscow.cineverse.designSystem.component.MovieCard
 import com.moscow.cineverse.designSystem.component.MovieListSection
@@ -258,29 +260,27 @@ fun SeriesDetailsContent(
                             )
                         }
                     }
-                    items(listOfSeries.size) {
-                        MovieListSection(
-                            title = "You Might Also Like",
-                            movies = listOfSeries,
-                            onClickShowMore = { },
-                            onClickPoster = { },
-                            modifier = Modifier.padding(top = 16.dp),
-                            movieCardContent = { movie, _, onClick ->
-                                MovieCard(
-                                    movieData = movie,
-                                    viewMode = ViewMode.GRID,
-                                    onMovieClick = { onClick(movie) },
-                                    getId = { it.id },
-                                    getTitle = { it.title },
-                                    getPosterUrl = { it.posterPath.toString() },
-                                    getRating = { it.rating.toFloat() },
-                                    getGenres = { listOf() },
-                                    getDuration = { it.runtime },
-                                    getReleaseDate = { it.releaseDate.toString() }
-                                )
-                            }
-                        )
-
+                    if (uiState.recommendation.isNotEmpty()){
+                        item {
+                            MovieListSection(
+                                title = stringResource(com.moscow.cinverse.presentation.R.string.you_might_also_like),
+                                movies = uiState.recommendation,
+                                onClickShowMore = {},
+                                onClickPoster = { series -> },
+                                modifier = Modifier.padding(top = 16.dp),
+                                movieCardContent = { series, modifier, onClick ->
+                                    MoviePosterCard(
+                                        movie = series,
+                                        viewMode = ViewMode.GRID,
+                                        showRating = true,
+                                        onMovieClick = {},
+                                        showTitle = true,
+                                        modifier = modifier,
+                                        getTitleOverride = { it.title.take(15) + if (it.title.length > 15) "…" else "" }
+                                    )
+                                }
+                            )
+                        }
                     }
 
                     item {

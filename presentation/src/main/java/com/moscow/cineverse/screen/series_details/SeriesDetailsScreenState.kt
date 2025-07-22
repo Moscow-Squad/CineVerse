@@ -3,10 +3,13 @@ package com.moscow.cineverse.screen.series_details
 
 import com.android.domain.model.CastDetails
 import com.android.domain.model.CrewDetails
+import com.android.domain.model.MediaType
 import com.android.domain.model.Review
+import com.android.domain.model.Series
 import com.android.domain.model.details.Creator
 import com.android.domain.model.details.Season
 import com.android.domain.model.details.SeriesDetail
+import com.moscow.cineverse.common_ui_state.MediaItemUiState
 
 data class SeriesDetailsScreenState(
     val isLoading: Boolean = false,
@@ -14,6 +17,9 @@ data class SeriesDetailsScreenState(
     val reviews: List<Review> = emptyList(),
     val cast: List<CastUiState> = emptyList(),
     val crew: List<CrewUiState> = emptyList(),
+    val recommendation: List<MediaItemUiState> = emptyList(),
+    val shouldShowError: Boolean = false,
+    val errorMessage: String = "",
     val error: String? = null,
     val latestSeason: List<SeriesDetail> = emptyList(),
     val listOfSeries: List<SeriesDetail> = emptyList(),
@@ -57,6 +63,13 @@ data class CastUiState(
     val name: String = "",
     val profilePath: String = "",
     val characterName: String = "",
+)
+
+data class SeriesRecommendation(
+    val id: Int = 0,
+    val title: String = "",
+    val posterPath: String = "",
+    val rating: Float = 0f,
 )
 
 fun SeriesDetail.ui() = SeriesDetailsUiState(
@@ -103,4 +116,15 @@ fun CrewDetails.ui() = CrewUiState(
     name = name,
     profilePath = profileImage,
     job = job
+)
+
+fun Series.ui() = MediaItemUiState(
+    id = id,
+    title = name,
+    posterPath = posterPath,
+    rating = rating,
+    genres = emptyList(),
+    releaseDate = firstAirDate.toString(),
+    duration = "",
+    mediaType = MediaType.Tv
 )

@@ -1,6 +1,7 @@
 package com.remote.source
 
 import com.remote.dto.MovieDto
+import com.remote.dto.details.SeriesRecommendationDto
 import com.remote.dto.review.ReviewDto
 import com.utils.ApiResponse
 import com.utils.MOVIE
@@ -18,6 +19,17 @@ class RecommendationsMoviesRemoteDataSource (
         client.performCall<Unit, ApiResponse<MovieDto>>(
             method = HttpMethod.Get,
             path = MOVIE + movieID + RECOMMENDATIONS,
+            requestBuilder = {
+                url {
+                    parameters.append("page", page.toString())
+                }
+            }
+        ).results
+
+    suspend fun getSeriesRecommendations(seriesId: Int,page:Int):List<SeriesRecommendationDto> =
+        client.performCall<Unit, ApiResponse<SeriesRecommendationDto>>(
+            method = HttpMethod.Get,
+            path = SERIES + seriesId + RECOMMENDATIONS,
             requestBuilder = {
                 url {
                     parameters.append("page", page.toString())
