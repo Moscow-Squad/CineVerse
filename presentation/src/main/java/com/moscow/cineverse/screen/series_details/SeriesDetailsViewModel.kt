@@ -18,7 +18,7 @@ class SeriesDetailsViewModel(
     private val rateSeriesUseCase: RateSeriesUseCase,
     private val getSeriesCreditsDetailsUseCase: GetSeriesCreditsDetailsUseCase,
     private val getSeriesRecommendationsUseCase: GetSeriesRecommendationsUseCase,
-    private val savedStateHandle: SavedStateHandle,
+    savedStateHandle: SavedStateHandle,
 ) : BaseViewModel<SeriesDetailsScreenState, SeriesDetailsScreenEvents>(SeriesDetailsScreenState()),
     SeriesInteractionListener {
 
@@ -127,6 +127,5 @@ class SeriesDetailsViewModel(
         updateState {
             it.copy(viewMode = viewMode)
         }
-
     }
 }

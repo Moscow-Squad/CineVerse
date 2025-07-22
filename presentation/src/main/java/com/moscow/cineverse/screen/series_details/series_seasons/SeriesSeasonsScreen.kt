@@ -28,8 +28,7 @@ import com.moscow.cineverse.screen.series_details.SeriesDetailsViewModel
 import com.moscow.cineverse.screen.series_details.SeriesInteractionListener
 import com.moscow.cinverse.presentation.R
 import androidx.compose.runtime.getValue
-import com.moscow.cineverse.designSystem.component.movieSeriesDetails.Season
-import com.moscow.cineverse.designSystem.component.movieSeriesDetails.SeasonCard
+import com.moscow.cineverse.screen.series_details.component.SeasonCard
 
 @Composable
 fun SeriesSeasonsScreen(
@@ -101,14 +100,12 @@ fun SeriesSeasonsScreenContent(
                         ) {
                             items(uiState.seriesDetail.seasons) { season ->
                                 SeasonCard(
-                                    season = Season(
-                                        seasonNumber = season.title,
-                                        episodeCount = season.episodeCount,
-                                        airDate = season.airDate,
-                                        posterUrl = season.posterPath,
-                                        caption = season.overview,
-                                        rate = season.rate
-                                    )
+                                    seasonNumber = season.title,
+                                    episodeCount = season.episodeCount,
+                                    airDate = season.airDate,
+                                    posterUrl = season.posterPath,
+                                    caption = season.overview,
+                                    rate = season.rate
                                 )
                             }
                         }

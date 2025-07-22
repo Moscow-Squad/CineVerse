@@ -5,9 +5,13 @@ import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -35,8 +39,11 @@ import androidx.navigation.NavHostController
 import coil3.compose.rememberAsyncImagePainter
 import com.moscow.cineverse.component.MoviePosterCard
 import com.moscow.cineverse.designSystem.component.MovieAppBar
+import com.moscow.cineverse.designSystem.component.MovieButton
 import com.moscow.cineverse.designSystem.component.MovieCircularProgressBar
 import com.moscow.cineverse.designSystem.component.MovieListSection
+import com.moscow.cineverse.designSystem.component.MovieScaffold
+import com.moscow.cineverse.designSystem.component.MovieText
 import com.moscow.cineverse.designSystem.component.SectionTitle
 import com.moscow.cineverse.designSystem.component.ViewMode
 import com.moscow.cineverse.designSystem.component.movieSeriesDetails.CastCard
@@ -45,8 +52,7 @@ import com.moscow.cineverse.designSystem.component.movieSeriesDetails.MovieCardD
 import com.moscow.cineverse.designSystem.component.movieSeriesDetails.MovieRatingBottomSheet
 import com.moscow.cineverse.designSystem.component.movieSeriesDetails.MovieReviewCard
 import com.moscow.cineverse.designSystem.component.movieSeriesDetails.RatingSection
-import com.moscow.cineverse.designSystem.component.movieSeriesDetails.Season
-import com.moscow.cineverse.designSystem.component.movieSeriesDetails.SeasonCard
+import com.moscow.cineverse.screen.series_details.component.SeasonCard
 import com.moscow.cineverse.designSystem.component.movieSeriesDetails.StaffInfoSection
 import com.moscow.cineverse.designSystem.component.movieSeriesDetails.StarCastSection
 import com.moscow.cineverse.designSystem.theme.Theme
@@ -103,63 +109,72 @@ fun SeriesDetailsContent(
             scrollState.firstVisibleItemScrollOffset > 10 || scrollState.firstVisibleItemIndex > 0
         }
     }
-    Column(modifier = Modifier.background(Theme.colors.background.screen)) {
-        MovieAppBar(backButtonClick = {}, showBackButton = true)
-        SharedTransitionLayout {
-            AnimatedContent(
-                targetState = isCollapsed,
-                label = "basic_transition"
-            ) { target ->
-                if (!target) {
-                    MovieCardDetails(
-                        posterUrl = detail.posterPath,
-                        title = detail.title,
-                        genres = detail.genre,
-                        rating = detail.rating,
-                        duration = detail.duration,
-                        releaseDate = detail.releaseDate,
-                        type = detail.type,
-                        animatedVisibilityScope = this@AnimatedContent,
-                        sharedTransitionScope = this@SharedTransitionLayout,
-                        onSaveClick = { interactionListener.addToCollection() }
-                    )
-                } else {
-                    MainMovieCard(
-                        posterUrl = detail.posterPath,
-                        title = detail.title,
-                        animatedVisibilityScope = this@AnimatedContent,
-                        sharedTransitionScope = this@SharedTransitionLayout
-                    )
-                }
+    MovieScaffold{
+        if (uiState.isLoading) {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                MovieCircularProgressBar(gradientColors = listOf(Theme.colors.brand.primary, Theme.colors.brand.tertiary))
             }
         }
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(Theme.colors.background.screen)
-        )
-        {
-            if (uiState.isLoading) {
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    MovieCircularProgressBar(
-                        gradientColors = listOf(
-                            Theme.colors.brand.primary,
-                            Theme.colors.brand.tertiary
-                        )
-                    )
-                }
+        else if (uiState.errorMessage != ""){
+            Column(
+                modifier = Modifier.fillMaxWidth().padding(bottom = 24.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                MovieText(
+                    text = "Error in loading movie details",
+                    color = Theme.colors.shade.primary
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+                MovieButton(
+                    buttonText = stringResource(R.string.retry),
+                    textColor = Theme.colors.button.primary,
+                    textStyle = Theme.textStyle.title.small,
+                    onClick = { }
+                )
             }
-            else {
+        }
+        else {
+            Column(modifier = Modifier.background(Theme.colors.background.screen)) {
+                MovieAppBar(backButtonClick = {}, showBackButton = true)
+                SharedTransitionLayout {
+                    AnimatedContent(
+                        targetState = isCollapsed,
+                        label = "basic_transition"
+                    ) { target ->
+                        if (!target) {
+                            MovieCardDetails(
+                                posterUrl = detail.posterPath,
+                                title = detail.title,
+                                genres = detail.genre,
+                                rating = detail.rating,
+                                duration = detail.duration,
+                                releaseDate = detail.releaseDate,
+                                type = detail.type,
+                                animatedVisibilityScope = this@AnimatedContent,
+                                sharedTransitionScope = this@SharedTransitionLayout,
+                                onSaveClick = { interactionListener.addToCollection() }
+                            )
+                        } else {
+                            MainMovieCard(
+                                posterUrl = detail.posterPath,
+                                title = detail.title,
+                                animatedVisibilityScope = this@AnimatedContent,
+                                sharedTransitionScope = this@SharedTransitionLayout
+                            )
+                        }
+                    }
+                }
                 LazyColumn(
                     state = scrollState,
                     modifier = Modifier.background(Theme.colors.background.screen)
-                ) {
+                ){
                     item {
                         Text(
-                            text = "Storyline",
+                            text = stringResource(R.string.storyline),
                             style = Theme.textStyle.title.small,
                             color = Theme.colors.shade.primary,
                             modifier = Modifier.padding(16.dp, top = 24.dp, bottom = 8.dp),
@@ -201,14 +216,12 @@ fun SeriesDetailsContent(
                     items(detail.seasons.reversed().take(3)) { season ->
                         SeasonCard(
                             modifier = Modifier.padding(horizontal = 16.dp),
-                            season = Season(
-                                seasonNumber = season.title,
-                                episodeCount = season.episodeCount,
-                                airDate = season.airDate,
-                                posterUrl = season.posterPath,
-                                caption = season.overview,
-                                rate = season.rate
-                            )
+                            seasonNumber = season.title,
+                            episodeCount = season.episodeCount,
+                            airDate = season.airDate,
+                            posterUrl = season.posterPath,
+                            caption = season.overview,
+                            rate = season.rate
                         )
                     }
                     if (uiState.cast.isNotEmpty()) {
@@ -244,7 +257,7 @@ fun SeriesDetailsContent(
                                     staffInfo.add(job to names.joinToString(", "))
                                 }
                             StaffInfoSection(
-                                staffInfo = staffInfo,
+                                staffInfo = staffInfo.take(5),
                                 modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 24.dp)
                             )
                         }
@@ -308,15 +321,15 @@ fun SeriesDetailsContent(
                         }
                     }
                 }
-                MovieRatingBottomSheet(
-                    isVisible = uiState.showRatingBottomSheet,
-                    onDismiss = interactionListener::onDismissOrCancelRatingBottomSheet,
-                    onRatingSubmit = { rating -> interactionListener.onRatingSubmit(rating, detail.id) },
-                    onRatingRemove = { interactionListener.onRatingSubmit(0, detail.id) },
-                    initialRating = uiState.starsRating,
-                    hasExistingRating = uiState.starsRating != 0,
-                )
             }
+            MovieRatingBottomSheet(
+                isVisible = uiState.showRatingBottomSheet,
+                onDismiss = interactionListener::onDismissOrCancelRatingBottomSheet,
+                onRatingSubmit = { rating -> interactionListener.onRatingSubmit(rating, detail.id) },
+                onRatingRemove = { interactionListener.onRatingSubmit(0, detail.id) },
+                initialRating = uiState.starsRating,
+                hasExistingRating = uiState.starsRating != 0,
+            )
         }
     }
 }

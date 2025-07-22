@@ -64,13 +64,6 @@ data class CastUiState(
     val characterName: String = "",
 )
 
-data class SeriesRecommendation(
-    val id: Int = 0,
-    val title: String = "",
-    val posterPath: String = "",
-    val rating: Float = 0f,
-)
-
 fun SeriesDetail.ui() = SeriesDetailsUiState(
     id = id,
     title = title,
