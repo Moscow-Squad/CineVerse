@@ -75,18 +75,18 @@ fun SeriesDetailsScreen(
     LaunchedEffect(viewModel) {
         viewModel.uiEvent.collect { event ->
             when (event) {
-                is SeriesDetailsScreenEvents.AddToCollection -> {
+                is SeriesDetailsScreenEffects.AddToCollection -> {
                     navController.navigate(
                         CollectionsBottomSheetRoute(mediaItemId = event.seriesId)
                     )
                 }
-                is SeriesDetailsScreenEvents.NavigateToRecommendationSeries -> {
+                is SeriesDetailsScreenEffects.NavigateToRecommendationSeries -> {
                     navController.navigate(SeriesRecommendationRoute(event.seriesId))
                 }
-                is SeriesDetailsScreenEvents.NavigateToReviewsScreen -> {
+                is SeriesDetailsScreenEffects.NavigateToReviewsScreen -> {
                     navController.navigate(ReviewsRoute(event.seriesId, false))
                 }
-                is SeriesDetailsScreenEvents.NavigateToSeriesSeasonsScreen -> {
+                is SeriesDetailsScreenEffects.NavigateToSeriesSeasonsScreen -> {
                     navController.navigate(SeriesSeasonsRoute(event.seriesId))
                 }
             }

@@ -19,7 +19,7 @@ class SeriesDetailsViewModel(
     private val getSeriesCreditsDetailsUseCase: GetSeriesCreditsDetailsUseCase,
     private val getSeriesRecommendationsUseCase: GetSeriesRecommendationsUseCase,
     savedStateHandle: SavedStateHandle,
-) : BaseViewModel<SeriesDetailsScreenState, SeriesDetailsScreenEvents>(SeriesDetailsScreenState()),
+) : BaseViewModel<SeriesDetailsScreenState, SeriesDetailsScreenEffects>(SeriesDetailsScreenState()),
     SeriesInteractionListener {
 
     val seriesId = savedStateHandle.get<Int>(SeriesDetailsRoute.SERIES_ID) ?: 0
@@ -108,19 +108,19 @@ class SeriesDetailsViewModel(
     }
 
     override fun onShowMoreRecommendationsClicked(seriesId: Int) {
-        sendEvent(SeriesDetailsScreenEvents.NavigateToRecommendationSeries(seriesId))
+        sendEvent(SeriesDetailsScreenEffects.NavigateToRecommendationSeries(seriesId))
     }
 
     override fun onShowMoreReviewsClicked(seriesId: Int) {
-        sendEvent(SeriesDetailsScreenEvents.NavigateToReviewsScreen(seriesId))
+        sendEvent(SeriesDetailsScreenEffects.NavigateToReviewsScreen(seriesId))
     }
 
     override fun onShowMoreSeasonsClicked(seriesId: Int) {
-        sendEvent(SeriesDetailsScreenEvents.NavigateToSeriesSeasonsScreen(seriesId))
+        sendEvent(SeriesDetailsScreenEffects.NavigateToSeriesSeasonsScreen(seriesId))
     }
 
     override fun addToCollection() {
-        uiState.value.seriesDetail.let { sendEvent(SeriesDetailsScreenEvents.AddToCollection(it.id)) }
+        uiState.value.seriesDetail.let { sendEvent(SeriesDetailsScreenEffects.AddToCollection(it.id)) }
     }
 
     override fun onViewModeChanged(viewMode: ViewMode) {
