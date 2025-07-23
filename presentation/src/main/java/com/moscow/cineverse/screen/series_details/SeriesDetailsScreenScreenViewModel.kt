@@ -12,7 +12,7 @@ import com.moscow.cineverse.designSystem.component.ViewMode
 import com.moscow.cineverse.navigation.routes.SeriesDetailsRoute
 import com.moscow.cineverse.screen.movie_details.toUi
 
-class SeriesDetailsViewModel(
+class SeriesDetailsScreenScreenViewModel(
     private val getSeriesDetailUseCase: GetSeriesDetailUseCase,
     private val getReviewsPageUseCase: GetReviewsPageUseCase,
     private val rateSeriesUseCase: RateSeriesUseCase,
@@ -20,7 +20,7 @@ class SeriesDetailsViewModel(
     private val getSeriesRecommendationsUseCase: GetSeriesRecommendationsUseCase,
     savedStateHandle: SavedStateHandle,
 ) : BaseViewModel<SeriesDetailsScreenState, SeriesDetailsScreenEffects>(SeriesDetailsScreenState()),
-    SeriesInteractionListener {
+    SeriesDetailsScreenInteractionListener {
 
     val seriesId = savedStateHandle.get<Int>(SeriesDetailsRoute.SERIES_ID) ?: 0
 
@@ -124,8 +124,14 @@ class SeriesDetailsViewModel(
     }
 
     override fun onViewModeChanged(viewMode: ViewMode) {
-        updateState {
-            it.copy(viewMode = viewMode)
-        }
+        updateState { it.copy(viewMode = viewMode) }
+    }
+
+    override fun onSeriesClicked(seriesId: Int) {
+        sendEvent(SeriesDetailsScreenEffects.NavigateToSeriesDetailsScreen(seriesId))
+    }
+
+    override fun onActorClicked(actorId: Int) {
+        sendEvent(SeriesDetailsScreenEffects.NavigateToActorDetailsScreen(actorId))
     }
 }

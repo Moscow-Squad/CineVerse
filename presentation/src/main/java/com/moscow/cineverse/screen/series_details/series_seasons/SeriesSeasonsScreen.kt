@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -24,19 +23,20 @@ import com.moscow.cineverse.designSystem.component.MovieText
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.navigation.LocalNavController
 import com.moscow.cineverse.screen.series_details.SeriesDetailsScreenState
-import com.moscow.cineverse.screen.series_details.SeriesDetailsViewModel
-import com.moscow.cineverse.screen.series_details.SeriesInteractionListener
+import com.moscow.cineverse.screen.series_details.SeriesDetailsScreenScreenViewModel
+import com.moscow.cineverse.screen.series_details.SeriesDetailsScreenInteractionListener
 import com.moscow.cinverse.presentation.R
 import androidx.compose.runtime.getValue
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.moscow.cineverse.screen.series_details.component.SeasonCard
 
 @Composable
 fun SeriesSeasonsScreen(
-    viewModel: SeriesDetailsViewModel,
+    viewModel: SeriesDetailsScreenScreenViewModel,
     modifier: Modifier = Modifier,
     navController: NavHostController = LocalNavController.current,
 ) {
-    val uiState by viewModel.uiState.collectAsState()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     SeriesSeasonsScreenContent(
         uiState = uiState,
@@ -49,7 +49,7 @@ fun SeriesSeasonsScreen(
 @Composable
 fun SeriesSeasonsScreenContent(
     uiState: SeriesDetailsScreenState,
-    interactionListener: SeriesInteractionListener,
+    interactionListener: SeriesDetailsScreenInteractionListener,
     onNavigateBack : () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -57,13 +57,7 @@ fun SeriesSeasonsScreenContent(
         Box(modifier = modifier.fillMaxSize()) {
             when {
                 uiState.isLoading -> {
-                    MovieCircularProgressBar(
-                        modifier = Modifier.align(Alignment.Center),
-                        gradientColors = listOf(
-                            Theme.colors.brand.primary,
-                            Theme.colors.brand.tertiary
-                        )
-                    )
+                    MovieCircularProgressBar(modifier = Modifier.align(Alignment.Center))
                 }
                 uiState.errorMessage != "" -> {
                     Box(

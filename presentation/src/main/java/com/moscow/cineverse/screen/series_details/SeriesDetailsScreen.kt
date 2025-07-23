@@ -19,7 +19,6 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -35,6 +34,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import coil3.compose.rememberAsyncImagePainter
 import com.moscow.cineverse.component.MoviePosterCard
@@ -57,8 +57,10 @@ import com.moscow.cineverse.designSystem.component.movieSeriesDetails.StaffInfoS
 import com.moscow.cineverse.designSystem.component.movieSeriesDetails.StarCastSection
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.navigation.LocalNavController
+import com.moscow.cineverse.navigation.routes.CastDetailsRoute
 import com.moscow.cineverse.navigation.routes.CollectionsBottomSheetRoute
 import com.moscow.cineverse.navigation.routes.ReviewsRoute
+import com.moscow.cineverse.navigation.routes.SeriesDetailsRoute
 import com.moscow.cineverse.navigation.routes.SeriesRecommendationRoute
 import com.moscow.cineverse.navigation.routes.SeriesSeasonsRoute
 import com.moscow.cineverse.screen.movie_details.formatReviewDate
@@ -67,18 +69,16 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun SeriesDetailsScreen(
-    viewModel: SeriesDetailsViewModel = koinViewModel(),
+    viewModel: SeriesDetailsScreenScreenViewModel = koinViewModel(),
     navController: NavHostController = LocalNavController.current
 ) {
-    val uiState by viewModel.uiState.collectAsState()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     LaunchedEffect(viewModel) {
         viewModel.uiEvent.collect { event ->
             when (event) {
                 is SeriesDetailsScreenEffects.AddToCollection -> {
-                    navController.navigate(
-                        CollectionsBottomSheetRoute(mediaItemId = event.seriesId)
-                    )
+                    navController.navigate(CollectionsBottomSheetRoute(mediaItemId = event.seriesId))
                 }
                 is SeriesDetailsScreenEffects.NavigateToRecommendationSeries -> {
                     navController.navigate(SeriesRecommendationRoute(event.seriesId))
@@ -88,6 +88,13 @@ fun SeriesDetailsScreen(
                 }
                 is SeriesDetailsScreenEffects.NavigateToSeriesSeasonsScreen -> {
                     navController.navigate(SeriesSeasonsRoute(event.seriesId))
+                }
+
+                is SeriesDetailsScreenEffects.NavigateToActorDetailsScreen -> {
+                    navController.navigate(CastDetailsRoute(event.ActorId))
+                }
+                is SeriesDetailsScreenEffects.NavigateToSeriesDetailsScreen -> {
+                    navController.navigate(SeriesDetailsRoute(event.seriesId))
                 }
             }
         }
@@ -99,7 +106,7 @@ fun SeriesDetailsScreen(
 @Composable
 fun SeriesDetailsContent(
     uiState: SeriesDetailsScreenState,
-    interactionListener: SeriesInteractionListener,
+    interactionListener: SeriesDetailsScreenInteractionListener,
 ) {
     val detail = uiState.seriesDetail
     val textColor = Theme.colors.shade.secondary
@@ -115,7 +122,7 @@ fun SeriesDetailsContent(
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
             ) {
-                MovieCircularProgressBar(gradientColors = listOf(Theme.colors.brand.primary, Theme.colors.brand.tertiary))
+                MovieCircularProgressBar()
             }
         }
         else if (uiState.errorMessage != ""){
@@ -234,7 +241,7 @@ fun SeriesDetailsContent(
                                 cast = uiState.cast.take(10),
                                 castContent = {actor->
                                     CastCard(
-                                        modifier = Modifier.clickable{},
+                                        modifier = Modifier.clickable{interactionListener.onActorClicked(actor.id)},
                                         castMember = actor,
                                         getOriginalName = { it.name },
                                         getCharacterName = { it.characterName },
@@ -277,7 +284,7 @@ fun SeriesDetailsContent(
                                         showRating = true,
                                         onMovieClick = {},
                                         showTitle = true,
-                                        modifier = modifier,
+                                        modifier = modifier.clickable{ interactionListener.onSeriesClicked(series.id) },
                                         getTitleOverride = { it.title.take(15) + if (it.title.length > 15) "…" else "" }
                                     )
                                 }

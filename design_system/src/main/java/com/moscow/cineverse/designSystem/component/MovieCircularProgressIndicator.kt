@@ -32,7 +32,7 @@ import kotlin.math.sin
 fun MovieCircularProgressBar(
     modifier: Modifier = Modifier,
     strokeWidth: Dp = 6.dp,
-    gradientColors: List<Color>,
+    gradientColors: List<Color> = listOf(Theme.colors.brand.primary, Theme.colors.brand.tertiary),
 ) {
     val rotation by rememberInfiniteTransition(label = "").animateFloat(
         initialValue = 0f,

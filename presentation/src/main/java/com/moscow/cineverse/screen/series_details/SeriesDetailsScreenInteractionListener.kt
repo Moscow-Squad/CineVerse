@@ -2,7 +2,7 @@ package com.moscow.cineverse.screen.series_details
 
 import com.moscow.cineverse.designSystem.component.ViewMode
 
-interface SeriesInteractionListener {
+interface SeriesDetailsScreenInteractionListener {
     fun addToCollection()
     fun showRatingBottomSheet()
     fun onDismissOrCancelRatingBottomSheet()
@@ -11,4 +11,6 @@ interface SeriesInteractionListener {
     fun onShowMoreReviewsClicked(seriesId: Int)
     fun onShowMoreSeasonsClicked(seriesId: Int)
     fun onViewModeChanged(viewMode: ViewMode)
+    fun onSeriesClicked(seriesId: Int)
+    fun onActorClicked(actorId: Int)
 }

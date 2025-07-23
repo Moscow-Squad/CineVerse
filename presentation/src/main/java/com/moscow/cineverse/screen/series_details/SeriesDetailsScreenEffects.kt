@@ -5,4 +5,6 @@ sealed interface SeriesDetailsScreenEffects {
     data class NavigateToRecommendationSeries(val seriesId: Int) : SeriesDetailsScreenEffects
     data class NavigateToReviewsScreen(val seriesId: Int) : SeriesDetailsScreenEffects
     data class NavigateToSeriesSeasonsScreen(val seriesId: Int) : SeriesDetailsScreenEffects
+    data class NavigateToSeriesDetailsScreen(val seriesId: Int) : SeriesDetailsScreenEffects
+    data class NavigateToActorDetailsScreen(val ActorId: Int) : SeriesDetailsScreenEffects
 }
