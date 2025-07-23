@@ -18,15 +18,15 @@ jobs:
           java-version: 17
           distribution: temurin
           cache: gradle
-
+      - name: Generate keys.properties
+        run: |
+          echo "BEARER_TOKEN=${{ secrets.BEARER_TOKEN }}" > keys.properties
       - name: Run Coverage
         run: |
             chmod +x gradlew
             ./gradlew testCoverage
 
-      - name: Generate keys.properties
-        run: |
-          echo "BEARER_TOKEN=${{ secrets.BEARER_TOKEN }}" > keys.properties
+   
 
 #      - name: Run unit tests + Kover
 #        run: ./gradlew test koverVerify koverXmlReport koverHtmlReport -PskipGoogleServices=true
