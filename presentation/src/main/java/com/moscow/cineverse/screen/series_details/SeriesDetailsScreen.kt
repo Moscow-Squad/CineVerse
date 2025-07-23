@@ -136,7 +136,7 @@ fun SeriesDetailsContent(
                 verticalArrangement = Arrangement.Center
             ) {
                 MovieText(
-                    text = "Error in loading movie details",
+                    text = "Error in loading series details",
                     color = Theme.colors.shade.primary
                 )
                 Spacer(modifier = Modifier.height(16.dp))

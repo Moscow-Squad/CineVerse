@@ -13,7 +13,7 @@ interface ReviewsService {
         @Query("page") page: Int
     ): Response<ApiResponse<ReviewDto>>
 
-    @GET("series/{id}/reviews")
+    @GET("tv/{id}/reviews")
     suspend fun getSeriesReviews(
         @Path("id") id: Int,
         @Query("page") page: Int

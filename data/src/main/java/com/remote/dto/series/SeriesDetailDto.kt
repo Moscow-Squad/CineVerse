@@ -7,7 +7,6 @@ import com.remote.dto.details.NetworkDto
 import com.remote.dto.details.ProductionCompanyDto
 import com.remote.dto.details.ProductionCountryDto
 import com.remote.dto.details.SpokenLanguageDto
-import com.remote.dto.review.ReviewDto
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -76,8 +75,6 @@ data class SeriesDetailDto(
     @SerialName("vote_average")
     val voteAverage: Double,
     @SerialName("vote_count")
-    val voteCount: Int,
-    @SerialName("reviews")
-    val reviews: List<ReviewDto>,
+    val voteCount: Int
 )
 

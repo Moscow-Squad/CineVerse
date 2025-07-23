@@ -31,7 +31,7 @@ class SeriesDetailsScreenScreenViewModel(
         loadReviews(seriesId, page = 1)
     }
 
-    fun loadSeriesDetails(seriesId: Int) {
+    private fun loadSeriesDetails(seriesId: Int) {
         updateState { it.copy(isLoading = true, errorMessage = "") }
         launchWithResult(
             action = { getSeriesDetailUseCase(seriesId) },
@@ -44,7 +44,7 @@ class SeriesDetailsScreenScreenViewModel(
         )
     }
 
-    fun loadSeriesCredits(seriesId: Int) {
+    private fun loadSeriesCredits(seriesId: Int) {
         updateState { it.copy(isLoading = true, errorMessage = "") }
         launchWithResult(
             action = { getSeriesCreditsDetailsUseCase(seriesId) },
@@ -63,7 +63,7 @@ class SeriesDetailsScreenScreenViewModel(
         )
     }
 
-    fun loadReviews(seriesId: Int, page: Int) {
+    private fun loadReviews(seriesId: Int, page: Int) {
         updateState { it.copy(isLoading = true, errorMessage = "") }
         launchWithResult(
             action = { getReviewsPageUseCase(seriesId, page, isMovie = false) },
