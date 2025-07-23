@@ -1,5 +1,6 @@
 package com.repository
 
+import com.android.domain.model.CreditsDetails
 import com.android.domain.model.Review
 import com.android.domain.model.Series
 import com.android.domain.model.details.ListOfSeries
@@ -21,7 +22,7 @@ class SeriesRepositoryImpl(
 
     override suspend fun getSeriesDetail(id: Int): SeriesDetail {
         val res = seriesRemoteDataSource.getSeriesDetails(id)
-        res.genres?.forEach { detailsLocalDataSource.insertFavouriteGenre(it.id) }
+        res.genres.forEach { detailsLocalDataSource.insertFavouriteGenre(it.id) }
         return res.toDomain()
     }
 
@@ -37,7 +38,7 @@ class SeriesRepositoryImpl(
 
     override suspend fun getLatestSeasons(): List<Season> {
         val response = seriesRemoteDataSource.getLatestSeasons()
-        return response.seasons?.map { it.toDomain() } ?: emptyList()
+        return response.seasons.map { it.toDomain() }
     }
 
 
@@ -66,5 +67,11 @@ class SeriesRepositoryImpl(
         return reviews.results?.mapNotNull { runCatching { it.toDomain() }.getOrNull() }
             ?: emptyList()
     }
+
+    override suspend fun getSeriesCreditsDetails(id: Int): CreditsDetails {
+        val response = seriesRemoteDataSource.getSeriesCredits(id)
+        return response.toDomain()
+    }
+
 
 }

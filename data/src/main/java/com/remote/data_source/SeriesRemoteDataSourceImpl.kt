@@ -1,6 +1,7 @@
 package com.remote.data_source
 
 import com.data_source.remote.SeriesRemoteDataSource
+import com.remote.dto.details.SeriesCreditDto
 import com.remote.dto.review.RatingRequestDto
 import com.remote.dto.review.ReviewDto
 import com.remote.dto.series.ListOfSeriesDto
@@ -62,5 +63,10 @@ class SeriesRemoteDataSourceImpl(
     override suspend fun getSeriesByGenreId(genreId: Int, page: Int): ApiResponse<SeriesDto> =
         handleApi {
             seriesService.getSeriesByGenreId(genreId, page)
+        }
+
+    override suspend fun getSeriesCredits(seriesId: Int): SeriesCreditDto =
+        handleApi {
+            seriesService.getSeriesCredits(seriesId)
         }
 }

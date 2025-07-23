@@ -1,5 +1,6 @@
 package com.remote.services
 
+import com.remote.dto.details.SeriesCreditDto
 import com.remote.dto.review.RatingRequestDto
 import com.remote.dto.review.ReviewDto
 import com.remote.dto.series.ListOfSeriesDto
@@ -14,6 +15,7 @@ import com.utils.POPULAR
 import com.utils.RATING
 import com.utils.RECOMMENDATIONS
 import com.utils.SERIES
+import com.utils.SERIES_CREDITS
 import com.utils.SESSION_ID
 import com.utils.WITH_GENRES
 import retrofit2.Response
@@ -51,7 +53,7 @@ interface SeriesService {
         @Query("page") page: Int
     ): Response<ListOfSeriesDto>
 
-    @GET("series/{id}/reviews")
+    @GET("tv/{id}/reviews")
     suspend fun getSeriesReviews(
         @Path("id") id: Int,
         @Query("page") page: Int
@@ -68,4 +70,9 @@ interface SeriesService {
         @Query(WITH_GENRES) genreId: Int,
         @Query(PAGE) page: Int
     ): Response<ApiResponse<SeriesDto>>
+
+    @GET("$SERIES{series_id}$SERIES_CREDITS")
+    suspend fun getSeriesCredits(
+        @Path("series_id") seriesId: Int
+    ): Response<SeriesCreditDto>
 }

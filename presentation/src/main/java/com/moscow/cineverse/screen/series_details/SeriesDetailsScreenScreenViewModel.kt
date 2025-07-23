@@ -2,11 +2,11 @@ package com.moscow.cineverse.screen.series_details
 
 import androidx.lifecycle.SavedStateHandle
 import com.android.domain.model.Series
-import com.android.domain.usecase.GetReviewsPageUseCase
-import com.android.domain.usecase.RateSeriesUseCase
-import com.android.domain.usecase.seriesdetails.GetSeriesCreditsDetailsUseCase
-import com.android.domain.usecase.seriesdetails.GetSeriesDetailUseCase
-import com.android.domain.usecase.seriesdetails.GetSeriesRecommendationsUseCase
+import com.android.domain.usecase.review.GetReviewsUseCase
+import com.android.domain.usecase.series.GetSeriesCreditsDetailsUseCase
+import com.android.domain.usecase.series.GetSeriesDetailUseCase
+import com.android.domain.usecase.series.GetSeriesRecommendationsUseCase
+import com.android.domain.usecase.series.RateSeriesUseCase
 import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.cineverse.designSystem.component.ViewMode
 import com.moscow.cineverse.mapper.toUi
@@ -14,7 +14,7 @@ import com.moscow.cineverse.navigation.routes.SeriesDetailsRoute
 
 class SeriesDetailsScreenScreenViewModel(
     private val getSeriesDetailUseCase: GetSeriesDetailUseCase,
-    private val getReviewsPageUseCase: GetReviewsPageUseCase,
+    private val getReviewsPageUseCase: GetReviewsUseCase,
     private val rateSeriesUseCase: RateSeriesUseCase,
     private val getSeriesCreditsDetailsUseCase: GetSeriesCreditsDetailsUseCase,
     private val getSeriesRecommendationsUseCase: GetSeriesRecommendationsUseCase,

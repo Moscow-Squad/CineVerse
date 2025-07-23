@@ -1,5 +1,6 @@
 package com.android.domain.repository
 
+import com.android.domain.model.CreditsDetails
 import com.android.domain.model.Review
 import com.android.domain.model.Series
 import com.android.domain.model.details.ListOfSeries
@@ -15,4 +16,5 @@ interface SeriesRepository {
     suspend fun getSeriesRecommendations(id: Int, page: Int): List<Series>
     suspend fun getSeriesByGenreId(genreId: Int, page: Int): List<Series>
     suspend fun getSeriesReviews(id: Int, page: Int): List<Review>
+    suspend fun getSeriesCreditsDetails(id: Int): CreditsDetails
 }
