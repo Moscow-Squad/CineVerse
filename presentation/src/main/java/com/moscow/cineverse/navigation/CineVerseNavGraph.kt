@@ -5,29 +5,31 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.rememberNavController
 import com.moscow.cineverse.navigation.routes.CastBestOfMovieRoute
 import com.moscow.cineverse.navigation.routes.CastDetailsRoute
 import com.moscow.cineverse.navigation.routes.CastGalleryRoute
 import com.moscow.cineverse.navigation.routes.ExploreRoute
+import com.moscow.cineverse.navigation.routes.HomeRoute
 import com.moscow.cineverse.navigation.routes.MovieDetailsRoute
 import com.moscow.cineverse.navigation.routes.RecommendationsRoute
 import com.moscow.cineverse.navigation.routes.ReviewsRoute
 import com.moscow.cineverse.navigation.routes.SeriesDetailsRoute
 import com.moscow.cineverse.navigation.routes.collectionsBottomSheetRoute
 import com.moscow.cineverse.navigation.routes.exploreRoute
+import com.moscow.cineverse.navigation.routes.homeRoute
+import com.moscow.cineverse.navigation.routes.matchRoute
+import com.moscow.cineverse.navigation.routes.profileRoute
 
 val LocalNavController =
     staticCompositionLocalOf<NavHostController> { error("No NavController provided") }
 
 @Composable
 
-fun CineVerseNavGraph() {
-    val navController = rememberNavController()
+fun CineVerseNavGraph(navController: NavHostController) {
     CompositionLocalProvider(
         LocalNavController provides navController
     ) {
-        NavHost(navController = navController, startDestination = ExploreRoute) {
+        NavHost(navController = navController, startDestination = HomeRoute) {
             exploreRoute()
             RecommendationsRoute()
             ReviewsRoute()
@@ -43,6 +45,10 @@ fun CineVerseNavGraph() {
                     navController.popBackStack()
                 }
             )
+            homeRoute()
+            matchRoute()
+            profileRoute()
+
         }
     }
 }
