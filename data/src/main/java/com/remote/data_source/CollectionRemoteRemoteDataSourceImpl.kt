@@ -1,6 +1,6 @@
 package com.remote.data_source
 
-import com.data_source.remote.CollectionsDataSource
+import com.data_source.remote.CollectionRemoteDataSource
 import com.remote.dto.AddMediaItemToCollectionRequestDto
 import com.remote.dto.CollectionDto
 import com.remote.dto.CreateCollectionDto
@@ -9,9 +9,9 @@ import com.utils.ApiResponse
 import com.utils.handleApi
 
 
-class CollectionsDataSourceImpl(
+class CollectionRemoteRemoteDataSourceImpl(
     private val collectionsService: CollectionsService
-) : CollectionsDataSource {
+) : CollectionRemoteDataSource {
     override suspend fun getMyCollections(
         accountId: Int,
         sessionId: String,

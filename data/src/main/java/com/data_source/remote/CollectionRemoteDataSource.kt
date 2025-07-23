@@ -6,7 +6,7 @@ import com.remote.dto.CreateCollectionDto
 import com.remote.dto.MediaItemDto
 import com.utils.ApiResponse
 
-interface CollectionsDataSource {
+interface CollectionRemoteDataSource {
     suspend fun getMyCollections(
         accountId: Int,
         sessionId: String,

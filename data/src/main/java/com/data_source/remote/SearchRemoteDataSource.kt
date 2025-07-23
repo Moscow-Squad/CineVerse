@@ -10,5 +10,5 @@ interface SearchRemoteDataSource {
     suspend fun searchMovie(query: String, page: Int, includeAdult: Boolean): ApiResponse<MovieDto>
     suspend fun searchSeries(query: String, page: Int, includeAdult: Boolean): ApiResponse<SeriesDto>
     suspend fun searchActor(query: String, page: Int, includeAdult: Boolean): ApiResponse<ActorDto>
-    suspend fun getSuggestions(keyword: String, page: Int, includeAdult: Boolean): ApiResponse<SuggestionDto>
+    suspend fun searchByKeyword(keyword: String, page: Int, includeAdult: Boolean): ApiResponse<SuggestionDto>
 }
