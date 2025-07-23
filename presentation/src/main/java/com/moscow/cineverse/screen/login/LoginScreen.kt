@@ -196,7 +196,7 @@ private fun LoginScreenContent(
             SignUpBottomSheet(interactionListener)
         }
     }
-    if (state.wantToSignup) {
+    AnimatedVisibility (state.wantToSignup) {
         SignupBrowser(
             onExitWebView = {
                 interactionListener.onDismissOrCancelSignUpBottomSheet()

@@ -50,7 +50,7 @@ class LoginViewModel(
     }
 
     override fun onClickLogin() {
-        if (uiState.value.username.isNotBlank() ||
+        if (uiState.value.username.isNotBlank() &&
             uiState.value.password.isNotBlank()
         ) {
             launchWithResult(
