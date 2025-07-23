@@ -67,6 +67,14 @@ class PreferenceRepositoryImpl(
             .first()
     }
 
+    override suspend fun getSessionId(): String {
+        return dataStore.data.map { it[SESSION_ID_KEY] }.firstOrNull() ?: ""
+    }
+
+    override suspend fun getSessionExpiration(): String {
+        return dataStore.data.map { it[EXPIRED_AT_KEY] }.firstOrNull() ?: ""
+    }
+
     override suspend fun clearUser() {
         dataStore.edit { it.clear() }
     }
@@ -87,6 +95,6 @@ class PreferenceRepositoryImpl(
         private val USERNAME_KEY = stringPreferencesKey("username")
         private val SESSION_ID_KEY = stringPreferencesKey("session_id")
         private val EXPIRED_AT_KEY = stringPreferencesKey("expired_at")
-        private val Is_LOGGED_IN_KEY = booleanPreferencesKey("are_logged_in")
+        private val Is_LOGGED_IN_KEY = booleanPreferencesKey("is_logged_in")
     }
 }

@@ -7,6 +7,8 @@ import com.android.domain.repository.PreferenceRepository
 import com.moscow.cineverse.navigation.routes.ExploreRoute
 import com.moscow.cineverse.navigation.routes.LoginRoute
 import kotlinx.coroutines.launch
+import kotlinx.datetime.Clock
+import kotlinx.datetime.Instant
 
 class NavViewModel(
     private val preferenceRepository: PreferenceRepository
@@ -21,8 +23,24 @@ class NavViewModel(
 
     private fun getStartDestination() {
         viewModelScope.launch {
-            val isLoggedIn = preferenceRepository.isLoggedIn()
-            _startDestination.value = if (isLoggedIn) ExploreRoute else LoginRoute
+            if (preferenceRepository.isGuest() && preferenceRepository.isLoggedIn()){
+                val isValid = isValidGuestSession(preferenceRepository.getSessionExpiration())
+                _startDestination.value = if (isValid) ExploreRoute else LoginRoute
+            }else{
+                val isLoggedIn = preferenceRepository.isLoggedIn()
+                _startDestination.value = if (isLoggedIn) ExploreRoute else LoginRoute
+            }
         }
+    }
+
+    private fun isValidGuestSession(expirationDateTime: String): Boolean{
+        if (expirationDateTime.isNotEmpty()){
+            val iso = expirationDateTime.replace(" UTC", "").replace(' ', 'T') + "Z"
+            val expiresAtInstant = Instant.parse(iso)
+            val expiresAtMillis = expiresAtInstant.toEpochMilliseconds()
+            val now = Clock.System.now().toEpochMilliseconds()
+            return now < expiresAtMillis
+        }
+        return false
     }
 }
