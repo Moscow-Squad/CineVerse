@@ -26,8 +26,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -35,6 +35,8 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.example.design_system.R
 import com.example.image_viewer.component.SafeImageViewer
+import com.moscow.cineverse.designSystem.component.blur.OnBlurContent
+import com.moscow.cineverse.designSystem.component.blur.RemoteImagePlaceholder
 import com.moscow.cineverse.designSystem.theme.CineVerseTheme
 import com.moscow.cineverse.designSystem.theme.Theme
 
@@ -94,14 +96,12 @@ private fun PlaceholderCard(
         modifier = modifier
             .fillMaxSize()
             .background(
-                cardColor,
-                RoundedCornerShape(
+                cardColor, RoundedCornerShape(
                     topStart = Theme.radius.large,
                     topEnd = Theme.radius.large,
                     bottomStart = Theme.radius.large
                 )
-            ),
-        contentAlignment = Alignment.Center
+            ), contentAlignment = Alignment.Center
     ) {
         Icon(
             painter = painterResource(R.drawable.due_tone_image),
@@ -261,8 +261,7 @@ private fun <T> ListMovieCard(
                     )
 
                     DurationAndDateSection(
-                        duration = getDuration(movieData),
-                        releaseDate = getReleaseDate(movieData)
+                        duration = getDuration(movieData), releaseDate = getReleaseDate(movieData)
                     )
 
                 }
@@ -292,31 +291,33 @@ fun LoadImageWithPlaceholder(
 ) {
     if (posterUrl.isNotEmpty()) {
         SafeImageViewer(
-            model = posterUrl,
-            contentDescription = contentDescription,
-            placeholder = painterResource(id = R.drawable.due_tone_image),
-            error = painterResource(id = R.drawable.due_tone_image),
-            contentScale = ContentScale.Crop,
-            modifier = modifier
-        )
-    } else {
-        PlaceholderCard(
-            modifier = placeholderModifier,
-            cardColor = placeholderCardColor,
-            iconSize = placeholderIconSize
-        )
+            imageUrl = posterUrl,
+            modifier = Modifier.fillMaxWidth(),
+            placeholderContent = {
+                RemoteImagePlaceholder(Modifier.fillMaxSize())
+            },
+            errorContent = {
+                RemoteImagePlaceholder(Modifier.fillMaxSize())
+            },
+        ) {
+            OnBlurContent(
+                hintText = stringResource(R.string.unsuitable_image),
+                textStyle = Theme.textStyle.body.small.regular.copy(
+                    color = Color(0x99FFFFFF)
+                ),
+                iconSize = 24.dp,
+                icon = painterResource(R.drawable.icon_eye_slash),
+            )
+        }
     }
 }
 
 @Composable
 fun DurationAndDateSection(
-    modifier: Modifier = Modifier,
-    duration: String,
-    releaseDate: String
+    modifier: Modifier = Modifier, duration: String, releaseDate: String
 ) {
     Row(
-        modifier = modifier.padding(top = 8.dp),
-        verticalAlignment = Alignment.CenterVertically
+        modifier = modifier.padding(top = 8.dp), verticalAlignment = Alignment.CenterVertically
     ) {
         if (duration.isNotEmpty()) {
             Icon(
@@ -361,14 +362,14 @@ fun GridMovieCardLoadingPreview() {
         Column(modifier = Modifier.padding(16.dp)) {
             MovieCard(
                 movieData = MockMovieData(
-                    id = 1,
-                    title = "The Dark Knight",
-                    posterUrl = "",
-                    rating = 9.0f,
-                    genres = listOf("Action", "Crime", "Drama"),
-                    duration = "2h 32m",
-                    releaseDate = "2008, Jul 18"
-                ),
+                id = 1,
+                title = "The Dark Knight",
+                posterUrl = "",
+                rating = 9.0f,
+                genres = listOf("Action", "Crime", "Drama"),
+                duration = "2h 32m",
+                releaseDate = "2008, Jul 18"
+            ),
                 viewMode = ViewMode.GRID,
                 onMovieClick = {},
                 getId = { it.id },
@@ -377,8 +378,7 @@ fun GridMovieCardLoadingPreview() {
                 getRating = { it.rating },
                 getGenres = { it.genres },
                 getDuration = { it.duration },
-                getReleaseDate = { it.releaseDate }
-            )
+                getReleaseDate = { it.releaseDate })
         }
     }
 }
@@ -390,14 +390,14 @@ fun ListMovieCardLoadingPreview() {
         Column(modifier = Modifier.padding(16.dp)) {
             MovieCard(
                 movieData = MockMovieData(
-                    id = 1,
-                    title = "Inception",
-                    posterUrl = "",
-                    rating = 8.8f,
-                    genres = listOf("Action", "Sci-Fi", "Thriller"),
-                    duration = "2h 28m",
-                    releaseDate = "2008, Jul 18"
-                ),
+                id = 1,
+                title = "Inception",
+                posterUrl = "",
+                rating = 8.8f,
+                genres = listOf("Action", "Sci-Fi", "Thriller"),
+                duration = "2h 28m",
+                releaseDate = "2008, Jul 18"
+            ),
                 viewMode = ViewMode.LIST,
                 onMovieClick = {},
                 getId = { it.id },
@@ -406,8 +406,7 @@ fun ListMovieCardLoadingPreview() {
                 getRating = { it.rating },
                 getGenres = { it.genres },
                 getDuration = { it.duration },
-                getReleaseDate = { it.releaseDate }
-            )
+                getReleaseDate = { it.releaseDate })
         }
     }
 }

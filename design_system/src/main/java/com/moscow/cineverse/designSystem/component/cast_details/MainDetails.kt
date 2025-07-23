@@ -75,14 +75,14 @@ fun MainDetails(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
             ) {
-                SafeImageViewer(
-                    model = profileImage,
-                    contentDescription = "Profile Image",
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .size(imageSize)
-                        .clip(if (isCollapsed) CircleShape else RoundedCornerShape(cornerSize))
-                )
+//                SafeImageViewer(
+//                    model = profileImage,
+//                    contentDescription = "Profile Image",
+//                    contentScale = ContentScale.Crop,
+//                    modifier = Modifier
+//                        .size(imageSize)
+//                        .clip(if (isCollapsed) CircleShape else RoundedCornerShape(cornerSize))
+//                )
                 Column(modifier = Modifier.padding(start = 12.dp)) {
                     Text(
                         text = name,

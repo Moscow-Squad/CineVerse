@@ -78,15 +78,15 @@ fun MovieCardDetails(
                     contentScale = ContentScale.Crop
                 )
             } else {
-                SafeImageViewer(
-                    model = posterUrl,
-                    contentDescription = "Image",
-                    modifier = Modifier
-                        .height(289.dp)
-                        .width(216.dp)
-                        .clip(RoundedCornerShape(Theme.radius.extraLarge)),
-                    contentScale = ContentScale.Crop
-                )
+//                SafeImageViewer(
+//                    model = posterUrl,
+//                    contentDescription = "Image",
+//                    modifier = Modifier
+//                        .height(289.dp)
+//                        .width(216.dp)
+//                        .clip(RoundedCornerShape(Theme.radius.extraLarge)),
+//                    contentScale = ContentScale.Crop
+//                )
             }
             DetailCard(
                 modifier,
@@ -239,14 +239,14 @@ fun MainMovieCard(
                     contentScale = ContentScale.FillBounds
                 )
             } else {
-                SafeImageViewer(
-                    model = posterUrl,
-                    contentDescription = "Image",
-                    modifier = Modifier
-                        .clip(CircleShape)
-                        .size(40.dp),
-                    contentScale = ContentScale.Crop
-                )
+//                SafeImageViewer(
+//                    model = posterUrl,
+//                    contentDescription = "Image",
+//                    modifier = Modifier
+//                        .clip(CircleShape)
+//                        .size(40.dp),
+//                    contentScale = ContentScale.Crop
+//                )
             }
             Text(
                 text = title,

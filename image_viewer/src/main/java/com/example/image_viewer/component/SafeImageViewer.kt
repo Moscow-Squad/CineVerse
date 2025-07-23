@@ -1,71 +1,96 @@
 package com.example.image_viewer.component
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.graphics.DefaultAlpha
-import androidx.compose.ui.graphics.FilterQuality
-import androidx.compose.ui.graphics.drawscope.DrawScope.Companion.DefaultFilterQuality
-import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import coil3.compose.AsyncImage
-import coil3.compose.AsyncImagePainter.State
+import coil3.Bitmap
+import coil3.ImageLoader
+import coil3.request.ImageRequest
+import coil3.request.allowHardware
 import coil3.toBitmap
 import com.example.image_viewer.classfier.HybridImageClassifier
 import com.skydoves.cloudy.cloudy
 
 @Composable
 fun SafeImageViewer(
-    model: Any?,
-    contentDescription: String?,
+    imageUrl: String,
     modifier: Modifier = Modifier,
-    blurRadius: Int = 300,
-    placeholder: Painter? = null,
-    error: Painter? = null,
-    fallback: Painter? = error,
-    onLoading: ((State.Loading) -> Unit)? = null,
-    onSuccess: ((State.Success) -> Unit)? = null,
-    onError: ((State.Error) -> Unit)? = null,
-    alignment: Alignment = Alignment.Center,
-    contentScale: ContentScale = ContentScale.Fit,
-    alpha: Float = DefaultAlpha,
-    colorFilter: ColorFilter? = null,
-    filterQuality: FilterQuality = DefaultFilterQuality,
+    blurRadius: Int = 25,
+    isBlurEnabled: Boolean = true,
+    placeholderContent: @Composable () -> Unit = {},
+    errorContent: @Composable () -> Unit = {},
+    onSuccess: (() -> Unit)? = null,
+    onError: (() -> Unit)? = null,
+    onBlurContent: @Composable () -> Unit = {},
 ) {
-
     val context = LocalContext.current
     val classifier = remember { HybridImageClassifier(context) }
 
-    var blurImage by remember { mutableStateOf(true) }
+    var bitmapToDisplay by remember { mutableStateOf<Bitmap?>(null) }
+    var isHaram by rememberSaveable { mutableStateOf(isBlurEnabled) }
+    var requestState by rememberSaveable { mutableStateOf(RequestState.LOADING) }
+
+    LaunchedEffect(imageUrl) {
+        val loader = ImageLoader(context)
+        val request = ImageRequest.Builder(context).data(imageUrl).allowHardware(false).build()
+
+        val result = runCatching { loader.execute(request) }
+        result.onSuccess { success ->
+            val bitmap = runCatching { success.image?.toBitmap() }.getOrNull()
+            if (bitmap != null) {
+                if (isBlurEnabled) isHaram = classifier.classifyImage(bitmap)
+                bitmapToDisplay = bitmap
+                requestState = RequestState.SUCCESS
+                onSuccess?.invoke()
+            } else {
+                requestState = RequestState.ERROR
+                onError?.invoke()
+            }
+        }.onFailure {
+            requestState = RequestState.ERROR
+            onError?.invoke()
+        }
+    }
 
     Box(modifier = modifier) {
-        AsyncImage(
-            model = model,
-            modifier = modifier.cloudy(radius = blurRadius, enabled = blurImage),
-            onSuccess = { success ->
-                val bitmapImage = success.result.image.toBitmap()
-                blurImage = classifier.classifyImage(bitmapImage)
-                if (onSuccess != null)
-                    onSuccess(success)
-            },
-            contentDescription = contentDescription,
-            placeholder = placeholder,
-            error = error,
-            fallback = fallback,
-            onLoading = onLoading,
-            onError = onError,
-            alignment = alignment,
-            contentScale = contentScale,
-            alpha = alpha,
-            colorFilter = colorFilter,
-            filterQuality = filterQuality,
-        )
+        when (requestState) {
+            RequestState.LOADING -> {
+                placeholderContent()
+            }
+
+            RequestState.SUCCESS -> {
+                bitmapToDisplay?.let {
+                    Image(
+                        bitmap = it.asImageBitmap(),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .cloudy(radius = blurRadius, enabled = isHaram),
+                        contentScale = ContentScale.Crop,
+                    )
+                }
+            }
+            RequestState.ERROR -> {
+                errorContent()
+            }
+        }
+        if (requestState == RequestState.SUCCESS && isHaram && isBlurEnabled) {
+            onBlurContent()
+        }
     }
+}
+
+enum class RequestState {
+    LOADING, SUCCESS, ERROR
 }

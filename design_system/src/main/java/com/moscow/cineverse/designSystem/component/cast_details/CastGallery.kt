@@ -78,15 +78,14 @@ fun CastGalleryItem(
         imageUrl: String,
         modifier: Modifier
     ) {
-        SafeImageViewer(
-            model = imageUrl,
-            contentDescription = stringResource(R.string.cast_image),
-            contentScale = ContentScale.Crop,
-            modifier = modifier.then(imageFlipModifier),
-            onLoading = { it.painter },
-            fallback = painterResource(R.drawable.due_tone_image),
-            placeholder = painterResource(R.drawable.due_tone_image)
-        )
+//        SafeImageViewer(
+//            imageUrl = imageUrl,
+//            contentScale = ContentScale.Crop,
+//            modifier = modifier.then(imageFlipModifier),
+//            onLoading = { it.painter },
+//            fallback = painterResource(R.drawable.due_tone_image),
+//            placeholder = painterResource(R.drawable.due_tone_image)
+//        )
     }
 
     when (images.size) {

@@ -45,17 +45,17 @@ fun CollectionItem(
                     .clickable { onClick() },
                 contentAlignment = Alignment.BottomCenter
             ) {
-                SafeImageViewer(
-                    model = imageURL,
-                    contentDescription = stringResource(R.string.collection_image),
-                    contentScale = ContentScale.FillWidth,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(80.dp),
-                    onLoading = { it.painter },
-                    fallback = painterResource(if (isSystemInDarkTheme()) R.drawable.loading_dark else R.drawable.loading_light),
-                    placeholder = painterResource(if (isSystemInDarkTheme()) R.drawable.loading_dark else R.drawable.loading_light)
-                )
+//                SafeImageViewer(
+//                    model = imageURL,
+//                    contentDescription = stringResource(R.string.collection_image),
+//                    contentScale = ContentScale.FillWidth,
+//                    modifier = Modifier
+//                        .fillMaxWidth()
+//                        .height(80.dp),
+//                    onLoading = { it.painter },
+//                    fallback = painterResource(if (isSystemInDarkTheme()) R.drawable.loading_dark else R.drawable.loading_light),
+//                    placeholder = painterResource(if (isSystemInDarkTheme()) R.drawable.loading_dark else R.drawable.loading_light)
+//                )
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()

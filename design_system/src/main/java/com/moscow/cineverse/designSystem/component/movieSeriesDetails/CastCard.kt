@@ -55,22 +55,22 @@ fun <T> CastCard(
                 contentScale = ContentScale.Crop
             )
         } else {
-            SafeImageViewer(
-                model = getProfileImage(castMember),
-                contentDescription = stringResource(R.string.cast_member_image),
-                placeholder = painterResource(R.drawable.due_tone_profile),
-                fallback = painterResource(R.drawable.due_tone_profile),
-                modifier = Modifier
-                    .size(64.dp)
-                    .clip(
-                        RoundedCornerShape(
-                            topEnd = Theme.radius.large,
-                            topStart = Theme.radius.large,
-                            bottomStart = Theme.radius.large
-                        )
-                    ),
-                contentScale = ContentScale.Crop
-            )
+//            SafeImageViewer(
+//                model = getProfileImage(castMember),
+//                contentDescription = stringResource(R.string.cast_member_image),
+//                placeholder = painterResource(R.drawable.due_tone_profile),
+//                fallback = painterResource(R.drawable.due_tone_profile),
+//                modifier = Modifier
+//                    .size(64.dp)
+//                    .clip(
+//                        RoundedCornerShape(
+//                            topEnd = Theme.radius.large,
+//                            topStart = Theme.radius.large,
+//                            bottomStart = Theme.radius.large
+//                        )
+//                    ),
+//                contentScale = ContentScale.Crop
+//            )
         }
         Column(
             modifier = Modifier.padding(12.dp),

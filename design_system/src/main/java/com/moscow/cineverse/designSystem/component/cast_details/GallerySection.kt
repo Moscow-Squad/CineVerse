@@ -51,15 +51,15 @@ fun GallerySection(
         imageUrl: String,
         modifier: Modifier
     ) {
-        SafeImageViewer(
-            model = imageUrl,
-            contentDescription = stringResource(R.string.cast_image),
-            contentScale = ContentScale.Crop,
-            modifier = modifier.then(imageFlipModifier),
-            onLoading = { it.painter },
-            fallback = painterResource(if (isSystemInDarkTheme()) R.drawable.loading_dark else R.drawable.loading_light),
-            placeholder = painterResource(if (isSystemInDarkTheme()) R.drawable.loading_dark else R.drawable.loading_light)
-        )
+//        SafeImageViewer(
+//            model = imageUrl,
+//            contentDescription = stringResource(R.string.cast_image),
+//            contentScale = ContentScale.Crop,
+//            modifier = modifier.then(imageFlipModifier),
+//            onLoading = { it.painter },
+//            fallback = painterResource(if (isSystemInDarkTheme()) R.drawable.loading_dark else R.drawable.loading_light),
+//            placeholder = painterResource(if (isSystemInDarkTheme()) R.drawable.loading_dark else R.drawable.loading_light)
+//        )
     }
 
     Row(
