@@ -4,9 +4,10 @@ import com.android.domain.model.CastDetails
 import com.android.domain.model.CrewDetails
 import com.android.domain.model.Review
 import com.android.domain.model.details.MovieDetail
+import com.moscow.cineverse.common_ui_state.CrewUiState
+import com.moscow.cineverse.common_ui_state.ReviewUiState
+import com.moscow.cineverse.common_ui_state.StarCastUiState
 import com.moscow.cineverse.screen.movie_details.MovieScreenState
-import com.moscow.cineverse.screen.movie_details.MovieScreenState.ReviewUiState
-import com.moscow.cineverse.screen.movie_details.MovieScreenState.StarCastUiState
 import kotlinx.datetime.LocalDate
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -37,21 +38,18 @@ fun Review.toUi(): ReviewUiState =
 
         )
 
-fun CastDetails.toUi(): StarCastUiState =
-    StarCastUiState(
-        id = id,
-        originalName = originalName,
-        characterName = characterName,
-        profileImage = profileImg
-    )
+fun CastDetails.toUi() = StarCastUiState(
+    id = id,
+    originalName = originalName,
+    characterName = characterName,
+    profileImage = profileImg
+)
 
-fun CrewDetails.toUi(): MovieScreenState.CrewUiState =
-    MovieScreenState.CrewUiState(
-        id = id,
-        name = name,
-        job = job,
-
-        )
+fun CrewDetails.toUi() = CrewUiState(
+    id = id,
+    name = name,
+    job = job,
+)
 
 fun LocalDate.toFormattedReleasedDate(): String {
     return try {

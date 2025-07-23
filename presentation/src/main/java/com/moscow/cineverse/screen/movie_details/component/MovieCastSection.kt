@@ -30,7 +30,6 @@ fun MovieCastSection(
             modifier = modifier
                 .background(Theme.colors.background.screen)
                 .padding(top = 24.dp, start = 16.dp, end = 16.dp),
-            onSeeMoreClick = {},
             cast = uiState.starCast?.take(6) ?: emptyList(),
             castContent = { actor ->
                 CastCard(

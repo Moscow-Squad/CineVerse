@@ -24,7 +24,7 @@ class DetailsRepositoryImpl(
 
     override suspend fun getSeriesDetail(seriesId: Int): SeriesDetail {
         val res = detailsRemoteDataSource.getSeriesDetails(seriesId)
-        res.genres?.forEach { detailsLocalDataSource.insertFavouriteGenre(it.id) }
+        res.genres.forEach { detailsLocalDataSource.insertFavouriteGenre(it.id) }
         return res.toDomain()
     }
 
@@ -33,10 +33,19 @@ class DetailsRepositoryImpl(
         return response.toDomain()
     }
 
+    override suspend fun getSeriesCreditsDetails(id: Int): CreditsDetails {
+        val response = detailsRemoteDataSource.getSeriesCredits(id)
+        return response.toDomain()
+    }
+
+    override suspend fun getRecommendations(id: Int,page:Int): List<Movie> {
+        val response = detailsRemoteDataSource.getRecommendations(id,page)
+        return response.map { it.toDomain() }
+    }
 
     override suspend fun getLatestSeasons(): List<Season> {
         val response = detailsRemoteDataSource.getLatestSeasons()
-        return response.seasons?.map { it.toDomain() } ?: emptyList()
+        return response.map { it.toDomain() }
     }
 
     override suspend fun getListOfSeries(id: Int, page: Int): List<ListOfSeries> {
@@ -44,6 +53,10 @@ class DetailsRepositoryImpl(
         return listOf(response.toDomain())
     }
 
+    override suspend fun getReviewsPage(id: Int, page: Int, isMovie: Boolean): List<Review> {
+        val response = detailsRemoteDataSource.getReviews(id, page, isMovie)
+        return response.results.orEmpty().mapNotNull { it?.toDomain() }
+    }
 
     override suspend fun rateMovie(
         rating: Float,

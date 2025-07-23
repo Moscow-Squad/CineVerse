@@ -8,7 +8,7 @@ import com.moscow.cineverse.screen.explore.ExploreViewModel
 import com.moscow.cineverse.screen.movie_details.MovieDetailsViewModel
 import com.moscow.cineverse.screen.movie_details.recommendations.RecommendationsMoviesViewModel
 import com.moscow.cineverse.screen.reviews.ReviewsViewModel
-import com.moscow.cineverse.screen.series_details.SeriesDetailsViewModel
+import com.moscow.cineverse.screen.series_details.SeriesDetailsScreenScreenViewModel
 import org.koin.core.module.dsl.viewModel
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
@@ -16,7 +16,7 @@ import org.koin.dsl.module
 val viewModels = module{
     viewModelOf(::ExploreViewModel)
     viewModelOf(::MovieDetailsViewModel)
-    viewModelOf(::SeriesDetailsViewModel)
+    viewModelOf(::SeriesDetailsScreenScreenViewModel)
     viewModelOf(::CollectionsBottomSheetViewModel)
     viewModelOf(::ReviewsViewModel)
     viewModelOf(::RecommendationsMoviesViewModel)

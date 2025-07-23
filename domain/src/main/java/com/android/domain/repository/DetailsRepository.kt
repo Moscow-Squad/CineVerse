@@ -11,8 +11,10 @@ interface DetailsRepository {
     suspend fun getSeriesDetail(seriesId: Int): SeriesDetail
     suspend fun rateMovie(rating: Float, movieId: Int)
     suspend fun rateSeries(rating: Float, seriesId: Int)
+    suspend fun getReviewsPage(id: Int, page: Int, isMovie: Boolean): List<Review>
+    suspend fun getSeriesCreditsDetails(id: Int): CreditsDetails
     suspend fun getCreditsDetails(id: Int) : CreditsDetails
+    suspend fun getRecommendations(id:Int,page: Int) : List<Movie>
     suspend fun getLatestSeasons(): List<Season>
     suspend fun getListOfSeries(id: Int, page: Int): List<ListOfSeries>
-
 }
