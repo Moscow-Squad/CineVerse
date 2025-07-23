@@ -64,7 +64,7 @@ fun ShowAllActorMoviesScreen(
         interactionListener = viewModel,
         modifier = modifier,
         title = title,
-        onNavigateBack = {navController.popBackStack()},
+        onNavigateBack = navController::navigateUp,
     )
 }
 

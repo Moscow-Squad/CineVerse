@@ -8,15 +8,14 @@ import com.android.domain.model.MediaItem
 import com.android.domain.model.MediaType
 import com.android.domain.model.Movie
 import com.android.domain.model.Series
-import com.remote.dto.ActorBestOfMoviesAsCastDto
-import com.remote.dto.ActorBestOfMoviesAsCrewDto
-import com.remote.dto.ActorDto
-import com.remote.dto.ActorImagesDto
+import com.remote.dto.actor.ActorDto
 import com.remote.dto.GenreDto
 import com.remote.dto.MediaItemDto
 import com.remote.dto.MovieDto
+import com.remote.dto.actor.ActorBestOfMoviesDto
+import com.remote.dto.actor.ActorImagesDto
 import com.remote.dto.details.ActorDetailsDto
-import com.remote.dto.details.SeriesDto
+import com.remote.dto.series.SeriesDto
 import com.utils.IMAGES_URL
 import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDate
@@ -111,47 +110,47 @@ fun ActorDetailsDto.toDomain(youtubeLink: String, facebookLink: String, instagra
         profileImg = IMAGES_URL + profilePath.orEmpty()
     )
 
-fun ActorImagesDto.toDomain() =
+fun ActorImagesDto.ActorImageDetails.toDomain() =
     IMAGES_URL + filePath.orEmpty()
 
-fun ActorBestOfMoviesAsCrewDto.toDomain() =
+fun ActorBestOfMoviesDto.ActorBestOfMoviesAsCrew.toDomain() =
     Movie(
         id = id ?: 0,
         name = title.orEmpty(),
-        genreIds = genreIds ?: emptyList(),
+        genreIds = genreIds,
         rating = voteAverage?.toFloat() ?: 0f,
-        releaseDate = if (releaseDate.isNullOrEmpty()) {
+        releaseDate = if (releaseDate.isEmpty()) {
             Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
         } else {
             LocalDate.parse(releaseDate)
         },
-        adult = adult ?: false,
+        adult = adult == true,
         backdropPath = backdropPath.orEmpty(),
         originalLanguage = originalLanguage.orEmpty(),
         originalTitle = originalTitle.orEmpty(),
         overview = overview.orEmpty(),
         posterPath = IMAGES_URL + posterPath.orEmpty(),
-        video = video ?: false,
+        video = video == true,
         poster = IMAGES_URL + posterPath.orEmpty()
     )
 
-fun ActorBestOfMoviesAsCastDto.toDomain() =
+fun ActorBestOfMoviesDto.ActorBestOfMoviesAsCast.toDomain() =
     Movie(
         id = id ?: 0,
         name = title.orEmpty(),
-        genreIds = genreIds ?: emptyList(),
+        genreIds = genreIds,
         rating = voteAverage?.toFloat() ?: 0f,
-        releaseDate = if (releaseDate.isNullOrEmpty()) {
+        releaseDate = if (releaseDate.isEmpty()) {
             Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
         } else {
             LocalDate.parse(releaseDate)
         },
-        adult = adult ?: false,
+        adult = adult == true,
         backdropPath = backdropPath.orEmpty(),
         originalLanguage = originalLanguage.orEmpty(),
         originalTitle = originalTitle.orEmpty(),
         overview = overview.orEmpty(),
         posterPath = IMAGES_URL + posterPath.orEmpty(),
-        video = video ?: false,
+        video = video == true,
         poster = IMAGES_URL + posterPath.orEmpty()
     )

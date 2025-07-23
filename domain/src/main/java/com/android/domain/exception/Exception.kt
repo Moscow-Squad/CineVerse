@@ -3,11 +3,6 @@ package com.android.domain.exception
 import com.android.domain.utils.ErrorMessages
 
 sealed class CineVerseException(override val message: String? = null) : Exception(message) {
-    class NotFoundCineVerseException : CineVerseException(ErrorMessages.RESOURCE_NOT_FOUND) {
-    }
-
-    class NoSuggestionFoundException(message: String = ErrorMessages.NO_SUGGESTIONS_FOUND) :
-        CineVerseException(message)
 
    data class IOException(override val message: String = ErrorMessages.NETWORK_ERROR) : CineVerseException()
 
@@ -38,3 +33,4 @@ sealed class CineVerseException(override val message: String? = null) : Exceptio
     }
     data  object MappingToDomainException: CineVerseException()
 }
+

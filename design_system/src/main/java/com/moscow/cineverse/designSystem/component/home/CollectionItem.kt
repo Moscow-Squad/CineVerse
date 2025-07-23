@@ -3,6 +3,7 @@ package com.moscow.cineverse.designSystem.component.home
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -23,8 +24,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import coil3.compose.SubcomposeAsyncImage
 import com.example.design_system.R
+import com.example.image_viewer.component.SafeImageViewer
 import com.moscow.cineverse.designSystem.theme.CineVerseTheme
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.designSystem.theme.ThemeState
@@ -44,14 +45,16 @@ fun CollectionItem(
                     .clickable { onClick() },
                 contentAlignment = Alignment.BottomCenter
             ) {
-                SubcomposeAsyncImage(
+                SafeImageViewer(
                     model = imageURL,
                     contentDescription = stringResource(R.string.collection_image),
                     contentScale = ContentScale.FillWidth,
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(80.dp),
-                    loading = { LoadingImage() }
+                    onLoading = { it.painter },
+                    fallback = painterResource(if (isSystemInDarkTheme()) R.drawable.loading_dark else R.drawable.loading_light),
+                    placeholder = painterResource(if (isSystemInDarkTheme()) R.drawable.loading_dark else R.drawable.loading_light)
                 )
                 Row(
                     modifier = Modifier

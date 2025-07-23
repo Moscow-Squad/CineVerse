@@ -2,7 +2,7 @@ package com.local
 
 import com.local.dao.search.FavouriteGenreDao
 import com.local.entity.FavouriteGenreEntity
-import com.repository.details.DetailsLocalDataSource
+import com.data_source.local.DetailsLocalDataSource
 import kotlinx.coroutines.flow.Flow
 
 class DetailsLocalDataSourceImpl(

@@ -1,3 +1,5 @@
+
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -26,12 +28,14 @@ android {
         versionName = ciName ?: libs.versions.versionName.get()
 
         ndk {
-            abiFilters += listOf("arm64-v8a", "armeabi-v7a")
+            abiFilters += listOf("arm64-v8a", "armeabi-v7a", "x86_64")
         }
 
+        @Suppress("UnstableApiUsage")
         androidResources {
             localeFilters.addAll(listOf("en", "ar"))
         }
+
     }
 
     buildTypes {
@@ -63,12 +67,6 @@ android {
     kotlinOptions {
         jvmTarget = libs.versions.javaVersion.get()
     }
-
-    buildFeatures {
-        compose = true
-        buildConfig = true
-        mlModelBinding = true
-    }
 }
 
 firebaseAppDistribution {
@@ -79,10 +77,10 @@ firebaseAppDistribution {
 }
 
 dependencies {
-    implementation(project(":design_system"))
-    implementation(project(":presentation"))
-    implementation(project(":data"))
-    implementation(project(":domain"))
+    implementation(projects.designSystem)
+    implementation(projects.presentation)
+    implementation(projects.data)
+    implementation(projects.domain)
 
     implementation(platform(libs.koin.bom))
     implementation(libs.bundles.koin)

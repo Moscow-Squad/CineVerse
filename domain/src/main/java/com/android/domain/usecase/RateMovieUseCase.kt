@@ -8,6 +8,5 @@ class RateMovieUseCase(
     suspend fun rateMovie(
         rating: Float,
         movieId: Int
-    ) =
-        repository.rateMovie(rating = rating, movieId = movieId)
+    ) = repository.rateMovie(rating = rating, movieId = movieId)
 }
