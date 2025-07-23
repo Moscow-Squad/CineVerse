@@ -72,7 +72,7 @@ class LoginViewModel(
     private fun onLoginSuccess(isSuccess: Boolean) {
         updateState { it.copy(isLoading = false) }
         if (isSuccess){
-            sendEvent(LoginScreenEvents.NavigateToExplore)
+            sendEvent(LoginScreenEvents.NavigateTo)
         }else{
             sendEvent(LoginScreenEvents.ShowError(context.getString(R.string.sorry_we_cannot_check_your_information_now)))
         }
@@ -98,7 +98,7 @@ class LoginViewModel(
 
     private fun onJoinAsGuestSuccess(isSuccess: Boolean){
         if (isSuccess){
-            sendEvent(LoginScreenEvents.NavigateToExplore)
+            sendEvent(LoginScreenEvents.NavigateTo)
         }else{
             sendEvent(LoginScreenEvents.ShowError(context.getString(R.string.sorry_you_cannot_enter_as_a_guest_now_try_to_create_a_new_account)))
         }

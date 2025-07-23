@@ -57,7 +57,7 @@ fun LoginScreen(
                     Toast.makeText(context, event.message, Toast.LENGTH_LONG).show()
                 }
 
-                is LoginScreenEvents.NavigateToExplore -> {
+                is LoginScreenEvents.NavigateTo -> {
                     val canGoBack = navController.previousBackStackEntry != null
                     if (canGoBack) {
                         navController.popBackStack()

@@ -1,5 +1,6 @@
 package com.moscow.cineverse.di
 
+import com.moscow.cineverse.navigation.NavViewModel
 import com.moscow.cineverse.screen.castDetails.CastDetailsViewModel
 import com.moscow.cineverse.screen.castDetails.best0fmovies.ShowAllActorMoviesInteractionViewModel
 import com.moscow.cineverse.screen.castDetails.gallery.ActorGalleryViewModel
@@ -49,6 +50,11 @@ val viewModels = module{
             getActorGallery = get(),
             actorId   = actorId,
             actorName = actorName,
+        )
+    }
+    viewModel {
+        NavViewModel(
+            preferenceRepository = get()
         )
     }
 }

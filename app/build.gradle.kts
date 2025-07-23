@@ -163,4 +163,8 @@ dependencies {
     implementation(libs.koin.androidx.workmanager)
     //navigation
     implementation(libs.androidx.navigation.compose)
+
+    // splash
+    implementation(libs.androidx.core.splashscreen)
+
 }

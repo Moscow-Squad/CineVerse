@@ -23,13 +23,14 @@ class PreferenceRepositoryImpl(
                     preferences[USER_ID_KEY] = userType.id
                     preferences[USERNAME_KEY] = userType.username
                     preferences[SESSION_ID_KEY] = userType.sessionId
-                    preferences[ARE_LOGGED_IN_KEY] = true
+                    preferences[Is_LOGGED_IN_KEY] = true
                     preferences.remove(EXPIRED_AT_KEY)
                 }
                 is UserType.GuestUser -> {
                     preferences[USER_TYPE_KEY] = GUEST_USER
                     preferences[SESSION_ID_KEY] = userType.sessionId
                     preferences[EXPIRED_AT_KEY] = userType.expiredAt.toString()
+                    preferences[Is_LOGGED_IN_KEY] = true
                     preferences.remove(USER_ID_KEY)
                     preferences.remove(USERNAME_KEY)
                 }
@@ -74,8 +75,8 @@ class PreferenceRepositoryImpl(
         return dataStore.data.map { it[USER_TYPE_KEY] == GUEST_USER }.firstOrNull() == true
     }
 
-    override suspend fun areLoggedIn(): Boolean {
-        return dataStore.data.map { it[ARE_LOGGED_IN_KEY] }.firstOrNull() == true
+    override suspend fun isLoggedIn(): Boolean {
+        return dataStore.data.map { it[Is_LOGGED_IN_KEY] }.firstOrNull() == true
     }
 
     companion object {
@@ -86,6 +87,6 @@ class PreferenceRepositoryImpl(
         private val USERNAME_KEY = stringPreferencesKey("username")
         private val SESSION_ID_KEY = stringPreferencesKey("session_id")
         private val EXPIRED_AT_KEY = stringPreferencesKey("expired_at")
-        private val ARE_LOGGED_IN_KEY = booleanPreferencesKey("are_logged_in")
+        private val Is_LOGGED_IN_KEY = booleanPreferencesKey("are_logged_in")
     }
 }

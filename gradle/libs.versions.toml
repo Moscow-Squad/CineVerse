@@ -51,8 +51,10 @@ junitJunit = "4.12"
 pagingCommonAndroid = "3.3.6"
 datastore = "1.1.7"
 readMoreVersion = "1.6.3"
+coreSplashscreen = "1.0.1"
 
 [libraries]
+androidx-core-splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "coreSplashscreen" }
 androidx-animation = { module = "androidx.compose.animation:animation", version.ref = "animation" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }

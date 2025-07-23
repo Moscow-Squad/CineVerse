@@ -7,5 +7,5 @@ interface PreferenceRepository {
     suspend fun getUser(): UserType
     suspend fun clearUser()
     suspend fun isGuest(): Boolean
-    suspend fun areLoggedIn(): Boolean
+    suspend fun isLoggedIn(): Boolean
 }
