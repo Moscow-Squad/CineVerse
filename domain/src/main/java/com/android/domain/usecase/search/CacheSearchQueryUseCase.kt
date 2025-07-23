@@ -1,4 +1,4 @@
-package com.android.domain.usecase
+package com.android.domain.usecase.search
 
 import com.android.domain.repository.SearchRepository
 

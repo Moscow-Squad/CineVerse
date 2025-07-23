@@ -1,11 +1,11 @@
-package com.android.domain.usecase
+package com.android.domain.usecase.collection
 
 import com.android.domain.repository.CollectionsRepository
 
 class AddNewCollectionUseCase(
     private val collectionsRepository: CollectionsRepository
 ) {
-    suspend fun addNewCollection(
+    suspend operator fun invoke(
         collectionName: String,
         collectionDescription: String?
     ) =
