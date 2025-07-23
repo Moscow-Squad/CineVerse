@@ -18,6 +18,18 @@ jobs:
           java-version: 17
           distribution: temurin
           cache: gradle
+
+      - name: Create mock google-services.json
+        run: |
+          echo '{
+            "project_info": {
+              "project_number": "123456789",
+              "firebase_url": "https://mock-project.firebaseio.com",
+              "project_id": "mock-project-id",
+              "storage_bucket": "mock-project.appspot.com"
+            },
+            "client": []
+          }' > app/google-services.json
       - name: Generate keys.properties
         run: |
           echo "BEARER_TOKEN=${{ secrets.BEARER_TOKEN }}" > keys.properties
@@ -29,4 +41,4 @@ jobs:
    
 
       - name: Run unit tests + Kover
-        run: ./gradlew test koverVerify koverXmlReport koverHtmlReport
+        run: ./gradlew test koverVerify koverXmlReport koverHtmlReport -PdisableGoogleServices=true
