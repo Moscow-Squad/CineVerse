@@ -18,13 +18,13 @@ data class SeriesDetailDto(
     @SerialName("backdrop_path")
     val backdropPath: String? = null,
     @SerialName("created_by")
-    val createdBy: List<CreatedByDto>? = null,
+    val createdBy: List<CreatedByDto>,
     @SerialName("episode_run_time")
-    val episodeRunTime: List<Int> ? = null,
+    val episodeRunTime: List<Int>,
     @SerialName("first_air_date")
     val firstAirDate: String? = null,
     @SerialName("genres")
-    val genres: List<GenreDto> ? = null,
+    val genres: List<GenreDto>,
     @SerialName("homepage")
     val homepage: String? = null,
     @SerialName("id")
@@ -32,7 +32,7 @@ data class SeriesDetailDto(
     @SerialName("in_production")
     val inProduction: Boolean,
     @SerialName("languages")
-    val languages: List<String> ? = null,
+    val languages: List<String>,
     @SerialName("last_air_date")
     val lastAirDate: String? = null,
     @SerialName("last_episode_to_air")
@@ -42,13 +42,13 @@ data class SeriesDetailDto(
     @SerialName("next_episode_to_air")
     val nextEpisodeToAir: String? = null,
     @SerialName("networks")
-    val networks: List<NetworkDto> ? = null,
+    val networks: List<NetworkDto>,
     @SerialName("number_of_episodes")
     val numberOfEpisodes: Int,
     @SerialName("number_of_seasons")
     val numberOfSeasons: Int,
     @SerialName("origin_country")
-    val originCountry: List<String> ? = null,
+    val originCountry: List<String>,
     @SerialName("original_language")
     val originalLanguage: String,
     @SerialName("original_name")
@@ -60,13 +60,13 @@ data class SeriesDetailDto(
     @SerialName("poster_path")
     val posterPath: String? = null,
     @SerialName("production_companies")
-    val productionCompanies: List<ProductionCompanyDto> ? = null,
+    val productionCompanies: List<ProductionCompanyDto>,
     @SerialName("production_countries")
-    val productionCountries: List<ProductionCountryDto> ? = null,
+    val productionCountries: List<ProductionCountryDto>,
     @SerialName("seasons")
-    val seasons: List<SeasonDto> ? = null,
+    val seasons: List<SeasonDto>,
     @SerialName("spoken_languages")
-    val spokenLanguages: List<SpokenLanguageDto> ? = null,
+    val spokenLanguages: List<SpokenLanguageDto>,
     @SerialName("status")
     val status: String,
     @SerialName("tagline")
@@ -78,6 +78,6 @@ data class SeriesDetailDto(
     @SerialName("vote_count")
     val voteCount: Int,
     @SerialName("reviews")
-    val reviews: List<ReviewDto> ? = null,
+    val reviews: List<ReviewDto>,
 )
 

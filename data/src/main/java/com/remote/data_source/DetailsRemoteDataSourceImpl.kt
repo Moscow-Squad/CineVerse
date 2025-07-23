@@ -3,6 +3,7 @@ package com.remote.data_source
 import com.data_source.remote.DetailsRemoteDataSource
 import com.remote.dto.CreditsDetailsDto
 import com.remote.dto.details.MovieDetailDto
+import com.remote.dto.details.SeriesCreditDto
 import com.remote.dto.review.RatingRequestDto
 import com.remote.dto.series.ListOfSeriesDto
 import com.remote.dto.series.SeriesDetailDto
@@ -52,4 +53,7 @@ class DetailsRemoteDataSourceImpl(
         )
     }
 
+    override suspend fun getSeriesCredits(seriesId: Int): SeriesCreditDto = handleApi {
+        detailsService.getSeriesCredits(seriesId)
+    }
 }

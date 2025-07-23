@@ -1,10 +1,11 @@
 package com.data_source.remote
 
 import com.remote.dto.CreditsDetailsDto
-import com.remote.dto.series.ListOfSeriesDto
 import com.remote.dto.details.MovieDetailDto
-import com.remote.dto.series.SeriesDetailDto
+import com.remote.dto.details.SeriesCreditDto
 import com.remote.dto.review.RatingRequestDto
+import com.remote.dto.series.ListOfSeriesDto
+import com.remote.dto.series.SeriesDetailDto
 import com.utils.ApiResponse
 
 interface DetailsRemoteDataSource {
@@ -15,4 +16,5 @@ interface DetailsRemoteDataSource {
     suspend fun rateSeries(rating: RatingRequestDto, seriesId: Int): ApiResponse<Nothing>
     suspend fun getLatestSeasons(): SeriesDetailDto
     suspend fun getListOfSeries(id: Int, page: Int): ListOfSeriesDto
+    suspend fun getSeriesCredits(seriesId: Int): SeriesCreditDto
 }

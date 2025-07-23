@@ -62,13 +62,12 @@ class CastDetailsViewModel(
 
         viewModelScope.launch {
             try {
-                getActorGallery.getActorGallery(actorId).collect { images ->
-                    updateState { currentState ->
-                        currentState.copy(
-                            images = images,
-                            isLoadingImages = false
-                        )
-                    }
+                val images = getActorGallery.getActorGallery(actorId)
+                updateState { currentState ->
+                    currentState.copy(
+                        images = images,
+                        isLoadingImages = false
+                    )
                 }
             } catch (e: Exception) {
                 updateState { currentState ->
@@ -88,13 +87,12 @@ class CastDetailsViewModel(
 
         viewModelScope.launch {
             try {
-                getActorBestOfMovies.getActorBestOfMovies(actorId).collect { movies ->
-                    updateState { currentState ->
-                        currentState.copy(
-                            movies = movies,
-                            isLoadingMovies = false
-                        )
-                    }
+                val movies = getActorBestOfMovies.getActorBestOfMovies(actorId)
+                updateState { currentState ->
+                    currentState.copy(
+                        movies = movies,
+                        isLoadingMovies = false
+                    )
                 }
             } catch (e: Exception) {
                 updateState { currentState ->

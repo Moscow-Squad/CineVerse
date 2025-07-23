@@ -100,8 +100,8 @@ class SeriesDetailsScreenScreenViewModel(
     }
 
     override fun onRatingSubmit(rating: Int, seriesId: Int) {
-        launchWithFlow(
-            flowAction = { rateSeriesUseCase.rateSeriesUse(rating.toFloat(), seriesId) },
+        launchAndForget(
+            action = { rateSeriesUseCase.rateSeriesUse(rating.toFloat(), seriesId) },
             onSuccess = { updateState { it.copy(starsRating = rating, showRatingBottomSheet = false) } },
             onError = { updateState { it.copy(starsRating = rating, showRatingBottomSheet = false) } },
         )

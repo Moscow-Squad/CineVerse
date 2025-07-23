@@ -1,9 +1,9 @@
 package com.remote.services
 
-import retrofit2.http.*
-import com.remote.dto.*
-import com.remote.dto.details.*
-import com.remote.dto.review.*
+import com.remote.dto.CreditsDetailsDto
+import com.remote.dto.details.MovieDetailDto
+import com.remote.dto.details.SeriesCreditDto
+import com.remote.dto.review.RatingRequestDto
 import com.remote.dto.series.ListOfSeriesDto
 import com.remote.dto.series.SeriesDetailDto
 import com.utils.CREDITS
@@ -12,8 +12,14 @@ import com.utils.LISTS
 import com.utils.MOVIE
 import com.utils.RATING
 import com.utils.SERIES
+import com.utils.SERIES_CREDITS
 import com.utils.SESSION_ID
 import retrofit2.Response
+import retrofit2.http.Body
+import retrofit2.http.GET
+import retrofit2.http.POST
+import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface DetailsService {
 
@@ -56,4 +62,9 @@ interface DetailsService {
         @Path("id") id: Int,
         @Query("page") page: Int
     ): Response<ListOfSeriesDto>
+
+    @GET("$SERIES{series_id}$SERIES_CREDITS")
+    suspend fun getSeriesCredits(
+        @Path("series_id") seriesId: Int
+    ): Response<SeriesCreditDto>
 }

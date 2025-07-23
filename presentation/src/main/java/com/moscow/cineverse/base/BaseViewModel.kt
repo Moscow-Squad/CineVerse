@@ -50,9 +50,11 @@ abstract class BaseViewModel<T, E>(
 
     protected fun launchAndForget(
         action: suspend () -> Unit,
+        onSuccess: () -> Unit = {},
         onError: (Throwable) -> Unit,
     ) = viewModelScope.launch(Dispatchers.IO) {
         runCatching { action() }
+            .onSuccess { onSuccess() }
             .onFailure(onError)
     }
 

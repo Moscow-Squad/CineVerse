@@ -3,7 +3,6 @@ package com.mapper
 import com.android.domain.model.CastDetails
 import com.android.domain.model.CreditsDetails
 import com.android.domain.model.CrewDetails
-import com.android.domain.model.Genre
 import com.android.domain.model.Series
 import com.android.domain.model.details.Creator
 import com.android.domain.model.details.Episode
@@ -13,23 +12,19 @@ import com.android.domain.model.details.SeriesDetail
 import com.android.domain.model.details.SeriesItem
 import com.remote.dto.details.CreatedByDto
 import com.remote.dto.details.LastEpisodeToAirDto
-import com.remote.dto.details.ListOfSeriesDto
-import com.remote.dto.details.SeasonDto
 import com.remote.dto.details.SeriesCastDto
 import com.remote.dto.details.SeriesCreditDto
 import com.remote.dto.details.SeriesCrewDto
-import com.remote.dto.details.SeriesDetailDto
-import com.remote.dto.details.SeriesItemDto
 import com.remote.dto.details.SeriesRecommendationDto
+import com.remote.dto.series.ListOfSeriesDto
+import com.remote.dto.series.SeasonDto
+import com.remote.dto.series.SeriesDetailDto
+import com.remote.dto.series.SeriesItemDto
 import com.utils.IMAGES_URL
 import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
-import com.remote.dto.series.ListOfSeriesDto
-import com.remote.dto.series.SeasonDto
-import com.remote.dto.series.SeriesDetailDto
-import com.remote.dto.series.SeriesItemDto
 
 fun SeriesDetailDto.toDomain(): SeriesDetail {
     return SeriesDetail(
@@ -38,18 +33,16 @@ fun SeriesDetailDto.toDomain(): SeriesDetail {
         overview = overview,
         posterPath = IMAGES_URL + posterPath.orEmpty(),
         genres = genres.map { it.toDomain() },
-        rating = voteAverage.toFloat(),
+        rating = voteAverage.toDouble(),
         runtime = formatRuntime(episodeRunTime).toString(),
-        releaseDate = if (firstAirDate != null){
-            LocalDate.parse(firstAirDate)
-        } else  {
-            Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
-        },
+        releaseDate = firstAirDate,
         type = type,
         creators = createdBy.map { it.toDomain() },
         numberOfSeasons = numberOfSeasons,
         numberOfEpisodes = numberOfEpisodes,
-        seasons = seasons.map { it.toDomain() }
+        seasons = seasons.map { it.toDomain() },
+        backdropPath = IMAGES_URL + backdropPath,
+        voteCount = voteCount
     )
 }
 
