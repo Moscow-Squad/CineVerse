@@ -96,15 +96,15 @@ class LoginViewModel(
     }
 
 
-    private fun onJoinAsGuestSuccess(isSuccess: Boolean){
-        if (isSuccess){
+    private fun onJoinAsGuestSuccess(isSuccess: Boolean) {
+        if (isSuccess) {
             sendEvent(LoginScreenEvents.NavigateTo)
-        }else{
+        } else {
             sendEvent(LoginScreenEvents.ShowError(context.getString(R.string.sorry_you_cannot_enter_as_a_guest_now_try_to_create_a_new_account)))
         }
     }
 
-    private fun onJoinAsGuestFailed(error: Throwable){
+    private fun onJoinAsGuestFailed(error: Throwable) {
         sendEvent(LoginScreenEvents.ShowError(error.message.toString()))
     }
 
@@ -114,6 +114,19 @@ class LoginViewModel(
 
     override fun onDismissOrCancelSignUpBottomSheet() {
         updateState { it.copy(showSignUpBottomSheet = false) }
+    }
+
+    override fun onClickGoToWebsite() {
+        updateState {
+            it.copy(
+                showSignUpBottomSheet = false,
+                wantToSignup = true
+            )
+        }
+    }
+
+    override fun onExitSignupBrowser() {
+        updateState { it.copy(wantToSignup = false) }
     }
 
     private fun validateInputWithDelay(

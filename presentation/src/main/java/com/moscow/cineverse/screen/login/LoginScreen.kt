@@ -10,25 +10,27 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.design_system.R
@@ -36,6 +38,7 @@ import com.moscow.cineverse.designSystem.component.AppTextField
 import com.moscow.cineverse.designSystem.component.MessageInfoBox
 import com.moscow.cineverse.designSystem.component.MovieButton
 import com.moscow.cineverse.designSystem.component.bottomsheet.CineVerseBottomSheet
+import com.moscow.cineverse.designSystem.component.login.SignupBrowser
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.navigation.LocalNavController
 import com.moscow.cineverse.navigation.routes.ExploreRoute
@@ -87,6 +90,7 @@ private fun LoginScreenContent(
     Column(
         modifier = modifier
             .fillMaxSize()
+            .verticalScroll(rememberScrollState())
             .background(color = Theme.colors.background.screen)
     ) {
         Image(
@@ -192,10 +196,18 @@ private fun LoginScreenContent(
             SignUpBottomSheet(interactionListener)
         }
     }
+    if (state.wantToSignup) {
+        SignupBrowser(
+            onExitWebView = {
+                interactionListener.onDismissOrCancelSignUpBottomSheet()
+                interactionListener.onExitSignupBrowser()
+            }
+        )
+    }
 }
 
 @Composable
-fun SignUpBottomSheet(interactionListener: LoginInteractionListener){
+fun SignUpBottomSheet(interactionListener: LoginInteractionListener) {
     CineVerseBottomSheet(
         onClose = interactionListener::onDismissOrCancelSignUpBottomSheet,
         expanded = false,
@@ -210,7 +222,7 @@ fun SignUpBottomSheet(interactionListener: LoginInteractionListener){
             firstButtonText = stringResource(com.moscow.cinverse.presentation.R.string.cancel),
             onClickFirstButton = interactionListener::onDismissOrCancelSignUpBottomSheet,
             secondButtonText = stringResource(com.moscow.cinverse.presentation.R.string.go_to_website),
-            onClickSecondButton = {}
+            onClickSecondButton = interactionListener::onClickGoToWebsite
         )
     }
 }

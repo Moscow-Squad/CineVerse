@@ -1,16 +1,42 @@
+# Gradle
+.gradle/
+*.gradle
+build/
+
+# IntelliJ & Android Studio
 *.iml
-.gradle
-/.idea/caches
-/.idea/libraries
-/.idea/modules.xml
-/.idea/workspace.xml
-/.idea/navEditor.xml
-/.idea/assetWizardSettings.xml
-.DS_Store
-/build
-/captures
-.externalNativeBuild
-.cxx
-/.idea/
+.idea/
+.idea/*
+*.ipr
+*.swp
+*~
+.navigation/
+out/
+*/out/
+*/build/
+*/local.properties
+*/*/build/
+*/*/production/
+
+# Local Configuration
 local.properties
-/local.properties
+keys.properties
+
+# Google Services
+app/google-services.json
+
+# Native Build Artifacts
+.externalNativeBuild/
+.cxx/
+captures/
+
+# macOS
+.DS_Store
+
+# IDE Cache
+.idea/caches/
+.idea/libraries/
+.idea/modules.xml
+.idea/workspace.xml
+.idea/navEditor.xml
+.idea/assetWizardSettings.xml
