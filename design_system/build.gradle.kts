@@ -60,4 +60,6 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
     implementation(libs.readmore.material3)
 
+
+    implementation(libs.accompanist.webview)
 }
