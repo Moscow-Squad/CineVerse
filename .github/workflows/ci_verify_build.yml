@@ -2,7 +2,7 @@ name: CI - Verify build
 
 on:
   pull_request:
-    branches: [develop]
+    branches: [main, development]
   workflow_dispatch:
 
 concurrency:
@@ -27,6 +27,7 @@ jobs:
         with:
           java-version: 17
           distribution: temurin
+          cache: gradle
 
       - name: Cache Gradle
         uses: actions/cache@v4
@@ -39,17 +40,33 @@ jobs:
             gradle-cache-${{ runner.os }}-
             gradle-cache-
 
-      - name: Decode Firebase Config
+      - name: Prepare google-services.json
+        shell: bash
         run: |
-          echo "${{ secrets.GOOGLE_SERVICES_JSON }}" | base64 --decode > app/google-services.json
-
+          if [ -n "${{ secrets.GOOGLE_SERVICES_JSON_BASE64 }}" ]; then
+            echo "✅  Decoding google-services.json from secret…"
+            echo "${{ secrets.GOOGLE_SERVICES_JSON_BASE64 }}" | base64 -d > app/google-services.json
+            grep -q '"project_info"' app/google-services.json
+          else
+            echo "ℹ️  Secret missing – using stub google-services.json"
+            printf '%s\n' \
+              '{' \
+              '  "project_info": {' \
+              '    "project_number": "000000000000",' \
+              '    "project_id": "stub-project"' \
+              '  }' \
+              '}' > app/google-services.json
+          fi
 
       - name: Create keys.properties
         run: |
-          echo "API_KEY=${{ secrets.BEARER_TOKEN }}" > keys.properties
+          echo "BEARER_TOKEN=${{ secrets.BEARER_TOKEN }}" > keys.properties
 
       - name: Setup Gradlew
         run: chmod +x ./gradlew
 
       - name: Build (assembleDebug)
         run: ./gradlew assembleDebug
+
+      - name: Build without tests
+        run: ./gradlew assemble -x lintVitalRelease -x lint
