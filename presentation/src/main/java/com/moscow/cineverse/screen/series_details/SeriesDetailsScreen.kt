@@ -63,7 +63,6 @@ import com.moscow.cineverse.navigation.routes.ReviewsRoute
 import com.moscow.cineverse.navigation.routes.SeriesDetailsRoute
 import com.moscow.cineverse.navigation.routes.SeriesRecommendationRoute
 import com.moscow.cineverse.navigation.routes.SeriesSeasonsRoute
-import com.moscow.cineverse.screen.movie_details.formatReviewDate
 import com.moscow.cinverse.presentation.R
 import org.koin.androidx.compose.koinViewModel
 
@@ -99,7 +98,11 @@ fun SeriesDetailsScreen(
             }
         }
     }
-    SeriesDetailsContent(uiState = uiState, interactionListener = viewModel)
+    SeriesDetailsContent(
+        uiState = uiState,
+        interactionListener = viewModel,
+        onNavigateBack = {navController.popBackStack()}
+    )
 }
 
 @OptIn(ExperimentalSharedTransitionApi::class)
@@ -107,6 +110,7 @@ fun SeriesDetailsScreen(
 fun SeriesDetailsContent(
     uiState: SeriesDetailsScreenState,
     interactionListener: SeriesDetailsScreenInteractionListener,
+    onNavigateBack: () -> Unit
 ) {
     val detail = uiState.seriesDetail
     val textColor = Theme.colors.shade.secondary
@@ -146,7 +150,7 @@ fun SeriesDetailsContent(
         }
         else {
             Column(modifier = Modifier.background(Theme.colors.background.screen)) {
-                MovieAppBar(backButtonClick = {}, showBackButton = true)
+                MovieAppBar(backButtonClick = onNavigateBack, showBackButton = true)
                 SharedTransitionLayout {
                     AnimatedContent(
                         targetState = isCollapsed,
@@ -243,9 +247,9 @@ fun SeriesDetailsContent(
                                     CastCard(
                                         modifier = Modifier.clickable{interactionListener.onActorClicked(actor.id)},
                                         castMember = actor,
-                                        getOriginalName = { it.name },
+                                        getOriginalName = { it.originalName },
                                         getCharacterName = { it.characterName },
-                                        getProfileImage = { it.profilePath }
+                                        getProfileImage = { it.profileImage }
                                     )
                                 }
                             )
@@ -315,7 +319,7 @@ fun SeriesDetailsContent(
                                 username = "@${review.username}",
                                 reviewText = review.reviewContent,
                                 rating = review.rate.toInt(),
-                                date = formatReviewDate(review.date),
+                                date = review.date,
                                 avatar =  if (review.userImage.isEmpty()) null else rememberAsyncImagePainter(
                                     model = review.userImage
                                 ),

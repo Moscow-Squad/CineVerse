@@ -1,11 +1,12 @@
 package com.moscow.cineverse.screen.movie_details
 
 import com.moscow.cineverse.common_ui_state.MediaItemUiState
+import com.moscow.cineverse.common_ui_state.ReviewUiState
+import com.moscow.cineverse.common_ui_state.StarCastUiState
 import kotlinx.datetime.LocalDate
 
 
 data class MovieScreenState(
-
     val movieDetailsUiState: MovieDetailsUiState? = null,
     val reviewsFlow: List<ReviewUiState>? = null,
     val starCast:List<StarCastUiState>? = null,
@@ -35,28 +36,5 @@ data class MovieScreenState(
         val releaseDate: LocalDate,
         val duration: Int,
         val description: String
-    )
-
-    data class StarCastUiState(
-        val id:Int,
-        val originalName:String,
-        val characterName:String,
-        val profileImage:String
-    )
-
-    data class CrewUiState(
-        val id:Int,
-        val name:String,
-        val job:String
-    )
-
-    data class ReviewUiState(
-        val id: String,
-        val name:String,
-        val username:String,
-        val rate:Int,
-        val reviewContent:String,
-        val date: String,
-        val userImage:String
     )
 }

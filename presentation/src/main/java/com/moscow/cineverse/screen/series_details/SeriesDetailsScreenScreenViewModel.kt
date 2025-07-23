@@ -9,8 +9,8 @@ import com.android.domain.usecase.seriesdetails.GetSeriesDetailUseCase
 import com.android.domain.usecase.seriesdetails.GetSeriesRecommendationsUseCase
 import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.cineverse.designSystem.component.ViewMode
+import com.moscow.cineverse.mapper.toUi
 import com.moscow.cineverse.navigation.routes.SeriesDetailsRoute
-import com.moscow.cineverse.screen.movie_details.toUi
 
 class SeriesDetailsScreenScreenViewModel(
     private val getSeriesDetailUseCase: GetSeriesDetailUseCase,
@@ -36,7 +36,7 @@ class SeriesDetailsScreenScreenViewModel(
         launchWithResult(
             action = { getSeriesDetailUseCase(seriesId) },
             onSuccess = { detail ->
-                updateState { it.copy(seriesDetail = detail.ui(), isLoading = false) }
+                updateState { it.copy(seriesDetail = detail.toUi(), isLoading = false) }
             },
             onError = { error ->
                 updateState { it.copy(errorMessage = error.message.toString(), isLoading = false) }
@@ -51,8 +51,8 @@ class SeriesDetailsScreenScreenViewModel(
             onSuccess = { credits ->
                 updateState {
                     it.copy(
-                        cast = credits.actors.map { it.ui() },
-                        crew = credits.behindTheScene.map { it.ui() },
+                        cast = credits.actors.map { it.toUi() },
+                        crew = credits.behindTheScene.map { it.toUi() },
                         isLoading = false
                     )
                 }
@@ -85,7 +85,7 @@ class SeriesDetailsScreenScreenViewModel(
     }
 
     private fun onGetRecommendationsSuccess(recommendations: List<Series>) {
-        updateState { it.copy(recommendation = recommendations.map { it.ui() }) }
+        updateState { it.copy(recommendation = recommendations.map { it.toUi() }) }
     }
 
     private fun getRecommendationsFailed(error: Throwable) {
