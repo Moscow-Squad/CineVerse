@@ -13,7 +13,7 @@ import org.koin.core.module.dsl.viewModel
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 
-val viewModels = module{
+val viewModelModule = module {
     viewModelOf(::ExploreViewModel)
     viewModelOf(::MovieDetailsViewModel)
     viewModelOf(::SeriesDetailsScreenScreenViewModel)
@@ -22,23 +22,23 @@ val viewModels = module{
     viewModelOf(::RecommendationsMoviesViewModel)
     viewModel { (actorId: Int) ->
         CastDetailsViewModel(
-            getActorBestOfMovies = get(),
-            getActorDetails = get(),
-            getActorGallery = get(),
+            getActorBestMoviesUseCase = get(),
+            getActorDetailsUseCase = get(),
+            getActorGalleryUseCase = get(),
             actorId = actorId,
         )
     }
     viewModel { (actorId: Int, actorName: String) ->
         ShowAllActorMoviesViewModel(
-            getActorBestOfMovies = get(),
+            getActorBestMoviesUseCase = get(),
             genreUseCase = get(),
-            actorId   = actorId,
+            actorId = actorId,
         )
     }
     viewModel { (actorId: Int, actorName: String) ->
         ActorGalleryViewModel(
-            getActorGallery = get(),
-            actorId   = actorId,
+            getActorGalleryUseCase = get(),
+            actorId = actorId,
             actorName = actorName,
         )
     }

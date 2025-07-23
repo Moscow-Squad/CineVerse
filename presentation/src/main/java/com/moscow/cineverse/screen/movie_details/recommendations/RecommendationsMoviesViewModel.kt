@@ -6,15 +6,15 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.android.domain.model.Movie
-import com.android.domain.usecase.GetRecommendationsUseCase
+import com.android.domain.usecase.movie.GetMovieRecommendationsUseCase
 import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.cineverse.designSystem.component.ViewMode
 import com.moscow.cineverse.paging.BasePagingSource
 import kotlinx.coroutines.flow.Flow
 
-class RecommendationsMoviesViewModel(
-    private val getRecommendationsUseCase: GetRecommendationsUseCase
-) : BaseViewModel<RecommendationsMoviesState,
+class RecommendationsMoviesViewModel (
+    private val getMovieRecommendationsUseCase: GetMovieRecommendationsUseCase,
+): BaseViewModel<RecommendationsMoviesState,
         RecommendationMoviesEffect>(RecommendationsMoviesState()),
     RecommendationsMoviesInteractionListener {
 
@@ -23,7 +23,7 @@ class RecommendationsMoviesViewModel(
             config = PagingConfig(pageSize = 20),
             pagingSourceFactory = {
                 BasePagingSource { page ->
-                    getRecommendationsUseCase(id, page)
+                    getMovieRecommendationsUseCase(id, page)
                 }
             }
         ).flow.cachedIn(viewModelScope)

@@ -3,8 +3,8 @@ package com.moscow.cineverse.screen.collections
 import androidx.lifecycle.SavedStateHandle
 import com.android.domain.model.Collection
 import com.android.domain.model.MediaType
-import com.android.domain.usecase.AddMediaItemToCollectionUseCase
-import com.android.domain.usecase.GetUserCollectionsUseCase
+import com.android.domain.usecase.collection.AddMediaItemToCollectionUseCase
+import com.android.domain.usecase.collection.GetUserCollectionsUseCase
 import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.cineverse.navigation.routes.CollectionsBottomSheetRoute
 
@@ -28,7 +28,7 @@ class CollectionsBottomSheetViewModel(
     override fun onCollectionClicked(collectionId: Int) {
         launchWithResult(
             action = {
-                addMediaItemToCollectionUseCase.addMediaItemToCollection(
+                addMediaItemToCollectionUseCase.invoke(
                     mediaItemId = mediaItemId,
                     mediaItemType = mediaItemType,
                     collectionId = collectionId

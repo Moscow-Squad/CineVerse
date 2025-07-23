@@ -6,14 +6,14 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.android.domain.model.Review
-import com.android.domain.usecase.GetReviewsPageUseCase
+import com.android.domain.usecase.review.GetReviewsUseCase
 import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.cineverse.paging.BasePagingSource
 import kotlinx.coroutines.flow.Flow
 
 class ReviewsViewModel(
-    private val getReviewsPageUseCase: GetReviewsPageUseCase
-) : BaseViewModel<ReviewsScreenState, ReviewsEffect>(ReviewsScreenState()),
+    private val getReviewsUseCase: GetReviewsUseCase
+    ) : BaseViewModel<ReviewsScreenState, ReviewsEffect>(ReviewsScreenState()),
     ReviewsInteractionListener {
 
     fun getPagedReviews(id: Int, isMovie: Boolean): Flow<PagingData<Review>> {
@@ -21,7 +21,7 @@ class ReviewsViewModel(
             config = PagingConfig(pageSize = 20),
             pagingSourceFactory = {
                 BasePagingSource { page ->
-                    getReviewsPageUseCase(id, page, isMovie)
+                    getReviewsUseCase(id, page, isMovie)
                 }
             }
         ).flow.cachedIn(viewModelScope)

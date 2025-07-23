@@ -3,17 +3,17 @@ package com.moscow.cineverse.screen.castDetails
 import androidx.lifecycle.viewModelScope
 import com.android.domain.model.ActorDetails
 import com.android.domain.model.Movie
-import com.android.domain.usecase.actordetails.GetActorBestOfMovies
-import com.android.domain.usecase.actordetails.GetActorDetails
-import com.android.domain.usecase.actordetails.GetActorGallery
+import com.android.domain.usecase.actor.GetActorBestMoviesUseCase
+import com.android.domain.usecase.actor.GetActorDetailsUseCase
+import com.android.domain.usecase.actor.GetActorGalleryUseCase
 import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.cineverse.designSystem.component.cast_details.SocialMediaLinks
 import kotlinx.coroutines.launch
 
 class CastDetailsViewModel(
-    private val getActorDetails: GetActorDetails,
-    private val getActorGallery: GetActorGallery,
-    private val getActorBestOfMovies: GetActorBestOfMovies,
+    private val getActorDetailsUseCase: GetActorDetailsUseCase,
+    private val getActorGalleryUseCase: GetActorGalleryUseCase,
+    private val getActorBestMoviesUseCase: GetActorBestMoviesUseCase,
     private val actorId: Int,
 ) : BaseViewModel<CastDetailsUiState, CastDetailsEffect>(CastDetailsUiState()),
     CastDetailsInteractionListener {
@@ -25,7 +25,7 @@ class CastDetailsViewModel(
     private fun loadActorDetails() {
         launchWithResult(
             action = {
-                val actorDetails = getActorDetails.getActorDetails(actorId)
+                val actorDetails = getActorDetailsUseCase.invoke(actorId)
                 actorDetails
             },
             onSuccess = ::onActorDetailsSuccess,
@@ -62,12 +62,13 @@ class CastDetailsViewModel(
 
         viewModelScope.launch {
             try {
-                val images = getActorGallery.getActorGallery(actorId)
-                updateState { currentState ->
-                    currentState.copy(
-                        images = images,
-                        isLoadingImages = false
-                    )
+                getActorGalleryUseCase.invoke(actorId).forEach { image ->
+                    updateState { currentState ->
+                        currentState.copy(
+                            images = currentState.images + image,
+                            isLoadingImages = false
+                        )
+                    }
                 }
             } catch (e: Exception) {
                 updateState { currentState ->
@@ -87,7 +88,7 @@ class CastDetailsViewModel(
 
         viewModelScope.launch {
             try {
-                val movies = getActorBestOfMovies.getActorBestOfMovies(actorId)
+                val movies = getActorBestMoviesUseCase.invoke(actorId)
                 updateState { currentState ->
                     currentState.copy(
                         movies = movies,
