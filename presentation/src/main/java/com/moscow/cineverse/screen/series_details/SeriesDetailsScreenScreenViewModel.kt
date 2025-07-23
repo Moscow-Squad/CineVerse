@@ -6,7 +6,6 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.android.domain.model.Movie
 import com.android.domain.model.Series
 import com.android.domain.usecase.review.GetReviewsUseCase
 import com.android.domain.usecase.series.GetSeriesCreditsDetailsUseCase

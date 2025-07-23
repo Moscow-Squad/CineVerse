@@ -34,9 +34,7 @@ import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
-import com.android.domain.model.Movie
 import com.android.domain.model.Series
-import com.moscow.cineverse.mapper.toMediaItemUi
 import com.moscow.cineverse.mapper.toUi
 
 @Composable
