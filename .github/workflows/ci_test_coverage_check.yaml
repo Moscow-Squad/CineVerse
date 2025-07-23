@@ -28,7 +28,6 @@ jobs:
           key: gradle-cache-${{ hashFiles('**/gradle-wrapper.properties', '**/*.gradle*', '**/settings.gradle*', '**/libs.versions.toml') }}
           restore-keys: |
             gradle-cache-${{ runner.os }}-
-            gradle-cache-
 
       - name: Make gradlew executable
         run: chmod +x ./gradlew
@@ -37,11 +36,11 @@ jobs:
         shell: bash
         run: |
           if [ -n "${{ secrets.GOOGLE_SERVICES_JSON_BASE64 }}" ]; then
-            echo "✅  Decoding google-services.json from secret…"
+            echo "✅ Decoding google-services.json from secret…"
             echo "${{ secrets.GOOGLE_SERVICES_JSON_BASE64 }}" | base64 -d > app/google-services.json
             grep -q '"project_info"' app/google-services.json
           else
-            echo "ℹ️  Secret missing – using stub google-services.json"
+            echo "ℹ️ Secret missing – using stub google-services.json"
             printf '%s\n' \
               '{' \
               '  "project_info": {' \
@@ -52,8 +51,7 @@ jobs:
           fi
 
       - name: Create keys.properties
-        run: |
-          echo "API_KEY=${{ secrets.BEARER_TOKEN }}" > keys.properties
+        run: echo "API_KEY=${{ secrets.BEARER_TOKEN }}" > keys.properties
 
       - name: Run Unit Tests & Generate Coverage
         run: ./gradlew test koverXmlReport koverHtmlReport koverVerify
@@ -63,13 +61,15 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: kover-coverage-report
-          path: build/reports/kover/report.xml
+          path: build/reports/kover/
+          if-no-files-found: error
 
   analyze-pr:
     name: Comment PR with Coverage Summary
     needs: test-coverage
     if: github.event_name == 'pull_request' && always()
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -79,6 +79,9 @@ jobs:
         with:
           name: kover-coverage-report
           path: build/reports/kover/
+
+      - name: Inspect Downloaded Coverage Report
+        run: ls -R build/reports/kover/
 
       - name: Comment PR with Coverage Stats
         uses: mi-kas/kover-report@v1
