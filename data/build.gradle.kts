@@ -1,34 +1,32 @@
+import java.io.FileInputStream
 import java.util.Properties
 
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.ksp)
-    alias(libs.plugins.serialization)
+    alias(libs.plugins.kotlin.serialization)
 }
+
+val localProperties = Properties()
+localProperties.load(FileInputStream(rootProject.file("keys.properties")))
 
 android {
     namespace = "com.moscow.cineverse.data"
-    compileSdk = 36
+    compileSdk = libs.versions.compileSdk.get().toInt()
 
+    defaultConfig {
+        minSdk = libs.versions.minSdk.get().toInt()
+
+        testInstrumentationRunner = libs.versions.testRunner.get()
+        consumerProguardFiles("consumer-rules.pro")
+
+        val bearerToken = localProperties["BEARER_TOKEN"].toString()
+        buildConfigField("String", "BEARER_TOKEN", "\"${bearerToken.trim()}\"")
+    }
     buildFeatures {
         buildConfig = true
     }
-
-    defaultConfig {
-        minSdk = 26
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFiles("consumer-rules.pro")
-
-        val keystoreFile = project.rootProject.file("local.properties")
-        val properties = Properties()
-        properties.load(keystoreFile.inputStream())
-
-        buildConfigField("String", "TMDB_API_KEY", "\"${properties.getProperty("TMDB_API_KEY")}\"")
-
-    }
-
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -38,19 +36,21 @@ android {
             )
         }
     }
+
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
-    }
-    kotlinOptions {
-        jvmTarget = "11"
+        val javaVer = JavaVersion.toVersion(libs.versions.javaVersion.get())
+        sourceCompatibility = javaVer
+        targetCompatibility = javaVer
     }
 
+    kotlinOptions {
+        jvmTarget = libs.versions.javaVersion.get()
+    }
 
 }
 
 dependencies {
-    implementation(project(":domain"))
+    implementation(projects.domain)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
@@ -60,12 +60,20 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
-    /** Koin */
+    // Koin
     implementation(platform(libs.koin.bom))
     implementation(libs.bundles.koin)
 
-    /** Ktor */
-    api(libs.bundles.ktor)
+    // Retrofit
+    implementation(libs.retrofit)
+
+    // OkHttp
+    implementation(libs.okhttp)
+    implementation(libs.logging.interceptor)
+
+    // Kotlinx Serialization
+    implementation(libs.kotlinx.serialization.json)
+    implementation(libs.retrofit2.kotlinx.serialization.converter)
 
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)

@@ -12,7 +12,7 @@ import com.moscow.cineverse.screen.model.toUi
 class CollectionsBottomSheetViewModel(
     private val getUserCollections: GetUserCollectionsUseCase,
     private val addMediaItemToCollectionUseCase: AddMediaItemToCollectionUseCase,
-    private val savedStateHandle: SavedStateHandle
+    savedStateHandle: SavedStateHandle
 ) : BaseViewModel<CollectionsBottomSheetUiState, CollectionsBottomSheetEvents>(
     CollectionsBottomSheetUiState()
 ), CollectionsBottomSheetInteractionListener {
@@ -22,17 +22,13 @@ class CollectionsBottomSheetViewModel(
         savedStateHandle.get<String>(CollectionsBottomSheetRoute.MEDIA_TYPE) ?: "movie"
     )
 
-    init {
-//        loadUserCollections()
-    }
-
     override fun onAddNewCollectionClick() {
         TODO("should open new bottom sheet to login or to create new collection")
     }
 
     override fun onCollectionClicked(collectionId: Int) {
-        launchWithFlow(
-            flowAction = {
+        launchWithResult(
+            action = {
                 addMediaItemToCollectionUseCase.addMediaItemToCollection(
                     mediaItemId = mediaItemId,
                     mediaItemType = mediaItemType,
@@ -56,8 +52,8 @@ class CollectionsBottomSheetViewModel(
         )
     }
 
-    private fun onAddMediaItemToCollectionSuccess(message: String) {
-        sendEvent(CollectionsBottomSheetEvents.OnMovieAddedSuccessfully("Movie added successfully"))
+    private fun onAddMediaItemToCollectionSuccess(message: String = "Movie added successfully") {
+        sendEvent(CollectionsBottomSheetEvents.OnMovieAddedSuccessfully(message))
     }
 
     private fun onAddMediaItemToCollectionFailed(e: Throwable) {
@@ -91,8 +87,8 @@ class CollectionsBottomSheetViewModel(
     }
 
     private fun loadUserCollections() {
-        launchWithFlow(
-            flowAction = { getUserCollections.getUseCollections() },
+        launchWithResult(
+            action = { getUserCollections(page = 1) },
             onSuccess = ::onLoadUserCollectionsSuccess,
             onError = ::onLoadUserCollectionsFailed,
             onStart = ::onLoading,
@@ -101,7 +97,7 @@ class CollectionsBottomSheetViewModel(
     }
 
     private fun onLoadUserCollectionsSuccess(collections: List<Collection>) {
-        updateState { it.copy(collections = collections.take(5).map { it.toUi() }) }
+        updateState { it.copy(collections = collections.take(5).map { collection -> collection.toUi() }) }
     }
 
     private fun onLoadUserCollectionsFailed(throwable: Throwable) {

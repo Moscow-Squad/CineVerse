@@ -6,10 +6,10 @@ import com.android.domain.model.Series
 import kotlinx.coroutines.flow.Flow
 
 interface ExploreRepository {
-    suspend fun getSeriesGenres(): Flow<List<Genre>>
-    suspend fun getMoviesGenres(): Flow<List<Genre>>
-    suspend fun geMovies(): Flow<List<Movie>>
-    suspend fun getSeries(): Flow<List<Series>>
-    suspend fun getMoviesByGenreId(genreId: Int): Flow<List<Movie>>
-    suspend fun getSeriesByGenreId(genreId: Int): Flow<List<Series>>
+    suspend fun getSeriesGenres():List<Genre>
+    suspend fun getMoviesGenres(): List<Genre>
+    suspend fun getMovies(page:Int): List<Movie>
+    suspend fun getSeries(page:Int): List<Series>
+    suspend fun getMoviesByGenreId(genreId: Int,page:Int): List<Movie>
+    suspend fun getSeriesByGenreId(genreId: Int,page:Int): List<Series>
 }

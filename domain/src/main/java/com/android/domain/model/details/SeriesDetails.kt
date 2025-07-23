@@ -12,7 +12,6 @@ data class SeriesDetail(
     val genres: List<Genre>,
     val rating: Double,
     val voteCount: Int,
-    val runtime: String?,
     val releaseDate: String?,
     val type: String,
     val cast: List<CastMember>,
