@@ -43,7 +43,9 @@ jobs:
       - name: Create keys.properties
         run: |
           echo "BEARER_TOKEN=${{ secrets.BEARER_TOKEN }}" > keys.properties
-
+      - name: Create keys.properties
+        run: |
+            echo "TMDB_API_KEY=\"${{ secrets.TMDB_API_KEY }}\"" > data/keys.properties
       - name: Setup Gradlew
         run: chmod +x ./gradlew
 
