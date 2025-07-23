@@ -1,24 +1,23 @@
-package com.example.image_viewer.component.classfier
+package com.example.image_viewer.classfier
 
 import android.content.Context
 import android.graphics.Bitmap
+import androidx.core.graphics.scale
 import org.tensorflow.lite.Interpreter
 import java.io.FileInputStream
-import java.io.IOException
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import java.nio.MappedByteBuffer
 import java.nio.channels.FileChannel
-import androidx.core.graphics.scale
 
-class NSFWClassifier(context: Context) {
-    private val interpreter: Interpreter
+internal class HybridImageClassifier(context: Context) {
+
+    private var interpreter: Interpreter? = null
 
     init {
         interpreter = Interpreter(loadModelFile(context))
     }
 
-    @Throws(IOException::class)
     private fun loadModelFile(context: Context): MappedByteBuffer {
         val fileDescriptor = context.assets.openFd(MODEL_NAME)
         val inputStream = FileInputStream(fileDescriptor.fileDescriptor)
@@ -31,7 +30,7 @@ class NSFWClassifier(context: Context) {
     fun classifyImage(bitmap: Bitmap): Boolean {
         val input = preprocess(bitmap)
         val output = Array(1) { FloatArray(OUTPUT_CLASSES) }
-        interpreter.run(input, output)
+        interpreter?.run(input, output)
         return isNSFW(output[0])
     }
 
@@ -77,6 +76,6 @@ class NSFWClassifier(context: Context) {
         private const val INPUT_SIZE = 224
         private const val PIXEL_SIZE = 3
         private const val OUTPUT_CLASSES = 5
-        private const val NSFW_THRESHOLD = 0.5f
+        private const val NSFW_THRESHOLD = 0.2f
     }
 }
