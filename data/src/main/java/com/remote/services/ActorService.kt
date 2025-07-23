@@ -8,24 +8,24 @@ import com.remote.dto.details.*
 import com.utils.ACTOR
 import retrofit2.Response
 
-interface ActorDetailsService {
+interface ActorService {
     @GET("$ACTOR{actorId}")
     suspend fun getActorDetails(
-        @Path("actorId") actorId: Int
+        @Path("actorId") id: Int
     ): Response<ActorDetailsDto>
 
     @GET("$ACTOR{actorId}/images")
-    suspend fun getGallery(
-        @Path("actorId") actorId: Int
+    suspend fun getActorGallery(
+        @Path("actorId") id: Int
     ): Response<ActorImagesDto>
 
     @GET("$ACTOR{actorId}/movie_credits")
     suspend fun getActorBestMovies(
-        @Path("actorId") actorId: Int
+        @Path("actorId") id: Int
     ): Response<ActorBestOfMoviesDto>
 
     @GET("$ACTOR{actorId}/external_ids")
-    suspend fun getSocialMedia(
-        @Path("actorId") actorId: Int
+    suspend fun getActorSocialMedia(
+        @Path("actorId") id: Int
     ): Response<ActorSocialMediaDto>
 }
