@@ -11,8 +11,6 @@ import com.local.SearchLocalDataSourceImpl
 import com.local.database.CineVerseDataBase
 import com.data_source.local.DetailsLocalDataSource
 import com.data_source.local.SearchLocalDataSource
-import com.repository.details.DetailsLocalDataSource
-import com.repository.explore.search.SearchLocalDateSource
 import org.koin.android.ext.koin.androidApplication
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.singleOf

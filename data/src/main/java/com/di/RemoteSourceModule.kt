@@ -19,15 +19,6 @@ import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.core.module.Module
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.bind
-import com.remote.source.ActorDetailsRemoteDataSource
-import com.remote.source.CollectionsDataSource
-import com.remote.source.DetailsRemoteDataSource
-import com.remote.source.ExploreRemoteDataSource
-import com.remote.source.RecommendationsMoviesRemoteDataSource
-import com.remote.source.ReviewsRemoteDataSource
-import com.remote.source.LoginRemoteDataSource
-import com.remote.source.SearchRemoteDataSource
-import io.ktor.client.engine.okhttp.OkHttp
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import java.util.concurrent.TimeUnit
@@ -86,5 +77,4 @@ val dataSourceModule = module {
     singleOf(::CollectionsDataSourceImpl) bind CollectionsDataSource::class
     singleOf(::ReviewsRemoteDataSourceImpl) bind ReviewsRemoteDataSource::class
     singleOf(::RecommendationsRemoteDataSourceImpl) bind RecommendationsRemoteDataSource::class
-    single { LoginRemoteDataSource(get()) }
 }

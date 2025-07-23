@@ -2,6 +2,7 @@ package com.example.image_viewer.component
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -46,10 +47,14 @@ fun SafeImageViewer(
     var blurImage by remember { mutableStateOf(true) }
 
     Box(modifier = modifier) {
+        LaunchedEffect(Unit) {
+
+        }
         AsyncImage(
             model = model,
             modifier = modifier.cloudy(radius = blurRadius, enabled = blurImage),
             onSuccess = { success ->
+
                 val bitmapImage = success.result.image.toBitmap()
                 blurImage = classifier.classifyImage(bitmapImage)
                 if (onSuccess != null)

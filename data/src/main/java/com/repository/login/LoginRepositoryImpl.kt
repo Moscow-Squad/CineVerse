@@ -12,30 +12,30 @@ class LoginRepositoryImpl(
 ): LoginRepository {
 
     override suspend fun loginWithUsernameAndPassword(loginData: LoginData): Boolean {
-        val requestToken = loginRemoteDataSource.createRequestToken()
-        val successLogin = loginRemoteDataSource.validateLoginWithRequestToken(requestToken,loginData)
-        if (!successLogin){
-            return false
-        }
-        val sessionId = loginRemoteDataSource.createAuthenticatedUserSession(requestToken)
-        val userId = loginRemoteDataSource.getUserId(sessionId)
-        preferenceRepository.saveUser(UserType.AuthenticatedUser(
-            id = userId.toString(),
-            username = loginData.username,
-            sessionId = sessionId
-        ))
+//        val requestToken = loginRemoteDataSource.createRequestToken()
+//        val successLogin = loginRemoteDataSource.validateLoginWithRequestToken(requestToken,loginData)
+//        if (!successLogin){
+//            return false
+//        }
+//        val sessionId = loginRemoteDataSource.createAuthenticatedUserSession(requestToken)
+//        val userId = loginRemoteDataSource.getUserId(sessionId)
+//        preferenceRepository.saveUser(UserType.AuthenticatedUser(
+//            id = userId.toString(),
+//            username = loginData.username,
+//            sessionId = sessionId
+//        ))
         return true
     }
 
     override suspend fun loginAsGuest(): Boolean {
-        val guestSessionInfo = loginRemoteDataSource.createGuestUserSession()
-        if (guestSessionInfo.first.isEmpty()){
-            return false
-        }
-        preferenceRepository.saveUser(UserType.GuestUser(
-            sessionId = guestSessionInfo.first,
-            expiredAt = guestSessionInfo.second
-        ))
+//        val guestSessionInfo = loginRemoteDataSource.createGuestUserSession()
+//        if (guestSessionInfo.first.isEmpty()){
+//            return false
+//        }
+//        preferenceRepository.saveUser(UserType.GuestUser(
+//            sessionId = guestSessionInfo.first,
+//            expiredAt = guestSessionInfo.second
+//        ))
         return true
     }
 }
