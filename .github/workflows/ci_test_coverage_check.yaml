@@ -2,7 +2,7 @@ name: CI – Test Coverage Check
 
 on:
   pull_request:
-    branches: [main, develop]
+    branches: [ main, develop ]
 
 jobs:
   test-coverage:
@@ -19,12 +19,14 @@ jobs:
           distribution: temurin
           cache: gradle
 
-      - name: Make gradlew executable
-        run: chmod +x ./gradlew
+      - name: Run Coverage
+        run: |
+            chmod +x gradlew
+            ./gradlew testCoverage
 
       - name: Generate keys.properties
         run: |
           echo "BEARER_TOKEN=${{ secrets.BEARER_TOKEN }}" > keys.properties
 
-      - name: Run unit tests + Kover
-        run: ./gradlew test koverVerify koverXmlReport koverHtmlReport -PskipGoogleServices=true
+#      - name: Run unit tests + Kover
+#        run: ./gradlew test koverVerify koverXmlReport koverHtmlReport -PskipGoogleServices=true
