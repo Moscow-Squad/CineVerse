@@ -7,23 +7,25 @@ import com.android.domain.model.CreditsDetails
 import com.android.domain.model.Movie
 import com.android.domain.model.Review
 import com.android.domain.model.details.MovieDetail
-import com.android.domain.usecase.GetCreditsUseCase
-import com.android.domain.usecase.GetMovieDetailUseCase
-import com.android.domain.usecase.GetRecommendationsUseCase
-import com.android.domain.usecase.GetReviewsPageUseCase
-import com.android.domain.usecase.RateMovieUseCase
+import com.android.domain.usecase.movie.GetMovieCreditsUseCase
+import com.android.domain.usecase.movie.GetMovieDetailsUseCase
+import com.android.domain.usecase.movie.GetMovieRecommendationsUseCase
+import com.android.domain.usecase.review.GetReviewsUseCase
+import com.android.domain.usecase.movie.RateMovieUseCase
 import com.moscow.cineverse.base.BaseViewModel
+import com.moscow.cineverse.mapper.toMediaItemUi
 import com.moscow.cineverse.navigation.routes.MovieDetailsRoute
+import com.moscow.cineverse.mapper.toUi
 
 
 class MovieDetailsViewModel(
-    private val getMovieDetailsUseCase: GetMovieDetailUseCase,
-    private val getReviewsPageUseCase: GetReviewsPageUseCase,
-    private val getCreditsUseCase: GetCreditsUseCase,
-    private val getRecommendationsUseCase: GetRecommendationsUseCase,
+    private val getMovieDetailsUseCase: GetMovieDetailsUseCase,
+    private val getReviewsUseCase: GetReviewsUseCase,
+    private val getMovieCreditsUseCase: GetMovieCreditsUseCase,
+    private val getMovieRecommendationsUseCase: GetMovieRecommendationsUseCase,
     private val rateMovieUseCase: RateMovieUseCase,
     saveStateHandle: SavedStateHandle,
-) : BaseViewModel<MovieScreenState, MovieDetailsScreenEvents>(MovieScreenState()),
+) : BaseViewModel<MovieScreenState, MovieDetailsScreenEffect>(MovieScreenState()),
     MovieDetailsInteractionListener {
 
     private val movieId = saveStateHandle.get<Int>(MovieDetailsRoute.MOVIE_ID) ?: 0
@@ -47,13 +49,13 @@ class MovieDetailsViewModel(
     }
 
     private fun onGetMovieDetailsSuccess(movieDetails: MovieDetail) {
-        updateState { it.copy(movieDetailsUi = movieDetails.toUi()) }
+        updateState { it.copy(movieDetailsUiState = movieDetails.toUi()) }
         Log.d("TAG", "onGetMovieDetailsSuccess: ${uiState}")
     }
 
     fun getReviews(movieID: Int) {
         launchWithResult(
-            action = { getReviewsPageUseCase(movieID, 1, true) },
+            action = { getReviewsUseCase(movieID, 1, true) },
             onSuccess = ::onGetReviewSuccess,
             onStart = ::onLoading,
             onError = ::getReviewFailed,
@@ -68,7 +70,7 @@ class MovieDetailsViewModel(
     }
         fun getCredits(movieID: Int) {
             launchWithResult(
-                action = { getCreditsUseCase(movieID) },
+                action = { getMovieCreditsUseCase(movieID) },
                 onSuccess = ::onGetCreditsSuccess,
                 onError = ::getCreditsFailed,
             )
@@ -91,7 +93,7 @@ class MovieDetailsViewModel(
 
         fun getRecommendations(movieID: Int) {
             launchWithResult(
-                action = { getRecommendationsUseCase(movieID, 1) },
+                action = { getMovieRecommendationsUseCase(movieID, 1) },
                 onSuccess = ::onGetRecommendationsSuccess,
                 onError = ::getRecommendationsFailed,
             )
@@ -131,7 +133,7 @@ class MovieDetailsViewModel(
         }
 
         override fun onBackPressed() {
-            sendEvent(MovieDetailsScreenEvents.NavigateBack)
+            sendEvent(MovieDetailsScreenEffect.NavigateBack)
         }
 
     override fun onShowMoreCast() {
@@ -139,19 +141,19 @@ class MovieDetailsViewModel(
     }
 
     override fun onShowMoreRecommendations(movieId: Int, movieTitle: String) {
-            sendEvent(MovieDetailsScreenEvents.NavigateToFullMovieList(movieId, movieTitle))
+        sendEvent(MovieDetailsScreenEffect.NavigateToFullMovieList(movieId, movieTitle))
         }
 
         override fun onShowMoreReviews(movieId: Int) {
-            sendEvent(MovieDetailsScreenEvents.NavigateToFullReviews(movieId))
+            sendEvent(MovieDetailsScreenEffect.NavigateToFullReviews(movieId))
         }
 
     override fun onAddToCollection(mediaItemId: Int) {
-        sendEvent(MovieDetailsScreenEvents.AddToCollection(mediaItemId))
+        sendEvent(MovieDetailsScreenEffect.AddToCollection(mediaItemId))
 
     }
     override fun onActorClicked(actorId: Int) {
-        sendEvent(MovieDetailsScreenEvents.NavigateCastDetails(actorId))
+        sendEvent(MovieDetailsScreenEffect.NavigateCastDetails(actorId))
     }
 
     override fun showRatingBottomSheet() {
@@ -164,7 +166,7 @@ class MovieDetailsViewModel(
 
     override fun onRatingSubmit(rating: Int, movieId: Int) {
         launchWithResult(
-            action = { rateMovieUseCase.rateMovie(rating.toFloat(), movieId) },
+            action = { rateMovieUseCase.invoke(rating.toFloat(), movieId) },
             onSuccess = {
                 updateState { it.copy(
                     starsRating = rating,
@@ -183,7 +185,7 @@ class MovieDetailsViewModel(
                         isLoading = false
                     )
                 }
-            },
+            }
         )
     }
 }

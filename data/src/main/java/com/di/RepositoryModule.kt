@@ -1,29 +1,26 @@
 package com.di
 
-import com.android.domain.repository.ActorDetailsRepository
+import com.android.domain.repository.ActorRepository
 import com.android.domain.repository.CollectionsRepository
-import com.android.domain.repository.DetailsRepository
-import com.android.domain.repository.ExploreRepository
-import com.android.domain.repository.RecommendationsMoviesRepository
-import com.android.domain.repository.ReviewsRepository
+import com.android.domain.repository.GenreRepository
+import com.android.domain.repository.MovieRepository
 import com.android.domain.repository.SearchRepository
-import com.repository.ActorDetailsRepositoryImpl
+import com.android.domain.repository.SeriesRepository
+import com.repository.ActorRepositoryImpl
 import com.repository.CollectionsRepositoryImpl
-import com.repository.DetailsRepositoryImpl
-import com.repository.ExploreRepositoryImpl
+import com.repository.GenreRepositoryImpl
+import com.repository.MovieRepositoryImpl
 import com.repository.SearchRepositoryImpl
-import com.repository.RecommendationRepositoryImpl
-import com.repository.ReviewsRepositoryImpl
+import com.repository.SeriesRepositoryImpl
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.bind
 import org.koin.dsl.module
 
 val repositoryModule = module {
-    singleOf(::ExploreRepositoryImpl) bind ExploreRepository::class
+    singleOf(::MovieRepositoryImpl) bind MovieRepository::class
     singleOf(::SearchRepositoryImpl) bind SearchRepository::class
-    singleOf(::DetailsRepositoryImpl) bind DetailsRepository::class
-    singleOf(::ReviewsRepositoryImpl) bind ReviewsRepository::class
-    singleOf(::RecommendationRepositoryImpl) bind RecommendationsMoviesRepository::class
-    singleOf(::ActorDetailsRepositoryImpl) bind ActorDetailsRepository::class
+    singleOf(::SeriesRepositoryImpl) bind SeriesRepository::class
+    singleOf(::GenreRepositoryImpl) bind GenreRepository::class
+    singleOf(::ActorRepositoryImpl) bind ActorRepository::class
     singleOf(::CollectionsRepositoryImpl) bind CollectionsRepository::class
 }

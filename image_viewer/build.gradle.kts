@@ -1,7 +1,7 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.kotlin.compose) // if needed
+    alias(libs.plugins.kotlin.compose)
 
 }
 
@@ -51,6 +51,7 @@ dependencies {
     api(libs.coil.compose)
     implementation(libs.cloudy)
 
+    implementation(libs.tensorflow.lite.vision)
     implementation(libs.tensorflow.lite)
     implementation(libs.tensorflow.lite.support)
 

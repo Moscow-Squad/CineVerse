@@ -2,13 +2,13 @@ package com.moscow.cineverse.screen.explore
 
 import com.moscow.cineverse.designSystem.component.ViewMode
 import com.moscow.cineverse.designSystem.component.tabs.ExploreTabsPages
-import com.moscow.cineverse.screen.model.MediaItemUi
+import com.moscow.cineverse.common_ui_state.MediaItemUiState
 
 interface ExploreInteractionListener {
     fun onMovieGenreSelected(genreId: Int)
     fun onSeriesGenreSelected(genreId: Int)
     fun onViewModeChanged(viewMode: ViewMode)
-    fun onMediaItemClicked(mediaItemUi: MediaItemUi)
+    fun onMediaItemClicked(mediaItemUiState: MediaItemUiState)
     fun onActorClick(actorId: Int)
     fun onTabSelected(tab: ExploreTabsPages)
     fun onRefresh()

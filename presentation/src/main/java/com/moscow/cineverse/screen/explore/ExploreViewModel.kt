@@ -6,20 +6,20 @@ import com.android.domain.model.Genre
 import com.android.domain.model.MediaType
 import com.android.domain.model.Movie
 import com.android.domain.model.Series
-import com.android.domain.usecase.CacheSearchQueryUseCase
-import com.android.domain.usecase.ClearSearchHistoryUseCase
-import com.android.domain.usecase.GenreUseCase
-import com.android.domain.usecase.GetLocalSuggestions
-import com.android.domain.usecase.GetMovieByGenreIdUseCase
-import com.android.domain.usecase.GetMoviesUseCase
-import com.android.domain.usecase.GetSeriesByGenreIdUseCase
-import com.android.domain.usecase.GetSeriesUseCase
-import com.android.domain.usecase.SearchUseCase
-import com.android.domain.usecase.SuggestionUseCase
+import com.android.domain.usecase.search.CacheSearchQueryUseCase
+import com.android.domain.usecase.search.ClearSearchHistoryUseCase
+import com.android.domain.usecase.genre.GenreUseCase
+import com.android.domain.usecase.search.GetLocalSuggestionsUseCase
+import com.android.domain.usecase.movie.GetMovieByGenreIdUseCase
+import com.android.domain.usecase.movie.GetPopularMoviesUseCase
+import com.android.domain.usecase.series.GetSeriesByGenreIdUseCase
+import com.android.domain.usecase.series.GetPopularSeriesUseCase
+import com.android.domain.usecase.search.SearchUseCase
+import com.android.domain.usecase.search.SuggestionUseCase
 import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.cineverse.designSystem.component.ViewMode
 import com.moscow.cineverse.designSystem.component.tabs.ExploreTabsPages
-import com.moscow.cineverse.screen.model.MediaItemUi
+import com.moscow.cineverse.common_ui_state.MediaItemUiState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.debounce
@@ -33,15 +33,15 @@ import kotlinx.coroutines.launch
 class ExploreViewModel(
     private val searchUseCase: SearchUseCase,
     private val suggestionUseCase: SuggestionUseCase,
-    private val getMoviesUseCase: GetMoviesUseCase,
-    private val getSeriesUseCase: GetSeriesUseCase,
-    val getLocalSuggestions: GetLocalSuggestions,
+    private val getPopularMoviesUseCase: GetPopularMoviesUseCase,
+    private val getPopularSeriesUseCase: GetPopularSeriesUseCase,
+    val getLocalSuggestionsUseCase: GetLocalSuggestionsUseCase,
     val genreUseCase: GenreUseCase,
     private val getMovieByGenreIdUseCase: GetMovieByGenreIdUseCase,
     private val getSeriesByGenreIdUseCase: GetSeriesByGenreIdUseCase,
     private val cacheSearchQueryUseCase: CacheSearchQueryUseCase,
     private val clearSearchHistoryUseCase: ClearSearchHistoryUseCase,
-) : BaseViewModel<ExploreScreenState, ExploreScreenEvents>(ExploreScreenState()),
+) : BaseViewModel<ExploreScreenState, ExploreScreenEffects>(ExploreScreenState()),
     ExploreInteractionListener {
 
     init {
@@ -203,7 +203,7 @@ class ExploreViewModel(
 
     private fun getHistoryData() {
         launchWithFlow(
-            flowAction = { getLocalSuggestions.localSuggestions() },
+            flowAction = { getLocalSuggestionsUseCase.invoke() },
             onSuccess = ::onGetHistoryDataSuccess,
             onError = ::onGetHistoryDataFailed,
             onStart = ::onLoading,
@@ -360,7 +360,7 @@ class ExploreViewModel(
         updateState {
             it.copy(
                 moviesGenres = listOf(
-                    ExploreScreenState.GenreUi(
+                    ExploreScreenState.GenreUiState(
                         id = 0,
                         name = "All"
                     )
@@ -391,7 +391,7 @@ class ExploreViewModel(
         updateState {
             it.copy(
                 seriesGenres = listOf(
-                    ExploreScreenState.GenreUi(
+                    ExploreScreenState.GenreUiState(
                         id = 0,
                         name = "All"
                     )
@@ -405,7 +405,7 @@ class ExploreViewModel(
 
     override fun getMoviesByGenreId(genreId: Int) {
         launchWithResult(
-            action = { getMovieByGenreIdUseCase.getMovieByGenreId(genreId) },
+            action = { getMovieByGenreIdUseCase.invoke(genreId, 1) },
             onSuccess = ::onGetMovieByGenreIdSuccess,
             onError = ::onGetMovieByGenreIdFailed,
             onStart = ::onLoading,
@@ -429,7 +429,7 @@ class ExploreViewModel(
 
     override fun getSeriesByGenreId(genreId: Int) {
         launchWithResult(
-            action = { getSeriesByGenreIdUseCase.getSeriesByGenreId(genreId) },
+            action = { getSeriesByGenreIdUseCase.invoke(genreId) },
             onSuccess = ::onGetSeriesByGenreIdSuccess,
             onError = ::onGetSeriesByGenreIdFailed,
             onStart = ::onLoading,
@@ -467,15 +467,15 @@ class ExploreViewModel(
         updateState { it.copy(viewMode = viewMode) }
     }
 
-    override fun onMediaItemClicked(mediaItemUi: MediaItemUi) {
-        if (mediaItemUi.mediaType == MediaType.Movie)
-            sendEvent(ExploreScreenEvents.MovieClicked(mediaItemUi.id))
+    override fun onMediaItemClicked(mediaItemUiState: MediaItemUiState) {
+        if (mediaItemUiState.mediaType == MediaType.Movie)
+            sendEvent(ExploreScreenEffects.MovieClicked(mediaItemUiState.id))
         else
-            sendEvent(ExploreScreenEvents.SeriesClicked(mediaItemUi.id))
+            sendEvent(ExploreScreenEffects.SeriesClicked(mediaItemUiState.id))
     }
 
     override fun onActorClick(actorId: Int) {
-        sendEvent(ExploreScreenEvents.ActorClicked(actorId))
+        sendEvent(ExploreScreenEffects.ActorClicked(actorId))
     }
 
     override fun onTabSelected(tab: ExploreTabsPages) {
@@ -504,7 +504,7 @@ class ExploreViewModel(
 
     private fun loadSeries() {
         launchWithResult(
-            action = { getSeriesUseCase() },
+            action = { getPopularSeriesUseCase(1) },
             onSuccess = ::onLoadSeriesSuccess,
             onError = ::onLoadSeriesFailed,
             onStart = ::onLoading,
@@ -529,7 +529,7 @@ class ExploreViewModel(
 
     private fun loadMovies() {
         launchWithResult(
-            action = { getMoviesUseCase() },
+            action = { getPopularMoviesUseCase(1) },
             onSuccess = ::onLoadMoviesSuccess,
             onError = ::onLoadMoviesFailed,
             onStart = ::onLoading,

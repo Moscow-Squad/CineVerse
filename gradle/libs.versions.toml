@@ -40,6 +40,7 @@ material3 = "1.3.2"
 mockk = "1.14.0"
 navigationCompose = "2.9.0"
 cloudy = "0.2.3"
+tensorflowLiteVision = "0.4.0"
 okhttp = "4.12.0"
 pagingCompose = "3.4.0-alpha01"
 pagingRuntime = "3.3.6"
@@ -70,6 +71,7 @@ readMoreVersion = "1.6.3"
 
 serializationKotlin = "2.0.0"
 [libraries]
+tensorflow-lite-vision = { module = "org.tensorflow:tensorflow-lite-task-vision", version.ref = "tensorflowLiteVision" }
 androidx-animation = { module = "androidx.compose.animation:animation", version.ref = "animation" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
