@@ -18,7 +18,7 @@ import androidx.compose.ui.platform.LocalContext
 import coil3.compose.AsyncImage
 import coil3.compose.AsyncImagePainter.State
 import coil3.toBitmap
-import com.example.image_viewer.component.classfier.NSFWClassifier
+import com.example.image_viewer.classfier.HybridImageClassifier
 import com.skydoves.cloudy.cloudy
 
 @Composable
@@ -41,7 +41,7 @@ fun SafeImageViewer(
 ) {
 
     val context = LocalContext.current
-    val classifier = remember { NSFWClassifier(context) }
+    val classifier = remember { HybridImageClassifier(context) }
 
     var blurImage by remember { mutableStateOf(true) }
 
