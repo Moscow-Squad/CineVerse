@@ -75,7 +75,7 @@ fun SeriesDetailsScreen(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     LaunchedEffect(viewModel) {
-        viewModel.uiEvent.collect { event ->
+        viewModel.uiEffect.collect { event ->
             when (event) {
                 is SeriesDetailsScreenEffects.AddToCollection -> {
                     navController.navigate(CollectionsBottomSheetRoute(mediaItemId = event.seriesId))

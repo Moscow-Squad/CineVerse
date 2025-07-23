@@ -1,23 +1,19 @@
-package com.moscow.cineverse.screen.movie_details
+package com.moscow.cineverse.mapper
 
 import com.android.domain.model.CastDetails
 import com.android.domain.model.CrewDetails
-import com.android.domain.model.Genre
-import com.android.domain.model.MediaType
-import com.android.domain.model.Movie
 import com.android.domain.model.Review
 import com.android.domain.model.details.MovieDetail
-import com.moscow.cineverse.screen.explore.ExploreScreenState.GenreUi
-import com.moscow.cineverse.common_ui_state.MediaItemUiState
-import com.moscow.cineverse.screen.movie_details.MovieScreenState.ReviewUi
-import com.moscow.cineverse.screen.movie_details.MovieScreenState.StarCastUi
+import com.moscow.cineverse.screen.movie_details.MovieScreenState
+import com.moscow.cineverse.screen.movie_details.MovieScreenState.ReviewUiState
+import com.moscow.cineverse.screen.movie_details.MovieScreenState.StarCastUiState
 import kotlinx.datetime.LocalDate
 import java.text.SimpleDateFormat
 import java.util.Locale
 
 
-fun MovieDetail.toUi(): MovieScreenState.MovieDetailsUi =
-    MovieScreenState.MovieDetailsUi(
+fun MovieDetail.toUi(): MovieScreenState.MovieDetailsUiState =
+    MovieScreenState.MovieDetailsUiState(
         id = id,
         title = title,
         posterPath = posterPath,
@@ -29,40 +25,33 @@ fun MovieDetail.toUi(): MovieScreenState.MovieDetailsUi =
     )
 
 
-fun Review.toUi(): ReviewUi =
-    ReviewUi(
+fun Review.toUi(): ReviewUiState =
+    ReviewUiState(
         id = id,
         username = username,
         name = author,
         userImage = avatarPath,
         rate = rating.toInt(),
         reviewContent = content,
-        date=createdAt,
+        date = createdAt,
 
-    )
+        )
 
-fun CastDetails.toUi(): StarCastUi =
-    StarCastUi(
+fun CastDetails.toUi(): StarCastUiState =
+    StarCastUiState(
         id = id,
         originalName = originalName,
         characterName = characterName,
         profileImage = profileImg
     )
 
-fun CrewDetails.toUi(): MovieScreenState.CrewUi =
-    MovieScreenState.CrewUi(
+fun CrewDetails.toUi(): MovieScreenState.CrewUiState =
+    MovieScreenState.CrewUiState(
         id = id,
         name = name,
         job = job,
 
-    )
-
-fun Genre.toUi() =
-    GenreUi(
-        id = id,
-        name = name
-    )
-
+        )
 
 fun LocalDate.toFormattedReleasedDate(): String {
     return try {
@@ -86,6 +75,7 @@ fun LocalDate.toFormattedReleasedDate(): String {
         "$this"
     }
 }
+
 fun formatReviewDate(dateString: String): String {
     return try {
         val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
@@ -95,19 +85,6 @@ fun formatReviewDate(dateString: String): String {
     } catch (e: Exception) {
         dateString
     }
-}
-
-fun Movie.toMediaItemUi(): MediaItemUiState {
-    return MediaItemUiState(
-        id = this.id,
-        title = this.name,
-        posterPath = this.posterPath,
-        rating = this.rating,
-        genres = emptyList(),
-        releaseDate = this.releaseDate.toString(),
-        duration = "",
-        mediaType = MediaType.Movie
-    )
 }
 
 fun Int.toHourMinuteFormat(): String {

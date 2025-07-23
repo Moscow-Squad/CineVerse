@@ -6,9 +6,9 @@ import kotlinx.datetime.LocalDate
 
 data class MovieScreenState(
 
-    val movieDetailsUi: MovieDetailsUi? = null,
-    val reviewsFlow: List<ReviewUi>? = null,
-    val starCast:List<StarCastUi>? = null,
+    val movieDetailsUiState: MovieDetailsUiState? = null,
+    val reviewsFlow: List<ReviewUiState>? = null,
+    val starCast:List<StarCastUiState>? = null,
     val characters: List<String> = emptyList(),
     val director:List<String> = emptyList(),
     val produce: List<String> = emptyList(),
@@ -26,7 +26,7 @@ data class MovieScreenState(
 
     ) {
 
-    data class MovieDetailsUi(
+    data class MovieDetailsUiState(
         val id: Int ,
         val title: String ,
         val posterPath: String,
@@ -36,19 +36,21 @@ data class MovieScreenState(
         val duration: Int,
         val description: String
     )
-    data class StarCastUi(
+
+    data class StarCastUiState(
         val id:Int,
         val originalName:String,
         val characterName:String,
         val profileImage:String
     )
-    data class CrewUi(
+
+    data class CrewUiState(
         val id:Int,
         val name:String,
         val job:String
     )
 
-    data class ReviewUi(
+    data class ReviewUiState(
         val id: String,
         val name:String,
         val username:String,
@@ -57,16 +59,4 @@ data class MovieScreenState(
         val date: String,
         val userImage:String
     )
-
-    data class GenreUi(
-        val id: Int,
-        val name: String
-    )
-
-    data class MovieUi(
-        val id:Int,
-        val name:String,
-        val poster:String
-    )
 }
-

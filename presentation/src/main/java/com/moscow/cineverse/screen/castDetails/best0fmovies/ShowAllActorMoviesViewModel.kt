@@ -5,15 +5,16 @@ import com.android.domain.usecase.GenreUseCase
 import com.android.domain.usecase.actordetails.GetActorBestOfMovies
 import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.cineverse.designSystem.component.ViewMode
+import com.moscow.cineverse.mapper.toUi
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flatMapConcat
 
-class ShowAllActorMoviesInteractionViewModel (
-   private val getActorBestOfMovies: GetActorBestOfMovies,
-   actorId: Int,
+class ShowAllActorMoviesViewModel(
+    private val getActorBestOfMovies: GetActorBestOfMovies,
+    actorId: Int,
     private val genreUseCase: GenreUseCase
-): BaseViewModel<ShowAllActorMoviesState, ShowAllActorMoviesEvents>(ShowAllActorMoviesState()),
-ShowAllActorMoviesInteractionListener {
+) : BaseViewModel<ShowAllActorMoviesState, ShowAllActorMoviesEffect>(ShowAllActorMoviesState()),
+    ShowAllActorMoviesInteractionListener {
     init {
         updateState { it.copy(actorId = actorId) }
         getActorMovies()
@@ -21,7 +22,7 @@ ShowAllActorMoviesInteractionListener {
 
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    private fun getActorMovies(){
+    private fun getActorMovies() {
         launchWithFlow(
             flowAction = {
                 genreUseCase.getMoviesGenres().flatMapConcat { genres ->
@@ -35,14 +36,17 @@ ShowAllActorMoviesInteractionListener {
             onFinally = ::onFinally
         )
     }
+
     private fun onGetMovieSuccess(movies: List<Movie>) {
         updateState { showAllActorMoviesState ->
             showAllActorMoviesState.copy(movies = movies.toUi(uiState.value.moviesGenres))
         }
     }
+
     private fun onGetMovieFailed(throwable: Throwable) {
         updateState { it.copy(error = throwable.message) }
     }
+
     private fun onLoading() {
         updateState { it.copy(isLoading = true) }
     }
@@ -50,6 +54,7 @@ ShowAllActorMoviesInteractionListener {
     private fun onFinally() {
         updateState { it.copy(isLoading = false) }
     }
+
     override fun onRefresh() {
         getActorMovies()
     }
@@ -58,16 +63,13 @@ ShowAllActorMoviesInteractionListener {
         updateState {
             it.copy(viewMode = viewMode)
         }
-
     }
 
     override fun onMovieClick(movieId: Int) {
-        sendEvent(ShowAllActorMoviesEvents.NavigateMovieDetails(movieId))
+        sendEvent(ShowAllActorMoviesEffect.NavigateMovieDetails(movieId))
     }
 
     override fun backButtonClick() {
 
     }
-
-
 }

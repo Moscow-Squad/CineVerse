@@ -1,5 +1,5 @@
 package com.moscow.cineverse.screen.castDetails.gallery
 
-sealed class ActorGalleryEvents {
+sealed class ActorGalleryEffect {
 
 }
