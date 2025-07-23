@@ -37,7 +37,11 @@ jobs:
                   }
                 },
                 "oauth_client": [],
-                "api_key": [],
+                "api_key": [
+                          {
+                            "current_key": ""
+                          }
+                      ], 
                 "services": {
                   "appinvite_service": {
                     "other_platform_oauth_client": []
@@ -54,7 +58,7 @@ jobs:
             chmod +x gradlew
       - name: Clean project
         run: ./gradlew clean
-   
+
 
       - name: Run unit tests + Kover
         run: ./gradlew test koverVerify koverXmlReport koverHtmlReport -PdisableGoogleServices=true
