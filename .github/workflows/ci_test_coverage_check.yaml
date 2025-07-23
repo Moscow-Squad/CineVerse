@@ -19,6 +19,10 @@ jobs:
           distribution: temurin
           cache: gradle
 
+      - name: Create google-services.json
+        run: |
+         echo "${{ secrets.GOOGLE_SERVICES_JSON }}" > app/google-services.json
+
       - name: Make gradlew executable
         run: chmod +x ./gradlew
 
