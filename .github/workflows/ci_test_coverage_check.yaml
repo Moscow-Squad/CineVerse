@@ -24,8 +24,9 @@ jobs:
       - name: Run Coverage
         run: |
             chmod +x gradlew
-
+      - name: Clean project
+        run: ./gradlew clean
    
 
       - name: Run unit tests + Kover
-        run: ./gradlew test koverVerify koverXmlReport koverHtmlReport -PskipGoogleServices=true
+        run: ./gradlew test koverVerify koverXmlReport koverHtmlReport
