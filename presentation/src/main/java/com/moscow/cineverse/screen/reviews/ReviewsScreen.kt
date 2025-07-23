@@ -22,6 +22,7 @@ import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.navigation.LocalNavController
 import com.moscow.cineverse.mapper.formatReviewDate
 import com.moscow.cineverse.mapper.toUi
+import com.moscow.cineverse.screen.movie_details.formatReviewDate
 import com.moscow.cinverse.presentation.R
 import org.koin.androidx.compose.koinViewModel
 
@@ -38,9 +39,7 @@ fun ReviewsScreen(
     LaunchedEffect(viewModel) {
         viewModel.uiEffect.collect { event ->
             when(event){
-                ReviewsEffect.NavigateBack -> {
-                    navController.popBackStack()
-                }
+                ReviewsEffect.NavigateBack -> navController::navigateUp
                 is ReviewsEffect.ShowError -> {}
             }
 

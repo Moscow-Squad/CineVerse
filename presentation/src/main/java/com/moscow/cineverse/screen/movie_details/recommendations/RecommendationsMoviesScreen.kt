@@ -11,6 +11,7 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -22,6 +23,7 @@ import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.android.domain.model.Movie
 import com.moscow.cineverse.component.MoviePosterCard
+import com.moscow.cineverse.designSystem.component.CineVersePreviews
 import com.moscow.cineverse.designSystem.component.MovieAppBar
 import com.moscow.cineverse.designSystem.component.MovieScaffold
 import com.moscow.cineverse.designSystem.component.ViewMode
@@ -44,9 +46,9 @@ fun RecommendationMoviesScreen(
 
     LaunchedEffect(viewModel) {
         viewModel.uiEffect.collect { event ->
-            when (event) {
+            when(event){
                 RecommendationMoviesEffect.NavigateBack -> {
-                    navController.popBackStack()
+                    navController::navigateUp
                 }
             }
         }

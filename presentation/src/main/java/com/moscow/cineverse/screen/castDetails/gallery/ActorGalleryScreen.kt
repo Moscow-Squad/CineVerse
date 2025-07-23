@@ -43,7 +43,7 @@ fun ActorGalleryScreen(
         modifier = modifier,
         uiState = uiState,
         interactionListener = viewModel,
-        onNavigateBack = { navController.popBackStack() },
+        onNavigateBack = navController::navigateUp,
         title = uiState.actorName
     )
 }

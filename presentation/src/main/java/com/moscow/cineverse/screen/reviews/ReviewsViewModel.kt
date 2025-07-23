@@ -8,6 +8,7 @@ import androidx.paging.cachedIn
 import com.android.domain.model.Review
 import com.android.domain.usecase.GetReviewsPageUseCase
 import com.moscow.cineverse.base.BaseViewModel
+import com.moscow.cineverse.paging.BasePagingSource
 import com.moscow.cineverse.paging.MovieReviewsPagingSource
 import kotlinx.coroutines.flow.Flow
 
@@ -20,7 +21,7 @@ class ReviewsViewModel(
         return Pager(
             config = PagingConfig(pageSize = 20),
             pagingSourceFactory = {
-                MovieReviewsPagingSource { page ->
+                BasePagingSource { page ->
                     getReviewsPageUseCase(id, page, isMovie)
                 }
             }

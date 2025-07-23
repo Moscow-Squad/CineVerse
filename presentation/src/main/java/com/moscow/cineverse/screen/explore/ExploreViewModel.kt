@@ -61,6 +61,7 @@ class ExploreViewModel(
             flowAction = {
                 searchUseCase.searchMovie(
                     uiState.value.searchKeyWord,
+                    page = 1,
                     isHistory = isHistory
                 )
             },
@@ -73,7 +74,13 @@ class ExploreViewModel(
 
     override fun searchSeries(isHistory: Boolean) {
         launchWithFlow(
-            flowAction = { searchUseCase.searchSeries(uiState.value.searchKeyWord, isHistory) },
+            flowAction = {
+                searchUseCase.searchSeries(
+                    uiState.value.searchKeyWord,
+                    page = 1,
+                    isHistory
+                )
+            },
             onSuccess = ::onSeriesSearchSuccess,
             onError = ::onSeriesSearchFailed,
             onStart = ::onLoading,
@@ -83,7 +90,13 @@ class ExploreViewModel(
 
     override fun searchActor(isHistory: Boolean) {
         launchWithFlow(
-            flowAction = { searchUseCase.searchActor(uiState.value.searchKeyWord, isHistory) },
+            flowAction = {
+                searchUseCase.searchActor(
+                    uiState.value.searchKeyWord,
+                    page = 1,
+                    isHistory
+                )
+            },
             onSuccess = ::onActorSearchSuccess,
             onError = ::onActorsSearchFailed,
             onStart = ::onLoading,
@@ -334,8 +347,8 @@ class ExploreViewModel(
     }
 
     override fun getMoviesGenres() {
-        launchWithFlow(
-            flowAction = { genreUseCase.getMoviesGenres() },
+        launchWithResult(
+            action = { genreUseCase.getMoviesGenres() },
             onSuccess = ::onMoviesGenresSuccess,
             onError = ::onMoviesGenresFailed,
             onStart = ::onLoading,
@@ -361,8 +374,8 @@ class ExploreViewModel(
     }
 
     override fun getSeriesGenres() {
-        launchWithFlow(
-            flowAction = { genreUseCase.getSeriesGenres() },
+        launchWithResult(
+            action = { genreUseCase.getSeriesGenres() },
             onSuccess = ::onSeriesGenresSuccess,
             onError = ::onSeriesGenresFailed,
             onStart = ::onLoading,
@@ -391,8 +404,8 @@ class ExploreViewModel(
     }
 
     override fun getMoviesByGenreId(genreId: Int) {
-        launchWithFlow(
-            flowAction = { getMovieByGenreIdUseCase.getMovieByGenreId(genreId) },
+        launchWithResult(
+            action = { getMovieByGenreIdUseCase.getMovieByGenreId(genreId) },
             onSuccess = ::onGetMovieByGenreIdSuccess,
             onError = ::onGetMovieByGenreIdFailed,
             onStart = ::onLoading,
@@ -415,8 +428,8 @@ class ExploreViewModel(
     }
 
     override fun getSeriesByGenreId(genreId: Int) {
-        launchWithFlow(
-            flowAction = { getSeriesByGenreIdUseCase.getSeriesByGenreId(genreId) },
+        launchWithResult(
+            action = { getSeriesByGenreIdUseCase.getSeriesByGenreId(genreId) },
             onSuccess = ::onGetSeriesByGenreIdSuccess,
             onError = ::onGetSeriesByGenreIdFailed,
             onStart = ::onLoading,
@@ -479,9 +492,9 @@ class ExploreViewModel(
                 errorMessage = ""
             )
         }
-        if (uiState.value.searchKeyWord != ""){
+        if (uiState.value.searchKeyWord != "") {
             onSearchQuery()
-        }else{
+        } else {
             getMoviesGenres()
             getSeriesGenres()
             loadMovies()
@@ -490,8 +503,8 @@ class ExploreViewModel(
     }
 
     private fun loadSeries() {
-        launchWithFlow(
-            flowAction = { getSeriesUseCase() },
+        launchWithResult(
+            action = { getSeriesUseCase() },
             onSuccess = ::onLoadSeriesSuccess,
             onError = ::onLoadSeriesFailed,
             onStart = ::onLoading,
@@ -515,8 +528,8 @@ class ExploreViewModel(
     }
 
     private fun loadMovies() {
-        launchWithFlow(
-            flowAction = { getMoviesUseCase() },
+        launchWithResult(
+            action = { getMoviesUseCase() },
             onSuccess = ::onLoadMoviesSuccess,
             onError = ::onLoadMoviesFailed,
             onStart = ::onLoading,

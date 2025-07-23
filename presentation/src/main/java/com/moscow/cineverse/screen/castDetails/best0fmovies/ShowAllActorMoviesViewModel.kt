@@ -7,7 +7,6 @@ import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.cineverse.designSystem.component.ViewMode
 import com.moscow.cineverse.mapper.toUi
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.flatMapConcat
 
 class ShowAllActorMoviesViewModel(
     private val getActorBestOfMovies: GetActorBestOfMovies,
@@ -23,12 +22,11 @@ class ShowAllActorMoviesViewModel(
 
     @OptIn(ExperimentalCoroutinesApi::class)
     private fun getActorMovies() {
-        launchWithFlow(
-            flowAction = {
-                genreUseCase.getMoviesGenres().flatMapConcat { genres ->
-                    updateState { it.copy(moviesGenres = genres.map { it.toUi() }) }
-                    getActorBestOfMovies.getActorBestOfMovies(uiState.value.actorId)
-                }
+        launchWithResult(
+            action = {
+                val genres = genreUseCase.getMoviesGenres()
+                updateState { it.copy(moviesGenres = genres.map { genre -> genre.toUi() }) }
+                getActorBestOfMovies.getActorBestOfMovies(uiState.value.actorId)
             },
             onSuccess = ::onGetMovieSuccess,
             onError = ::onGetMovieFailed,

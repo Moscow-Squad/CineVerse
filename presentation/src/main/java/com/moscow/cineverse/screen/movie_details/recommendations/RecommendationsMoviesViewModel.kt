@@ -9,7 +9,7 @@ import com.android.domain.model.Movie
 import com.android.domain.usecase.GetRecommendationsUseCase
 import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.cineverse.designSystem.component.ViewMode
-import com.moscow.cineverse.paging.RecommendationsMoviesPagingSource
+import com.moscow.cineverse.paging.BasePagingSource
 import kotlinx.coroutines.flow.Flow
 
 class RecommendationsMoviesViewModel(
@@ -22,7 +22,7 @@ class RecommendationsMoviesViewModel(
         return Pager(
             config = PagingConfig(pageSize = 20),
             pagingSourceFactory = {
-                RecommendationsMoviesPagingSource { page ->
+                BasePagingSource { page ->
                     getRecommendationsUseCase(id, page)
                 }
             }

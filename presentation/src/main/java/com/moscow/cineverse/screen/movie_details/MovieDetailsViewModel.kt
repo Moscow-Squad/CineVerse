@@ -13,8 +13,8 @@ import com.android.domain.usecase.GetRecommendationsUseCase
 import com.android.domain.usecase.GetReviewsPageUseCase
 import com.android.domain.usecase.RateMovieUseCase
 import com.moscow.cineverse.base.BaseViewModel
-import com.moscow.cineverse.navigation.routes.MovieDetailsRoute
 import com.moscow.cineverse.mapper.toMediaItemUi
+import com.moscow.cineverse.navigation.routes.MovieDetailsRoute
 import com.moscow.cineverse.mapper.toUi
 
 
@@ -165,8 +165,8 @@ class MovieDetailsViewModel(
     }
 
     override fun onRatingSubmit(rating: Int, movieId: Int) {
-        launchWithFlow(
-            flowAction = { rateMovieUseCase.rateMovie(rating.toFloat(), movieId) },
+        launchWithResult(
+            action = { rateMovieUseCase.rateMovie(rating.toFloat(), movieId) },
             onSuccess = {
                 updateState { it.copy(
                     starsRating = rating,
