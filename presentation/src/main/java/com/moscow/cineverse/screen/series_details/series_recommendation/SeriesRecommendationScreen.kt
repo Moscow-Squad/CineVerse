@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -33,6 +32,12 @@ import com.moscow.cineverse.screen.series_details.SeriesDetailsScreenInteraction
 import com.moscow.cinverse.presentation.R
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.collectAsLazyPagingItems
+import com.android.domain.model.Movie
+import com.android.domain.model.Series
+import com.moscow.cineverse.mapper.toMediaItemUi
+import com.moscow.cineverse.mapper.toUi
 
 @Composable
 fun SeriesRecommendationScreen(
@@ -41,9 +46,11 @@ fun SeriesRecommendationScreen(
     navController: NavHostController = LocalNavController.current,
     ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val recommendations = viewModel.getRecommendations(uiState.seriesDetail.id).collectAsLazyPagingItems()
 
     SeriesRecommendationScreenContent(
         uiState = uiState,
+        recommendations = recommendations,
         interactionListener = viewModel,
         modifier = modifier,
         onNavigateBack = {navController.popBackStack()},
@@ -53,6 +60,7 @@ fun SeriesRecommendationScreen(
 @Composable
 fun SeriesRecommendationScreenContent(
     uiState: SeriesDetailsScreenState,
+    recommendations: LazyPagingItems<Series>,
     interactionListener: SeriesDetailsScreenInteractionListener,
     onNavigateBack : () -> Unit,
     modifier: Modifier = Modifier,
@@ -104,12 +112,19 @@ fun SeriesRecommendationScreenContent(
                             horizontalArrangement = Arrangement.spacedBy(12.dp),
                             modifier = Modifier.fillMaxSize()
                         ) {
-                            items(uiState.recommendation) { item ->
-                                MoviePosterCard(
-                                    movie = item,
-                                    viewMode = uiState.viewMode,
-                                    onMovieClick = {interactionListener.onSeriesClicked(item.id)}
-                                )
+                            items(recommendations.itemCount) { index ->
+                                val recommendation = recommendations[index]?.toUi()
+                                if (recommendation != null) {
+                                    MoviePosterCard(
+                                        movie = recommendation,
+                                        viewMode = uiState.viewMode,
+                                        onMovieClick = {
+                                            interactionListener.onSeriesClicked(
+                                                recommendation.id
+                                            )
+                                        }
+                                    )
+                                }
                             }
                         }
                     }
