@@ -26,7 +26,9 @@ jobs:
 
       - name: Set up Gradle
         uses: gradle/gradle-build-action@v3
-
+      - name: Generate keys.properties
+        run: |
+          echo "BEARER_TOKEN=${{ secrets.BEARER_TOKEN }}" > keys.properties
       - name: Make gradlew executable
         run: chmod +x ./gradlew
 
