@@ -5,9 +5,9 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -56,14 +56,11 @@ import com.moscow.cineverse.designSystem.component.movieSeriesDetails.StaffInfoS
 import com.moscow.cineverse.designSystem.component.movieSeriesDetails.StarCastSection
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.navigation.LocalNavController
-import com.moscow.cineverse.navigation.routes.CollectionsBottomSheetRoute
 import com.moscow.cineverse.navigation.routes.CastDetailsRoute
+import com.moscow.cineverse.navigation.routes.CollectionsBottomSheetRoute
 import com.moscow.cineverse.navigation.routes.RecommendationsRoute
 import com.moscow.cineverse.navigation.routes.ReviewsRoute
-import com.moscow.cineverse.screen.castDetails.toFormattedBirthDate
-
 import com.moscow.cineverse.screen.component.movie_poster_card.MoviePosterCard
-import com.moscow.cineverse.screen.movie_details.MovieScreenState.StarCastUi
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -76,10 +73,7 @@ fun MovieDetailsScreen(
     LaunchedEffect(viewModel) {
         viewModel.uiEvent.collect { event ->
             when (event) {
-                is MovieDetailsScreenEvents.NavigateBack -> {
-                    navController.popBackStack()
-                }
-
+                is MovieDetailsScreenEvents.NavigateBack -> navController::navigateUp
                 is MovieDetailsScreenEvents.ShowError -> {
                     // TODO: Show error (Snackbar, Toast, etc.)
                 }
@@ -111,7 +105,7 @@ fun MovieDetailsScreen(
     MovieDetailsContent(
         uiState = uiState,
         interactionListener = viewModel,
-        onNavigateBack = { navController.popBackStack() },
+        onNavigateBack = navController::navigateUp,
         modifier = modifier,
     )
 }

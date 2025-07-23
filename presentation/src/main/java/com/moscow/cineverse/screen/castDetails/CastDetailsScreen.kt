@@ -57,7 +57,7 @@ fun CastDetailsScreen(
     LaunchedEffect(viewModel) {
         viewModel.uiEvent.collect { event ->
             when (event) {
-                is CastDetailsEvent.NavigateBack -> {navController.popBackStack()}
+                is CastDetailsEvent.NavigateBack -> navController::navigateUp
                 is CastDetailsEvent.ShowError -> {
                     // TODO: Show error (Snackbar, Toast, etc.)
                 }
@@ -82,7 +82,7 @@ fun CastDetailsScreen(
         CastDetailsContent(
             uiState = uiState,
             interactionListener = viewModel,
-            onBackPressed = { navController.popBackStack() },
+            onBackPressed = navController::navigateUp,
             modifier = Modifier.fillMaxSize()
         )
     }
