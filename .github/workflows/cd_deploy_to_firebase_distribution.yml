@@ -51,8 +51,11 @@ jobs:
       - name: Create keys.properties
         run: echo "API_KEY=${{ secrets.BEARER_TOKEN }}" > keys.properties
 
-      - name: Write google-services.json
-        run: echo '${{ secrets.FIREBASE_SERVICE_ACCOUNT_KEY }}' > app/google-services.json
+      - name: Write google-services.json from secret
+        run: echo '${{ secrets.GOOGLE_SERVICES_JSON }}' > app/google-services.json
+
+      - name: Validate google-services.json
+        run: jq empty app/google-services.json
 
       - name: Set PR metadata as outputs
         id: set-pr-metadata
