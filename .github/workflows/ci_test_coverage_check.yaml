@@ -28,7 +28,23 @@ jobs:
               "project_id": "mock-project-id",
               "storage_bucket": "mock-project.appspot.com"
             },
-            "client": []
+            "client": [
+              {
+                "client_info": {
+                  "mobilesdk_app_id": "1:123456789:android:abcdefgh",
+                  "android_client_info": {
+                    "package_name": "com.moscow.cineverse"
+                  }
+                },
+                "oauth_client": [],
+                "api_key": [],
+                "services": {
+                  "appinvite_service": {
+                    "other_platform_oauth_client": []
+                  }
+                }
+              }
+            ]
           }' > app/google-services.json
       - name: Generate keys.properties
         run: |
