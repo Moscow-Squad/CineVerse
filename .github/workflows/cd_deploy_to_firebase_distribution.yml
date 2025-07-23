@@ -49,10 +49,9 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
-      - name: Create local.properties
+      - name: Create keys.properties
         run: |
-          echo "sdk.dir=$ANDROID_SDK_ROOT" > local.properties
-          echo "API_KEY=\"${{ secrets.TMDB_API_KEY }}\"" >> local.properties
+          echo "API_KEY=${{ secrets.BEARER_TOKEN }}" > keys.properties
 
       - name: Decode Firebase Config
         run: |

@@ -43,10 +43,10 @@ jobs:
         run: |
           echo "${{ secrets.GOOGLE_SERVICES_JSON }}" | base64 --decode > app/google-services.json
 
-      - name: Create local.properties
+
+      - name: Create keys.properties
         run: |
-          echo "sdk.dir=$ANDROID_SDK_ROOT" > local.properties
-          echo "API_KEY=\"${{ secrets.TMDB_API_KEY }}\"" >> local.properties
+          echo "API_KEY=${{ secrets.BEARER_TOKEN }}" > keys.properties
 
       - name: Setup Gradlew
         run: chmod +x ./gradlew

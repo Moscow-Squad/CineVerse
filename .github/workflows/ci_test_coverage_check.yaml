@@ -51,10 +51,9 @@ jobs:
               '}' > app/google-services.json
           fi
 
-      - name: Create local.properties
+      - name: Create keys.properties
         run: |
-          echo "sdk.dir=$ANDROID_SDK_ROOT" > local.properties
-          echo "api_key=\"${{ secrets.TMDB_API_KEY }}\"" >> local.properties
+          echo "API_KEY=${{ secrets.BEARER_TOKEN }}" > keys.properties
 
       - name: Run Unit Tests & Generate Coverage
         run: ./gradlew test koverXmlReport koverHtmlReport koverVerify
