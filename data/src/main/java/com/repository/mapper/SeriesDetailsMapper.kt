@@ -1,6 +1,10 @@
 package com.repository.mapper
 
+import com.android.domain.model.CastDetails
+import com.android.domain.model.CreditsDetails
+import com.android.domain.model.CrewDetails
 import com.android.domain.model.Genre
+import com.android.domain.model.Series
 import com.android.domain.model.details.Creator
 import com.android.domain.model.details.Episode
 import com.android.domain.model.details.ListOfSeries
@@ -12,36 +16,36 @@ import com.remote.dto.details.CreatedByDto
 import com.remote.dto.details.LastEpisodeToAirDto
 import com.remote.dto.details.ListOfSeriesDto
 import com.remote.dto.details.SeasonDto
+import com.remote.dto.details.SeriesCastDto
+import com.remote.dto.details.SeriesCreditDto
+import com.remote.dto.details.SeriesCrewDto
 import com.remote.dto.details.SeriesDetailDto
 import com.remote.dto.details.SeriesItemDto
-import java.text.SimpleDateFormat
-import java.util.Locale
+import com.remote.dto.details.SeriesRecommendationDto
+import com.utils.IMAGES_URL
+import kotlinx.datetime.Clock
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 
 fun SeriesDetailDto.toDomain(): SeriesDetail {
     return SeriesDetail(
         id = id,
         title = name,
         overview = overview,
-        posterPath = posterPath,
-        backdropPath = backdropPath,
+        posterPath = IMAGES_URL + posterPath.orEmpty(),
         genres = genres.map { it.toDomain() },
-        rating = voteAverage,
-        voteCount = voteCount,
-        runtime = formatRuntime(episodeRunTime),
-        releaseDate = formatDate(firstAirDate),
+        rating = voteAverage.toFloat(),
+        runtime = formatRuntime(episodeRunTime).toString(),
+        releaseDate = if (firstAirDate != null){
+            LocalDate.parse(firstAirDate)
+        } else  {
+            Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
+        },
         type = type,
-        cast = emptyList(),
         creators = createdBy.map { it.toDomain() },
-        tagline = tagline,
-        status = status,
         numberOfSeasons = numberOfSeasons,
         numberOfEpisodes = numberOfEpisodes,
-        lastAirDate = lastAirDate,
-        nextAirDate = nextEpisodeToAir,
-        lastEpisodeToAir = lastEpisodeToAir?.toDomain(),
-        nextEpisodeToAir = null,
-        reviews = emptyList(),
-        similarSeries = emptyList(),
         seasons = seasons.map { it.toDomain() }
     )
 }
@@ -76,9 +80,11 @@ private fun SeasonDto.toDomain(): Season {
     return Season(
         id = id,
         name = name,
-        airDate = airDate,
+        airDate = airDate ?: "",
         episodeCount = episodeCount,
-        posterPath = posterPath
+        posterPath = IMAGES_URL + posterPath.orEmpty(),
+        overview = overview,
+        rate = voteAverage.toFloat()
     )
 }
 
@@ -106,6 +112,43 @@ fun SeriesItemDto.toDomain(): SeriesItem {
     )
 }
 
+fun SeriesCreditDto.toDomain() = CreditsDetails(
+    actors = cast.map { it.toDomain() },
+    behindTheScene = crew.map { it.toDomain() }
+)
+
+fun SeriesCastDto.toDomain() = CastDetails(
+    id = id,
+    originalName = originalName ?: "",
+    characterName = roles.firstOrNull()?.character ?: "",
+    profileImg = IMAGES_URL + profilePath
+)
+fun SeriesCrewDto.toDomain() = CrewDetails(
+    id = id,
+    name = originalName ?: "",
+    job = jobs.firstOrNull()?.job ?: "",
+    profileImage = IMAGES_URL + profilePath
+)
+
+fun SeriesRecommendationDto.toDomain() = Series(
+    id = id,
+    name = name ?: "",
+    rating = voteAverage?.toFloat() ?: 0f,
+    adult = adult ?: false,
+    backdropPath = IMAGES_URL + backdropPath.orEmpty(),
+    firstAirDate = if (firstAirDate != null){
+        LocalDate.parse(firstAirDate)
+    } else  {
+        Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
+    },
+    genreIds = genreIds,
+    originCountry = originCountry,
+    originalLanguage = originalLanguage ?: "",
+    originalName = originalName ?: "",
+    overview = overview ?: "",
+    posterPath = IMAGES_URL + posterPath.orEmpty()
+)
+
 private fun formatRuntime(runtimeMinutes: List<Int>): String? {
     if (runtimeMinutes.isEmpty()) return null
     val totalMinutes = runtimeMinutes.firstOrNull() ?: return null
@@ -116,17 +159,5 @@ private fun formatRuntime(runtimeMinutes: List<Int>): String? {
         hours > 0 && minutes > 0 -> "${hours}h ${minutes}m"
         hours > 0 -> "${hours}h"
         else -> "${minutes}m"
-    }
-}
-
-private fun formatDate(dateString: String?): String? {
-    if (dateString.isNullOrEmpty()) return null
-    return try {
-        val inputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-        val outputFormat = SimpleDateFormat("yyyy, MMM dd", Locale.getDefault())
-        val date = inputFormat.parse(dateString)
-        date?.let { outputFormat.format(it) }
-    } catch (e: Exception) {
-        dateString
     }
 }

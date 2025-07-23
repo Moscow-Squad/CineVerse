@@ -1,10 +1,10 @@
 package com.moscow.cineverse.designSystem.component.movieSeriesDetails
 
 data class Season (
-    val seasonNumber: Int,
+    val seasonNumber: String,
     val episodeCount: Int,
     val airDate: String,
     val posterUrl: String? = null,
     val caption: String,
-    val rate: Float
+    val rate: String
 )

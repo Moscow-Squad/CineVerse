@@ -4,6 +4,7 @@ import com.remote.dto.CreditsDetailsDto
 import com.remote.dto.MovieDto
 import com.remote.dto.details.ListOfSeriesDto
 import com.remote.dto.details.MovieDetailDto
+import com.remote.dto.details.SeriesCreditDto
 import com.remote.dto.details.SeriesDetailDto
 import com.remote.dto.review.RatingRequestDto
 import com.remote.dto.review.ReviewDto
@@ -16,6 +17,7 @@ import com.utils.RATING
 import com.utils.RECOMMENDATIONS
 import com.utils.REVIEWS
 import com.utils.SERIES
+import com.utils.SERIES_CREDITS
 import com.utils.SESSION_ID
 import com.utils.performCall
 import io.ktor.client.HttpClient
@@ -37,12 +39,17 @@ class DetailsRemoteDataSource(
             path = SERIES + id
         )
 
+    suspend fun getSeriesCredits(seriesId:Int): SeriesCreditDto =
+        client.performCall<Unit, SeriesCreditDto>(
+            method = HttpMethod.Get,
+            path = SERIES + seriesId + SERIES_CREDITS
+        )
+
     suspend fun getCredits(movieID:Int): CreditsDetailsDto =
         client.performCall<Unit, CreditsDetailsDto>(
             method = HttpMethod.Get,
             path = MOVIE + movieID + CREDITS
         )
-
 
     suspend fun getReviews(id: Int, page: Int, isMovie: Boolean): ReviewDto =
         client.performCall<Unit, ReviewDto>(

@@ -25,7 +25,9 @@ import com.android.domain.usecase.actordetails.GetActorDetails
 import com.android.domain.usecase.actordetails.GetActorGallery
 import com.android.domain.usecase.seriesdetails.GetLatestSeasonsUseCase
 import com.android.domain.usecase.seriesdetails.GetListOfSeriesUseCase
+import com.android.domain.usecase.seriesdetails.GetSeriesCreditsDetailsUseCase
 import com.android.domain.usecase.seriesdetails.GetSeriesDetailUseCase
+import com.android.domain.usecase.seriesdetails.GetSeriesRecommendationsUseCase
 
 import org.koin.core.module.dsl.singleOf
 
@@ -52,6 +54,8 @@ val useCases = module {
     single { GetListOfSeriesUseCase(get()) }
     singleOf(::CacheSearchQueryUseCase)
     singleOf(::ClearSearchHistoryUseCase)
+    singleOf(::GetSeriesCreditsDetailsUseCase)
+    singleOf(::GetSeriesRecommendationsUseCase)
 
     single { GetUserCollectionsUseCase(get()) }
     single { AddNewCollectionUseCase(get()) }
