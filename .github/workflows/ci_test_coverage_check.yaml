@@ -27,5 +27,5 @@ jobs:
 
    
 
-#      - name: Run unit tests + Kover
-#        run: ./gradlew test koverVerify koverXmlReport koverHtmlReport -PskipGoogleServices=true
+      - name: Run unit tests + Kover
+        run: ./gradlew test koverVerify koverXmlReport koverHtmlReport -PskipGoogleServices=true
