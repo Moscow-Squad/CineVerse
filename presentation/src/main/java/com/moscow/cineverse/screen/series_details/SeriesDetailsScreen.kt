@@ -33,10 +33,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import com.android.domain.model.Genre
-import com.android.domain.model.Review
-import com.android.domain.model.details.Creator
-import com.android.domain.model.details.SeriesDetail
 import com.example.design_system.R
 import com.moscow.cineverse.designSystem.component.MovieAppBar
 import com.moscow.cineverse.designSystem.component.MovieCard
@@ -148,7 +144,7 @@ fun SeriesDetailsContent(
                         title = detail?.title ?: "Loading...",
                         genres = detail?.genres?.joinToString(", ") { it.name } ?: "",
                         rating = detail?.rating?.toString() ?: "0.0",
-                        duration = detail?.runtime ?: "N/A",
+                        duration = "N/A",
                         releaseDate = detail?.releaseDate?.let { formatDate(it) } ?: "",
                         type = detail?.type ?: "SERIES",
                         animatedVisibilityScope = this@AnimatedContent,
@@ -293,7 +289,7 @@ fun SeriesDetailsContent(
                                     getPosterUrl = { it.posterPath.toString() },
                                     getRating = { it.rating.toFloat() },
                                     getGenres = { listOf() },
-                                    getDuration = { it.runtime ?: "" },
+                                    getDuration = { "" },
                                     getReleaseDate = {
                                         it.releaseDate?.let { date -> formatDate(date) } ?: ""
                                     }
@@ -379,82 +375,5 @@ fun SeriesDetailsContent(
 @Composable
 private fun SeriesDetailsScreenPreview() {
     CineVerseTheme {
-        SeriesDetailsContent(
-            uiState = SeriesDetailsUiState(
-                isLoading = false,
-                seriesDetail = SeriesDetail(
-                    id = 101,
-                    title = "The Great Adventure",
-                    posterPath = "",
-                    backdropPath = "",
-                    genres = listOf(
-                        Genre(id = 1, name = "Adventure"),
-                        Genre(id = 2, name = "Drama")
-                    ),
-                    rating = 8.5,
-                    voteCount = 1245,
-                    runtime = "45m per episode",
-                    releaseDate = "2021-09-15",
-                    type = "SERIES",
-                    overview = "A thrilling adventure series that explores the life of a young hero on a quest to save their world.",
-                    numberOfSeasons = 3,
-                    numberOfEpisodes = 30,
-                    cast = listOf(
-                        com.android.domain.model.details.CastMember(
-                            id = 1,
-                            name = "Emma Stone",
-                            character = "Hero",
-                            profilePath = null
-                        ),
-                        com.android.domain.model.details.CastMember(
-                            id = 2,
-                            name = "Ryan Gosling",
-                            character = "Mentor",
-                            profilePath = null
-                        )
-                    ),
-                    creators = listOf(
-                        Creator(
-                            id = 1,
-                            name = "John Doe",
-                            profilePath = null
-                        )
-                    ),
-                    tagline = "",
-                    status = "",
-                    lastAirDate = null,
-                    nextAirDate = null,
-                    lastEpisodeToAir = null,
-                    nextEpisodeToAir = null,
-                    seasons = emptyList(),
-                    similarSeries = emptyList(),
-                    reviews = emptyList()
-                ),
-                reviews = listOf(
-                    Review(
-                        id = "rev1",
-                        author = "FilmFan99",
-                        username = "filmfan99",
-                        content = "Absolutely amazing! The plot, the acting, everything was top-notch.",
-                        rating = 9.0,
-                        createdAt = "2024-03-05T15:23:01.000Z",
-                        avatarPath = "null"
-                    ),
-                    Review(
-                        id = "rev2",
-                        author = "MovieBuff88",
-                        username = "moviebuff88",
-                        content = "Great cinematography and storytelling. Can't wait for the next season!",
-                        rating = 8.0,
-                        createdAt = "2024-04-10T11:12:01.000Z",
-                        avatarPath = "null"
-                    )
-                )
-            ),
-            interactionListener = TODO(),
-            onClickArrow = TODO(),
-            onDismiss = TODO(),
-            onRatingSubmit = TODO()
-        )
     }
 }

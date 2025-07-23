@@ -1,4 +1,4 @@
-import com.google.firebase.appdistribution.gradle.firebaseAppDistribution
+
 
 plugins {
     alias(libs.plugins.android.application)
@@ -8,33 +8,40 @@ plugins {
     alias(libs.plugins.google.firebase.crashlytics)
     alias(libs.plugins.google.firebase.firebase.perf)
     alias(libs.plugins.google.firebase.appdistribution)
-    jacoco
+    alias(libs.plugins.kover)
 }
 
 android {
-    namespace = "com.moscow.cineverse"
-    compileSdk = 36
+    namespace = libs.versions.namespace.get()
+    compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
-        applicationId = "com.moscow.cineverse"
-        minSdk = 26
-        targetSdk = 36
-        versionCode = 1
-        versionName = "1.0"
+        applicationId = libs.versions.applicationId.get()
+        minSdk = libs.versions.minSdk.get().toInt()
+        targetSdk = libs.versions.targetSdk.get().toInt()
+        testInstrumentationRunner = libs.versions.testRunner.get()
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-    }
+        val ciCode = System.getenv("CI_VERSION_CODE")?.toIntOrNull()
+        val ciName = System.getenv("CI_VERSION_NAME")
 
-    defaultConfig {
+        versionCode = ciCode ?: libs.versions.versionCode.get().toInt()
+        versionName = ciName ?: libs.versions.versionName.get()
+
+        ndk {
+            abiFilters += listOf("arm64-v8a", "armeabi-v7a", "x86_64")
+        }
+
+        @Suppress("UnstableApiUsage")
         androidResources {
             localeFilters.addAll(listOf("en", "ar"))
         }
-    }
 
+    }
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -43,93 +50,40 @@ android {
         debug {
             isDebuggable = true
             isMinifyEnabled = true
-            isShrinkResources = true
-            proguardFiles(
-                getDefaultProguardFile("proguard-android.txt"),
-                "proguard-rules.pro"
-            )
-            enableAndroidTestCoverage = true
-            enableUnitTestCoverage = true
+            applicationIdSuffix = ".debug"
+            versionNameSuffix = "-debug"
+
+            manifestPlaceholders["crashlytics_debug"] = "true"
+            manifestPlaceholders["analytics_debug"] = "true"
         }
     }
+
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        val javaVer = JavaVersion.toVersion(libs.versions.javaVersion.get())
+        sourceCompatibility = javaVer
+        targetCompatibility = javaVer
     }
+
     kotlinOptions {
-        jvmTarget = "11"
+        jvmTarget = libs.versions.javaVersion.get()
     }
-    buildFeatures {
-        compose = true
-    }
-}
-
-jacoco {
-
-    toolVersion = "0.8.12"
-}
-subprojects {
-    afterEvaluate {
-        tasks.withType<Test> {
-            configure<JacocoTaskExtension> {
-                isIncludeNoLocationClasses = true
-            }
-        }
-    }
-}
-tasks.register<JacocoReport>("testCoverage") {
-    dependsOn("testDebugUnitTest")
-
-    reports {
-        xml.required.set(true)
-        html.required.set(true)
-        xml.outputLocation.set(layout.buildDirectory.file("reports/jacoco/testCoverage/testCoverage.xml").get().asFile)
-        html.outputLocation.set(layout.buildDirectory.dir("reports/jacoco/html").get().asFile)
-    }
-
-    val fileFilter = listOf(
-        "**/R.class",
-        "**/R$*.class",
-        "**/BuildConfig.*",
-        "**/Manifest*.*",
-        "**/*Test*.*",
-        "android/**/*.*",
-        "**/*_MembersInjector.class",
-        "**/*Module*.*",
-        "**/*Dagger*.*",
-        "**/*Hilt*.*"
-    )
-    val debugTree = fileTree(mapOf(
-        "dir" to layout.buildDirectory.dir("intermediates/classes/debug").get().asFile,
-        "excludes" to fileFilter
-    ))
-    val mainSrc = "${project.projectDir}/src/main/java"
-
-    sourceDirectories.setFrom(files(mainSrc))
-    classDirectories.setFrom(files(debugTree))
-    executionData.setFrom(fileTree(mapOf(
-        "dir" to layout.buildDirectory.get().asFile,
-        "includes" to listOf("jacoco/testDebugUnitTest.exec")
-    )))
 }
 
 firebaseAppDistribution {
     appId = System.getenv("FIREBASE_APP_ID")
     serviceCredentialsFile = "service-account-key.json"
     artifactType = "APK"
-
     groups = "tester"
-
 }
 
-
 dependencies {
+    implementation(projects.designSystem)
+    implementation(projects.presentation)
+    implementation(projects.data)
+    implementation(projects.domain)
 
-    implementation(project(":design_system"))
-    implementation(project(":presentation"))
-    implementation(project(":data"))
-    implementation(project(":domain"))
-    implementation(libs.koin.android)
+    implementation(platform(libs.koin.bom))
+    implementation(libs.bundles.koin)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -139,9 +93,11 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+
     implementation(libs.firebase.crashlytics)
     implementation(libs.firebase.analytics)
     implementation(libs.firebase.perf)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -149,18 +105,13 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
     implementation(libs.ui)
     implementation(libs.material3)
     implementation(libs.androidx.animation)
-    implementation (libs.coil.compose)
+    implementation(libs.coil.compose)
 
-    /** Koin */
-    implementation(platform(libs.koin.bom))
-    implementation(libs.bundles.koin)
-
-    /** work manager */
     implementation(libs.androidx.work.runtime.ktx)
     implementation(libs.koin.androidx.workmanager)
-    //navigation
     implementation(libs.androidx.navigation.compose)
 }

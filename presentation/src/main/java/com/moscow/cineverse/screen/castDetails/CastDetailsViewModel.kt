@@ -8,7 +8,6 @@ import com.android.domain.usecase.actordetails.GetActorDetails
 import com.android.domain.usecase.actordetails.GetActorGallery
 import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.cineverse.designSystem.component.cast_details.SocialMediaLinks
-import com.moscow.cineverse.screen.explore.ExploreScreenEvents
 import kotlinx.coroutines.launch
 
 class CastDetailsViewModel(
@@ -63,10 +62,10 @@ class CastDetailsViewModel(
 
         viewModelScope.launch {
             try {
-                getActorGallery.getActorGallery(actorId).collect { images ->
+                getActorGallery.getActorGallery(actorId).forEach { image ->
                     updateState { currentState ->
                         currentState.copy(
-                            images = images,
+                            images = currentState.images + image,
                             isLoadingImages = false
                         )
                     }
@@ -89,13 +88,12 @@ class CastDetailsViewModel(
 
         viewModelScope.launch {
             try {
-                getActorBestOfMovies.getActorBestOfMovies(actorId).collect { movies ->
-                    updateState { currentState ->
-                        currentState.copy(
-                            movies = movies,
-                            isLoadingMovies = false
-                        )
-                    }
+                val movies = getActorBestOfMovies.getActorBestOfMovies(actorId)
+                updateState { currentState ->
+                    currentState.copy(
+                        movies = movies,
+                        isLoadingMovies = false
+                    )
                 }
             } catch (e: Exception) {
                 updateState { currentState ->
@@ -176,13 +174,23 @@ class CastDetailsViewModel(
     }
 
     override fun onShowMoreMovies() {
-        sendEvent(CastDetailsEvent.NavigateToFullMovieList(actorId, uiState.value.actorDetails?.name ?: ""))
+        sendEvent(
+            CastDetailsEvent.NavigateToFullMovieList(
+                actorId,
+                uiState.value.actorDetails?.name ?: ""
+            )
+        )
         // Handle show more movies - you can add navigation to full movie list
         // For example: sendEvent(CastDetailsEvent.NavigateToFullMovieList(actorId))
     }
 
     override fun onShowMoreGallery() {
-        sendEvent(CastDetailsEvent.NavigateToFullGallery(actorId, uiState.value.actorDetails?.name ?: ""))
+        sendEvent(
+            CastDetailsEvent.NavigateToFullGallery(
+                actorId,
+                uiState.value.actorDetails?.name ?: ""
+            )
+        )
         // Handle show more gallery - you can add navigation to full gallery
         // For example: sendEvent(CastDetailsEvent.NavigateToFullGallery(actorId))
     }

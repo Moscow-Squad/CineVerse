@@ -41,9 +41,7 @@ fun CineVerseNavGraph(navController: NavHostController) {
             collectionsBottomSheetRoute(
                 onAddNewCollectionClick = {},
                 onCreateCollectionClicked = {},
-                navigateBack = {
-                    navController.popBackStack()
-                }
+                navigateBack = navController::navigateUp
             )
             homeRoute()
             matchRoute()

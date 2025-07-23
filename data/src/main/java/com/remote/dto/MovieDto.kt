@@ -4,6 +4,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class MovieDto(
+    @SerialName("name") val name: String? = null,
     @SerialName("release_date") val releaseDate: String? = null,
     @SerialName("video") val video: Boolean? = null,
     @SerialName("adult") val adult: Boolean? = null,

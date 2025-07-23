@@ -12,8 +12,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.paging.compose.LazyPagingItems
@@ -24,13 +26,11 @@ import com.moscow.cineverse.designSystem.component.MovieAppBar
 import com.moscow.cineverse.designSystem.component.MovieScaffold
 import com.moscow.cineverse.designSystem.component.ViewMode
 import com.moscow.cineverse.designSystem.component.ViewModeToggle
+import com.moscow.cineverse.navigation.LocalNavController
 import com.moscow.cineverse.screen.castDetails.toMediaItemUi
 import com.moscow.cineverse.screen.component.movie_poster_card.MoviePosterCard
-import org.koin.androidx.compose.koinViewModel
-import androidx.compose.runtime.getValue
-import androidx.compose.ui.res.stringResource
-import com.moscow.cineverse.navigation.LocalNavController
 import com.moscow.cinverse.presentation.R
+import org.koin.androidx.compose.koinViewModel
 
 
 @Composable
@@ -48,7 +48,7 @@ fun RecommendationMoviesScreen(
         viewModel.uiEvent.collect { event ->
             when(event){
                 RecommendationMoviesEvents.NavigateBack -> {
-                    navController.popBackStack()
+                    navController::navigateUp
                 }
             }
 

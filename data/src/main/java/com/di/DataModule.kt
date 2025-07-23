@@ -1,4 +1,12 @@
 package com.di
 
+import org.koin.dsl.module
 
-val dataModule = remoteSourceModule + localSourceModule + repositoryModule
+
+val dataModule = module{
+    includes(
+        dataSourceModule,
+        localSourceModule,
+        repositoryModule
+    )
+}

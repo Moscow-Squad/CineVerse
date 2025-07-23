@@ -1,16 +1,105 @@
+# ────── Gradle ──────
+.gradle/
+*.gradle
+build/
+!gradle/wrapper/gradle-wrapper.jar
+
+# ────── Android Studio & IntelliJ ──────
 *.iml
-.gradle
-/.idea/caches
-/.idea/libraries
-/.idea/modules.xml
-/.idea/workspace.xml
-/.idea/navEditor.xml
-/.idea/assetWizardSettings.xml
-.DS_Store
-/build
-/captures
-.externalNativeBuild
-.cxx
-/.idea/
+.idea/
+*.ipr
+*.iws
+.idea/*
+*.swp
+*~
+.navigation/
+*/build/
+*/out/
+*/local.properties
+*/*/build/
+*/*/production/
+out/
+
+# ────── Local Configuration ──────
 local.properties
-/local.properties
+keys.properties
+
+# ────── Native Build Artifacts ──────
+.externalNativeBuild/
+.cxx/
+obj/
+captures/
+gen-external-apklibs
+
+# ────── Google Firebase & Services ──────
+app/google-services.json
+com_crashlytics_export_strings.xml
+crashlytics.properties
+crashlytics-build.properties
+fabric.properties
+
+# ────── Build Outputs ──────
+*.apk
+*.ap_
+*.aab
+output.json
+bin/
+gen/
+
+# ────── Profiling, Crash, Log ──────
+*.log
+*.hprof
+hs_err_pid*
+replay_pid*
+
+# ────── Kotlin / Java / Compose ──────
+*.class
+*.dex
+
+# ────── Artifacts ──────
+*.jar
+*.war
+*.nar
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# ────── macOS ──────
+.DS_Store
+
+# ────── Eclipse Legacy ──────
+.classpath
+.project
+.cproject
+.settings/
+
+# ────── Android Studio Project Files ──────
+.idea/caches/
+.idea/libraries/
+.idea/modules.xml
+.idea/workspace.xml
+.idea/navEditor.xml
+.idea/assetWizardSettings.xml
+.idea/tasks.xml
+.idea/shelf/
+.idea/.name
+.idea/compiler.xml
+.idea/copyright/profiles_settings.xml
+.idea/encodings.xml
+.idea/scopes/scope_settings.xml
+.idea/dictionaries
+.idea/vcs.xml
+.idea/jsLibraryMappings.xml
+.idea/datasources.xml
+.idea/dataSources.ids
+.idea/sqlDataSources.xml
+.idea/dynamic.xml
+.idea/uiDesigner.xml
+.idea/gradle.xml
+.idea/jarRepositories.xml
+
+# ────── Plugin-specific Files ──────
+.idea_modules/
+atlassian-ide-plugin.xml
+.idea/mongoSettings.xml

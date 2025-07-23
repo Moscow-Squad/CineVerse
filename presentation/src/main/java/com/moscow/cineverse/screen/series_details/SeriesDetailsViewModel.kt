@@ -14,7 +14,7 @@ class SeriesDetailsViewModel(
     private val getReviewsPageUseCase: GetReviewsPageUseCase,
     private val getLatestSeasonsUseCase: GetLatestSeasonsUseCase,
     private val getListOfSeriesUseCase: GetListOfSeriesUseCase,
-    private val savedStateHandle: SavedStateHandle,
+    savedStateHandle: SavedStateHandle,
     private val rateSeriesUseCase : RateSeriesUseCase
 ) : BaseViewModel<SeriesDetailsUiState, SeriesDetailsEvents>(SeriesDetailsUiState()),
     SeriesInteractionListener {
@@ -86,8 +86,8 @@ class SeriesDetailsViewModel(
     }
 
     fun onRatingSubmit(rating: Int, seriesId: Int) {
-       launchWithFlow(
-           flowAction = { rateSeriesUseCase.rateSeriesUse(rating.toFloat(), seriesId) },
+       launchWithResult(
+           action = { rateSeriesUseCase.rateSeriesUse(rating.toFloat(), seriesId) },
            onSuccess = {
                updateState { it.copy(
                    starsRating = rating,
