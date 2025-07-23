@@ -3,7 +3,6 @@ package com.moscow.cineverse.designSystem.component.home
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -18,7 +17,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -26,6 +24,8 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.example.design_system.R
 import com.example.image_viewer.component.SafeImageViewer
+import com.moscow.cineverse.designSystem.component.blur.OnBlurContent
+import com.moscow.cineverse.designSystem.component.blur.RemoteImagePlaceholder
 import com.moscow.cineverse.designSystem.theme.CineVerseTheme
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.designSystem.theme.ThemeState
@@ -45,17 +45,24 @@ fun CollectionItem(
                     .clickable { onClick() },
                 contentAlignment = Alignment.BottomCenter
             ) {
-//                SafeImageViewer(
-//                    model = imageURL,
-//                    contentDescription = stringResource(R.string.collection_image),
-//                    contentScale = ContentScale.FillWidth,
-//                    modifier = Modifier
-//                        .fillMaxWidth()
-//                        .height(80.dp),
-//                    onLoading = { it.painter },
-//                    fallback = painterResource(if (isSystemInDarkTheme()) R.drawable.loading_dark else R.drawable.loading_light),
-//                    placeholder = painterResource(if (isSystemInDarkTheme()) R.drawable.loading_dark else R.drawable.loading_light)
-//                )
+                SafeImageViewer(
+                    imageUrl = imageURL,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(80.dp),
+                    placeholderContent = { RemoteImagePlaceholder() },
+                    errorContent = { RemoteImagePlaceholder() },
+                    onBlurContent = {
+                        OnBlurContent(
+                            icon = painterResource(R.drawable.icon_eye_slash),
+                            hintText = stringResource(R.string.unsuitable_image),
+                            textStyle = Theme.textStyle.body.small.regular.copy(
+                                color = Color(0x99FFFFFF)
+                            ),
+                            iconSize = 24.dp,
+                        )
+                    }
+                )
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
