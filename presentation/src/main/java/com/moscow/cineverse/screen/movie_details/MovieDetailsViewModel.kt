@@ -7,20 +7,20 @@ import com.android.domain.model.CreditsDetails
 import com.android.domain.model.Movie
 import com.android.domain.model.Review
 import com.android.domain.model.details.MovieDetail
-import com.android.domain.usecase.GetCreditsUseCase
-import com.android.domain.usecase.GetMovieDetailUseCase
-import com.android.domain.usecase.GetRecommendationsUseCase
-import com.android.domain.usecase.GetReviewsPageUseCase
-import com.android.domain.usecase.RateMovieUseCase
+import com.android.domain.usecase.movie.GetMovieCreditsUseCase
+import com.android.domain.usecase.movie.GetMovieDetailsUseCase
+import com.android.domain.usecase.movie.GetMovieRecommendationsUseCase
+import com.android.domain.usecase.review.GetReviewsUseCase
+import com.android.domain.usecase.movie.RateMovieUseCase
 import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.cineverse.navigation.routes.MovieDetailsRoute
 
 
 class MovieDetailsViewModel(
-    private val getMovieDetailsUseCase: GetMovieDetailUseCase,
-    private val getReviewsPageUseCase: GetReviewsPageUseCase,
-    private val getCreditsUseCase: GetCreditsUseCase,
-    private val getRecommendationsUseCase: GetRecommendationsUseCase,
+    private val getMovieDetailsUseCase: GetMovieDetailsUseCase,
+    private val getReviewsUseCase: GetReviewsUseCase,
+    private val getMovieCreditsUseCase: GetMovieCreditsUseCase,
+    private val getMovieRecommendationsUseCase: GetMovieRecommendationsUseCase,
     private val rateMovieUseCase: RateMovieUseCase,
     saveStateHandle: SavedStateHandle,
 ) : BaseViewModel<MovieScreenState, MovieDetailsScreenEvents>(MovieScreenState()),
@@ -53,7 +53,7 @@ class MovieDetailsViewModel(
 
     fun getReviews(movieID: Int) {
         launchWithResult(
-            action = { getReviewsPageUseCase(movieID, 1, true) },
+            action = { getReviewsUseCase(movieID, 1, true) },
             onSuccess = ::onGetReviewSuccess,
             onStart = ::onLoading,
             onError = ::getReviewFailed,
@@ -68,7 +68,7 @@ class MovieDetailsViewModel(
     }
         fun getCredits(movieID: Int) {
             launchWithResult(
-                action = { getCreditsUseCase(movieID) },
+                action = { getMovieCreditsUseCase(movieID) },
                 onSuccess = ::onGetCreditsSuccess,
                 onError = ::getCreditsFailed,
             )
@@ -91,7 +91,7 @@ class MovieDetailsViewModel(
 
         fun getRecommendations(movieID: Int) {
             launchWithResult(
-                action = { getRecommendationsUseCase(movieID, 1) },
+                action = { getMovieRecommendationsUseCase(movieID, 1) },
                 onSuccess = ::onGetRecommendationsSuccess,
                 onError = ::getRecommendationsFailed,
             )
@@ -164,7 +164,7 @@ class MovieDetailsViewModel(
 
     override fun onRatingSubmit(rating: Int, movieId: Int) {
         launchWithResult(
-            action = { rateMovieUseCase.rateMovie(rating.toFloat(), movieId) },
+            action = { rateMovieUseCase.invoke(rating.toFloat(), movieId) },
             onSuccess = {
                 updateState { it.copy(
                     starsRating = rating,

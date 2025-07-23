@@ -1,10 +1,10 @@
 package com.moscow.cineverse.screen.castDetails.gallery
 
-import com.android.domain.usecase.actordetails.GetActorGallery
+import com.android.domain.usecase.actor.GetActorGalleryUseCase
 import com.moscow.cineverse.base.BaseViewModel
 
 class ActorGalleryViewModel(
-    private val getActorGallery: GetActorGallery,
+    private val getActorGalleryUseCase: GetActorGalleryUseCase,
     actorId: Int,
     actorName: String,
 ) : BaseViewModel<ShowAllActorMoviesState, ActorGalleryEvents>(ShowAllActorMoviesState()),
@@ -22,7 +22,7 @@ class ActorGalleryViewModel(
     fun getActorPhotos() {
         launchWithResult(
             action = {
-                getActorGallery.getActorGallery(uiState.value.actorId)
+                getActorGalleryUseCase.invoke(uiState.value.actorId)
             },
             onSuccess = ::onGetActorPhotosSuccess,
             onError = ::onGetActorPhotosFailed,

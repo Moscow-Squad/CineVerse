@@ -1,17 +1,17 @@
 package com.moscow.cineverse.screen.series_details
 
 import androidx.lifecycle.SavedStateHandle
-import com.android.domain.usecase.GetReviewsPageUseCase
-import com.android.domain.usecase.RateSeriesUseCase
-import com.android.domain.usecase.seriesdetails.GetLatestSeasonsUseCase
-import com.android.domain.usecase.seriesdetails.GetListOfSeriesUseCase
-import com.android.domain.usecase.seriesdetails.GetSeriesDetailUseCase
+import com.android.domain.usecase.review.GetReviewsUseCase
+import com.android.domain.usecase.series.RateSeriesUseCase
+import com.android.domain.usecase.series.GetLatestSeasonsUseCase
+import com.android.domain.usecase.series.GetListOfSeriesUseCase
+import com.android.domain.usecase.series.GetSeriesDetailUseCase
 import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.cineverse.navigation.routes.SeriesDetailsRoute
 
 class SeriesDetailsViewModel(
     private val getSeriesDetailUseCase: GetSeriesDetailUseCase,
-    private val getReviewsPageUseCase: GetReviewsPageUseCase,
+    private val getReviewsUseCase: GetReviewsUseCase,
     private val getLatestSeasonsUseCase: GetLatestSeasonsUseCase,
     private val getListOfSeriesUseCase: GetListOfSeriesUseCase,
     savedStateHandle: SavedStateHandle,
@@ -41,7 +41,7 @@ class SeriesDetailsViewModel(
     fun loadReviews(seriesId: Int, page: Int) {
         updateState { it.copy(isLoading = true, error = null) }
         launchWithResult(
-            action = { getReviewsPageUseCase(seriesId, page, isMovie = false) },
+            action = { getReviewsUseCase(seriesId, page, isMovie = false) },
             onSuccess = { reviews ->
                 updateState { it.copy(reviews = reviews, isLoading = false) }
             },

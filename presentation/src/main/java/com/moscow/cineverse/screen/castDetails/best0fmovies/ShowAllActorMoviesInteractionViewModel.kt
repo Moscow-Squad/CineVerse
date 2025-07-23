@@ -1,14 +1,14 @@
 package com.moscow.cineverse.screen.castDetails.best0fmovies
 
 import com.android.domain.model.Movie
-import com.android.domain.usecase.GenreUseCase
-import com.android.domain.usecase.actordetails.GetActorBestOfMovies
+import com.android.domain.usecase.genre.GenreUseCase
+import com.android.domain.usecase.actor.GetActorBestMoviesUseCase
 import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.cineverse.designSystem.component.ViewMode
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 class ShowAllActorMoviesInteractionViewModel(
-    private val getActorBestOfMovies: GetActorBestOfMovies,
+    private val getActorBestMoviesUseCase: GetActorBestMoviesUseCase,
     actorId: Int,
     private val genreUseCase: GenreUseCase
 ) : BaseViewModel<ShowAllActorMoviesState, ShowAllActorMoviesEvents>(ShowAllActorMoviesState()),
@@ -25,7 +25,7 @@ class ShowAllActorMoviesInteractionViewModel(
             action = {
                 val genres = genreUseCase.getMoviesGenres()
                 updateState { it.copy(moviesGenres = genres.map { genre -> genre.toUi() }) }
-                getActorBestOfMovies.getActorBestOfMovies(uiState.value.actorId)
+                getActorBestMoviesUseCase.invoke(uiState.value.actorId)
             },
             onSuccess = ::onGetMovieSuccess,
             onError = ::onGetMovieFailed,
