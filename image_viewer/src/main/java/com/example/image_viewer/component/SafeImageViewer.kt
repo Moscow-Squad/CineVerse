@@ -1,6 +1,5 @@
 package com.example.image_viewer.component
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -45,7 +44,6 @@ fun SafeImageViewer(
     var requestState by rememberSaveable { mutableStateOf(RequestState.LOADING) }
 
     LaunchedEffect(imageUrl) {
-        Log.e("hzm", "SafeImageViewer: $imageUrl")
         val loader = ImageLoader(context)
         val request = ImageRequest.Builder(context).data(imageUrl).allowHardware(false).build()
 
