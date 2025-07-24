@@ -42,7 +42,7 @@ inline fun <reified T> Module.bindService() {
     single { get<Retrofit>().create(T::class.java) }
 }
 
-val dataSourceModule = module {
+val remoteDataSourceModule = module {
 
     single { HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BODY } }
     singleOf(::CineVerseInterceptor)

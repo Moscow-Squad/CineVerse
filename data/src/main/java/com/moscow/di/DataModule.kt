@@ -4,7 +4,8 @@ import org.koin.dsl.module
 
 val dataModule = module{
     includes(
-        dataSourceModule,
+        systemModule,
+        remoteDataSourceModule,
         localSourceModule,
     )
 }
