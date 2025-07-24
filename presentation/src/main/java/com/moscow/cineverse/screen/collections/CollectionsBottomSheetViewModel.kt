@@ -3,18 +3,17 @@ package com.moscow.cineverse.screen.collections
 import androidx.lifecycle.SavedStateHandle
 import com.android.domain.model.Collection
 import com.android.domain.model.MediaType
-import com.android.domain.usecase.AddMediaItemToCollectionUseCase
-import com.android.domain.usecase.GetUserCollectionsUseCase
+import com.android.domain.usecase.collection.AddMediaItemToCollectionUseCase
+import com.android.domain.usecase.collection.GetUserCollectionsUseCase
 import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.cineverse.navigation.routes.CollectionsBottomSheetRoute
-import com.moscow.cineverse.screen.model.toUi
 
 class CollectionsBottomSheetViewModel(
     private val getUserCollections: GetUserCollectionsUseCase,
     private val addMediaItemToCollectionUseCase: AddMediaItemToCollectionUseCase,
     savedStateHandle: SavedStateHandle
-) : BaseViewModel<CollectionsBottomSheetUiState, CollectionsBottomSheetEvents>(
-    CollectionsBottomSheetUiState()
+) : BaseViewModel<CollectionsBottomSheetScreenState, CollectionsBottomSheetEffect>(
+    CollectionsBottomSheetScreenState()
 ), CollectionsBottomSheetInteractionListener {
 
     val mediaItemId: Int = savedStateHandle.get<Int>(CollectionsBottomSheetRoute.MEDIA_ITEM_ID) ?: 0
@@ -29,7 +28,7 @@ class CollectionsBottomSheetViewModel(
     override fun onCollectionClicked(collectionId: Int) {
         launchWithResult(
             action = {
-                addMediaItemToCollectionUseCase.addMediaItemToCollection(
+                addMediaItemToCollectionUseCase.invoke(
                     mediaItemId = mediaItemId,
                     mediaItemType = mediaItemType,
                     collectionId = collectionId
@@ -52,8 +51,8 @@ class CollectionsBottomSheetViewModel(
         )
     }
 
-    private fun onAddMediaItemToCollectionSuccess(message: String = "Movie added successfully") {
-        sendEvent(CollectionsBottomSheetEvents.OnMovieAddedSuccessfully(message))
+    private fun onAddMediaItemToCollectionSuccess(message: String) {
+        sendEvent(CollectionsBottomSheetEffect.OnMovieAddedSuccessfully("Movie added successfully"))
     }
 
     private fun onAddMediaItemToCollectionFailed(e: Throwable) {
@@ -111,5 +110,4 @@ class CollectionsBottomSheetViewModel(
     private fun onFinally() {
         updateState { it.copy(isLoading = false) }
     }
-
 }

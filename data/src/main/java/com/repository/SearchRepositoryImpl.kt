@@ -56,7 +56,7 @@ class SearchRepositoryImpl(
     }
 
     override suspend fun getRemoteSuggestions(keyWord: String, page: Int): List<String> {
-        return searchRemoteDataSource.getSuggestions(
+        return searchRemoteDataSource.searchByKeyword(
             keyWord,
             page,
             false

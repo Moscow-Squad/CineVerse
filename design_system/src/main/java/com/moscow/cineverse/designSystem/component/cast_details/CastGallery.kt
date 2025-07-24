@@ -21,7 +21,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -29,6 +28,8 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.example.design_system.R
 import com.example.image_viewer.component.SafeImageViewer
+import com.moscow.cineverse.designSystem.component.blur.OnBlurContent
+import com.moscow.cineverse.designSystem.component.blur.RemoteImagePlaceholder
 import com.moscow.cineverse.designSystem.theme.CineVerseTheme
 import com.moscow.cineverse.designSystem.theme.Theme
 
@@ -79,13 +80,20 @@ fun CastGalleryItem(
         modifier: Modifier
     ) {
         SafeImageViewer(
-            model = imageUrl,
-            contentDescription = stringResource(R.string.cast_image),
-            contentScale = ContentScale.Crop,
+            imageUrl = imageUrl,
             modifier = modifier.then(imageFlipModifier),
-            onLoading = { it.painter },
-            fallback = painterResource(R.drawable.due_tone_image),
-            placeholder = painterResource(R.drawable.due_tone_image)
+            placeholderContent = { RemoteImagePlaceholder() },
+            errorContent = { RemoteImagePlaceholder() },
+            onBlurContent = {
+                OnBlurContent(
+                    icon = painterResource(R.drawable.icon_eye_slash),
+                    hintText = stringResource(R.string.unsuitable_image),
+                    textStyle = Theme.textStyle.body.small.regular.copy(
+                        color = Color(0x99FFFFFF)
+                    ),
+                    iconSize = 24.dp,
+                )
+            }
         )
     }
 

@@ -1,12 +1,12 @@
 package com.di
 
-import com.data_source.remote.ActorDetailsRemoteDataSource
-import com.data_source.remote.CollectionsDataSource
-import com.data_source.remote.DetailsRemoteDataSource
-import com.data_source.remote.ExploreRemoteDataSource
-import com.data_source.remote.RecommendationsRemoteDataSource
-import com.data_source.remote.ReviewsRemoteDataSource
+import com.data_source.remote.ActorRemoteDataSource
+import com.data_source.remote.CollectionRemoteDataSource
+import com.data_source.remote.GenreRemoteDataSource
+import com.data_source.remote.LoginRemoteDataSource
+import com.data_source.remote.MovieRemoteDataSource
 import com.data_source.remote.SearchRemoteDataSource
+import com.data_source.remote.SeriesRemoteDataSource
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import com.remote.interceptors.CineverseInterceptor
 import com.remote.services.*
@@ -61,13 +61,13 @@ val dataSourceModule = module {
     }
 
     // Retrofit Services
-    bindService<ActorDetailsService>()
-    bindService<ExploreService>()
+    bindService<ActorService>()
+    bindService<GenreService>()
     bindService<CollectionsService>()
-    bindService<DetailsService>()
-    bindService<RecommendationsService>()
-    bindService<ReviewsService>()
+    bindService<MovieService>()
+    bindService<SeriesService>()
     bindService<SearchService>()
+    bindService<LoginService>()
 
     // Remote Data Sources
     singleOf(::SearchRemoteDataSourceImpl) bind SearchRemoteDataSource::class
@@ -78,4 +78,5 @@ val dataSourceModule = module {
     singleOf(::ReviewsRemoteDataSourceImpl) bind ReviewsRemoteDataSource::class
     singleOf(::RecommendationsRemoteDataSourceImpl) bind RecommendationsRemoteDataSource::class
     singleOf(::HomeRemoteDataSource)
+
 }

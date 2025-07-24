@@ -54,6 +54,7 @@ fun MessageInfoBox(
             contentAlignment = Alignment.Center
         ) {
             Image(
+                modifier = Modifier.size(28.dp),
                 painter = icon,
                 contentDescription = stringResource(R.string.arrow_left),
                 colorFilter = ColorFilter.tint(Theme.colors.brand.primary)

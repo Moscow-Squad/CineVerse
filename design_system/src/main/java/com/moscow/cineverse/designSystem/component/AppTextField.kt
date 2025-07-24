@@ -8,11 +8,13 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
@@ -33,6 +35,7 @@ import androidx.compose.ui.unit.dp
 import com.example.design_system.R
 import com.moscow.cineverse.designSystem.theme.CineVerseTheme
 import com.moscow.cineverse.designSystem.theme.Theme
+import com.moscow.cineverse.designSystem.theme.ThemeState
 
 @Composable
 fun AppTextField(
@@ -45,6 +48,7 @@ fun AppTextField(
     isPassword: Boolean = false,
     trailingIcon: @Composable (() -> Unit)? = null,
     leadingIcon: Int,
+    leadingIconTint: Color = LocalContentColor.current,
     singleLine: Boolean = true,
     maxLines: Int = 1,
     enabled: Boolean = true,
@@ -53,7 +57,7 @@ fun AppTextField(
     label: String? = null,
     forgotPasswordClick: (() -> Unit)? = null
 ) {
-    var passwordVisible by remember { mutableStateOf(false) }
+    var passwordVisible by remember { mutableStateOf(true) }
 
     Column(
         verticalArrangement = Arrangement.spacedBy(8.dp),
@@ -94,9 +98,10 @@ fun AppTextField(
             enabled = enabled,
             leadingIcon = {
                 Icon(
-                    painter = painterResource(leadingIcon),
+                    modifier = Modifier.size(20.dp),
+                    painter = painterResource(leadingIcon) ,
                     contentDescription = "leading icon",
-                    tint = Theme.colors.shade.tertiary
+                    tint = leadingIconTint
                 )
             },
             trailingIcon = {
@@ -107,12 +112,14 @@ fun AppTextField(
                                 R.drawable.outline_eye_closed
                             )
                         IconButton(onClick = { passwordVisible = !passwordVisible }) {
-                            Icon(painter = image, contentDescription = "Toggle password visibility")
+                            Icon(painter = image, contentDescription = "Toggle password visibility"
+                            , modifier = Modifier.size(20.dp))
                         }
                     }
 
                     isError -> {
                         Icon(
+                            modifier = Modifier.size(20.dp),
                             painter = painterResource(R.drawable.outline_danger_triangle),
                             contentDescription = "Error",
                             tint = Theme.colors.additional.primary.red
@@ -130,6 +137,7 @@ fun AppTextField(
             shape = RoundedCornerShape(Theme.radius.large),
             colors = OutlinedTextFieldDefaults.colors(
                 focusedTextColor = Theme.colors.shade.primary,
+                unfocusedTextColor = Theme.colors.shade.primary,
                 focusedBorderColor = Theme.colors.brand.primary,
                 unfocusedBorderColor = Theme.colors.stroke.primary,
                 errorBorderColor = Theme.colors.additional.primary.red,
@@ -177,7 +185,8 @@ private fun PreviewBasicAppTextField() {
             value = text,
             onValueChange = { text = it },
             placeholder = "Enter your name",
-            leadingIcon = R.drawable.due_tone_profile
+            leadingIcon = R.drawable.outline_user,
+            leadingIconTint = Theme.colors.shade.tertiary
         )
     }
 }
@@ -194,7 +203,8 @@ private fun PreviewPasswordAppTextField() {
             onValueChange = { password = it },
             placeholder = "Password",
             isPassword = true,
-            leadingIcon = R.drawable.due_tone_profile
+            leadingIcon = R.drawable.due_tone_profile,
+            leadingIconTint = Theme.colors.shade.tertiary
         )
     }
 }
@@ -212,7 +222,8 @@ private fun PreviewErrorAppTextField() {
             placeholder = "Email",
             isError = true,
             errorMessage = "Error Message",
-            leadingIcon = R.drawable.due_tone_profile
+            leadingIcon = R.drawable.due_tone_profile,
+            leadingIconTint = Theme.colors.shade.tertiary
         )
     }
 }

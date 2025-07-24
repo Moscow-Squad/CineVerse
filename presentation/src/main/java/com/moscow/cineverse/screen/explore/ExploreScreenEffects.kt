@@ -1,0 +1,16 @@
+package com.moscow.cineverse.screen.explore
+
+import com.android.domain.model.Genre
+import com.moscow.cineverse.designSystem.component.ViewMode
+import com.moscow.cineverse.designSystem.component.tabs.ExploreTabsPages
+
+sealed class ExploreScreenEffects {
+    data class GenreSelected(val genre: Genre) : ExploreScreenEffects()
+    data class ViewModeChanged(val viewMode: ViewMode) : ExploreScreenEffects()
+    data class MovieClicked(val movieId: Int) : ExploreScreenEffects()
+    data class SeriesClicked(val seriesId: Int) : ExploreScreenEffects()
+    data class TabSelected(val tab: ExploreTabsPages) : ExploreScreenEffects()
+    object RefreshRequested : ExploreScreenEffects()
+    object LoadData : ExploreScreenEffects()
+    data class ActorClicked(val actorId: Int) : ExploreScreenEffects()
+}

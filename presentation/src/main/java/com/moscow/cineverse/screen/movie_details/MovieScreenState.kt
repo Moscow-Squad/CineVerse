@@ -1,19 +1,20 @@
 package com.moscow.cineverse.screen.movie_details
 
-import com.moscow.cineverse.screen.model.MediaItemUi
+import com.moscow.cineverse.common_ui_state.MediaItemUiState
+import com.moscow.cineverse.common_ui_state.ReviewUiState
+import com.moscow.cineverse.common_ui_state.StarCastUiState
 import kotlinx.datetime.LocalDate
 
 
 data class MovieScreenState(
-
-    val movieDetailsUi: MovieDetailsUi? = null,
-    val reviewsFlow: List<ReviewUi>? = null,
-    val starCast:List<StarCastUi>? = null,
+    val movieDetailsUiState: MovieDetailsUiState? = null,
+    val reviewsFlow: List<ReviewUiState>? = null,
+    val starCast:List<StarCastUiState>? = null,
     val characters: List<String> = emptyList(),
     val director:List<String> = emptyList(),
     val produce: List<String> = emptyList(),
     val writer: List<String> = emptyList(),
-    val recommendations:List<MediaItemUi> = emptyList(),
+    val recommendations:List<MediaItemUiState> = emptyList(),
     val isLoading: Boolean = false,
     val error: String? = null,
     val isReviewEmpty: Boolean = false,
@@ -26,7 +27,7 @@ data class MovieScreenState(
 
     ) {
 
-    data class MovieDetailsUi(
+    data class MovieDetailsUiState(
         val id: Int ,
         val title: String ,
         val posterPath: String,
@@ -36,37 +37,4 @@ data class MovieScreenState(
         val duration: Int,
         val description: String
     )
-    data class StarCastUi(
-        val id:Int,
-        val originalName:String,
-        val characterName:String,
-        val profileImage:String
-    )
-    data class CrewUi(
-        val id:Int,
-        val name:String,
-        val job:String
-    )
-
-    data class ReviewUi(
-        val id: String,
-        val name:String,
-        val username:String,
-        val rate:Int,
-        val reviewContent:String,
-        val date: String,
-        val userImage:String
-    )
-
-    data class GenreUi(
-        val id: Int,
-        val name: String
-    )
-
-    data class MovieUi(
-        val id:Int,
-        val name:String,
-        val poster:String
-    )
 }
-

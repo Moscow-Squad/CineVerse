@@ -2,7 +2,7 @@ name: CI – Test Coverage Check
 
 on:
   pull_request:
-    branches: [main, develop]
+    branches: [ main, develop ]
 
 jobs:
   test-coverage:
@@ -10,83 +10,27 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
           java-version: 17
           distribution: temurin
+          cache: gradle
 
-      - name: Cache Gradle
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: gradle-cache-${{ hashFiles('**/gradle-wrapper.properties', '**/*.gradle*', '**/settings.gradle*', '**/libs.versions.toml') }}
-          restore-keys: |
-            gradle-cache-${{ runner.os }}-
-            gradle-cache-
-
-      - name: Make gradlew executable
-        run: chmod +x ./gradlew
-
-      - name: Prepare google-services.json
-        shell: bash
+      - name: Create google-services.json
         run: |
-          if [ -n "${{ secrets.GOOGLE_SERVICES_JSON_BASE64 }}" ]; then
-            echo "✅  Decoding google-services.json from secret…"
-            echo "${{ secrets.GOOGLE_SERVICES_JSON_BASE64 }}" | base64 -d > app/google-services.json
-            grep -q '"project_info"' app/google-services.json
-          else
-            echo "ℹ️  Secret missing – using stub google-services.json"
-            printf '%s\n' \
-              '{' \
-              '  "project_info": {' \
-              '    "project_number": "000000000000",' \
-              '    "project_id": "stub-project"' \
-              '  }' \
-              '}' > app/google-services.json
-          fi
-
-      - name: Create local.properties
+           echo "${{ secrets.GOOGLE_SERVICES_JSON }}" | base64 -d > app/google-services.json
+      - name: Generate keys.properties
         run: |
-          echo "sdk.dir=$ANDROID_SDK_ROOT" > local.properties
-          echo "api_key=\"${{ secrets.TMDB_API_KEY }}\"" >> local.properties
+          echo "BEARER_TOKEN=${{ secrets.BEARER_TOKEN }}" > keys.properties
+      - name: Run Coverage
+        run: |
+            chmod +x gradlew
+      - name: Clean project
+        run: ./gradlew clean
 
-      - name: Run Unit Tests & Generate Coverage
-        run: ./gradlew test koverXmlReport koverHtmlReport koverVerify
 
-      - name: Upload Coverage Report
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: kover-coverage-report
-          path: build/reports/kover/report.xml
-
-  analyze-pr:
-    name: Comment PR with Coverage Summary
-    needs: test-coverage
-    if: github.event_name == 'pull_request' && always()
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-
-      - name: Download Kover Report
-        uses: actions/download-artifact@v4
-        with:
-          name: kover-coverage-report
-          path: build/reports/kover/
-
-      - name: Comment PR with Coverage Stats
-        uses: mi-kas/kover-report@v1
-        with:
-          path: build/reports/kover/report.xml
-          token: ${{ secrets.GITHUB_TOKEN }}
-          min-coverage-overall: 80
-          min-coverage-changed-files: 80
-          update-comment: true
-          title: Code Coverage Summary
+      - name: Run unit tests + Kover
+        run: ./gradlew test koverVerify koverXmlReport koverHtmlReport -PdisableGoogleServices=true
