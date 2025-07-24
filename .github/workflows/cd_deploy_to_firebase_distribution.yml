@@ -29,6 +29,8 @@ jobs:
       - name: Generate keys.properties
         run: |
           echo "BEARER_TOKEN=${{ secrets.BEARER_TOKEN }}" > keys.properties
+          
+
       - name: Make gradlew executable
         run: chmod +x ./gradlew
 
