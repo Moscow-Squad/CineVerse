@@ -1,6 +1,7 @@
 name: CD deploy to Firebase Distribution
 
 on:
+#  //todo setenv it to push
   pull_request:
     branches: [ develop ]
 
@@ -29,8 +30,8 @@ jobs:
 
       - name: Save Service Account Key
         env:
-          FIREBASE_SERVICE_ACCOUNT_KEY: ${{ secrets.GOOGLE_SERVICES_JSON }}
-        run: echo "${{ secrets.GOOGLE_SERVICES_JSON }}" | base64 -d > app/google-services.json
+          FIREBASE_SERVICE_ACCOUNT_KEY: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_KEY }}
+        run: echo "$FIREBASE_SERVICE_ACCOUNT_KEY" > service-account-key.json
 
       - name: Generate keys.properties
         run: |
