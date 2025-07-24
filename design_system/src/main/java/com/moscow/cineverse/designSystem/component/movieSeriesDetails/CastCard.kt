@@ -13,6 +13,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.painterResource
@@ -21,6 +22,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.design_system.R
 import com.example.image_viewer.component.SafeImageViewer
+import com.moscow.cineverse.designSystem.component.blur.OnBlurContent
+import com.moscow.cineverse.designSystem.component.blur.RemoteImagePlaceholder
 import com.moscow.cineverse.designSystem.theme.CineVerseTheme
 import com.moscow.cineverse.designSystem.theme.Theme
 
@@ -28,9 +31,9 @@ import com.moscow.cineverse.designSystem.theme.Theme
 fun <T> CastCard(
     modifier: Modifier = Modifier,
     castMember: T,
-    getOriginalName:(T) -> String,
-    getCharacterName:(T) -> String,
-    getProfileImage:(T) -> String
+    getOriginalName: (T) -> String,
+    getCharacterName: (T) -> String,
+    getProfileImage: (T) -> String
 ) {
     val isPreview = LocalInspectionMode.current
     Row(
@@ -55,22 +58,30 @@ fun <T> CastCard(
                 contentScale = ContentScale.Crop
             )
         } else {
-//            SafeImageViewer(
-//                model = getProfileImage(castMember),
-//                contentDescription = stringResource(R.string.cast_member_image),
-//                placeholder = painterResource(R.drawable.due_tone_profile),
-//                fallback = painterResource(R.drawable.due_tone_profile),
-//                modifier = Modifier
-//                    .size(64.dp)
-//                    .clip(
-//                        RoundedCornerShape(
-//                            topEnd = Theme.radius.large,
-//                            topStart = Theme.radius.large,
-//                            bottomStart = Theme.radius.large
-//                        )
-//                    ),
-//                contentScale = ContentScale.Crop
-//            )
+            SafeImageViewer(
+                imageUrl = getProfileImage(castMember),
+                modifier = Modifier
+                    .size(64.dp)
+                    .clip(
+                        RoundedCornerShape(
+                            topEnd = Theme.radius.large,
+                            topStart = Theme.radius.large,
+                            bottomStart = Theme.radius.large
+                        )
+                    ),
+                placeholderContent = { RemoteImagePlaceholder() },
+                errorContent = { RemoteImagePlaceholder() },
+                onBlurContent = {
+                    OnBlurContent(
+                        icon = painterResource(R.drawable.icon_eye_slash),
+                        hintText = stringResource(R.string.unsuitable_image),
+                        textStyle = Theme.textStyle.body.small.regular.copy(
+                            color = Color(0x99FFFFFF)
+                        ),
+                        iconSize = 24.dp,
+                    )
+                }
+            )
         }
         Column(
             modifier = Modifier.padding(12.dp),

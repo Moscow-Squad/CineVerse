@@ -29,11 +29,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.design_system.R
 import com.example.image_viewer.component.SafeImageViewer
 import com.moscow.cineverse.designSystem.component.MovieFloatingButton
+import com.moscow.cineverse.designSystem.component.blur.OnBlurContent
+import com.moscow.cineverse.designSystem.component.blur.RemoteImagePlaceholder
 import com.moscow.cineverse.designSystem.theme.Theme
 
 @OptIn(ExperimentalSharedTransitionApi::class)
@@ -78,15 +81,25 @@ fun MovieCardDetails(
                     contentScale = ContentScale.Crop
                 )
             } else {
-//                SafeImageViewer(
-//                    model = posterUrl,
-//                    contentDescription = "Image",
-//                    modifier = Modifier
-//                        .height(289.dp)
-//                        .width(216.dp)
-//                        .clip(RoundedCornerShape(Theme.radius.extraLarge)),
-//                    contentScale = ContentScale.Crop
-//                )
+                SafeImageViewer(
+                    imageUrl = posterUrl,
+                    modifier = Modifier
+                        .height(289.dp)
+                        .width(216.dp)
+                        .clip(RoundedCornerShape(Theme.radius.extraLarge)),
+                    placeholderContent = { RemoteImagePlaceholder() },
+                    errorContent = { RemoteImagePlaceholder() },
+                    onBlurContent = {
+                        OnBlurContent(
+                            icon = painterResource(R.drawable.icon_eye_slash),
+                            hintText = stringResource(R.string.unsuitable_image),
+                            textStyle = Theme.textStyle.body.small.regular.copy(
+                                color = Color(0x99FFFFFF)
+                            ),
+                            iconSize = 24.dp,
+                        )
+                    }
+                )
             }
             DetailCard(
                 modifier,

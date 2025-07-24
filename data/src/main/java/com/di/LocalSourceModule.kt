@@ -1,11 +1,17 @@
 package com.di
 
+import android.content.Context
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.PreferenceDataStoreFactory
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.preferencesDataStoreFile
 import androidx.room.Room
 import com.local.DetailsLocalDataSourceImpl
 import com.local.SearchLocalDataSourceImpl
 import com.local.database.CineVerseDataBase
 import com.data_source.local.DetailsLocalDataSource
 import com.data_source.local.SearchLocalDataSource
+import org.koin.android.ext.koin.androidApplication
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.bind
@@ -30,5 +36,16 @@ val localSourceModule = module {
     singleOf(CineVerseDataBase::favouriteGenreDao)
     singleOf(::SearchLocalDataSourceImpl) bind SearchLocalDataSource::class
     singleOf(::DetailsLocalDataSourceImpl) bind DetailsLocalDataSource::class
+
+    single<Context> {
+        androidApplication()
+    }
+    single<DataStore<Preferences>> {
+        PreferenceDataStoreFactory.create(
+            produceFile = {
+                get<Context>().preferencesDataStoreFile("cineverse_preferences")
+            }
+        )
+    }
 }
 

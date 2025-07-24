@@ -27,11 +27,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.design_system.R
 import com.example.image_viewer.component.SafeImageViewer
+import com.moscow.cineverse.designSystem.component.blur.OnBlurContent
+import com.moscow.cineverse.designSystem.component.blur.RemoteImagePlaceholder
 import com.moscow.cineverse.designSystem.theme.Theme
 
 @Composable
@@ -75,14 +78,25 @@ fun MainDetails(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
             ) {
-//                SafeImageViewer(
-//                    model = profileImage,
-//                    contentDescription = "Profile Image",
-//                    contentScale = ContentScale.Crop,
-//                    modifier = Modifier
-//                        .size(imageSize)
-//                        .clip(if (isCollapsed) CircleShape else RoundedCornerShape(cornerSize))
-//                )
+
+                SafeImageViewer(
+                    imageUrl = profileImage,
+                    modifier = Modifier
+                        .size(imageSize)
+                        .clip(if (isCollapsed) CircleShape else RoundedCornerShape(cornerSize)),
+                    placeholderContent = { RemoteImagePlaceholder() },
+                    errorContent = { RemoteImagePlaceholder() },
+                    onBlurContent = {
+                        OnBlurContent(
+                            icon = painterResource(R.drawable.icon_eye_slash),
+                            hintText = stringResource(R.string.unsuitable_image),
+                            textStyle = Theme.textStyle.body.small.regular.copy(
+                                color = Color(0x99FFFFFF)
+                            ),
+                            iconSize = 24.dp,
+                        )
+                    }
+                )
                 Column(modifier = Modifier.padding(start = 12.dp)) {
                     Text(
                         text = name,

@@ -5,8 +5,11 @@ import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -30,6 +33,7 @@ fun MovieButton(
     textColor: Color,
     textStyle: TextStyle,
     onClick: () -> Unit,
+    textPadding: PaddingValues = PaddingValues(),
     modifier: Modifier = Modifier,
     buttonColor: Color = Color.Transparent,
     cornerRadius: Dp = Theme.radius.large,
@@ -45,24 +49,33 @@ fun MovieButton(
     )
 
     Row(
-        modifier = Modifier
+        modifier = modifier
+            .height(48.dp)
             .background(backgroundColor, RoundedCornerShape(cornerRadius))
-            .clickable { if (enable) onClick() }
-            .then(modifier),
+            .clickable(enabled = enable, onClick = onClick),
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
     )
     {
 
         AnimatedContent(isLoading) { state ->
-            if (state == false)
+            if(!state){
                 Text(
+                    modifier = Modifier.padding(textPadding),
                     text = buttonText,
                     color = color,
                     style = textStyle
                 )
-
-            // TODO:should show circular progress bar when isLoading is true
+            }else{
+                MovieCircularProgressBar(
+                    modifier = Modifier.size(24.dp),
+                    strokeWidth = 3.dp,
+                    gradientColors = listOf(
+                        Theme.colors.brand.primary,
+                        Theme.colors.brand.tertiary
+                    )
+                )
+            }
         }
     }
 }
@@ -70,10 +83,11 @@ fun MovieButton(
 @Preview
 @Composable
 private fun PreviewButton() {
-    var isLoading by remember { mutableStateOf(false) }
+    var isLoading by remember { mutableStateOf(true) }
     var isEnabled by remember { mutableStateOf(true) }
     CineVerseTheme {
         MovieButton(
+            buttonColor = Theme.colors.button.primary,
             buttonText = "Login",
             textColor = Theme.colors.button.onPrimary,
             textStyle = Theme.textStyle.title.small,
