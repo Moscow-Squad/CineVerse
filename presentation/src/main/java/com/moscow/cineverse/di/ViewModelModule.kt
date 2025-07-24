@@ -10,7 +10,6 @@ import com.moscow.cineverse.screen.movie_details.MovieDetailsViewModel
 import com.moscow.cineverse.screen.movie_details.recommendations.RecommendationsMoviesViewModel
 import com.moscow.cineverse.screen.reviews.ReviewsViewModel
 import com.moscow.cineverse.screen.series_details.SeriesDetailsScreenScreenViewModel
-import com.moscow.cineverse.screen.series_details.SeriesDetailsViewModel
 import com.moscow.cineverse.screen.login.LoginViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.viewModel

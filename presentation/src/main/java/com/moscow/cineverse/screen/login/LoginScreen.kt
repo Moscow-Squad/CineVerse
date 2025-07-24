@@ -54,7 +54,7 @@ fun LoginScreen(
     val context = LocalContext.current
 
     LaunchedEffect(viewModel) {
-        viewModel.uiEvent.collect { event ->
+        viewModel.uiEffect.collect { event ->
             when (event) {
                 is LoginScreenEvents.ShowError -> {
                     Toast.makeText(context, event.message, Toast.LENGTH_LONG).show()

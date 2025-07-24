@@ -4,10 +4,6 @@ import com.android.domain.repository.ActorRepository
 import com.android.domain.repository.CollectionsRepository
 import com.android.domain.repository.GenreRepository
 import com.android.domain.repository.MovieRepository
-import com.android.domain.repository.DetailsRepository
-import com.android.domain.repository.ExploreRepository
-import com.android.domain.repository.RecommendationsMoviesRepository
-import com.android.domain.repository.ReviewsRepository
 import com.android.domain.repository.LoginRepository
 import com.android.domain.repository.PreferenceRepository
 import com.android.domain.repository.SearchRepository
