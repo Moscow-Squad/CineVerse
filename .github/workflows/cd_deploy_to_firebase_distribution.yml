@@ -1,8 +1,7 @@
 name: CD deploy to Firebase Distribution
 
 on:
-#  //todo setenv it to push
-  pull_request:
+  push:
     branches: [ develop ]
 
 permissions:
