@@ -74,7 +74,7 @@ class MainActivity : ComponentActivity() {
                         )
                     }
                 ) {
-                    CineVerseNavGraph(navController = navController)
+                    CineVerseNavGraph(navController = navController, navViewModel = navViewModel)
                 }
             }
         }

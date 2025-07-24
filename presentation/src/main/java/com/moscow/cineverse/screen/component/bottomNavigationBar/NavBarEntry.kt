@@ -31,7 +31,11 @@ fun RowScope.NavBarEntry(
             .weight(1f)
             .clickable(
                 enabled = !isSelected,
-                onClick = onItemClick,
+                onClick = {
+                    if (!isSelected) {
+                        onItemClick()
+                    }
+                },
                 indication = null,
                 interactionSource = remember { MutableInteractionSource() }
             ),

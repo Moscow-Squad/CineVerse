@@ -11,6 +11,5 @@ object ProfileRoute : AppDestination
 
 fun NavGraphBuilder.profileRoute() {
     composable<ProfileRoute>{
-        LoginScreen()
     }
 }

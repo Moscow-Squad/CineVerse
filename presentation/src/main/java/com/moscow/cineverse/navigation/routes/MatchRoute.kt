@@ -11,6 +11,5 @@ object MatchRoute : AppDestination
 
 fun NavGraphBuilder.matchRoute() {
     composable<MatchRoute>{
-        LoginScreen()
     }
 }

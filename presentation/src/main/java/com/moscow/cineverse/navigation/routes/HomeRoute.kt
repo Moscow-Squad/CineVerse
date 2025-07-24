@@ -11,6 +11,5 @@ object HomeRoute : AppDestination
 
 fun NavGraphBuilder.homeRoute() {
     composable<HomeRoute>{
-        LoginScreen()
     }
 }
