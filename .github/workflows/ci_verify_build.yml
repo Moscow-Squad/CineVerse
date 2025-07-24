@@ -2,7 +2,7 @@ name: CI - Verify build
 
 on:
   pull_request:
-    branches: [main, development]
+    branches: [ develop ]
   workflow_dispatch:
 
 concurrency:

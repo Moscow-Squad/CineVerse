@@ -31,7 +31,7 @@ jobs:
             "client": [
               {
                 "client_info": {
-                  "mobilesdk_app_id": "1:123456789:android:abcdefgh",
+                  "mobilesdk_app_id": "",
                   "android_client_info": {
                     "package_name": "com.moscow.cineverse"
                   }
