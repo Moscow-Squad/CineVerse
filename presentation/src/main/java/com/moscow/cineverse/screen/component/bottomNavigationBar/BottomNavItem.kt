@@ -14,29 +14,29 @@ sealed class BottomNavItem(
     val destination: AppDestination
 ) {
     data object Home : BottomNavItem(
-        selectedIcon = com.example.design_system.R.drawable.due_tone_home,
-        unselectedIcon = com.example.design_system.R.drawable.outline_home,
+        selectedIcon = com.moscow.cineverse.design_system.R.drawable.due_tone_home,
+        unselectedIcon = com.moscow.cineverse.design_system.R.drawable.outline_home,
         label = R.string.home ,
         destination = HomeRoute
     )
 
     data object Explore : BottomNavItem(
-        selectedIcon = com.example.design_system.R.drawable.due_tone_search,
-        unselectedIcon = com.example.design_system.R.drawable.outline_search,
+        selectedIcon = com.moscow.cineverse.design_system.R.drawable.due_tone_search,
+        unselectedIcon = com.moscow.cineverse.design_system.R.drawable.outline_search,
         label = R.string.explore ,
         destination = ExploreRoute
     )
 
     data object Match : BottomNavItem(
-        selectedIcon = com.example.design_system.R.drawable.due_tone_magic_stick,
-        unselectedIcon = com.example.design_system.R.drawable.outline_magic_stick,
+        selectedIcon = com.moscow.cineverse.design_system.R.drawable.due_tone_magic_stick,
+        unselectedIcon = com.moscow.cineverse.design_system.R.drawable.outline_magic_stick,
         label = R.string.match,
         destination = MatchRoute
     )
 
     data object Me : BottomNavItem(
-        selectedIcon = com.example.design_system.R.drawable.due_tone_user_square,
-        unselectedIcon = com.example.design_system.R.drawable.outline_user_square,
+        selectedIcon = com.moscow.cineverse.design_system.R.drawable.due_tone_user_square,
+        unselectedIcon = com.moscow.cineverse.design_system.R.drawable.outline_user_square,
         label = R.string.me,
         destination =  ProfileRoute
     )
