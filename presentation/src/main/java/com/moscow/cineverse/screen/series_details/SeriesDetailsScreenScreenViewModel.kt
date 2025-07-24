@@ -1,6 +1,11 @@
 package com.moscow.cineverse.screen.series_details
 
 import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.viewModelScope
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import com.android.domain.model.Series
 import com.android.domain.usecase.review.GetReviewsUseCase
 import com.android.domain.usecase.series.GetSeriesCreditsDetailsUseCase
@@ -11,6 +16,8 @@ import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.cineverse.designSystem.component.ViewMode
 import com.moscow.cineverse.mapper.toUi
 import com.moscow.cineverse.navigation.routes.SeriesDetailsRoute
+import com.moscow.cineverse.paging.BasePagingSource
+import kotlinx.coroutines.flow.Flow
 
 class SeriesDetailsScreenScreenViewModel(
     private val getSeriesDetailUseCase: GetSeriesDetailUseCase,
@@ -76,12 +83,23 @@ class SeriesDetailsScreenScreenViewModel(
         )
     }
 
-    fun getSeriesRecommendations(seriesId: Int, page: Int) {
+    private fun getSeriesRecommendations(seriesId: Int, page: Int) {
         launchWithResult(
             action = { getSeriesRecommendationsUseCase(seriesId, page) },
             onSuccess = ::onGetRecommendationsSuccess,
             onError = ::getRecommendationsFailed,
         )
+    }
+
+    fun getRecommendations(id: Int): Flow<PagingData<Series>> {
+        return Pager(
+            config = PagingConfig(pageSize = 20),
+            pagingSourceFactory = {
+                BasePagingSource { page ->
+                    getSeriesRecommendationsUseCase(id, page)
+                }
+            }
+        ).flow.cachedIn(viewModelScope)
     }
 
     private fun onGetRecommendationsSuccess(recommendations: List<Series>) {

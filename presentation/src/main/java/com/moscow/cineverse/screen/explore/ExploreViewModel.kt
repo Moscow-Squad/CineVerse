@@ -1,30 +1,35 @@
 package com.moscow.cineverse.screen.explore
 
 import androidx.lifecycle.viewModelScope
-import com.android.domain.model.Actor
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
+import androidx.paging.map
 import com.android.domain.model.Genre
 import com.android.domain.model.MediaType
-import com.android.domain.model.Movie
-import com.android.domain.model.Series
-import com.android.domain.usecase.search.CacheSearchQueryUseCase
-import com.android.domain.usecase.search.ClearSearchHistoryUseCase
 import com.android.domain.usecase.genre.GenreUseCase
-import com.android.domain.usecase.search.GetLocalSuggestionsUseCase
 import com.android.domain.usecase.movie.GetMovieByGenreIdUseCase
 import com.android.domain.usecase.movie.GetPopularMoviesUseCase
-import com.android.domain.usecase.series.GetSeriesByGenreIdUseCase
-import com.android.domain.usecase.series.GetPopularSeriesUseCase
+import com.android.domain.usecase.search.CacheSearchQueryUseCase
+import com.android.domain.usecase.search.ClearSearchHistoryUseCase
+import com.android.domain.usecase.search.GetLocalSuggestionsUseCase
 import com.android.domain.usecase.search.SearchUseCase
 import com.android.domain.usecase.search.SuggestionUseCase
+import com.android.domain.usecase.series.GetPopularSeriesUseCase
+import com.android.domain.usecase.series.GetSeriesByGenreIdUseCase
 import com.moscow.cineverse.base.BaseViewModel
+import com.moscow.cineverse.common_ui_state.MediaItemUiState
 import com.moscow.cineverse.designSystem.component.ViewMode
 import com.moscow.cineverse.designSystem.component.tabs.ExploreTabsPages
-import com.moscow.cineverse.common_ui_state.MediaItemUiState
-import kotlinx.coroutines.Dispatchers
+import com.moscow.cineverse.paging.BasePagingSource
+import com.moscow.cineverse.screen.explore.ExploreScreenState.ActorUiState
 import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
@@ -44,117 +49,97 @@ class ExploreViewModel(
 ) : BaseViewModel<ExploreScreenState, ExploreScreenEffects>(ExploreScreenState()),
     ExploreInteractionListener {
 
+    lateinit var contentList: Flow<PagingData<Any>>
+
+    private lateinit var _movies: Flow<PagingData<MediaItemUiState>>
+    private lateinit var _series: Flow<PagingData<MediaItemUiState>>
+
+    private lateinit var _moviesSearch: Flow<PagingData<MediaItemUiState>>
+    private lateinit var _seriesSearch: Flow<PagingData<MediaItemUiState>>
+    private lateinit var _actorSearch: Flow<PagingData<ActorUiState>>
+
+
     init {
         getMoviesGenres()
         getSeriesGenres()
-        loadMovies()
-        loadSeries()
+        getMovies()
+        getSeries()
         observeKeyword()
     }
 
-    override fun getSavedHistoryItems(suggestion: String) {
-        TODO("Not yet implemented")
-    }
-
     override fun searchMovie(isHistory: Boolean) {
-        launchWithFlow(
-            flowAction = {
-                searchUseCase.searchMovie(
-                    uiState.value.searchKeyWord,
-                    page = 1,
-                    isHistory = isHistory
-                )
-            },
-            onSuccess = ::onMovieSearchSuccess,
-            onError = ::onMovieSearchFailed,
-            onStart = ::onLoading,
-            onFinally = ::onFinally,
-        )
+        _moviesSearch = Pager(
+            config = PagingConfig(pageSize = 20),
+            pagingSourceFactory = {
+                BasePagingSource { page ->
+                    searchUseCase.searchMovie(uiState.value.searchKeyWord, page, isHistory).first()
+                }
+            }
+        ).flow
+            .map { pagingData -> pagingData.map { it.toUi(uiState.value.moviesGenres) } }
+            .cachedIn(viewModelScope)
+
+        updateState { it.copy(isLoading = false) }
     }
 
     override fun searchSeries(isHistory: Boolean) {
-        launchWithFlow(
-            flowAction = {
-                searchUseCase.searchSeries(
-                    uiState.value.searchKeyWord,
-                    page = 1,
-                    isHistory
-                )
-            },
-            onSuccess = ::onSeriesSearchSuccess,
-            onError = ::onSeriesSearchFailed,
-            onStart = ::onLoading,
-            onFinally = ::onFinally
-        )
+        _seriesSearch = Pager(
+            config = PagingConfig(pageSize = 20),
+            pagingSourceFactory = {
+                BasePagingSource { page ->
+                    searchUseCase.searchSeries(uiState.value.searchKeyWord, page, isHistory).first()
+                }
+            }
+        ).flow
+            .map { pagingData -> pagingData.map { it.toUi(uiState.value.seriesGenres) } }
+            .cachedIn(viewModelScope)
+
+        updateState { it.copy(isLoading = false) }
     }
 
     override fun searchActor(isHistory: Boolean) {
-        launchWithFlow(
-            flowAction = {
-                searchUseCase.searchActor(
-                    uiState.value.searchKeyWord,
-                    page = 1,
-                    isHistory
-                )
-            },
-            onSuccess = ::onActorSearchSuccess,
-            onError = ::onActorsSearchFailed,
-            onStart = ::onLoading,
-            onFinally = ::onFinally
-        )
+        _actorSearch = Pager(
+            config = PagingConfig(pageSize = 20),
+            pagingSourceFactory = {
+                BasePagingSource { page ->
+                    searchUseCase.searchActor(uiState.value.searchKeyWord, page, isHistory).first()
+                }
+            }
+        ).flow
+            .map { pagingData -> pagingData.map { it.toUi() } }
+            .cachedIn(viewModelScope)
+
+        updateState { it.copy(isLoading = false) }
     }
 
-    private fun onMovieSearchSuccess(items: List<Movie>) {
-        updateState {
-            it.copy(
-                searchResult = it.searchResult.plus(ExploreTabsPages.MOVIES.toTitle() to items.map { movie ->
-                    movie.toUi(
-                        uiState.value.moviesGenres
-                    )
-                }),
-                isLoading = false
-            )
+    override fun getMoviesByGenreId(genreId: Int) {
+        _movies = Pager(
+            config = PagingConfig(pageSize = 20),
+            pagingSourceFactory = {
+                BasePagingSource { page ->
+                    getMovieByGenreIdUseCase(genreId, page)
+                }
+            }
+        ).flow.map { pagingData ->
+            pagingData.map { movie -> movie.toUi(uiState.value.moviesGenres) }
         }
-        checkEmptySearchResult(items)
+            .cachedIn(viewModelScope)
         updateContentList()
     }
 
-    private fun onSeriesSearchSuccess(items: List<Series>) {
-        updateState {
-            it.copy(
-                searchResult = it.searchResult.plus(ExploreTabsPages.SERIES.toTitle() to items.map { series ->
-                    series.toUi(
-                        uiState.value.seriesGenres
-                    )
-                }),
-                isLoading = false
-            )
+    override fun getSeriesByGenreId(genreId: Int) {
+        _series = Pager(
+            config = PagingConfig(pageSize = 20),
+            pagingSourceFactory = {
+                BasePagingSource { page ->
+                    getSeriesByGenreIdUseCase(genreId, page)
+                }
+            }
+        ).flow.map { pagingData ->
+            pagingData.map { series -> series.toUi(uiState.value.seriesGenres) }
         }
-        checkEmptySearchResult(items)
+            .cachedIn(viewModelScope)
         updateContentList()
-    }
-
-    private fun onActorSearchSuccess(actors: List<Actor>) {
-        updateState { state ->
-            state.copy(
-                searchResult = state.searchResult.plus(ExploreTabsPages.ACTORS.toTitle() to actors.map { it.toUi() }),
-                isLoading = false
-            )
-        }
-        checkEmptySearchResult(actors)
-        updateContentList()
-    }
-
-    private fun onMovieSearchFailed(e: Throwable) {
-        updateState { it.copy(isLoading = false, error = e.message) }
-    }
-
-    private fun onSeriesSearchFailed(e: Throwable) {
-        updateState { it.copy(isLoading = false, error = e.message) }
-    }
-
-    private fun onActorsSearchFailed(e: Throwable) {
-        updateState { it.copy(isLoading = false, error = e.message) }
     }
 
     private fun onLoading() {
@@ -218,7 +203,6 @@ class ExploreViewModel(
     }
 
     private fun onGetHistoryDataFailed(e: Throwable) {
-
     }
 
     override fun onCancelButtonClicked() {
@@ -237,7 +221,6 @@ class ExploreViewModel(
                 showSuggestions = false,
                 isLoading = false,
                 remoteSuggestions = emptyList(),
-                searchResult = mutableMapOf()
             )
         }
         updateContentList()
@@ -286,27 +269,26 @@ class ExploreViewModel(
     }
 
     override fun onClickSuggestion(suggestion: SuggestItemUiState) {
-        updateState {
-            it.copy(
-                searchKeyWord = suggestion.title,
-            )
-        }
-        viewModelScope.launch(Dispatchers.IO) {
-            suggestion.isHistory.let {
-                if (!it) {
-                    cacheSearchQueryUseCase.cacheSearchQuery(suggestion.title)
+        updateState { it.copy(searchKeyWord = suggestion.title) }
+        launchAndForget(
+            action = {
+                suggestion.isHistory.let {
+                    if (!it) {
+                        cacheSearchQueryUseCase.cacheSearchQuery(suggestion.title)
+                    }
+                    searchMovie(it)
+                    searchSeries(it)
+                    searchActor(it)
                 }
-                searchMovie(it)
-                searchSeries(it)
-                searchActor(it)
-            }
-        }
-        updateState {
-            it.copy(
-                showHistory = false,
-                showSuggestions = false,
-            )
-        }
+            },
+            onSuccess = {
+                updateState {
+                    it.copy(showHistory = false, showSuggestions = false)
+                }
+                updateContentList()
+            },
+            onError = ::onSearchQueryError
+        )
     }
 
     override fun onSearchQuery() {
@@ -314,6 +296,7 @@ class ExploreViewModel(
             it.copy(
                 showHistory = false,
                 showSuggestions = false,
+                isLoading = true
             )
         }
         launchAndForget(
@@ -326,6 +309,10 @@ class ExploreViewModel(
                         searchSeries(isQueryInHistory)
                         searchActor(isQueryInHistory)
                     }
+            },
+            onSuccess = {
+                updateState { it.copy(isLoading = false, showHistory = false) }
+                updateContentList()
             },
             onError = ::onSearchQueryError
         )
@@ -403,63 +390,19 @@ class ExploreViewModel(
         updateState { it.copy(shouldShowError = true, isLoading = false, error = e.message) }
     }
 
-    override fun getMoviesByGenreId(genreId: Int) {
-        launchWithResult(
-            action = { getMovieByGenreIdUseCase.invoke(genreId, 1) },
-            onSuccess = ::onGetMovieByGenreIdSuccess,
-            onError = ::onGetMovieByGenreIdFailed,
-            onStart = ::onLoading,
-            onFinally = ::onFinally
-        )
-    }
-
-    private fun onGetMovieByGenreIdSuccess(movies: List<Movie>) {
-        updateState {
-            it.copy(
-                movies = movies.map { movie -> movie.toUi(uiState.value.moviesGenres) }
-            )
-        }
-        checkEmptySearchResult(movies)
-        updateContentList()
-    }
-
-    private fun onGetMovieByGenreIdFailed(e: Throwable) {
-        updateState { it.copy(shouldShowError = true, isLoading = false, error = e.message) }
-    }
-
-    override fun getSeriesByGenreId(genreId: Int) {
-        launchWithResult(
-            action = { getSeriesByGenreIdUseCase.invoke(genreId) },
-            onSuccess = ::onGetSeriesByGenreIdSuccess,
-            onError = ::onGetSeriesByGenreIdFailed,
-            onStart = ::onLoading,
-            onFinally = ::onFinally
-        )
-    }
-
-    private fun onGetSeriesByGenreIdSuccess(series: List<Series>) {
-        updateState {
-            it.copy(
-                series = series.map { series -> series.toUi(uiState.value.seriesGenres) }
-            )
-        }
-        checkEmptySearchResult(series)
-        updateContentList()
-    }
-
-    private fun onGetSeriesByGenreIdFailed(e: Throwable) {
-        updateState { it.copy(shouldShowError = true, isLoading = false, error = e.message) }
-    }
-
     override fun onMovieGenreSelected(genreId: Int) {
         if (uiState.value.selectedMovieGenre == genreId) return
-        if (genreId == 0) loadMovies() else getMoviesByGenreId(genreId)
+        viewModelScope.launch {
+            if (genreId == 0) getMovies() else getMoviesByGenreId(genreId)
+        }
         updateState { it.copy(selectedMovieGenre = genreId) }
     }
 
     override fun onSeriesGenreSelected(genreId: Int) {
         if (uiState.value.selectedSeriesGenre == genreId) return
-        if (genreId == 0) loadSeries() else getSeriesByGenreId(genreId)
+        viewModelScope.launch {
+            if (genreId == 0) getSeries() else getSeriesByGenreId(genreId)
+        }
         updateState { it.copy(selectedSeriesGenre = genreId) }
     }
 
@@ -497,90 +440,61 @@ class ExploreViewModel(
         } else {
             getMoviesGenres()
             getSeriesGenres()
-            loadMovies()
-            loadSeries()
+            getSeries()
+            getMovies()
         }
     }
 
-    private fun loadSeries() {
-        launchWithResult(
-            action = { getPopularSeriesUseCase(1) },
-            onSuccess = ::onLoadSeriesSuccess,
-            onError = ::onLoadSeriesFailed,
-            onStart = ::onLoading,
-            onFinally = ::onFinally
-        )
-    }
-
-    private fun onLoadSeriesSuccess(series: List<Series>) {
-        updateState {
-            it.copy(
-                isLoading = false,
-                series = series.map { series -> series.toUi(uiState.value.seriesGenres) },
-            )
+    private fun getMovies() {
+        _movies = Pager(
+            config = PagingConfig(pageSize = 20),
+            pagingSourceFactory = {
+                BasePagingSource { page ->
+                    getPopularMoviesUseCase(page)
+                }
+            }
+        ).flow.map { pagingData ->
+            pagingData.map { movie -> movie.toUi(uiState.value.moviesGenres) }
         }
-        checkEmptySearchResult(series)
+            .cachedIn(viewModelScope)
         updateContentList()
     }
 
-    private fun onLoadSeriesFailed(e: Throwable) {
-        updateState { it.copy(shouldShowError = true, isLoading = false, error = e.message) }
-    }
-
-    private fun loadMovies() {
-        launchWithResult(
-            action = { getPopularMoviesUseCase(1) },
-            onSuccess = ::onLoadMoviesSuccess,
-            onError = ::onLoadMoviesFailed,
-            onStart = ::onLoading,
-            onFinally = ::onFinally
-        )
-    }
-
-    private fun onLoadMoviesSuccess(movie: List<Movie>) {
-        updateState {
-            it.copy(
-                isLoading = false,
-                movies = movie.map { movie -> movie.toUi(uiState.value.moviesGenres) },
-            )
+    private fun getSeries() {
+        _series = Pager(
+            config = PagingConfig(pageSize = 20),
+            pagingSourceFactory = {
+                BasePagingSource { page ->
+                    getPopularSeriesUseCase(page)
+                }
+            }
+        ).flow.map { pagingData ->
+            pagingData.map { series -> series.toUi(uiState.value.seriesGenres) }
         }
-        checkEmptySearchResult(movie)
+            .cachedIn(viewModelScope)
         updateContentList()
-    }
-
-    private fun onLoadMoviesFailed(e: Throwable) {
-        updateState { it.copy(shouldShowError = true, isLoading = false, error = e.message) }
     }
 
     private fun updateContentList() {
-        if (uiState.value.searchResult.isNotEmpty() &&
-            uiState.value.searchResult.containsKey(uiState.value.selectedTab.toTitle())
-        )
-            updateState {
-                it.copy(
-                    contentList = it.searchResult.getOrDefault(
-                        it.selectedTab.toTitle(),
-                        emptyList()
-                    ),
-                    shouldShowGenres = false
-                )
-            }
-        else {
-            updateState {
-                it.copy(
-                    genres = if (it.selectedTab == ExploreTabsPages.MOVIES)
-                        it.moviesGenres
-                    else it.seriesGenres
-                )
-            }
-            updateState {
-                it.copy(
-                    shouldShowGenres = it.selectedTab != ExploreTabsPages.ACTORS,
-                    contentList = if (it.selectedTab == ExploreTabsPages.MOVIES)
-                        it.movies
-                    else
-                        it.series
+        if (uiState.value.searchKeyWord.isNotBlank()) {
+            updateState { it.copy(shouldShowGenres = false) }
+            contentList = when (uiState.value.selectedTab) {
+                ExploreTabsPages.MOVIES -> _moviesSearch
+                ExploreTabsPages.SERIES -> _seriesSearch
+                ExploreTabsPages.ACTORS -> _actorSearch
+            } as Flow<PagingData<Any>>
+        } else {
+            contentList = when (uiState.value.selectedTab) {
+                ExploreTabsPages.MOVIES -> _movies
+                ExploreTabsPages.SERIES -> _series
+                ExploreTabsPages.ACTORS -> null
+            } as Flow<PagingData<Any>>
 
+            updateState {
+                it.copy(
+                    genres = if (uiState.value.selectedTab == ExploreTabsPages.MOVIES)
+                        it.moviesGenres else it.seriesGenres,
+                    shouldShowGenres = true
                 )
             }
         }
