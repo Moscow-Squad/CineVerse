@@ -46,25 +46,12 @@ jobs:
       - name: Create keys.properties
         run: |
             echo "TMDB_API_KEY=\"${{ secrets.TMDB_API_KEY }}\"" > data/keys.properties
-
-#      - name: Create debug directory
-#        run: mkdir -p app/src/debug
-
       - name: Create google-services.json
         run: |
-#          echo "${{ secrets.GOOGLE_SERVICES_JSON }}" | base64 -d > app/src/debug/google-services.json
           echo "${{ secrets.GOOGLE_SERVICES_JSON }}" | base64 -d > app/google-services.json
-
-#      - name: Verify google-services.json
-#        run: |
-#          ls -l app/src/debug/
-#          cat app/src/debug/google-services.json
 
       - name: Setup Gradlew
         run: chmod +x ./gradlew
 
       - name: Build (assembleDebug)
         run: ./gradlew assembleDebug --stacktrace --info
-
-#      - name: Build without tests
-#        run: ./gradlew assemble -x lintVitalRelease -x lint
