@@ -43,7 +43,7 @@ import com.moscow.cineverse.designSystem.theme.ThemeState
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CineVerseBottomSheet(
-    title: String,
+    title: String = "",
     onClose: () -> Unit,
     modifier: Modifier = Modifier,
     containerColor: Color = Theme.colors.background.bottomSheet,
@@ -99,11 +99,13 @@ fun CineVerseBottomSheet(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Text(
-                    text = title,
-                    style = Theme.textStyle.title.small,
-                    color = Theme.colors.shade.primary
-                )
+                if (title.isNotEmpty()){
+                    Text(
+                        text = title,
+                        style = Theme.textStyle.title.small,
+                        color = Theme.colors.shade.primary
+                    )
+                }
                 if (showCancelIcon) {
                     Icon(
                         painter = painterResource(R.drawable.outline_x),

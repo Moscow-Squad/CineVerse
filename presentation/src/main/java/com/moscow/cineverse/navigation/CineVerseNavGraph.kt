@@ -14,8 +14,13 @@ import com.moscow.cineverse.navigation.routes.MovieDetailsRoute
 import com.moscow.cineverse.navigation.routes.RecommendationsRoute
 import com.moscow.cineverse.navigation.routes.ReviewsRoute
 import com.moscow.cineverse.navigation.routes.SeriesDetailsRoute
+import com.moscow.cineverse.navigation.routes.SeriesRecommendationRoute
+import com.moscow.cineverse.navigation.routes.SeriesSeasonsRoute
 import com.moscow.cineverse.navigation.routes.collectionsBottomSheetRoute
 import com.moscow.cineverse.navigation.routes.exploreRoute
+import com.moscow.cineverse.navigation.routes.loginRoute
+import org.koin.androidx.compose.koinViewModel
+
 import com.moscow.cineverse.navigation.routes.homeRoute
 import com.moscow.cineverse.navigation.routes.matchRoute
 import com.moscow.cineverse.navigation.routes.profileRoute
@@ -25,12 +30,22 @@ val LocalNavController =
 
 @Composable
 
-fun CineVerseNavGraph(navController: NavHostController) {
+fun CineVerseNavGraph(
+    navViewModel: NavViewModel = koinViewModel(),
+    navController: NavHostController
+) {
+    val navController = rememberNavController()
+
+    val startDestination = navViewModel.startDestination.value
+
+    if (startDestination == null) return // splash is still shown
+
     CompositionLocalProvider(
         LocalNavController provides navController
     ) {
-        NavHost(navController = navController, startDestination = HomeRoute) {
+        NavHost(navController = navController, startDestination = startDestination) {
             exploreRoute()
+            loginRoute()
             RecommendationsRoute()
             ReviewsRoute()
             CastDetailsRoute()
@@ -38,6 +53,8 @@ fun CineVerseNavGraph(navController: NavHostController) {
             CastBestOfMovieRoute()
             MovieDetailsRoute()
             SeriesDetailsRoute()
+            SeriesRecommendationRoute()
+            SeriesSeasonsRoute()
             collectionsBottomSheetRoute(
                 onAddNewCollectionClick = {},
                 onCreateCollectionClicked = {},

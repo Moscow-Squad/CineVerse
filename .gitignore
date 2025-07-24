@@ -33,6 +33,7 @@ gen-external-apklibs
 
 # ────── Google Firebase & Services ──────
 app/google-services.json
+app/service-account-key.json
 com_crashlytics_export_strings.xml
 crashlytics.properties
 crashlytics-build.properties

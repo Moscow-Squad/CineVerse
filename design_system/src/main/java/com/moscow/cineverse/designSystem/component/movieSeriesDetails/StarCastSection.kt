@@ -20,32 +20,19 @@ import com.moscow.cineverse.designSystem.theme.Theme
 fun <T> StarCastSection(
     title: String,
     cast: List<T>,
-    onSeeMoreClick: () -> Unit,
     castContent: @Composable (T) -> Unit,
     modifier: Modifier = Modifier,
-    showMoreText: String = stringResource(R.string.show_more),
 
 ) {
     Column(
         modifier = modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            Text(
-                text = title,
-                style = Theme.textStyle.title.small,
-                color = Theme.colors.shade.primary,
-            )
-            Text(
-                text = showMoreText,
-                style = Theme.textStyle.body.medium.medium,
-                color = Theme.colors.brand.primary,
-                modifier = Modifier.clickable { onSeeMoreClick() }
-            )
-        }
+        Text(
+            text = title,
+            style = Theme.textStyle.title.small,
+            color = Theme.colors.shade.primary,
+        )
 
         LazyRow(
             horizontalArrangement = Arrangement.spacedBy(12.dp),

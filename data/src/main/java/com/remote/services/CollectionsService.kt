@@ -19,7 +19,7 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface CollectionsService {
-    @GET("$ACCOUNT{accountId}$LISTS")
+    @GET("$ACCOUNT/{accountId}$LISTS")
     suspend fun getMyCollections(
         @Path("accountId") accountId: Int,
         @Query(PAGE) page: Int,

@@ -19,8 +19,8 @@ abstract class BaseViewModel<T, E>(
     private val _uiState = MutableStateFlow(initialState)
     val uiState: StateFlow<T> = _uiState.asStateFlow()
 
-    private val _uiEvent = Channel<E>()
-    val uiEvent = _uiEvent.receiveAsFlow()
+    private val _uiEffect = Channel<E>()
+    val uiEffect = _uiEffect.receiveAsFlow()
 
     protected fun updateState(transform: (T) -> T) {
         _uiState.update { transform(it) }
@@ -28,7 +28,7 @@ abstract class BaseViewModel<T, E>(
 
     protected fun sendEvent(event: E) {
         viewModelScope.launch {
-            _uiEvent.send(event)
+            _uiEffect.send(event)
         }
     }
 
@@ -50,9 +50,11 @@ abstract class BaseViewModel<T, E>(
 
     protected fun launchAndForget(
         action: suspend () -> Unit,
+        onSuccess: () -> Unit = {},
         onError: (Throwable) -> Unit,
     ) = viewModelScope.launch(Dispatchers.IO) {
         runCatching { action() }
+            .onSuccess { onSuccess() }
             .onFailure(onError)
     }
 

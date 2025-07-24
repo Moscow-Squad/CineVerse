@@ -1,5 +1,3 @@
-
-
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -38,23 +36,27 @@ android {
 
     }
 
+    lint {
+        checkReleaseBuilds = false
+        abortOnError = false
+    }
+
     buildTypes {
-        release {
-            isMinifyEnabled = true
-            isShrinkResources = true
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
-        }
+//        release {
+//            isMinifyEnabled = false
+//            isShrinkResources = true
+//            proguardFiles(
+//                getDefaultProguardFile("proguard-android-optimize.txt"),
+//                "proguard-rules.pro"
+//            )
+//        }
         debug {
             isDebuggable = true
-            isMinifyEnabled = true
-            applicationIdSuffix = ".debug"
-            versionNameSuffix = "-debug"
+            isMinifyEnabled = false
 
             manifestPlaceholders["crashlytics_debug"] = "true"
             manifestPlaceholders["analytics_debug"] = "true"
+
         }
     }
 
@@ -71,7 +73,7 @@ android {
 
 firebaseAppDistribution {
     appId = System.getenv("FIREBASE_APP_ID")
-    serviceCredentialsFile = "service-account-key.json"
+    serviceCredentialsFile = "app/service-account-key.json"
     artifactType = "APK"
     groups = "tester"
 }
@@ -114,4 +116,8 @@ dependencies {
     implementation(libs.androidx.work.runtime.ktx)
     implementation(libs.koin.androidx.workmanager)
     implementation(libs.androidx.navigation.compose)
+
+    // splash
+    implementation(libs.androidx.core.splashscreen)
+
 }

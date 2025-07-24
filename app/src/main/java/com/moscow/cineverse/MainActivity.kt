@@ -6,6 +6,8 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -21,19 +23,26 @@ import com.google.firebase.ktx.Firebase
 import com.moscow.cineverse.designSystem.theme.CineVerseTheme
 import com.moscow.cineverse.screen.component.bottomNavigationBar.BottomNavItem
 import com.moscow.cineverse.navigation.CineVerseNavGraph
+import com.moscow.cineverse.navigation.NavViewModel
 import com.moscow.cineverse.screen.component.bottomNavigationBar.NavBar
 import kotlinx.coroutines.launch
 
 
 class MainActivity : ComponentActivity() {
-
     private lateinit var analytics: FirebaseAnalytics
+    private val navViewModel: NavViewModel by viewModel()
+
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        val splashScreen = installSplashScreen()
+        splashScreen.setKeepOnScreenCondition {
+            navViewModel.startDestination.value == null
+        }
+
         super.onCreate(savedInstanceState)
         analytics = Firebase.analytics
         enableEdgeToEdge()
-
         setContent {
             CineVerseTheme {
                 val navController = rememberNavController()
@@ -67,10 +76,10 @@ class MainActivity : ComponentActivity() {
                 ) {
                     CineVerseNavGraph(navController = navController)
                 }
-            }
         }
     }
 }
+    }
 
 
 
