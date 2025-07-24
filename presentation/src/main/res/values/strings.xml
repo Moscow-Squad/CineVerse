@@ -47,4 +47,8 @@
     <string name="go_to_website">Go to Website</string>
     <string name="cancel">Cancel</string>
     <string name="join_cineverse">Join CineVerse</string>
+    <string name="home">Home</string>
+    <string name="me">Me</string>
+    <string name="match">Match</string>
+    <string name="explore">Explore</string>
 </resources>
