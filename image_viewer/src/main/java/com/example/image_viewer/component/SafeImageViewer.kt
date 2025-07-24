@@ -1,5 +1,6 @@
 package com.example.image_viewer.component
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -21,6 +22,8 @@ import coil3.request.allowHardware
 import coil3.toBitmap
 import com.example.image_viewer.classfier.HybridImageClassifier
 import com.skydoves.cloudy.cloudy
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 @Composable
 fun SafeImageViewer(
@@ -42,6 +45,7 @@ fun SafeImageViewer(
     var requestState by rememberSaveable { mutableStateOf(RequestState.LOADING) }
 
     LaunchedEffect(imageUrl) {
+        Log.e("hzm", "SafeImageViewer: $imageUrl")
         val loader = ImageLoader(context)
         val request = ImageRequest.Builder(context).data(imageUrl).allowHardware(false).build()
 
@@ -49,7 +53,11 @@ fun SafeImageViewer(
         result.onSuccess { success ->
             val bitmap = runCatching { success.image?.toBitmap() }.getOrNull()
             if (bitmap != null) {
-                if (isBlurEnabled) isHaram = classifier.classifyImage(bitmap)
+                if (isBlurEnabled) {
+                    isHaram = withContext(Dispatchers.Default) {
+                        classifier.classifyImage(bitmap)
+                    }
+                }
                 bitmapToDisplay = bitmap
                 requestState = RequestState.SUCCESS
                 onSuccess?.invoke()
