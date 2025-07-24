@@ -5,5 +5,5 @@ import com.android.domain.repository.SeriesRepository
 class GetSeriesByGenreIdUseCase(
     private val seriesRepository: SeriesRepository
 ) {
-    suspend operator fun invoke(genreId: Int) = seriesRepository.getSeriesByGenreId(genreId, 1)
+    suspend operator fun invoke(genreId: Int, page: Int) = seriesRepository.getSeriesByGenreId(genreId, page)
 }

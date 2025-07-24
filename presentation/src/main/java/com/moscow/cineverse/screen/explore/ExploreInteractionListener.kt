@@ -15,7 +15,6 @@ interface ExploreInteractionListener {
     fun searchMovie(isHistory: Boolean = false)
     fun searchSeries(isHistory: Boolean = false)
     fun searchActor(isHistory: Boolean = false)
-    fun getSavedHistoryItems(suggestion: String)
     fun onSearchBarClickedOn()
     fun onCancelButtonClicked()
     fun onSearchValueChange(text: String)
