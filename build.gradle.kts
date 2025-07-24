@@ -18,7 +18,6 @@ val excludedPackages = listOf(
     "*.R",
     "*.R_*",
     "**.di.**",
-    "**.logging.**",
     "*.BuildConfig*",
     "*.Manifest*",
     "*.ComposableSingletons*",
@@ -41,7 +40,7 @@ allprojects {
             }
             total {
                 verify {
-                    rule { bound { minValue = 0 } }
+                    rule { bound { minValue = 80 } }
                 }
             }
         }
