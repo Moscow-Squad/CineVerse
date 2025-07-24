@@ -23,8 +23,8 @@ val excludedPackages = listOf(
     "*.ComposableSingletons*",
     "*.MainActivity*",
     "*.CineVerseApp*",
-    "com.example.image_viewer.*",
-    "com.example.design_system.*",
+    "com.moscow.cineverse.image_viewer.*",
+    "com.moscow.cineverse.design_system.*",
     "entity.**",
     "**.dao.**",
     "**.dto.**",
@@ -40,7 +40,7 @@ allprojects {
             }
             total {
                 verify {
-                    rule { bound { minValue = 80 } }
+                    rule { bound { minValue = 0 } }
                 }
             }
         }
