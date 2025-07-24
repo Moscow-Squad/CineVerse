@@ -19,37 +19,10 @@ jobs:
           distribution: temurin
           cache: gradle
 
-      - name: Create mock google-services.json
+      - name: Create google-services.json
         run: |
-          echo '{
-            "project_info": {
-              "project_number": "123456789",
-              "firebase_url": "https://mock-project.firebaseio.com",
-              "project_id": "mock-project-id",
-              "storage_bucket": "mock-project.appspot.com"
-            },
-            "client": [
-              {
-                "client_info": {
-                  "mobilesdk_app_id": "",
-                  "android_client_info": {
-                    "package_name": "com.moscow.cineverse"
-                  }
-                },
-                "oauth_client": [],
-                "api_key": [
-                          {
-                            "current_key": ""
-                          }
-                      ], 
-                "services": {
-                  "appinvite_service": {
-                    "other_platform_oauth_client": []
-                  }
-                }
-              }
-            ]
-          }' > app/google-services.json
+#          echo "${{ secrets.GOOGLE_SERVICES_JSON }}" | base64 -d > app/src/debug/google-services.json
+           echo "${{ secrets.GOOGLE_SERVICES_JSON }}" | base64 -d > app/google-services.json
       - name: Generate keys.properties
         run: |
           echo "BEARER_TOKEN=${{ secrets.BEARER_TOKEN }}" > keys.properties
