@@ -6,6 +6,7 @@ import org.gradle.api.artifacts.VersionCatalogsExtension
 import org.gradle.api.plugins.ExtensionAware
 import org.gradle.kotlin.dsl.configure
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmOptions
+import kotlin.collections.addAll
 
 class AndroidApplicationConventionPlugin : Plugin<Project> {
     override fun apply(project: Project) = with(project) {
@@ -39,6 +40,11 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
 
                 ndk {
                     abiFilters += listOf("arm64-v8a", "armeabi-v7a")
+                }
+
+                @Suppress("UnstableApiUsage")
+                androidResources {
+                    localeFilters.addAll(listOf("en", "ar"))
                 }
             }
 

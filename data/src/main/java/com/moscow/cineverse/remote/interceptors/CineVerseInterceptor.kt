@@ -1,11 +1,11 @@
-package com.remote.interceptors
+package com.moscow.cineverse.remote.interceptors
 
 import com.moscow.cineverse.data.BuildConfig
 import okhttp3.Interceptor
 import okhttp3.Response
 import java.util.Locale
 
-class CineverseInterceptor : Interceptor {
+class CineVerseInterceptor : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val originalRequest = chain.request()
         val originalUrl = originalRequest.url

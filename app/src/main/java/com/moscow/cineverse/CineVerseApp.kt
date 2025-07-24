@@ -8,11 +8,11 @@ import org.koin.androidx.workmanager.koin.workManagerFactory
 import org.koin.core.component.KoinComponent
 import org.koin.core.context.GlobalContext.startKoin
 
-class App: Application(), KoinComponent {
+class CineVerseApp: Application(), KoinComponent {
     override fun onCreate() {
         super.onCreate()
         startKoin {
-            androidContext(this@App)
+            androidContext(this@CineVerseApp)
             androidLogger()
             modules(appModule)
             workManagerFactory()
