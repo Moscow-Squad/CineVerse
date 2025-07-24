@@ -8,6 +8,11 @@ import com.android.domain.usecase.collection.AddNewCollectionUseCase
 import com.android.domain.usecase.collection.GetCollectionDetailsUseCase
 import com.android.domain.usecase.collection.GetUserCollectionsUseCase
 import com.android.domain.usecase.genre.GenreUseCase
+import com.android.domain.usecase.home.GetMatchesYourVibesMovies
+import com.android.domain.usecase.home.GetRecentlyReleasedMovies
+import com.android.domain.usecase.home.GetTopRatedTVShows
+import com.android.domain.usecase.home.GetTrendingMovies
+import com.android.domain.usecase.home.GetUpcomingMovies
 import com.android.domain.usecase.login.LoginAsGuestUseCase
 import com.android.domain.usecase.login.LoginWithUsernameAndPasswordUseCase
 import com.android.domain.usecase.movie.GetMovieByGenreIdUseCase
@@ -58,6 +63,11 @@ val useCaseModule = module {
     singleOf(::GetCollectionDetailsUseCase)
     singleOf(::RateMovieUseCase)
     singleOf(::RateSeriesUseCase)
+    singleOf(::GetTrendingMovies)
+    singleOf(::GetUpcomingMovies)
+    singleOf(::GetTopRatedTVShows)
+    singleOf(::GetMatchesYourVibesMovies)
+    singleOf(::GetRecentlyReleasedMovies)
     singleOf(::LoginWithUsernameAndPasswordUseCase)
     singleOf(::LoginAsGuestUseCase)
 }

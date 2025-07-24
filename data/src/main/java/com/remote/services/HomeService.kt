@@ -10,13 +10,21 @@ import com.utils.NOW_PLAYING
 import com.utils.PAGE
 import com.utils.SERIES
 import com.utils.TOP_RATED
+import com.utils.TRENDING
 import com.utils.UPCOMING
 import com.utils.WITH_GENRES
 import retrofit2.Response
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface HomeService {
+
+    @GET("$TRENDING$MOVIE{time_window}")
+    fun getTrendingMovies(
+        @Path("time_window") time:String,
+        @Query(PAGE) page: Int = 1
+    ): Response<ApiResponse<MovieDto>>
 
     @GET("$MOVIE$UPCOMING")
     fun getUpComingMovies(
