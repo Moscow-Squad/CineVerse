@@ -30,4 +30,21 @@
     <string name="try_again">Try Again</string>
     <string name="oops_no_internet">Oops! No Internet</string>
     <string name="offline_reconnect">Looks like you\'re offline. Let\'s reconnect so you don\'t miss out!</string>
+    <string name="cine_verse_logo">cine verse logo</string>
+    <string name="welcome_back_to_cineverse">Welcome back to CineVerse!</string>
+    <string name="email_or_username">Email or Username</string>
+    <string name="enter_your_email_or_username">Enter your email or username</string>
+    <string name="password">Password</string>
+    <string name="enter_your_password">Enter your password</string>
+    <string name="login">Login</string>
+    <string name="join_as_guest">Join as Guest</string>
+    <string name="create_a_new_account">Create a New Account</string>
+    <string name="usernames_can_only_4_32_letters_and_numbers">Usernames can only 4–32 letters and numbers</string>
+    <string name="password_can_only_4_100_characters">Password can only 4-100 characters</string>
+    <string name="sorry_we_cannot_check_your_information_now">Sorry, we cannot check your information now</string>
+    <string name="sorry_you_cannot_enter_as_a_guest_now_try_to_create_a_new_account">Sorry, you cannot enter as a guest now, try to create a new account</string>
+    <string name="let_s_get_you_set_up_we_ll_take_you_to_the_website_to_create_your_account">Let’s get you set up! We’ll take you to the website to create your account.</string>
+    <string name="go_to_website">Go to Website</string>
+    <string name="cancel">Cancel</string>
+    <string name="join_cineverse">Join CineVerse</string>
 </resources>

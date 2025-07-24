@@ -3,6 +3,7 @@ package com.di
 import com.data_source.remote.ActorRemoteDataSource
 import com.data_source.remote.CollectionRemoteDataSource
 import com.data_source.remote.GenreRemoteDataSource
+import com.data_source.remote.LoginRemoteDataSource
 import com.data_source.remote.MovieRemoteDataSource
 import com.data_source.remote.SearchRemoteDataSource
 import com.data_source.remote.SeriesRemoteDataSource
@@ -66,6 +67,7 @@ val dataSourceModule = module {
     bindService<MovieService>()
     bindService<SeriesService>()
     bindService<SearchService>()
+    bindService<LoginService>()
 
     // Remote Data Sources
     singleOf(::SearchRemoteDataSourceImpl) bind SearchRemoteDataSource::class
@@ -74,4 +76,5 @@ val dataSourceModule = module {
     singleOf(::CollectionRemoteRemoteDataSourceImpl) bind CollectionRemoteDataSource::class
     singleOf(::SeriesRemoteDataSourceImpl) bind SeriesRemoteDataSource::class
     singleOf(::GenreRemoteDataSourceImpl) bind GenreRemoteDataSource::class
+    singleOf(::LoginRemoteDataSourceImpl) bind LoginRemoteDataSource::class
 }
