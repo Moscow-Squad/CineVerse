@@ -15,6 +15,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
+import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.collectAsLazyPagingItems
+import com.moscow.cineverse.common_ui_state.MediaItemUiState
 import com.moscow.cineverse.designSystem.component.tabs.ExploreTabsPages
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.navigation.LocalNavController
@@ -36,6 +39,7 @@ fun ExploreScreen(
     viewModel: ExploreViewModel = koinViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val contentList = viewModel.contentList.collectAsLazyPagingItems()
 
     LaunchedEffect(Unit) {
         viewModel.uiEffect.collect { event -> handleEffects(event, navController) }
@@ -43,6 +47,7 @@ fun ExploreScreen(
 
     ExploreScreenContent(
         uiState = uiState,
+        contentList = contentList,
         interactionListener = viewModel,
         modifier = modifier
     )
@@ -81,6 +86,7 @@ private fun handleEffects(
 @Composable
 private fun ExploreScreenContent(
     uiState: ExploreScreenState,
+    contentList: LazyPagingItems<Any>,
     interactionListener: ExploreInteractionListener,
     modifier: Modifier = Modifier
 ) {
@@ -101,7 +107,7 @@ private fun ExploreScreenContent(
                 ExploreSearchBarSection(uiState, interactionListener)
                 ExploreTabsSection(uiState.selectedTab, interactionListener::onTabSelected, uiState.searchKeyWord.isNotEmpty())
                 Box(modifier = Modifier.fillMaxSize()) {
-                    ExploreMainContent(uiState, gridState, interactionListener)
+                    ExploreMainContent(uiState, gridState, contentList, interactionListener)
                     GenresRow(uiState, genresState, interactionListener, modifier = Modifier.align(Alignment.TopCenter))
                 }
             }

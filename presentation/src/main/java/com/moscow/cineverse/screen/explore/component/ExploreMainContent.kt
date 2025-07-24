@@ -15,6 +15,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.paging.compose.LazyPagingItems
+import com.android.domain.model.Movie
+import com.android.domain.model.Series
 import com.moscow.cineverse.common_ui_state.MediaItemUiState
 import com.moscow.cineverse.component.MoviePosterCard
 import com.moscow.cineverse.component.NoInternetScreen
@@ -23,14 +26,17 @@ import com.moscow.cineverse.designSystem.component.MovieCircularProgressBar
 import com.moscow.cineverse.designSystem.component.ViewMode
 import com.moscow.cineverse.designSystem.component.tabs.ExploreTabsPages
 import com.moscow.cineverse.designSystem.theme.Theme
+import com.moscow.cineverse.mapper.toUi
 import com.moscow.cineverse.screen.explore.ExploreInteractionListener
 import com.moscow.cineverse.screen.explore.ExploreScreenState
+import com.moscow.cineverse.screen.explore.toUi
 import com.moscow.cinverse.presentation.R
 
 @Composable
 fun ExploreMainContent(
     uiState: ExploreScreenState,
     gridState: LazyGridState,
+    contentList: LazyPagingItems<Any>,
     interactionListener: ExploreInteractionListener,
     modifier: Modifier = Modifier
 ) {
@@ -82,22 +88,31 @@ fun ExploreMainContent(
                 horizontalArrangement = Arrangement.spacedBy(12.dp),
                 modifier = modifier.fillMaxSize()
             ) {
+                items(contentList.itemCount) { index ->
+                    val item = contentList[index]
+                    if (item != null) {
+                        when(item){
+                            is MediaItemUiState ->{
+                                MoviePosterCard(
+                                    movie = item,
+                                    viewMode = uiState.viewMode,
+                                    onMovieClick = { interactionListener.onMediaItemClicked(item) }
+                                )
+                            }
+                            is ExploreScreenState.ActorUiState -> {
+                                ActorPosterCard(
+                                    actor = item,
+                                    viewMode = uiState.viewMode,
+                                    onActorClicked = interactionListener::onActorClick
+                                )
+                            }
+                        }
+                    }
+                }
                 items(uiState.contentList) { item ->
                     when (item) {
-                        is MediaItemUiState -> {
-                            MoviePosterCard(
-                                movie = item,
-                                viewMode = uiState.viewMode,
-                                onMovieClick = { interactionListener.onMediaItemClicked(item) }
-                            )
-                        }
-
                         is ExploreScreenState.ActorUiState -> {
-                            ActorPosterCard(
-                                actor = item,
-                                viewMode = uiState.viewMode,
-                                onActorClicked = interactionListener::onActorClick
-                            )
+
                         }
                     }
                 }
