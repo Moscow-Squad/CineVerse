@@ -8,8 +8,6 @@ import androidx.navigation.compose.NavHost
 import com.moscow.cineverse.navigation.routes.CastBestOfMovieRoute
 import com.moscow.cineverse.navigation.routes.CastDetailsRoute
 import com.moscow.cineverse.navigation.routes.CastGalleryRoute
-import com.moscow.cineverse.navigation.routes.ExploreRoute
-import com.moscow.cineverse.navigation.routes.HomeRoute
 import com.moscow.cineverse.navigation.routes.MovieDetailsRoute
 import com.moscow.cineverse.navigation.routes.RecommendationsRoute
 import com.moscow.cineverse.navigation.routes.ReviewsRoute
@@ -18,12 +16,11 @@ import com.moscow.cineverse.navigation.routes.SeriesRecommendationRoute
 import com.moscow.cineverse.navigation.routes.SeriesSeasonsRoute
 import com.moscow.cineverse.navigation.routes.collectionsBottomSheetRoute
 import com.moscow.cineverse.navigation.routes.exploreRoute
-import com.moscow.cineverse.navigation.routes.loginRoute
-import org.koin.androidx.compose.koinViewModel
-
 import com.moscow.cineverse.navigation.routes.homeRoute
+import com.moscow.cineverse.navigation.routes.loginRoute
 import com.moscow.cineverse.navigation.routes.matchRoute
 import com.moscow.cineverse.navigation.routes.profileRoute
+import org.koin.androidx.compose.koinViewModel
 
 val LocalNavController =
     staticCompositionLocalOf<NavHostController> { error("No NavController provided") }
@@ -34,8 +31,6 @@ fun CineVerseNavGraph(
     navViewModel: NavViewModel = koinViewModel(),
     navController: NavHostController
 ) {
-    val navController = rememberNavController()
-
     val startDestination = navViewModel.startDestination.value
 
     if (startDestination == null) return // splash is still shown

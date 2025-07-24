@@ -76,10 +76,10 @@ class MainActivity : ComponentActivity() {
                 ) {
                     CineVerseNavGraph(navController = navController)
                 }
+            }
         }
     }
 }
-    }
 
 
 
