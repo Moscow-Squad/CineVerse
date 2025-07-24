@@ -221,7 +221,6 @@ class ExploreViewModel(
                 showSuggestions = false,
                 isLoading = false,
                 remoteSuggestions = emptyList(),
-                searchResult = mutableMapOf()
             )
         }
         updateContentList()
