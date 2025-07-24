@@ -21,6 +21,8 @@ import coil3.request.allowHardware
 import coil3.toBitmap
 import com.example.image_viewer.classfier.HybridImageClassifier
 import com.skydoves.cloudy.cloudy
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 @Composable
 fun SafeImageViewer(
@@ -49,7 +51,11 @@ fun SafeImageViewer(
         result.onSuccess { success ->
             val bitmap = runCatching { success.image?.toBitmap() }.getOrNull()
             if (bitmap != null) {
-                if (isBlurEnabled) isHaram = classifier.classifyImage(bitmap)
+                if (isBlurEnabled) {
+                    isHaram = withContext(Dispatchers.Default) {
+                        classifier.classifyImage(bitmap)
+                    }
+                }
                 bitmapToDisplay = bitmap
                 requestState = RequestState.SUCCESS
                 onSuccess?.invoke()
