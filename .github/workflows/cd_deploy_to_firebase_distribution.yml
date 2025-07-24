@@ -31,7 +31,7 @@ jobs:
       - name: Save Service Account Key
         env:
           FIREBASE_SERVICE_ACCOUNT_KEY: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_KEY }}
-        run: echo "$FIREBASE_SERVICE_ACCOUNT_KEY" > service-account-key.json
+        run: echo "$FIREBASE_SERVICE_ACCOUNT_KEY" > app/service-account-key.json
 
       - name: Generate keys.properties
         run: |
