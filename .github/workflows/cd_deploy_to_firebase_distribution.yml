@@ -30,7 +30,7 @@ jobs:
       - name: Save Service Account Key
         env:
           FIREBASE_SERVICE_ACCOUNT_KEY: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_KEY }}
-        run: echo "$FIREBASE_SERVICE_ACCOUNT_KEY" > service-account-key.json
+        run: echo "$secrets.FIREBASE_SERVICE_ACCOUNT_KEY" > app/google-services.json
 
       - name: Generate keys.properties
         run: |
