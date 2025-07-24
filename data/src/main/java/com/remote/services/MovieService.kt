@@ -13,6 +13,7 @@ import com.utils.PAGE
 import com.utils.POPULAR
 import com.utils.RATING
 import com.utils.RECOMMENDATIONS
+import com.utils.REVIEWS
 import com.utils.SESSION_ID
 import com.utils.WITH_GENRES
 import retrofit2.Response
@@ -46,16 +47,16 @@ interface MovieService {
         @Path("movie_id") id: Int
     ): Response<CreditsDetailsDto>
 
-    @GET("movie/{id}/reviews")
+    @GET("$MOVIE{id}$REVIEWS")
     suspend fun getMovieReviews(
         @Path("id") id: Int,
-        @Query("page") page: Int
+        @Query(PAGE) page: Int
     ): Response<ApiResponse<ReviewDto>>
 
     @GET("$MOVIE{movie_id}$RECOMMENDATIONS")
     suspend fun getMoviesRecommendations(
         @Path("movie_id") id: Int,
-        @Query("page") page: Int
+        @Query(PAGE) page: Int
     ): Response<ApiResponse<MovieDto>>
 
     @GET(DISCOVER_MOVIE_LIST)

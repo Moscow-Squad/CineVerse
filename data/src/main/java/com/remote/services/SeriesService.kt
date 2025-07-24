@@ -14,6 +14,7 @@ import com.utils.PAGE
 import com.utils.POPULAR
 import com.utils.RATING
 import com.utils.RECOMMENDATIONS
+import com.utils.REVIEWS
 import com.utils.SERIES
 import com.utils.SERIES_CREDITS
 import com.utils.SESSION_ID
@@ -53,7 +54,7 @@ interface SeriesService {
         @Query("page") page: Int
     ): Response<ListOfSeriesDto>
 
-    @GET("tv/{id}/reviews")
+    @GET("$SERIES{id}$REVIEWS")
     suspend fun getSeriesReviews(
         @Path("id") id: Int,
         @Query("page") page: Int
