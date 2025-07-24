@@ -27,7 +27,7 @@ class LoginViewModel(
 
         usernameValidationJob = validateInputWithDelay(
             input = username,
-            isValid = { it.length in 4..32 },
+            isValid = { it.length in 4..32 && it.all { char -> char.isLetterOrDigit() || char == '_' } },
             onResult = { error ->
                 updateState { it.copy(usernameError = error) }
             },
