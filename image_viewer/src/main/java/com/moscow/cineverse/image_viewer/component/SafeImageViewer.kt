@@ -1,4 +1,4 @@
-package com.example.image_viewer.component
+package com.moscow.cineverse.image_viewer.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
@@ -19,7 +19,7 @@ import coil3.ImageLoader
 import coil3.request.ImageRequest
 import coil3.request.allowHardware
 import coil3.toBitmap
-import com.example.image_viewer.classfier.HybridImageClassifier
+import com.moscow.cineverse.image_viewer.classfier.HybridImageClassifier
 import com.skydoves.cloudy.cloudy
 
 @Composable

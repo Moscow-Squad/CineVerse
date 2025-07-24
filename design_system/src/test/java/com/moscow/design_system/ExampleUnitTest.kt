@@ -1,4 +1,4 @@
-package com.example.design_system
+package com.moscow.design_system
 
 import org.junit.Test
 

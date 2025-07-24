@@ -1,4 +1,4 @@
-package com.example.design_system
+package com.moscow.design_system
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
