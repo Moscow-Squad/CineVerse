@@ -3,14 +3,17 @@ package com.di
 import com.android.domain.repository.ActorRepository
 import com.android.domain.repository.CollectionsRepository
 import com.android.domain.repository.GenreRepository
+import com.android.domain.repository.HomeRepository
 import com.android.domain.repository.MovieRepository
 import com.android.domain.repository.LoginRepository
 import com.android.domain.repository.PreferenceRepository
 import com.android.domain.repository.SearchRepository
 import com.android.domain.repository.SeriesRepository
+import com.remote.data_source.HomeRemoteDataSourceImpl
 import com.repository.ActorRepositoryImpl
 import com.repository.CollectionsRepositoryImpl
 import com.repository.GenreRepositoryImpl
+import com.repository.HomeRepositoryImpl
 import com.repository.MovieRepositoryImpl
 import com.repository.SearchRepositoryImpl
 import com.repository.SeriesRepositoryImpl
@@ -29,4 +32,5 @@ val repositoryModule = module {
     singleOf(::CollectionsRepositoryImpl) bind CollectionsRepository::class
     singleOf(::LoginRepositoryImpl) bind LoginRepository::class
     singleOf(::PreferenceRepositoryImpl) bind PreferenceRepository::class
+    singleOf(::HomeRepositoryImpl) bind HomeRepository::class
 }

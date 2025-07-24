@@ -9,6 +9,9 @@ import com.mapper.toDomain
 class HomeRepositoryImpl(
     private val homeRemoteDataSource: HomeRemoteDataSource
 ) : HomeRepository {
+    override suspend fun getTrendingMovies(time: String): List<Movie> =
+        homeRemoteDataSource.getTrendingMovies(time).results?.map { it.toDomain() } ?: emptyList()
+
     override suspend fun getUpComingMovies(page: Int): List<Movie> =
         homeRemoteDataSource.getUpComingMovies(page).results?.map { it.toDomain() } ?: emptyList()
 

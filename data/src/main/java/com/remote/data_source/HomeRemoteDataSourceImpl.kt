@@ -10,7 +10,11 @@ import com.utils.handleApi
 class HomeRemoteDataSourceImpl(
     private val homeService: HomeService
 ): HomeRemoteDataSource{
-    override suspend fun getUpComingMovies(page: Int): ApiResponse<MovieDto> = handleApi { 
+    override suspend fun getTrendingMovies(time:String): ApiResponse<MovieDto> = handleApi{
+        homeService.getTrendingMovies(time)
+    }
+
+    override suspend fun getUpComingMovies(page: Int): ApiResponse<MovieDto> = handleApi {
         homeService.getUpComingMovies(page)
     }
 
