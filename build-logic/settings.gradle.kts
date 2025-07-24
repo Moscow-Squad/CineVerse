@@ -17,15 +17,12 @@ dependencyResolutionManagement {
         google()
         mavenCentral()
     }
+
+    versionCatalogs {
+        create("libs") {
+            from(files("../gradle/libs.versions.toml"))
+        }
+    }
 }
 
-includeBuild("build-logic")
-
-enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
-rootProject.name = "CineVerse"
-include(":app")
-include(":presentation")
-include(":design_system")
-include(":data")
-include(":domain")
-include(":image_viewer")
+include(":conventions")

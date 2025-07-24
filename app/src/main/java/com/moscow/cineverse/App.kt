@@ -8,7 +8,7 @@ import org.koin.androidx.workmanager.koin.workManagerFactory
 import org.koin.core.component.KoinComponent
 import org.koin.core.context.GlobalContext.startKoin
 
-class App : Application(), KoinComponent {
+class App: Application(), KoinComponent {
     override fun onCreate() {
         super.onCreate()
         startKoin {
