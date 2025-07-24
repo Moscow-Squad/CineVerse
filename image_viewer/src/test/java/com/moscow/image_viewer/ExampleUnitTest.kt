@@ -1,4 +1,4 @@
-package com.example.image_viewer
+package com.moscow.image_viewer
 
 import org.junit.Test
 

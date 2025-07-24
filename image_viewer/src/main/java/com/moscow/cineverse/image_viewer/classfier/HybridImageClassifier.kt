@@ -1,4 +1,4 @@
-package com.example.image_viewer.classfier
+package com.moscow.cineverse.image_viewer.classfier
 
 import android.content.Context
 import android.graphics.Bitmap
