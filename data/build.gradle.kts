@@ -57,7 +57,13 @@ dependencies {
 
     implementation(libs.koin.androidx.workmanager)
     //unit test
+    androidTestImplementation(libs.androidx.core.testing)
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.mockk)
     testImplementation(libs.truth)
+    androidTestImplementation(libs.kotlinx.coroutines.test)
+    androidTestImplementation(libs.androidx.junit.v115)
+    androidTestImplementation(libs.androidx.runner)
+    androidTestImplementation(libs.androidx.core)
+    androidTestImplementation(libs.truth.v115)
 }
