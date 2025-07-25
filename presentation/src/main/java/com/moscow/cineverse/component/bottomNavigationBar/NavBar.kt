@@ -1,4 +1,4 @@
-package com.moscow.cineverse.screen.component.bottomNavigationBar
+package com.moscow.cineverse.component.bottomNavigationBar
 
 import androidx.compose.material3.NavigationBar
 import androidx.compose.runtime.Composable

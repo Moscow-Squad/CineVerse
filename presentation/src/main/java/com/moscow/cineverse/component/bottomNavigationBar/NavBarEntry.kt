@@ -1,4 +1,4 @@
-package com.moscow.cineverse.screen.component.bottomNavigationBar
+package com.moscow.cineverse.component.bottomNavigationBar
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.clickable

@@ -16,8 +16,8 @@ import com.moscow.cineverse.navigation.NavViewModel
 import com.moscow.cineverse.navigation.navigateToNewGraph
 import com.moscow.cineverse.navigation.rememberIsInGraph
 import com.moscow.cineverse.navigation.rememberNavGraphIndex
-import com.moscow.cineverse.screen.component.bottomNavigationBar.BottomNavItem.Companion.destinations
-import com.moscow.cineverse.screen.component.bottomNavigationBar.NavBar
+import com.moscow.cineverse.component.bottomNavigationBar.BottomNavItem.Companion.destinations
+import com.moscow.cineverse.component.bottomNavigationBar.NavBar
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable

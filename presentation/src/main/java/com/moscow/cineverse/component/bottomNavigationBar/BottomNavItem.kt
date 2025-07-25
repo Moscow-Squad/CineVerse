@@ -1,4 +1,4 @@
-package com.moscow.cineverse.screen.component.bottomNavigationBar
+package com.moscow.cineverse.component.bottomNavigationBar
 
 import com.moscow.cineverse.navigation.AppDestination
 import com.moscow.cineverse.navigation.routes.ExploreRoute
