@@ -1,7 +1,5 @@
 package com.moscow.cineverse
 
-
-import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -20,6 +18,7 @@ import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.ktx.Firebase
 import com.moscow.cineverse.designSystem.theme.CineVerseTheme
 import com.moscow.cineverse.navigation.CineVerseNavGraph
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.moscow.cineverse.navigation.NavViewModel
 import com.moscow.cineverse.navigation.navigateToNewGraph
 import com.moscow.cineverse.navigation.rememberIsInGraph
@@ -27,12 +26,12 @@ import com.moscow.cineverse.navigation.rememberNavGraphIndex
 import com.moscow.cineverse.screen.component.bottomNavigationBar.BottomNavItem.Companion.destinations
 import com.moscow.cineverse.screen.component.bottomNavigationBar.NavBar
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : ComponentActivity() {
-    private lateinit var analytics: FirebaseAnalytics
+
     private val navViewModel: NavViewModel by viewModel()
 
-    @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
 
         val splashScreen = installSplashScreen()
@@ -41,8 +40,8 @@ class MainActivity : ComponentActivity() {
         }
 
         super.onCreate(savedInstanceState)
-        analytics = Firebase.analytics
         enableEdgeToEdge()
+
         setContent {
             CineVerseTheme {
                 val navController = rememberNavController()
@@ -75,11 +74,8 @@ class MainActivity : ComponentActivity() {
                         navController = navController, navViewModel = navViewModel)
             }
             }
+            CineVerseRoot()
         }
     }
 }
-
-
-
-
 

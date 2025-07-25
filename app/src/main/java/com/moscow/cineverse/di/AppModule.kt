@@ -1,9 +1,17 @@
 package com.moscow.cineverse.di
 
 import com.android.domain.di.useCaseModule
-import com.di.dataModule
-import com.di.repositoryModule
-import com.di.workManagerModule
-import kotlin.collections.plus
+import com.moscow.di.dataModule
+import com.moscow.di.repositoryModule
+import com.moscow.di.workManagerModule
+import org.koin.dsl.module
 
-val appModule = dataModule + workManagerModule + repositoryModule + useCaseModule + viewModelModule
+val appModule = module {
+    includes(
+        dataModule,
+        workManagerModule,
+        repositoryModule,
+        useCaseModule,
+        viewModelModule
+    )
+}

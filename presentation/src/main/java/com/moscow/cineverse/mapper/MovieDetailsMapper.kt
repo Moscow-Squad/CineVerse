@@ -12,7 +12,6 @@ import kotlinx.datetime.LocalDate
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-
 fun MovieDetail.toUi(): MovieScreenState.MovieDetailsUiState =
     MovieScreenState.MovieDetailsUiState(
         id = id,

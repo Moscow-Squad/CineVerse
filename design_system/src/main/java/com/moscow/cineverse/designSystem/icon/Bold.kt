@@ -1,6 +1,6 @@
 package com.moscow.cineverse.designSystem.icon
 
-import com.example.design_system.R
+import com.moscow.cineverse.design_system.R
 
 data class Bold(
     val logo: Int,

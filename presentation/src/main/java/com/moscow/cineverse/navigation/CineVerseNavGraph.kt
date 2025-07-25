@@ -26,7 +26,6 @@ val LocalNavController =
     staticCompositionLocalOf<NavHostController> { error("No NavController provided") }
 
 @Composable
-
 fun CineVerseNavGraph(
     modifier : Modifier,
     navViewModel: NavViewModel,
