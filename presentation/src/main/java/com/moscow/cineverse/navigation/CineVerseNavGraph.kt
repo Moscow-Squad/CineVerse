@@ -1,5 +1,6 @@
 package com.moscow.cineverse.navigation
 
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.staticCompositionLocalOf
@@ -16,31 +17,34 @@ import com.moscow.cineverse.navigation.routes.SeriesRecommendationRoute
 import com.moscow.cineverse.navigation.routes.SeriesSeasonsRoute
 import com.moscow.cineverse.navigation.routes.collectionsBottomSheetRoute
 import com.moscow.cineverse.navigation.routes.exploreRoute
-import com.moscow.cineverse.navigation.routes.homeRoute
-import com.moscow.cineverse.screen.home.HomeRoute
-import com.moscow.cineverse.screen.home.homeScreen
 import com.moscow.cineverse.navigation.routes.loginRoute
 import com.moscow.cineverse.navigation.routes.matchRoute
 import com.moscow.cineverse.navigation.routes.profileRoute
+import com.moscow.cineverse.screen.home.HomeRoute
+import com.moscow.cineverse.screen.home.homeRoute
 import org.koin.androidx.compose.koinViewModel
 
 
 val LocalNavController =
     staticCompositionLocalOf<NavHostController> { error("No NavController provided") }
+val LocalScaffoldPaddingValues =
+    staticCompositionLocalOf<PaddingValues> { error("No PaddingValues provided") }
 
 @Composable
 fun CineVerseNavGraph(
     navViewModel: NavViewModel = koinViewModel(),
-    navController: NavHostController
+    navController: NavHostController,
+    scaffoldPaddingValues: PaddingValues
 ) {
     val startDestination = navViewModel.startDestination.value
 
     if (startDestination == null) return
 
     CompositionLocalProvider(
-        LocalNavController provides navController
+        LocalNavController provides navController,
+        LocalScaffoldPaddingValues provides scaffoldPaddingValues
     ) {
-        NavHost(navController = navController, startDestination = startDestination) {
+        NavHost(navController = navController, startDestination = HomeRoute) {
             exploreRoute()
             loginRoute()
             RecommendationsRoute()
@@ -57,7 +61,6 @@ fun CineVerseNavGraph(
                 onCreateCollectionClicked = {},
                 navigateBack = navController::navigateUp
             )
-            homeScreen()
             homeRoute()
             matchRoute()
             profileRoute()

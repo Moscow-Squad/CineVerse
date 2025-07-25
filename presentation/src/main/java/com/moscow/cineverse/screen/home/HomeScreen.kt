@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
@@ -21,6 +20,7 @@ import androidx.navigation.NavHostController
 import com.moscow.cineverse.designSystem.component.ScreenStateHandler
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.navigation.LocalNavController
+import com.moscow.cineverse.navigation.LocalScaffoldPaddingValues
 import com.moscow.cineverse.screen.home.components.FeaturedMovies
 import com.moscow.cineverse.screen.home.components.HomeHeader
 import com.moscow.cineverse.screen.home.components.HomeHeaderSlider
@@ -55,7 +55,7 @@ fun HomeContent(
             modifier = modifier
                 .fillMaxSize()
                 .background(Theme.colors.background.screen)
-                .systemBarsPadding(),
+                .padding(LocalScaffoldPaddingValues.current),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             HomeHeader(userName = state.userName, modifier)
@@ -83,7 +83,7 @@ fun HomeContent(
                     onMovieClick = listener::onMovieClick,
                     onShowMoreClick = listener::onSeeAllClick,
                     type = HomeFeaturedItems.RECENTLY_RELEASED,
-                    modifier = Modifier.padding(horizontal = 16.dp)
+                    modifier = Modifier
                 )
 
                 SuggestionWithHeader(
@@ -99,14 +99,14 @@ fun HomeContent(
                     onMovieClick = listener::onMovieClick,
                     onShowMoreClick = listener::onSeeAllClick,
                     type = HomeFeaturedItems.UPCOMING_MOVIES,
-                    modifier = Modifier.padding(horizontal = 16.dp),
+                    modifier = Modifier,
                 )
 
                 FeaturedMovies(
                     displayMovies = state.matchesYourVibe,
                     onMovieClick = listener::onMovieClick,
                     onShowMoreClick = listener::onSeeAllClick,
-                    modifier = Modifier.padding(horizontal = 16.dp),
+                    modifier = Modifier,
                     type = HomeFeaturedItems.MATCHES_YOUR_VIBE
                 )
 
@@ -114,7 +114,7 @@ fun HomeContent(
                     displayMovies = state.topRatedTvShows,
                     onMovieClick = listener::onMovieClick,
                     onShowMoreClick = listener::onSeeAllClick,
-                    modifier = Modifier.padding(horizontal = 16.dp),
+                    modifier = Modifier,
                     type = HomeFeaturedItems.TOP_RATED_TV_SHOWS
                 )
 
@@ -122,7 +122,7 @@ fun HomeContent(
                     displayMovies = state.youRecentlyViewed,
                     onMovieClick = listener::onMovieClick,
                     onShowMoreClick = listener::onSeeAllClick,
-                    modifier = Modifier.padding(horizontal = 16.dp),
+                    modifier = Modifier,
                     type = HomeFeaturedItems.YOU_RECENTLY_VIEWED
                 )
 
@@ -134,7 +134,9 @@ fun HomeContent(
                 )
 
                 SuggestionWithHeader(
-                    modifier = Modifier.padding(horizontal = 16.dp),
+                    modifier = Modifier
+                        .padding(horizontal = 16.dp)
+                        .padding(bottom = 16.dp),
                     header = stringResource(id = R.string.need_more_to_watch),
                     title = stringResource(id = R.string.browse_everything),
                     message = stringResource(id = R.string.browse_everything_message),

@@ -53,9 +53,10 @@ fun CineVerseRoot() {
                     }
                 )
             }
-        ) {
+        ) {paddingValues ->
             CineVerseNavGraph(
-                navController = navController
+                navController = navController,
+                scaffoldPaddingValues = paddingValues
             )
         }
     }

@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.lerp
 import androidx.compose.ui.zIndex
 import com.moscow.cineverse.common_ui_state.MediaItemUiState
-import com.moscow.cineverse.designSystem.component.LoadImageWithPlaceholder
+import com.moscow.cineverse.component.MoviePosterCard
 import com.moscow.cineverse.designSystem.component.RatingDisplaySection
 import com.moscow.cineverse.designSystem.theme.Theme
 import kotlin.math.absoluteValue
@@ -69,20 +69,19 @@ fun HomeHeaderSlider(items: List<MediaItemUiState>, modifier: Modifier = Modifie
                     .height(280.dp)
                     .zIndex(1f - pageOffset)
             ) {
-                LoadImageWithPlaceholder(
-                    posterUrl = items[page].posterPath,
-                    contentDescription = items[page].title,
+                MoviePosterCard(
+                    movie = items[page],
                     modifier = Modifier
                         .fillMaxWidth()
                         .align(BiasAlignment(0f, pageOffset - 1f))
                         .size(width = animatedWidth, height = animatedHeight)
                         .clip(RoundedCornerShape(Theme.radius.extraLarge)),
-                    placeholderModifier = Modifier
-                        .padding(horizontal = 4.dp)
-                        .fillMaxWidth()
-                        .padding(vertical = 16.dp),
-                    placeholderCardColor = Theme.colors.shade.secondary,
-                    placeholderIconSize = 32.dp
+//                    placeholderModifier = Modifier
+//                        .padding(horizontal = 4.dp)
+//                        .fillMaxWidth()
+//                        .padding(vertical = 16.dp),
+//                    placeholderCardColor = Theme.colors.shade.secondary,
+//                    placeholderIconSize = 32.dp
                 )
             }
 
