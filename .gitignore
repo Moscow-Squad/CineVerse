@@ -104,3 +104,4 @@ replay_pid*
 .idea_modules/
 atlassian-ide-plugin.xml
 .idea/mongoSettings.xml
+/.kotlin/
