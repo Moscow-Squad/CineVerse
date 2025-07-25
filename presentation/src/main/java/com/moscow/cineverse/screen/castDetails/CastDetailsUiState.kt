@@ -1,9 +1,8 @@
-
 package com.moscow.cineverse.screen.castDetails
 
-import com.android.domain.model.ActorDetails
-import com.android.domain.model.Movie
 import com.moscow.cineverse.designSystem.component.cast_details.SocialMediaLinks
+import com.moscow.domain.model.ActorDetails
+import com.moscow.domain.model.Movie
 
 data class CastDetailsUiState(
     val isLoading: Boolean = false,

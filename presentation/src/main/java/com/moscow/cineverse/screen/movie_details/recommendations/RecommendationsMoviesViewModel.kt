@@ -5,11 +5,11 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.android.domain.model.Movie
-import com.android.domain.usecase.movie.GetMovieRecommendationsUseCase
 import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.cineverse.designSystem.component.ViewMode
 import com.moscow.cineverse.paging.BasePagingSource
+import com.moscow.domain.model.Movie
+import com.moscow.domain.usecase.movie.GetMovieRecommendationsUseCase
 import kotlinx.coroutines.flow.Flow
 
 class RecommendationsMoviesViewModel (

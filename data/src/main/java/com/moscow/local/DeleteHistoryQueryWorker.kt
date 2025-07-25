@@ -3,7 +3,7 @@ package com.moscow.local
 import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
-import com.android.domain.repository.SearchRepository
+import com.moscow.domain.repository.SearchRepository
 
 class DeleteHistoryQueryWorker(
     appContext: Context,
