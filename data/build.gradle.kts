@@ -48,6 +48,7 @@ dependencies {
 
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
+    testImplementation(libs.junit.jupiter)
     ksp(libs.androidx.room.compiler)
     testImplementation(libs.bundles.room.testing)
 
@@ -56,10 +57,11 @@ dependencies {
 
     implementation(libs.koin.androidx.workmanager)
 
-    //unit testing
+    //unit test
+    testImplementation(libs.mockk)
+    testImplementation(libs.truth)
     testImplementation (libs.junit)
     testImplementation (libs.kotlinx.coroutines.test)
     testImplementation (libs.mockk.v11310)
-
 
 }
