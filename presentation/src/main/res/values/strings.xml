@@ -60,4 +60,8 @@
     <string name="need_more_to_watch">Need More to Watch?</string>
     <string name="browse_everything">Browse Everything</string>
     <string name="browse_everything_message">Explore all movies and series by genre or search for anything you like.</string>
+    <string name="home">Home</string>
+    <string name="me">Me</string>
+    <string name="match">Match</string>
+    <string name="explore">Explore</string>
 </resources>

@@ -9,7 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
-import com.example.design_system.R
+import com.moscow.cineverse.design_system.R
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.webtoonscorp.android.readmore.foundation.ReadMoreTextOverflow
 import com.webtoonscorp.android.readmore.foundation.ToggleArea

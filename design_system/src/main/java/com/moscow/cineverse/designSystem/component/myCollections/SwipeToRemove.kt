@@ -32,7 +32,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.design_system.R
+import com.moscow.cineverse.design_system.R
 import com.moscow.cineverse.designSystem.theme.Theme
 import kotlinx.coroutines.delay
 

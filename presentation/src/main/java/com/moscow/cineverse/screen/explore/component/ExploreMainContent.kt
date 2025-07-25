@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -15,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.paging.compose.LazyPagingItems
 import com.moscow.cineverse.common_ui_state.MediaItemUiState
 import com.moscow.cineverse.component.MoviePosterCard
 import com.moscow.cineverse.component.NoInternetScreen
@@ -31,6 +31,7 @@ import com.moscow.cinverse.presentation.R
 fun ExploreMainContent(
     uiState: ExploreScreenState,
     gridState: LazyGridState,
+    contentList: LazyPagingItems<Any>,
     interactionListener: ExploreInteractionListener,
     modifier: Modifier = Modifier
 ) {
@@ -77,27 +78,35 @@ fun ExploreMainContent(
             LazyVerticalGrid(
                 state = gridState,
                 columns = gridColumns,
-                contentPadding = PaddingValues(top = 56.dp, start = 16.dp, end = 16.dp, bottom = 100.dp),
+                contentPadding = PaddingValues(
+                    top = 56.dp,
+                    start = 16.dp,
+                    end = 16.dp,
+                    bottom = 100.dp
+                ),
                 verticalArrangement = Arrangement.spacedBy(16.dp),
                 horizontalArrangement = Arrangement.spacedBy(12.dp),
                 modifier = modifier.fillMaxSize()
             ) {
-                items(uiState.contentList) { item ->
-                    when (item) {
-                        is MediaItemUiState -> {
-                            MoviePosterCard(
-                                movie = item,
-                                viewMode = uiState.viewMode,
-                                onMovieClick = { interactionListener.onMediaItemClicked(item) }
-                            )
-                        }
+                items(contentList.itemCount) { index ->
+                    val item = contentList[index]
+                    if (item != null) {
+                        when (item) {
+                            is MediaItemUiState -> {
+                                MoviePosterCard(
+                                    movie = item,
+                                    viewMode = uiState.viewMode,
+                                    onMovieClick = { interactionListener.onMediaItemClicked(item) }
+                                )
+                            }
 
-                        is ExploreScreenState.ActorUiState -> {
-                            ActorPosterCard(
-                                actor = item,
-                                viewMode = uiState.viewMode,
-                                onActorClicked = interactionListener::onActorClick
-                            )
+                            is ExploreScreenState.ActorUiState -> {
+                                ActorPosterCard(
+                                    actor = item,
+                                    viewMode = uiState.viewMode,
+                                    onActorClicked = interactionListener::onActorClick
+                                )
+                            }
                         }
                     }
                 }

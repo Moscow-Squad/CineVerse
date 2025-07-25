@@ -8,5 +8,6 @@ interface LoginInteractionListener {
     fun onClickCreateNewAccount()
     fun onDismissOrCancelSignUpBottomSheet()
     fun onClickGoToWebsite()
-    fun onExitSignupBrowser()
+    fun onClickForgetPassword()
+    fun onExitWebViewBrowser()
 }

@@ -19,6 +19,8 @@ dependencyResolutionManagement {
     }
 }
 
+includeBuild("build-logic")
+
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 rootProject.name = "CineVerse"
 include(":app")

@@ -7,8 +7,11 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
@@ -33,12 +36,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.example.design_system.R
+import com.moscow.cineverse.design_system.R
 import com.moscow.cineverse.designSystem.component.AppTextField
 import com.moscow.cineverse.designSystem.component.MessageInfoBox
 import com.moscow.cineverse.designSystem.component.MovieButton
 import com.moscow.cineverse.designSystem.component.bottomsheet.CineVerseBottomSheet
-import com.moscow.cineverse.designSystem.component.login.SignupBrowser
+import com.moscow.cineverse.designSystem.component.login.WebViewBrowser
+import com.moscow.cineverse.designSystem.theme.CineVerseTheme
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.navigation.LocalNavController
 import com.moscow.cineverse.navigation.routes.ExploreRoute
@@ -156,7 +160,8 @@ private fun LoginScreenContent(
                 onDone = {
                     focusManager.clearFocus()
                 }
-            )
+            ),
+            forgotPasswordClick = interactionListener::onClickForgetPassword
         )
         MovieButton(
             modifier = Modifier
@@ -183,7 +188,7 @@ private fun LoginScreenContent(
         Spacer(modifier = Modifier.weight(1f))
         MovieButton(
             modifier = Modifier
-                .padding(bottom = 24.dp)
+                .padding(vertical = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding() + 24.dp)
                 .align(Alignment.CenterHorizontally),
             buttonText = stringResource(com.moscow.cinverse.presentation.R.string.create_a_new_account),
             textColor = Theme.colors.button.onSecondary,
@@ -196,11 +201,11 @@ private fun LoginScreenContent(
             SignUpBottomSheet(interactionListener)
         }
     }
-    AnimatedVisibility (state.wantToSignup) {
-        SignupBrowser(
+    AnimatedVisibility (state.showWebView) {
+        WebViewBrowser(
+            url = state.urlWebView,
             onExitWebView = {
-                interactionListener.onDismissOrCancelSignUpBottomSheet()
-                interactionListener.onExitSignupBrowser()
+                interactionListener.onExitWebViewBrowser()
             }
         )
     }
@@ -230,6 +235,7 @@ fun SignUpBottomSheet(interactionListener: LoginInteractionListener) {
 @Preview()
 @Composable()
 fun LoginScreenPreview() {
-    val nav = rememberNavController()
-    LoginScreen(nav)
+    CineVerseTheme {
+        LoginScreen()
+    }
 }
