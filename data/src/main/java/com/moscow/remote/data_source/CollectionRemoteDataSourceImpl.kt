@@ -8,7 +8,7 @@ import com.moscow.remote.services.CollectionsService
 import com.moscow.utils.ApiResponse
 import com.moscow.utils.handleApi
 
-class CollectionRemoteRemoteDataSourceImpl(
+class CollectionRemoteDataSourceImpl(
     private val collectionsService: CollectionsService
 ) : CollectionRemoteDataSource {
     override suspend fun getMyCollections(

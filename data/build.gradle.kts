@@ -56,4 +56,10 @@ dependencies {
 
     implementation(libs.koin.androidx.workmanager)
 
+    //unit testing
+    testImplementation (libs.junit)
+    testImplementation (libs.kotlinx.coroutines.test)
+    testImplementation (libs.mockk.v11310)
+
+
 }
