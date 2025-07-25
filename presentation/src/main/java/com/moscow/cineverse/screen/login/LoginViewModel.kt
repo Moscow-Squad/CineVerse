@@ -27,7 +27,7 @@ class LoginViewModel(
 
         usernameValidationJob = validateInputWithDelay(
             input = username,
-            isValid = { it.length in 4..32 && it.all(Char::isLetterOrDigit) },
+            isValid = { it.length in 4..32 && it.all { char -> char.isLetterOrDigit() || char == '_' } },
             onResult = { error ->
                 updateState { it.copy(usernameError = error) }
             },
@@ -120,13 +120,21 @@ class LoginViewModel(
         updateState {
             it.copy(
                 showSignUpBottomSheet = false,
-                wantToSignup = true
+                urlWebView = SIGN_UP_URL,
+                showWebView = true
             )
         }
     }
 
-    override fun onExitSignupBrowser() {
-        updateState { it.copy(wantToSignup = false) }
+    override fun onClickForgetPassword() {
+        updateState { it.copy(
+            urlWebView = FORGET_PASSWORD_URL,
+            showWebView = true
+        ) }
+    }
+
+    override fun onExitWebViewBrowser() {
+        updateState { it.copy(showWebView = false) }
     }
 
     private fun validateInputWithDelay(
@@ -144,6 +152,11 @@ class LoginViewModel(
             val error = if (!isInputValid && trimmedInput.isNotEmpty()) errorMessage else null
             onResult(error)
         }
+    }
+
+    companion object{
+        private const val SIGN_UP_URL = "https://www.themoviedb.org/signup"
+        private const val FORGET_PASSWORD_URL = "https://www.themoviedb.org/reset-password"
     }
 
 }
