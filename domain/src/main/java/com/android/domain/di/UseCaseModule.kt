@@ -26,7 +26,9 @@ import com.android.domain.usecase.series.GetLatestSeasonsUseCase
 import com.android.domain.usecase.series.GetListOfSeriesUseCase
 import com.android.domain.usecase.series.GetPopularSeriesUseCase
 import com.android.domain.usecase.series.GetSeriesByGenreIdUseCase
+import com.android.domain.usecase.series.GetSeriesCreditsDetailsUseCase
 import com.android.domain.usecase.series.GetSeriesDetailUseCase
+import com.android.domain.usecase.series.GetSeriesRecommendationsUseCase
 import com.android.domain.usecase.series.RateSeriesUseCase
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
@@ -47,6 +49,8 @@ val useCaseModule = module {
     singleOf(::GetActorBestMoviesUseCase)
     singleOf(::GetMovieDetailsUseCase)
     singleOf(::GetSeriesDetailUseCase)
+    singleOf(::GetSeriesCreditsDetailsUseCase)
+    singleOf(::GetSeriesRecommendationsUseCase)
     singleOf(::GetReviewsUseCase)
     singleOf(::GetMovieCreditsUseCase)
     singleOf(::GetMovieRecommendationsUseCase)

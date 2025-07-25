@@ -4,15 +4,12 @@ import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.Stable
 import com.moscow.cineverse.designSystem.component.ViewMode
 import com.moscow.cineverse.designSystem.component.tabs.ExploreTabsPages
-import com.moscow.cineverse.common_ui_state.MediaItemUiState
 
 @Immutable
 @Stable
 data class ExploreScreenState(
 
     val searchKeyWord: String = "",
-
-    val searchResult: Map<String, List<Any>> = mutableMapOf(),
 
     val remoteSuggestions: List<String> = emptyList(),
     val localSuggestions: List<SuggestItemUiState> = listOf(),
@@ -24,9 +21,6 @@ data class ExploreScreenState(
 
     val moviesGenres: List<GenreUiState> = emptyList(),
     val seriesGenres: List<GenreUiState> = emptyList(),
-
-    val movies: List<MediaItemUiState> = emptyList(),
-    val series: List<MediaItemUiState> = emptyList(),
 
     val selectedMovieGenre: Int = 0,
     val selectedSeriesGenre: Int = 0,
@@ -40,10 +34,7 @@ data class ExploreScreenState(
     val shouldShowLoading: Boolean = false,
     val shouldShowError: Boolean = false,
     val errorMessage: String = "",
-    val contentList: List<Any> = emptyList()
-
 ) {
-
     val displayedSuggestions: List<SuggestItemUiState>
         get() {
             val filteredLocalSuggestions = localSuggestions
@@ -54,14 +45,6 @@ data class ExploreScreenState(
 
             return filteredLocalSuggestions + mappedRemoteSuggestions
         }
-
-    fun fromScreenState(selectedTab: ExploreTabsPages): List<MediaItemUiState> {
-        return when (selectedTab) {
-            ExploreTabsPages.MOVIES -> movies
-            ExploreTabsPages.SERIES -> series
-            else -> emptyList()
-        }
-    }
 
     data class ActorUiState(
         val title: String,
