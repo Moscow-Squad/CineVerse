@@ -11,13 +11,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
-import com.moscow.cineverse.designSystem.component.ScreenStateHandler
+import com.moscow.cineverse.component.ScreenStateHandler
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.navigation.LocalNavController
 import com.moscow.cineverse.navigation.LocalScaffoldPaddingValues
@@ -36,6 +37,20 @@ fun HomeScreen(
     navController: NavHostController = LocalNavController.current,
 ) {
     val state by viewmodel.uiState.collectAsStateWithLifecycle()
+    LaunchedEffect(Unit) {
+        viewmodel.uiEffect.collect { effect ->
+            when (effect) {
+                is HomeEvent.CollectionClicked -> {}
+                is HomeEvent.MovieClicked -> {}
+                is HomeEvent.PromotionClicked -> {}
+                is HomeEvent.SeeAllClicked -> {
+                    // Navigate to SeeMoreHomeScreen with the category
+                    navController.navigate("see_more/${effect.category}")
+                }
+                is HomeEvent.SeriesClicked -> {}
+            }
+        }
+    }
     HomeContent(modifier, state, viewmodel)
 }
 

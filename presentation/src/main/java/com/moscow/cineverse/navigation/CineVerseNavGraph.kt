@@ -20,8 +20,9 @@ import com.moscow.cineverse.navigation.routes.exploreRoute
 import com.moscow.cineverse.navigation.routes.loginRoute
 import com.moscow.cineverse.navigation.routes.matchRoute
 import com.moscow.cineverse.navigation.routes.profileRoute
-import com.moscow.cineverse.screen.home.HomeRoute
-import com.moscow.cineverse.screen.home.homeRoute
+import com.moscow.cineverse.navigation.routes.HomeRoute
+import com.moscow.cineverse.navigation.routes.homeRoute
+import com.moscow.cineverse.navigation.routes.seeMoreRoute
 import org.koin.androidx.compose.koinViewModel
 
 
@@ -62,6 +63,7 @@ fun CineVerseNavGraph(
                 navigateBack = navController::navigateUp
             )
             homeRoute()
+            seeMoreRoute()
             matchRoute()
             profileRoute()
         }
