@@ -7,5 +7,5 @@ import org.koin.dsl.bind
 import org.koin.dsl.module
 
 val systemModule = module {
-    singleOf(::DeviceLanguageProvider) bind LanguageProvider::class
+    single<LanguageProvider> { DeviceLanguageProvider() }
 }

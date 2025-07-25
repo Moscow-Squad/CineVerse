@@ -34,6 +34,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.moscow.cineverse.design_system.R
 import com.moscow.cineverse.image_viewer.component.SafeImageViewer
 import com.moscow.cineverse.designSystem.component.blur.OnBlurContent
