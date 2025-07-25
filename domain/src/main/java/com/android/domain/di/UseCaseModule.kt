@@ -32,8 +32,6 @@ import com.android.domain.usecase.series.GetSeriesRecommendationsUseCase
 import com.android.domain.usecase.series.RateSeriesUseCase
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
-import com.android.domain.usecase.series.GetSeriesRecommendationsUseCase
-import com.android.domain.usecase.series.GetSeriesCreditsDetailsUseCase
 
 val useCaseModule = module {
     singleOf(::GetLocalSuggestionsUseCase)
