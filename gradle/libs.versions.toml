@@ -1,15 +1,11 @@
 [versions]
 accompanistWebview = "0.36.0"
 
-androidxJunit = "1.1.5"
-core = "1.5.0"
 namespace = "com.moscow.cineverse"
 applicationId = "com.moscow.cineverse"
 compileSdk = "36"
 minSdk = "26"
-runner = "1.5.2"
 targetSdk = "36"
-truthVersion = "1.1.5"
 versionCode = "1"
 versionName = "1.0"
 javaVersion = "11"
@@ -24,7 +20,6 @@ coreKtx = "1.16.0"
 junit = "4.13.2"
 junitVersion = "1.2.1"
 junitJupiterApi = "5.13.3"
-coreTesting = "2.2.0"
 junitJupiterEngine = "5.13.3"
 espressoCore = "3.6.1"
 kotlinxCoroutinesAndroid = "1.7.3"
@@ -81,9 +76,6 @@ coreSplashscreen = "1.0.1"
 serializationKotlin = "2.0.0"
 
 [libraries]
-androidx-core = { module = "androidx.test:core", version.ref = "core" }
-androidx-junit-v115 = { module = "androidx.test.ext:junit", version.ref = "androidxJunit" }
-androidx-runner = { module = "androidx.test:runner", version.ref = "runner" }
 tensorflow-lite-vision = { module = "org.tensorflow:tensorflow-lite-task-vision", version.ref = "tensorflowLiteVision" }
 accompanist-webview = { module = "com.google.accompanist:accompanist-webview", version.ref = "accompanistWebview" }
 androidx-core-splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "coreSplashscreen" }
@@ -133,7 +125,6 @@ tensorflow-lite = { module = "org.tensorflow:tensorflow-lite", version.ref = "te
 tensorflow-lite-support = { module = "org.tensorflow:tensorflow-lite-support", version.ref = "tensorflowLiteSupport" }
 
 # Test
-androidx-core-testing = { module = "androidx.arch.core:core-testing", version.ref = "coreTesting" }
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinxCoroutinesTest" }
 truth = { module = "com.google.truth:truth", version.ref = "truth" }
@@ -150,7 +141,6 @@ androidx-junit-ktx = { group = "androidx.test.ext", name = "junit-ktx", version.
 # Mock
 mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
 
-truth-v115 = { module = "com.google.truth:truth", version.ref = "truthVersion" }
 ui = { module = "androidx.compose.ui:ui", version.ref = "ui" }
 cloudy = { module = "com.github.skydoves:cloudy", version.ref = "cloudy" }
 androidx-ui-tooling-preview-android = { group = "androidx.compose.ui", name = "ui-tooling-preview-android", version.ref = "uiToolingPreviewAndroid" }
