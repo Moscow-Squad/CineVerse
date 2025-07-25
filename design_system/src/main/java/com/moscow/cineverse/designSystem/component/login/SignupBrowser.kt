@@ -1,52 +1,60 @@
-@file:Suppress("DEPRECATION")
-
 package com.moscow.cineverse.designSystem.component.login
 
-import android.annotation.SuppressLint
+import android.view.ViewGroup
 import android.webkit.WebView
+import android.webkit.WebViewClient
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import com.google.accompanist.web.AccompanistWebViewClient
-import com.google.accompanist.web.WebView
-import com.google.accompanist.web.rememberWebViewState
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.viewinterop.AndroidView
 import com.moscow.cineverse.designSystem.component.MovieScaffold
 
-@SuppressLint("SetJavaScriptEnabled")
 @Composable
-fun SignupBrowser(
+fun WebViewBrowser(
+    url: String,
     onExitWebView: () -> Unit
 ) {
-    val url = "https://www.themoviedb.org/signup"
-    val state = rememberWebViewState(url)
-
-    val webViewHolder = remember { WebViewHolder() }
+    val context = LocalContext.current
+    val webView = remember { WebView(context) }
 
     BackHandler {
-        val canGoBack = webViewHolder.webView?.canGoBack() == true
-        if (canGoBack) {
-            webViewHolder.webView?.goBack()
+        if (webView.canGoBack()) {
+            webView.goBack()
         } else {
             onExitWebView()
         }
     }
 
-    MovieScaffold() {
-        WebView(
-            state = state,
+    DisposableEffect(Unit) {
+        onDispose {
+            webView.stopLoading()
+            webView.destroy()
+        }
+    }
+
+    MovieScaffold {
+        AndroidView(
             modifier = Modifier.fillMaxSize(),
-            onCreated = {
-                it.settings.javaScriptEnabled = true
-                webViewHolder.webView = it
+            factory = {
+                webView.apply {
+                    layoutParams = ViewGroup.LayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.MATCH_PARENT
+                    )
+                    settings.javaScriptEnabled = true
+                    webViewClient = WebViewClient()
+                    loadUrl(url)
+                }
             },
-            client = remember { AccompanistWebViewClient() }
+            update = {
+                if (it.url != url) {
+                    it.loadUrl(url)
+                }
+            }
         )
     }
-}
-
-// Helper class to store WebView reference
-class WebViewHolder {
-    var webView: WebView? = null
 }

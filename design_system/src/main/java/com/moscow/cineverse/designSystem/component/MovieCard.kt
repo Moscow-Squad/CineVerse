@@ -28,6 +28,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -36,7 +37,6 @@ import androidx.compose.ui.unit.dp
 import com.moscow.cineverse.design_system.R
 import com.moscow.cineverse.image_viewer.component.SafeImageViewer
 import com.moscow.cineverse.designSystem.component.blur.OnBlurContent
-import com.moscow.cineverse.designSystem.component.blur.RemoteImagePlaceholder
 import com.moscow.cineverse.designSystem.theme.CineVerseTheme
 import com.moscow.cineverse.designSystem.theme.Theme
 
@@ -87,21 +87,22 @@ fun <T : Any> MovieCard(
 }
 
 @Composable
-private fun PlaceholderCard(
+private fun RemoteImagePlaceholder(
     modifier: Modifier = Modifier,
     cardColor: Color = Theme.colors.brand.tertiary,
     iconSize: Dp = 24.dp
 ) {
     Box(
         modifier = modifier
-            .fillMaxSize()
             .background(
-                cardColor, RoundedCornerShape(
+                cardColor,
+                RoundedCornerShape(
                     topStart = Theme.radius.large,
                     topEnd = Theme.radius.large,
                     bottomStart = Theme.radius.large
                 )
-            ), contentAlignment = Alignment.Center
+            ),
+        contentAlignment = Alignment.Center
     ) {
         Icon(
             painter = painterResource(R.drawable.due_tone_image),
@@ -139,16 +140,35 @@ private fun <T> GridMovieCard(
             Box {
                 val posterUrl = getPosterUrl(movieData)
 
-                LoadImageWithPlaceholder(
-                    posterUrl = posterUrl,
-                    contentDescription = getTitle(movieData),
+                SafeImageViewer(
+                    imageUrl = posterUrl,
                     modifier = Modifier
                         .fillMaxSize()
                         .clip(RoundedCornerShape(Theme.radius.large)),
-                    placeholderModifier = Modifier.fillMaxSize(),
-                    placeholderCardColor = Theme.colors.background.card,
-                    placeholderIconSize = 32.dp
-                )
+                    placeholderContent = {
+                        RemoteImagePlaceholder(
+                            modifier = Modifier.fillMaxSize(),
+                            cardColor = Theme.colors.background.card,
+                            iconSize = 32.dp
+                        )
+                    },
+                    errorContent = {
+                        RemoteImagePlaceholder(
+                            modifier = Modifier.fillMaxSize(),
+                            cardColor = Theme.colors.background.card,
+                            iconSize = 32.dp
+                        )
+                    }
+                ) {
+                    OnBlurContent(
+                        icon = painterResource(R.drawable.icon_eye_slash),
+                        hintText = stringResource(R.string.unsuitable_image),
+                        textStyle = Theme.textStyle.body.small.regular.copy(
+                            color = Color(0x99FFFFFF)
+                        ),
+                        iconSize = 24.dp,
+                    )
+                }
 
                 val rating = getRating(movieData)
                 if (showRating && rating > 0) {
@@ -223,14 +243,11 @@ private fun <T> ListMovieCard(
         colors = CardDefaults.cardColors(containerColor = Theme.colors.background.card)
     ) {
         Box(modifier = Modifier.fillMaxSize()) {
-
             Row(modifier = Modifier.fillMaxSize()) {
-
                 val posterUrl = getPosterUrl(movieData)
 
-                LoadImageWithPlaceholder(
-                    posterUrl = posterUrl,
-                    contentDescription = getTitle(movieData),
+                SafeImageViewer(
+                    imageUrl = posterUrl,
                     modifier = Modifier
                         .width(64.dp)
                         .fillMaxHeight()
@@ -241,12 +258,35 @@ private fun <T> ListMovieCard(
                                 bottomStart = Theme.radius.large
                             )
                         ),
-                    placeholderModifier = Modifier
-                        .width(64.dp)
-                        .fillMaxHeight(),
-                    placeholderCardColor = Theme.colors.brand.tertiary,
-                    placeholderIconSize = 24.dp
-                )
+                    placeholderContent = {
+                        RemoteImagePlaceholder(
+                            modifier = Modifier
+                                .width(64.dp)
+                                .fillMaxHeight(),
+                            cardColor = Theme.colors.brand.tertiary,
+                            iconSize = 24.dp
+                        )
+                    },
+                    errorContent = {
+                        RemoteImagePlaceholder(
+                            modifier = Modifier
+                                .width(64.dp)
+                                .fillMaxHeight(),
+                            cardColor = Theme.colors.brand.tertiary,
+                            iconSize = 24.dp
+                        )
+                    }
+                ) {
+                    OnBlurContent(
+                        icon = painterResource(R.drawable.icon_eye_slash),
+                        hintText = stringResource(R.string.unsuitable_image),
+                        textStyle = TextStyle(
+                            fontSize = 8.sp,
+                            color = Color(0x99FFFFFF)
+                        ),
+                        iconSize = 16.dp,
+                    )
+                }
 
                 Column(
                     modifier = Modifier
@@ -261,9 +301,9 @@ private fun <T> ListMovieCard(
                     )
 
                     DurationAndDateSection(
-                        duration = getDuration(movieData), releaseDate = getReleaseDate(movieData)
+                        duration = getDuration(movieData),
+                        releaseDate = getReleaseDate(movieData)
                     )
-
                 }
             }
         }
@@ -281,43 +321,14 @@ data class MockMovieData(
 )
 
 @Composable
-fun LoadImageWithPlaceholder(
-    posterUrl: String,
-    contentDescription: String,
-    modifier: Modifier = Modifier,
-    placeholderModifier: Modifier = Modifier,
-    placeholderCardColor: Color,
-    placeholderIconSize: Dp
-) {
-    if (posterUrl.isNotEmpty()) {
-        SafeImageViewer(
-            imageUrl = posterUrl,
-            modifier = Modifier.fillMaxWidth(),
-            placeholderContent = {
-                RemoteImagePlaceholder(Modifier.fillMaxSize())
-            },
-            errorContent = {
-                RemoteImagePlaceholder(Modifier.fillMaxSize())
-            },
-        ) {
-            OnBlurContent(
-                hintText = stringResource(R.string.unsuitable_image),
-                textStyle = Theme.textStyle.body.small.regular.copy(
-                    color = Color(0x99FFFFFF)
-                ),
-                iconSize = 24.dp,
-                icon = painterResource(R.drawable.icon_eye_slash),
-            )
-        }
-    }
-}
-
-@Composable
 fun DurationAndDateSection(
-    modifier: Modifier = Modifier, duration: String, releaseDate: String
+    modifier: Modifier = Modifier,
+    duration: String,
+    releaseDate: String
 ) {
     Row(
-        modifier = modifier.padding(top = 8.dp), verticalAlignment = Alignment.CenterVertically
+        modifier = modifier.padding(top = 8.dp),
+        verticalAlignment = Alignment.CenterVertically
     ) {
         if (duration.isNotEmpty()) {
             Icon(
@@ -355,21 +366,21 @@ fun DurationAndDateSection(
     }
 }
 
-@Preview(showBackground = true, name = "Grid View - Loading State")
+@Preview(showBackground = true, name = "Grid View - Safe Image")
 @Composable
-fun GridMovieCardLoadingPreview() {
+fun GridMovieCardSafeImagePreview() {
     MaterialTheme {
         Column(modifier = Modifier.padding(16.dp)) {
             MovieCard(
                 movieData = MockMovieData(
-                id = 1,
-                title = "The Dark Knight",
-                posterUrl = "",
-                rating = 9.0f,
-                genres = listOf("Action", "Crime", "Drama"),
-                duration = "2h 32m",
-                releaseDate = "2008, Jul 18"
-            ),
+                    id = 1,
+                    title = "The Dark Knight",
+                    posterUrl = "https://example.com/poster.jpg",
+                    rating = 9.0f,
+                    genres = listOf("Action", "Crime", "Drama"),
+                    duration = "2h 32m",
+                    releaseDate = "2008, Jul 18"
+                ),
                 viewMode = ViewMode.GRID,
                 onMovieClick = {},
                 getId = { it.id },
@@ -378,26 +389,27 @@ fun GridMovieCardLoadingPreview() {
                 getRating = { it.rating },
                 getGenres = { it.genres },
                 getDuration = { it.duration },
-                getReleaseDate = { it.releaseDate })
+                getReleaseDate = { it.releaseDate }
+            )
         }
     }
 }
 
-@Preview(showBackground = true, name = "List View - Loading State")
+@Preview(showBackground = true, name = "List View - Safe Image")
 @Composable
-fun ListMovieCardLoadingPreview() {
+fun ListMovieCardSafeImagePreview() {
     CineVerseTheme {
         Column(modifier = Modifier.padding(16.dp)) {
             MovieCard(
                 movieData = MockMovieData(
-                id = 1,
-                title = "Inception",
-                posterUrl = "",
-                rating = 8.8f,
-                genres = listOf("Action", "Sci-Fi", "Thriller"),
-                duration = "2h 28m",
-                releaseDate = "2008, Jul 18"
-            ),
+                    id = 1,
+                    title = "Inception",
+                    posterUrl = "https://example.com/poster.jpg",
+                    rating = 8.8f,
+                    genres = listOf("Action", "Sci-Fi", "Thriller"),
+                    duration = "2h 28m",
+                    releaseDate = "2008, Jul 18"
+                ),
                 viewMode = ViewMode.LIST,
                 onMovieClick = {},
                 getId = { it.id },
@@ -406,7 +418,8 @@ fun ListMovieCardLoadingPreview() {
                 getRating = { it.rating },
                 getGenres = { it.genres },
                 getDuration = { it.duration },
-                getReleaseDate = { it.releaseDate })
+                getReleaseDate = { it.releaseDate }
+            )
         }
     }
 }

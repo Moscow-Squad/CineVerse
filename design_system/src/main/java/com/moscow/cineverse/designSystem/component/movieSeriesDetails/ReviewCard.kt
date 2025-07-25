@@ -37,7 +37,10 @@ fun MovieReviewCard(
 
     Column(modifier
         .fillMaxWidth()
-        .background(color = Theme.colors.background.card, shape = RoundedCornerShape(Theme.radius.large))
+        .background(
+            color = Theme.colors.background.card,
+            shape = RoundedCornerShape(Theme.radius.large)
+        )
         .padding(12.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)) {
 
