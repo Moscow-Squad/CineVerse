@@ -56,8 +56,12 @@ dependencies {
     implementation(libs.kotlinx.datetime)
 
     implementation(libs.koin.androidx.workmanager)
+
     //unit test
-    testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.mockk)
     testImplementation(libs.truth)
+    testImplementation (libs.junit)
+    testImplementation (libs.kotlinx.coroutines.test)
+    testImplementation (libs.mockk.v11310)
+
 }

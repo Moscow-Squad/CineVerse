@@ -1,8 +1,8 @@
 package com.moscow.cineverse.mapper
 
-import com.android.domain.model.MediaType
-import com.android.domain.model.Movie
 import com.moscow.cineverse.common_ui_state.MediaItemUiState
+import com.moscow.domain.model.MediaType
+import com.moscow.domain.model.Movie
 import kotlinx.datetime.LocalDate
 
 fun LocalDate.toFormattedBirthDate(): String {

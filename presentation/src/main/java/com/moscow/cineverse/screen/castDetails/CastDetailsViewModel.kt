@@ -1,13 +1,13 @@
 package com.moscow.cineverse.screen.castDetails
 
 import androidx.lifecycle.viewModelScope
-import com.android.domain.model.ActorDetails
-import com.android.domain.model.Movie
-import com.android.domain.usecase.actor.GetActorBestMoviesUseCase
-import com.android.domain.usecase.actor.GetActorDetailsUseCase
-import com.android.domain.usecase.actor.GetActorGalleryUseCase
 import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.cineverse.designSystem.component.cast_details.SocialMediaLinks
+import com.moscow.domain.model.ActorDetails
+import com.moscow.domain.model.Movie
+import com.moscow.domain.usecase.actor.GetActorBestMoviesUseCase
+import com.moscow.domain.usecase.actor.GetActorDetailsUseCase
+import com.moscow.domain.usecase.actor.GetActorGalleryUseCase
 import kotlinx.coroutines.launch
 
 class CastDetailsViewModel(

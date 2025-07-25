@@ -1,5 +1,6 @@
 package com.moscow.cineverse.screen.collections
-import com.android.domain.model.Collection
+
+import com.moscow.domain.model.Collection
 
 data class CollectionsBottomSheetScreenState(
     val isLoading: Boolean = false,

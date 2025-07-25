@@ -1,13 +1,13 @@
 package com.moscow.di
 
-import com.android.domain.repository.ActorRepository
-import com.android.domain.repository.CollectionsRepository
-import com.android.domain.repository.GenreRepository
-import com.android.domain.repository.MovieRepository
-import com.android.domain.repository.LoginRepository
-import com.android.domain.repository.PreferenceRepository
-import com.android.domain.repository.SearchRepository
-import com.android.domain.repository.SeriesRepository
+import com.moscow.domain.repository.ActorRepository
+import com.moscow.domain.repository.CollectionsRepository
+import com.moscow.domain.repository.GenreRepository
+import com.moscow.domain.repository.LoginRepository
+import com.moscow.domain.repository.MovieRepository
+import com.moscow.domain.repository.PreferenceRepository
+import com.moscow.domain.repository.SearchRepository
+import com.moscow.domain.repository.SeriesRepository
 import com.moscow.repository.ActorRepositoryImpl
 import com.moscow.repository.CollectionsRepositoryImpl
 import com.moscow.repository.GenreRepositoryImpl

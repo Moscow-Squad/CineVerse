@@ -1,6 +1,6 @@
 package com.moscow.mapper
 
-import com.android.domain.model.Review
+import com.moscow.domain.model.Review
 import com.moscow.remote.dto.review.ReviewDto
 import com.moscow.utils.IMAGES_URL
 

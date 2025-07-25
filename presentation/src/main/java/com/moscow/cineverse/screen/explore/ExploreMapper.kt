@@ -1,14 +1,14 @@
 package com.moscow.cineverse.screen.explore
 
-import com.android.domain.model.Actor
-import com.android.domain.model.Genre
-import com.android.domain.model.MediaType
-import com.android.domain.model.Movie
-import com.android.domain.model.Series
 import com.moscow.cineverse.designSystem.component.tabs.ExploreTabsPages
 import com.moscow.cineverse.screen.explore.ExploreScreenState.ActorUiState
 import com.moscow.cineverse.screen.explore.ExploreScreenState.GenreUiState
 import com.moscow.cineverse.common_ui_state.MediaItemUiState
+import com.moscow.domain.model.Actor
+import com.moscow.domain.model.Genre
+import com.moscow.domain.model.MediaType
+import com.moscow.domain.model.Movie
+import com.moscow.domain.model.Series
 import kotlinx.datetime.LocalDate
 
 const val YYYY_MMM_DD = "yyyy, MMM dd"
