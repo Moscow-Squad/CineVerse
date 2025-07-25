@@ -26,14 +26,13 @@ val LocalNavController =
     staticCompositionLocalOf<NavHostController> { error("No NavController provided") }
 
 @Composable
-
 fun CineVerseNavGraph(
     navViewModel: NavViewModel = koinViewModel(),
     navController: NavHostController
 ) {
     val startDestination = navViewModel.startDestination.value
 
-    if (startDestination == null) return // splash is still shown
+    if (startDestination == null) return
 
     CompositionLocalProvider(
         LocalNavController provides navController
@@ -58,7 +57,6 @@ fun CineVerseNavGraph(
             homeRoute()
             matchRoute()
             profileRoute()
-
         }
     }
 }

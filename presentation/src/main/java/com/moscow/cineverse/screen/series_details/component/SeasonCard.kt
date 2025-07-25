@@ -23,7 +23,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.example.design_system.R
+import com.moscow.cineverse.design_system.R
 import com.moscow.cineverse.designSystem.component.MovieText
 import com.moscow.cineverse.designSystem.component.SaveImage
 import com.moscow.cineverse.designSystem.theme.Theme

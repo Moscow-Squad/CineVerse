@@ -6,7 +6,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import coil3.compose.rememberAsyncImagePainter
-import com.example.design_system.R
+import com.moscow.cineverse.design_system.R
 import com.moscow.cineverse.designSystem.component.SectionTitle
 import com.moscow.cineverse.designSystem.component.movieSeriesDetails.MovieRatingBottomSheet
 import com.moscow.cineverse.designSystem.component.movieSeriesDetails.MovieReviewCard
