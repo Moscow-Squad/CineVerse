@@ -24,7 +24,6 @@ coreKtx = "1.16.0"
 junit = "4.13.2"
 junitVersion = "1.2.1"
 junitJupiterApi = "5.13.3"
-coreTesting = "2.2.0"
 junitJupiterEngine = "5.13.3"
 espressoCore = "3.6.1"
 kotlinxCoroutinesAndroid = "1.7.3"
@@ -133,7 +132,6 @@ tensorflow-lite = { module = "org.tensorflow:tensorflow-lite", version.ref = "te
 tensorflow-lite-support = { module = "org.tensorflow:tensorflow-lite-support", version.ref = "tensorflowLiteSupport" }
 
 # Test
-androidx-core-testing = { module = "androidx.arch.core:core-testing", version.ref = "coreTesting" }
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinxCoroutinesTest" }
 truth = { module = "com.google.truth:truth", version.ref = "truth" }
