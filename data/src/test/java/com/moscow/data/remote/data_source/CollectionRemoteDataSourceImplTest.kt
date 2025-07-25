@@ -10,7 +10,6 @@ import com.moscow.remote.dto.MediaItemDto
 import com.moscow.remote.services.CollectionsService
 import com.moscow.utils.ApiResponse
 import com.moscow.utils.CineVerseExceptions
-import com.moscow.utils.MOVIE
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
