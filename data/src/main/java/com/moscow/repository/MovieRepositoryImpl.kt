@@ -1,12 +1,12 @@
 package com.moscow.repository
 
-import com.android.domain.model.CreditsDetails
-import com.android.domain.model.Movie
-import com.android.domain.model.Review
-import com.android.domain.model.details.MovieDetail
-import com.android.domain.repository.MovieRepository
 import com.moscow.data_source.local.DetailsLocalDataSource
 import com.moscow.data_source.remote.MovieRemoteDataSource
+import com.moscow.domain.model.CreditsDetails
+import com.moscow.domain.model.Movie
+import com.moscow.domain.model.Review
+import com.moscow.domain.model.details.MovieDetail
+import com.moscow.domain.repository.MovieRepository
 import com.moscow.mapper.toDomain
 import com.moscow.remote.dto.review.RatingRequestDto
 

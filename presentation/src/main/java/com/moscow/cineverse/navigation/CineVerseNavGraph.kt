@@ -1,6 +1,5 @@
 package com.moscow.cineverse.navigation
 
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.staticCompositionLocalOf
@@ -33,19 +32,18 @@ val LocalScaffoldPaddingValues =
 
 @Composable
 fun CineVerseNavGraph(
-    navViewModel: NavViewModel = koinViewModel(),
-    navController: NavHostController,
-    scaffoldPaddingValues: PaddingValues
+    modifier : Modifier,
+    navViewModel: NavViewModel,
+    navController: NavHostController
+   scaffoldPaddingValues: PaddingValues
 ) {
-    val startDestination = navViewModel.startDestination.value
-
-    if (startDestination == null) return
+    val startDestination = navViewModel.startDestination.value ?: return
 
     CompositionLocalProvider(
         LocalNavController provides navController,
         LocalScaffoldPaddingValues provides scaffoldPaddingValues
     ) {
-        NavHost(navController = navController, startDestination = HomeRoute) {
+        NavHost(modifier = modifier, navController = navController, startDestination = startDestination) {
             exploreRoute()
             loginRoute()
             RecommendationsRoute()
@@ -66,6 +64,7 @@ fun CineVerseNavGraph(
             seeMoreRoute()
             matchRoute()
             profileRoute()
+
         }
     }
 }

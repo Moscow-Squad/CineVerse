@@ -1,9 +1,9 @@
 package com.moscow.repository
 
-import com.android.domain.model.ActorDetails
-import com.android.domain.model.Movie
-import com.android.domain.repository.ActorRepository
 import com.moscow.data_source.remote.ActorRemoteDataSource
+import com.moscow.domain.model.ActorDetails
+import com.moscow.domain.model.Movie
+import com.moscow.domain.repository.ActorRepository
 import com.moscow.mapper.toDomain
 
 class ActorRepositoryImpl(

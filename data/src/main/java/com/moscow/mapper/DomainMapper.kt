@@ -1,13 +1,10 @@
 package com.moscow.mapper
 
-import com.android.domain.model.Actor
-import com.android.domain.model.ActorDetails
-import com.android.domain.model.Gender
-import com.android.domain.model.Genre
-import com.android.domain.model.MediaItem
-import com.android.domain.model.MediaType
-import com.android.domain.model.Movie
-import com.android.domain.model.Series
+import com.moscow.domain.model.Actor
+import com.moscow.domain.model.ActorDetails
+import com.moscow.domain.model.Gender
+import com.moscow.domain.model.Genre
+import com.moscow.domain.model.Series
 import com.moscow.remote.dto.GenreDto
 import com.moscow.remote.dto.MediaItemDto
 import com.moscow.remote.dto.MovieDto
@@ -21,6 +18,9 @@ import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
+import com.moscow.domain.model.MediaItem
+import com.moscow.domain.model.MediaType
+import com.moscow.domain.model.Movie
 
 fun MediaItemDto.toDomain() =
     MediaItem(

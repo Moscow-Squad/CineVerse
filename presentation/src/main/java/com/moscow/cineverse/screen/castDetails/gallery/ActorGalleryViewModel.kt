@@ -1,7 +1,7 @@
 package com.moscow.cineverse.screen.castDetails.gallery
 
-import com.android.domain.usecase.actor.GetActorGalleryUseCase
 import com.moscow.cineverse.base.BaseViewModel
+import com.moscow.domain.usecase.actor.GetActorGalleryUseCase
 
 class ActorGalleryViewModel(
     private val getActorGalleryUseCase: GetActorGalleryUseCase,

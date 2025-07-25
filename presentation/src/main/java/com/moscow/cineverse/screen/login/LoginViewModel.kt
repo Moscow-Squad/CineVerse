@@ -2,11 +2,11 @@ package com.moscow.cineverse.screen.login
 
 import android.content.Context
 import androidx.lifecycle.viewModelScope
-import com.android.domain.model.LoginData
-import com.android.domain.usecase.login.LoginAsGuestUseCase
-import com.android.domain.usecase.login.LoginWithUsernameAndPasswordUseCase
 import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.cinverse.presentation.R
+import com.moscow.domain.model.LoginData
+import com.moscow.domain.usecase.login.LoginAsGuestUseCase
+import com.moscow.domain.usecase.login.LoginWithUsernameAndPasswordUseCase
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch

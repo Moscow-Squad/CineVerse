@@ -3,12 +3,12 @@ package com.moscow.repository
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.workDataOf
-import com.android.domain.model.Actor
-import com.android.domain.model.Movie
-import com.android.domain.model.Series
-import com.android.domain.repository.SearchRepository
 import com.moscow.data_source.local.SearchLocalDataSource
 import com.moscow.data_source.remote.SearchRemoteDataSource
+import com.moscow.domain.model.Actor
+import com.moscow.domain.model.Movie
+import com.moscow.domain.model.Series
+import com.moscow.domain.repository.SearchRepository
 import com.moscow.local.DeleteHistoryQueryWorker
 import com.moscow.mapper.toDomain
 import com.moscow.mapper.toEntity

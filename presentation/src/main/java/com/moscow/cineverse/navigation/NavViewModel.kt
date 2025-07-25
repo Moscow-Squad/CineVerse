@@ -3,9 +3,9 @@ package com.moscow.cineverse.navigation
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.android.domain.repository.PreferenceRepository
 import com.moscow.cineverse.navigation.routes.ExploreRoute
 import com.moscow.cineverse.navigation.routes.LoginRoute
+import com.moscow.domain.repository.PreferenceRepository
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant

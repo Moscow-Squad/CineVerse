@@ -1,6 +1,6 @@
 package com.moscow.cineverse.screen.castDetails
 
-import com.android.domain.model.Movie
+import com.moscow.domain.model.Movie
 
 interface CastDetailsInteractionListener {
     fun onBackPressed()

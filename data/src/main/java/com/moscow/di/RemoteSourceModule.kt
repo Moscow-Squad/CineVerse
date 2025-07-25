@@ -11,7 +11,7 @@ import com.moscow.data_source.remote.MovieRemoteDataSource
 import com.moscow.data_source.remote.SearchRemoteDataSource
 import com.moscow.data_source.remote.SeriesRemoteDataSource
 import com.moscow.remote.data_source.ActorRemoteDataSourceImpl
-import com.moscow.remote.data_source.CollectionRemoteRemoteDataSourceImpl
+import com.moscow.remote.data_source.CollectionRemoteDataSourceImpl
 import com.moscow.remote.data_source.GenreRemoteDataSourceImpl
 import com.moscow.remote.data_source.LoginRemoteDataSourceImpl
 import com.moscow.remote.data_source.MovieRemoteDataSourceImpl
@@ -89,7 +89,7 @@ val remoteDataSourceModule = module {
     singleOf(::SearchRemoteDataSourceImpl) bind SearchRemoteDataSource::class
     singleOf(::ActorRemoteDataSourceImpl) bind ActorRemoteDataSource::class
     singleOf(::MovieRemoteDataSourceImpl) bind MovieRemoteDataSource::class
-    singleOf(::CollectionRemoteRemoteDataSourceImpl) bind CollectionRemoteDataSource::class
+    singleOf(::CollectionRemoteDataSourceImpl) bind CollectionRemoteDataSource::class
     singleOf(::SeriesRemoteDataSourceImpl) bind SeriesRemoteDataSource::class
     singleOf(::GenreRemoteDataSourceImpl) bind GenreRemoteDataSource::class
     singleOf(::LoginRemoteDataSourceImpl) bind LoginRemoteDataSource::class

@@ -6,18 +6,19 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.android.domain.model.Series
-import com.android.domain.usecase.review.GetReviewsUseCase
-import com.android.domain.usecase.series.GetSeriesCreditsDetailsUseCase
-import com.android.domain.usecase.series.GetSeriesDetailUseCase
-import com.android.domain.usecase.series.GetSeriesRecommendationsUseCase
-import com.android.domain.usecase.series.RateSeriesUseCase
 import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.cineverse.designSystem.component.ViewMode
 import com.moscow.cineverse.mapper.toUi
 import com.moscow.cineverse.navigation.routes.SeriesDetailsRoute
 import com.moscow.cineverse.paging.BasePagingSource
+import com.moscow.domain.model.Series
+import com.moscow.domain.usecase.review.GetReviewsUseCase
+import com.moscow.domain.usecase.series.GetSeriesCreditsDetailsUseCase
+import com.moscow.domain.usecase.series.GetSeriesDetailUseCase
+import com.moscow.domain.usecase.series.GetSeriesRecommendationsUseCase
+import com.moscow.domain.usecase.series.RateSeriesUseCase
 import kotlinx.coroutines.flow.Flow
+import kotlin.collections.map
 
 class SeriesDetailsScreenScreenViewModel(
     private val getSeriesDetailUseCase: GetSeriesDetailUseCase,
