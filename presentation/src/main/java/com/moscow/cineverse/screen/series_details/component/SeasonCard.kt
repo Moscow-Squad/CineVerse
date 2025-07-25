@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -55,10 +54,9 @@ fun SeasonCard(
         ) {
             SaveImage(
                 posterUrl = posterUrl,
-                contentDescription = stringResource(R.string.season_poster),
                 modifier = Modifier
                     .width(48.dp)
-                    .heightIn(64.dp)
+                    .height(80.dp)
                     .clip(
                         RoundedCornerShape(
                             topStart = Theme.radius.size5xl,
@@ -108,13 +106,13 @@ fun SeasonCard(
                 icon = R.drawable.due_tone_video_library,
                 iconTint = Theme.colors.shade.secondary,
                 iconDescription = stringResource(R.string.episodes_icon),
-                title = stringResource(R.string.episodes, episodeCount)
+                title = episodeCount.toString() + " " + stringResource(R.string.episodes)
             )
             SeasonInfo(
                 icon = R.drawable.due_tone_calendar,
                 iconTint = Theme.colors.shade.secondary,
                 iconDescription = stringResource(R.string.air_date_icon),
-                title = airDate
+                title = airDate.take(4)
             )
         }
     }
