@@ -1,6 +1,5 @@
 package com.moscow.local
 
-import android.util.Log
 import com.moscow.data_source.local.SearchLocalDataSource
 import com.moscow.local.dao.search.ActorDao
 import com.moscow.local.dao.search.FavouriteGenreDao
