@@ -1,8 +1,10 @@
 package com.moscow.cineverse.navigation
 
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.staticCompositionLocalOf
+import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import com.moscow.cineverse.navigation.routes.CastBestOfMovieRoute
@@ -16,26 +18,24 @@ import com.moscow.cineverse.navigation.routes.SeriesRecommendationRoute
 import com.moscow.cineverse.navigation.routes.SeriesSeasonsRoute
 import com.moscow.cineverse.navigation.routes.collectionsBottomSheetRoute
 import com.moscow.cineverse.navigation.routes.exploreRoute
+import com.moscow.cineverse.navigation.routes.homeRoute
 import com.moscow.cineverse.navigation.routes.loginRoute
 import com.moscow.cineverse.navigation.routes.matchRoute
 import com.moscow.cineverse.navigation.routes.profileRoute
-import com.moscow.cineverse.navigation.routes.HomeRoute
-import com.moscow.cineverse.navigation.routes.homeRoute
 import com.moscow.cineverse.navigation.routes.seeMoreRoute
-import org.koin.androidx.compose.koinViewModel
 
 
 val LocalNavController =
     staticCompositionLocalOf<NavHostController> { error("No NavController provided") }
 val LocalScaffoldPaddingValues =
-    staticCompositionLocalOf<PaddingValues> { error("No PaddingValues provided") }
+    staticCompositionLocalOf<PaddingValues> { error("No ScaffoldPadding provided") }
 
 @Composable
 fun CineVerseNavGraph(
-    modifier : Modifier,
+    modifier: Modifier,
     navViewModel: NavViewModel,
-    navController: NavHostController
-   scaffoldPaddingValues: PaddingValues
+    navController: NavHostController,
+    scaffoldPaddingValues: PaddingValues,
 ) {
     val startDestination = navViewModel.startDestination.value ?: return
 
@@ -43,7 +43,11 @@ fun CineVerseNavGraph(
         LocalNavController provides navController,
         LocalScaffoldPaddingValues provides scaffoldPaddingValues
     ) {
-        NavHost(modifier = modifier, navController = navController, startDestination = startDestination) {
+        NavHost(
+            modifier = modifier,
+            navController = navController,
+            startDestination = startDestination
+        ) {
             exploreRoute()
             loginRoute()
             RecommendationsRoute()
