@@ -26,7 +26,7 @@
     <string name="rate_icon">Rate icon</string>
     <string name="episodes_icon">Episodes icon</string>
     <string name="air_date_icon">Air date icon</string>
-    <string name="episodes">Episodes %d</string>
+    <string name="episodes"> Episodes</string>
     <string name="star_cast">Star Cast</string>
     <string name="featured_collections">Featured Collections</string>
     <string name="you_collections_section">You Collections Section</string>
