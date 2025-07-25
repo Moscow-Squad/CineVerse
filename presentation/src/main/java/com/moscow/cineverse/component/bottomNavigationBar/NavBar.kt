@@ -1,4 +1,4 @@
-package com.moscow.cineverse.screen.component.bottomNavigationBar
+package com.moscow.cineverse.component.bottomNavigationBar
 
 import androidx.compose.material3.NavigationBar
 import androidx.compose.runtime.Composable
@@ -8,19 +8,19 @@ import com.moscow.cineverse.navigation.AppDestination
 @Composable
 fun NavBar(
     selectedItem: BottomNavItem,
-    destinations: List<BottomNavItem> = BottomNavItem.destinations,
-    onItemClick: (AppDestination) -> Unit = {},
+    destinations: List<BottomNavItem> = BottomNavItem.destinations.values.toList(),
+    onItemClick: (Int,AppDestination) -> Unit
 ) {
 
     NavigationBar(
         containerColor = Theme.colors.background.card,
     ) {
-        destinations.forEachIndexed { _, item ->
+        destinations.forEachIndexed { index, item ->
             NavBarEntry(
                 isSelected = item == selectedItem,
                 currentItem = item,
                 onItemClick = {
-                    onItemClick(item.destination)
+                    onItemClick(index,item.destination)
                 }
             )
         }

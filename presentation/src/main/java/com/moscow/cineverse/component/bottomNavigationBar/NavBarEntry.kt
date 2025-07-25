@@ -1,4 +1,4 @@
-package com.moscow.cineverse.screen.component.bottomNavigationBar
+package com.moscow.cineverse.component.bottomNavigationBar
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.clickable
@@ -31,7 +31,11 @@ fun RowScope.NavBarEntry(
             .weight(1f)
             .clickable(
                 enabled = !isSelected,
-                onClick = onItemClick,
+                onClick = {
+                    if (!isSelected) {
+                        onItemClick()
+                    }
+                },
                 indication = null,
                 interactionSource = remember { MutableInteractionSource() }
             ),

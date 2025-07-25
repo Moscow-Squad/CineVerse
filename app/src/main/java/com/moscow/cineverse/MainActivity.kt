@@ -23,7 +23,9 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
 
         setContent {
-            CineVerseRoot()
+
+            CineVerseRoot(navViewModel)
         }
     }
 }
+
