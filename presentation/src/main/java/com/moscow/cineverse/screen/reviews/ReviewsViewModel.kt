@@ -5,10 +5,10 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.android.domain.model.Review
-import com.android.domain.usecase.review.GetReviewsUseCase
 import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.cineverse.paging.BasePagingSource
+import com.moscow.domain.model.Review
+import com.moscow.domain.usecase.review.GetReviewsUseCase
 import kotlinx.coroutines.flow.Flow
 
 class ReviewsViewModel(

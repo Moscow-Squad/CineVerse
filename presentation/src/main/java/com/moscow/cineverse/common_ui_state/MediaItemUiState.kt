@@ -1,6 +1,6 @@
 package com.moscow.cineverse.common_ui_state
 
-import com.android.domain.model.MediaType
+import com.moscow.domain.model.MediaType
 
 data class MediaItemUiState(
     val id: Int,

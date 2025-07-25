@@ -1,14 +1,14 @@
 package com.moscow.repository
 
-import com.android.domain.model.CreditsDetails
-import com.android.domain.model.Review
-import com.android.domain.model.Series
-import com.android.domain.model.details.ListOfSeries
-import com.android.domain.model.details.Season
-import com.android.domain.model.details.SeriesDetail
-import com.android.domain.repository.SeriesRepository
 import com.moscow.data_source.local.DetailsLocalDataSource
 import com.moscow.data_source.remote.SeriesRemoteDataSource
+import com.moscow.domain.model.CreditsDetails
+import com.moscow.domain.model.Review
+import com.moscow.domain.model.Series
+import com.moscow.domain.model.details.ListOfSeries
+import com.moscow.domain.model.details.Season
+import com.moscow.domain.model.details.SeriesDetail
+import com.moscow.domain.repository.SeriesRepository
 import com.moscow.mapper.toDomain
 import com.moscow.remote.dto.review.RatingRequestDto
 
