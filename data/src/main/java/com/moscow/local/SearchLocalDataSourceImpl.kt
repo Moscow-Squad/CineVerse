@@ -40,7 +40,6 @@ class SearchLocalDataSourceImpl(
 
     override suspend fun insertMovie(moviesEntity: List<MovieEntity>, searchTerm: String) {
         val updatedMovieEntity = moviesEntity.map { movie -> movie.copy(searchTerm = searchTerm) }
-        Log.d("SearchLocalDateSourceImpl", "insertMovie: $updatedMovieEntity")
         movieDao.insertMovies(updatedMovieEntity)
     }
 
@@ -50,7 +49,6 @@ class SearchLocalDataSourceImpl(
 
     override suspend fun insertActors(actors: List<ActorEntity>, searchTerm: String) {
         val updatedActors = actors.map { it.copy(searchTerm = searchTerm) }
-        Log.d("SearchLocalDateSourceImpl", "insertActors: $updatedActors")
         actorDao.insertActors(updatedActors)
     }
 
@@ -60,7 +58,6 @@ class SearchLocalDataSourceImpl(
 
     override suspend fun insertSeries(series: List<SeriesEntity>, searchTerm: String) {
         val updatedSeries = series.map { it.copy(searchTerm = searchTerm) }
-        Log.d("SearchLocalDateSourceImpl", "insertSeries: $updatedSeries")
         seriesDao.insertSeries(updatedSeries)
     }
 
