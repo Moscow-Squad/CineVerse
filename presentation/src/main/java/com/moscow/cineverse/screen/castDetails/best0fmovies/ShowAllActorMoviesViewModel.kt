@@ -1,11 +1,11 @@
 package com.moscow.cineverse.screen.castDetails.best0fmovies
 
-import com.android.domain.model.Movie
-import com.android.domain.usecase.genre.GenreUseCase
-import com.android.domain.usecase.actor.GetActorBestMoviesUseCase
 import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.cineverse.designSystem.component.ViewMode
 import com.moscow.cineverse.mapper.toUi
+import com.moscow.domain.model.Movie
+import com.moscow.domain.usecase.actor.GetActorBestMoviesUseCase
+import com.moscow.domain.usecase.genre.GenreUseCase
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 class ShowAllActorMoviesViewModel(

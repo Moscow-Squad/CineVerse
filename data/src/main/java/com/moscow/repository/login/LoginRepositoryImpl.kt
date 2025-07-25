@@ -1,10 +1,10 @@
 package com.moscow.repository.login
 
-import com.android.domain.model.LoginData
-import com.android.domain.model.UserType
-import com.android.domain.repository.LoginRepository
-import com.android.domain.repository.PreferenceRepository
 import com.moscow.data_source.remote.LoginRemoteDataSource
+import com.moscow.domain.model.LoginData
+import com.moscow.domain.model.UserType
+import com.moscow.domain.repository.LoginRepository
+import com.moscow.domain.repository.PreferenceRepository
 
 class LoginRepositoryImpl(
     private val loginRemoteDataSource: LoginRemoteDataSource,

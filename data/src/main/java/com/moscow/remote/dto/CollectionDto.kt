@@ -1,6 +1,6 @@
 package com.moscow.remote.dto
 
-import com.android.domain.model.Collection
+import com.moscow.domain.model.Collection
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 

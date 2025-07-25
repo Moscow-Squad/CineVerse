@@ -1,8 +1,8 @@
 package com.moscow.repository
 
-import com.android.domain.model.Genre
-import com.android.domain.repository.GenreRepository
 import com.moscow.data_source.remote.GenreRemoteDataSource
+import com.moscow.domain.model.Genre
+import com.moscow.domain.repository.GenreRepository
 import com.moscow.mapper.toDomain
 
 class GenreRepositoryImpl(

@@ -1,14 +1,14 @@
 package com.moscow.repository
 
-import com.android.domain.model.Collection
-import com.android.domain.model.MediaItem
-import com.android.domain.model.MediaType
-import com.android.domain.repository.CollectionsRepository
 import com.moscow.data_source.remote.CollectionRemoteDataSource
+import com.moscow.domain.repository.CollectionsRepository
 import com.moscow.mapper.toDomain
 import com.moscow.remote.dto.AddMediaItemToCollectionRequestDto
 import com.moscow.remote.dto.CreateCollectionDto
 import com.moscow.remote.dto.toDomain
+import com.moscow.domain.model.Collection
+import com.moscow.domain.model.MediaItem
+import com.moscow.domain.model.MediaType
 
 class CollectionsRepositoryImpl(
     private val collectionRemoteDataSource: CollectionRemoteDataSource
