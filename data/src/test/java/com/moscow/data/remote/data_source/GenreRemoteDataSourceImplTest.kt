@@ -1,48 +1,68 @@
 package com.moscow.data.remote.data_source
 
-import com.google.common.truth.Truth
+import com.google.common.truth.Truth.assertThat
 import com.moscow.data_source.remote.GenreRemoteDataSource
 import com.moscow.remote.data_source.GenreRemoteDataSourceImpl
 import com.moscow.remote.dto.GenreDto
 import com.moscow.remote.dto.GenreResponse
 import com.moscow.remote.services.GenreService
+import com.moscow.utils.CineVerseExceptions
 import io.mockk.coEvery
 import io.mockk.mockk
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
-import org.junit.Before
-import org.junit.Test
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.ResponseBody.Companion.toResponseBody
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
+import retrofit2.HttpException
 import retrofit2.Response
 
-@OptIn(ExperimentalCoroutinesApi::class)
 class GenreRemoteDataSourceImplTest {
 
     private lateinit var genreService: GenreService
     private lateinit var genreRemoteDataSource: GenreRemoteDataSource
 
-    @Before
-    fun setup(){
+    @BeforeEach
+    fun setup() {
         genreService = mockk()
         genreRemoteDataSource = GenreRemoteDataSourceImpl(genreService)
     }
 
     @Test
-    fun`should return the list of genres for movies when call getMoviesGenres`() = runTest {
+    fun `when getMoviesGenres succeeds then return the list of genres for movies `() = runTest {
         val expected = GenreResponse(listOf(GenreDto(1, "Action")))
         coEvery { genreService.getMoviesGenres() } returns Response.success(expected)
 
         val result = genreRemoteDataSource.getMoviesGenres()
 
-        Truth.assertThat(expected).isEqualTo(result)
+        assertThat(expected).isEqualTo(result)
     }
 
     @Test
-    fun`should return the list of genres for series when call getSeriesGenres`() = runTest {
+    fun `when call getSeriesGenres succeeds then return the list of genres for series`() = runTest {
         val expected = GenreResponse(listOf(GenreDto(2, "Drama")))
         coEvery { genreService.getSeriesGenres() } returns Response.success(expected)
 
         val result = genreRemoteDataSource.getSeriesGenres()
 
-        Truth.assertThat(expected).isEqualTo(result)
+        assertThat(expected).isEqualTo(result)
     }
+
+    @Test
+    fun `should throw CineVerseException when call getSeriesGenres fails`() = runTest {
+
+        coEvery { genreService.getSeriesGenres() } throws HttpException(
+            Response.error<Any>(
+            500,
+            "Server Error".toResponseBody("application/json".toMediaType())
+        ))
+        val exception = assertThrows<CineVerseExceptions> {
+            genreRemoteDataSource.getSeriesGenres()
+        }
+        assertThat(exception.code).isEqualTo(500)
+        assertThat(exception.message).contains("Server Error")
+    }
+
+
 }
