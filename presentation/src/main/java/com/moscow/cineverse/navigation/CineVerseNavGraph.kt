@@ -3,6 +3,7 @@ package com.moscow.cineverse.navigation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.staticCompositionLocalOf
+import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import com.moscow.cineverse.navigation.routes.CastBestOfMovieRoute
@@ -20,7 +21,6 @@ import com.moscow.cineverse.navigation.routes.homeRoute
 import com.moscow.cineverse.navigation.routes.loginRoute
 import com.moscow.cineverse.navigation.routes.matchRoute
 import com.moscow.cineverse.navigation.routes.profileRoute
-import org.koin.androidx.compose.koinViewModel
 
 val LocalNavController =
     staticCompositionLocalOf<NavHostController> { error("No NavController provided") }
@@ -28,17 +28,16 @@ val LocalNavController =
 @Composable
 
 fun CineVerseNavGraph(
-    navViewModel: NavViewModel = koinViewModel(),
+    modifier : Modifier,
+    navViewModel: NavViewModel,
     navController: NavHostController
 ) {
-    val startDestination = navViewModel.startDestination.value
-
-    if (startDestination == null) return // splash is still shown
+    val startDestination = navViewModel.startDestination.value ?: return
 
     CompositionLocalProvider(
         LocalNavController provides navController
     ) {
-        NavHost(navController = navController, startDestination = startDestination) {
+        NavHost(modifier = modifier, navController = navController, startDestination = startDestination) {
             exploreRoute()
             loginRoute()
             RecommendationsRoute()

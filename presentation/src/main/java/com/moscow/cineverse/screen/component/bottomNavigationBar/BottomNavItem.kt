@@ -38,11 +38,17 @@ sealed class BottomNavItem(
         selectedIcon = com.example.design_system.R.drawable.due_tone_user_square,
         unselectedIcon = com.example.design_system.R.drawable.outline_user_square,
         label = R.string.me,
-        destination =  ProfileRoute
+        destination =  ProfileRoute,
+
     )
 
     companion object {
-        val destinations = listOf(Home, Explore, Match, Me)
+        val destinations = mapOf(
+            Home.destination to Home,
+            Explore.destination  to Explore,
+            Match.destination to Match,
+            Me.destination to Me
+        )
     }
 
 }
