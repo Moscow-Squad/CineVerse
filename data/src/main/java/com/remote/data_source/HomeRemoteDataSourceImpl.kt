@@ -5,31 +5,32 @@ import com.remote.dto.MovieDto
 import com.remote.dto.series.SeriesDto
 import com.remote.services.HomeService
 import com.utils.ApiResponse
+import com.utils.DAY
 import com.utils.handleApi
 
 class HomeRemoteDataSourceImpl(
     private val homeService: HomeService
-): HomeRemoteDataSource{
-    override suspend fun getTrendingMovies(time:String): ApiResponse<MovieDto> = handleApi{
-        homeService.getTrendingMovies(time)
+) : HomeRemoteDataSource {
+    override suspend fun getTrendingMovies(time: String?): ApiResponse<MovieDto> = handleApi {
+        homeService.getTrendingMovies(time ?: DAY)
     }
 
     override suspend fun getUpComingMovies(page: Int): ApiResponse<MovieDto> = handleApi {
         homeService.getUpComingMovies(page)
     }
 
-    override suspend fun getRecentlyReleasedMovies(page: Int): ApiResponse<MovieDto> = handleApi { 
+    override suspend fun getRecentlyReleasedMovies(page: Int): ApiResponse<MovieDto> = handleApi {
         homeService.getRecentlyReleasedMovies(page)
     }
 
     override suspend fun getMatchYourVibeMovies(
         genreId: Int,
         page: Int
-    ): ApiResponse<MovieDto> = handleApi { 
-        homeService.getMatchYourVibeMovies(genreId,page)
+    ): ApiResponse<MovieDto> = handleApi {
+        homeService.getMatchYourVibeMovies(genreId, page)
     }
 
-    override suspend fun getTopRatedTVSeries(page: Int): ApiResponse<SeriesDto> = handleApi { 
+    override suspend fun getTopRatedTVSeries(page: Int): ApiResponse<SeriesDto> = handleApi {
         homeService.getTopRatedTVSeries(page)
     }
 }

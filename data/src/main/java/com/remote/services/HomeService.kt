@@ -1,6 +1,5 @@
 package com.remote.services
 
-import com.android.domain.model.Movie
 import com.remote.dto.MovieDto
 import com.remote.dto.series.SeriesDto
 import com.utils.ApiResponse
@@ -21,29 +20,29 @@ import retrofit2.http.Query
 interface HomeService {
 
     @GET("$TRENDING$MOVIE{time_window}")
-    fun getTrendingMovies(
-        @Path("time_window") time:String,
+    suspend fun getTrendingMovies(
+        @Path("time_window") time: String,
         @Query(PAGE) page: Int = 1
     ): Response<ApiResponse<MovieDto>>
 
     @GET("$MOVIE$UPCOMING")
-    fun getUpComingMovies(
+    suspend fun getUpComingMovies(
         @Query(PAGE) page: Int
     ): Response<ApiResponse<MovieDto>>
 
     @GET("$MOVIE$NOW_PLAYING")
-    fun getRecentlyReleasedMovies(
+    suspend fun getRecentlyReleasedMovies(
         @Query(PAGE) page: Int
     ): Response<ApiResponse<MovieDto>>
 
 
     @GET(DISCOVER_MOVIE_LIST)
-    fun getMatchYourVibeMovies(
+    suspend fun getMatchYourVibeMovies(
         @Query(WITH_GENRES) genreId: Int, @Query(PAGE) page: Int
     ): Response<ApiResponse<MovieDto>>
 
     @GET("$SERIES$TOP_RATED")
-    fun getTopRatedTVSeries(
+    suspend fun getTopRatedTVSeries(
         @Query(PAGE) page: Int
     ): Response<ApiResponse<SeriesDto>>
 

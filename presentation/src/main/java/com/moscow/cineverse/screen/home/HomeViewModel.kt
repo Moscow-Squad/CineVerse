@@ -1,9 +1,222 @@
 package com.moscow.cineverse.screen.home
 
+import androidx.lifecycle.viewModelScope
+import com.android.domain.model.Genre
+import com.android.domain.model.Movie
+import com.android.domain.model.Series
+import com.android.domain.usecase.genre.GenreUseCase
+import com.android.domain.usecase.home.GetMatchesYourVibesMoviesUseCase
+import com.android.domain.usecase.home.GetRecentlyReleasedMoviesUseCase
+import com.android.domain.usecase.home.GetTopRatedTVShowsUseCase
+import com.android.domain.usecase.home.GetTrendingMoviesUseCase
+import com.android.domain.usecase.home.GetUpcomingMoviesUseCase
 import com.moscow.cineverse.base.BaseViewModel
+import com.moscow.cineverse.mapper.toGenreUi
+import com.moscow.cineverse.mapper.toUi
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.suspendCancellableCoroutine
 
-class HomeViewModel
-    : BaseViewModel<HomeUiState, HomeEvent>(HomeUiState()) {
+class HomeViewModel(
+    private val getMatchesYourVibesMoviesUseCase: GetMatchesYourVibesMoviesUseCase,
+    private val getRecentlyReleasedMoviesUseCase: GetRecentlyReleasedMoviesUseCase,
+    private val getTopRatedTVShowsUseCase: GetTopRatedTVShowsUseCase,
+    private val getUpcomingMoviesUseCase: GetUpcomingMoviesUseCase,
+    private val genreUseCase: GenreUseCase,
+    private val getTrendingMoviesUseCase: GetTrendingMoviesUseCase
+) : BaseViewModel<HomeUiState, HomeEvent>(HomeUiState()), HomeInteractionListener {
+    override fun onSeriesClick(seriesId: Int) {
+        sendEvent(HomeEvent.SeriesClicked(seriesId))
+    }
+
+    init {
+        loadHomeData()
+    }
+
+    private fun loadHomeData() {
+        updateState { it.copy(isLoading = true) }
+
+        viewModelScope.launch {
+            getGenres()
+            coroutineScope {
+                launch { fetchTrendingMovies() }
+                launch { fetchRecentlyReleasedMovies() }
+                launch { fetchUpcomingMovies() }
+                launch { fetchTopRatedTVShows() }
+                launch { fetchMatchesYourVibesMovies() }
+            }
+        }
+
+    }
+
+    private suspend fun getGenres() {
+        return suspendCancellableCoroutine { continuation ->
+            launchWithResult(
+                action = { genreUseCase.getMoviesGenres() },
+                onSuccess = {
+                    onGetGenresSuccess(it)
+                    continuation.resume(
+                        value = Unit,
+                    ){cause,value,context ->
+
+                    }
+                },
+                onError = {
+                    onGetGenresError(it)
+                    continuation.resume(
+                        value = Unit,
+                    ){cause,value,context ->
+
+                    }
+                },
+            )
+        }
+    }
+
+    private fun onGetGenresSuccess(genres: List<Genre>) {
+        updateState {
+            it.copy(
+                genres = genres.map { genre -> genre.toGenreUi() },
+                isLoading = false,
+            )
+        }
+    }
+
+    private fun onGetGenresError(throwable: Throwable) {
+        updateState { it.copy(error = throwable.message) }
+    }
+
+    private fun fetchTrendingMovies() {
+        launchWithResult(
+            action = {
+                getTrendingMoviesUseCase()
+            },
+            onSuccess = ::onFetchTrendingMoviesSuccess,
+            onError = ::onFetchTrendingMoviesError,
+        )
+    }
+
+    private fun onFetchTrendingMoviesSuccess(movies: List<Movie>) {
+        updateState { it.copy(sliderItems = movies.toUi(uiState.value.genres), isLoading = false) }
+    }
+
+    private fun onFetchTrendingMoviesError(throwable: Throwable) {
+        updateState { it.copy(error = throwable.message, isLoading = false) }
+    }
+
+    private fun fetchRecentlyReleasedMovies() {
+        launchWithResult(
+            action = { getRecentlyReleasedMoviesUseCase(page = 1) },
+            onSuccess = ::onFetchRecentlyReleasedMoviesSuccess,
+            onError = ::onFetchRecentlyReleasedMoviesError,
+        )
+    }
+
+    private fun onFetchRecentlyReleasedMoviesSuccess(movies: List<Movie>) {
+        updateState {
+            it.copy(
+                recentlyReleasedMovies = movies.toUi(uiState.value.genres),
+                isLoading = false
+            )
+        }
+    }
+
+    private fun onFetchRecentlyReleasedMoviesError(throwable: Throwable) {
+        updateState { it.copy(error = throwable.message, isLoading = false) }
+    }
+
+    private fun fetchUpcomingMovies() {
+        launchWithResult(
+            action = { getUpcomingMoviesUseCase(page = 1) },
+            onSuccess = ::onFetchUpcomingMoviesSuccess,
+            onError = ::onFetchUpcomingMoviesError,
+        )
+    }
+
+    private fun onFetchUpcomingMoviesSuccess(movies: List<Movie>) {
+        updateState {
+            it.copy(
+                upcomingMovies = movies.toUi(uiState.value.genres),
+                isLoading = false
+            )
+        }
+    }
+
+    private fun onFetchUpcomingMoviesError(throwable: Throwable) {
+        updateState { it.copy(error = throwable.message, isLoading = false) }
+    }
+
+    private fun fetchTopRatedTVShows() {
+        launchWithResult(
+            action = { getTopRatedTVShowsUseCase(page = 1) },
+            onSuccess = ::onFetchTopRatedTVShowsSuccess,
+            onError = ::onFetchTopRatedTVShowsError,
+        )
+    }
+
+    private fun onFetchTopRatedTVShowsSuccess(tvShows: List<Series>) {
+        updateState { it.copy(topRatedTvShows = tvShows.toUi(), isLoading = false) }
+    }
+
+    private fun onFetchTopRatedTVShowsError(throwable: Throwable) {
+        updateState { it.copy(error = throwable.message, isLoading = false) }
+    }
+
+    private fun fetchMatchesYourVibesMovies() {
+
+        launchWithResult(
+            action = { getMatchesYourVibesMoviesUseCase(genreId = 28, page = 1) },
+            onSuccess = ::onFetchMatchesYourVibesMoviesSuccess,
+            onError = ::onFetchMatchesYourVibesMoviesError,
+        )
+    }
+
+    private fun onFetchMatchesYourVibesMoviesSuccess(movies: List<Movie>) {
+        updateState {
+            it.copy(
+                matchesYourVibe = movies.toUi(uiState.value.genres),
+                isLoading = false,
+                error = null
+            )
+        }
+    }
+
+    private fun onFetchMatchesYourVibesMoviesError(throwable: Throwable) {
+        updateState { it.copy(error = throwable.message, isLoading = false) }
+    }
+
+
+    override fun onMovieClick(movieId: Int) {
+        sendEvent(HomeEvent.MovieClicked(movieId))
+    }
+
+    override fun onSeeAllClick(type: String) {
+        sendEvent(HomeEvent.SeeAllClicked(type))
+    }
+
+    override fun onCollectionsShowMoreClick() {
+        TODO("Not yet implemented")
+    }
+
+    override fun onCollectionClick(collectionId: Int) {
+        sendEvent(HomeEvent.CollectionClicked(collectionId))
+    }
+
+    override fun onPromotionClick(promotionId: Int) {
+        sendEvent(HomeEvent.PromotionClicked(promotionId))
+    }
+
+    override fun onWatchSuggestionClick() {
+        TODO("Not yet implemented")
+    }
+
+    override fun onBrowseSuggestionClick() {
+        TODO("Not yet implemented")
+    }
+
+    override fun onRefresh() {
+        loadHomeData()
+    }
 
 
 }
