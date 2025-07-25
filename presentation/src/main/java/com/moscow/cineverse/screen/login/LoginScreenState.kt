@@ -7,5 +7,6 @@ data class LoginScreenState(
     val passwordError: String? = null,
     val isLoading: Boolean = false,
     val showSignUpBottomSheet: Boolean = false,
-    val wantToSignup: Boolean = false
+    val urlWebView: String = "",
+    val showWebView: Boolean = false
 )
