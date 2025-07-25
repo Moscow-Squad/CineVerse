@@ -16,7 +16,8 @@ suspend inline fun <T> handleApi(
             throw CineVerseExceptions(response.code(), errorBody ?: "Unexpected error happened")
         }
     } catch (e: HttpException) {
-        throw CineVerseExceptions(e.code(), e.message())
+        val errorBodyString = e.response()?.errorBody()?.string()
+        throw CineVerseExceptions(e.code(), errorBodyString ?: e.message())
     } catch (e: Throwable) {
         throw CineVerseExceptions(0, e.message?: "Unexpected error happened")
     }

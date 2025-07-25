@@ -1,13 +1,13 @@
 package com.moscow.cineverse.mapper
 
-import com.android.domain.model.CastDetails
-import com.android.domain.model.CrewDetails
-import com.android.domain.model.Review
-import com.android.domain.model.details.MovieDetail
 import com.moscow.cineverse.common_ui_state.CrewUiState
 import com.moscow.cineverse.common_ui_state.ReviewUiState
 import com.moscow.cineverse.common_ui_state.StarCastUiState
 import com.moscow.cineverse.screen.movie_details.MovieScreenState
+import com.moscow.domain.model.CastDetails
+import com.moscow.domain.model.CrewDetails
+import com.moscow.domain.model.Review
+import com.moscow.domain.model.details.MovieDetail
 import kotlinx.datetime.LocalDate
 import java.text.SimpleDateFormat
 import java.util.Locale

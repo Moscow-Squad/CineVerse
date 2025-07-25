@@ -1,6 +1,6 @@
 package com.moscow.mapper
 
-import com.android.domain.model.Series
+import com.moscow.domain.model.Series
 import com.moscow.local.entity.SeriesEntity
 import kotlin.collections.map
 

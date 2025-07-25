@@ -1,12 +1,13 @@
 package com.moscow.cineverse.screen.collections
 
 import androidx.lifecycle.SavedStateHandle
-import com.android.domain.model.Collection
-import com.android.domain.model.MediaType
-import com.android.domain.usecase.collection.AddMediaItemToCollectionUseCase
-import com.android.domain.usecase.collection.GetUserCollectionsUseCase
 import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.cineverse.navigation.routes.CollectionsBottomSheetRoute
+import com.moscow.domain.model.MediaType
+import com.moscow.domain.model.Collection
+import com.moscow.domain.usecase.collection.AddMediaItemToCollectionUseCase
+import com.moscow.domain.usecase.collection.GetUserCollectionsUseCase
+import kotlin.collections.take
 
 class CollectionsBottomSheetViewModel(
     private val getUserCollections: GetUserCollectionsUseCase,

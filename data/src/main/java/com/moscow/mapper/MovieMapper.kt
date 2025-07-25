@@ -1,6 +1,6 @@
 package com.moscow.mapper
 
-import com.android.domain.model.Movie
+import com.moscow.domain.model.Movie
 import com.moscow.local.entity.MovieEntity
 import com.moscow.utils.IMAGES_URL
 import kotlinx.datetime.LocalDate

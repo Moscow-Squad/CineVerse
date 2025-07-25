@@ -1,9 +1,9 @@
 package com.moscow.mapper
 
-import com.android.domain.model.CastDetails
-import com.android.domain.model.CreditsDetails
-import com.android.domain.model.CrewDetails
-import com.android.domain.model.details.MovieDetail
+import com.moscow.domain.model.CastDetails
+import com.moscow.domain.model.CreditsDetails
+import com.moscow.domain.model.CrewDetails
+import com.moscow.domain.model.details.MovieDetail
 import com.moscow.remote.dto.CastDetailsDto
 import com.moscow.remote.dto.CreditsDetailsDto
 import com.moscow.remote.dto.CrewDetailsDto

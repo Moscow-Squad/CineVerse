@@ -1,22 +1,21 @@
 package com.moscow.cineverse.screen.movie_details
 
-
 import android.util.Log
 import androidx.lifecycle.SavedStateHandle
-import com.android.domain.model.CreditsDetails
-import com.android.domain.model.Movie
-import com.android.domain.model.Review
-import com.android.domain.model.details.MovieDetail
-import com.android.domain.usecase.movie.GetMovieCreditsUseCase
-import com.android.domain.usecase.movie.GetMovieDetailsUseCase
-import com.android.domain.usecase.movie.GetMovieRecommendationsUseCase
-import com.android.domain.usecase.review.GetReviewsUseCase
-import com.android.domain.usecase.movie.RateMovieUseCase
 import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.cineverse.mapper.toMediaItemUi
 import com.moscow.cineverse.navigation.routes.MovieDetailsRoute
 import com.moscow.cineverse.mapper.toUi
-
+import com.moscow.domain.model.CreditsDetails
+import com.moscow.domain.model.Movie
+import com.moscow.domain.model.Review
+import com.moscow.domain.model.details.MovieDetail
+import com.moscow.domain.usecase.movie.GetMovieCreditsUseCase
+import com.moscow.domain.usecase.movie.GetMovieDetailsUseCase
+import com.moscow.domain.usecase.movie.GetMovieRecommendationsUseCase
+import com.moscow.domain.usecase.movie.RateMovieUseCase
+import com.moscow.domain.usecase.review.GetReviewsUseCase
+import kotlin.collections.take
 
 class MovieDetailsViewModel(
     private val getMovieDetailsUseCase: GetMovieDetailsUseCase,
