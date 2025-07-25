@@ -1,62 +1,56 @@
 package com.moscow.cineverse
 
 import android.annotation.SuppressLint
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.navigation.NavDestination.Companion.hasRoute
-import androidx.navigation.NavOptions
+import androidx.compose.ui.Modifier
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.moscow.cineverse.designSystem.theme.CineVerseTheme
 import com.moscow.cineverse.navigation.CineVerseNavGraph
-import com.moscow.cineverse.screen.component.bottomNavigationBar.BottomNavItem
+import com.moscow.cineverse.navigation.NavViewModel
+import com.moscow.cineverse.navigation.navigateToNewGraph
+import com.moscow.cineverse.navigation.rememberIsInGraph
+import com.moscow.cineverse.navigation.rememberNavGraphIndex
+import com.moscow.cineverse.screen.component.bottomNavigationBar.BottomNavItem.Companion.destinations
 import com.moscow.cineverse.screen.component.bottomNavigationBar.NavBar
-import kotlinx.coroutines.launch
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun CineVerseRoot() {
-    val navController = rememberNavController()
-    val scope = rememberCoroutineScope()
-    val currentBackStackEntry by navController.currentBackStackEntryAsState()
-
-    val selectedItemIndex by remember(currentBackStackEntry) {
-        derivedStateOf {
-            BottomNavItem.destinations.indexOfFirst { item ->
-                currentBackStackEntry?.destination?.hasRoute(item.destination::class) == true
-            }.coerceAtLeast(0)
-        }
-    }
-
+fun CineVerseRoot(navViewModel: NavViewModel) {
     CineVerseTheme {
+        val navController = rememberNavController()
+
+        val currentNavBackStackEntry by navController.currentBackStackEntryAsState()
+
+        val navGraphIndex by rememberNavGraphIndex(currentNavBackStackEntry, destinations.keys)
+
+        val isNavBarVisible by rememberIsInGraph(currentNavBackStackEntry, destinations.keys)
+
         Scaffold(
+            modifier = Modifier
+                .fillMaxSize()
+                .navigationBarsPadding(),
             bottomBar = {
-                NavBar(
-                    selectedItem = BottomNavItem.destinations[selectedItemIndex],
-                    onItemClick = { destination ->
-                        scope.launch {
-                            navController.navigate(
-                                route = destination,
-                                navOptions = NavOptions.Builder()
-                                    .setPopUpTo(
-                                        navController.graph.startDestinationId,
-                                        inclusive = false
-                                    )
-                                    .setLaunchSingleTop(true)
-                                    .build()
-                            )
+                AnimatedVisibility(
+                    visible = isNavBarVisible
+                ) {
+                    NavBar(
+                        selectedItem = destinations.values.elementAt(navGraphIndex),
+                        onItemClick = { index, _ ->
+                            val targetGraph = destinations.keys.elementAt(index)
+                            navController.navigateToNewGraph(targetGraph)
                         }
-                    }
-                )
+                    )
+                }
             }
         ) {
-            CineVerseNavGraph(
-                navController = navController
-            )
+            CineVerseNavGraph( modifier = Modifier,
+                navController = navController, navViewModel = navViewModel)
         }
     }
 }
