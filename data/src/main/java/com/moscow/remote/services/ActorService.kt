@@ -1,11 +1,14 @@
 package com.moscow.remote.services
 
+import com.moscow.remote.dto.actor.ActorBestOfMoviesDto
+import com.moscow.remote.dto.actor.ActorImagesDto
+import com.moscow.remote.dto.actor.ActorSocialMediaDto
+import com.moscow.remote.dto.details.ActorDetailsDto
+import com.moscow.utils.ACTOR
+import com.moscow.utils.EXTERNAL_IDS
+import com.moscow.utils.IMAGES
+import com.moscow.utils.MOVIE_CREDITS
 import retrofit2.http.*
-import com.remote.dto.actor.ActorBestOfMoviesDto
-import com.remote.dto.actor.ActorImagesDto
-import com.remote.dto.actor.ActorSocialMediaDto
-import com.remote.dto.details.*
-import com.utils.ACTOR
 import retrofit2.Response
 
 interface ActorService {

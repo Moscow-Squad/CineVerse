@@ -4,7 +4,7 @@ import com.android.domain.model.Movie
 import com.android.domain.model.Series
 import com.android.domain.repository.HomeRepository
 import com.data_source.remote.HomeRemoteDataSource
-import com.mapper.toDomain
+import com.moscow.mapper.toDomain
 
 class HomeRepositoryImpl(
     private val homeRemoteDataSource: HomeRemoteDataSource

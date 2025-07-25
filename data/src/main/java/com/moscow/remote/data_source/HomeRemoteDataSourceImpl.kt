@@ -1,12 +1,12 @@
 package com.remote.data_source
 
 import com.data_source.remote.HomeRemoteDataSource
-import com.remote.dto.MovieDto
-import com.remote.dto.series.SeriesDto
+import com.moscow.remote.dto.MovieDto
+import com.moscow.remote.dto.series.SeriesDto
+import com.moscow.utils.ApiResponse
+import com.moscow.utils.DAY
+import com.moscow.utils.handleApi
 import com.remote.services.HomeService
-import com.utils.ApiResponse
-import com.utils.DAY
-import com.utils.handleApi
 
 class HomeRemoteDataSourceImpl(
     private val homeService: HomeService
