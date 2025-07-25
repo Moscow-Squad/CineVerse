@@ -1,10 +1,7 @@
 package com.moscow.cineverse.screen.home
 
 import androidx.lifecycle.viewModelScope
-import com.android.domain.model.Genre
-import com.android.domain.model.Movie
-import com.android.domain.model.Series
-import com.android.domain.usecase.genre.GenreUseCase
+
 import com.android.domain.usecase.home.GetMatchesYourVibesMoviesUseCase
 import com.android.domain.usecase.home.GetRecentlyReleasedMoviesUseCase
 import com.android.domain.usecase.home.GetTopRatedTVShowsUseCase
@@ -13,9 +10,14 @@ import com.android.domain.usecase.home.GetUpcomingMoviesUseCase
 import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.cineverse.mapper.toGenreUi
 import com.moscow.cineverse.mapper.toUi
+import com.moscow.domain.model.Genre
+import com.moscow.domain.model.Movie
+import com.moscow.domain.model.Series
+import com.moscow.domain.usecase.genre.GenreUseCase
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
+import kotlin.collections.map
 
 class HomeViewModel(
     private val getMatchesYourVibesMoviesUseCase: GetMatchesYourVibesMoviesUseCase,
@@ -57,7 +59,7 @@ class HomeViewModel(
                     onGetGenresSuccess(it)
                     continuation.resume(
                         value = Unit,
-                    ){cause,value,context ->
+                    ) { cause, value, context ->
 
                     }
                 },
@@ -65,7 +67,7 @@ class HomeViewModel(
                     onGetGenresError(it)
                     continuation.resume(
                         value = Unit,
-                    ){cause,value,context ->
+                    ) { cause, value, context ->
 
                     }
                 },

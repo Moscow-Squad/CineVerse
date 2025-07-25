@@ -47,6 +47,7 @@ fun HomeScreen(
                     // Navigate to SeeMoreHomeScreen with the category
                     navController.navigate("see_more/${effect.category}")
                 }
+
                 is HomeEvent.SeriesClicked -> {}
             }
         }
@@ -73,14 +74,18 @@ fun HomeContent(
                 .padding(LocalScaffoldPaddingValues.current),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            HomeHeader(userName = state.userName, modifier)
-            Spacer(
-                modifier = Modifier
-                    .padding(top = 8.dp)
-                    .fillMaxWidth()
-                    .height(1.dp)
-                    .background(Theme.colors.stroke.primary),
-            )
+            Column(
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                HomeHeader(userName = state.userName, modifier)
+                Spacer(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(1.dp)
+                        .background(Theme.colors.stroke.primary),
+                )
+
+            }
 
             HomeHeaderSlider(items = state.sliderItems)
 

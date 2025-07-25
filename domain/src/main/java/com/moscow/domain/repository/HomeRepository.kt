@@ -1,7 +1,8 @@
-package com.android.domain.repository
+package com.moscow.domain.repository
 
-import com.android.domain.model.Movie
-import com.android.domain.model.Series
+import com.moscow.domain.model.Movie
+import com.moscow.domain.model.Series
+
 
 interface HomeRepository {
     suspend fun getTrendingMovies(time:String?): List<Movie>

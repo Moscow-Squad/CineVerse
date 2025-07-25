@@ -1,9 +1,10 @@
-package com.repository
+package com.moscow.repository
 
-import com.android.domain.model.Movie
-import com.android.domain.model.Series
-import com.android.domain.repository.HomeRepository
+
+import com.moscow.domain.repository.HomeRepository
 import com.data_source.remote.HomeRemoteDataSource
+import com.moscow.domain.model.Movie
+import com.moscow.domain.model.Series
 import com.moscow.mapper.toDomain
 
 class HomeRepositoryImpl(

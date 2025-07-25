@@ -1,13 +1,15 @@
 package com.moscow.cineverse.mapper
 
-import com.android.domain.model.Genre
-import com.android.domain.model.MediaType
-import com.android.domain.model.Movie
-import com.android.domain.model.Series
+
 import com.moscow.cineverse.common_ui_state.MediaItemUiState
 import com.moscow.cineverse.screen.explore.YYYY_MMM_DD
 import com.moscow.cineverse.screen.explore.formatWith
 import com.moscow.cineverse.screen.home.HomeUiState
+import com.moscow.domain.model.Genre
+import com.moscow.domain.model.MediaType
+import com.moscow.domain.model.Movie
+import com.moscow.domain.model.Series
+import kotlin.collections.map
 
 fun Genre.toGenreUi() = HomeUiState.GenreUi(
     id = id,

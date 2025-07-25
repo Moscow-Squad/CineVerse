@@ -1,7 +1,7 @@
 package com.android.domain.usecase.home
 
-import com.android.domain.model.Series
-import com.android.domain.repository.HomeRepository
+import com.moscow.domain.repository.HomeRepository
+import com.moscow.domain.model.Series
 
 class GetTopRatedTVShowsUseCase(
     private val homeRepository: HomeRepository

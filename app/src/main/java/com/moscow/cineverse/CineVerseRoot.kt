@@ -48,10 +48,12 @@ fun CineVerseRoot(navViewModel: NavViewModel) {
                     )
                 }
             }
-        ) {paddingValues ->
+        ) { paddingValues ->
             CineVerseNavGraph(
                 modifier = Modifier,
                 navController = navController,
+                navViewModel = navViewModel,
+                scaffoldPaddingValues = paddingValues
             )
         }
     }
