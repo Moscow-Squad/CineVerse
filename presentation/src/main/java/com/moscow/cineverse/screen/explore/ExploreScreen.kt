@@ -115,7 +115,7 @@ private fun ExploreScreenContent(
                 ViewModeToggleButton(
                     selectedMode = uiState.viewMode,
                     onModeSelected = interactionListener::onViewModeChanged,
-                    modifier = Modifier.align(Alignment.BottomEnd).padding(16.dp)
+                    modifier = Modifier.align(Alignment.BottomEnd).padding(end = 16.dp, bottom = 96.dp)
                 )
             }
         }
