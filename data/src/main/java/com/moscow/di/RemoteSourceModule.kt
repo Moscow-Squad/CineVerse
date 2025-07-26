@@ -1,5 +1,7 @@
-package com.moscow.di
+package com.di
 
+
+import com.data_source.remote.HomeRemoteDataSource
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import com.moscow.data_source.remote.ActorRemoteDataSource
 import com.moscow.data_source.remote.CollectionRemoteDataSource
@@ -24,6 +26,8 @@ import com.moscow.remote.services.MovieService
 import com.moscow.remote.services.SearchService
 import com.moscow.remote.services.SeriesService
 import com.moscow.utils.BASE_URL
+import com.remote.data_source.HomeRemoteDataSourceImpl
+import com.remote.services.HomeService
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
@@ -79,6 +83,7 @@ val remoteDataSourceModule = module {
     bindService<SeriesService>()
     bindService<SearchService>()
     bindService<LoginService>()
+    bindService<HomeService>()
 
     // Remote Data Sources
     singleOf(::SearchRemoteDataSourceImpl) bind SearchRemoteDataSource::class
@@ -88,4 +93,5 @@ val remoteDataSourceModule = module {
     singleOf(::SeriesRemoteDataSourceImpl) bind SeriesRemoteDataSource::class
     singleOf(::GenreRemoteDataSourceImpl) bind GenreRemoteDataSource::class
     singleOf(::LoginRemoteDataSourceImpl) bind LoginRemoteDataSource::class
+    singleOf(::HomeRemoteDataSourceImpl) bind HomeRemoteDataSource::class
 }

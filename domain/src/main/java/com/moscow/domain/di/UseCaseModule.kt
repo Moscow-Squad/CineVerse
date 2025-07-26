@@ -1,5 +1,10 @@
 package com.moscow.domain.di
 
+import com.android.domain.usecase.home.GetMatchesYourVibesMoviesUseCase
+import com.android.domain.usecase.home.GetRecentlyReleasedMoviesUseCase
+import com.android.domain.usecase.home.GetTopRatedTVShowsUseCase
+import com.android.domain.usecase.home.GetTrendingMoviesUseCase
+import com.android.domain.usecase.home.GetUpcomingMoviesUseCase
 import com.moscow.domain.usecase.actor.GetActorBestMoviesUseCase
 import com.moscow.domain.usecase.actor.GetActorDetailsUseCase
 import com.moscow.domain.usecase.actor.GetActorGalleryUseCase
@@ -64,4 +69,9 @@ val useCaseModule = module {
     singleOf(::RateSeriesUseCase)
     singleOf(::LoginWithUsernameAndPasswordUseCase)
     singleOf(::LoginAsGuestUseCase)
+    singleOf(::GetTrendingMoviesUseCase)
+    singleOf(::GetMatchesYourVibesMoviesUseCase)
+    singleOf(::GetRecentlyReleasedMoviesUseCase)
+    singleOf(::GetTopRatedTVShowsUseCase)
+    singleOf(::GetUpcomingMoviesUseCase)
 }

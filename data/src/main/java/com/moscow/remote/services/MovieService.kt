@@ -13,6 +13,7 @@ import com.moscow.utils.PAGE
 import com.moscow.utils.POPULAR
 import com.moscow.utils.RATING
 import com.moscow.utils.RECOMMENDATIONS
+import com.moscow.utils.REVIEWS
 import com.moscow.utils.SESSION_ID
 import com.moscow.utils.WITH_GENRES
 import retrofit2.Response
@@ -27,6 +28,7 @@ interface MovieService {
     suspend fun getPopularMovies(
         @Query(PAGE) page: Int
     ): Response<ApiResponse<MovieDto>>
+
 
     @GET("$MOVIE{id}")
     suspend fun getMovieDetails(
@@ -45,16 +47,16 @@ interface MovieService {
         @Path("movie_id") id: Int
     ): Response<CreditsDetailsDto>
 
-    @GET("movie/{id}/reviews")
+    @GET("$MOVIE{id}$REVIEWS")
     suspend fun getMovieReviews(
         @Path("id") id: Int,
-        @Query("page") page: Int
+        @Query(PAGE) page: Int
     ): Response<ApiResponse<ReviewDto>>
 
     @GET("$MOVIE{movie_id}$RECOMMENDATIONS")
     suspend fun getMoviesRecommendations(
         @Path("movie_id") id: Int,
-        @Query("page") page: Int
+        @Query(PAGE) page: Int
     ): Response<ApiResponse<MovieDto>>
 
     @GET(DISCOVER_MOVIE_LIST)

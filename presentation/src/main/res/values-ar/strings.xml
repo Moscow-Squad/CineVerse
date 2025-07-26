@@ -30,6 +30,13 @@
     <string name="try_again">حاول مرة اخرى</string>
     <string name="oops_no_internet">ياللهول! لا يوجد نت كافي</string>
     <string name="offline_reconnect">يبدو انك بدون نت. حاول التقاط نت حتى لا تفوتك المتعة.</string>
+    <string name="welcome">welcome</string>
+    <string name="show_more">Show More</string>
+    <string name="recently_released">Recently Released</string>
+    <string name="upcoming_movies">upcoiming movies</string>
+    <string name="matches_your_vibe">Matches your Vibe</string>
+    <string name="top_rated_tv_shows">Top Rated TV Shows</string>
+    <string name="you_recently_viewed">You Recently Viewed</string>
     <string name="cine_verse_logo">شعار سينيفيرس</string>
     <string name="welcome_back_to_cineverse">مرحبًا بك مرة أخرى في CineVerse!</string>
     <string name="email_or_username">الإيميل او اسم المستخدم</string>
@@ -47,4 +54,10 @@
     <string name="go_to_website">الذهاب الى الموقع</string>
     <string name="cancel">إلغاء</string>
     <string name="join_cineverse">CineVerse انضم الى</string>
+    <string name="let_us_choose_message">We’ll help you skip the scroll and go straight to the good stuff.</string>
+    <string name="let_us_choose_for_you">Let Us Choose For You!</string>
+    <string name="what_sould_i_watch">What Should I Watch?</string>
+    <string name="need_more_to_watch">Need More to Watch?</string>
+    <string name="browse_everything">Browse Everything</string>
+    <string name="browse_everything_message">Explore all movies and series by genre or search for anything you like.</string>
 </resources>

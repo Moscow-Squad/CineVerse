@@ -25,8 +25,8 @@ fun MovieAppBar(
     modifier: Modifier = Modifier,
     backButtonClick: () -> Unit = {},
     addButtonClick: () -> Unit = {},
-    title: String?=null,
-    caption: String?=null,
+    title: String? = null,
+    caption: String? = null,
     showBackButton: Boolean = true,
     showAddButton: Boolean = false,
     showLogo: Boolean = false,
@@ -75,7 +75,7 @@ fun MovieAppBar(
                         color = Theme.colors.shade.secondary
                     )
                 }
-                if (title!=null) {
+                if (title != null) {
                     Text(
                         text = title,
                         style = Theme.textStyle.title.small,
@@ -109,12 +109,12 @@ fun MovieAppBar(
 
 @CineVersePreviews
 @Composable
-fun MovieAppBarPreview(modifier: Modifier = Modifier) {
+fun MovieAppBarPreview() {
     CineVerseTheme {
         MovieAppBar(
             title = "Title",
             caption = "Caption",
 
-        )
+            )
     }
 }

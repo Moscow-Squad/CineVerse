@@ -3,6 +3,7 @@ package com.moscow.di
 import com.moscow.domain.repository.ActorRepository
 import com.moscow.domain.repository.CollectionsRepository
 import com.moscow.domain.repository.GenreRepository
+import com.moscow.domain.repository.HomeRepository
 import com.moscow.domain.repository.LoginRepository
 import com.moscow.domain.repository.MovieRepository
 import com.moscow.domain.repository.PreferenceRepository
@@ -16,6 +17,7 @@ import com.moscow.repository.SearchRepositoryImpl
 import com.moscow.repository.SeriesRepositoryImpl
 import com.moscow.repository.login.LoginRepositoryImpl
 import com.moscow.repository.preference.PreferenceRepositoryImpl
+import com.moscow.repository.HomeRepositoryImpl
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.bind
 import org.koin.dsl.module
@@ -29,4 +31,5 @@ val repositoryModule = module {
     singleOf(::CollectionsRepositoryImpl) bind CollectionsRepository::class
     singleOf(::LoginRepositoryImpl) bind LoginRepository::class
     singleOf(::PreferenceRepositoryImpl) bind PreferenceRepository::class
+    singleOf(::HomeRepositoryImpl) bind HomeRepository::class
 }
