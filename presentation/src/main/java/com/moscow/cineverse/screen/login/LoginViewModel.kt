@@ -1,7 +1,7 @@
 package com.moscow.cineverse.screen.login
 
-import android.content.Context
 import androidx.lifecycle.viewModelScope
+import com.moscow.cineverse.utlis.StringValue
 import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.cinverse.presentation.R
 import com.moscow.domain.model.LoginData
@@ -12,7 +12,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class LoginViewModel(
-    private val context: Context,
     private val loginWithUsernameAndPasswordUseCase: LoginWithUsernameAndPasswordUseCase,
     private val loginAsGuestUseCase: LoginAsGuestUseCase
 ) : BaseViewModel<LoginScreenState, LoginScreenEvents>(LoginScreenState()),
@@ -31,7 +30,7 @@ class LoginViewModel(
             onResult = { error ->
                 updateState { it.copy(usernameError = error) }
             },
-            errorMessage = context.getString(R.string.usernames_can_only_4_32_letters_and_numbers)
+            errorMessage = StringValue.StringResource(resId = R.string.usernames_can_only_4_32_letters_and_numbers)
         )
     }
 
@@ -45,7 +44,7 @@ class LoginViewModel(
             onResult = { error ->
                 updateState { it.copy(passwordError = error) }
             },
-            errorMessage = context.getString(R.string.password_can_only_4_100_characters)
+            errorMessage = StringValue.StringResource(resId = R.string.password_can_only_4_100_characters)
         )
     }
 
@@ -71,16 +70,16 @@ class LoginViewModel(
 
     private fun onLoginSuccess(isSuccess: Boolean) {
         updateState { it.copy(isLoading = false) }
-        if (isSuccess){
+        if (isSuccess) {
             sendEvent(LoginScreenEvents.NavigateTo)
-        }else{
-            sendEvent(LoginScreenEvents.ShowError(context.getString(R.string.sorry_we_cannot_check_your_information_now)))
+        } else {
+            sendEvent(LoginScreenEvents.ShowError(StringValue.StringResource(resId = R.string.sorry_we_cannot_check_your_information_now)))
         }
     }
 
     private fun onLoginFailed(error: Throwable) {
         updateState { it.copy(isLoading = false) }
-        sendEvent(LoginScreenEvents.ShowError(error.message.toString()))
+        sendEvent(LoginScreenEvents.ShowError(StringValue.DynamicString(error.message.toString())))
     }
 
     private fun onStartLogin() {
@@ -100,12 +99,12 @@ class LoginViewModel(
         if (isSuccess) {
             sendEvent(LoginScreenEvents.NavigateTo)
         } else {
-            sendEvent(LoginScreenEvents.ShowError(context.getString(R.string.sorry_you_cannot_enter_as_a_guest_now_try_to_create_a_new_account)))
+            sendEvent(LoginScreenEvents.ShowError(StringValue.StringResource(resId = R.string.sorry_you_cannot_enter_as_a_guest_now_try_to_create_a_new_account)))
         }
     }
 
     private fun onJoinAsGuestFailed(error: Throwable) {
-        sendEvent(LoginScreenEvents.ShowError(error.message.toString()))
+        sendEvent(LoginScreenEvents.ShowError(StringValue.DynamicString(error.message.toString())))
     }
 
     override fun onClickCreateNewAccount() {
@@ -127,10 +126,12 @@ class LoginViewModel(
     }
 
     override fun onClickForgetPassword() {
-        updateState { it.copy(
-            urlWebView = FORGET_PASSWORD_URL,
-            showWebView = true
-        ) }
+        updateState {
+            it.copy(
+                urlWebView = FORGET_PASSWORD_URL,
+                showWebView = true
+            )
+        }
     }
 
     override fun onExitWebViewBrowser() {
@@ -141,8 +142,8 @@ class LoginViewModel(
         input: String,
         delayMillis: Long = 500,
         isValid: (String) -> Boolean,
-        onResult: (String?) -> Unit,
-        errorMessage: String
+        onResult: (StringValue?) -> Unit,
+        errorMessage: StringValue
     ): Job {
         return viewModelScope.launch {
             delay(delayMillis)
@@ -154,7 +155,7 @@ class LoginViewModel(
         }
     }
 
-    companion object{
+    companion object {
         private const val SIGN_UP_URL = "https://www.themoviedb.org/signup"
         private const val FORGET_PASSWORD_URL = "https://www.themoviedb.org/reset-password"
     }
