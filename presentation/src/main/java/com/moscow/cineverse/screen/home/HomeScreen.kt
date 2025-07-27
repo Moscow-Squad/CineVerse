@@ -19,10 +19,10 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import com.moscow.cineverse.component.ScreenStateHandler
-import com.moscow.cineverse.designSystem.component.home.FeaturedCollectionsSection
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.navigation.LocalNavController
 import com.moscow.cineverse.navigation.LocalScaffoldPaddingValues
+import com.moscow.cineverse.screen.home.components.FeaturedCollectionsSection
 import com.moscow.cineverse.screen.home.components.FeaturedMovies
 import com.moscow.cineverse.screen.home.components.HomeHeader
 import com.moscow.cineverse.screen.home.components.HomeHeaderSlider
