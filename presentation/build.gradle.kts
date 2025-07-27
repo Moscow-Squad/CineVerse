@@ -17,7 +17,7 @@ dependencies {
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.ui.tooling.preview)
-    implementation(libs.androidx.material3)
+    implementation(libs.material3)
     // Koin
     implementation(platform(libs.koin.bom))
     implementation(libs.bundles.koin)

@@ -13,7 +13,7 @@ dependencies {
     implementation(libs.coil3.compose)
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.ui.tooling.preview)
-    implementation(libs.androidx.material3)
+    implementation(libs.material3)
     implementation(libs.readmore.material3)
 
     implementation(libs.accompanist.webview)

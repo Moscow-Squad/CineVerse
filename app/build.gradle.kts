@@ -53,6 +53,7 @@ dependencies {
     implementation(libs.material3)
     // Background
     implementation(libs.androidx.work.runtime.ktx)
+    implementation(libs.koin.androidx.workmanager)
     //navigation
     implementation(libs.androidx.navigation.compose)
     // Splash
