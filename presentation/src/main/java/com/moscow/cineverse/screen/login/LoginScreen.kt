@@ -1,5 +1,6 @@
 package com.moscow.cineverse.screen.login
 
+import android.content.Context
 import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
@@ -35,6 +36,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import com.moscow.cineverse.design_system.R
 import com.moscow.cineverse.designSystem.component.AppTextField
 import com.moscow.cineverse.designSystem.component.MessageInfoBox
 import com.moscow.cineverse.designSystem.component.MovieButton
@@ -60,7 +62,7 @@ fun LoginScreen(
         viewModel.uiEffect.collect { event ->
             when (event) {
                 is LoginScreenEvents.ShowError -> {
-                    Toast.makeText(context, event.message, Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, event.message.asString(context), Toast.LENGTH_LONG).show()
                 }
 
                 is LoginScreenEvents.NavigateTo -> {
@@ -79,7 +81,8 @@ fun LoginScreen(
 
     LoginScreenContent(
         state = state,
-        interactionListener = viewModel
+        interactionListener = viewModel,
+        context = context
     )
 }
 
@@ -87,7 +90,8 @@ fun LoginScreen(
 private fun LoginScreenContent(
     modifier: Modifier = Modifier,
     state: LoginScreenState,
-    interactionListener: LoginInteractionListener
+    interactionListener: LoginInteractionListener,
+    context: Context
 ) {
     val focusManager = LocalFocusManager.current
     Column(
@@ -126,7 +130,7 @@ private fun LoginScreenContent(
             leadingIconTint = Theme.colors.shade.tertiary,
             maxLines = 1,
             isError = state.usernameError != null,
-            errorMessage = state.usernameError,
+            errorMessage = state.usernameError?.asString(context = context),
             keyboardOptions = KeyboardOptions(
                 imeAction = ImeAction.Next,
                 keyboardType = KeyboardType.Text,
@@ -149,7 +153,7 @@ private fun LoginScreenContent(
             leadingIcon = R.drawable.outline_lock,
             leadingIconTint = Theme.colors.shade.tertiary,
             isError = state.passwordError != null,
-            errorMessage = state.passwordError,
+            errorMessage = state.passwordError?.asString(context),
             keyboardOptions = KeyboardOptions(
                 imeAction = ImeAction.Done,
                 keyboardType = KeyboardType.Password,
