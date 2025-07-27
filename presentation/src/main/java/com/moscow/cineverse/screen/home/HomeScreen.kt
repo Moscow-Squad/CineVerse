@@ -87,8 +87,6 @@ fun HomeContent(
 
             }
 
-            HomeHeaderSlider(items = state.sliderItems)
-
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -97,6 +95,7 @@ fun HomeContent(
                 verticalArrangement = Arrangement.spacedBy(16.dp)
 
             ) {
+                HomeHeaderSlider(items = state.sliderItems)
 
                 FeaturedMovies(
                     displayMovies = state.recentlyReleasedMovies,

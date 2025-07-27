@@ -10,6 +10,8 @@ import androidx.paging.map
 import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.cineverse.common_ui_state.MediaItemUiState
 import com.moscow.cineverse.designSystem.component.ViewMode
+import com.moscow.cineverse.mapper.toMediaItemUi
+import com.moscow.cineverse.mapper.toUi
 import com.moscow.cineverse.paging.BasePagingSource
 import com.moscow.domain.model.MediaType
 import com.moscow.domain.model.Movie
@@ -51,37 +53,32 @@ class SeeMoreHomeViewModel(
                     HomeFeaturedItems.RECENTLY_RELEASED.name -> {
                         createPagingFlow(
                             pageSize = pageSize,
-                            fetchData = { page -> moviesRepository.getPopularMovies(page) },
-                            mediaType = MediaType.Movie
+                            fetchData = { page -> moviesRepository.getPopularMovies(page) }
                         )
                     }
                     HomeFeaturedItems.UPCOMING_MOVIES.name -> {
                         createPagingFlow(
                             pageSize = pageSize,
-                            fetchData = { page -> moviesRepository.getPopularMovies(page) }, // Replace with getUpcomingMovies when available
-                            mediaType = MediaType.Movie
+                            fetchData = { page -> moviesRepository.getPopularMovies(page) } // Replace with getUpcomingMovies when available
                         )
                     }
                     HomeFeaturedItems.MATCHES_YOUR_VIBE.name -> {
                         // Using genre ID 28 for Action, same as in HomeViewModel
                         createPagingFlow(
                             pageSize = pageSize,
-                            fetchData = { page -> moviesRepository.getMoviesByGenreId(28, page) },
-                            mediaType = MediaType.Movie
+                            fetchData = { page -> moviesRepository.getMoviesByGenreId(28, page) }
                         )
                     }
                     HomeFeaturedItems.TOP_RATED_TV_SHOWS.name -> {
                         createPagingFlow(
                             pageSize = pageSize,
-                            fetchData = { page -> seriesRepository.getPopularSeries(page) },
-                            mediaType = MediaType.Tv
+                            fetchData = { page -> seriesRepository.getPopularSeries(page) }
                         )
                     }
                     HomeFeaturedItems.YOU_RECENTLY_VIEWED.name -> {
                         createPagingFlow(
                             pageSize = pageSize,
-                            fetchData = { page -> moviesRepository.getPopularMovies(page) }, // Replace with getRecentlyViewed when available
-                            mediaType = MediaType.Movie
+                            fetchData = { page -> moviesRepository.getPopularMovies(page) } // Replace with getRecentlyViewed when available
                         )
                     }
                     else -> emptyFlow()
@@ -97,54 +94,25 @@ class SeeMoreHomeViewModel(
 
     private fun <T : Any> createPagingFlow(
         pageSize: Int,
-        fetchData: suspend (Int) -> List<T>,
-        mediaType: MediaType
+        fetchData: suspend (Int) -> List<T>
     ): Flow<PagingData<MediaItemUiState>> {
         return Pager(
             config = PagingConfig(
                 pageSize = pageSize,
                 enablePlaceholders = false
             ),
-            pagingSourceFactory = { BasePagingSource<T>(fetchData) }
+            pagingSourceFactory = { BasePagingSource(fetchData) }
         ).flow
             .map { pagingData ->
                 pagingData.map { item ->
                     when (item) {
-                        is Movie -> movieToUiState(item)
-                        is Series -> seriesToUiState(item)
+                        is Movie -> item.toMediaItemUi()
+                        is Series -> item.toUi()
                         else -> throw IllegalArgumentException("Unsupported type: ${item::class.java}")
                     }
                 }
             }
             .cachedIn(viewModelScope)
-    }
-
-    // Safe mapping function for Movie to prevent NoSuchElementException
-    private fun movieToUiState(movie: Movie): MediaItemUiState {
-        return MediaItemUiState(
-            id = movie.id.toInt(),
-            title = movie.name,
-            posterPath = movie.posterPath,
-            rating = movie.rating,
-            genres = emptyList(), // We don't have genre details in this context, so use empty list to avoid crashes
-            releaseDate = movie.releaseDate.toString(),
-            duration = "",
-            mediaType = MediaType.Movie
-        )
-    }
-
-    // Safe mapping function for Series to prevent NoSuchElementException
-    private fun seriesToUiState(series: Series): MediaItemUiState {
-        return MediaItemUiState(
-            id = series.id,
-            title = series.name,
-            posterPath = series.posterPath,
-            rating = series.rating,
-            genres = emptyList(), // We don't have genre details in this context, so use empty list to avoid crashes
-            releaseDate = series.firstAirDate.toString(),
-            duration = "",
-            mediaType = MediaType.Tv
-        )
     }
 
     override fun onRefresh() {

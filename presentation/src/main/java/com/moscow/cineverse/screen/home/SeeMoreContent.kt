@@ -155,50 +155,55 @@ fun SeeMoreContentPreview() {
             title = "Sample Movie",
             posterPath = "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Electrotachyscope1.jpg/500px-Electrotachyscope1.jpg",
             rating = 7.8f,
-            duration = "2022",
             genres = listOf(),
+            releaseDate = "2022",
+            duration = "2022",
             mediaType = MediaType.Person,
-            releaseDate = "2022"
+            backdropPath = "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Electrotachyscope1.jpg/500px-Electrotachyscope1.jpg"
         ),
         MediaItemUiState(
             id = 2,
             title = "Another Movie",
             posterPath = "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Electrotachyscope1.jpg/500px-Electrotachyscope1.jpg",
             rating = 7.8f,
-            duration = "2022",
             genres = listOf(),
+            releaseDate = "2022",
+            duration = "2022",
             mediaType = MediaType.Person,
-            releaseDate = "2022"
+            backdropPath = "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Electrotachyscope1.jpg/500px-Electrotachyscope1.jpg"
         ),
         MediaItemUiState(
             id = 3,
             title = "Another Movie",
             posterPath = "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Electrotachyscope1.jpg/500px-Electrotachyscope1.jpg",
             rating = 7.8f,
-            duration = "2022",
             genres = listOf(),
+            releaseDate = "2022",
+            duration = "2022",
             mediaType = MediaType.Person,
-            releaseDate = "2022"
+            backdropPath = "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Electrotachyscope1.jpg/500px-Electrotachyscope1.jpg"
         ),
         MediaItemUiState(
             id = 4,
             title = "Another Movie",
             posterPath = "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Electrotachyscope1.jpg/500px-Electrotachyscope1.jpg",
             rating = 7.8f,
-            duration = "2022",
             genres = listOf(),
+            releaseDate = "2022",
+            duration = "2022",
             mediaType = MediaType.Person,
-            releaseDate = "2022"
+            backdropPath = "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Electrotachyscope1.jpg/500px-Electrotachyscope1.jpg"
         ),
         MediaItemUiState(
             id = 5,
             title = "Another Movie",
             posterPath = "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Electrotachyscope1.jpg/500px-Electrotachyscope1.jpg",
             rating = 7.8f,
-            duration = "2022",
             genres = listOf(),
+            releaseDate = "2022",
+            duration = "2022",
             mediaType = MediaType.Person,
-            releaseDate = "2022"
+            backdropPath = "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Electrotachyscope1.jpg/500px-Electrotachyscope1.jpg"
         )
     )
 
