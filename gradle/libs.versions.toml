@@ -77,7 +77,6 @@ coreSplashscreen = "1.0.1"
 serializationKotlin = "2.0.0"
 
 [libraries]
-mockk-v11310 = { module = "io.mockk:mockk", version.ref = "mockkVersion" }
 tensorflow-lite-vision = { module = "org.tensorflow:tensorflow-lite-task-vision", version.ref = "tensorflowLiteVision" }
 accompanist-webview = { module = "com.google.accompanist:accompanist-webview", version.ref = "accompanistWebview" }
 androidx-core-splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "coreSplashscreen" }
