@@ -10,9 +10,12 @@ import androidx.paging.map
 import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.cineverse.common_ui_state.MediaItemUiState
 import com.moscow.cineverse.designSystem.component.ViewMode
+import com.moscow.cineverse.mapper.toMediaItemUi
+import com.moscow.cineverse.mapper.toUi
 import com.moscow.cineverse.paging.BasePagingSource
-import com.moscow.cineverse.screen.home.HomeFeaturedItems
-import com.moscow.domain.model.MediaType
+import com.moscow.cineverse.screen.see_more.SeeMoreEvent
+import com.moscow.cineverse.screen.see_more.SeeMoreInteractionListener
+import com.moscow.cineverse.screen.see_more.SeeMoreUiState
 import com.moscow.domain.model.Movie
 import com.moscow.domain.model.Series
 import com.moscow.domain.usecase.home.GetMatchesYourVibesMoviesUseCase
@@ -57,14 +60,12 @@ class SeeMoreViewModel(
                         createPagingFlow(
                             pageSize = pageSize,
                             fetchData = { page -> getRecentlyReleasedMoviesUseCase(page) },
-                            mediaType = MediaType.Movie
                         )
                     }
                     HomeFeaturedItems.UPCOMING_MOVIES.name -> {
                         createPagingFlow(
                             pageSize = pageSize,
                             fetchData = { page -> getUpcomingMoviesUseCase(page) }, // Replace with getUpcomingMovies when available
-                            mediaType = MediaType.Movie
                         )
                     }
                     HomeFeaturedItems.MATCHES_YOUR_VIBE.name -> {
@@ -72,21 +73,21 @@ class SeeMoreViewModel(
                         createPagingFlow(
                             pageSize = pageSize,
                             fetchData = { page -> getMatchesYourVibesMoviesUseCase(28, page) },
-                            mediaType = MediaType.Movie
+
                         )
                     }
                     HomeFeaturedItems.TOP_RATED_TV_SHOWS.name -> {
                         createPagingFlow(
                             pageSize = pageSize,
                             fetchData = { page -> getTopRatedTVShowsUseCase(page) },
-                            mediaType = MediaType.Tv
+
                         )
                     }
                     HomeFeaturedItems.YOU_RECENTLY_VIEWED.name -> {
                         createPagingFlow(
                             pageSize = pageSize,
                             fetchData = { page -> getRecentlyReleasedMoviesUseCase(page) }, // Replace with getRecentlyViewed when available
-                            mediaType = MediaType.Movie
+
                         )
                     }
                     else -> emptyFlow()

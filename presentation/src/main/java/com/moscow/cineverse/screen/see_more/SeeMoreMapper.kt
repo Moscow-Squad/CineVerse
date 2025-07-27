@@ -15,6 +15,7 @@ internal fun movieToUiState(movie: Movie): MediaItemUiState {
         genres = emptyList(), // We don't have genre details in this context, so use empty list to avoid crashes
         releaseDate = movie.releaseDate.toString(),
         duration = "",
+        backdropPath = movie.backdropPath,
         mediaType = MediaType.Movie
     )
 }
@@ -28,6 +29,7 @@ internal fun seriesToUiState(series: Series): MediaItemUiState {
         genres = emptyList(), // We don't have genre details in this context, so use empty list to avoid crashes
         releaseDate = series.firstAirDate.toString(),
         duration = "",
+        backdropPath = series.backdropPath,
         mediaType = MediaType.Tv
     )
 }

@@ -195,6 +195,7 @@ class HomeViewModel(
     }
 
 
+
     override fun onSeeAllClick(type: HomeFeaturedItems) {
         sendEvent(HomeEvent.SeeAllClicked(type))
     }

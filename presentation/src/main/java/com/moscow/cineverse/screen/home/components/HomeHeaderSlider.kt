@@ -122,7 +122,6 @@ fun HomeHeaderSlider(items: List<MediaItemUiState>, modifier: Modifier = Modifie
                         )
                         .size(width = animatedWidth, height = animatedHeight)
                         .clip(RoundedCornerShape(Theme.radius.extraLarge)),
-                    showRating = false,
                     showBackdrop = true,
                     showTitle = false
                 )

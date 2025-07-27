@@ -7,12 +7,12 @@ import com.moscow.cineverse.screen.castDetails.gallery.ActorGalleryViewModel
 import com.moscow.cineverse.screen.collections.CollectionsBottomSheetViewModel
 import com.moscow.cineverse.screen.explore.ExploreViewModel
 import com.moscow.cineverse.screen.home.HomeViewModel
+import com.moscow.cineverse.screen.home.SeeMoreViewModel
 import com.moscow.cineverse.screen.movie_details.MovieDetailsViewModel
 import com.moscow.cineverse.screen.movie_details.recommendations.RecommendationsMoviesViewModel
 import com.moscow.cineverse.screen.reviews.ReviewsViewModel
 import com.moscow.cineverse.screen.series_details.SeriesDetailsScreenScreenViewModel
 import com.moscow.cineverse.screen.login.LoginViewModel
-import com.moscow.cineverse.screen.see_more.SeeMoreViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.viewModel
 import org.koin.core.module.dsl.viewModelOf
