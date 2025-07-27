@@ -22,7 +22,9 @@ class LoginViewModel(
     private var passwordValidationJob: Job? = null
 
     override fun onUsernameValueChanged(username: String) {
-        updateState { it.copy(username = username) }
+        if (username.length <= 33) {
+            updateState { it.copy(username = username) }
+        }
         usernameValidationJob?.cancel()
 
         usernameValidationJob = validateInputWithDelay(
@@ -36,7 +38,9 @@ class LoginViewModel(
     }
 
     override fun onPasswordValueChanged(password: String) {
-        updateState { it.copy(password = password) }
+        if(password.length <= 100){
+            updateState { it.copy(password = password) }
+        }
         passwordValidationJob?.cancel()
 
         passwordValidationJob = validateInputWithDelay(
@@ -139,7 +143,7 @@ class LoginViewModel(
 
     private fun validateInputWithDelay(
         input: String,
-        delayMillis: Long = 500,
+        delayMillis: Long = 100,
         isValid: (String) -> Boolean,
         onResult: (String?) -> Unit,
         errorMessage: String
