@@ -36,7 +36,7 @@ class RecommendationsMoviesViewModel (
     }
 
     override fun onMovieClick(movieId: Int) {
-        sendEvent(RecommendationMoviesEffect.NavigateToMovieDetailsBack(movieId))
+        sendEvent(RecommendationMoviesEffect.MovieClicked(movieId))
     }
 
     override fun backButtonClick() {

@@ -47,7 +47,13 @@ fun RecommendationMoviesScreen(
         viewModel.uiEffect.collect { event ->
             when(event){
                 RecommendationMoviesEffect.NavigateBack -> {
-                    navController::navigateUp
+                    navController.popBackStack()
+                }
+
+                is RecommendationMoviesEffect.MovieClicked -> {
+                    navController.navigate(
+                        MovieDetailsRoute(event.movieId)
+                    )
                 }
 
                 is RecommendationMoviesEffect.NavigateToMovieDetailsBack -> {
