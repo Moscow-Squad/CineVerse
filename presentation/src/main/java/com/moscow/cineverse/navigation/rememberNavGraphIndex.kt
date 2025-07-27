@@ -7,7 +7,6 @@ import androidx.compose.runtime.remember
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavDestination.Companion.hierarchy
 
-
 @Composable
 fun rememberNavGraphIndex(
     navBackStackEntry: NavBackStackEntry?,
@@ -15,12 +14,22 @@ fun rememberNavGraphIndex(
 ): State<Int> {
     return remember(navBackStackEntry) {
         derivedStateOf {
+            val currentRoute = navBackStackEntry?.destination?.route
+
+            graphRoutes.forEachIndexed { index, destination ->
+                if (currentRoute == destination::class.qualifiedName) {
+                    return@derivedStateOf index
+                }
+            }
+
             val currentHierarchy = navBackStackEntry?.destination?.hierarchy
-            graphRoutes.indexOfFirst { graph ->
+            val index = graphRoutes.indexOfFirst { graph ->
                 currentHierarchy?.any { destination ->
                     destination.route == graph::class.qualifiedName
                 } ?: false
-            }.takeIf { it >= 0 } ?: 0
+            }
+
+            if (index >= 0) index else 0
         }
     }
 }

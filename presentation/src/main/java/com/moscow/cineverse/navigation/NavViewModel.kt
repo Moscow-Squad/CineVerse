@@ -3,7 +3,7 @@ package com.moscow.cineverse.navigation
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.moscow.cineverse.navigation.routes.ExploreRoute
+import com.moscow.cineverse.navigation.routes.HomeRoute
 import com.moscow.cineverse.navigation.routes.LoginRoute
 import com.moscow.domain.repository.PreferenceRepository
 import kotlinx.coroutines.launch
@@ -25,10 +25,10 @@ class NavViewModel(
         viewModelScope.launch {
             if (preferenceRepository.isGuest() && preferenceRepository.isLoggedIn()){
                 val isValid = isValidGuestSession(preferenceRepository.getSessionExpiration())
-                _startDestination.value = if (isValid) ExploreRoute else LoginRoute
+                _startDestination.value = if (isValid) HomeRoute else LoginRoute
             }else{
                 val isLoggedIn = preferenceRepository.isLoggedIn()
-                _startDestination.value = if (isLoggedIn) ExploreRoute else LoginRoute
+                _startDestination.value = if (isLoggedIn) HomeRoute else LoginRoute
             }
         }
     }
