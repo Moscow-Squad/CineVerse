@@ -64,4 +64,6 @@
     <string name="me">Me</string>
     <string name="match">Match</string>
     <string name="explore">Explore</string>
+    <string name="username">Username</string>
+    <string name="enter_your_username">Enter your username</string>
 </resources>
