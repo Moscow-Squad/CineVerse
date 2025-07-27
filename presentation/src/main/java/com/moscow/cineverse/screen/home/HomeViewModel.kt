@@ -210,7 +210,7 @@ class HomeViewModel(
     }
 
     override fun onWatchSuggestionClick() {
-        TODO("Not yet implemented")
+        sendEvent(HomeEvent.WatchingSuggestionClicked)
     }
 
     override fun onBrowseSuggestionClick() {

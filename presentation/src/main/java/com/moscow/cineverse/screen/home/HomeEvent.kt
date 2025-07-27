@@ -7,4 +7,5 @@ sealed class HomeEvent {
     data class CollectionClicked(val collectionId: Int): HomeEvent()
     data class PromotionClicked(val promotionId: Int): HomeEvent()
     object BrowseSuggestionClicked : HomeEvent()
+    object WatchingSuggestionClicked : HomeEvent()
 }
