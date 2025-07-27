@@ -15,7 +15,7 @@ const val YYYY_MMM_DD = "yyyy, MMM dd"
 
 fun Movie.toUi(genresList: List<GenreUiState>): MediaItemUiState =
     MediaItemUiState(
-        id = id.toInt(),
+        id = id,
         title = name,
         posterPath = posterPath,
         rating = rating,

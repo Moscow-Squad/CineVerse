@@ -13,7 +13,6 @@ import com.moscow.cineverse.designSystem.component.ViewMode
 import com.moscow.cineverse.mapper.toMediaItemUi
 import com.moscow.cineverse.mapper.toUi
 import com.moscow.cineverse.paging.BasePagingSource
-import com.moscow.domain.model.MediaType
 import com.moscow.domain.model.Movie
 import com.moscow.domain.model.Series
 import com.moscow.domain.repository.MovieRepository
