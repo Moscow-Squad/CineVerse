@@ -41,6 +41,7 @@ fun FeaturedMovies(
                 style = Theme.textStyle.body.medium.medium,
                 color = Theme.colors.brand.primary,
                 modifier = Modifier.noRibbleClick {
+
                     onShowMoreClick(type.name)
                 }
             )

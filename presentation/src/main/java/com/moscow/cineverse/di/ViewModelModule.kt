@@ -12,7 +12,7 @@ import com.moscow.cineverse.screen.movie_details.recommendations.Recommendations
 import com.moscow.cineverse.screen.reviews.ReviewsViewModel
 import com.moscow.cineverse.screen.series_details.SeriesDetailsScreenScreenViewModel
 import com.moscow.cineverse.screen.login.LoginViewModel
-import com.moscow.cineverse.screen.home.SeeMoreHomeViewModel
+import com.moscow.cineverse.screen.see_more.SeeMoreViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.viewModel
 import org.koin.core.module.dsl.viewModelOf
@@ -26,7 +26,7 @@ val viewModelModule = module {
     viewModelOf(::ReviewsViewModel)
     viewModelOf(::RecommendationsMoviesViewModel)
     viewModelOf(::HomeViewModel)
-    viewModelOf(::SeeMoreHomeViewModel)
+    viewModelOf(::SeeMoreViewModel)
     viewModel {
         LoginViewModel(
             context = androidContext(),
