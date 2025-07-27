@@ -16,7 +16,7 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
-    api(libs.coil.compose)
+    api(libs.coil3.compose)
     implementation(libs.cloudy)
 
     implementation(libs.tensorflow.lite.vision)

@@ -70,7 +70,7 @@ dependencies {
     implementation(libs.ui)
     implementation(libs.material3)
     implementation(libs.androidx.animation)
-    implementation(libs.coil.compose)
+    implementation(libs.coil3.compose)
 
     // Background & Navigation
     implementation(libs.androidx.work.runtime.ktx)
