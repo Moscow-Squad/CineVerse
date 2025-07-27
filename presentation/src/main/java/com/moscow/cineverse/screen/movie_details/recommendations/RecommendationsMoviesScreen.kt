@@ -28,6 +28,7 @@ import com.moscow.cineverse.designSystem.component.ViewMode
 import com.moscow.cineverse.designSystem.component.ViewModeToggle
 import com.moscow.cineverse.navigation.LocalNavController
 import com.moscow.cineverse.mapper.toMediaItemUi
+import com.moscow.cineverse.navigation.routes.MovieDetailsRoute
 import com.moscow.cinverse.presentation.R
 import org.koin.androidx.compose.koinViewModel
 
@@ -47,6 +48,12 @@ fun RecommendationMoviesScreen(
             when(event){
                 RecommendationMoviesEffect.NavigateBack -> {
                     navController::navigateUp
+                }
+
+                is RecommendationMoviesEffect.MovieClicked -> {
+                    navController.navigate(
+                        MovieDetailsRoute(event.movieId)
+                    )
                 }
             }
         }
