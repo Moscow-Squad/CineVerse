@@ -31,11 +31,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.moscow.cineverse.design_system.R
 import com.moscow.cineverse.image_viewer.component.SafeImageViewer
 import com.moscow.cineverse.designSystem.component.blur.OnBlurContent
 import com.moscow.cineverse.designSystem.component.blur.RemoteImagePlaceholder
 import com.moscow.cineverse.designSystem.theme.Theme
+import com.moscow.cineverse.designSystem.utils.noRibbleClick
+import kotlin.math.sin
 
 @Composable
 fun MainDetails(
@@ -67,12 +70,12 @@ fun MainDetails(
     Card(
         shape = RoundedCornerShape(Theme.radius.extraLarge),
         colors = CardDefaults.cardColors(containerColor = Theme.colors.background.card),
-        modifier = modifier.padding(20.dp)
+        modifier = modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 24.dp).fillMaxWidth()
     ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp)
+                .padding(4.dp)
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
@@ -180,7 +183,7 @@ private fun SocialMediaPill(
             .height(32.dp)
             .clip(RoundedCornerShape(Theme.radius.full))
             .background(backgroundColor)
-            .clickable { url?.let { onClick(it) } }
+            .noRibbleClick{ url?.let { onClick(it) } }
             .padding(horizontal = 10.dp, vertical = 8.dp),
         contentAlignment = Alignment.Center
     ) {
@@ -196,7 +199,8 @@ private fun SocialMediaPill(
             Text(
                 text = name,
                 color = textColor,
-                style = Theme.textStyle.label.medium.medium
+                style = Theme.textStyle.label.medium.medium,
+                fontSize = 12.sp
             )
         }
     }
