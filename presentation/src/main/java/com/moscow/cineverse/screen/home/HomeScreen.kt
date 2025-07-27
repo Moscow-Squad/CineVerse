@@ -22,7 +22,9 @@ import com.moscow.cineverse.component.ScreenStateHandler
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.navigation.LocalNavController
 import com.moscow.cineverse.navigation.LocalScaffoldPaddingValues
+import com.moscow.cineverse.navigation.navigateToNewGraph
 import com.moscow.cineverse.navigation.routes.ExploreRoute
+import com.moscow.cineverse.navigation.routes.MatchRoute
 import com.moscow.cineverse.navigation.routes.MovieDetailsRoute
 import com.moscow.cineverse.navigation.routes.SeriesDetailsRoute
 import com.moscow.cineverse.screen.home.components.FeaturedMovies
@@ -63,7 +65,12 @@ fun HomeScreen(
                 }
 
                 is HomeEvent.BrowseSuggestionClicked -> {
-                    navController.navigate(ExploreRoute)
+                    // Use the same navigation method as bottom navigation
+                    navController.navigateToNewGraph(ExploreRoute)
+                }
+
+                HomeEvent.WatchingSuggestionClicked -> {
+                    navController.navigateToNewGraph(MatchRoute)
                 }
             }
         }
