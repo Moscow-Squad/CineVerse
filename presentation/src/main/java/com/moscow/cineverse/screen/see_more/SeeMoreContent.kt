@@ -30,6 +30,7 @@ import com.moscow.cineverse.designSystem.component.MovieScaffold
 import com.moscow.cineverse.designSystem.component.ViewMode
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.screen.explore.component.ViewModeToggleButton
+import com.moscow.cineverse.screen.home.HomeFeaturedItems
 import com.moscow.cinverse.presentation.R
 
 @Composable
@@ -48,10 +49,12 @@ fun <T : Any> SeeMoreContent(
         }
     }
 
+    val category = HomeFeaturedItems.valueOf(uiState.title)
+
     MovieScaffold (
         movieAppBar = {
             MovieAppBar(
-                title = uiState.title,
+                title = stringResource(category.titleResource),
                 showDivider = true,
                 showBackButton = true,
                 backButtonClick = { interactionListener.onNavigateBack() }
@@ -74,7 +77,7 @@ fun <T : Any> SeeMoreContent(
         ) {
 
             when {
-                uiState.isLoading -> {
+                 contentList.loadState.refresh is LoadState.Loading-> {
                     Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                         MovieCircularProgressBar(
                             gradientColors = listOf(
@@ -85,19 +88,9 @@ fun <T : Any> SeeMoreContent(
                     }
                 }
 
-                uiState.shouldShowError -> {
+                contentList.loadState.refresh is LoadState.Error-> {
                     Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                         NoInternetScreen(onRetry = interactionListener::onRefresh)
-                    }
-                }
-
-                uiState.isContentEmpty -> {
-                    Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                        EmptyState(
-                            icon = painterResource(Theme.icons.dueTone.search),
-                            title = stringResource(R.string.nothing_found),
-                            description = stringResource(R.string.we_searched_the_entire_universe_but_found_nothing_matching_your_query_try_something_else)
-                        )
                     }
                 }
 
@@ -123,6 +116,7 @@ fun <T : Any> SeeMoreContent(
                                 }
                             }
                         }
+
                         if (contentList.loadState.append is LoadState.Loading) {
                             item {
                                 Box(

@@ -15,9 +15,10 @@ import com.moscow.cineverse.screen.home.HomeFeaturedItems
 import com.moscow.domain.model.MediaType
 import com.moscow.domain.model.Movie
 import com.moscow.domain.model.Series
-import com.moscow.domain.repository.MovieRepository
-import com.moscow.domain.repository.SeriesRepository
-import com.moscow.domain.usecase.movie.GetPopularMoviesUseCase
+import com.moscow.domain.usecase.home.GetMatchesYourVibesMoviesUseCase
+import com.moscow.domain.usecase.home.GetRecentlyReleasedMoviesUseCase
+import com.moscow.domain.usecase.home.GetTopRatedTVShowsUseCase
+import com.moscow.domain.usecase.home.GetUpcomingMoviesUseCase
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -26,10 +27,12 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 class SeeMoreViewModel(
-    private val getPopularMoviesUseCase: GetPopularMoviesUseCase,
-    private val seriesRepository: SeriesRepository,
+    private val getMatchesYourVibesMoviesUseCase: GetMatchesYourVibesMoviesUseCase,
+    private val getRecentlyReleasedMoviesUseCase: GetRecentlyReleasedMoviesUseCase,
+    private val getTopRatedTVShowsUseCase: GetTopRatedTVShowsUseCase,
+    private val getUpcomingMoviesUseCase: GetUpcomingMoviesUseCase,
     private val savedStateHandle: SavedStateHandle
-) : BaseViewModel<SeeMoreUiState, SeeMoreEvent>(
+) : BaseViewModel<SeeMoreUiState, SeeMoreEvent> (
     SeeMoreUiState(
         title = savedStateHandle.get<String>("category") ?: ""
     )
@@ -53,14 +56,14 @@ class SeeMoreViewModel(
                     HomeFeaturedItems.RECENTLY_RELEASED.name -> {
                         createPagingFlow(
                             pageSize = pageSize,
-                            fetchData = { page -> getPopularMoviesUseCase(page) },
+                            fetchData = { page -> getRecentlyReleasedMoviesUseCase(page) },
                             mediaType = MediaType.Movie
                         )
                     }
                     HomeFeaturedItems.UPCOMING_MOVIES.name -> {
                         createPagingFlow(
                             pageSize = pageSize,
-                            fetchData = { page -> moviesRepository.getPopularMovies(page) }, // Replace with getUpcomingMovies when available
+                            fetchData = { page -> getUpcomingMoviesUseCase(page) }, // Replace with getUpcomingMovies when available
                             mediaType = MediaType.Movie
                         )
                     }
@@ -68,21 +71,21 @@ class SeeMoreViewModel(
                         // Using genre ID 28 for Action, same as in HomeViewModel
                         createPagingFlow(
                             pageSize = pageSize,
-                            fetchData = { page -> moviesRepository.getMoviesByGenreId(28, page) },
+                            fetchData = { page -> getMatchesYourVibesMoviesUseCase(28, page) },
                             mediaType = MediaType.Movie
                         )
                     }
                     HomeFeaturedItems.TOP_RATED_TV_SHOWS.name -> {
                         createPagingFlow(
                             pageSize = pageSize,
-                            fetchData = { page -> seriesRepository.getPopularSeries(page) },
+                            fetchData = { page -> getTopRatedTVShowsUseCase(page) },
                             mediaType = MediaType.Tv
                         )
                     }
                     HomeFeaturedItems.YOU_RECENTLY_VIEWED.name -> {
                         createPagingFlow(
                             pageSize = pageSize,
-                            fetchData = { page -> moviesRepository.getPopularMovies(page) }, // Replace with getRecentlyViewed when available
+                            fetchData = { page -> getRecentlyReleasedMoviesUseCase(page) }, // Replace with getRecentlyViewed when available
                             mediaType = MediaType.Movie
                         )
                     }

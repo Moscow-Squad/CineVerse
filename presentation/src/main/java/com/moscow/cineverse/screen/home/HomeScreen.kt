@@ -45,7 +45,7 @@ fun HomeScreen(
                 is HomeEvent.PromotionClicked -> {}
                 is HomeEvent.SeeAllClicked -> {
                     // Navigate to SeeMoreHomeScreen with the category
-                    navController.navigate("see_more/${effect.category}")
+                    navController.navigate("see_more/${effect.category.name}")
                 }
 
                 is HomeEvent.SeriesClicked -> {}
@@ -139,7 +139,7 @@ fun HomeContent(
                 )
 
                 FeaturedMovies(
-                    displayMovies = state.youRecentlyViewed,
+                    displayMovies = state.matchesYourVibe,
                     onMovieClick = listener::onMovieClick,
                     onShowMoreClick = listener::onSeeAllClick,
                     modifier = Modifier,

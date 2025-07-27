@@ -24,7 +24,7 @@ import com.moscow.cinverse.presentation.R
 fun FeaturedMovies(
     displayMovies: List<MediaItemUiState>,
     onMovieClick: (id: Int) -> Unit,
-    onShowMoreClick: (type: String) -> Unit,
+    onShowMoreClick: (type: HomeFeaturedItems) -> Unit,
     type: HomeFeaturedItems,
     modifier: Modifier = Modifier
 ) {
@@ -42,7 +42,7 @@ fun FeaturedMovies(
                 color = Theme.colors.brand.primary,
                 modifier = Modifier.noRibbleClick {
 
-                    onShowMoreClick(type.name)
+                    onShowMoreClick(type)
                 }
             )
         }

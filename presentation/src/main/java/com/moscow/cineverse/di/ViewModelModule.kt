@@ -27,6 +27,7 @@ val viewModelModule = module {
     viewModelOf(::RecommendationsMoviesViewModel)
     viewModelOf(::HomeViewModel)
     viewModelOf(::SeeMoreViewModel)
+
     viewModel {
         LoginViewModel(
             context = androidContext(),
