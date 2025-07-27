@@ -71,6 +71,7 @@ fun HomeHeaderSlider(items: List<MediaItemUiState>, modifier: Modifier = Modifie
             ) {
                 MoviePosterCard(
                     movie = items[page],
+                    showRating = false,
                     modifier = Modifier
                         .fillMaxWidth()
                         .align(BiasAlignment(0f, pageOffset - 1f))
