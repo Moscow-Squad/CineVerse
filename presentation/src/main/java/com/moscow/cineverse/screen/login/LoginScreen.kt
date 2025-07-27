@@ -119,10 +119,10 @@ private fun LoginScreenContent(
             modifier = Modifier
                 .padding(top = 48.dp, start = 16.dp, end = 16.dp)
                 .align(Alignment.CenterHorizontally),
-            label = stringResource(com.moscow.cinverse.presentation.R.string.email_or_username),
+            label = stringResource(com.moscow.cinverse.presentation.R.string.username),
             value = state.username,
             onValueChange = interactionListener::onUsernameValueChanged,
-            placeholder = stringResource(com.moscow.cinverse.presentation.R.string.enter_your_email_or_username),
+            placeholder = stringResource(com.moscow.cinverse.presentation.R.string.enter_your_username),
             leadingIcon = R.drawable.outline_user,
             leadingIconTint = Theme.colors.shade.tertiary,
             maxLines = 1,
