@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import com.moscow.cineverse.component.ScreenStateHandler
+import com.moscow.cineverse.designSystem.component.home.FeaturedCollectionsSection
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.navigation.LocalNavController
 import com.moscow.cineverse.navigation.LocalScaffoldPaddingValues
@@ -127,6 +128,11 @@ fun HomeContent(
                     onShowMoreClick = listener::onSeeAllClick,
                     modifier = Modifier,
                     type = HomeFeaturedItems.MATCHES_YOUR_VIBE
+                )
+
+                FeaturedCollectionsSection(
+                    collections = HomeFeaturedCollections.entries.toList(),
+                    onCollectionClick = {},
                 )
 
                 FeaturedMovies(

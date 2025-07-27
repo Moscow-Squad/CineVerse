@@ -16,16 +16,12 @@ import com.moscow.cineverse.design_system.R
 import com.moscow.cineverse.designSystem.theme.CineVerseTheme
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.designSystem.theme.ThemeState
+import com.moscow.cineverse.presentation.screen.home.HomeFeaturedCollections
 
-data class FeaturedItem(
-    // ToDo: Will be Ui_State
-    val description: String,
-    val imageURL: String,
-)
 
 @Composable
 fun FeaturedCollectionsSection(
-    collections: List<FeaturedItem>, // ToDo: Will be Ui_State
+    collections: List<HomeFeaturedCollections>,
     onCollectionClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -61,8 +57,8 @@ private fun FeaturedCollections(
             CollectionItem(
                 modifier = Modifier.width(280.dp),
                 description = item.description,
-                imageURL = item.imageURL.toString(),
-                onClick = onCollectionClick  // ToDo: Will add Action Later
+                imageURL = item.imageURL,
+                onClick = onCollectionClick
             )
         }
     }
@@ -72,7 +68,7 @@ private fun FeaturedCollections(
 @Preview(showBackground = true, backgroundColor = 0x121321)
 @Composable
 private fun FeaturedCollectionsSectionPreview() {
-    CineVerseTheme(state = ThemeState(isDark = true, {})) {
+    CineVerseTheme(state = ThemeState(isDark = true) {}) {
         val collections = listOf(
             FeaturedItem(
                 description = "Description",
