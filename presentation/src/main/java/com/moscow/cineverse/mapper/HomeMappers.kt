@@ -9,7 +9,6 @@ import com.moscow.domain.model.Genre
 import com.moscow.domain.model.MediaType
 import com.moscow.domain.model.Movie
 import com.moscow.domain.model.Series
-import kotlin.collections.map
 
 fun Genre.toGenreUi() = HomeUiState.GenreUi(
     id = id,
@@ -43,7 +42,7 @@ fun List<Series>.toUi(
             genres = emptyList(),
             releaseDate = series.firstAirDate.toString(),
             duration = "",
-            mediaType = MediaType.Movie
+            mediaType = MediaType.Tv
         )
     }
 }
