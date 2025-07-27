@@ -194,7 +194,7 @@ private fun <T> GridMovieCard(
                                 contentDescription = "Rating",
                                 tint = Theme.colors.additional.primary.yellow,
                                 modifier = Modifier
-                                    .size(16.dp)
+                                    .size(23.dp)
                                     .padding(start = 4.dp)
                             )
                         }
