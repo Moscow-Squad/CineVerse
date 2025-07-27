@@ -30,7 +30,6 @@ fun OnBlurContent(
         modifier = modifier
             .fillMaxSize()
             .background(Color(0x52000000)),
-
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterVertically)
     ) {
