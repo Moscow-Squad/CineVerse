@@ -1,6 +1,7 @@
 package com.moscow.cineverse.designSystem.component.search
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -59,6 +60,11 @@ fun SearchBar(
     val focusRequester = remember { FocusRequester() }
     val focusManager = LocalFocusManager.current
 
+    val paddingStart by animateDpAsState(
+        targetValue = if (isFocused || value.isNotEmpty()) 20.dp else 0.dp,
+        animationSpec = tween(300)
+    )
+
     LaunchedEffect(blockRefocus) {
         if (blockRefocus) {
             delay(500)
@@ -88,7 +94,6 @@ fun SearchBar(
                 contentDescription = stringResource(R.string.search_icon),
                 tint = Theme.colors.shade.primary,
                 modifier = Modifier
-                    .padding(10.dp)
                     .size(20.dp)
                     .noRibbleClick(
                         onClick = {
@@ -105,6 +110,7 @@ fun SearchBar(
             value = value,
             onValueChange = onValueChange,
             modifier = Modifier
+                .padding(start = paddingStart)
                 .weight(1f)
                 .focusRequester(focusRequester)
                 .onFocusChanged { focusState ->
