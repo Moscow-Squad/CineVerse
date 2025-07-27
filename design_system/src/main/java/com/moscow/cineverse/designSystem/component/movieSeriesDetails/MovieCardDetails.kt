@@ -128,7 +128,6 @@ fun DetailCard(
     onSaveClick: () -> Unit = {},
     onPlayClick: () -> Unit = {},
 ) {
-
     val formattedRating = try {
         val ratingValue = rating.toDouble()
         String.format("%.1f", ratingValue)
@@ -177,7 +176,14 @@ fun DetailCard(
                     formattedRating,
                     Theme.colors.additional.primary.yellow
                 )
-                InfoTextWithIcon(R.drawable.due_tone_clock, duration, Theme.colors.shade.secondary)
+                if (duration.isNotBlank() && duration != "N/A" && duration != "null") {
+                    InfoTextWithIcon(
+                        R.drawable.due_tone_clock,
+                        duration,
+                        Theme.colors.shade.secondary
+                    )
+                }
+
                 InfoTextWithIcon(
                     R.drawable.due_tone_calendar,
                     releaseDate,
@@ -204,6 +210,8 @@ fun DetailCard(
         }
     }
 }
+
+
 
 @Composable
 fun InfoTextWithIcon(icon: Int, text: String, tint: Color) {
