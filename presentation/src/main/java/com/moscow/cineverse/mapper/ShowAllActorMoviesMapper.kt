@@ -21,7 +21,8 @@ fun List<Movie>.toUi(
             genres = movie.genreIds.map { genresList.first { genre -> genre.id == it }.name },
             releaseDate = movie.releaseDate.formatWith(YYYY_MMM_DD) ?: "",
             duration = "",
-            mediaType = MediaType.Movie
+            mediaType = MediaType.Movie,
+            backdropPath = movie.backdropPath
         )
     }
 }
