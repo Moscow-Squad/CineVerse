@@ -24,6 +24,7 @@ fun List<Movie>.toUi(
             id = movie.id,
             title = movie.name,
             posterPath = movie.posterPath,
+            backdropPath = movie.backdropPath,
             rating = movie.rating,
             genres = movie.genreIds.map { genresList.first { genre -> genre.id == it }.name },
             releaseDate = movie.releaseDate.formatWith(YYYY_MMM_DD) ?: "",
@@ -43,7 +44,8 @@ fun List<Series>.toUi(
             genres = emptyList(),
             releaseDate = series.firstAirDate.toString(),
             duration = "",
-            mediaType = MediaType.Movie
+            mediaType = MediaType.Movie,
+            backdropPath = series.backdropPath
         )
     }
 }
