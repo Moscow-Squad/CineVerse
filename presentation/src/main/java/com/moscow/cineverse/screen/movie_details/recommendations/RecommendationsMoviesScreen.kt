@@ -55,6 +55,10 @@ fun RecommendationMoviesScreen(
                         MovieDetailsRoute(event.movieId)
                     )
                 }
+
+                is RecommendationMoviesEffect.NavigateToMovieDetailsBack -> {
+                    navController.navigate(MovieDetailsRoute(event.movieId))
+                }
             }
         }
     }
