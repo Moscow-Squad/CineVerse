@@ -10,5 +10,6 @@ data class MediaItemUiState(
     val genres: List<String>,
     val releaseDate: String,
     val duration: String,
-    val mediaType: MediaType
+    val mediaType: MediaType,
+    val backdropPath: String
 )

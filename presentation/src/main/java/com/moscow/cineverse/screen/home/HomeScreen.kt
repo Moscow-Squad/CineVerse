@@ -22,6 +22,12 @@ import com.moscow.cineverse.component.ScreenStateHandler
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.navigation.LocalNavController
 import com.moscow.cineverse.navigation.LocalScaffoldPaddingValues
+import com.moscow.cineverse.screen.home.components.FeaturedCollectionsSection
+import com.moscow.cineverse.navigation.navigateToNewGraph
+import com.moscow.cineverse.navigation.routes.ExploreRoute
+import com.moscow.cineverse.navigation.routes.MatchRoute
+import com.moscow.cineverse.navigation.routes.MovieDetailsRoute
+import com.moscow.cineverse.navigation.routes.SeriesDetailsRoute
 import com.moscow.cineverse.screen.home.components.FeaturedMovies
 import com.moscow.cineverse.screen.home.components.HomeHeader
 import com.moscow.cineverse.screen.home.components.HomeHeaderSlider
@@ -41,14 +47,32 @@ fun HomeScreen(
         viewmodel.uiEffect.collect { effect ->
             when (effect) {
                 is HomeEvent.CollectionClicked -> {}
-                is HomeEvent.MovieClicked -> {}
+                is HomeEvent.MovieClicked -> {
+                    navController.navigate(
+                        MovieDetailsRoute(effect.movieId)
+                    )
+                }
+
                 is HomeEvent.PromotionClicked -> {}
                 is HomeEvent.SeeAllClicked -> {
                     // Navigate to SeeMoreHomeScreen with the category
                     navController.navigate("see_more/${effect.category}")
                 }
 
-                is HomeEvent.SeriesClicked -> {}
+                is HomeEvent.SeriesClicked -> {
+                    navController.navigate(
+                        SeriesDetailsRoute(effect.seriesId)
+                    )
+                }
+
+                is HomeEvent.BrowseSuggestionClicked -> {
+                    // Use the same navigation method as bottom navigation
+                    navController.navigateToNewGraph(ExploreRoute)
+                }
+
+                HomeEvent.WatchingSuggestionClicked -> {
+                    navController.navigateToNewGraph(MatchRoute)
+                }
             }
         }
     }
@@ -71,8 +95,7 @@ fun HomeContent(
             modifier = modifier
                 .fillMaxSize()
                 .background(Theme.colors.background.screen)
-                .padding(LocalScaffoldPaddingValues.current),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+                .padding(LocalScaffoldPaddingValues.current)
         ) {
             Column(
                 verticalArrangement = Arrangement.spacedBy(8.dp)
@@ -84,23 +107,21 @@ fun HomeContent(
                         .height(1.dp)
                         .background(Theme.colors.stroke.primary),
                 )
-
             }
-
-            HomeHeaderSlider(items = state.sliderItems)
 
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(1f)
                     .verticalScroll(rememberScrollState()),
-                verticalArrangement = Arrangement.spacedBy(16.dp)
+                verticalArrangement = Arrangement.spacedBy(32.dp)
 
             ) {
+                HomeHeaderSlider(items = state.sliderItems)
 
                 FeaturedMovies(
                     displayMovies = state.recentlyReleasedMovies,
-                    onMovieClick = listener::onMovieClick,
+                    onMovieClick = listener::onMediaItemClicked,
                     onShowMoreClick = listener::onSeeAllClick,
                     type = HomeFeaturedItems.RECENTLY_RELEASED,
                     modifier = Modifier
@@ -116,7 +137,7 @@ fun HomeContent(
 
                 FeaturedMovies(
                     displayMovies = state.upcomingMovies,
-                    onMovieClick = listener::onMovieClick,
+                    onMovieClick = listener::onMediaItemClicked,
                     onShowMoreClick = listener::onSeeAllClick,
                     type = HomeFeaturedItems.UPCOMING_MOVIES,
                     modifier = Modifier,
@@ -124,15 +145,20 @@ fun HomeContent(
 
                 FeaturedMovies(
                     displayMovies = state.matchesYourVibe,
-                    onMovieClick = listener::onMovieClick,
+                    onMovieClick = listener::onMediaItemClicked,
                     onShowMoreClick = listener::onSeeAllClick,
                     modifier = Modifier,
                     type = HomeFeaturedItems.MATCHES_YOUR_VIBE
                 )
 
+                FeaturedCollectionsSection(
+                    collections = HomeFeaturedCollections.entries.toList(),
+                    onCollectionClick = {},
+                )
+
                 FeaturedMovies(
                     displayMovies = state.topRatedTvShows,
-                    onMovieClick = listener::onMovieClick,
+                    onMovieClick = listener::onMediaItemClicked,
                     onShowMoreClick = listener::onSeeAllClick,
                     modifier = Modifier,
                     type = HomeFeaturedItems.TOP_RATED_TV_SHOWS
@@ -140,7 +166,7 @@ fun HomeContent(
 
                 FeaturedMovies(
                     displayMovies = state.youRecentlyViewed,
-                    onMovieClick = listener::onMovieClick,
+                    onMovieClick = listener::onMediaItemClicked,
                     onShowMoreClick = listener::onSeeAllClick,
                     modifier = Modifier,
                     type = HomeFeaturedItems.YOU_RECENTLY_VIEWED

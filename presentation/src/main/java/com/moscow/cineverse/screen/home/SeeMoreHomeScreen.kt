@@ -21,7 +21,6 @@ fun SeeMoreHomeScreen(
     val gridState = rememberLazyGridState()
     val pagingItems = viewModel.pagingDataFlow.collectAsStateWithLifecycle().value.collectAsLazyPagingItems()
 
-    // Handle navigation events
     LaunchedEffect(Unit) {
         viewModel.uiEffect.collect { effect ->
             when (effect) {
