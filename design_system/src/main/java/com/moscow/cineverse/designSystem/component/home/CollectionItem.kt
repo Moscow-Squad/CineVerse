@@ -1,5 +1,7 @@
 package com.moscow.cineverse.designSystem.component.home
 
+import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -17,23 +19,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.moscow.cineverse.design_system.R
-import com.moscow.cineverse.image_viewer.component.SafeImageViewer
-import com.moscow.cineverse.designSystem.component.blur.OnBlurContent
-import com.moscow.cineverse.designSystem.component.blur.RemoteImagePlaceholder
-import com.moscow.cineverse.designSystem.theme.CineVerseTheme
 import com.moscow.cineverse.designSystem.theme.Theme
-import com.moscow.cineverse.designSystem.theme.ThemeState
 
 @Composable
 fun CollectionItem(
-    description: String,
-    imageURL: String,
+    @StringRes titleRes: Int,
+    @DrawableRes imageRes: Int,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -45,23 +41,14 @@ fun CollectionItem(
                     .clickable { onClick() },
                 contentAlignment = Alignment.BottomCenter
             ) {
-                SafeImageViewer(
-                    imageUrl = imageURL,
+
+                Image(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(80.dp),
-                    placeholderContent = { RemoteImagePlaceholder() },
-                    errorContent = { RemoteImagePlaceholder() },
-                    onBlurContent = {
-                        OnBlurContent(
-                            icon = painterResource(R.drawable.icon_eye_slash),
-                            hintText = stringResource(R.string.unsuitable_image),
-                            textStyle = Theme.textStyle.body.small.regular.copy(
-                                color = Color(0x99FFFFFF)
-                            ),
-                            iconSize = 24.dp,
-                        )
-                    }
+                    painter = painterResource(imageRes),
+                    contentDescription = "collection image",
+                    contentScale = ContentScale.Crop
                 )
                 Row(
                     modifier = Modifier
@@ -72,7 +59,7 @@ fun CollectionItem(
                 ) {
                     Text(
                         modifier = Modifier.padding(8.dp),
-                        text = description,
+                        text = stringResource(titleRes),
                         style = Theme.textStyle.body.small.medium,
                         color = Theme.colors.shade.primary
                     )
@@ -81,14 +68,6 @@ fun CollectionItem(
             BackLayer()
         }
     }
-}
-
-@Composable
-fun LoadingImage() {
-    Image(
-        painter = painterResource(R.drawable.due_tone_image),
-        contentDescription = stringResource(R.string.collection_image),
-    )
 }
 
 @Composable
@@ -124,16 +103,4 @@ private fun BackgroundLayer(
             .height(layerHeight)
             .background(color = color),
     ) {}
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun CollectionItemPreview() {
-    CineVerseTheme(state = ThemeState(isDark = true) {}) {
-        CollectionItem(
-            description = "Text",
-            imageURL = "https://upload.wikimedia.org/wikipedia/commons/2/23/Real_Monasterio_de_San_Juan_de_la_Pe%C3%B1a%2C_Huesca%2C_Espa%C3%B1a%2C_2023-01-05%2C_DD_48-50_HDR.jpg",
-            onClick = {}
-        )
-    }
 }

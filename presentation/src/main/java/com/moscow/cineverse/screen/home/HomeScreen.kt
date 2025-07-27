@@ -22,6 +22,7 @@ import com.moscow.cineverse.component.ScreenStateHandler
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.navigation.LocalNavController
 import com.moscow.cineverse.navigation.LocalScaffoldPaddingValues
+import com.moscow.cineverse.screen.home.components.FeaturedCollectionsSection
 import com.moscow.cineverse.navigation.navigateToNewGraph
 import com.moscow.cineverse.navigation.routes.ExploreRoute
 import com.moscow.cineverse.navigation.routes.MatchRoute
@@ -148,6 +149,11 @@ fun HomeContent(
                     onShowMoreClick = listener::onSeeAllClick,
                     modifier = Modifier,
                     type = HomeFeaturedItems.MATCHES_YOUR_VIBE
+                )
+
+                FeaturedCollectionsSection(
+                    collections = HomeFeaturedCollections.entries.toList(),
+                    onCollectionClick = {},
                 )
 
                 FeaturedMovies(
