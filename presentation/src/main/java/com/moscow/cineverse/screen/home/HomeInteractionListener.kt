@@ -1,9 +1,11 @@
 package com.moscow.cineverse.screen.home
 
+import com.moscow.cineverse.common_ui_state.MediaItemUiState
+
 interface HomeInteractionListener {
-    fun onSeriesClick(seriesId: Int)
-    fun onMovieClick(movieId: Int)
-    fun onSeeAllClick(type: HomeFeaturedItems)
+    fun onMediaItemClicked(mediaItemUiState: MediaItemUiState)
+    fun onSeeAllClick(type: String)
+      fun onSeeAllClick(type: HomeFeaturedItems)
     fun onCollectionsShowMoreClick()
     fun onCollectionClick(collectionId: Int)
     fun onPromotionClick(promotionId: Int)

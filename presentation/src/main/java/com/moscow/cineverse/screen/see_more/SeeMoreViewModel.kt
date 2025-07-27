@@ -1,4 +1,4 @@
-package com.moscow.cineverse.screen.see_more
+package com.moscow.cineverse.screen.home
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
@@ -102,21 +102,20 @@ class SeeMoreViewModel(
 
     private fun <T : Any> createPagingFlow(
         pageSize: Int,
-        fetchData: suspend (Int) -> List<T>,
-        mediaType: MediaType
+        fetchData: suspend (Int) -> List<T>
     ): Flow<PagingData<MediaItemUiState>> {
         return Pager(
             config = PagingConfig(
                 pageSize = pageSize,
                 enablePlaceholders = false
             ),
-            pagingSourceFactory = { BasePagingSource<T>(fetchData) }
+            pagingSourceFactory = { BasePagingSource(fetchData) }
         ).flow
             .map { pagingData ->
                 pagingData.map { item ->
                     when (item) {
-                        is Movie -> movieToUiState(item)
-                        is Series -> seriesToUiState(item)
+                        is Movie -> item.toMediaItemUi()
+                        is Series -> item.toUi()
                         else -> throw IllegalArgumentException("Unsupported type: ${item::class.java}")
                     }
                 }
