@@ -64,14 +64,13 @@
     <string name="me">Me</string>
     <string name="match">Match</string>
     <string name="explore">Explore</string>
+    <string name="username">Username</string>
+    <string name="enter_your_username">Enter your username</string>
     <string name="feel_good_favorites">Feel-Good Favorites</string>
     <string name="cinematic_masterpieces">Cinematic Masterpieces</string>
     <string name="based_on_true_events">Based on True Events</string>
     <string name="mind_bending_stories">Mind-Bending Stories</string>
     <string name="family_night_picks">Family Night Picks</string>
     <string name="late_night_thrills">Late-Night Thrills</string>
-
-    <string name="username">Username</string>
-    <string name="enter_your_username">Enter your username</string>
 
 </resources>

@@ -165,7 +165,7 @@ fun HomeContent(
                 )
 
                 FeaturedMovies(
-                    displayMovies = state.youRecentlyViewed,
+                    displayMovies = state.matchesYourVibe,
                     onMovieClick = listener::onMediaItemClicked,
                     onShowMoreClick = listener::onSeeAllClick,
                     modifier = Modifier,

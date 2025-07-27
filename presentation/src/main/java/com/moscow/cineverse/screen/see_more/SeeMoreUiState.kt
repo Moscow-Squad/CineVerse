@@ -1,8 +1,8 @@
-package com.moscow.cineverse.screen.home
+package com.moscow.cineverse.screen.see_more
 
 import com.moscow.cineverse.designSystem.component.ViewMode
 
-data class SeeMoreHomeState(
+data class SeeMoreUiState(
     val title: String,
     val isLoading: Boolean = false,
     val isContentEmpty: Boolean = false,
