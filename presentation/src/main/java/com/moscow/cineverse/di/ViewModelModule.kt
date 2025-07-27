@@ -7,6 +7,7 @@ import com.moscow.cineverse.screen.castDetails.gallery.ActorGalleryViewModel
 import com.moscow.cineverse.screen.collections.CollectionsBottomSheetViewModel
 import com.moscow.cineverse.screen.explore.ExploreViewModel
 import com.moscow.cineverse.screen.home.HomeViewModel
+import com.moscow.cineverse.screen.home.SeeMoreViewModel
 import com.moscow.cineverse.screen.movie_details.MovieDetailsViewModel
 import com.moscow.cineverse.screen.movie_details.recommendations.RecommendationsMoviesViewModel
 import com.moscow.cineverse.screen.reviews.ReviewsViewModel
@@ -25,7 +26,8 @@ val viewModelModule = module {
     viewModelOf(::ReviewsViewModel)
     viewModelOf(::RecommendationsMoviesViewModel)
     viewModelOf(::HomeViewModel)
-    viewModelOf(::SeeMoreHomeViewModel)
+    viewModelOf(::SeeMoreViewModel)
+
     viewModel {
         LoginViewModel(
             loginWithUsernameAndPasswordUseCase = get(),

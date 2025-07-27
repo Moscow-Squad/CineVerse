@@ -1,4 +1,4 @@
-package com.moscow.cineverse.screen.home
+package com.moscow.cineverse.screen.see_more
 
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.runtime.Composable
@@ -9,32 +9,35 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.moscow.cineverse.navigation.LocalNavController
+import com.moscow.cineverse.navigation.routes.CastDetailsRoute
+import com.moscow.cineverse.navigation.routes.MovieDetailsRoute
+import com.moscow.cineverse.navigation.routes.SeriesDetailsRoute
+import com.moscow.cineverse.screen.home.SeeMoreViewModel
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun SeeMoreHomeScreen(
     modifier: Modifier = Modifier,
-    viewModel: SeeMoreHomeViewModel = koinViewModel(),
+    viewModel: SeeMoreViewModel = koinViewModel(),
     navController: NavHostController = LocalNavController.current
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
     val gridState = rememberLazyGridState()
     val pagingItems = viewModel.pagingDataFlow.collectAsStateWithLifecycle().value.collectAsLazyPagingItems()
 
-    // Handle navigation events
     LaunchedEffect(Unit) {
         viewModel.uiEffect.collect { effect ->
             when (effect) {
-                is SeeMoreHomeEvent.MovieClicked -> {
-                    navController.navigate("movie_details/${effect.movieId}")
+                is SeeMoreEvent.MovieClicked -> {
+                    navController.navigate(MovieDetailsRoute(effect.movieId))
                 }
-                is SeeMoreHomeEvent.SeriesClicked -> {
-                    navController.navigate("series_details/${effect.seriesId}")
+                is SeeMoreEvent.SeriesClicked -> {
+                    navController.navigate(SeriesDetailsRoute(effect.seriesId))
                 }
-                is SeeMoreHomeEvent.ActorClicked -> {
-                    navController.navigate("cast_details/${effect.actorId}")
+                is SeeMoreEvent.ActorClicked -> {
+                    navController.navigate(CastDetailsRoute(effect.actorId))
                 }
-                is SeeMoreHomeEvent.NavigateBack -> {
+                is SeeMoreEvent.NavigateBack -> {
                     navController.popBackStack()
                 }
             }
