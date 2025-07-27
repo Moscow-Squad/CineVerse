@@ -35,8 +35,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
-import com.moscow.cineverse.design_system.R
 import com.moscow.cineverse.designSystem.component.AppTextField
 import com.moscow.cineverse.designSystem.component.MessageInfoBox
 import com.moscow.cineverse.designSystem.component.MovieButton
@@ -44,8 +42,9 @@ import com.moscow.cineverse.designSystem.component.bottomsheet.CineVerseBottomSh
 import com.moscow.cineverse.designSystem.component.login.WebViewBrowser
 import com.moscow.cineverse.designSystem.theme.CineVerseTheme
 import com.moscow.cineverse.designSystem.theme.Theme
+import com.moscow.cineverse.design_system.R
 import com.moscow.cineverse.navigation.LocalNavController
-import com.moscow.cineverse.navigation.routes.ExploreRoute
+import com.moscow.cineverse.navigation.routes.HomeRoute
 import com.moscow.cineverse.navigation.routes.LoginRoute
 import org.koin.androidx.compose.koinViewModel
 
@@ -69,7 +68,7 @@ fun LoginScreen(
                     if (canGoBack) {
                         navController.popBackStack()
                     } else {
-                        navController.navigate(ExploreRoute) {
+                        navController.navigate(HomeRoute) {
                             popUpTo(LoginRoute) { inclusive = true }
                         }
                     }
