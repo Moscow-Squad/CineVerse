@@ -22,7 +22,6 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
         dependencies.apply {
             add("implementation", libs.findLibrary("androidx.core.ktx").get())
             add("implementation", libs.findLibrary("kotlinx.coroutines.core").get())
-            add("testImplementation", libs.findLibrary("junit").get())
             add("testImplementation", libs.findLibrary("junit.jupiter").get())
             add("testImplementation", libs.findLibrary("junit.jupiter.api").get())
             add("testRuntimeOnly", libs.findLibrary("junit.jupiter.engine").get())

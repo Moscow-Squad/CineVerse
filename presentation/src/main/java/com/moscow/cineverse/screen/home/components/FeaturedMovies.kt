@@ -11,8 +11,8 @@ import com.moscow.cineverse.screen.home.HomeFeaturedItems
 @Composable
 fun FeaturedMovies(
     displayMovies: List<MediaItemUiState>,
+    onShowMoreClick: (type: HomeFeaturedItems) -> Unit,
     onMovieClick: (MediaItemUiState) -> Unit,
-    onShowMoreClick: (type: String) -> Unit,
     type: HomeFeaturedItems,
     modifier: Modifier = Modifier
 ) {
@@ -21,7 +21,7 @@ fun FeaturedMovies(
         movies = displayMovies,
         paddingHorizontal = 16,
         onClickShowMore = {
-            onShowMoreClick(type.name)
+            onShowMoreClick(type)
         },
         onClickPoster = { movie ->
             onMovieClick(movie)

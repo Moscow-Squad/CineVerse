@@ -1,11 +1,8 @@
 package com.moscow.cineverse.screen.home
 
 import androidx.lifecycle.viewModelScope
-import com.android.domain.usecase.home.GetMatchesYourVibesMoviesUseCase
-import com.android.domain.usecase.home.GetRecentlyReleasedMoviesUseCase
-import com.android.domain.usecase.home.GetTopRatedTVShowsUseCase
-import com.android.domain.usecase.home.GetTrendingMoviesUseCase
-import com.android.domain.usecase.home.GetUpcomingMoviesUseCase
+
+
 import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.cineverse.common_ui_state.MediaItemUiState
 import com.moscow.cineverse.mapper.toGenreUi
@@ -15,6 +12,11 @@ import com.moscow.domain.model.MediaType
 import com.moscow.domain.model.Movie
 import com.moscow.domain.model.Series
 import com.moscow.domain.usecase.genre.GenreUseCase
+import com.moscow.domain.usecase.home.GetMatchesYourVibesMoviesUseCase
+import com.moscow.domain.usecase.home.GetRecentlyReleasedMoviesUseCase
+import com.moscow.domain.usecase.home.GetTopRatedTVShowsUseCase
+import com.moscow.domain.usecase.home.GetTrendingMoviesUseCase
+import com.moscow.domain.usecase.home.GetUpcomingMoviesUseCase
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
@@ -193,7 +195,8 @@ class HomeViewModel(
     }
 
 
-    override fun onSeeAllClick(type: String) {
+
+    override fun onSeeAllClick(type: HomeFeaturedItems) {
         sendEvent(HomeEvent.SeeAllClicked(type))
     }
 
