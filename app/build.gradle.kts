@@ -41,49 +41,21 @@ dependencies {
     implementation(projects.presentation)
     implementation(projects.data)
     implementation(projects.domain)
-
     // DI & platform
-    implementation(platform(libs.koin.bom))
     implementation(libs.bundles.koin)
-
-    // Core
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.lifecycle.runtime.ktx)
-    implementation(libs.androidx.activity.compose)
-
     // Compose
     implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.androidx.ui)
-    implementation(libs.androidx.ui.graphics)
-    implementation(libs.androidx.ui.tooling.preview)
-    implementation(libs.androidx.material3)
-
-    debugImplementation(libs.androidx.ui.tooling)
-    debugImplementation(libs.androidx.ui.test.manifest)
-
     // Firebase
     implementation(libs.firebase.crashlytics)
     implementation(libs.firebase.analytics)
     implementation(libs.firebase.perf)
-
-    // UI extras
-    implementation(libs.ui)
+    //material 3
     implementation(libs.material3)
-    implementation(libs.androidx.animation)
-    implementation(libs.coil.compose)
-
-    // Background & Navigation
+    // Background
     implementation(libs.androidx.work.runtime.ktx)
     implementation(libs.koin.androidx.workmanager)
+    //navigation
     implementation(libs.androidx.navigation.compose)
-
     // Splash
     implementation(libs.androidx.core.splashscreen)
-
-    // Testing
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
-    androidTestImplementation(platform(libs.androidx.compose.bom))
-    androidTestImplementation(libs.androidx.ui.test.junit4)
 }
