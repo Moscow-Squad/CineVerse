@@ -3,6 +3,7 @@ package com.moscow.cineverse.screen.movie_details.component
 import androidx.navigation.NavHostController
 import com.moscow.cineverse.navigation.routes.CastDetailsRoute
 import com.moscow.cineverse.navigation.routes.CollectionsBottomSheetRoute
+import com.moscow.cineverse.navigation.routes.MovieDetailsRoute
 import com.moscow.cineverse.navigation.routes.RecommendationsRoute
 import com.moscow.cineverse.navigation.routes.ReviewsRoute
 import com.moscow.cineverse.screen.movie_details.MovieDetailsScreenEffect
@@ -46,6 +47,10 @@ object MovieDetailsEffectHandler {
 
             MovieDetailsScreenEffect.NavigateToFullCast -> {
                 // TODO: Implement navigation to full cast
+            }
+
+            is MovieDetailsScreenEffect.NavigateToMovie -> {
+                navController.navigate((MovieDetailsRoute(effect.movieId)))
             }
         }
     }

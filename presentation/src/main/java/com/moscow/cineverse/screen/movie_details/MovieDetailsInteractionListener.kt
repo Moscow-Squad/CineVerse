@@ -1,5 +1,7 @@
 package com.moscow.cineverse.screen.movie_details
 
+import com.moscow.cineverse.common_ui_state.MediaItemUiState
+
 interface MovieDetailsInteractionListener {
     fun onBackPressed()
     fun onShowMoreCast()
@@ -10,4 +12,5 @@ interface MovieDetailsInteractionListener {
     fun onDismissOrCancelRatingBottomSheet()
     fun onRatingSubmit(rating: Int, movieId: Int)
     fun onActorClicked(actorId: Int)
+    fun onMovieItemClicked(movieId: Int)
 }
