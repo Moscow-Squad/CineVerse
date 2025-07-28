@@ -6,6 +6,7 @@ import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.cineverse.mapper.toMediaItemUi
 import com.moscow.cineverse.navigation.routes.MovieDetailsRoute
 import com.moscow.cineverse.mapper.toUi
+import com.moscow.cineverse.screen.movie_details.recommendations.RecommendationMoviesEffect
 import com.moscow.domain.model.CreditsDetails
 import com.moscow.domain.model.Movie
 import com.moscow.domain.model.Review
@@ -153,6 +154,10 @@ class MovieDetailsViewModel(
     }
     override fun onActorClicked(actorId: Int) {
         sendEvent(MovieDetailsScreenEffect.NavigateCastDetails(actorId))
+    }
+
+    override fun onMovieItemClicked(movieId: Int) {
+        sendEvent(MovieDetailsScreenEffect.NavigateToMovie(movieId))
     }
 
     override fun showRatingBottomSheet() {

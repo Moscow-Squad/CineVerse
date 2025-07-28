@@ -86,7 +86,7 @@ fun MovieRecommendationsSection(
                         movie = movie,
                         viewMode = ViewMode.GRID,
                         showRating = true,
-                        onMovieClick = {},
+                        onMovieClick = interactionListener::onMovieItemClicked,
                         showTitle = true,
                         modifier = cardModifier,
                         getTitleOverride = { it.title.take(15) + if (it.title.length > 15) "…" else "" }
