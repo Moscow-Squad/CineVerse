@@ -38,7 +38,7 @@ fun ReviewsScreen(
     LaunchedEffect(viewModel) {
         viewModel.uiEffect.collect { event ->
             when(event){
-                ReviewsEffect.NavigateBack -> navController::navigateUp
+                ReviewsEffect.NavigateBack -> navController.popBackStack()
                 is ReviewsEffect.ShowError -> {}
             }
 
