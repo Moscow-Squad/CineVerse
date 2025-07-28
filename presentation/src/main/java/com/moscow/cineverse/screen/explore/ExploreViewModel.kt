@@ -1,5 +1,6 @@
 package com.moscow.cineverse.screen.explore
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
@@ -91,7 +92,11 @@ class ExploreViewModel(
                 }
             }
         ).flow
-            .map { pagingData -> pagingData.map { it.toUi(uiState.value.seriesGenres) } }
+            .map { pagingData ->
+                pagingData.map {
+                    it.toUi(uiState.value.seriesGenres + uiState.value.moviesGenres)
+                }
+            }
             .cachedIn(viewModelScope)
 
         updateState { it.copy(isLoading = false) }
@@ -384,6 +389,7 @@ class ExploreViewModel(
                     )
                 ) + genres.map { genre -> genre.toUi() })
         }
+        Log.d("TAG", "onSeriesGenresSuccess: $genres")
     }
 
     private fun onSeriesGenresFailed(e: Throwable) {
