@@ -2,22 +2,24 @@ package com.moscow.cineverse.screen.home
 
 import androidx.lifecycle.viewModelScope
 
-import com.android.domain.usecase.home.GetMatchesYourVibesMoviesUseCase
-import com.android.domain.usecase.home.GetRecentlyReleasedMoviesUseCase
-import com.android.domain.usecase.home.GetTopRatedTVShowsUseCase
-import com.android.domain.usecase.home.GetTrendingMoviesUseCase
-import com.android.domain.usecase.home.GetUpcomingMoviesUseCase
+
 import com.moscow.cineverse.base.BaseViewModel
+import com.moscow.cineverse.common_ui_state.MediaItemUiState
 import com.moscow.cineverse.mapper.toGenreUi
 import com.moscow.cineverse.mapper.toUi
 import com.moscow.domain.model.Genre
+import com.moscow.domain.model.MediaType
 import com.moscow.domain.model.Movie
 import com.moscow.domain.model.Series
 import com.moscow.domain.usecase.genre.GenreUseCase
+import com.moscow.domain.usecase.home.GetMatchesYourVibesMoviesUseCase
+import com.moscow.domain.usecase.home.GetRecentlyReleasedMoviesUseCase
+import com.moscow.domain.usecase.home.GetTopRatedTVShowsUseCase
+import com.moscow.domain.usecase.home.GetTrendingMoviesUseCase
+import com.moscow.domain.usecase.home.GetUpcomingMoviesUseCase
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
-import kotlin.collections.map
 
 class HomeViewModel(
     private val getMatchesYourVibesMoviesUseCase: GetMatchesYourVibesMoviesUseCase,
@@ -27,9 +29,6 @@ class HomeViewModel(
     private val genreUseCase: GenreUseCase,
     private val getTrendingMoviesUseCase: GetTrendingMoviesUseCase
 ) : BaseViewModel<HomeUiState, HomeEvent>(HomeUiState()), HomeInteractionListener {
-    override fun onSeriesClick(seriesId: Int) {
-        sendEvent(HomeEvent.SeriesClicked(seriesId))
-    }
 
     init {
         loadHomeData()
@@ -188,11 +187,16 @@ class HomeViewModel(
     }
 
 
-    override fun onMovieClick(movieId: Int) {
-        sendEvent(HomeEvent.MovieClicked(movieId))
+    override fun onMediaItemClicked(mediaItemUiState: MediaItemUiState) {
+        if (mediaItemUiState.mediaType == MediaType.Movie)
+            sendEvent(HomeEvent.MovieClicked(mediaItemUiState.id))
+        else
+            sendEvent(HomeEvent.SeriesClicked(mediaItemUiState.id))
     }
 
-    override fun onSeeAllClick(type: String) {
+
+
+    override fun onSeeAllClick(type: HomeFeaturedItems) {
         sendEvent(HomeEvent.SeeAllClicked(type))
     }
 
@@ -209,11 +213,11 @@ class HomeViewModel(
     }
 
     override fun onWatchSuggestionClick() {
-        TODO("Not yet implemented")
+        sendEvent(HomeEvent.WatchingSuggestionClicked)
     }
 
     override fun onBrowseSuggestionClick() {
-        TODO("Not yet implemented")
+        sendEvent(HomeEvent.BrowseSuggestionClicked)
     }
 
     override fun onRefresh() {

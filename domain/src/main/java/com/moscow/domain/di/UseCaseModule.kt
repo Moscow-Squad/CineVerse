@@ -1,10 +1,5 @@
 package com.moscow.domain.di
 
-import com.android.domain.usecase.home.GetMatchesYourVibesMoviesUseCase
-import com.android.domain.usecase.home.GetRecentlyReleasedMoviesUseCase
-import com.android.domain.usecase.home.GetTopRatedTVShowsUseCase
-import com.android.domain.usecase.home.GetTrendingMoviesUseCase
-import com.android.domain.usecase.home.GetUpcomingMoviesUseCase
 import com.moscow.domain.usecase.actor.GetActorBestMoviesUseCase
 import com.moscow.domain.usecase.actor.GetActorDetailsUseCase
 import com.moscow.domain.usecase.actor.GetActorGalleryUseCase
@@ -13,6 +8,11 @@ import com.moscow.domain.usecase.collection.AddNewCollectionUseCase
 import com.moscow.domain.usecase.collection.GetCollectionDetailsUseCase
 import com.moscow.domain.usecase.collection.GetUserCollectionsUseCase
 import com.moscow.domain.usecase.genre.GenreUseCase
+import com.moscow.domain.usecase.home.GetMatchesYourVibesMoviesUseCase
+import com.moscow.domain.usecase.home.GetRecentlyReleasedMoviesUseCase
+import com.moscow.domain.usecase.home.GetTopRatedTVShowsUseCase
+import com.moscow.domain.usecase.home.GetTrendingMoviesUseCase
+import com.moscow.domain.usecase.home.GetUpcomingMoviesUseCase
 import com.moscow.domain.usecase.login.LoginAsGuestUseCase
 import com.moscow.domain.usecase.login.LoginWithUsernameAndPasswordUseCase
 import com.moscow.domain.usecase.movie.GetMovieByGenreIdUseCase
