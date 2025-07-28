@@ -14,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -100,7 +101,7 @@ fun HomeContent(
             Column(
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                HomeHeader(userName = state.userName, modifier)
+                HomeHeader(userName = state.userName ?: stringResource(R.string.guest), modifier)
                 Spacer(
                     modifier = Modifier
                         .fillMaxWidth()
