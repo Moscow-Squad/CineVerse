@@ -130,24 +130,25 @@ fun SeriesDetailsContent(
             }
         }
         else if (uiState.errorMessage != ""){
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 24.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
             ) {
-                MovieText(
-                    text = "Error in loading series details",
-                    color = Theme.colors.shade.primary
-                )
-                Spacer(modifier = Modifier.height(16.dp))
-                MovieButton(
-                    buttonText = stringResource(R.string.retry),
-                    textColor = Theme.colors.button.primary,
-                    textStyle = Theme.textStyle.title.small,
-                    onClick = { }
-                )
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    MovieText(
+                        text = "Error in loading series details",
+                        color = Theme.colors.shade.primary
+                    )
+                    MovieButton(
+                        buttonText = stringResource(R.string.retry),
+                        textColor = Theme.colors.button.primary,
+                        textStyle = Theme.textStyle.title.small,
+                        onClick = {  }
+                    )
+                }
             }
         }
         else {
