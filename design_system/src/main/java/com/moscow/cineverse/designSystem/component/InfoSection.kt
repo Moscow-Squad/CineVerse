@@ -67,7 +67,7 @@ fun InfoSection(
                         contentDescription = "Rating",
                         tint = Theme.colors.additional.primary.yellow,
                         modifier = Modifier
-                            .size(16.dp)
+                            .size(22.dp)
                             .padding(start = 2.dp)
                     )
                 }
