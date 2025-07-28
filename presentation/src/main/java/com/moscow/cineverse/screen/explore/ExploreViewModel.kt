@@ -117,6 +117,29 @@ class ExploreViewModel(
         updateState { it.copy(isLoading = false) }
     }
 
+    private fun resetSearchResults() {
+        if (::_moviesSearch.isInitialized) {
+            _moviesSearch = Pager(
+                config = PagingConfig(pageSize = 20, initialLoadSize = 20),
+                pagingSourceFactory = { BasePagingSource { page -> emptyList<MediaItemUiState>() } }
+            ).flow.cachedIn(viewModelScope)
+        }
+
+        if (::_seriesSearch.isInitialized) {
+            _seriesSearch = Pager(
+                config = PagingConfig(pageSize = 20, initialLoadSize = 20),
+                pagingSourceFactory = { BasePagingSource { page -> emptyList<MediaItemUiState>() } }
+            ).flow.cachedIn(viewModelScope)
+        }
+
+        if (::_actorSearch.isInitialized) {
+            _actorSearch = Pager(
+                config = PagingConfig(pageSize = 20, initialLoadSize = 20),
+                pagingSourceFactory = { BasePagingSource { page -> emptyList<ActorUiState>() } }
+            ).flow.cachedIn(viewModelScope)
+        }
+    }
+
     override fun getMoviesByGenreId(genreId: Int) {
         _movies = Pager(
             config = PagingConfig(pageSize = 20),
@@ -275,6 +298,7 @@ class ExploreViewModel(
 
     override fun onClickSuggestion(suggestion: SuggestItemUiState) {
         updateState { it.copy(searchKeyWord = suggestion.title) }
+        resetSearchResults()
         launchAndForget(
             action = {
                 suggestion.isHistory.let {
@@ -304,6 +328,7 @@ class ExploreViewModel(
                 isLoading = true
             )
         }
+        resetSearchResults()
         launchAndForget(
             action = {
                 uiState.value.localSuggestions.any { it.title == uiState.value.searchKeyWord }

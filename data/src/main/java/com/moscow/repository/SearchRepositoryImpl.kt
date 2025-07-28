@@ -63,10 +63,17 @@ class SearchRepositoryImpl(
         ).results?.map { it.toModel() } ?: emptyList()
     }
 
-    override suspend fun searchMovie(query: String, page: Int, isHistory: Boolean): Flow<List<Movie>> =
+    override suspend fun searchMovie(
+        query: String,
+        page: Int,
+        isHistory: Boolean
+    ): Flow<List<Movie>> =
         flow {
             if (isHistory) {
-                emit(getLocalMoviesBySearchTerm(query))
+                if (page > 1)
+                    emit(emptyList())
+                else
+                    emit(getLocalMoviesBySearchTerm(query))
                 return@flow
             }
             val result = searchRemoteDataSource.searchMovie(query, page, false)
@@ -79,16 +86,23 @@ class SearchRepositoryImpl(
             }
         }.flowOn(Dispatchers.IO)
 
-    override suspend fun searchSeries(query: String, page: Int, isHistory: Boolean): Flow<List<Series>> =
+    override suspend fun searchSeries(
+        query: String,
+        page: Int,
+        isHistory: Boolean
+    ): Flow<List<Series>> =
         flow {
             if (isHistory) {
-                emit(
-                    searchLocalDataSource
-                        .getSeriesBySearchTerm(query)
-                        .sortByFavouriteGenres { it.genresId }
-                        .toDomain()
+                if (page > 1)
+                    emit(emptyList())
+                else
+                    emit(
+                        searchLocalDataSource
+                            .getSeriesBySearchTerm(query)
+                            .sortByFavouriteGenres { it.genresId }
+                            .toDomain()
 
-                )
+                    )
                 return@flow
             }
             val result = searchRemoteDataSource.searchSeries(query, page, false)
@@ -101,10 +115,17 @@ class SearchRepositoryImpl(
             }
         }.flowOn(Dispatchers.IO)
 
-    override suspend fun searchActor(query: String, page: Int, isHistory: Boolean): Flow<List<Actor>> =
+    override suspend fun searchActor(
+        query: String,
+        page: Int,
+        isHistory: Boolean
+    ): Flow<List<Actor>> =
         flow {
             if (isHistory) {
-                emit(searchLocalDataSource.getActorsBySearchTerm(query).toDomain())
+                if (page > 1)
+                    emit(emptyList())
+                else
+                    emit(searchLocalDataSource.getActorsBySearchTerm(query).toDomain())
                 return@flow
             }
             val result = searchRemoteDataSource.searchActor(query, page, false)
