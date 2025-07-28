@@ -1,4 +1,4 @@
-package com.android.domain.usecase.home
+package com.moscow.domain.usecase.home
 
 import com.moscow.domain.repository.HomeRepository
 

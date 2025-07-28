@@ -35,11 +35,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.moscow.cineverse.design_system.R
-import com.moscow.cineverse.image_viewer.component.SafeImageViewer
 import com.moscow.cineverse.designSystem.component.blur.OnBlurContent
 import com.moscow.cineverse.designSystem.theme.CineVerseTheme
 import com.moscow.cineverse.designSystem.theme.Theme
+import com.moscow.cineverse.design_system.R
+import com.moscow.cineverse.image_viewer.component.SafeImageViewer
 
 @Composable
 fun <T : Any> MovieCard(
@@ -50,9 +50,11 @@ fun <T : Any> MovieCard(
     onMovieClick: (Int) -> Unit = {},
     titleTextAlign: TextAlign = TextAlign.Start,
     showTitle: Boolean = true,
+    showBackdrop: Boolean = false,
     getId: (T) -> Int,
     getTitle: (T) -> String,
     getPosterUrl: (T) -> String,
+    getBackdropUrl: (T) -> String = { "" },
     getRating: (T) -> Float,
     getGenres: (T) -> List<String>,
     getDuration: (T) -> String,
@@ -66,9 +68,11 @@ fun <T : Any> MovieCard(
             modifier = modifier,
             titleTextAlign = titleTextAlign,
             showTitle = showTitle,
+            showBackdrop = showBackdrop,
             getId = getId,
             getTitle = getTitle,
             getPosterUrl = getPosterUrl,
+            getBackdropUrl = getBackdropUrl,
             getRating = getRating,
         )
 
@@ -120,11 +124,13 @@ private fun <T> GridMovieCard(
     movieData: T,
     showTitle: Boolean = true,
     showRating: Boolean = true,
+    showBackdrop: Boolean = false,
     onMovieClick: (Int) -> Unit,
     titleTextAlign: TextAlign,
     getId: (T) -> Int,
     getTitle: (T) -> String,
     getPosterUrl: (T) -> String,
+    getBackdropUrl: (T) -> String = { "" },
     getRating: (T) -> Float,
 ) {
     Column(
@@ -139,7 +145,8 @@ private fun <T> GridMovieCard(
             shape = RoundedCornerShape(Theme.radius.large)
         ) {
             Box {
-                val posterUrl = getPosterUrl(movieData)
+                val posterUrl =
+                    if (showBackdrop) getBackdropUrl(movieData) else getPosterUrl(movieData)
 
                 SafeImageViewer(
                     imageUrl = posterUrl,

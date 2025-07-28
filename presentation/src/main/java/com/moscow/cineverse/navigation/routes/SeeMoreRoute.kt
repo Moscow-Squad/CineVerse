@@ -5,7 +5,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.moscow.cineverse.navigation.AppDestination
-import com.moscow.cineverse.screen.home.SeeMoreHomeScreen
+import com.moscow.cineverse.screen.see_more.SeeMoreHomeScreen
 import kotlinx.serialization.Serializable
 
 @Serializable

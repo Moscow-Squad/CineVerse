@@ -10,12 +10,18 @@ import androidx.paging.map
 import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.cineverse.common_ui_state.MediaItemUiState
 import com.moscow.cineverse.designSystem.component.ViewMode
+import com.moscow.cineverse.mapper.toMediaItemUi
+import com.moscow.cineverse.mapper.toUi
 import com.moscow.cineverse.paging.BasePagingSource
-import com.moscow.domain.model.MediaType
+import com.moscow.cineverse.screen.see_more.SeeMoreEvent
+import com.moscow.cineverse.screen.see_more.SeeMoreInteractionListener
+import com.moscow.cineverse.screen.see_more.SeeMoreUiState
 import com.moscow.domain.model.Movie
 import com.moscow.domain.model.Series
-import com.moscow.domain.repository.MovieRepository
-import com.moscow.domain.repository.SeriesRepository
+import com.moscow.domain.usecase.home.GetMatchesYourVibesMoviesUseCase
+import com.moscow.domain.usecase.home.GetRecentlyReleasedMoviesUseCase
+import com.moscow.domain.usecase.home.GetTopRatedTVShowsUseCase
+import com.moscow.domain.usecase.home.GetUpcomingMoviesUseCase
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -23,15 +29,17 @@ import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
-class SeeMoreHomeViewModel(
-    private val moviesRepository: MovieRepository,
-    private val seriesRepository: SeriesRepository,
+class SeeMoreViewModel(
+    private val getMatchesYourVibesMoviesUseCase: GetMatchesYourVibesMoviesUseCase,
+    private val getRecentlyReleasedMoviesUseCase: GetRecentlyReleasedMoviesUseCase,
+    private val getTopRatedTVShowsUseCase: GetTopRatedTVShowsUseCase,
+    private val getUpcomingMoviesUseCase: GetUpcomingMoviesUseCase,
     private val savedStateHandle: SavedStateHandle
-) : BaseViewModel<SeeMoreHomeState, SeeMoreHomeEvent>(
-    SeeMoreHomeState(
+) : BaseViewModel<SeeMoreUiState, SeeMoreEvent> (
+    SeeMoreUiState(
         title = savedStateHandle.get<String>("category") ?: ""
     )
-), SeeMoreHomeInteractionListener {
+), SeeMoreInteractionListener {
 
     private val _pagingDataFlow = MutableStateFlow<Flow<PagingData<MediaItemUiState>>>(emptyFlow())
     val pagingDataFlow = _pagingDataFlow.asStateFlow()
@@ -51,37 +59,35 @@ class SeeMoreHomeViewModel(
                     HomeFeaturedItems.RECENTLY_RELEASED.name -> {
                         createPagingFlow(
                             pageSize = pageSize,
-                            fetchData = { page -> moviesRepository.getPopularMovies(page) },
-                            mediaType = MediaType.Movie
+                            fetchData = { page -> getRecentlyReleasedMoviesUseCase(page) },
                         )
                     }
                     HomeFeaturedItems.UPCOMING_MOVIES.name -> {
                         createPagingFlow(
                             pageSize = pageSize,
-                            fetchData = { page -> moviesRepository.getPopularMovies(page) }, // Replace with getUpcomingMovies when available
-                            mediaType = MediaType.Movie
+                            fetchData = { page -> getUpcomingMoviesUseCase(page) }, // Replace with getUpcomingMovies when available
                         )
                     }
                     HomeFeaturedItems.MATCHES_YOUR_VIBE.name -> {
                         // Using genre ID 28 for Action, same as in HomeViewModel
                         createPagingFlow(
                             pageSize = pageSize,
-                            fetchData = { page -> moviesRepository.getMoviesByGenreId(28, page) },
-                            mediaType = MediaType.Movie
+                            fetchData = { page -> getMatchesYourVibesMoviesUseCase(28, page) },
+
                         )
                     }
                     HomeFeaturedItems.TOP_RATED_TV_SHOWS.name -> {
                         createPagingFlow(
                             pageSize = pageSize,
-                            fetchData = { page -> seriesRepository.getPopularSeries(page) },
-                            mediaType = MediaType.Tv
+                            fetchData = { page -> getTopRatedTVShowsUseCase(page) },
+
                         )
                     }
                     HomeFeaturedItems.YOU_RECENTLY_VIEWED.name -> {
                         createPagingFlow(
                             pageSize = pageSize,
-                            fetchData = { page -> moviesRepository.getPopularMovies(page) }, // Replace with getRecentlyViewed when available
-                            mediaType = MediaType.Movie
+                            fetchData = { page -> getRecentlyReleasedMoviesUseCase(page) }, // Replace with getRecentlyViewed when available
+
                         )
                     }
                     else -> emptyFlow()
@@ -97,21 +103,20 @@ class SeeMoreHomeViewModel(
 
     private fun <T : Any> createPagingFlow(
         pageSize: Int,
-        fetchData: suspend (Int) -> List<T>,
-        mediaType: MediaType
+        fetchData: suspend (Int) -> List<T>
     ): Flow<PagingData<MediaItemUiState>> {
         return Pager(
             config = PagingConfig(
                 pageSize = pageSize,
                 enablePlaceholders = false
             ),
-            pagingSourceFactory = { BasePagingSource<T>(fetchData) }
+            pagingSourceFactory = { BasePagingSource(fetchData) }
         ).flow
             .map { pagingData ->
                 pagingData.map { item ->
                     when (item) {
-                        is Movie -> movieToUiState(item)
-                        is Series -> seriesToUiState(item)
+                        is Movie -> item.toMediaItemUi()
+                        is Series -> item.toUi()
                         else -> throw IllegalArgumentException("Unsupported type: ${item::class.java}")
                     }
                 }
@@ -119,33 +124,7 @@ class SeeMoreHomeViewModel(
             .cachedIn(viewModelScope)
     }
 
-    // Safe mapping function for Movie to prevent NoSuchElementException
-    private fun movieToUiState(movie: Movie): MediaItemUiState {
-        return MediaItemUiState(
-            id = movie.id.toInt(),
-            title = movie.name,
-            posterPath = movie.posterPath,
-            rating = movie.rating,
-            genres = emptyList(), // We don't have genre details in this context, so use empty list to avoid crashes
-            releaseDate = movie.releaseDate.toString(),
-            duration = "",
-            mediaType = MediaType.Movie
-        )
-    }
 
-    // Safe mapping function for Series to prevent NoSuchElementException
-    private fun seriesToUiState(series: Series): MediaItemUiState {
-        return MediaItemUiState(
-            id = series.id,
-            title = series.name,
-            posterPath = series.posterPath,
-            rating = series.rating,
-            genres = emptyList(), // We don't have genre details in this context, so use empty list to avoid crashes
-            releaseDate = series.firstAirDate.toString(),
-            duration = "",
-            mediaType = MediaType.Tv
-        )
-    }
 
     override fun onRefresh() {
         loadContent()
@@ -154,18 +133,18 @@ class SeeMoreHomeViewModel(
     override fun onMediaItemClicked(id: Int) {
         val category = savedStateHandle.get<String>("category") ?: return
         val event = when {
-            category == HomeFeaturedItems.TOP_RATED_TV_SHOWS.name -> SeeMoreHomeEvent.SeriesClicked(id)
-            else -> SeeMoreHomeEvent.MovieClicked(id)
+            category == HomeFeaturedItems.TOP_RATED_TV_SHOWS.name -> SeeMoreEvent.SeriesClicked(id)
+            else -> SeeMoreEvent.MovieClicked(id)
         }
         sendEvent(event)
     }
 
     override fun onActorClick(id: Int) {
-        sendEvent(SeeMoreHomeEvent.ActorClicked(id))
+        sendEvent(SeeMoreEvent.ActorClicked(id))
     }
 
     override fun onNavigateBack() {
-        sendEvent(SeeMoreHomeEvent.NavigateBack)
+        sendEvent(SeeMoreEvent.NavigateBack)
     }
 
     override fun onViewModeChanged(viewMode: ViewMode) {

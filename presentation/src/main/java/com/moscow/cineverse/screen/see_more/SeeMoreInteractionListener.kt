@@ -1,9 +1,9 @@
-package com.moscow.cineverse.screen.home
+package com.moscow.cineverse.screen.see_more
 
 import com.moscow.cineverse.designSystem.component.ViewMode
 
 
-interface SeeMoreHomeInteractionListener {
+interface SeeMoreInteractionListener {
     fun onRefresh()
     fun onMediaItemClicked(id: Int)
     fun onActorClick(id: Int)
