@@ -39,33 +39,39 @@ fun SafeImageViewer(
     val context = LocalContext.current
     val classifier = remember { HybridImageClassifier(context) }
 
-    var bitmapToDisplay by remember { mutableStateOf<Bitmap?>(null) }
+    var bitmapToDisplay by rememberSaveable { mutableStateOf<Bitmap?>(null) }
     var isHaram by rememberSaveable { mutableStateOf(isBlurEnabled) }
     var requestState by rememberSaveable { mutableStateOf(RequestState.LOADING) }
 
-    LaunchedEffect(imageUrl) {
-        val loader = ImageLoader(context)
-        val request = ImageRequest.Builder(context).data(imageUrl).allowHardware(false).build()
+    LaunchedEffect(bitmapToDisplay) {
+        if (bitmapToDisplay == null){
+            val loader = ImageLoader(context)
+            val request = ImageRequest.Builder(context)
+                .data(imageUrl)
+                .size(500, 750)
+                .allowHardware(false)
+                .build()
 
-        val result = runCatching { loader.execute(request) }
-        result.onSuccess { success ->
-            val bitmap = runCatching { success.image?.toBitmap() }.getOrNull()
-            if (bitmap != null) {
-                if (isBlurEnabled) {
-                    isHaram = withContext(Dispatchers.Default) {
-                        classifier.classifyImage(bitmap)
+            val result = runCatching { loader.execute(request) }
+            result.onSuccess { success ->
+                val bitmap = runCatching { success.image?.toBitmap() }.getOrNull()
+                if (bitmap != null) {
+                    if (isBlurEnabled) {
+                        isHaram = withContext(Dispatchers.Default) {
+                            classifier.classifyImage(bitmap)
+                        }
                     }
+                    bitmapToDisplay = bitmap
+                    requestState = RequestState.SUCCESS
+                    onSuccess?.invoke()
+                } else {
+                    requestState = RequestState.ERROR
+                    onError?.invoke()
                 }
-                bitmapToDisplay = bitmap
-                requestState = RequestState.SUCCESS
-                onSuccess?.invoke()
-            } else {
+            }.onFailure {
                 requestState = RequestState.ERROR
                 onError?.invoke()
             }
-        }.onFailure {
-            requestState = RequestState.ERROR
-            onError?.invoke()
         }
     }
 
