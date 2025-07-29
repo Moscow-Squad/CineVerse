@@ -9,14 +9,15 @@ import com.moscow.cineverse.screen.castDetails.best0fmovies.ShowAllActorMoviesSc
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class CastBestOfMovieRoute(val castId: Int, val castName: String)
+data class CastBestOfMovieRoute(val castId: Int, val castName: String){
+    companion object {
+        const val CAST_ID = "castId"
+        const val CAST_NAME = "castName"
+    }
+}
 
 fun NavGraphBuilder.CastBestOfMovieRoute() {
     composable<CastBestOfMovieRoute>{
-        val args = it.toRoute<CastBestOfMovieRoute>()
-        ShowAllActorMoviesScreen(
-            actorId = args.castId,
-            title = args.castName,
-        )
+        ShowAllActorMoviesScreen()
     }
 }

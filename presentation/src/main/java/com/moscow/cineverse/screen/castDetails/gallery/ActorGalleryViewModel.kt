@@ -1,17 +1,24 @@
 package com.moscow.cineverse.screen.castDetails.gallery
 
+import androidx.lifecycle.SavedStateHandle
 import com.moscow.cineverse.base.BaseViewModel
+import com.moscow.cineverse.navigation.routes.CastGalleryRoute
+import com.moscow.cineverse.navigation.routes.SeriesDetailsRoute
 import com.moscow.domain.usecase.actor.GetActorGalleryUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class ActorGalleryViewModel(
+@HiltViewModel
+class ActorGalleryViewModel @Inject constructor(
     private val getActorGalleryUseCase: GetActorGalleryUseCase,
-    actorId: Int,
-    actorName: String,
+                                                savedStateHandle: SavedStateHandle
 ) : BaseViewModel<ShowAllActorMoviesState, ActorGalleryEffect>(ShowAllActorMoviesState()),
     ActorGalleryInteractionListener {
+    private val castID = savedStateHandle.get<Int>(CastGalleryRoute.CAST_ID) ?: 0
+    private val castName = savedStateHandle.get<String>(CastGalleryRoute.CAST_NAME) ?: ""
 
     init {
-        getActor(actorId, actorName)
+        getActor(castID, castName)
         getActorPhotos()
     }
 

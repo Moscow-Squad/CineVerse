@@ -34,6 +34,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import coil3.compose.rememberAsyncImagePainter
@@ -64,11 +65,10 @@ import com.moscow.cineverse.navigation.routes.SeriesRecommendationRoute
 import com.moscow.cineverse.navigation.routes.SeriesSeasonsRoute
 import com.moscow.cineverse.screen.series_details.component.SeasonCard
 import com.moscow.cinverse.presentation.R
-import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun SeriesDetailsScreen(
-    viewModel: SeriesDetailsScreenScreenViewModel = koinViewModel(),
+    viewModel: SeriesDetailsScreenScreenViewModel = hiltViewModel(),
     navController: NavHostController = LocalNavController.current
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()

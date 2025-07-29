@@ -10,8 +10,11 @@ import com.moscow.cineverse.paging.BasePagingSource
 import com.moscow.domain.model.Review
 import com.moscow.domain.usecase.review.GetReviewsUseCase
 import kotlinx.coroutines.flow.Flow
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class ReviewsViewModel(
+@HiltViewModel
+class ReviewsViewModel @Inject constructor(
     private val getReviewsUseCase: GetReviewsUseCase
     ) : BaseViewModel<ReviewsScreenState, ReviewsEffect>(ReviewsScreenState()),
     ReviewsInteractionListener {

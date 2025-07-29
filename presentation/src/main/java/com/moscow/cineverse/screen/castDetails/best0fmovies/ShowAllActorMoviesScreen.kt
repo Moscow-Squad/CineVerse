@@ -9,6 +9,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import com.moscow.cineverse.designSystem.component.MovieScaffold
@@ -18,19 +19,13 @@ import com.moscow.cineverse.navigation.routes.MovieDetailsRoute
 import com.moscow.cineverse.screen.castDetails.best0fmovies.component.ErrorContent
 import com.moscow.cineverse.screen.castDetails.best0fmovies.component.LoadingContent
 import com.moscow.cineverse.screen.castDetails.best0fmovies.component.SuccessContent
-import org.koin.androidx.compose.koinViewModel
-import org.koin.core.parameter.parametersOf
 
 @Composable
 fun ShowAllActorMoviesScreen(
-    actorId: Int,
-    title: String,
     modifier: Modifier = Modifier,
     navController: NavHostController = LocalNavController.current,
 ) {
-    val viewModel: ShowAllActorMoviesViewModel = koinViewModel(
-        parameters = { parametersOf(actorId, title) }
-    )
+    val viewModel: ShowAllActorMoviesViewModel = hiltViewModel()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     LaunchedEffect(viewModel) {
@@ -47,7 +42,6 @@ fun ShowAllActorMoviesScreen(
         uiState = uiState,
         interactionListener = viewModel,
         modifier = modifier,
-        title = title,
         onNavigateBack = navController::navigateUp,
     )
 }
@@ -56,7 +50,6 @@ fun ShowAllActorMoviesScreen(
 private fun ShowAllActorMoviesContent(
     uiState: ShowAllActorMoviesState,
     interactionListener: ShowAllActorMoviesInteractionListener,
-    title: String,
     onNavigateBack: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -79,7 +72,7 @@ private fun ShowAllActorMoviesContent(
                     SuccessContent(
                         uiState = uiState,
                         interactionListener = interactionListener,
-                        title = title,
+                        title = uiState.actorName,
                         onNavigateBack = onNavigateBack
                     )
 

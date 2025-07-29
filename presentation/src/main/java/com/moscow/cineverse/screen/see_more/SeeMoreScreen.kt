@@ -5,6 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.paging.compose.collectAsLazyPagingItems
@@ -13,12 +14,11 @@ import com.moscow.cineverse.navigation.routes.CastDetailsRoute
 import com.moscow.cineverse.navigation.routes.MovieDetailsRoute
 import com.moscow.cineverse.navigation.routes.SeriesDetailsRoute
 import com.moscow.cineverse.screen.home.SeeMoreViewModel
-import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun SeeMoreHomeScreen(
     modifier: Modifier = Modifier,
-    viewModel: SeeMoreViewModel = koinViewModel(),
+    viewModel: SeeMoreViewModel = hiltViewModel(),
     navController: NavHostController = LocalNavController.current
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
