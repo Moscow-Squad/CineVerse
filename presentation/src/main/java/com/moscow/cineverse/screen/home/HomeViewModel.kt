@@ -40,7 +40,7 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun loadHomeData() {
-        updateState { it.copy(isLoading = true) }
+        updateState { it.copy(isLoading = true,error = null) }
 
         viewModelScope.launch {
             getGenres()

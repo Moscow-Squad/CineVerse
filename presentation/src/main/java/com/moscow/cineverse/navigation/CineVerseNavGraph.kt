@@ -44,8 +44,10 @@ fun CineVerseNavGraph(
         NavHost(
             modifier = modifier,
             navController = navController,
+
             startDestination = startDestination
         ) {
+
             exploreRoute(navController)
             loginRoute(navController)
             RecommendationsRoute(navController)
