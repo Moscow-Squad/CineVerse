@@ -10,12 +10,13 @@ import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.cineverse.designSystem.component.ViewMode
 import com.moscow.cineverse.navigation.routes.SeriesRecommendationRoute
 import com.moscow.cineverse.paging.BasePagingSource
-import com.moscow.cineverse.screen.series_details.SeriesDetailsScreenEffects
 import com.moscow.domain.model.Series
 import com.moscow.domain.usecase.series.GetSeriesRecommendationsUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
+@HiltViewModel
 class SeriesRecommendationViewModel @Inject constructor(
     private val getSeriesRecommendationsUseCase: GetSeriesRecommendationsUseCase,
     savedStateHandle: SavedStateHandle,

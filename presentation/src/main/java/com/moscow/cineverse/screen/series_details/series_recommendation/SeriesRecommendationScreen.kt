@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -38,9 +39,20 @@ fun SeriesRecommendationScreen(
     modifier: Modifier = Modifier,
     viewModel: SeriesRecommendationViewModel = hiltViewModel(),
     navigateBack: () -> Unit,
+    navigateToSeriesDetails: (Int) -> Unit
     ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val recommendations = viewModel.getRecommendations(viewModel.seriesId).collectAsLazyPagingItems()
+
+    LaunchedEffect(viewModel) {
+        viewModel.uiEffect.collect { event ->
+            when (event) {
+                is SeriesRecommendationEffects.NavigateToSeriesDetailsScreen -> {
+                    navigateToSeriesDetails(event.seriesId)
+                }
+            }
+        }
+    }
 
     SeriesRecommendationScreenContent(
         title = viewModel.seriesName,
@@ -92,6 +104,7 @@ fun SeriesRecommendationScreenContent(
                 else -> {
                     Column(modifier = Modifier.fillMaxSize()) {
                         MovieAppBar(
+                            caption = stringResource(R.string.because_you_watched),
                             title = title,
                             backButtonClick = onNavigateBack,
                         )

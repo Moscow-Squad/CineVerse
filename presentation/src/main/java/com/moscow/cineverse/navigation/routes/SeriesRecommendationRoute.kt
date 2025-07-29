@@ -17,7 +17,10 @@ data class SeriesRecommendationRoute(val seriesId: Int, val seriesName: String) 
 fun NavGraphBuilder.SeriesRecommendationRoute(navController: NavHostController) {
     composable<SeriesRecommendationRoute>{
         SeriesRecommendationScreen(
-            navigateBack = { navController.navigateUp() }
+            navigateBack = { navController.navigateUp() },
+            navigateToSeriesDetails = { seriesId ->
+                navController.navigate(SeriesDetailsRoute(seriesId))
+            }
         )
     }
 }

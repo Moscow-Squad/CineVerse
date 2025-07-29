@@ -283,7 +283,7 @@ fun SeriesDetailsContent(
                             MovieListSection(
                                 title = stringResource(R.string.you_might_also_like),
                                 movies = uiState.recommendation.take(6),
-                                onClickShowMore = {interactionListener.onShowMoreRecommendationsClicked(uiState.seriesDetail.id)},
+                                onClickShowMore = {interactionListener.onShowMoreRecommendationsClicked(uiState.seriesDetail.id, uiState.seriesDetail.title)},
                                 onClickPoster = { series -> },
                                 modifier = Modifier.padding(top = 16.dp),
                                 movieCardContent = { series, modifier, onClick ->
