@@ -36,7 +36,8 @@ fun CollectionsBottomSheetScreen(
     viewModel: CollectionsBottomSheetViewModel = hiltViewModel(),
     onAddNewCollectionClick: () -> Unit,
     onCreateCollectionClicked: () -> Unit,
-    navigateBack: () -> Unit
+    navigateBack: () -> Unit,
+    onLogIn: () -> Unit
 ) {
 
     val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
@@ -49,7 +50,6 @@ fun CollectionsBottomSheetScreen(
         onDismissBottomSheet = navigateBack,
         onCloseBottomSheet = navigateBack,
         onNotNow = navigateBack,
-        onLogIn = {}
     )
 
     LaunchedEffect(Unit) {
@@ -58,7 +58,8 @@ fun CollectionsBottomSheetScreen(
                 event = event,
                 onCreateCollectionClicked = onCreateCollectionClicked,// user already log in - navigate to collections screen
                 navigateBack = navigateBack,
-                context = context
+                context = context,
+                onLogIn = onLogIn
             )
         }
     }
@@ -69,11 +70,12 @@ private fun handleEvents(
     event: CollectionsBottomSheetEffect,
     onCreateCollectionClicked: () -> Unit,
     navigateBack: () -> Unit,
+    onLogIn: () -> Unit,
     context: Context
 ) {
     when (event) {
         CollectionsBottomSheetEffect.OnCreateCollectionClicked -> onCreateCollectionClicked()
-        CollectionsBottomSheetEffect.OnLoginClicked -> {}
+        CollectionsBottomSheetEffect.OnLoginClicked -> onLogIn()
         is CollectionsBottomSheetEffect.OnMovieAddedSuccessfully -> {
             Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
             navigateBack()
@@ -88,7 +90,6 @@ private fun CollectionsBottomSheetContent(
     onDismissBottomSheet: () -> Unit,
     onCloseBottomSheet: () -> Unit,
     onNotNow: () -> Unit,
-    onLogIn: () -> Unit,
     uiState: CollectionsBottomSheetScreenState,
     interactionListener: CollectionsBottomSheetInteractionListener
 ) {
@@ -109,7 +110,7 @@ private fun CollectionsBottomSheetContent(
                     firstButtonText = stringResource(R.string.not_now),
                     onClickFirstButton = onNotNow,
                     secondButtonText = stringResource(R.string.log_in),
-                    onClickSecondButton = onLogIn,
+                    onClickSecondButton = { interactionListener.navigateToLogin() },
                     modifier = Modifier.padding(bottom = 16.dp)
                 )
             }

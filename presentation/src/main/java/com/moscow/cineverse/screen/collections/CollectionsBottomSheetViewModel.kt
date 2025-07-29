@@ -3,11 +3,11 @@ package com.moscow.cineverse.screen.collections
 import androidx.lifecycle.SavedStateHandle
 import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.cineverse.navigation.routes.CollectionsBottomSheetRoute
-import com.moscow.domain.model.MediaType
+import com.moscow.cineverse.screen.collections.CollectionsBottomSheetEffect.OnLoginClicked
 import com.moscow.domain.model.Collection
+import com.moscow.domain.model.MediaType
 import com.moscow.domain.usecase.collection.AddMediaItemToCollectionUseCase
 import com.moscow.domain.usecase.collection.GetUserCollectionsUseCase
-import kotlin.collections.take
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -80,7 +80,9 @@ class CollectionsBottomSheetViewModel @Inject constructor(
         updateState { it.copy(createCollection = true) }
 
     }
-
+    override fun navigateToLogin() {
+        sendEvent(OnLoginClicked)
+    }
     override fun onRefresh() {
         loadUserCollections()
     }
