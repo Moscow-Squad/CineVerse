@@ -57,6 +57,7 @@ fun MovieHeaderSection(
 @Composable
 fun MovieCollapsedHeaderSection(
     uiState: MovieScreenState,
+    interactionListener: MovieDetailsInteractionListener,
     animatedVisibilityScope: AnimatedVisibilityScope,
     sharedTransitionScope: SharedTransitionScope
 ) {
@@ -65,7 +66,10 @@ fun MovieCollapsedHeaderSection(
             posterUrl = it.posterPath,
             title = it.title,
             animatedVisibilityScope = animatedVisibilityScope,
-            sharedTransitionScope = sharedTransitionScope
+            sharedTransitionScope = sharedTransitionScope,
+            onSaveClick = {
+                interactionListener.onAddToCollection(it.id)
+            },
         )
     }
 }

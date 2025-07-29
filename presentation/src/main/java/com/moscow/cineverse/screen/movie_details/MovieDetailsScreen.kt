@@ -130,6 +130,7 @@ private fun MovieDetailsMainContent(
                 } else {
                     MovieCollapsedHeaderSection(
                         uiState = uiState,
+                        interactionListener = interactionListener,
                         animatedVisibilityScope = this@AnimatedContent,
                         sharedTransitionScope = this@SharedTransitionLayout
                     )
