@@ -52,7 +52,7 @@ fun CastDetailsScreen(
     MovieScaffold {
         Column(modifier = modifier.fillMaxSize()) {
             MovieAppBar(
-                title = uiState.actorDetails?.name ?: "",
+                title = "",
                 backButtonClick = { navigateBack() },
                 showBackButton = true,
                 showAddButton = false,

@@ -11,6 +11,7 @@ import com.moscow.cineverse.navigation.routes.CastBestOfMovieRoute
 import com.moscow.cineverse.navigation.routes.CastDetailsRoute
 import com.moscow.cineverse.navigation.routes.CastGalleryRoute
 import com.moscow.cineverse.navigation.routes.HomeRoute
+import com.moscow.cineverse.navigation.routes.LoginRoute
 import com.moscow.cineverse.navigation.routes.MovieDetailsRoute
 import com.moscow.cineverse.navigation.routes.RecommendationsRoute
 import com.moscow.cineverse.navigation.routes.ReviewsRoute
@@ -43,7 +44,7 @@ fun CineVerseNavGraph(
         NavHost(
             modifier = modifier,
             navController = navController,
-            startDestination = HomeRoute
+            startDestination = startDestination
         ) {
             exploreRoute(navController)
             loginRoute(navController)
