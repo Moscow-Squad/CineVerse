@@ -13,10 +13,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.NavHostController
 import com.moscow.cineverse.designSystem.component.MovieAppBar
 import com.moscow.cineverse.designSystem.component.MovieScaffold
-import com.moscow.cineverse.navigation.LocalNavController
 import com.moscow.cineverse.screen.castDetails.components.ActorBiographySection
 import com.moscow.cineverse.screen.castDetails.components.ActorGallerySection
 import com.moscow.cineverse.screen.castDetails.components.ActorMainDetailsSection
@@ -29,8 +27,11 @@ import com.moscow.cineverse.screen.castDetails.components.LoadingContent
 @Composable
 fun CastDetailsScreen(
     modifier: Modifier = Modifier,
-    navController: NavHostController = LocalNavController.current,
-    viewModel: CastDetailsViewModel = hiltViewModel()
+    viewModel: CastDetailsViewModel = hiltViewModel(),
+    navigateBack: () -> Unit,
+    navigateToMovieDetails: (Int) -> Unit,
+    navigateToCastBestOfMovie: (Int, String) -> Unit,
+    navigateToCastGallery: (Int, String) -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val context = LocalContext.current
@@ -39,8 +40,12 @@ fun CastDetailsScreen(
         viewModel.uiEffect.collect { effect ->
             CastDetailsEffectHandlerWithContext.handleEffectWithContext(
                 effect = effect,
-                navController = navController,
-                context = context
+                context = context,
+                navigateBack = navigateBack,
+                navigateToMovieDetails = navigateToMovieDetails,
+                navigateToCastBestOfMovie = navigateToCastBestOfMovie,
+                navigateToCastGallery = navigateToCastGallery
+
             )
         }
     }
@@ -49,7 +54,7 @@ fun CastDetailsScreen(
         Column(modifier = modifier.fillMaxSize()) {
             MovieAppBar(
                 title = uiState.actorDetails?.name ?: "",
-                backButtonClick = { navController.popBackStack() },
+                backButtonClick = { navigateBack() },
                 showBackButton = true,
                 showAddButton = false,
                 showLogo = false,

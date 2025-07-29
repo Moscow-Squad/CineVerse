@@ -204,7 +204,6 @@ class HomeViewModel @Inject constructor(
     }
 
     override fun onCollectionsShowMoreClick() {
-        TODO("Not yet implemented")
     }
 
     override fun onCollectionClick(collectionId: Int) {

@@ -1,21 +1,22 @@
 package com.moscow.cineverse.screen.movie_details.component
 
-import androidx.navigation.NavHostController
-import com.moscow.cineverse.navigation.routes.CastDetailsRoute
-import com.moscow.cineverse.navigation.routes.CollectionsBottomSheetRoute
-import com.moscow.cineverse.navigation.routes.RecommendationsRoute
-import com.moscow.cineverse.navigation.routes.ReviewsRoute
 import com.moscow.cineverse.screen.movie_details.MovieDetailsScreenEffect
 
 object MovieDetailsEffectHandler {
 
     fun handleEffect(
         effect: MovieDetailsScreenEffect,
-        navController: NavHostController
+        navigateBack: () -> Unit,
+        navigateToRecommendations: (Int, String) -> Unit,
+        navigateToReviews: (Int) -> Unit,
+        navigateToCastDetails: (Int) -> Unit,
+        navigateToCollectionsBottomSheet: (Int) -> Unit,
+
+
     ) {
         when (effect) {
             is MovieDetailsScreenEffect.NavigateBack -> {
-                navController.popBackStack()
+                navigateBack()
             }
 
             is MovieDetailsScreenEffect.ShowError -> {
@@ -23,9 +24,11 @@ object MovieDetailsEffectHandler {
             }
 
             is MovieDetailsScreenEffect.NavigateToFullMovieList -> {
-                navController.navigate(
-                    RecommendationsRoute(effect.movieID, effect.movieTitle)
+                navigateToRecommendations(
+                    effect.movieID,
+                    effect.movieTitle
                 )
+
             }
 
             is MovieDetailsScreenEffect.NavigateToFullActors -> {
@@ -33,15 +36,17 @@ object MovieDetailsEffectHandler {
             }
 
             is MovieDetailsScreenEffect.NavigateToFullReviews -> {
-                navController.navigate(ReviewsRoute(effect.movieID, true))
+                navigateToReviews(effect.movieID)
+
             }
 
             is MovieDetailsScreenEffect.NavigateCastDetails -> {
-                navController.navigate(CastDetailsRoute(effect.castId))
+                navigateToCastDetails(effect.castId)
             }
 
             is MovieDetailsScreenEffect.AddToCollection -> {
-                navController.navigate(CollectionsBottomSheetRoute(effect.movieId))
+                navigateToCollectionsBottomSheet(effect.movieId)
+
             }
 
             MovieDetailsScreenEffect.NavigateToFullCast -> {

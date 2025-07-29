@@ -3,7 +3,6 @@ package com.moscow.cineverse.navigation.routes
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
-import androidx.navigation.toRoute
 import com.moscow.cineverse.screen.castDetails.CastDetailsScreen
 import kotlinx.serialization.Serializable
 
@@ -15,8 +14,23 @@ data class CastDetailsRoute(val castId: Int){
     }
 }
 
-fun NavGraphBuilder.CastDetailsRoute() {
+fun NavGraphBuilder.CastDetailsRoute(navController: NavHostController) {
     composable<CastDetailsRoute>{
-        CastDetailsScreen()
+        CastDetailsScreen(
+            navigateBack = { navController.navigateUp() },
+            navigateToMovieDetails = { movieId ->
+                navController.navigate(MovieDetailsRoute(movieId))
+            },
+            navigateToCastBestOfMovie = { actorId, actorName ->
+                navController.navigate(
+                    CastBestOfMovieRoute(actorId, actorName)
+                )
+            },
+            navigateToCastGallery = { actorId, actorName ->
+                navController.navigate(
+                    CastGalleryRoute(actorId, actorName)
+                )
+            }
+        )
     }
 }

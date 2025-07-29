@@ -18,7 +18,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.NavHostController
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.moscow.cineverse.component.MoviePosterCard
@@ -27,32 +26,30 @@ import com.moscow.cineverse.designSystem.component.MovieScaffold
 import com.moscow.cineverse.designSystem.component.ViewMode
 import com.moscow.cineverse.designSystem.component.ViewModeToggle
 import com.moscow.cineverse.mapper.toMediaItemUi
-import com.moscow.cineverse.navigation.LocalNavController
-import com.moscow.cineverse.navigation.routes.MovieDetailsRoute
 import com.moscow.cinverse.presentation.R
 import com.moscow.domain.model.Movie
 
 @Composable
 fun RecommendationMoviesScreen(
-    movieId: Int,
-    title: String,
     modifier: Modifier = Modifier,
-    navController: NavHostController = LocalNavController.current,
     viewModel: RecommendationsMoviesViewModel = hiltViewModel(),
-) {
-    val recommendations = viewModel.getRecommendations(movieId).collectAsLazyPagingItems()
+    navigateBack: () -> Unit,
+    navigateToMovieDetails: (Int) -> Unit,
+
+    ) {
+    val recommendations = viewModel.getRecommendations().collectAsLazyPagingItems()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     LaunchedEffect(viewModel) {
         viewModel.uiEffect.collect { event ->
             when(event){
                 RecommendationMoviesEffect.NavigateBack -> {
-                    navController.popBackStack()
+                    navigateBack()
                 }
 
                 is RecommendationMoviesEffect.MovieClicked -> {
-                    navController.navigate(
-                        MovieDetailsRoute(event.movieId)
+                    navigateToMovieDetails(
+                        event.movieId,
                     )
                 }
 
@@ -67,7 +64,7 @@ fun RecommendationMoviesScreen(
         recommendations = recommendations,
         interactionListener = viewModel,
         modifier = modifier,
-        title = title
+        title = uiState.movieTitle
     )
 }
 

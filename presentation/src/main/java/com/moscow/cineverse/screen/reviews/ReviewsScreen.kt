@@ -11,7 +11,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavHostController
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import coil3.compose.rememberAsyncImagePainter
@@ -21,24 +20,23 @@ import com.moscow.cineverse.designSystem.component.movieSeriesDetails.MovieRevie
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.mapper.formatReviewDate
 import com.moscow.cineverse.mapper.toUi
-import com.moscow.cineverse.navigation.LocalNavController
 import com.moscow.cinverse.presentation.R
 import com.moscow.domain.model.Review
 
 @Composable
 fun ReviewsScreen(
-    movieId:Int,
-    isMovie: Boolean,
     modifier: Modifier = Modifier,
     viewModel: ReviewsViewModel = hiltViewModel(),
-    navController: NavHostController = LocalNavController.current
+    navigateBack: () -> Unit,
     ) {
-    val reviewsFlow = viewModel.getPagedReviews(movieId, isMovie).collectAsLazyPagingItems()
+    val reviewsFlow = viewModel.getPagedReviews().collectAsLazyPagingItems()
 
     LaunchedEffect(viewModel) {
         viewModel.uiEffect.collect { event ->
             when(event){
-                ReviewsEffect.NavigateBack -> navController::navigateUp
+                ReviewsEffect.NavigateBack -> {
+                    navigateBack()
+                }
                 is ReviewsEffect.ShowError -> {}
             }
 

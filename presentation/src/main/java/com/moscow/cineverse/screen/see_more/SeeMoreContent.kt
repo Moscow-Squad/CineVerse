@@ -15,7 +15,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
@@ -23,7 +22,6 @@ import androidx.paging.compose.LazyPagingItems
 import com.moscow.cineverse.common_ui_state.MediaItemUiState
 import com.moscow.cineverse.component.MoviePosterCard
 import com.moscow.cineverse.component.NoInternetScreen
-import com.moscow.cineverse.designSystem.component.EmptyState
 import com.moscow.cineverse.designSystem.component.MovieAppBar
 import com.moscow.cineverse.designSystem.component.MovieCircularProgressBar
 import com.moscow.cineverse.designSystem.component.MovieScaffold
@@ -31,7 +29,6 @@ import com.moscow.cineverse.designSystem.component.ViewMode
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.screen.explore.component.ViewModeToggleButton
 import com.moscow.cineverse.screen.home.HomeFeaturedItems
-import com.moscow.cinverse.presentation.R
 
 @Composable
 fun <T : Any> SeeMoreContent(
