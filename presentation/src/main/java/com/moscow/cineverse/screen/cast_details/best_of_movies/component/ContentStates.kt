@@ -1,4 +1,4 @@
-package com.moscow.cineverse.screen.castDetails.best0fmovies.component
+package com.moscow.cineverse.screen.cast_details.best_of_movies.component
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -22,8 +22,8 @@ import com.moscow.cineverse.designSystem.component.MovieCircularProgressBar
 import com.moscow.cineverse.designSystem.component.MovieText
 import com.moscow.cineverse.designSystem.component.ViewMode
 import com.moscow.cineverse.designSystem.theme.Theme
-import com.moscow.cineverse.screen.castDetails.best0fmovies.ShowAllActorMoviesInteractionListener
-import com.moscow.cineverse.screen.castDetails.best0fmovies.ShowAllActorMoviesState
+import com.moscow.cineverse.screen.cast_details.best_of_movies.ShowAllActorMoviesInteractionListener
+import com.moscow.cineverse.screen.cast_details.best_of_movies.ShowAllActorMoviesState
 import com.moscow.cinverse.presentation.R
 
 @Composable

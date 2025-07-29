@@ -1,4 +1,4 @@
-package com.moscow.cineverse.screen.castDetails
+package com.moscow.cineverse.screen.cast_details
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -17,14 +17,14 @@ import androidx.navigation.NavHostController
 import com.moscow.cineverse.designSystem.component.MovieAppBar
 import com.moscow.cineverse.designSystem.component.MovieScaffold
 import com.moscow.cineverse.navigation.LocalNavController
-import com.moscow.cineverse.screen.castDetails.components.ActorBiographySection
-import com.moscow.cineverse.screen.castDetails.components.ActorGallerySection
-import com.moscow.cineverse.screen.castDetails.components.ActorMainDetailsSection
-import com.moscow.cineverse.screen.castDetails.components.ActorMoviesSection
-import com.moscow.cineverse.screen.castDetails.components.CastDetailsEffectHandlerWithContext
-import com.moscow.cineverse.screen.castDetails.components.EmptyContent
-import com.moscow.cineverse.screen.castDetails.components.ErrorContent
-import com.moscow.cineverse.screen.castDetails.components.LoadingContent
+import com.moscow.cineverse.screen.cast_details.components.ActorBiographySection
+import com.moscow.cineverse.screen.cast_details.components.ActorGallerySection
+import com.moscow.cineverse.screen.cast_details.components.ActorMainDetailsSection
+import com.moscow.cineverse.screen.cast_details.components.ActorMoviesSection
+import com.moscow.cineverse.screen.cast_details.components.CastDetailsEffectHandlerWithContext
+import com.moscow.cineverse.screen.cast_details.components.EmptyContent
+import com.moscow.cineverse.screen.cast_details.components.ErrorContent
+import com.moscow.cineverse.screen.cast_details.components.LoadingContent
 
 @Composable
 fun CastDetailsScreen(

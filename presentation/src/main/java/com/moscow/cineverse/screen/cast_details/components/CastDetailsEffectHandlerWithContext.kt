@@ -1,4 +1,4 @@
-package com.moscow.cineverse.screen.castDetails.components
+package com.moscow.cineverse.screen.cast_details.components
 
 import android.content.Intent
 import androidx.core.net.toUri
@@ -6,7 +6,7 @@ import androidx.navigation.NavHostController
 import com.moscow.cineverse.navigation.routes.CastBestOfMovieRoute
 import com.moscow.cineverse.navigation.routes.CastGalleryRoute
 import com.moscow.cineverse.navigation.routes.MovieDetailsRoute
-import com.moscow.cineverse.screen.castDetails.CastDetailsEffect
+import com.moscow.cineverse.screen.cast_details.CastDetailsEffect
 
 object CastDetailsEffectHandlerWithContext {
 

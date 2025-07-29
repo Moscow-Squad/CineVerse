@@ -1,4 +1,4 @@
-package com.moscow.cineverse.screen.castDetails
+package com.moscow.cineverse.screen.cast_details
 
 import com.moscow.cineverse.designSystem.component.cast_details.SocialMediaLinks
 import com.moscow.domain.model.ActorDetails

@@ -1,4 +1,4 @@
-package com.moscow.cineverse.screen.castDetails
+package com.moscow.cineverse.screen.cast_details
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope

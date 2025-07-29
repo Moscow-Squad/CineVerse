@@ -1,4 +1,4 @@
-package com.moscow.cineverse.screen.castDetails.components
+package com.moscow.cineverse.screen.cast_details.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable

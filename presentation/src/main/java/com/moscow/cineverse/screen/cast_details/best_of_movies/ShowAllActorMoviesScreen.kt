@@ -1,4 +1,4 @@
-package com.moscow.cineverse.screen.castDetails.best0fmovies
+package com.moscow.cineverse.screen.cast_details.best_of_movies
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,9 +16,9 @@ import com.moscow.cineverse.designSystem.component.MovieScaffold
 import com.moscow.cineverse.designSystem.component.ViewModeToggle
 import com.moscow.cineverse.navigation.LocalNavController
 import com.moscow.cineverse.navigation.routes.MovieDetailsRoute
-import com.moscow.cineverse.screen.castDetails.best0fmovies.component.ErrorContent
-import com.moscow.cineverse.screen.castDetails.best0fmovies.component.LoadingContent
-import com.moscow.cineverse.screen.castDetails.best0fmovies.component.SuccessContent
+import com.moscow.cineverse.screen.cast_details.best_of_movies.component.ErrorContent
+import com.moscow.cineverse.screen.cast_details.best_of_movies.component.LoadingContent
+import com.moscow.cineverse.screen.cast_details.best_of_movies.component.SuccessContent
 
 @Composable
 fun ShowAllActorMoviesScreen(

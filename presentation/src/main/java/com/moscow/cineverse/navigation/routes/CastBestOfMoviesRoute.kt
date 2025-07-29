@@ -1,11 +1,8 @@
 package com.moscow.cineverse.navigation.routes
 
 import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
-import androidx.navigation.toRoute
-import com.moscow.cineverse.navigation.LocalNavController
-import com.moscow.cineverse.screen.castDetails.best0fmovies.ShowAllActorMoviesScreen
+import com.moscow.cineverse.screen.cast_details.best_of_movies.ShowAllActorMoviesScreen
 import kotlinx.serialization.Serializable
 
 @Serializable

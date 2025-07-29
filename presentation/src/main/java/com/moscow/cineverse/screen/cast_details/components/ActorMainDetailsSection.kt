@@ -1,4 +1,4 @@
-package com.moscow.cineverse.screen.castDetails.components
+package com.moscow.cineverse.screen.cast_details.components
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,8 +15,8 @@ import com.moscow.cineverse.designSystem.component.SectionTitle
 import com.moscow.cineverse.designSystem.component.ViewMode
 import com.moscow.cineverse.designSystem.component.cast_details.GallerySection
 import com.moscow.cineverse.designSystem.component.cast_details.MainDetails
-import com.moscow.cineverse.screen.castDetails.CastDetailsInteractionListener
-import com.moscow.cineverse.screen.castDetails.CastDetailsUiState
+import com.moscow.cineverse.screen.cast_details.CastDetailsInteractionListener
+import com.moscow.cineverse.screen.cast_details.CastDetailsUiState
 import com.moscow.cineverse.mapper.toFormattedBirthDate
 import com.moscow.cineverse.mapper.toMediaItemUi
 

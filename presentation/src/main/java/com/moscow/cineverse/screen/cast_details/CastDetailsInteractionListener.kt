@@ -1,4 +1,4 @@
-package com.moscow.cineverse.screen.castDetails
+package com.moscow.cineverse.screen.cast_details
 
 import com.moscow.domain.model.Movie
 
