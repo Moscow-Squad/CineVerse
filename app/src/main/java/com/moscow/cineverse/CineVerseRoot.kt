@@ -1,7 +1,6 @@
 package com.moscow.cineverse
 
 import android.annotation.SuppressLint
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.material3.Scaffold
@@ -34,21 +33,16 @@ fun CineVerseRoot(navViewModel: NavViewModel) {
         Scaffold(
             modifier = Modifier
                 .fillMaxSize()
-                .navigationBarsPadding(),
-            bottomBar = {
-                AnimatedVisibility(
-                    visible = isNavBarVisible
-                ) {
-                    NavBar(
-                        selectedItem = destinations.values.elementAt(navGraphIndex),
-                        onItemClick = { index, _ ->
-                            val targetGraph = destinations.keys.elementAt(index)
-                            navController.navigateToNewGraph(targetGraph)
-                        }
-                    )
-                }
-            }
-        ) { paddingValues ->
+                .navigationBarsPadding(), bottomBar = {
+
+                if (isNavBarVisible) NavBar(
+                    selectedItem = destinations.values.elementAt(navGraphIndex),
+                    onItemClick = { index, _ ->
+                        val targetGraph = destinations.keys.elementAt(index)
+                        navController.navigateToNewGraph(targetGraph)
+                    })
+
+            }) { paddingValues ->
             CineVerseNavGraph(
                 modifier = Modifier,
                 navController = navController,
