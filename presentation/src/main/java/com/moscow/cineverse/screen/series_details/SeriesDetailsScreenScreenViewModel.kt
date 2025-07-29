@@ -1,6 +1,5 @@
 package com.moscow.cineverse.screen.series_details
 
-import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.cineverse.designSystem.component.ViewMode
@@ -46,7 +45,6 @@ class SeriesDetailsScreenScreenViewModel @Inject constructor(
                 updateState { it.copy(seriesDetail = detail.toUi(), isLoading = false) }
             },
             onError = { error ->
-                Log.d("ddddddddddd", error.message.toString())
                 updateState { it.copy(errorMessage = error.message.toString(), isLoading = false) }
             }
         )
@@ -66,7 +64,6 @@ class SeriesDetailsScreenScreenViewModel @Inject constructor(
                 }
             },
             onError = { error ->
-                Log.d("ddddddddddd", error.message.toString())
                 updateState { it.copy(errorMessage = error.message.toString(), isLoading = false) }
             }
         )
@@ -80,7 +77,6 @@ class SeriesDetailsScreenScreenViewModel @Inject constructor(
                 updateState { it.copy(reviews = reviews.map { it.toUi() }, isLoading = false) }
             },
             onError = { error ->
-                Log.d("ddddddddddd", error.message.toString())
                 updateState { it.copy(errorMessage = error.message.toString(), isLoading = false) }
             }
         )

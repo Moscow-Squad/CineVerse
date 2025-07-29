@@ -74,4 +74,5 @@
     <string name="browse_everything_message">استكشف كل الأفلام والمسلسلات حسب النوع أو ابحث عن اللي يعجبك</string>
     <string name="guest">ضيف</string>
     <string name="seasons">المواسم</string>
+    <string name="latest_seasons">اخر المواسم</string>
 </resources>

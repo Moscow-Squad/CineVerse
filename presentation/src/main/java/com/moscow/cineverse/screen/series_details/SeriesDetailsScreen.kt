@@ -55,7 +55,6 @@ import com.moscow.cineverse.designSystem.component.movieSeriesDetails.RatingSect
 import com.moscow.cineverse.designSystem.component.movieSeriesDetails.StaffInfoSection
 import com.moscow.cineverse.designSystem.component.movieSeriesDetails.StarCastSection
 import com.moscow.cineverse.designSystem.theme.Theme
-import com.moscow.cineverse.mapper.toFormattedReleasedDate
 import com.moscow.cineverse.screen.series_details.component.SeasonCard
 import com.moscow.cinverse.presentation.R
 
@@ -216,7 +215,7 @@ fun SeriesDetailsContent(
                     }
                     item {
                         SectionTitle(
-                            title = "Latest Seasons",
+                            title = stringResource(R.string.latest_seasons),
                             onClick = {interactionListener.onShowMoreSeasonsClicked(uiState.seriesDetail.id)},
                             modifier = Modifier.padding(
                                 start = 16.dp,
@@ -293,9 +292,8 @@ fun SeriesDetailsContent(
                                         movie = series,
                                         viewMode = ViewMode.GRID,
                                         showRating = true,
-                                        onMovieClick = {},
+                                        onMovieClick = {interactionListener.onSeriesClicked(series.id)},
                                         showTitle = true,
-                                        modifier = modifier.clickable{ interactionListener.onSeriesClicked(series.id) },
                                         getTitleOverride = { it.title.take(15) + if (it.title.length > 15) "…" else "" }
                                     )
                                 }
