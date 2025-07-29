@@ -10,4 +10,5 @@ interface MovieDetailsInteractionListener {
     fun onDismissOrCancelRatingBottomSheet()
     fun onRatingSubmit(rating: Int, movieId: Int)
     fun onActorClicked(actorId: Int)
+    fun onMovieClicked(movieId: Int)
 }

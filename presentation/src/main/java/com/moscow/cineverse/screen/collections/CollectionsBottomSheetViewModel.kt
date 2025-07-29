@@ -3,11 +3,12 @@ package com.moscow.cineverse.screen.collections
 import androidx.lifecycle.SavedStateHandle
 import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.cineverse.navigation.routes.CollectionsBottomSheetRoute
-import com.moscow.domain.model.MediaType
+import com.moscow.cineverse.screen.collections.CollectionsBottomSheetEffect.OnLoginClicked
 import com.moscow.domain.model.Collection
+import com.moscow.domain.model.MediaType
 import com.moscow.domain.usecase.collection.AddMediaItemToCollectionUseCase
+import com.moscow.domain.usecase.collection.GetCurrentUserUseCase
 import com.moscow.domain.usecase.collection.GetUserCollectionsUseCase
-import kotlin.collections.take
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -15,6 +16,7 @@ import javax.inject.Inject
 class CollectionsBottomSheetViewModel @Inject constructor(
     private val getUserCollections: GetUserCollectionsUseCase,
     private val addMediaItemToCollectionUseCase: AddMediaItemToCollectionUseCase,
+    private val getCurrentUserUseCase: GetCurrentUserUseCase,
     savedStateHandle: SavedStateHandle
 ) : BaseViewModel<CollectionsBottomSheetScreenState, CollectionsBottomSheetEffect>(
     CollectionsBottomSheetScreenState()
@@ -25,6 +27,22 @@ class CollectionsBottomSheetViewModel @Inject constructor(
         savedStateHandle.get<String>(CollectionsBottomSheetRoute.MEDIA_TYPE) ?: "movie"
     )
 
+    private fun isUserLoggedIn() {
+        launchWithResult(
+            action = { getCurrentUserUseCase.isLoggedIn() },
+            onSuccess = { isLoggedIn ->
+                isLoading(false)
+                updateState { it.copy(isLoggedIn = isLoggedIn) }
+            },
+            onError = { e -> isLoading(false) },
+            onStart = { isLoading(true) },
+            onFinally = {}
+        )
+    }
+
+    private fun isLoading(loading: Boolean) {
+        updateState { it.copy(isLoading = loading) }
+    }
     override fun onAddNewCollectionClick() {
         TODO("should open new bottom sheet to login or to create new collection")
     }
@@ -77,10 +95,11 @@ class CollectionsBottomSheetViewModel @Inject constructor(
 
 
     override fun onCreateCollectionClicked() {
-        updateState { it.copy(createCollection = true) }
-
+        isUserLoggedIn()
     }
-
+    override fun navigateToLogin() {
+        sendEvent(OnLoginClicked)
+    }
     override fun onRefresh() {
         loadUserCollections()
     }

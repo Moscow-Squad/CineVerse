@@ -7,9 +7,10 @@ data class CollectionsBottomSheetScreenState(
     val errorMessage: String = "",
     val showBottomSheet: Boolean = false,
     val collections: List<CollectionUiState> = emptyList(),
-    val createCollection: Boolean = false,
-    val showProcessIndicator: Boolean = false
-)
+    val showProcessIndicator: Boolean = false,
+    val isLoggedIn: Boolean? = null,
+
+    )
 
 data class CollectionUiState(
     val id: Int,

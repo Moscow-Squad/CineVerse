@@ -136,7 +136,7 @@ fun SeriesDetailsContent(
                 verticalArrangement = Arrangement.Center
             ) {
                 MovieText(
-                    text = "Error in loading series details",
+                    text = stringResource(R.string.error_in_loading_series_details),
                     color = Theme.colors.shade.primary
                 )
                 Spacer(modifier = Modifier.height(16.dp))
@@ -174,7 +174,8 @@ fun SeriesDetailsContent(
                                 posterUrl = detail.posterPath,
                                 title = detail.title,
                                 animatedVisibilityScope = this@AnimatedContent,
-                                sharedTransitionScope = this@SharedTransitionLayout
+                                sharedTransitionScope = this@SharedTransitionLayout,
+                                onSaveClick = { interactionListener.addToCollection() }
                             )
                         }
                     }
@@ -214,7 +215,7 @@ fun SeriesDetailsContent(
                     }
                     item {
                         SectionTitle(
-                            title = "Latest Seasons",
+                            title = stringResource(R.string.latest_seasons),
                             onClick = {interactionListener.onShowMoreSeasonsClicked(uiState.seriesDetail.id)},
                             modifier = Modifier.padding(
                                 start = 16.dp,
@@ -291,7 +292,9 @@ fun SeriesDetailsContent(
                                         movie = series,
                                         viewMode = ViewMode.GRID,
                                         showRating = true,
-                                        onMovieClick = {},
+                                        onMovieClick = {
+                                            interactionListener.onSeriesClicked(series.id)
+                                        },
                                         showTitle = true,
                                         modifier = modifier.clickable{ interactionListener.onSeriesClicked(series.id) },
                                         getTitleOverride = { it.title.take(15) + if (it.title.length > 15) "…" else "" }
@@ -305,7 +308,7 @@ fun SeriesDetailsContent(
                             icon = Theme.icons.dueTone.star,
                             title = stringResource(R.string.give_it_stars),
                             caption = stringResource(R.string.let_the_world_know_how_you_felt),
-                            onClickArrow = interactionListener::showRatingBottomSheet,
+                            onClick = interactionListener::showRatingBottomSheet,
                             ratingStars = uiState.starsRating,
                             modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 24.dp),
                         )

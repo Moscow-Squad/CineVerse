@@ -68,6 +68,7 @@ fun MovieCollapsedHeaderSection(
     uiState: MovieScreenState,
     animatedVisibilityScope: AnimatedVisibilityScope,
     sharedTransitionScope: SharedTransitionScope,
+    interactionListener: MovieDetailsInteractionListener,
 ) {
     uiState.movieDetailsUiState?.let {
         MainMovieCard(
@@ -75,10 +76,12 @@ fun MovieCollapsedHeaderSection(
             title = it.title,
             animatedVisibilityScope = animatedVisibilityScope,
             sharedTransitionScope = sharedTransitionScope,
+            onSaveClick = {
+                interactionListener.onAddToCollection(it.id)
+            }
         )
     }
 }
-
 
 @Composable
 fun MovieStorylineSection(

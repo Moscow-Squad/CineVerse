@@ -51,5 +51,6 @@
     <string name="unsuitable_image">"unsuitable image "</string>
     <string name="your_collections">Your Collections</string>
     <string name="shows">Shows</string>
+    <string name="did_you_watch_it">Did You Watch it?</string>
 
 </resources>
