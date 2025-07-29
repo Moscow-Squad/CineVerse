@@ -175,7 +175,8 @@ fun SeriesDetailsContent(
                                 posterUrl = detail.posterPath,
                                 title = detail.title,
                                 animatedVisibilityScope = this@AnimatedContent,
-                                sharedTransitionScope = this@SharedTransitionLayout
+                                sharedTransitionScope = this@SharedTransitionLayout,
+                                onSaveClick = { interactionListener.addToCollection() }
                             )
                         }
                     }
