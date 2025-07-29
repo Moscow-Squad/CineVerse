@@ -101,7 +101,7 @@ private fun CollectionsBottomSheetContent(
         onAddNewCollectionClick = onAddNewCollectionClick
     ) {
         when {
-            uiState.createCollection -> {
+            uiState.isLoggedIn == false -> {
                 MessageInfoBox(
                     title = stringResource(R.string.you_re_almost_there),
                     description = stringResource(R.string.log_in_to_save_movies_create_collections_and_get_personalized_recommendations),
@@ -111,7 +111,7 @@ private fun CollectionsBottomSheetContent(
                     onClickFirstButton = onNotNow,
                     secondButtonText = stringResource(R.string.log_in),
                     onClickSecondButton = { interactionListener.navigateToLogin() },
-                    modifier = Modifier.padding(bottom = 16.dp)
+                    modifier = Modifier.padding(bottom = 16.dp),
                 )
             }
 
@@ -165,7 +165,8 @@ private fun CollectionsBottomSheetContent(
                         onClickFirstButton = {},
                         secondButtonText = stringResource(R.string.create_collection),
                         onClickSecondButton = { interactionListener.onCreateCollectionClicked() },
-                        modifier = Modifier.padding(bottom = 16.dp)
+                        modifier = Modifier.padding(bottom = 16.dp),
+                        firstButtonLoading = uiState.isLoading
                     )
                 } else {
                     LazyColumn(
