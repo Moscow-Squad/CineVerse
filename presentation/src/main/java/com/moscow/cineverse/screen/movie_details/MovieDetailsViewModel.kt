@@ -160,6 +160,10 @@ class MovieDetailsViewModel @Inject constructor(
         sendEvent(MovieDetailsScreenEffect.NavigateCastDetails(actorId))
     }
 
+    override fun onMovieClicked(movieId: Int) {
+        sendEvent(MovieDetailsScreenEffect.NavigateMovieDetails(movieId))
+    }
+
     override fun showRatingBottomSheet() {
         updateState { it.copy(showRatingBottomSheet = true) }
     }
