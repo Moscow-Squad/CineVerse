@@ -148,7 +148,7 @@ class LoginViewModel(
     private fun validateInput(
         input: String,
         isPassword: Boolean,
-        delayMillis: Long = 500,
+        delayMillis: Long = 100,
         onResult: (StringValue?) -> Unit
     ): Job {
         return viewModelScope.launch {
