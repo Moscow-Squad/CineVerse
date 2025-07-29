@@ -24,6 +24,7 @@ import com.moscow.cineverse.mapper.toFormattedReleasedDate
 import com.moscow.cineverse.mapper.toHourMinuteFormat
 import com.moscow.cineverse.screen.movie_details.MovieDetailsInteractionListener
 import com.moscow.cineverse.screen.movie_details.MovieScreenState
+import com.moscow.cinverse.presentation.R
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
@@ -44,7 +45,7 @@ fun MovieHeaderSection(
             rating = it.rating.toString(),
             duration = it.duration.toHourMinuteFormat(),
             releaseDate = it.releaseDate.toFormattedReleasedDate(),
-            type = stringResource(com.moscow.cinverse.presentation.R.string.movie),
+            type = stringResource(R.string.movie),
             onSaveClick = {
                 interactionListener.onAddToCollection(it.id)
             },
@@ -79,7 +80,7 @@ fun MovieStorylineSection(
 
     uiState.movieDetailsUiState?.let { movieDetails ->
         Text(
-            text = stringResource(com.moscow.cinverse.presentation.R.string.storyline),
+            text = stringResource(R.string.storyline),
             style = Theme.textStyle.title.small,
             color = Theme.colors.shade.primary,
             modifier = modifier.padding(16.dp, top = 24.dp, bottom = 8.dp),

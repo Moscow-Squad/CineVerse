@@ -27,9 +27,9 @@ import com.moscow.cineverse.designSystem.component.MovieCircularProgressBar
 import com.moscow.cineverse.designSystem.component.MovieScaffold
 import com.moscow.cineverse.designSystem.component.MovieText
 import com.moscow.cineverse.designSystem.component.ViewMode
-import com.moscow.cineverse.designSystem.component.ViewModeToggle
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.mapper.toUi
+import com.moscow.cineverse.screen.explore.component.ViewModeToggleButton
 import com.moscow.cineverse.screen.series_details.SeriesDetailsScreenInteractionListener
 import com.moscow.cineverse.screen.series_details.SeriesDetailsScreenScreenViewModel
 import com.moscow.cineverse.screen.series_details.SeriesDetailsScreenState
@@ -125,7 +125,7 @@ fun SeriesRecommendationScreenContent(
                             }
                         }
                     }
-                    ViewModeToggle(
+                    ViewModeToggleButton(
                         selectedMode = uiState.viewMode,
                         onModeSelected = interactionListener::onViewModeChanged,
                         modifier = Modifier
