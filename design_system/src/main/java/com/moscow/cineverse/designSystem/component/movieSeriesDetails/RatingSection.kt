@@ -44,7 +44,7 @@ fun RatingSection(
         modifier = modifier
     ) {
         Text(
-            text = "Did You Watch it?",
+            text = stringResource(R.string.did_you_watch_it),
             style = Theme.textStyle.title.small,
             color = Theme.colors.shade.primary
         )
