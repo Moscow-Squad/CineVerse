@@ -1,8 +1,7 @@
 package com.moscow.cineverse.screen.home
 
+
 import androidx.lifecycle.viewModelScope
-
-
 import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.cineverse.common_ui_state.MediaItemUiState
 import com.moscow.cineverse.mapper.toGenreUi
@@ -11,12 +10,14 @@ import com.moscow.domain.model.Genre
 import com.moscow.domain.model.MediaType
 import com.moscow.domain.model.Movie
 import com.moscow.domain.model.Series
+import com.moscow.domain.model.UserType
 import com.moscow.domain.usecase.genre.GenreUseCase
 import com.moscow.domain.usecase.home.GetMatchesYourVibesMoviesUseCase
 import com.moscow.domain.usecase.home.GetRecentlyReleasedMoviesUseCase
 import com.moscow.domain.usecase.home.GetTopRatedTVShowsUseCase
 import com.moscow.domain.usecase.home.GetTrendingMoviesUseCase
 import com.moscow.domain.usecase.home.GetUpcomingMoviesUseCase
+import com.moscow.domain.usecase.local.GetUserDetailsUseCase
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
@@ -27,7 +28,8 @@ class HomeViewModel(
     private val getTopRatedTVShowsUseCase: GetTopRatedTVShowsUseCase,
     private val getUpcomingMoviesUseCase: GetUpcomingMoviesUseCase,
     private val genreUseCase: GenreUseCase,
-    private val getTrendingMoviesUseCase: GetTrendingMoviesUseCase
+    private val getTrendingMoviesUseCase: GetTrendingMoviesUseCase,
+    private val getUserDetailsUseCase: GetUserDetailsUseCase
 ) : BaseViewModel<HomeUiState, HomeEvent>(HomeUiState()), HomeInteractionListener {
 
     init {
@@ -40,6 +42,7 @@ class HomeViewModel(
         viewModelScope.launch {
             getGenres()
             coroutineScope {
+                launch { getUserDetails() }
                 launch { fetchTrendingMovies() }
                 launch { fetchRecentlyReleasedMovies() }
                 launch { fetchUpcomingMovies() }
@@ -47,7 +50,30 @@ class HomeViewModel(
                 launch { fetchMatchesYourVibesMovies() }
             }
         }
+    }
 
+    private fun getUserDetails() {
+        launchWithResult(
+            action = getUserDetailsUseCase::invoke,
+            onSuccess = ::onGetUserDetailsSuccess,
+            onError = ::onGetUserDetailsError
+        )
+    }
+
+    private fun onGetUserDetailsSuccess(user: UserType) {
+        when (user) {
+            is UserType.AuthenticatedUser -> {
+                updateState { it.copy(userName = user.username) }
+            }
+
+            is UserType.GuestUser -> {
+                updateState { it.copy(userName = null) }
+            }
+        }
+    }
+
+    private fun onGetUserDetailsError(throwable: Throwable) {
+        updateState { it.copy(error = throwable.message, isLoading = false) }
     }
 
     private suspend fun getGenres() {
@@ -195,7 +221,6 @@ class HomeViewModel(
     }
 
 
-
     override fun onSeeAllClick(type: HomeFeaturedItems) {
         sendEvent(HomeEvent.SeeAllClicked(type))
     }
@@ -223,6 +248,4 @@ class HomeViewModel(
     override fun onRefresh() {
         loadHomeData()
     }
-
-
 }

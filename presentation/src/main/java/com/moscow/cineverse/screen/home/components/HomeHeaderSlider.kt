@@ -93,7 +93,7 @@ fun HomeHeaderSlider(items: List<MediaItemUiState>, modifier: Modifier = Modifie
             val textAlpha = 1f - pageOffset * 3f
 
             val isCurrentPage = pageOffset < 0.1f
-            val shadowElevation = if (isCurrentPage) 40.dp else 0.dp
+            val shadowElevation = if (isCurrentPage) 30.dp else 0.dp
 
             Box(
                 modifier = Modifier

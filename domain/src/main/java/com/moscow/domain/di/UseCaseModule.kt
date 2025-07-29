@@ -13,6 +13,7 @@ import com.moscow.domain.usecase.home.GetRecentlyReleasedMoviesUseCase
 import com.moscow.domain.usecase.home.GetTopRatedTVShowsUseCase
 import com.moscow.domain.usecase.home.GetTrendingMoviesUseCase
 import com.moscow.domain.usecase.home.GetUpcomingMoviesUseCase
+import com.moscow.domain.usecase.local.GetUserDetailsUseCase
 import com.moscow.domain.usecase.login.LoginAsGuestUseCase
 import com.moscow.domain.usecase.login.LoginWithUsernameAndPasswordUseCase
 import com.moscow.domain.usecase.movie.GetMovieByGenreIdUseCase
@@ -74,4 +75,5 @@ val useCaseModule = module {
     singleOf(::GetRecentlyReleasedMoviesUseCase)
     singleOf(::GetTopRatedTVShowsUseCase)
     singleOf(::GetUpcomingMoviesUseCase)
+    singleOf(::GetUserDetailsUseCase)
 }

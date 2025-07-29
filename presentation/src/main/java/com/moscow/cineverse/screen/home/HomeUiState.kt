@@ -6,7 +6,7 @@ data class HomeUiState(
     val isLoading: Boolean = false,
     val error: String? = null,
     val genres: List<GenreUi> = emptyList(),
-    val userName: String? = null,
+    val userName: String? = "",
     val sliderItems: List<MediaItemUiState> = emptyList(),
     val recentlyReleasedMovies: List<MediaItemUiState> = emptyList(),
     val upcomingMovies: List<MediaItemUiState> = emptyList(),
@@ -19,7 +19,6 @@ data class HomeUiState(
         val id: Int,
         val name: String
     )
-
 }
 
 
