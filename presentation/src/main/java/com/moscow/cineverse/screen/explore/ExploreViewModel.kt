@@ -190,7 +190,7 @@ class ExploreViewModel @Inject constructor(
             .filter { it.isNotBlank() }
             .onEach { keyword ->
                 getSuggestions(keyword)
-                updateState { it.copy(showHistory = false) }
+                updateState { it.copy(showHistory = keyword.isBlank()) }
             }
             .launchIn(viewModelScope)
     }
@@ -209,7 +209,6 @@ class ExploreViewModel @Inject constructor(
         viewModelScope.launch {
             updateState { it.copy(remoteSuggestions = suggestion) }
         }
-        updateDisplayedSuggestions()
     }
 
     override fun onSearchBarClickedOn() {
@@ -230,7 +229,6 @@ class ExploreViewModel @Inject constructor(
     private fun onGetHistoryDataSuccess(suggestions: List<String>) {
         val suggestions = suggestions.map { SuggestItemUiState(it, isHistory = true) }
         updateState { it.copy(localSuggestions = suggestions, showHistory = true) }
-        updateDisplayedSuggestions()
     }
 
     private fun onGetHistoryDataFailed(e: Throwable) {
@@ -266,7 +264,6 @@ class ExploreViewModel @Inject constructor(
                 remoteSuggestions = emptyList()
             )
         }
-        updateDisplayedSuggestions()
     }
 
     override fun onSearchWordDetected(searchKeyWord: List<String>) {
@@ -278,26 +275,6 @@ class ExploreViewModel @Inject constructor(
         }
     }
 
-    private fun updateDisplayedSuggestions() {
-        updateState { state ->
-            val filteredLocalSuggestions = if (state.searchKeyWord.isBlank()) state.localSuggestions
-            else state.localSuggestions.filter {
-                it.title.contains(
-                    state.searchKeyWord,
-                    ignoreCase = true
-                )
-            }
-
-            val mappedRemoteSuggestions = state.remoteSuggestions
-                .map { SuggestItemUiState(it, isHistory = false) }
-
-
-            state.copy(
-                localSuggestions = filteredLocalSuggestions,
-                remoteSuggestions = mappedRemoteSuggestions.map { it.title }
-            )
-        }
-    }
 
     override fun onClickSuggestion(suggestion: SuggestItemUiState) {
         updateState { it.copy(searchKeyWord = suggestion.title) }
