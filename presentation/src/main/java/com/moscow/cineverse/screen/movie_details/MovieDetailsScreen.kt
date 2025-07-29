@@ -2,8 +2,16 @@ package com.moscow.cineverse.screen.movie_details
 
 
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionLayout
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.spring
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
+import androidx.compose.animation.with
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -104,7 +112,7 @@ private fun MovieDetailsContent(
     }
 }
 
-@OptIn(ExperimentalSharedTransitionApi::class)
+@OptIn(ExperimentalSharedTransitionApi::class, ExperimentalAnimationApi::class)
 @Composable
 private fun MovieDetailsMainContent(
     uiState: MovieScreenState,
@@ -115,7 +123,7 @@ private fun MovieDetailsMainContent(
     val scrollState = rememberLazyListState()
     val isCollapsed by remember {
         derivedStateOf {
-            scrollState.firstVisibleItemScrollOffset > 10 || scrollState.firstVisibleItemIndex > 0
+            scrollState.firstVisibleItemScrollOffset > 10
         }
     }
 
@@ -125,7 +133,32 @@ private fun MovieDetailsMainContent(
         SharedTransitionLayout {
             AnimatedContent(
                 targetState = isCollapsed,
-                label = "basic_transition"
+                transitionSpec = {
+                    slideInVertically(
+                        animationSpec = spring(
+                            dampingRatio = Spring.DampingRatioMediumBouncy,
+                            stiffness = Spring.StiffnessLow
+                        ),
+                        initialOffsetY = { fullHeight -> fullHeight }
+                    ) + fadeIn(
+                        animationSpec = spring(
+                            dampingRatio = Spring.DampingRatioMediumBouncy,
+                            stiffness = Spring.StiffnessLow
+                        )
+                    ) with
+                            slideOutVertically(
+                                animationSpec = spring(
+                                    dampingRatio = Spring.DampingRatioMediumBouncy,
+                                    stiffness = Spring.StiffnessLow
+                                ),
+                                targetOffsetY = { fullHeight -> -fullHeight }
+                            ) + fadeOut(
+                        animationSpec = spring(
+                            dampingRatio = Spring.DampingRatioMediumBouncy,
+                            stiffness = Spring.StiffnessLow
+                        )
+                    )
+                }
             ) { target ->
                 if (!target) {
                     MovieHeaderSection(
@@ -150,43 +183,27 @@ private fun MovieDetailsMainContent(
             modifier = Modifier.background(Theme.colors.background.screen)
         ) {
             item {
-                MovieStorylineSection(
-                    uiState = uiState
+                MovieStorylineSection(uiState = uiState)
+            }
+            item {
+                MovieCastSection(uiState = uiState, interactionListener = interactionListener)
+            }
+            item {
+                MovieStaffInfoSection(uiState = uiState)
+            }
+            item {
+                MovieRecommendationsSection(
+                    uiState = uiState,
+                    interactionListener = interactionListener
                 )
             }
-
-                    item {
-                        MovieCastSection(
-                            uiState = uiState,
-                            interactionListener = interactionListener
-                        )
-                    }
-
-                    item {
-                        MovieStaffInfoSection(uiState = uiState)
-                    }
-
-                    item {
-                        MovieRecommendationsSection(
-                            uiState = uiState,
-                            interactionListener = interactionListener
-                        )
-                    }
-
-                    item {
-                        MovieRatingSection(
-                            uiState = uiState,
-                            interactionListener = interactionListener
-                        )
-                    }
-
-                    item {
-                        MovieReviewsSection(
-                            uiState = uiState,
-                            interactionListener = interactionListener
-                        )
-                    }
-                }
+            item {
+                MovieRatingSection(uiState = uiState, interactionListener = interactionListener)
+            }
+            item {
+                MovieReviewsSection(uiState = uiState, interactionListener = interactionListener)
+            }
+        }
 
         MovieRatingBottomSheetSection(
             uiState = uiState,
@@ -194,3 +211,4 @@ private fun MovieDetailsMainContent(
         )
     }
 }
+

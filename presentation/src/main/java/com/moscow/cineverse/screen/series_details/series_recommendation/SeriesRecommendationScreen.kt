@@ -28,7 +28,6 @@ import com.moscow.cineverse.designSystem.component.MovieButton
 import com.moscow.cineverse.designSystem.component.MovieCircularProgressBar
 import com.moscow.cineverse.designSystem.component.MovieScaffold
 import com.moscow.cineverse.designSystem.component.ViewMode
-import com.moscow.cineverse.designSystem.component.ViewModeToggle
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.mapper.toUi
 import com.moscow.cinverse.presentation.R
@@ -133,7 +132,7 @@ fun SeriesRecommendationScreenContent(
                             }
                         }
                     }
-                    ViewModeToggle(
+                    ViewModeToggleButton(
                         selectedMode = uiState.viewMode,
                         onModeSelected = interactionListener::onViewModeChanged,
                         modifier = Modifier
