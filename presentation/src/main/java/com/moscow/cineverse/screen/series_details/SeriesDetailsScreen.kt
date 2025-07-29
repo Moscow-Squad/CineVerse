@@ -45,7 +45,6 @@ import com.moscow.cineverse.designSystem.component.MovieListSection
 import com.moscow.cineverse.designSystem.component.MovieScaffold
 import com.moscow.cineverse.designSystem.component.MovieText
 import com.moscow.cineverse.designSystem.component.SectionTitle
-import com.moscow.cineverse.designSystem.component.ViewMode
 import com.moscow.cineverse.designSystem.component.movieSeriesDetails.CastCard
 import com.moscow.cineverse.designSystem.component.movieSeriesDetails.MainMovieCard
 import com.moscow.cineverse.designSystem.component.movieSeriesDetails.MovieCardDetails
@@ -287,14 +286,12 @@ fun SeriesDetailsContent(
                                 onClickShowMore = {interactionListener.onShowMoreRecommendationsClicked(uiState.seriesDetail.id, uiState.seriesDetail.title)},
                                 onClickPoster = { series -> },
                                 modifier = Modifier.padding(top = 16.dp),
+                                paddingHorizontal = 16,
                                 movieCardContent = { series, modifier, onClick ->
                                     MoviePosterCard(
                                         movie = series,
-                                        viewMode = ViewMode.GRID,
-                                        showRating = true,
                                         onMovieClick = {interactionListener.onSeriesClicked(series.id)},
-                                        showTitle = true,
-                                        getTitleOverride = { it.title.take(15) + if (it.title.length > 15) "…" else "" }
+                                        modifier = modifier
                                     )
                                 }
                             )
