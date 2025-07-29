@@ -58,14 +58,18 @@ fun MovieHeaderSection(
 fun MovieCollapsedHeaderSection(
     uiState: MovieScreenState,
     animatedVisibilityScope: AnimatedVisibilityScope,
-    sharedTransitionScope: SharedTransitionScope
+    sharedTransitionScope: SharedTransitionScope,
+    interactionListener: MovieDetailsInteractionListener,
 ) {
     uiState.movieDetailsUiState?.let {
         MainMovieCard(
             posterUrl = it.posterPath,
             title = it.title,
             animatedVisibilityScope = animatedVisibilityScope,
-            sharedTransitionScope = sharedTransitionScope
+            sharedTransitionScope = sharedTransitionScope,
+            onSaveClick = {
+                interactionListener.onAddToCollection(it.id)
+            }
         )
     }
 }

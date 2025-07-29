@@ -41,6 +41,7 @@ fun MovieDetailsScreen(
     navigateToReviews: (Int) -> Unit,
     navigateToCastDetails: (Int) -> Unit,
     navigateToCollectionsBottomSheet: (Int) -> Unit,
+    navigateToMovieDetails: (Int) -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -52,7 +53,8 @@ fun MovieDetailsScreen(
                 navigateToRecommendations = navigateToRecommendations,
                 navigateToReviews = navigateToReviews,
                 navigateToCastDetails = navigateToCastDetails,
-                navigateToCollectionsBottomSheet = navigateToCollectionsBottomSheet
+                navigateToCollectionsBottomSheet = navigateToCollectionsBottomSheet,
+                navigateToMovieDetails = navigateToMovieDetails
             )
         }
     }
@@ -131,7 +133,8 @@ private fun MovieDetailsMainContent(
                     MovieCollapsedHeaderSection(
                         uiState = uiState,
                         animatedVisibilityScope = this@AnimatedContent,
-                        sharedTransitionScope = this@SharedTransitionLayout
+                        sharedTransitionScope = this@SharedTransitionLayout,
+                        interactionListener = interactionListener,
                     )
                 }
             }
