@@ -36,10 +36,11 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-
-
-class ExploreViewModel (
+@HiltViewModel
+class ExploreViewModel @Inject constructor(
     private val searchUseCase: SearchUseCase,
     private val suggestionUseCase: SuggestionUseCase,
     private val getPopularMoviesUseCase: GetPopularMoviesUseCase,
@@ -62,6 +63,7 @@ class ExploreViewModel (
     private lateinit var _seriesSearch: Flow<PagingData<MediaItemUiState>>
     private lateinit var _actorSearch: Flow<PagingData<ActorUiState>>
 
+    // Track empty states for each tab separately
     private var isMoviesEmpty = false
     private var isSeriesEmpty = false
     private var isActorsEmpty = false
@@ -88,7 +90,7 @@ class ExploreViewModel (
                         viewModelScope.launch {
                             val isEmpty = result.isEmpty()
                             isMoviesEmpty = isEmpty
-
+                            // Update content empty state if currently on movies tab
                             if (uiState.value.selectedTab == ExploreTabsPages.MOVIES) {
                                 updateState {
                                     it.copy(isContentEmpty = isEmpty)
@@ -125,7 +127,7 @@ class ExploreViewModel (
                         viewModelScope.launch {
                             val isEmpty = result.isEmpty()
                             isSeriesEmpty = isEmpty
-
+                            // Update content empty state if currently on series tab
                             if (uiState.value.selectedTab == ExploreTabsPages.SERIES) {
                                 updateState {
                                     it.copy(isContentEmpty = isEmpty)
@@ -166,7 +168,7 @@ class ExploreViewModel (
                         viewModelScope.launch {
                             val isEmpty = result.isEmpty()
                             isActorsEmpty = isEmpty
-
+                            // Update content empty state if currently on actors tab
                             if (uiState.value.selectedTab == ExploreTabsPages.ACTORS) {
                                 updateState {
                                     it.copy(isContentEmpty = isEmpty)
