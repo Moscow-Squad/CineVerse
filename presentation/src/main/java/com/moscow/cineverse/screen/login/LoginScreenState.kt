@@ -10,5 +10,6 @@ data class LoginScreenState(
     val isLoading: Boolean = false,
     val showSignUpBottomSheet: Boolean = false,
     val urlWebView: String = "",
-    val showWebView: Boolean = false
+    val showWebView: Boolean = false,
+    val isJoinAsGuest: Boolean = false
 )

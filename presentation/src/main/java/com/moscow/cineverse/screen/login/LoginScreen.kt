@@ -175,7 +175,7 @@ private fun LoginScreenContent(
             onClick = interactionListener::onClickLogin,
             buttonColor = Theme.colors.button.primary,
             isLoading = state.isLoading,
-            enable = state.usernameError == null && state.passwordError == null
+            enable = (state.username.isNotBlank() && state.password.length >= 4) && (state.usernameError == null && state.passwordError == null)
         )
         MovieButton(
             modifier = Modifier
@@ -186,11 +186,12 @@ private fun LoginScreenContent(
             textStyle = Theme.textStyle.body.medium.medium,
             onClick = interactionListener::onClickJoinAsGuest,
             buttonColor = Theme.colors.button.secondary,
+            isLoading = state.isJoinAsGuest
         )
         Spacer(modifier = Modifier.weight(1f))
         MovieButton(
             modifier = Modifier
-                .padding(vertical = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding() + 24.dp)
+                .padding(vertical = 24.dp)
                 .align(Alignment.CenterHorizontally),
             buttonText = stringResource(com.moscow.cinverse.presentation.R.string.create_a_new_account),
             textColor = Theme.colors.button.onSecondary,
@@ -217,7 +218,6 @@ private fun LoginScreenContent(
 fun SignUpBottomSheet(interactionListener: LoginInteractionListener) {
     CineVerseBottomSheet(
         onClose = interactionListener::onDismissOrCancelSignUpBottomSheet,
-        expanded = false,
         onDismissRequest = interactionListener::onDismissOrCancelSignUpBottomSheet,
         showCancelIcon = false,
     ) {

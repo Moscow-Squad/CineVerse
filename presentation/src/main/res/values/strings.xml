@@ -72,5 +72,6 @@
     <string name="mind_bending_stories">Mind-Bending Stories</string>
     <string name="family_night_picks">Family Night Picks</string>
     <string name="late_night_thrills">Late-Night Thrills</string>
+    <string name="incorrect_username_or_password_please_try_again">Incorrect username or password. Please try again.</string>
 
 </resources>

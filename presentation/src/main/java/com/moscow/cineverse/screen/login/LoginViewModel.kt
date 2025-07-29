@@ -1,5 +1,6 @@
 package com.moscow.cineverse.screen.login
 
+import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewModelScope
 import com.moscow.cineverse.utlis.StringValue
 import com.moscow.cineverse.base.BaseViewModel
@@ -82,8 +83,11 @@ class LoginViewModel(
     }
 
     private fun onLoginFailed(error: Throwable) {
-        updateState { it.copy(isLoading = false) }
-        sendEvent(LoginScreenEvents.ShowError(StringValue.DynamicString(error.message.toString())))
+        updateState {
+            it.copy(
+                isLoading = false,
+                passwordError = StringValue.StringResource(resId = R.string.incorrect_username_or_password_please_try_again)
+            ) }
     }
 
     private fun onStartLogin() {
@@ -91,6 +95,7 @@ class LoginViewModel(
     }
 
     override fun onClickJoinAsGuest() {
+        updateState { it.copy(isJoinAsGuest = true) }
         launchWithResult(
             action = { loginAsGuestUseCase.invoke() },
             onSuccess = ::onJoinAsGuestSuccess,
@@ -151,10 +156,9 @@ class LoginViewModel(
     ): Job {
         return viewModelScope.launch {
             delay(delayMillis)
-            val trimmedInput = input.trim()
-            val isInputValid = isValid(trimmedInput)
+            val isInputValid = isValid(input)
 
-            val error = if (!isInputValid && trimmedInput.isNotEmpty()) errorMessage else null
+            val error = if (!isInputValid && input.isNotEmpty()) errorMessage else null
             onResult(error)
         }
     }

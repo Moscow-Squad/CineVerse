@@ -65,6 +65,7 @@
     <string name="mind_bending_stories">قصص محيرة للعقل</string>
     <string name="family_night_picks">اختيارات ليلة العائلة</string>
     <string name="late_night_thrills">إثارة في وقت متأخر من الليل</string>
+    <string name="incorrect_username_or_password_please_try_again">اسم المستخدم أو كلمة المرور غير صحيحة. يُرجى المحاولة مرة أخرى.</string>
     <string name="join_cineverse">CineVerse انضم الى</string>
     <string name="let_us_choose_message">We’ll help you skip the scroll and go straight to the good stuff.</string>
     <string name="let_us_choose_for_you">Let Us Choose For You!</string>
