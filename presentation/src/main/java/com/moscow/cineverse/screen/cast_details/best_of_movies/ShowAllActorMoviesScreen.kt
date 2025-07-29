@@ -12,15 +12,10 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.moscow.cineverse.designSystem.component.MovieScaffold
-import com.moscow.cineverse.designSystem.component.ViewModeToggle
-import com.moscow.cineverse.navigation.routes.MovieDetailsRoute
-import com.moscow.cineverse.screen.cast_details.best_of_movies.ShowAllActorMoviesEffect
-import com.moscow.cineverse.screen.cast_details.best_of_movies.ShowAllActorMoviesInteractionListener
-import com.moscow.cineverse.screen.cast_details.best_of_movies.ShowAllActorMoviesState
-import com.moscow.cineverse.screen.cast_details.best_of_movies.ShowAllActorMoviesViewModel
 import com.moscow.cineverse.screen.cast_details.best_of_movies.component.ErrorContent
 import com.moscow.cineverse.screen.cast_details.best_of_movies.component.LoadingContent
 import com.moscow.cineverse.screen.cast_details.best_of_movies.component.SuccessContent
+import com.moscow.cineverse.screen.explore.component.ViewModeToggleButton
 
 @Composable
 fun ShowAllActorMoviesScreen(
@@ -79,7 +74,7 @@ private fun ShowAllActorMoviesContent(
                         onNavigateBack = onNavigateBack
                     )
 
-                    ViewModeToggle(
+                    ViewModeToggleButton(
                         selectedMode = uiState.viewMode,
                         onModeSelected = interactionListener::onViewModeChanged,
                         modifier = Modifier

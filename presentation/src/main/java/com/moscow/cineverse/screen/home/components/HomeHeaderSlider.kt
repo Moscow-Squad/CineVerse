@@ -141,7 +141,7 @@ fun HomeHeaderSlider(items: List<MediaItemUiState>, modifier: Modifier = Modifie
                     Column(
                         modifier = Modifier
                             .align(Alignment.BottomCenter)
-                            .padding(bottom = 24.dp)
+                            .padding(bottom = 32.dp)
                             .fillMaxWidth(0.8f)
                             .alpha(textAlpha),
                         verticalArrangement = Arrangement.spacedBy(4.dp),

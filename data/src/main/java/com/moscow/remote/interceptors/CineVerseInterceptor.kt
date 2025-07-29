@@ -23,5 +23,4 @@ class CineVerseInterceptor(
 
         return chain.proceed(newRequest)
     }
-
 }

@@ -1,23 +1,16 @@
 package com.moscow.cineverse.screen.series_details
 
 import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.viewModelScope
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
-import androidx.paging.PagingData
-import androidx.paging.cachedIn
 import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.cineverse.designSystem.component.ViewMode
 import com.moscow.cineverse.mapper.toUi
 import com.moscow.cineverse.navigation.routes.SeriesDetailsRoute
-import com.moscow.cineverse.paging.BasePagingSource
 import com.moscow.domain.model.Series
 import com.moscow.domain.usecase.review.GetReviewsUseCase
 import com.moscow.domain.usecase.series.GetSeriesCreditsDetailsUseCase
 import com.moscow.domain.usecase.series.GetSeriesDetailUseCase
 import com.moscow.domain.usecase.series.GetSeriesRecommendationsUseCase
 import com.moscow.domain.usecase.series.RateSeriesUseCase
-import kotlinx.coroutines.flow.Flow
 import kotlin.collections.map
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -36,6 +29,7 @@ class SeriesDetailsScreenScreenViewModel @Inject constructor(
     val seriesId = savedStateHandle.get<Int>(SeriesDetailsRoute.SERIES_ID) ?: 0
 
     init {
+        updateState { it.copy(isLoading = true) }
         loadSeriesDetails(seriesId)
         loadSeriesCredits(seriesId)
         getSeriesRecommendations(seriesId, page = 1)
@@ -95,17 +89,6 @@ class SeriesDetailsScreenScreenViewModel @Inject constructor(
         )
     }
 
-    fun getRecommendations(id: Int): Flow<PagingData<Series>> {
-        return Pager(
-            config = PagingConfig(pageSize = 20),
-            pagingSourceFactory = {
-                BasePagingSource { page ->
-                    getSeriesRecommendationsUseCase(id, page)
-                }
-            }
-        ).flow.cachedIn(viewModelScope)
-    }
-
     private fun onGetRecommendationsSuccess(recommendations: List<Series>) {
         updateState { it.copy(recommendation = recommendations.map { it.toUi() }) }
     }
@@ -129,8 +112,8 @@ class SeriesDetailsScreenScreenViewModel @Inject constructor(
         )
     }
 
-    override fun onShowMoreRecommendationsClicked(seriesId: Int) {
-        sendEvent(SeriesDetailsScreenEffects.NavigateToRecommendationSeries(seriesId))
+    override fun onShowMoreRecommendationsClicked(seriesId: Int, seriesName: String) {
+        sendEvent(SeriesDetailsScreenEffects.NavigateToRecommendationSeries(seriesId, seriesName))
     }
 
     override fun onShowMoreReviewsClicked(seriesId: Int) {
@@ -155,5 +138,13 @@ class SeriesDetailsScreenScreenViewModel @Inject constructor(
 
     override fun onActorClicked(actorId: Int) {
         sendEvent(SeriesDetailsScreenEffects.NavigateToActorDetailsScreen(actorId))
+    }
+
+    override fun onRetry() {
+        updateState { it.copy(isLoading = true, errorMessage = "") }
+        loadSeriesDetails(seriesId)
+        loadSeriesCredits(seriesId)
+        getSeriesRecommendations(seriesId, page = 1)
+        loadReviews(seriesId, page = 1)
     }
 }

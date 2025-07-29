@@ -23,9 +23,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.moscow.cineverse.design_system.R
 import com.moscow.cineverse.designSystem.theme.CineVerseTheme
 import com.moscow.cineverse.designSystem.theme.Theme
+import com.moscow.cineverse.design_system.R
 
 @Composable
 fun MessageInfoBox(
@@ -38,6 +38,8 @@ fun MessageInfoBox(
     modifier: Modifier = Modifier,
     secondButtonText: String = "",
     onClickSecondButton: () -> Unit = {},
+    firstButtonLoading: Boolean = false,
+    secondButtonLoading: Boolean = false
 ) {
     Column(
         modifier = modifier,
@@ -87,7 +89,8 @@ fun MessageInfoBox(
                     buttonColor = Theme.colors.button.secondary,
                     modifier = Modifier
                         .weight(1f)
-                        .padding(vertical = 14.dp)
+                        .padding(vertical = 14.dp),
+                    isLoading = firstButtonLoading
                 )
             }
             MovieButton(
@@ -98,7 +101,8 @@ fun MessageInfoBox(
                 buttonColor = Theme.colors.button.primary,
                 modifier = Modifier
                     .weight(1f)
-                    .padding(vertical = 14.5.dp)
+                    .padding(vertical = 14.5.dp),
+                isLoading = secondButtonLoading
             )
         }
     }

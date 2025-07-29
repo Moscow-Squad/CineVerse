@@ -83,8 +83,7 @@ fun SeriesSeasonsScreenContent(
                 else -> {
                     Column(modifier = Modifier.fillMaxSize()) {
                         MovieAppBar(
-                            caption = stringResource(R.string.because_you_watched),
-                            title = uiState.seriesDetail.title,
+                            title = stringResource(R.string.seasons),
                             backButtonClick = onNavigateBack,
                         )
                         LazyColumn (

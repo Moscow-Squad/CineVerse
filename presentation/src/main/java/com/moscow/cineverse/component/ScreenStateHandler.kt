@@ -21,6 +21,7 @@ fun ScreenStateHandler(
     Box(modifier = modifier
         .fillMaxSize()
         .background(Theme.colors.background.screen)) {
+
         when {
             isLoading -> {
                 MovieCircularProgressBar(

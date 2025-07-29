@@ -112,7 +112,7 @@ fun AppTextField(
                             )
                         IconButton(onClick = { passwordVisible = !passwordVisible }) {
                             Icon(painter = image, contentDescription = "Toggle password visibility"
-                            , modifier = Modifier.size(20.dp))
+                            , modifier = Modifier.size(20.dp), tint = Theme.colors.shade.secondary)
                         }
                     }
 
