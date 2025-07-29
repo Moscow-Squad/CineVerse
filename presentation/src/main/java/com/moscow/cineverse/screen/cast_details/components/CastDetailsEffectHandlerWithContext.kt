@@ -1,23 +1,24 @@
 package com.moscow.cineverse.screen.cast_details.components
 
+import android.content.Context
 import android.content.Intent
 import androidx.core.net.toUri
-import androidx.navigation.NavHostController
-import com.moscow.cineverse.navigation.routes.CastBestOfMovieRoute
-import com.moscow.cineverse.navigation.routes.CastGalleryRoute
-import com.moscow.cineverse.navigation.routes.MovieDetailsRoute
 import com.moscow.cineverse.screen.cast_details.CastDetailsEffect
 
 object CastDetailsEffectHandlerWithContext {
 
     fun handleEffectWithContext(
         effect: CastDetailsEffect,
-        navController: NavHostController,
-        context: android.content.Context
-    ) {
+        context: Context,
+        navigateBack: () -> Unit,
+        navigateToMovieDetails: (Int) -> Unit,
+        navigateToCastBestOfMovie: (Int, String) -> Unit,
+        navigateToCastGallery: (Int, String) -> Unit,
+
+        ) {
         when (effect) {
             is CastDetailsEffect.NavigateBack -> {
-                navController.popBackStack()
+                navigateBack()
             }
 
             is CastDetailsEffect.ShowError -> {
@@ -30,19 +31,15 @@ object CastDetailsEffectHandlerWithContext {
             }
 
             is CastDetailsEffect.NavigateToMovie -> {
-                navController.navigate(MovieDetailsRoute(effect.movieId))
+                navigateToMovieDetails(effect.movieId)
             }
 
             is CastDetailsEffect.NavigateToFullMovieList -> {
-                navController.navigate(
-                    CastBestOfMovieRoute(effect.actorId, effect.actorName)
-                )
+                navigateToCastBestOfMovie(effect.actorId, effect.actorName)
             }
 
             is CastDetailsEffect.NavigateToFullGallery -> {
-                navController.navigate(
-                    CastGalleryRoute(effect.actorId, effect.actorName)
-                )
+                navigateToCastGallery(effect.actorId, effect.actorName)
             }
         }
     }

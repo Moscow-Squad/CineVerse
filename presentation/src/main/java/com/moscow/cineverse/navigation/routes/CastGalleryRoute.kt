@@ -1,6 +1,7 @@
 package com.moscow.cineverse.navigation.routes
 
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import com.moscow.cineverse.screen.cast_details.gallery.ActorGalleryScreen
 import kotlinx.serialization.Serializable
@@ -14,8 +15,10 @@ data class CastGalleryRoute(val castId: Int, val castName: String){
 }
 
 
-fun NavGraphBuilder.CastGalleryRoute() {
+fun NavGraphBuilder.CastGalleryRoute(navController: NavHostController) {
     composable<CastGalleryRoute>{
-        ActorGalleryScreen()
+        ActorGalleryScreen(
+            navigateBack = { navController.navigateUp() },
+        )
     }
 }

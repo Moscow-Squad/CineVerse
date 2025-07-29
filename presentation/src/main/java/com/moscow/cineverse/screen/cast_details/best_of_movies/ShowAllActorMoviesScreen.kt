@@ -11,11 +11,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.NavHostController
 import com.moscow.cineverse.designSystem.component.MovieScaffold
 import com.moscow.cineverse.designSystem.component.ViewModeToggle
-import com.moscow.cineverse.navigation.LocalNavController
 import com.moscow.cineverse.navigation.routes.MovieDetailsRoute
+import com.moscow.cineverse.screen.cast_details.best_of_movies.ShowAllActorMoviesEffect
+import com.moscow.cineverse.screen.cast_details.best_of_movies.ShowAllActorMoviesInteractionListener
+import com.moscow.cineverse.screen.cast_details.best_of_movies.ShowAllActorMoviesState
+import com.moscow.cineverse.screen.cast_details.best_of_movies.ShowAllActorMoviesViewModel
 import com.moscow.cineverse.screen.cast_details.best_of_movies.component.ErrorContent
 import com.moscow.cineverse.screen.cast_details.best_of_movies.component.LoadingContent
 import com.moscow.cineverse.screen.cast_details.best_of_movies.component.SuccessContent
@@ -23,7 +25,8 @@ import com.moscow.cineverse.screen.cast_details.best_of_movies.component.Success
 @Composable
 fun ShowAllActorMoviesScreen(
     modifier: Modifier = Modifier,
-    navController: NavHostController = LocalNavController.current,
+    navigateMovieDetails: (Int) -> Unit,
+    navigateBack: () -> Unit = {},
 ) {
     val viewModel: ShowAllActorMoviesViewModel = hiltViewModel()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -32,7 +35,7 @@ fun ShowAllActorMoviesScreen(
         viewModel.uiEffect.collect { effect ->
             when (effect) {
                 is ShowAllActorMoviesEffect.NavigateMovieDetails -> {
-                    navController.navigate(MovieDetailsRoute(effect.movieId))
+                    navigateMovieDetails(effect.movieId)
                 }
             }
         }
@@ -42,7 +45,7 @@ fun ShowAllActorMoviesScreen(
         uiState = uiState,
         interactionListener = viewModel,
         modifier = modifier,
-        onNavigateBack = navController::navigateUp,
+        onNavigateBack = navigateBack,
     )
 }
 
