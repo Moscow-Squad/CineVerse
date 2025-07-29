@@ -11,8 +11,7 @@ object MovieDetailsEffectHandler {
         navigateToReviews: (Int) -> Unit,
         navigateToCastDetails: (Int) -> Unit,
         navigateToCollectionsBottomSheet: (Int) -> Unit,
-
-
+        navigateToMovieDetails: (Int) -> Unit,
     ) {
         when (effect) {
             is MovieDetailsScreenEffect.NavigateBack -> {
@@ -51,6 +50,10 @@ object MovieDetailsEffectHandler {
 
             MovieDetailsScreenEffect.NavigateToFullCast -> {
                 // TODO: Implement navigation to full cast
+            }
+
+            is MovieDetailsScreenEffect.NavigateMovieDetails -> {
+                navigateToMovieDetails(effect.movieId)
             }
         }
     }

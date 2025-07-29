@@ -24,8 +24,8 @@ import com.moscow.cineverse.component.MoviePosterCard
 import com.moscow.cineverse.designSystem.component.MovieAppBar
 import com.moscow.cineverse.designSystem.component.MovieScaffold
 import com.moscow.cineverse.designSystem.component.ViewMode
-import com.moscow.cineverse.designSystem.component.ViewModeToggle
 import com.moscow.cineverse.mapper.toMediaItemUi
+import com.moscow.cineverse.screen.explore.component.ViewModeToggleButton
 import com.moscow.cinverse.presentation.R
 import com.moscow.domain.model.Movie
 
@@ -52,10 +52,6 @@ fun RecommendationMoviesScreen(
                         event.movieId,
                     )
                 }
-
-              /*  is RecommendationMoviesEffect -> {
-                    navController.navigate(MovieDetailsRoute(event.movieId))
-                }*/
             }
         }
     }
@@ -137,7 +133,7 @@ fun RecommendationMoviesContent(
                 }
 
             }
-            ViewModeToggle(
+            ViewModeToggleButton(
                 selectedMode = uiState.viewMode,
                 onModeSelected = interactionListener::onViewModeChanged,
                 modifier = Modifier

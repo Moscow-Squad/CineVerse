@@ -12,12 +12,12 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -232,7 +232,7 @@ fun MainMovieCard(
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
-                .padding(horizontal = 16.dp)
+                .padding(16.dp)
                 .sharedBounds(
                     rememberSharedContentState(key = "Main Movie Card"),
                     animatedVisibilityScope = animatedVisibilityScope,
@@ -241,25 +241,30 @@ fun MainMovieCard(
                     resizeMode = SharedTransitionScope.ResizeMode.ScaleToBounds()
                 )
         ) {
-            val isPreview = LocalInspectionMode.current
-            if (isPreview) {
-                Image(
-                    painter = painterResource(R.drawable.profile_image),
-                    contentDescription = "Image",
-                    modifier = Modifier
-                        .clip(CircleShape)
-                        .size(40.dp),
-                    contentScale = ContentScale.FillBounds
+            SafeImageViewer(
+                imageUrl = posterUrl,
+                modifier = Modifier
+                    .size(40.dp)
+                    .clip(RoundedCornerShape(Theme.radius.full)),
+                placeholderContent = {
+                    RemoteImagePlaceholder(
+                        modifier = Modifier.fillMaxSize()
+                    )
+                },
+                errorContent = {
+                    RemoteImagePlaceholder(
+                        modifier = Modifier.fillMaxSize()
+                    )
+                }
+            ) {
+                OnBlurContent(
+                    icon = painterResource(R.drawable.icon_eye_slash),
+                    hintText = stringResource(R.string.unsuitable_image),
+                    textStyle = Theme.textStyle.body.small.regular.copy(
+                        color = Color(0x99FFFFFF)
+                    ),
+                    iconSize = 24.dp,
                 )
-            } else {
-//                SafeImageViewer(
-//                    model = posterUrl,
-//                    contentDescription = "Image",
-//                    modifier = Modifier
-//                        .clip(CircleShape)
-//                        .size(40.dp),
-//                    contentScale = ContentScale.Crop
-//                )
             }
             Text(
                 text = title,
