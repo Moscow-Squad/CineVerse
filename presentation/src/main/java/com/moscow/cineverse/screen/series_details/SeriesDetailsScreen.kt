@@ -63,7 +63,7 @@ fun SeriesDetailsScreen(
     viewModel: SeriesDetailsScreenScreenViewModel = hiltViewModel(),
     navigateBack: () -> Unit,
     navigateToCollectionBottomSheet: (Int) -> Unit,
-    navigateToSeriesRecommendation: (Int) -> Unit,
+    navigateToSeriesRecommendation: (Int, String) -> Unit,
     navigateToReviews: (Int) -> Unit,
     navigateToSeriesSeasons: (Int) -> Unit,
     navigateToCastDetails: (Int) -> Unit,
@@ -78,7 +78,7 @@ fun SeriesDetailsScreen(
                     navigateToCollectionBottomSheet(event.seriesId)
                 }
                 is SeriesDetailsScreenEffects.NavigateToRecommendationSeries -> {
-                    navigateToSeriesRecommendation(event.seriesId)
+                    navigateToSeriesRecommendation(event.seriesId, event.seriesName)
                 }
                 is SeriesDetailsScreenEffects.NavigateToReviewsScreen -> {
                     navigateToReviews(event.seriesId)

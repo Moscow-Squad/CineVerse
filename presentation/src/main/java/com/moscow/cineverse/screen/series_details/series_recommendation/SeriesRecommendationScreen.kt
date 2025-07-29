@@ -30,22 +30,20 @@ import com.moscow.cineverse.designSystem.component.ViewMode
 import com.moscow.cineverse.designSystem.component.ViewModeToggle
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.mapper.toUi
-import com.moscow.cineverse.screen.series_details.SeriesDetailsScreenInteractionListener
-import com.moscow.cineverse.screen.series_details.SeriesDetailsScreenScreenViewModel
-import com.moscow.cineverse.screen.series_details.SeriesDetailsScreenState
 import com.moscow.cinverse.presentation.R
 import com.moscow.domain.model.Series
 
 @Composable
 fun SeriesRecommendationScreen(
     modifier: Modifier = Modifier,
-    viewModel: SeriesDetailsScreenScreenViewModel = hiltViewModel(),
+    viewModel: SeriesRecommendationViewModel = hiltViewModel(),
     navigateBack: () -> Unit,
     ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    val recommendations = viewModel.getRecommendations(uiState.seriesDetail.id).collectAsLazyPagingItems()
+    val recommendations = viewModel.getRecommendations(viewModel.seriesId).collectAsLazyPagingItems()
 
     SeriesRecommendationScreenContent(
+        title = viewModel.seriesName,
         uiState = uiState,
         recommendations = recommendations,
         interactionListener = viewModel,
@@ -56,9 +54,10 @@ fun SeriesRecommendationScreen(
 
 @Composable
 fun SeriesRecommendationScreenContent(
-    uiState: SeriesDetailsScreenState,
+    title: String,
+    uiState: SeriesRecommendationScreenState,
     recommendations: LazyPagingItems<Series>,
-    interactionListener: SeriesDetailsScreenInteractionListener,
+    interactionListener: SeriesRecommendationInteractionListener,
     onNavigateBack : () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -93,7 +92,7 @@ fun SeriesRecommendationScreenContent(
                 else -> {
                     Column(modifier = Modifier.fillMaxSize()) {
                         MovieAppBar(
-                            title = uiState.seriesDetail.title,
+                            title = title,
                             backButtonClick = onNavigateBack,
                         )
                         LazyVerticalGrid(
