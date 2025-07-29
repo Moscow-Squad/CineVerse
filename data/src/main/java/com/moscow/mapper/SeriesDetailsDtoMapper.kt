@@ -51,34 +51,22 @@ fun SeriesDetailDto.toDomain(): SeriesDetail {
 private fun CreatedByDto.toDomain(): Creator {
     return Creator(
         id = id,
-        name = name,
-        profilePath = profilePath
-    )
-}
-
-private fun LastEpisodeToAirDto.toDomain(): Episode {
-    return Episode(
-        id = id,
-        name = name,
-        overview = overview,
-        airDate = airDate,
-        episodeNumber = episodeNumber,
-        seasonNumber = seasonNumber
+        name = name ?: "",
+        profilePath = profilePath ?: ""
     )
 }
 
 internal fun SeasonDto.toDomain(): Season {
     return Season(
         id = id,
-        name = name,
+        name = name ?: "",
         airDate = airDate ?: "",
-        episodeCount = episodeCount,
+        episodeCount = episodeCount ?: 0,
         posterPath = IMAGES_URL + posterPath.orEmpty(),
-        overview = overview,
-        rate = voteAverage.toFloat()
+        overview = overview ?: "",
+        rate = voteAverage?.toFloat() ?: 0f
     )
 }
-
 
 fun ListOfSeriesDto.toDomain(): ListOfSeries {
     return ListOfSeries(
