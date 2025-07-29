@@ -29,10 +29,12 @@ class SeriesDetailsScreenScreenViewModel @Inject constructor(
     val seriesId = savedStateHandle.get<Int>(SeriesDetailsRoute.SERIES_ID) ?: 0
 
     init {
+        updateState { it.copy(isLoading = true) }
         loadSeriesDetails(seriesId)
         loadSeriesCredits(seriesId)
         getSeriesRecommendations(seriesId, page = 1)
         loadReviews(seriesId, page = 1)
+        updateState { it.copy(isLoading = false) }
     }
 
     private fun loadSeriesDetails(seriesId: Int) {

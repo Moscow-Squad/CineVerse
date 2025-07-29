@@ -33,10 +33,12 @@ class MovieDetailsViewModel @Inject constructor(
     private val movieId = saveStateHandle.get<Int>(MovieDetailsRoute.MOVIE_ID) ?: 0
 
     init {
+        updateState { it.copy(isLoading = true) }
         getMovieDetails(movieId)
         getReviews(movieId)
         getCredits(movieId)
         getRecommendations(movieId)
+        updateState { it.copy(isLoading = false) }
     }
     fun getMovieDetails(movieID: Int) {
         launchWithResult(
