@@ -151,7 +151,7 @@ fun HomeHeaderSlider(items: List<MediaItemUiState>, modifier: Modifier = Modifie
                             text = items[page].title,
                             color = Theme.colors.shade.primary,
                             style = Theme.textStyle.body.medium.medium,
-                            textAlign = TextAlign.Center
+                            textAlign = TextAlign.Center,
                         )
                         Text(
                             text = items[page].genres.joinToString(),
