@@ -13,7 +13,6 @@ import com.moscow.cineverse.navigation.LocalNavController
 import com.moscow.cineverse.navigation.routes.CastDetailsRoute
 import com.moscow.cineverse.navigation.routes.MovieDetailsRoute
 import com.moscow.cineverse.navigation.routes.SeriesDetailsRoute
-import com.moscow.cineverse.screen.home.SeeMoreViewModel
 
 @Composable
 fun SeeMoreHomeScreen(
