@@ -1,4 +1,4 @@
-package com.moscow.cineverse.screen.home
+package com.moscow.cineverse.screen.see_more
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
@@ -12,45 +12,43 @@ import com.moscow.cineverse.common_ui_state.MediaItemUiState
 import com.moscow.cineverse.designSystem.component.ViewMode
 import com.moscow.cineverse.mapper.toMediaItemUi
 import com.moscow.cineverse.mapper.toUi
+import com.moscow.cineverse.navigation.routes.SeeMoreRoute
 import com.moscow.cineverse.paging.BasePagingSource
-import com.moscow.cineverse.screen.see_more.SeeMoreEvent
-import com.moscow.cineverse.screen.see_more.SeeMoreInteractionListener
-import com.moscow.cineverse.screen.see_more.SeeMoreUiState
+import com.moscow.cineverse.screen.home.HomeFeaturedItems
 import com.moscow.domain.model.Movie
 import com.moscow.domain.model.Series
 import com.moscow.domain.usecase.home.GetMatchesYourVibesMoviesUseCase
 import com.moscow.domain.usecase.home.GetRecentlyReleasedMoviesUseCase
 import com.moscow.domain.usecase.home.GetTopRatedTVShowsUseCase
 import com.moscow.domain.usecase.home.GetUpcomingMoviesUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
-
-class SeeMoreViewModel(
+import javax.inject.Inject
+@HiltViewModel
+class SeeMoreViewModel @Inject constructor(
     private val getMatchesYourVibesMoviesUseCase: GetMatchesYourVibesMoviesUseCase,
     private val getRecentlyReleasedMoviesUseCase: GetRecentlyReleasedMoviesUseCase,
     private val getTopRatedTVShowsUseCase: GetTopRatedTVShowsUseCase,
     private val getUpcomingMoviesUseCase: GetUpcomingMoviesUseCase,
     private val savedStateHandle: SavedStateHandle
-) : BaseViewModel<SeeMoreUiState, SeeMoreEvent> (
-    SeeMoreUiState(
-        title = savedStateHandle.get<String>("category") ?: ""
-    )
-), SeeMoreInteractionListener {
+) : BaseViewModel<SeeMoreUiState, SeeMoreEvent>(SeeMoreUiState()), SeeMoreInteractionListener {
 
     private val _pagingDataFlow = MutableStateFlow<Flow<PagingData<MediaItemUiState>>>(emptyFlow())
     val pagingDataFlow = _pagingDataFlow.asStateFlow()
+    private val category = savedStateHandle.get<String>(SeeMoreRoute.CATEGORY) ?: ""
 
     init {
+        updateState { it.copy(title = category) }
         loadContent()
     }
 
     private fun loadContent() {
         updateState { it.copy(isLoading = true) }
-        val category = savedStateHandle.get<String>("category") ?: return
         val pageSize = 20
 
         viewModelScope.launch {
@@ -62,27 +60,31 @@ class SeeMoreViewModel(
                             fetchData = { page -> getRecentlyReleasedMoviesUseCase(page) },
                         )
                     }
+
                     HomeFeaturedItems.UPCOMING_MOVIES.name -> {
                         createPagingFlow(
                             pageSize = pageSize,
                             fetchData = { page -> getUpcomingMoviesUseCase(page) }, // Replace with getUpcomingMovies when available
                         )
                     }
+
                     HomeFeaturedItems.MATCHES_YOUR_VIBE.name -> {
                         // Using genre ID 28 for Action, same as in HomeViewModel
                         createPagingFlow(
                             pageSize = pageSize,
                             fetchData = { page -> getMatchesYourVibesMoviesUseCase(28, page) },
 
-                        )
+                            )
                     }
+
                     HomeFeaturedItems.TOP_RATED_TV_SHOWS.name -> {
                         createPagingFlow(
                             pageSize = pageSize,
                             fetchData = { page -> getTopRatedTVShowsUseCase(page) },
 
-                        )
+                            )
                     }
+
                     HomeFeaturedItems.YOU_RECENTLY_VIEWED.name -> {
                         createPagingFlow(
                             pageSize = pageSize,
@@ -90,6 +92,7 @@ class SeeMoreViewModel(
 
                         )
                     }
+
                     else -> emptyFlow()
                 }
 
@@ -123,7 +126,6 @@ class SeeMoreViewModel(
             }
             .cachedIn(viewModelScope)
     }
-
 
 
     override fun onRefresh() {

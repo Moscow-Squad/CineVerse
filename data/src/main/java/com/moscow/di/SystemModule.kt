@@ -2,10 +2,19 @@ package com.moscow.di
 
 import com.moscow.DeviceLanguageProvider
 import com.moscow.data_source.system.LanguageProvider
-import org.koin.core.module.dsl.singleOf
-import org.koin.dsl.bind
-import org.koin.dsl.module
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
 
-val systemModule = module {
-    single<LanguageProvider> { DeviceLanguageProvider() }
+@Module
+@InstallIn(SingletonComponent::class)
+object SystemModule {
+
+    @Provides
+    @Singleton
+    fun provideLanguageProvider(): LanguageProvider {
+        return DeviceLanguageProvider()
+    }
 }

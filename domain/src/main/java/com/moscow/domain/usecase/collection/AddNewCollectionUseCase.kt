@@ -1,8 +1,9 @@
 package com.moscow.domain.usecase.collection
 
 import com.moscow.domain.repository.CollectionsRepository
+import javax.inject.Inject
 
-class AddNewCollectionUseCase(
+class AddNewCollectionUseCase @Inject constructor(
     private val collectionsRepository: CollectionsRepository
 ) {
     suspend operator fun invoke(

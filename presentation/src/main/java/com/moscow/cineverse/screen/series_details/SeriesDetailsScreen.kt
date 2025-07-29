@@ -34,8 +34,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.NavHostController
 import coil3.compose.rememberAsyncImagePainter
 import com.moscow.cineverse.component.MoviePosterCard
 import com.moscow.cineverse.designSystem.component.MovieAppBar
@@ -55,21 +55,19 @@ import com.moscow.cineverse.designSystem.component.movieSeriesDetails.RatingSect
 import com.moscow.cineverse.designSystem.component.movieSeriesDetails.StaffInfoSection
 import com.moscow.cineverse.designSystem.component.movieSeriesDetails.StarCastSection
 import com.moscow.cineverse.designSystem.theme.Theme
-import com.moscow.cineverse.navigation.LocalNavController
-import com.moscow.cineverse.navigation.routes.CastDetailsRoute
-import com.moscow.cineverse.navigation.routes.CollectionsBottomSheetRoute
-import com.moscow.cineverse.navigation.routes.ReviewsRoute
-import com.moscow.cineverse.navigation.routes.SeriesDetailsRoute
-import com.moscow.cineverse.navigation.routes.SeriesRecommendationRoute
-import com.moscow.cineverse.navigation.routes.SeriesSeasonsRoute
 import com.moscow.cineverse.screen.series_details.component.SeasonCard
 import com.moscow.cinverse.presentation.R
-import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun SeriesDetailsScreen(
-    viewModel: SeriesDetailsScreenScreenViewModel = koinViewModel(),
-    navController: NavHostController = LocalNavController.current
+    viewModel: SeriesDetailsScreenScreenViewModel = hiltViewModel(),
+    navigateBack: () -> Unit,
+    navigateToCollectionBottomSheet: (Int) -> Unit,
+    navigateToSeriesRecommendation: (Int) -> Unit,
+    navigateToReviews: (Int) -> Unit,
+    navigateToSeriesSeasons: (Int) -> Unit,
+    navigateToCastDetails: (Int) -> Unit,
+    navigateToSeriesDetails: (Int) -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -77,23 +75,23 @@ fun SeriesDetailsScreen(
         viewModel.uiEffect.collect { event ->
             when (event) {
                 is SeriesDetailsScreenEffects.AddToCollection -> {
-                    navController.navigate(CollectionsBottomSheetRoute(mediaItemId = event.seriesId))
+                    navigateToCollectionBottomSheet(event.seriesId)
                 }
                 is SeriesDetailsScreenEffects.NavigateToRecommendationSeries -> {
-                    navController.navigate(SeriesRecommendationRoute(event.seriesId))
+                    navigateToSeriesRecommendation(event.seriesId)
                 }
                 is SeriesDetailsScreenEffects.NavigateToReviewsScreen -> {
-                    navController.navigate(ReviewsRoute(event.seriesId, false))
+                    navigateToReviews(event.seriesId)
                 }
                 is SeriesDetailsScreenEffects.NavigateToSeriesSeasonsScreen -> {
-                    navController.navigate(SeriesSeasonsRoute(event.seriesId))
+                    navigateToSeriesSeasons(event.seriesId)
                 }
 
                 is SeriesDetailsScreenEffects.NavigateToActorDetailsScreen -> {
-                    navController.navigate(CastDetailsRoute(event.ActorId))
+                    navigateToCastDetails(event.ActorId)
                 }
                 is SeriesDetailsScreenEffects.NavigateToSeriesDetailsScreen -> {
-                    navController.navigate(SeriesDetailsRoute(event.seriesId))
+                    navigateToSeriesDetails(event.seriesId)
                 }
             }
         }
@@ -101,7 +99,7 @@ fun SeriesDetailsScreen(
     SeriesDetailsContent(
         uiState = uiState,
         interactionListener = viewModel,
-        onNavigateBack = {navController.popBackStack()}
+        onNavigateBack = navigateBack
     )
 }
 

@@ -11,11 +11,16 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.collectAsLazyPagingItems
+import com.moscow.cineverse.component.MoviePosterCard
 import com.moscow.cineverse.designSystem.component.MovieAppBar
 import com.moscow.cineverse.designSystem.component.MovieButton
 import com.moscow.cineverse.designSystem.component.MovieCircularProgressBar
@@ -24,24 +29,18 @@ import com.moscow.cineverse.designSystem.component.MovieText
 import com.moscow.cineverse.designSystem.component.ViewMode
 import com.moscow.cineverse.designSystem.component.ViewModeToggle
 import com.moscow.cineverse.designSystem.theme.Theme
-import com.moscow.cineverse.navigation.LocalNavController
-import com.moscow.cineverse.component.MoviePosterCard
-import com.moscow.cineverse.screen.series_details.SeriesDetailsScreenState
-import com.moscow.cineverse.screen.series_details.SeriesDetailsScreenScreenViewModel
-import com.moscow.cineverse.screen.series_details.SeriesDetailsScreenInteractionListener
-import com.moscow.cinverse.presentation.R
-import androidx.compose.runtime.getValue
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.paging.compose.LazyPagingItems
-import androidx.paging.compose.collectAsLazyPagingItems
 import com.moscow.cineverse.mapper.toUi
+import com.moscow.cineverse.screen.series_details.SeriesDetailsScreenInteractionListener
+import com.moscow.cineverse.screen.series_details.SeriesDetailsScreenScreenViewModel
+import com.moscow.cineverse.screen.series_details.SeriesDetailsScreenState
+import com.moscow.cinverse.presentation.R
 import com.moscow.domain.model.Series
 
 @Composable
 fun SeriesRecommendationScreen(
-    viewModel: SeriesDetailsScreenScreenViewModel,
     modifier: Modifier = Modifier,
-    navController: NavHostController = LocalNavController.current,
+    viewModel: SeriesDetailsScreenScreenViewModel = hiltViewModel(),
+    navigateBack: () -> Unit,
     ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val recommendations = viewModel.getRecommendations(uiState.seriesDetail.id).collectAsLazyPagingItems()
@@ -51,7 +50,7 @@ fun SeriesRecommendationScreen(
         recommendations = recommendations,
         interactionListener = viewModel,
         modifier = modifier,
-        onNavigateBack = {navController.popBackStack()},
+        onNavigateBack = navigateBack
     )
 }
 

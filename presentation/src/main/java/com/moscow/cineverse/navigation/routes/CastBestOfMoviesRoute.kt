@@ -3,20 +3,26 @@ package com.moscow.cineverse.navigation.routes
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
-import androidx.navigation.toRoute
-import com.moscow.cineverse.navigation.LocalNavController
-import com.moscow.cineverse.screen.castDetails.best0fmovies.ShowAllActorMoviesScreen
+import com.moscow.cineverse.screen.cast_details.best_of_movies.ShowAllActorMoviesScreen
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class CastBestOfMovieRoute(val castId: Int, val castName: String)
+data class CastBestOfMovieRoute(val castId: Int, val castName: String){
+    companion object {
+        const val CAST_ID = "castId"
+        const val CAST_NAME = "castName"
+    }
+}
 
-fun NavGraphBuilder.CastBestOfMovieRoute() {
+fun NavGraphBuilder.CastBestOfMovieRoute(navController: NavHostController) {
     composable<CastBestOfMovieRoute>{
-        val args = it.toRoute<CastBestOfMovieRoute>()
         ShowAllActorMoviesScreen(
-            actorId = args.castId,
-            title = args.castName,
+            navigateMovieDetails = { movieId ->
+                navController.navigate(MovieDetailsRoute(movieId))
+            },
+            navigateBack = {
+                navController.navigateUp()
+            },
         )
     }
 }

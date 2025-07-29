@@ -20,11 +20,10 @@ import com.moscow.cineverse.designSystem.theme.Theme
 @Composable
 fun MovieScaffold(
     modifier: Modifier = Modifier,
-    movieFloatingActionButton: @Composable () -> Unit? = {},
-    movieAppBar: @Composable () -> Unit? = {},
-    content: @Composable () -> Unit = {},
-
-    ) {
+    movieFloatingActionButton: @Composable () -> Unit = {},
+    movieAppBar: @Composable () -> Unit = {},
+    content: @Composable () -> Unit = {}
+) {
     Scaffold(
         topBar = {
             Box(Modifier.statusBarsPadding()) {
@@ -34,11 +33,14 @@ fun MovieScaffold(
         floatingActionButton = {
             movieFloatingActionButton()
         },
-        modifier =  modifier.fillMaxSize(),
+        modifier = modifier.fillMaxSize(),
         content = { paddingValues ->
-            Box(modifier = Modifier.fillMaxSize()
-                .background(Theme.colors.background.screen)
-                .padding(paddingValues)) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Theme.colors.background.screen)
+                    .padding(paddingValues)
+            ) {
                 content()
             }
         }
@@ -62,7 +64,7 @@ fun MovieScaffoldPreview() {
                 }
             },
             movieFloatingActionButton = {
-                FloatingActionButton(onClick = {  }) {
+                FloatingActionButton(onClick = { }) {
                     MovieText(text = "Action")
                 }
             },

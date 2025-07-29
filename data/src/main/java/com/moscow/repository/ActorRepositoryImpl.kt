@@ -5,8 +5,9 @@ import com.moscow.domain.model.ActorDetails
 import com.moscow.domain.model.Movie
 import com.moscow.domain.repository.ActorRepository
 import com.moscow.mapper.toDomain
+import javax.inject.Inject
 
-class ActorRepositoryImpl(
+class ActorRepositoryImpl @Inject constructor(
     private val actorRemoteDataSource: ActorRemoteDataSource,
 ) : ActorRepository {
 

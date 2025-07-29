@@ -11,41 +11,69 @@ import com.moscow.data_source.local.SearchLocalDataSource
 import com.moscow.local.DetailsLocalDataSourceImpl
 import com.moscow.local.SearchLocalDataSourceImpl
 import com.moscow.local.database.CineVerseDataBase
-import org.koin.android.ext.koin.androidApplication
-import org.koin.android.ext.koin.androidContext
-import org.koin.core.module.dsl.singleOf
-import org.koin.dsl.bind
-import org.koin.dsl.module
+import dagger.Binds
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
+
 
 private const val CINE_VERSE_DATABASE = "cineverse_database"
 
-val localSourceModule = module {
-    single {
-        Room.databaseBuilder(
-            androidContext(),
-            CineVerseDataBase::class.java,
-            CINE_VERSE_DATABASE
-        )
-            .fallbackToDestructiveMigration(true)
-            .build()
-    }
-    singleOf(CineVerseDataBase::movieDao)
-    singleOf(CineVerseDataBase::searchHistoryDao)
-    singleOf(CineVerseDataBase::actorDao)
-    singleOf(CineVerseDataBase::seriesDao)
-    singleOf(CineVerseDataBase::favouriteGenreDao)
-    singleOf(::SearchLocalDataSourceImpl) bind SearchLocalDataSource::class
-    singleOf(::DetailsLocalDataSourceImpl) bind DetailsLocalDataSource::class
+@Module
+@InstallIn(SingletonComponent::class)
+abstract class LocalSourceModule {
 
-    single<Context> {
-        androidApplication()
-    }
-    single<DataStore<Preferences>> {
-        PreferenceDataStoreFactory.create(
-            produceFile = {
-                get<Context>().preferencesDataStoreFile("cineverse_preferences")
-            }
-        )
+    @Binds
+    @Singleton
+    abstract fun bindSearchLocalDataSource(impl: SearchLocalDataSourceImpl): SearchLocalDataSource
+
+    @Binds
+    @Singleton
+    abstract fun bindDetailsLocalDataSource(impl: DetailsLocalDataSourceImpl): DetailsLocalDataSource
+
+    companion object {
+        @Provides
+        @Singleton
+        fun provideCineVerseDataBase(@ApplicationContext context: Context): CineVerseDataBase {
+            return Room.databaseBuilder(
+                context,
+                CineVerseDataBase::class.java,
+                CINE_VERSE_DATABASE
+            )
+                .fallbackToDestructiveMigration(true)
+                .build()
+        }
+
+        @Provides
+        @Singleton
+        fun provideMovieDao(database: CineVerseDataBase) = database.movieDao()
+
+        @Provides
+        @Singleton
+        fun provideSearchHistoryDao(database: CineVerseDataBase) = database.searchHistoryDao()
+
+        @Provides
+        @Singleton
+        fun provideActorDao(database: CineVerseDataBase) = database.actorDao()
+
+        @Provides
+        @Singleton
+        fun provideSeriesDao(database: CineVerseDataBase) = database.seriesDao()
+
+        @Provides
+        @Singleton
+        fun provideFavouriteGenreDao(database: CineVerseDataBase) = database.favouriteGenreDao()
+
+        @Provides
+        @Singleton
+        fun provideDataStore(@ApplicationContext context: Context): DataStore<Preferences> {
+            return PreferenceDataStoreFactory.create(
+                produceFile = { context.preferencesDataStoreFile("cineverse_preferences") }
+            )
+
+        }
     }
 }
-

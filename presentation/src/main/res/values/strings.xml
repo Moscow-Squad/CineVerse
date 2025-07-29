@@ -30,10 +30,10 @@
     <string name="try_again">Try Again</string>
     <string name="oops_no_internet">Oops! No Internet</string>
     <string name="offline_reconnect">Looks like you\'re offline. Let\'s reconnect so you don\'t miss out!</string>
-    <string name="welcome">welcome</string>
+    <string name="welcome">Welcome</string>
     <string name="show_more">Show More</string>
     <string name="recently_released">Recently Released</string>
-    <string name="upcoming_movies">Upcoming movies</string>
+    <string name="upcoming_movies">Upcoming Movies</string>
     <string name="matches_your_vibe">Matches your Vibe</string>
     <string name="top_rated_tv_shows">Top Rated TV Shows</string>
     <string name="you_recently_viewed">You Recently Viewed</string>
@@ -72,6 +72,7 @@
     <string name="mind_bending_stories">Mind-Bending Stories</string>
     <string name="family_night_picks">Family Night Picks</string>
     <string name="late_night_thrills">Late-Night Thrills</string>
+    <string name="guest">Guest</string>
     <string name="incorrect_username_or_password_please_try_again">Incorrect username or password. Please try again.</string>
     <string name="username_length_invalid">Username must be 4–32 characters</string>
     <string name="no_double_spaces">No multiple spaces allowed</string>

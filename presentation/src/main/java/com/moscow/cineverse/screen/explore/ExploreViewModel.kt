@@ -34,8 +34,11 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class ExploreViewModel(
+@HiltViewModel
+class ExploreViewModel @Inject constructor(
     private val searchUseCase: SearchUseCase,
     private val suggestionUseCase: SuggestionUseCase,
     private val getPopularMoviesUseCase: GetPopularMoviesUseCase,

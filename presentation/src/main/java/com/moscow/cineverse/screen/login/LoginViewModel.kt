@@ -1,17 +1,20 @@
 package com.moscow.cineverse.screen.login
 
 import androidx.lifecycle.viewModelScope
-import com.moscow.cineverse.utlis.StringValue
 import com.moscow.cineverse.base.BaseViewModel
+import com.moscow.cineverse.utlis.StringValue
 import com.moscow.cinverse.presentation.R
 import com.moscow.domain.model.LoginData
 import com.moscow.domain.usecase.login.LoginAsGuestUseCase
 import com.moscow.domain.usecase.login.LoginWithUsernameAndPasswordUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class LoginViewModel(
+@HiltViewModel
+class LoginViewModel @Inject constructor(
     private val loginWithUsernameAndPasswordUseCase: LoginWithUsernameAndPasswordUseCase,
     private val loginAsGuestUseCase: LoginAsGuestUseCase
 ) : BaseViewModel<LoginScreenState, LoginScreenEvents>(LoginScreenState()),

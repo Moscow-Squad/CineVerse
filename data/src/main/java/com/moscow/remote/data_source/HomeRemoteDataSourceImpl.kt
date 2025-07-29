@@ -7,8 +7,9 @@ import com.moscow.utils.ApiResponse
 import com.moscow.utils.DAY
 import com.moscow.utils.handleApi
 import com.remote.services.HomeService
+import javax.inject.Inject
 
-class HomeRemoteDataSourceImpl(
+class HomeRemoteDataSourceImpl @Inject constructor(
     private val homeService: HomeService
 ) : HomeRemoteDataSource {
     override suspend fun getTrendingMovies(time: String?): ApiResponse<MovieDto> = handleApi {
