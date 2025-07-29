@@ -30,6 +30,7 @@ import com.moscow.cineverse.designSystem.component.MovieScaffold
 import com.moscow.cineverse.designSystem.component.ViewMode
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.mapper.toUi
+import com.moscow.cineverse.screen.explore.component.ViewModeToggleButton
 import com.moscow.cinverse.presentation.R
 import com.moscow.domain.model.Series
 

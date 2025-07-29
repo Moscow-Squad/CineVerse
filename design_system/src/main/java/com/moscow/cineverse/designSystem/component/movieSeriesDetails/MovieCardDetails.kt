@@ -26,7 +26,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.painterResource
@@ -233,7 +232,7 @@ fun MainMovieCard(
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
-                .padding(horizontal = 16.dp)
+                .padding(16.dp)
                 .sharedBounds(
                     rememberSharedContentState(key = "Main Movie Card"),
                     animatedVisibilityScope = animatedVisibilityScope,

@@ -1,6 +1,5 @@
 package com.moscow.cineverse.screen.movie_details.component
 
-import android.R.attr.scaleY
 import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionScope
