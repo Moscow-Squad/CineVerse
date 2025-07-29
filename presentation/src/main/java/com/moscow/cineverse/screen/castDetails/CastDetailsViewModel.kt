@@ -1,22 +1,28 @@
 package com.moscow.cineverse.screen.castDetails
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.cineverse.designSystem.component.cast_details.SocialMediaLinks
+import com.moscow.cineverse.navigation.routes.CastDetailsRoute
 import com.moscow.domain.model.ActorDetails
 import com.moscow.domain.model.Movie
 import com.moscow.domain.usecase.actor.GetActorBestMoviesUseCase
 import com.moscow.domain.usecase.actor.GetActorDetailsUseCase
 import com.moscow.domain.usecase.actor.GetActorGalleryUseCase
 import kotlinx.coroutines.launch
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class CastDetailsViewModel(
+@HiltViewModel
+class CastDetailsViewModel @Inject constructor(
     private val getActorDetailsUseCase: GetActorDetailsUseCase,
     private val getActorGalleryUseCase: GetActorGalleryUseCase,
     private val getActorBestMoviesUseCase: GetActorBestMoviesUseCase,
-    private val actorId: Int,
+    savedStateHandle: SavedStateHandle
 ) : BaseViewModel<CastDetailsUiState, CastDetailsEffect>(CastDetailsUiState()),
     CastDetailsInteractionListener {
+        val actorId = savedStateHandle.get<Int>(CastDetailsRoute.CAST_ID) ?: 0
 
     init {
         loadActorDetails()
