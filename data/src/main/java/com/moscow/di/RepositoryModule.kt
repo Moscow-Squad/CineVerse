@@ -3,6 +3,7 @@ package com.moscow.di
 import com.moscow.domain.repository.ActorRepository
 import com.moscow.domain.repository.CollectionsRepository
 import com.moscow.domain.repository.GenreRepository
+import com.moscow.domain.repository.HomeRepository
 import com.moscow.domain.repository.LoginRepository
 import com.moscow.domain.repository.MovieRepository
 import com.moscow.domain.repository.PreferenceRepository
@@ -11,6 +12,7 @@ import com.moscow.domain.repository.SeriesRepository
 import com.moscow.repository.ActorRepositoryImpl
 import com.moscow.repository.CollectionsRepositoryImpl
 import com.moscow.repository.GenreRepositoryImpl
+import com.moscow.repository.HomeRepositoryImpl
 import com.moscow.repository.MovieRepositoryImpl
 import com.moscow.repository.SearchRepositoryImpl
 import com.moscow.repository.SeriesRepositoryImpl
@@ -57,4 +59,9 @@ abstract class RepositoryModule {
     @Binds
     @Singleton
     abstract fun bindPreferenceRepository(impl: PreferenceRepositoryImpl): PreferenceRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindHomeRepository(impl: HomeRepositoryImpl): HomeRepository
+
 }

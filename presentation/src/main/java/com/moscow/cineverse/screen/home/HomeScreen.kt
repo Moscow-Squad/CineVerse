@@ -16,6 +16,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import com.moscow.cineverse.component.ScreenStateHandler
@@ -34,12 +35,11 @@ import com.moscow.cineverse.screen.home.components.HomeHeaderSlider
 import com.moscow.cineverse.screen.home.components.MyCollectionsLayout
 import com.moscow.cineverse.screen.home.components.SuggestionWithHeader
 import com.moscow.cinverse.presentation.R
-import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
-    viewmodel: HomeViewModel = koinViewModel(),
+    viewmodel: HomeViewModel = hiltViewModel(),
     navController: NavHostController = LocalNavController.current,
 ) {
     val state by viewmodel.uiState.collectAsStateWithLifecycle()

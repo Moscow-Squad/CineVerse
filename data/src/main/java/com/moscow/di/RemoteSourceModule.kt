@@ -1,5 +1,6 @@
 package com.moscow.di
 
+import com.data_source.remote.HomeRemoteDataSource
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import com.moscow.data_source.remote.ActorRemoteDataSource
 import com.moscow.data_source.remote.CollectionRemoteDataSource
@@ -25,6 +26,8 @@ import com.moscow.remote.services.MovieService
 import com.moscow.remote.services.SearchService
 import com.moscow.remote.services.SeriesService
 import com.moscow.utils.BASE_URL
+import com.remote.data_source.HomeRemoteDataSourceImpl
+import com.remote.services.HomeService
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -72,6 +75,10 @@ abstract class RemoteDataSourceModule {
     @Binds
     @Singleton
     abstract fun bindLoginRemoteDataSource(impl: LoginRemoteDataSourceImpl): LoginRemoteDataSource
+
+    @Binds
+    @Singleton
+    abstract fun bindHomeRemoteDataSource(impl: HomeRemoteDataSourceImpl): HomeRemoteDataSource
 
     companion object {
         @Provides
@@ -157,6 +164,12 @@ abstract class RemoteDataSourceModule {
         @Singleton
         fun provideLoginService(retrofit: Retrofit): LoginService {
             return retrofit.create(LoginService::class.java)
+        }
+
+        @Provides
+        @Singleton
+        fun provideHomeService(retrofit: Retrofit): HomeService {
+            return retrofit.create(HomeService::class.java)
         }
     }
 }

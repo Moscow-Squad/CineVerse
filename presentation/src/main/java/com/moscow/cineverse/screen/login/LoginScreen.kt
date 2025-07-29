@@ -45,7 +45,6 @@ import com.moscow.cineverse.designSystem.component.bottomsheet.CineVerseBottomSh
 import com.moscow.cineverse.designSystem.component.login.WebViewBrowser
 import com.moscow.cineverse.designSystem.theme.CineVerseTheme
 import com.moscow.cineverse.designSystem.theme.Theme
-import com.moscow.cineverse.design_system.R
 import com.moscow.cineverse.navigation.LocalNavController
 import com.moscow.cineverse.navigation.routes.HomeRoute
 import com.moscow.cineverse.navigation.routes.LoginRoute
