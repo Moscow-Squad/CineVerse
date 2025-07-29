@@ -13,4 +13,5 @@ interface SeriesDetailsScreenInteractionListener {
     fun onViewModeChanged(viewMode: ViewMode)
     fun onSeriesClicked(seriesId: Int)
     fun onActorClicked(actorId: Int)
+    fun onRetry()
 }

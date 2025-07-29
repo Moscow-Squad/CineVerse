@@ -34,7 +34,6 @@ class SeriesDetailsScreenScreenViewModel @Inject constructor(
         loadSeriesCredits(seriesId)
         getSeriesRecommendations(seriesId, page = 1)
         loadReviews(seriesId, page = 1)
-        updateState { it.copy(isLoading = false) }
     }
 
     private fun loadSeriesDetails(seriesId: Int) {
@@ -139,5 +138,13 @@ class SeriesDetailsScreenScreenViewModel @Inject constructor(
 
     override fun onActorClicked(actorId: Int) {
         sendEvent(SeriesDetailsScreenEffects.NavigateToActorDetailsScreen(actorId))
+    }
+
+    override fun onRetry() {
+        updateState { it.copy(isLoading = true, errorMessage = "") }
+        loadSeriesDetails(seriesId)
+        loadSeriesCredits(seriesId)
+        getSeriesRecommendations(seriesId, page = 1)
+        loadReviews(seriesId, page = 1)
     }
 }

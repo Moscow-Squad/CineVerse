@@ -5,13 +5,10 @@ import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -38,12 +35,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.rememberAsyncImagePainter
 import com.moscow.cineverse.component.MoviePosterCard
+import com.moscow.cineverse.component.NoInternetScreen
 import com.moscow.cineverse.designSystem.component.MovieAppBar
-import com.moscow.cineverse.designSystem.component.MovieButton
 import com.moscow.cineverse.designSystem.component.MovieCircularProgressBar
 import com.moscow.cineverse.designSystem.component.MovieListSection
-import com.moscow.cineverse.designSystem.component.MovieScaffold
-import com.moscow.cineverse.designSystem.component.MovieText
 import com.moscow.cineverse.designSystem.component.SectionTitle
 import com.moscow.cineverse.designSystem.component.movieSeriesDetails.CastCard
 import com.moscow.cineverse.designSystem.component.movieSeriesDetails.MainMovieCard
@@ -117,37 +112,24 @@ fun SeriesDetailsContent(
             scrollState.firstVisibleItemScrollOffset > 10 || scrollState.firstVisibleItemIndex > 0
         }
     }
-    MovieScaffold{
-        if (uiState.isLoading) {
+    when {
+        uiState.isLoading ->{
             Box(
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier.fillMaxSize().background(Theme.colors.background.screen),
                 contentAlignment = Alignment.Center
             ) {
                 MovieCircularProgressBar()
             }
         }
-        else if (uiState.errorMessage != ""){
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 24.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
+        uiState.errorMessage != "" ->{
+            Box(
+                modifier = Modifier.fillMaxSize().background(Theme.colors.background.screen),
+                contentAlignment = Alignment.Center
             ) {
-                MovieText(
-                    text = "Error in loading series details",
-                    color = Theme.colors.shade.primary
-                )
-                Spacer(modifier = Modifier.height(16.dp))
-                MovieButton(
-                    buttonText = stringResource(R.string.retry),
-                    textColor = Theme.colors.button.primary,
-                    textStyle = Theme.textStyle.title.small,
-                    onClick = { }
-                )
+                NoInternetScreen(onRetry = interactionListener::onRetry)
             }
         }
-        else {
+        else ->{
             Column(modifier = Modifier.background(Theme.colors.background.screen)) {
                 MovieAppBar(backButtonClick = onNavigateBack, showBackButton = true)
                 SharedTransitionLayout {
