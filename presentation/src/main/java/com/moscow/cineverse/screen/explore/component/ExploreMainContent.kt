@@ -82,10 +82,13 @@ fun ExploreMainContent(
                 state = gridState,
                 columns = gridColumns,
                 contentPadding = PaddingValues(
-                    top = 56.dp, start = 16.dp, end = 16.dp, bottom = 100.dp
+                    top = 16.dp,
+                    start = 16.dp,
+                    end = 16.dp,
+                    bottom = 100.dp
                 ),
                 verticalArrangement = Arrangement.spacedBy(16.dp),
-                horizontalArrangement = Arrangement.spacedBy(12.dp),
+                horizontalArrangement = Arrangement.spacedBy(16.dp),
                 modifier = modifier.fillMaxSize()
             ) {
                 items(contentList.itemCount) { index ->
@@ -116,5 +119,3 @@ fun ExploreMainContent(
         }
     }
 }
-
-

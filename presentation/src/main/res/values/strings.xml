@@ -79,5 +79,10 @@
     <string name="writer">Writer</string>
     <string name="latest_seasons">Latest Seasons</string>
     <string name="seasons">Seasons</string>
+    <string name="incorrect_username_or_password_please_try_again">Incorrect username or password. Please try again.</string>
+    <string name="username_length_invalid">Username must be 4–32 characters</string>
+    <string name="no_double_spaces">No multiple spaces allowed</string>
+    <string name="no_leading_trailing_spaces">No leading or trailing spaces</string>
+    <string name="username_invalid_chars">Username must be Only letters, numbers and underscores</string>
 
 </resources>
