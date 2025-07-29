@@ -13,7 +13,7 @@ class CollectionRemoteDataSourceImpl  @Inject constructor(
     private val collectionsService: CollectionsService
 ) : CollectionRemoteDataSource {
     override suspend fun getMyCollections(
-        accountId: Int,
+        accountId: String,
         sessionId: String,
         page: Int
     ): ApiResponse<CollectionDto> = handleApi {

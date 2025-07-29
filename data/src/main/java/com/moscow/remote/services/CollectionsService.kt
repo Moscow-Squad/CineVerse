@@ -19,9 +19,9 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface CollectionsService {
-    @GET("$ACCOUNT/{accountId}$LISTS")
+    @GET("$ACCOUNT/{account_id}$LISTS")
     suspend fun getMyCollections(
-        @Path("accountId") accountId: Int,
+        @Path("account_id") accountId: String,
         @Query(PAGE) page: Int,
         @Query(SESSION_ID) sessionId: String
     ): Response<ApiResponse<CollectionDto>>
@@ -32,16 +32,16 @@ interface CollectionsService {
         @Query(SESSION_ID) sessionId: String
     ): Response<ApiResponse<Nothing>>
 
-    @POST("$LIST/{collectionId}/$ADD_ITEM")
+    @POST("$LIST/{collection_id}/$ADD_ITEM")
     suspend fun addMediaItemToCollection(
         @Body item: AddMediaItemToCollectionRequestDto,
-        @Path("collectionId") collectionId: Int,
+        @Path("collection_id") collectionId: Int,
         @Query(SESSION_ID) sessionId: String
     ): Response<ApiResponse<Nothing>>
 
-    @GET("$LIST/{collectionId}")
+    @GET("$LIST/{collection_id}")
     suspend fun getCollectionDetails(
-        @Path("collectionId") collectionId: Int,
+        @Path("collection_id") collectionId: Int,
         @Query(SESSION_ID) sessionId: String
     ): Response<ApiResponse<MediaItemDto>>
 }
