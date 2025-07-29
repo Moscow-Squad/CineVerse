@@ -7,6 +7,8 @@ plugins {
     alias(libs.plugins.google.firebase.firebase.perf)
     alias(libs.plugins.google.firebase.appdistribution)
     alias(libs.plugins.kover)
+    alias(libs.plugins.hiltAndroid)
+    alias(libs.plugins.ksp)
 }
 
 android {
@@ -43,8 +45,8 @@ dependencies {
     implementation(projects.domain)
 
     // DI & platform
-    implementation(platform(libs.koin.bom))
-    implementation(libs.bundles.koin)
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.android.compiler)
 
     // Core
     implementation(libs.androidx.core.ktx)
@@ -74,7 +76,7 @@ dependencies {
 
     // Background & Navigation
     implementation(libs.androidx.work.runtime.ktx)
-    implementation(libs.koin.androidx.workmanager)
+
     implementation(libs.androidx.navigation.compose)
 
     // Splash

@@ -27,12 +27,13 @@ import com.moscow.cineverse.screen.series_details.SeriesDetailsScreenScreenViewM
 import com.moscow.cineverse.screen.series_details.SeriesDetailsScreenInteractionListener
 import com.moscow.cinverse.presentation.R
 import androidx.compose.runtime.getValue
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.moscow.cineverse.screen.series_details.component.SeasonCard
 
 @Composable
 fun SeriesSeasonsScreen(
-    viewModel: SeriesDetailsScreenScreenViewModel,
+    viewModel: SeriesDetailsScreenScreenViewModel = hiltViewModel(),
     modifier: Modifier = Modifier,
     navController: NavHostController = LocalNavController.current,
 ) {

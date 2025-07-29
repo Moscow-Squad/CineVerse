@@ -10,9 +10,13 @@ import com.moscow.domain.usecase.login.LoginWithUsernameAndPasswordUseCase
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
+import javax.inject.Inject
 
-class LoginViewModel(
-    private val context: Context,
+@HiltViewModel
+class LoginViewModel @Inject constructor(
+    @ApplicationContext private val context: Context,
     private val loginWithUsernameAndPasswordUseCase: LoginWithUsernameAndPasswordUseCase,
     private val loginAsGuestUseCase: LoginAsGuestUseCase
 ) : BaseViewModel<LoginScreenState, LoginScreenEvents>(LoginScreenState()),

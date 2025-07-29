@@ -8,9 +8,10 @@ import com.moscow.remote.dto.login.RequestTokenDto
 import com.moscow.remote.dto.login.SessionDto
 import com.moscow.remote.services.LoginService
 import com.moscow.utils.handleApi
+import javax.inject.Inject
 
 
-class LoginRemoteDataSourceImpl(
+class LoginRemoteDataSourceImpl @Inject constructor(
     private val loginService: LoginService
 ) : LoginRemoteDataSource {
     override suspend fun createRequestToken(): RequestTokenDto = handleApi {

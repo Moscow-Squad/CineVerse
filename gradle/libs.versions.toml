@@ -1,6 +1,8 @@
 [versions]
 accompanistWebview = "0.36.0"
 
+daggerAndroid = "2.57"
+daggerAndroidProcessor = "2.57"
 mockkVersion = "1.13.10"
 namespace = "com.moscow.cineverse"
 applicationId = "com.moscow.cineverse"
@@ -63,7 +65,8 @@ secretsGradlePlugin = "2.0.1"
 kotlinxDatetime = "0.3.3"
 kover = "0.9.1"
 # DI
-koin-bom = "4.1.0"
+hiltAndroid = "2.57"
+hiltNavigationCompose = "1.2.0"
 # Network
 jetbrainsKotlinJvm = "2.0.21"
 workRuntimeKtx = "2.10.2"
@@ -77,6 +80,7 @@ coreSplashscreen = "1.0.1"
 serializationKotlin = "2.0.0"
 
 [libraries]
+dagger-android-processor = { module = "com.google.dagger:dagger-android-processor", version.ref = "daggerAndroidProcessor" }
 mockk-v11310 = { module = "io.mockk:mockk", version.ref = "mockkVersion" }
 tensorflow-lite-vision = { module = "org.tensorflow:tensorflow-lite-task-vision", version.ref = "tensorflowLiteVision" }
 accompanist-webview = { module = "com.google.accompanist:accompanist-webview", version.ref = "accompanistWebview" }
@@ -108,7 +112,6 @@ androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-man
 androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
-koin-androidx-workmanager = { module = "io.insert-koin:koin-androidx-workmanager" }
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinxCoroutinesAndroid" }
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinxCoroutinesCore" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
@@ -149,10 +152,15 @@ androidx-ui-tooling-preview-android = { group = "androidx.compose.ui", name = "u
 readmore-material3 = { group = "com.webtoonscorp.android", name = "readmore-material3", version.ref = "readMoreVersion" }
 
 # DI
-koin-bom = { group = "io.insert-koin", name = "koin-bom", version.ref = "koin-bom" }
-koin-android = { group = "io.insert-koin", name = "koin-android" }
-koin-core = { group = "io.insert-koin", name = "koin-core" }
-koin-compose = { group = "io.insert-koin", name = "koin-androidx-compose" }
+hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hiltAndroid" }
+hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hiltAndroid" }
+androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
+
+dagger-android = { module = "com.google.dagger:dagger-android", version.ref = "daggerAndroid" }
+dagger-compiler= { module = "com.google.dagger:dagger-compiler", version.ref = "daggerAndroid" }
+
+
+
 
 #kotlin date time
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinxDatetime" }
@@ -171,6 +179,7 @@ android-gradle-plugin = { module = "com.android.tools.build:gradle", version.ref
 [plugins]
 kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+hiltAndroid = { id = "com.google.dagger.hilt.android", version.ref = "hiltAndroid" }
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
@@ -192,11 +201,7 @@ cineverse-android-application = { id = "cineverse.android.application" }
 
 [bundles]
 
-koin = [
-    "koin-core",
-    "koin-android",
-    "koin-compose",
-]
+
 
 coroutines = [
     "kotlinx-coroutines-core",

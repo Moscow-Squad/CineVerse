@@ -7,8 +7,9 @@ import com.moscow.remote.dto.actor.ActorSocialMediaDto
 import com.moscow.remote.dto.details.ActorDetailsDto
 import com.moscow.remote.services.ActorService
 import com.moscow.utils.handleApi
+import javax.inject.Inject
 
-class ActorRemoteDataSourceImpl(private val actorService: ActorService) :
+class ActorRemoteDataSourceImpl @Inject constructor(private val actorService: ActorService) :
     ActorRemoteDataSource {
     override suspend fun getActorDetails(id: Int): ActorDetailsDto =
         handleApi {

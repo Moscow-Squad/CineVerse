@@ -19,8 +19,11 @@ import com.moscow.domain.usecase.series.GetSeriesRecommendationsUseCase
 import com.moscow.domain.usecase.series.RateSeriesUseCase
 import kotlinx.coroutines.flow.Flow
 import kotlin.collections.map
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class SeriesDetailsScreenScreenViewModel(
+@HiltViewModel
+class SeriesDetailsScreenScreenViewModel @Inject constructor(
     private val getSeriesDetailUseCase: GetSeriesDetailUseCase,
     private val getReviewsPageUseCase: GetReviewsUseCase,
     private val rateSeriesUseCase: RateSeriesUseCase,

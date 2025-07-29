@@ -16,17 +16,45 @@ import com.moscow.repository.SearchRepositoryImpl
 import com.moscow.repository.SeriesRepositoryImpl
 import com.moscow.repository.login.LoginRepositoryImpl
 import com.moscow.repository.preference.PreferenceRepositoryImpl
-import org.koin.core.module.dsl.singleOf
-import org.koin.dsl.bind
-import org.koin.dsl.module
+import dagger.Binds
+import dagger.Module
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
 
-val repositoryModule = module {
-    singleOf(::MovieRepositoryImpl) bind MovieRepository::class
-    singleOf(::SearchRepositoryImpl) bind SearchRepository::class
-    singleOf(::SeriesRepositoryImpl) bind SeriesRepository::class
-    singleOf(::GenreRepositoryImpl) bind GenreRepository::class
-    singleOf(::ActorRepositoryImpl) bind ActorRepository::class
-    singleOf(::CollectionsRepositoryImpl) bind CollectionsRepository::class
-    singleOf(::LoginRepositoryImpl) bind LoginRepository::class
-    singleOf(::PreferenceRepositoryImpl) bind PreferenceRepository::class
+@Module
+@InstallIn(SingletonComponent::class)
+abstract class RepositoryModule {
+
+    @Binds
+    @Singleton
+    abstract fun bindMovieRepository(impl: MovieRepositoryImpl): MovieRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindSearchRepository(impl: SearchRepositoryImpl): SearchRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindSeriesRepository(impl: SeriesRepositoryImpl): SeriesRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindGenreRepository(impl: GenreRepositoryImpl): GenreRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindActorRepository(impl: ActorRepositoryImpl): ActorRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindCollectionsRepository(impl: CollectionsRepositoryImpl): CollectionsRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindLoginRepository(impl: LoginRepositoryImpl): LoginRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindPreferenceRepository(impl: PreferenceRepositoryImpl): PreferenceRepository
 }
