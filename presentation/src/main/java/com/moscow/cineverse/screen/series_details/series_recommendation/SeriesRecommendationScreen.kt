@@ -19,6 +19,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.moscow.cineverse.component.MoviePosterCard
@@ -26,7 +27,6 @@ import com.moscow.cineverse.designSystem.component.MovieAppBar
 import com.moscow.cineverse.designSystem.component.MovieButton
 import com.moscow.cineverse.designSystem.component.MovieCircularProgressBar
 import com.moscow.cineverse.designSystem.component.MovieScaffold
-import com.moscow.cineverse.designSystem.component.MovieText
 import com.moscow.cineverse.designSystem.component.ViewMode
 import com.moscow.cineverse.designSystem.component.ViewModeToggle
 import com.moscow.cineverse.designSystem.theme.Theme
@@ -75,11 +75,11 @@ fun SeriesRecommendationScreenContent(
 ) {
     MovieScaffold {
         Box(modifier = modifier.fillMaxSize()) {
-            when {
-                uiState.isLoading -> {
+            when (recommendations.loadState.append) {
+                is LoadState.Loading -> {
                     MovieCircularProgressBar(modifier = Modifier.align(Alignment.Center))
                 }
-                uiState.errorMessage != "" -> {
+                is LoadState.Error -> {
                     Box(
                         modifier = Modifier.fillMaxSize(),
                         contentAlignment = Alignment.Center
@@ -87,10 +87,6 @@ fun SeriesRecommendationScreenContent(
                         Column(
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
-                            MovieText(
-                                text = uiState.errorMessage,
-                                color = Theme.colors.shade.primary
-                            )
                             Spacer(modifier = Modifier.height(16.dp))
                             MovieButton(
                                 buttonText = stringResource(R.string.retry),
@@ -101,7 +97,7 @@ fun SeriesRecommendationScreenContent(
                         }
                     }
                 }
-                else -> {
+                is LoadState.NotLoading -> {
                     Column(modifier = Modifier.fillMaxSize()) {
                         MovieAppBar(
                             caption = stringResource(R.string.because_you_watched),
