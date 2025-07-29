@@ -1,12 +1,15 @@
 package com.moscow.cineverse.screen.movie_details.component
 
+import android.R.attr.scaleY
 import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionScope
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.ParagraphStyle
 import androidx.compose.ui.text.SpanStyle
@@ -24,6 +27,7 @@ import com.moscow.cineverse.mapper.toFormattedReleasedDate
 import com.moscow.cineverse.mapper.toHourMinuteFormat
 import com.moscow.cineverse.screen.movie_details.MovieDetailsInteractionListener
 import com.moscow.cineverse.screen.movie_details.MovieScreenState
+import com.moscow.cinverse.presentation.R
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
@@ -40,15 +44,20 @@ fun MovieHeaderSection(
             sharedTransitionScope = sharedTransitionScope,
             posterUrl = it.posterPath,
             title = it.title,
-            genres = it.genres.joinToString(","),
+            genres = it.genres.joinToString(", "),
             rating = it.rating.toString(),
             duration = it.duration.toHourMinuteFormat(),
             releaseDate = it.releaseDate.toFormattedReleasedDate(),
-            type = stringResource(com.moscow.cinverse.presentation.R.string.movie),
+            type = stringResource(R.string.movie),
             onSaveClick = {
                 interactionListener.onAddToCollection(it.id)
             },
             modifier = modifier
+                .graphicsLayer {
+                    alpha = 1f
+                    scaleY = 1f
+                }
+                .animateContentSize()
         )
     }
 }
@@ -83,7 +92,7 @@ fun MovieStorylineSection(
 
     uiState.movieDetailsUiState?.let { movieDetails ->
         Text(
-            text = stringResource(com.moscow.cinverse.presentation.R.string.storyline),
+            text = stringResource(R.string.storyline),
             style = Theme.textStyle.title.small,
             color = Theme.colors.shade.primary,
             modifier = modifier.padding(16.dp, top = 24.dp, bottom = 8.dp),
