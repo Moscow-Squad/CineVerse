@@ -15,15 +15,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.NavHostController
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.moscow.cineverse.designSystem.component.tabs.ExploreTabsPages
 import com.moscow.cineverse.designSystem.theme.Theme
-import com.moscow.cineverse.navigation.LocalNavController
-import com.moscow.cineverse.navigation.routes.CastDetailsRoute
-import com.moscow.cineverse.navigation.routes.MovieDetailsRoute
-import com.moscow.cineverse.navigation.routes.SeriesDetailsRoute
 import com.moscow.cineverse.screen.explore.component.ExploreMainContent
 import com.moscow.cineverse.screen.explore.component.ExploreSearchBarSection
 import com.moscow.cineverse.screen.explore.component.ExploreTabsSection
@@ -34,14 +29,23 @@ import com.moscow.cineverse.screen.explore.component.ViewModeToggleButton
 @Composable
 fun ExploreScreen(
     modifier: Modifier = Modifier,
-    navController: NavHostController = LocalNavController.current,
     viewModel: ExploreViewModel = hiltViewModel(),
+    navigateToCastDetails: (Int) -> Unit,
+    navigateToMovieDetails: (Int) -> Unit,
+    navigateToSeriesDetails: (Int) -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val contentList = viewModel.contentList.collectAsLazyPagingItems()
 
     LaunchedEffect(Unit) {
-        viewModel.uiEffect.collect { event -> handleEffects(event, navController) }
+        viewModel.uiEffect.collect { event ->
+            handleEffects(
+                event,
+                navigateToCastDetails = navigateToCastDetails,
+                navigateToMovieDetails = navigateToMovieDetails,
+                navigateToSeriesDetails = navigateToSeriesDetails
+            )
+        }
     }
 
     ExploreScreenContent(
@@ -54,30 +58,28 @@ fun ExploreScreen(
 
 private fun handleEffects(
     event: ExploreScreenEffects,
-    navController: NavHostController
+    navigateToCastDetails: (Int) -> Unit,
+    navigateToMovieDetails: (Int) -> Unit,
+    navigateToSeriesDetails: (Int) -> Unit,
+
+
 ) {
     when (event) {
         is ExploreScreenEffects.ActorClicked -> {
-            navController.navigate(
-                CastDetailsRoute(event.actorId)
-            )
+            navigateToCastDetails(event.actorId)
         }
 
         is ExploreScreenEffects.GenreSelected -> {}
         ExploreScreenEffects.LoadData -> {}
         is ExploreScreenEffects.MovieClicked -> {
-            navController.navigate(
-                MovieDetailsRoute(event.movieId)
-            )
+            navigateToMovieDetails(event.movieId)
         }
 
         ExploreScreenEffects.RefreshRequested -> {}
         is ExploreScreenEffects.TabSelected -> {}
         is ExploreScreenEffects.ViewModeChanged -> {}
         is ExploreScreenEffects.SeriesClicked -> {
-            navController.navigate(
-                SeriesDetailsRoute(event.seriesId)
-            )
+            navigateToSeriesDetails(event.seriesId)
         }
     }
 }
@@ -115,7 +117,9 @@ private fun ExploreScreenContent(
                 ViewModeToggleButton(
                     selectedMode = uiState.viewMode,
                     onModeSelected = interactionListener::onViewModeChanged,
-                    modifier = Modifier.align(Alignment.BottomEnd).padding(end = 16.dp, bottom = 96.dp)
+                    modifier = Modifier
+                        .align(Alignment.BottomEnd)
+                        .padding(end = 16.dp, bottom = 96.dp)
                 )
             }
         }

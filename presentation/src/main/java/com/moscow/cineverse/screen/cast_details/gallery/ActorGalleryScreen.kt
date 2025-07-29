@@ -1,4 +1,4 @@
-package com.moscow.cineverse.screen.castDetails.gallery
+package com.moscow.cineverse.screen.cast_details.gallery
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,7 +14,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.NavHostController
 import com.moscow.cineverse.designSystem.component.CineVersePreviews
 import com.moscow.cineverse.designSystem.component.MovieAppBar
 import com.moscow.cineverse.designSystem.component.MovieButton
@@ -23,14 +22,12 @@ import com.moscow.cineverse.designSystem.component.MovieScaffold
 import com.moscow.cineverse.designSystem.component.MovieText
 import com.moscow.cineverse.designSystem.component.cast_details.CastGallery
 import com.moscow.cineverse.designSystem.theme.Theme
-import com.moscow.cineverse.navigation.LocalNavController
 import com.moscow.cinverse.presentation.R
 
 @Composable
 fun ActorGalleryScreen(
     modifier: Modifier = Modifier,
-    navController: NavHostController = LocalNavController.current,
-
+    navigateBack: () -> Unit,
     ) {
     val viewModel: ActorGalleryViewModel = hiltViewModel()
 
@@ -40,7 +37,7 @@ fun ActorGalleryScreen(
         modifier = modifier,
         uiState = uiState,
         interactionListener = viewModel,
-        onNavigateBack = navController::navigateUp,
+        onNavigateBack = navigateBack,
         title = uiState.actorName
     )
 }

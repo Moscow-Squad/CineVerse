@@ -10,6 +10,7 @@ import androidx.navigation.compose.NavHost
 import com.moscow.cineverse.navigation.routes.CastBestOfMovieRoute
 import com.moscow.cineverse.navigation.routes.CastDetailsRoute
 import com.moscow.cineverse.navigation.routes.CastGalleryRoute
+import com.moscow.cineverse.navigation.routes.HomeRoute
 import com.moscow.cineverse.navigation.routes.MovieDetailsRoute
 import com.moscow.cineverse.navigation.routes.RecommendationsRoute
 import com.moscow.cineverse.navigation.routes.ReviewsRoute
@@ -24,9 +25,6 @@ import com.moscow.cineverse.navigation.routes.matchRoute
 import com.moscow.cineverse.navigation.routes.profileRoute
 import com.moscow.cineverse.navigation.routes.seeMoreRoute
 
-
-val LocalNavController =
-    staticCompositionLocalOf<NavHostController> { error("No NavController provided") }
 val LocalScaffoldPaddingValues =
     staticCompositionLocalOf<PaddingValues> { error("No ScaffoldPadding provided") }
 
@@ -40,34 +38,29 @@ fun CineVerseNavGraph(
     val startDestination = navViewModel.startDestination.value ?: return
 
     CompositionLocalProvider(
-        LocalNavController provides navController,
         LocalScaffoldPaddingValues provides scaffoldPaddingValues
     ) {
         NavHost(
             modifier = modifier,
             navController = navController,
-            startDestination = startDestination
+            startDestination = HomeRoute
         ) {
-            exploreRoute()
-            loginRoute()
-            RecommendationsRoute()
-            ReviewsRoute()
-            CastDetailsRoute()
-            CastGalleryRoute()
-            CastBestOfMovieRoute()
-            MovieDetailsRoute()
-            SeriesDetailsRoute()
-            SeriesRecommendationRoute()
-            SeriesSeasonsRoute()
-            collectionsBottomSheetRoute(
-                onAddNewCollectionClick = {},
-                onCreateCollectionClicked = {},
-                navigateBack = navController::navigateUp
-            )
-            homeRoute()
-            seeMoreRoute()
-            matchRoute()
-            profileRoute()
+            exploreRoute(navController)
+            loginRoute(navController)
+            RecommendationsRoute(navController)
+            ReviewsRoute(navController)
+            CastDetailsRoute(navController)
+            CastGalleryRoute(navController)
+            CastBestOfMovieRoute(navController)
+            MovieDetailsRoute(navController)
+            SeriesDetailsRoute(navController)
+            SeriesRecommendationRoute(navController)
+            SeriesSeasonsRoute(navController)
+            collectionsBottomSheetRoute(navController)
+            homeRoute(navController)
+            seeMoreRoute(navController)
+            matchRoute(navController)
+            profileRoute(navController)
 
         }
     }

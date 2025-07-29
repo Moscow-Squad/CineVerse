@@ -89,13 +89,11 @@ fun HomeHeaderSlider(items: List<MediaItemUiState>, modifier: Modifier = Modifie
             val animatedHeight = lerp(230.dp, 200.dp, 1f - pageOffset)
             val animatedWidth = lerp(360.dp, 312.dp, 1f - pageOffset)
 
-            // Calculate alpha based on whether it's current page
             val cardAlpha = lerp(0.6f, 1f, 1f - pageOffset)
             val textAlpha = 1f - pageOffset * 3f
 
-            // Only apply shadow to current page (when pageOffset is very close to 0)
             val isCurrentPage = pageOffset < 0.1f
-            val shadowElevation = if (isCurrentPage) 20.dp else 0.dp
+            val shadowElevation = if (isCurrentPage) 30.dp else 0.dp
 
             Box(
                 modifier = Modifier
@@ -123,7 +121,7 @@ fun HomeHeaderSlider(items: List<MediaItemUiState>, modifier: Modifier = Modifie
                         .size(width = animatedWidth, height = animatedHeight)
                         .clip(RoundedCornerShape(Theme.radius.extraLarge)),
                     showBackdrop = true,
-                    showTitle = false
+                    showTitle = false,
                 )
 
                 if (textAlpha > 0) {
@@ -136,7 +134,6 @@ fun HomeHeaderSlider(items: List<MediaItemUiState>, modifier: Modifier = Modifie
                         verticalArrangement = Arrangement.spacedBy(4.dp),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        // Text content remains the same
                         Text(
                             text = items[page].title,
                             color = Theme.colors.shade.primary,
@@ -159,8 +156,7 @@ fun HomeHeaderSlider(items: List<MediaItemUiState>, modifier: Modifier = Modifie
             alpha = 1f,
             modifier = Modifier
                 .align(Alignment.TopEnd)
-                .padding(12.dp)
-                .padding(end = 24.dp)
+                .padding(top = 4.dp, end = 32.dp)
         )
     }
 }

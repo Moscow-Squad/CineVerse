@@ -6,7 +6,9 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -15,10 +17,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.moscow.cineverse.design_system.R
 import com.moscow.cineverse.designSystem.theme.CineVerseTheme
 import com.moscow.cineverse.designSystem.theme.Theme
+import com.moscow.cineverse.design_system.R
 
 @Composable
 fun MovieAppBar(
@@ -35,21 +38,20 @@ fun MovieAppBar(
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .background(
-                color = Theme.colors.background.screen
-            ),
+            .background(Theme.colors.background.screen)
     ) {
         Row(
-            modifier = modifier
+            modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 16.dp),
+                .height(56.dp)
+                .padding(horizontal = 8.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             if (showBackButton) {
                 IconButton(
                     onClick = { backButtonClick() },
-                    modifier = Modifier
+                    modifier = Modifier.size(40.dp)
                 ) {
                     Icon(
                         painter = painterResource(R.drawable.outline_arrow_left),
@@ -72,28 +74,31 @@ fun MovieAppBar(
                     Text(
                         text = caption,
                         style = Theme.textStyle.body.medium.regular,
-                        color = Theme.colors.shade.secondary
+                        color = Theme.colors.shade.secondary,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
                     )
                 }
                 if (title != null) {
                     Text(
                         text = title,
                         style = Theme.textStyle.title.small,
-                        color = Theme.colors.shade.primary
+                        color = Theme.colors.shade.primary,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
                     )
                 }
             }
             if (showAddButton) {
                 IconButton(
                     onClick = addButtonClick,
-                    modifier = Modifier
+                    modifier = Modifier.size(40.dp)
                 ) {
                     Icon(
                         painter = painterResource(R.drawable.outline_add),
                         contentDescription = "Search",
                         tint = Theme.colors.shade.primary
                     )
-
                 }
             }
         }
@@ -113,8 +118,7 @@ fun MovieAppBarPreview() {
     CineVerseTheme {
         MovieAppBar(
             title = "Title",
-            caption = "Caption",
-
-            )
+            caption = "Caption"
+        )
     }
 }

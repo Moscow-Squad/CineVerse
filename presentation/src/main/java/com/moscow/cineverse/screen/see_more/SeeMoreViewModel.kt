@@ -1,4 +1,4 @@
-package com.moscow.cineverse.screen.home
+package com.moscow.cineverse.screen.see_more
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
@@ -12,10 +12,9 @@ import com.moscow.cineverse.common_ui_state.MediaItemUiState
 import com.moscow.cineverse.designSystem.component.ViewMode
 import com.moscow.cineverse.mapper.toMediaItemUi
 import com.moscow.cineverse.mapper.toUi
+import com.moscow.cineverse.navigation.routes.SeeMoreRoute
 import com.moscow.cineverse.paging.BasePagingSource
-import com.moscow.cineverse.screen.see_more.SeeMoreEvent
-import com.moscow.cineverse.screen.see_more.SeeMoreInteractionListener
-import com.moscow.cineverse.screen.see_more.SeeMoreUiState
+import com.moscow.cineverse.screen.home.HomeFeaturedItems
 import com.moscow.domain.model.Movie
 import com.moscow.domain.model.Series
 import com.moscow.domain.usecase.home.GetMatchesYourVibesMoviesUseCase
@@ -37,22 +36,19 @@ class SeeMoreViewModel @Inject constructor(
     private val getTopRatedTVShowsUseCase: GetTopRatedTVShowsUseCase,
     private val getUpcomingMoviesUseCase: GetUpcomingMoviesUseCase,
     private val savedStateHandle: SavedStateHandle
-) : BaseViewModel<SeeMoreUiState, SeeMoreEvent> (
-    SeeMoreUiState(
-        title = savedStateHandle.get<String>("category") ?: ""
-    )
-), SeeMoreInteractionListener {
+) : BaseViewModel<SeeMoreUiState, SeeMoreEvent>(SeeMoreUiState()), SeeMoreInteractionListener {
 
     private val _pagingDataFlow = MutableStateFlow<Flow<PagingData<MediaItemUiState>>>(emptyFlow())
     val pagingDataFlow = _pagingDataFlow.asStateFlow()
+    private val category = savedStateHandle.get<String>(SeeMoreRoute.CATEGORY) ?: ""
 
     init {
+        updateState { it.copy(title = category) }
         loadContent()
     }
 
     private fun loadContent() {
         updateState { it.copy(isLoading = true) }
-        val category = savedStateHandle.get<String>("category") ?: return
         val pageSize = 20
 
         viewModelScope.launch {

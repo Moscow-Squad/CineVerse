@@ -1,9 +1,8 @@
-package com.moscow.cineverse.screen.castDetails.gallery
+package com.moscow.cineverse.screen.cast_details.gallery
 
 import androidx.lifecycle.SavedStateHandle
 import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.cineverse.navigation.routes.CastGalleryRoute
-import com.moscow.cineverse.navigation.routes.SeriesDetailsRoute
 import com.moscow.domain.usecase.actor.GetActorGalleryUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject

@@ -1,7 +1,7 @@
 package com.moscow.cineverse.mapper
 
 import com.moscow.cineverse.common_ui_state.MediaItemUiState
-import com.moscow.cineverse.screen.castDetails.best0fmovies.GenreUi
+import com.moscow.cineverse.screen.cast_details.best_of_movies.GenreUi
 import com.moscow.cineverse.screen.explore.YYYY_MMM_DD
 import com.moscow.cineverse.screen.explore.formatWith
 import com.moscow.domain.model.Genre

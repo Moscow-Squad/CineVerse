@@ -16,11 +16,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.NavHostController
 import com.moscow.cineverse.designSystem.component.MovieAppBar
 import com.moscow.cineverse.designSystem.component.MovieScaffold
 import com.moscow.cineverse.designSystem.theme.Theme
-import com.moscow.cineverse.navigation.LocalNavController
 import com.moscow.cineverse.screen.movie_details.component.ErrorContent
 import com.moscow.cineverse.screen.movie_details.component.LoadingContent
 import com.moscow.cineverse.screen.movie_details.component.MovieCastSection
@@ -38,20 +36,31 @@ import com.moscow.cineverse.screen.movie_details.component.MovieStorylineSection
 fun MovieDetailsScreen(
     modifier: Modifier = Modifier,
     viewModel: MovieDetailsViewModel = hiltViewModel(),
-    navController: NavHostController = LocalNavController.current,
+    navigateBack: () -> Unit,
+    navigateToRecommendations: (Int, String) -> Unit,
+    navigateToReviews: (Int) -> Unit,
+    navigateToCastDetails: (Int) -> Unit,
+    navigateToCollectionsBottomSheet: (Int) -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     LaunchedEffect(viewModel) {
         viewModel.uiEffect.collect { effect ->
-            MovieDetailsEffectHandler.handleEffect(effect, navController)
+            MovieDetailsEffectHandler.handleEffect(
+                effect,
+                navigateBack = navigateBack,
+                navigateToRecommendations = navigateToRecommendations,
+                navigateToReviews = navigateToReviews,
+                navigateToCastDetails = navigateToCastDetails,
+                navigateToCollectionsBottomSheet = navigateToCollectionsBottomSheet
+            )
         }
     }
 
     MovieDetailsContent(
         uiState = uiState,
         interactionListener = viewModel,
-        onNavigateBack = { navController.popBackStack() },
+        onNavigateBack = navigateBack,
         modifier = modifier,
     )
 }

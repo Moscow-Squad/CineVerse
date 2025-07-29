@@ -18,17 +18,15 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.NavHostController
 import com.moscow.cineverse.component.ScreenStateHandler
 import com.moscow.cineverse.designSystem.theme.Theme
-import com.moscow.cineverse.navigation.LocalNavController
 import com.moscow.cineverse.navigation.LocalScaffoldPaddingValues
-import com.moscow.cineverse.screen.home.components.FeaturedCollectionsSection
 import com.moscow.cineverse.navigation.navigateToNewGraph
 import com.moscow.cineverse.navigation.routes.ExploreRoute
 import com.moscow.cineverse.navigation.routes.MatchRoute
 import com.moscow.cineverse.navigation.routes.MovieDetailsRoute
 import com.moscow.cineverse.navigation.routes.SeriesDetailsRoute
+import com.moscow.cineverse.screen.home.components.FeaturedCollectionsSection
 import com.moscow.cineverse.screen.home.components.FeaturedMovies
 import com.moscow.cineverse.screen.home.components.HomeHeader
 import com.moscow.cineverse.screen.home.components.HomeHeaderSlider
@@ -40,7 +38,11 @@ import com.moscow.cinverse.presentation.R
 fun HomeScreen(
     modifier: Modifier = Modifier,
     viewmodel: HomeViewModel = hiltViewModel(),
-    navController: NavHostController = LocalNavController.current,
+    navigateToMovieDetails: (movieId: Int) -> Unit,
+    navigateToSeeMoreHome: (category: String) -> Unit,
+    navigateToSeriesDetails: (seriesId: Int) -> Unit,
+    navigateToBrowseSuggestion: () -> Unit,
+    navigateToWatchingSuggestion: () -> Unit
 ) {
     val state by viewmodel.uiState.collectAsStateWithLifecycle()
     LaunchedEffect(Unit) {
@@ -48,30 +50,34 @@ fun HomeScreen(
             when (effect) {
                 is HomeEvent.CollectionClicked -> {}
                 is HomeEvent.MovieClicked -> {
-                    navController.navigate(
-                        MovieDetailsRoute(effect.movieId)
+                    navigateToMovieDetails(
+                        effect.movieId
                     )
+
                 }
 
                 is HomeEvent.PromotionClicked -> {}
                 is HomeEvent.SeeAllClicked -> {
+                    navigateToSeeMoreHome(
+                        effect.category.name
+                    )
                     // Navigate to SeeMoreHomeScreen with the category
-                    navController.navigate("see_more/${effect.category}")
                 }
 
                 is HomeEvent.SeriesClicked -> {
-                    navController.navigate(
-                        SeriesDetailsRoute(effect.seriesId)
+                    navigateToSeriesDetails(
+                        effect.seriesId
                     )
+
                 }
 
                 is HomeEvent.BrowseSuggestionClicked -> {
                     // Use the same navigation method as bottom navigation
-                    navController.navigateToNewGraph(ExploreRoute)
+                    navigateToBrowseSuggestion()
                 }
 
                 HomeEvent.WatchingSuggestionClicked -> {
-                    navController.navigateToNewGraph(MatchRoute)
+                    navigateToWatchingSuggestion()
                 }
             }
         }
@@ -100,7 +106,7 @@ fun HomeContent(
             Column(
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                HomeHeader(userName = state.userName, modifier)
+                HomeHeader(userName = state.userName ?: stringResource(R.string.guest), modifier)
                 Spacer(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -115,9 +121,12 @@ fun HomeContent(
                     .weight(1f)
                     .verticalScroll(rememberScrollState()),
                 verticalArrangement = Arrangement.spacedBy(32.dp)
-
             ) {
-                HomeHeaderSlider(items = state.sliderItems)
+
+                HomeHeaderSlider(
+                    items = state.sliderItems,
+                    modifier = Modifier.padding(top = 16.dp)
+                )
 
                 FeaturedMovies(
                     displayMovies = state.recentlyReleasedMovies,

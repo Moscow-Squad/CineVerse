@@ -1,4 +1,4 @@
-package com.moscow.cineverse.screen.castDetails
+package com.moscow.cineverse.screen.cast_details
 
 sealed class CastDetailsEffect {
     data object NavigateBack : CastDetailsEffect()
