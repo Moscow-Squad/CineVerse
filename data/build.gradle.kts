@@ -32,7 +32,8 @@ dependencies {
     implementation(libs.bundles.koin)
     //Retrofit
     implementation(libs.retrofit)
-    //
+    //OkHttp
+    implementation(libs.okhttp)
     implementation(libs.logging.interceptor)
     //Kotlinx Serialization
     implementation(libs.kotlinx.serialization.json)
