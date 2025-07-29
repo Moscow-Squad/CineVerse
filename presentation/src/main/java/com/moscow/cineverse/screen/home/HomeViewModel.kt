@@ -42,16 +42,21 @@ class HomeViewModel @Inject constructor(
     private fun loadHomeData() {
         updateState { it.copy(isLoading = true,error = null) }
 
+
         viewModelScope.launch {
             getGenres()
             coroutineScope {
-                launch { getUserDetails() }
-                launch { fetchTrendingMovies() }
-                launch { fetchRecentlyReleasedMovies() }
-                launch { fetchUpcomingMovies() }
-                launch { fetchTopRatedTVShows() }
-                launch { fetchMatchesYourVibesMovies() }
+                val jobs = listOf(
+                    launch { getUserDetails() },
+                    launch { fetchTrendingMovies() },
+                    launch { fetchRecentlyReleasedMovies() },
+                    launch { fetchUpcomingMovies() },
+                    launch { fetchTopRatedTVShows() },
+                    launch { fetchMatchesYourVibesMovies() }
+                )
+                jobs.forEach { it.join() }
             }
+            updateState { it.copy(isLoading = false) }
         }
     }
 
@@ -76,7 +81,7 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun onGetUserDetailsError(throwable: Throwable) {
-        updateState { it.copy(error = throwable.message, isLoading = false) }
+        updateState { it.copy(error = throwable.message, ) }
     }
 
     private suspend fun getGenres() {
@@ -107,7 +112,7 @@ class HomeViewModel @Inject constructor(
         updateState {
             it.copy(
                 genres = genres.map { genre -> genre.toGenreUi() },
-                isLoading = false,
+
             )
         }
     }
@@ -127,11 +132,11 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun onFetchTrendingMoviesSuccess(movies: List<Movie>) {
-        updateState { it.copy(sliderItems = movies.toUi(uiState.value.genres), isLoading = false) }
+        updateState { it.copy(sliderItems = movies.toUi(uiState.value.genres), ) }
     }
 
     private fun onFetchTrendingMoviesError(throwable: Throwable) {
-        updateState { it.copy(error = throwable.message, isLoading = false) }
+        updateState { it.copy(error = throwable.message, ) }
     }
 
     private fun fetchRecentlyReleasedMovies() {
@@ -146,13 +151,13 @@ class HomeViewModel @Inject constructor(
         updateState {
             it.copy(
                 recentlyReleasedMovies = movies.toUi(uiState.value.genres),
-                isLoading = false
+
             )
         }
     }
 
     private fun onFetchRecentlyReleasedMoviesError(throwable: Throwable) {
-        updateState { it.copy(error = throwable.message, isLoading = false) }
+        updateState { it.copy(error = throwable.message, ) }
     }
 
     private fun fetchUpcomingMovies() {
@@ -167,13 +172,13 @@ class HomeViewModel @Inject constructor(
         updateState {
             it.copy(
                 upcomingMovies = movies.toUi(uiState.value.genres),
-                isLoading = false
+
             )
         }
     }
 
     private fun onFetchUpcomingMoviesError(throwable: Throwable) {
-        updateState { it.copy(error = throwable.message, isLoading = false) }
+        updateState { it.copy(error = throwable.message, ) }
     }
 
     private fun fetchTopRatedTVShows() {
@@ -185,11 +190,11 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun onFetchTopRatedTVShowsSuccess(tvShows: List<Series>) {
-        updateState { it.copy(topRatedTvShows = tvShows.toUi(), isLoading = false) }
+        updateState { it.copy(topRatedTvShows = tvShows.toUi(), ) }
     }
 
     private fun onFetchTopRatedTVShowsError(throwable: Throwable) {
-        updateState { it.copy(error = throwable.message, isLoading = false) }
+        updateState { it.copy(error = throwable.message, ) }
     }
 
     private fun fetchMatchesYourVibesMovies() {
@@ -205,14 +210,13 @@ class HomeViewModel @Inject constructor(
         updateState {
             it.copy(
                 matchesYourVibe = movies.toUi(uiState.value.genres),
-                isLoading = false,
                 error = null
             )
         }
     }
 
     private fun onFetchMatchesYourVibesMoviesError(throwable: Throwable) {
-        updateState { it.copy(error = throwable.message, isLoading = false) }
+        updateState { it.copy(error = throwable.message, ) }
     }
 
 
