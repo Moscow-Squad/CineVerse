@@ -35,8 +35,9 @@ fun SeriesDetailDto.toDomain(): SeriesDetail {
         posterPath = IMAGES_URL + posterPath.orEmpty(),
         genres = genres.map { it.toDomain() },
         rating = voteAverage.toDouble(),
-        runtime = formatRuntime(episodeRunTime).toString(),
-        releaseDate = firstAirDate,
+        runtime = formatRuntime(episodeRunTime) ?: "0m",
+        releaseDate = if (firstAirDate == null) Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
+        else LocalDate.parse(firstAirDate),
         type = type,
         creators = createdBy.map { it.toDomain() },
         numberOfSeasons = numberOfSeasons,

@@ -1,6 +1,7 @@
 package com.moscow.domain.model.details
 
 import com.moscow.domain.model.Genre
+import kotlinx.datetime.LocalDate
 
 data class SeriesDetail(
     val id: Int,
@@ -11,7 +12,7 @@ data class SeriesDetail(
     val genres: List<Genre>,
     val rating: Double,
     val voteCount: Int,
-    val releaseDate: String?,
+    val releaseDate: LocalDate,
     val runtime: String,
     val type: String,
     val creators: List<Creator>,

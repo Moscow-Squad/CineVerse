@@ -55,6 +55,7 @@ import com.moscow.cineverse.designSystem.component.movieSeriesDetails.RatingSect
 import com.moscow.cineverse.designSystem.component.movieSeriesDetails.StaffInfoSection
 import com.moscow.cineverse.designSystem.component.movieSeriesDetails.StarCastSection
 import com.moscow.cineverse.designSystem.theme.Theme
+import com.moscow.cineverse.mapper.toFormattedReleasedDate
 import com.moscow.cineverse.screen.series_details.component.SeasonCard
 import com.moscow.cinverse.presentation.R
 
