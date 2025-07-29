@@ -1,12 +1,15 @@
 package com.moscow.cineverse.screen.movie_details.component
 
+import android.R.attr.scaleY
 import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionScope
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.ParagraphStyle
 import androidx.compose.ui.text.SpanStyle
@@ -41,7 +44,7 @@ fun MovieHeaderSection(
             sharedTransitionScope = sharedTransitionScope,
             posterUrl = it.posterPath,
             title = it.title,
-            genres = it.genres.joinToString(","),
+            genres = it.genres.joinToString(", "),
             rating = it.rating.toString(),
             duration = it.duration.toHourMinuteFormat(),
             releaseDate = it.releaseDate.toFormattedReleasedDate(),
@@ -50,6 +53,11 @@ fun MovieHeaderSection(
                 interactionListener.onAddToCollection(it.id)
             },
             modifier = modifier
+                .graphicsLayer {
+                    alpha = 1f
+                    scaleY = 1f
+                }
+                .animateContentSize()
         )
     }
 }
@@ -59,17 +67,18 @@ fun MovieHeaderSection(
 fun MovieCollapsedHeaderSection(
     uiState: MovieScreenState,
     animatedVisibilityScope: AnimatedVisibilityScope,
-    sharedTransitionScope: SharedTransitionScope
+    sharedTransitionScope: SharedTransitionScope,
 ) {
     uiState.movieDetailsUiState?.let {
         MainMovieCard(
             posterUrl = it.posterPath,
             title = it.title,
             animatedVisibilityScope = animatedVisibilityScope,
-            sharedTransitionScope = sharedTransitionScope
+            sharedTransitionScope = sharedTransitionScope,
         )
     }
 }
+
 
 @Composable
 fun MovieStorylineSection(
