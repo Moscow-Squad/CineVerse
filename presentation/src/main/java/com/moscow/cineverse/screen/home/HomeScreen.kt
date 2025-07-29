@@ -181,7 +181,7 @@ fun HomeContent(
                     type = HomeFeaturedItems.YOU_RECENTLY_VIEWED
                 )
 
-                MyCollectionsLayout(
+                if(false)MyCollectionsLayout(
                     items = state.collections,
                     onCollectionClick = listener::onCollectionClick,
                     modifier = Modifier.padding(horizontal = 16.dp),

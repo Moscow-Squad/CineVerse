@@ -67,8 +67,10 @@ fun <T : Any> SeeMoreContent(
         }
     ) {
         Column(
-            modifier = modifier,
+            modifier = modifier
+                ,
             verticalArrangement = Arrangement.Center,
+
         ) {
 
             when (contentList.loadState.refresh) {
