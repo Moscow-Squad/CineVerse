@@ -10,8 +10,9 @@ import com.moscow.domain.repository.PreferenceRepository
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
+import javax.inject.Inject
 
-class PreferenceRepositoryImpl(
+class PreferenceRepositoryImpl @Inject constructor(
     private val dataStore: DataStore<Preferences>
 ): PreferenceRepository{
 

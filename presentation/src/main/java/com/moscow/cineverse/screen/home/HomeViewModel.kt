@@ -17,12 +17,15 @@ import com.moscow.domain.usecase.home.GetRecentlyReleasedMoviesUseCase
 import com.moscow.domain.usecase.home.GetTopRatedTVShowsUseCase
 import com.moscow.domain.usecase.home.GetTrendingMoviesUseCase
 import com.moscow.domain.usecase.home.GetUpcomingMoviesUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import com.moscow.domain.usecase.local.GetUserDetailsUseCase
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
+import javax.inject.Inject
 
-class HomeViewModel(
+@HiltViewModel
+class HomeViewModel @Inject constructor(
     private val getMatchesYourVibesMoviesUseCase: GetMatchesYourVibesMoviesUseCase,
     private val getRecentlyReleasedMoviesUseCase: GetRecentlyReleasedMoviesUseCase,
     private val getTopRatedTVShowsUseCase: GetTopRatedTVShowsUseCase,

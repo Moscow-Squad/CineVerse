@@ -19,6 +19,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.moscow.cineverse.designSystem.component.MessageInfoBox
 import com.moscow.cineverse.designSystem.component.MovieButton
@@ -28,12 +29,11 @@ import com.moscow.cineverse.designSystem.component.bottomsheet.CineVerseBottomSh
 import com.moscow.cineverse.designSystem.component.movieSeriesDetails.CollectionItem
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cinverse.presentation.R
-import org.koin.androidx.compose.koinViewModel
 
 
 @Composable
 fun CollectionsBottomSheetScreen(
-    viewModel: CollectionsBottomSheetViewModel = koinViewModel(),
+    viewModel: CollectionsBottomSheetViewModel = hiltViewModel(),
     onAddNewCollectionClick: () -> Unit,
     onCreateCollectionClicked: () -> Unit,
     navigateBack: () -> Unit

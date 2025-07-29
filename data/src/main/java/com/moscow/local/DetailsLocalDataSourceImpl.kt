@@ -4,8 +4,9 @@ import com.moscow.data_source.local.DetailsLocalDataSource
 import com.moscow.local.dao.search.FavouriteGenreDao
 import com.moscow.local.entity.FavouriteGenreEntity
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
-class DetailsLocalDataSourceImpl(
+class DetailsLocalDataSourceImpl  @Inject constructor(
     private val favouriteGenreDao: FavouriteGenreDao
 ) : DetailsLocalDataSource {
 

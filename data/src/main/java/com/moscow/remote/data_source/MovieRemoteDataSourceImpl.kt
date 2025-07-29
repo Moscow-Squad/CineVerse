@@ -9,8 +9,9 @@ import com.moscow.remote.dto.review.ReviewDto
 import com.moscow.remote.services.MovieService
 import com.moscow.utils.ApiResponse
 import com.moscow.utils.handleApi
+import javax.inject.Inject
 
-class MovieRemoteDataSourceImpl(
+class MovieRemoteDataSourceImpl  @Inject constructor(
     private val movieService: MovieService
 ) : MovieRemoteDataSource {
 

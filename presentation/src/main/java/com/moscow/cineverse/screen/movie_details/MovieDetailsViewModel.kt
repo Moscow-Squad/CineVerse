@@ -16,8 +16,11 @@ import com.moscow.domain.usecase.movie.GetMovieRecommendationsUseCase
 import com.moscow.domain.usecase.movie.RateMovieUseCase
 import com.moscow.domain.usecase.review.GetReviewsUseCase
 import kotlin.collections.take
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class MovieDetailsViewModel(
+@HiltViewModel
+class MovieDetailsViewModel @Inject constructor(
     private val getMovieDetailsUseCase: GetMovieDetailsUseCase,
     private val getReviewsUseCase: GetReviewsUseCase,
     private val getMovieCreditsUseCase: GetMovieCreditsUseCase,

@@ -8,8 +8,11 @@ import com.moscow.domain.model.Collection
 import com.moscow.domain.usecase.collection.AddMediaItemToCollectionUseCase
 import com.moscow.domain.usecase.collection.GetUserCollectionsUseCase
 import kotlin.collections.take
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class CollectionsBottomSheetViewModel(
+@HiltViewModel
+class CollectionsBottomSheetViewModel @Inject constructor(
     private val getUserCollections: GetUserCollectionsUseCase,
     private val addMediaItemToCollectionUseCase: AddMediaItemToCollectionUseCase,
     savedStateHandle: SavedStateHandle

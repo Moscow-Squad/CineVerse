@@ -4,8 +4,9 @@ import com.moscow.data_source.remote.GenreRemoteDataSource
 import com.moscow.remote.dto.GenreResponse
 import com.moscow.remote.services.GenreService
 import com.moscow.utils.handleApi
+import javax.inject.Inject
 
-class GenreRemoteDataSourceImpl(
+class GenreRemoteDataSourceImpl  @Inject constructor(
     private val genreService: GenreService
 ) : GenreRemoteDataSource {
     override suspend fun getMoviesGenres(): GenreResponse =

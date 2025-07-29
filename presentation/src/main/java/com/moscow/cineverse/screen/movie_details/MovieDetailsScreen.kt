@@ -14,6 +14,7 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import com.moscow.cineverse.designSystem.component.MovieAppBar
@@ -32,12 +33,11 @@ import com.moscow.cineverse.screen.movie_details.component.MovieRecommendationsS
 import com.moscow.cineverse.screen.movie_details.component.MovieReviewsSection
 import com.moscow.cineverse.screen.movie_details.component.MovieStaffInfoSection
 import com.moscow.cineverse.screen.movie_details.component.MovieStorylineSection
-import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun MovieDetailsScreen(
     modifier: Modifier = Modifier,
-    viewModel: MovieDetailsViewModel = koinViewModel(),
+    viewModel: MovieDetailsViewModel = hiltViewModel(),
     navController: NavHostController = LocalNavController.current,
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()

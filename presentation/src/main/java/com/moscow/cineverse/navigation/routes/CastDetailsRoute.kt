@@ -8,15 +8,15 @@ import com.moscow.cineverse.screen.castDetails.CastDetailsScreen
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class CastDetailsRoute(val castId: Int)
+data class CastDetailsRoute(val castId: Int){
+    companion object{
+        const val CAST_ID = "castId"
+
+    }
+}
 
 fun NavGraphBuilder.CastDetailsRoute() {
     composable<CastDetailsRoute>{
-        val args = it.toRoute<CastDetailsRoute>()
-        CastDetailsScreen(
-
-            actorId = args.castId,
-
-        )
+        CastDetailsScreen()
     }
 }

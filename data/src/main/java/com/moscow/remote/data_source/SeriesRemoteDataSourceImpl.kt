@@ -10,8 +10,9 @@ import com.moscow.remote.dto.series.SeriesDto
 import com.moscow.remote.services.SeriesService
 import com.moscow.utils.ApiResponse
 import com.moscow.utils.handleApi
+import javax.inject.Inject
 
-class SeriesRemoteDataSourceImpl(
+class SeriesRemoteDataSourceImpl  @Inject constructor(
     private val seriesService: SeriesService
 ) : SeriesRemoteDataSource {
 

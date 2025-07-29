@@ -3,8 +3,9 @@ package com.moscow.remote.data_source
 import com.moscow.data_source.remote.SearchRemoteDataSource
 import com.moscow.remote.services.SearchService
 import com.moscow.utils.handleApi
+import javax.inject.Inject
 
-class SearchRemoteDataSourceImpl(
+class SearchRemoteDataSourceImpl  @Inject constructor(
     private val searchService: SearchService
 ) : SearchRemoteDataSource {
 

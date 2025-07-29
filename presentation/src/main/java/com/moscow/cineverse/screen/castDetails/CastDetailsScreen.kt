@@ -11,6 +11,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import com.moscow.cineverse.designSystem.component.MovieAppBar
@@ -24,15 +25,12 @@ import com.moscow.cineverse.screen.castDetails.components.CastDetailsEffectHandl
 import com.moscow.cineverse.screen.castDetails.components.EmptyContent
 import com.moscow.cineverse.screen.castDetails.components.ErrorContent
 import com.moscow.cineverse.screen.castDetails.components.LoadingContent
-import org.koin.androidx.compose.koinViewModel
-import org.koin.core.parameter.parametersOf
 
 @Composable
 fun CastDetailsScreen(
-    actorId: Int,
     modifier: Modifier = Modifier,
     navController: NavHostController = LocalNavController.current,
-    viewModel: CastDetailsViewModel = koinViewModel(parameters = { parametersOf(actorId) })
+    viewModel: CastDetailsViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val context = LocalContext.current
