@@ -138,7 +138,7 @@ private fun <T> GridMovieCard(
     ) {
         Card(
             modifier = Modifier
-                .height(208.dp)
+                .height(225.dp)
                 .fillMaxWidth()
                 .clip(RoundedCornerShape(Theme.radius.large))
                 .clickable { onMovieClick(getId(movieData)) },
@@ -179,7 +179,7 @@ private fun <T> GridMovieCard(
                 }
 
                 val rating = getRating(movieData)
-                if (showRating && rating > 0) {
+                if (showRating && rating >= 0) {
                     Surface(
                         modifier = Modifier
                             .align(Alignment.TopEnd)

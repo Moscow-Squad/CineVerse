@@ -121,7 +121,7 @@ fun HomeHeaderSlider(items: List<MediaItemUiState>, modifier: Modifier = Modifie
                         .size(width = animatedWidth, height = animatedHeight)
                         .clip(RoundedCornerShape(Theme.radius.extraLarge)),
                     showBackdrop = true,
-                    showTitle = false
+                    showTitle = false,
                 )
 
                 if (textAlpha > 0) {
@@ -156,8 +156,7 @@ fun HomeHeaderSlider(items: List<MediaItemUiState>, modifier: Modifier = Modifie
             alpha = 1f,
             modifier = Modifier
                 .align(Alignment.TopEnd)
-                .padding(12.dp)
-                .padding(end = 24.dp)
+                .padding(top = 4.dp, end = 32.dp)
         )
     }
 }

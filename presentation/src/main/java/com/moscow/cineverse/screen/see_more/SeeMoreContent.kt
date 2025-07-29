@@ -3,6 +3,7 @@ package com.moscow.cineverse.screen.see_more
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -94,7 +95,8 @@ fun <T : Any> SeeMoreContent(
                         columns = gridColumns,
                         verticalArrangement = Arrangement.spacedBy(16.dp),
                         horizontalArrangement = Arrangement.spacedBy(12.dp),
-                        modifier = modifier.fillMaxSize().padding(16.dp)
+                        modifier = modifier.fillMaxSize(),
+                        contentPadding = PaddingValues(16.dp)
                     ) {
                         items(contentList.itemCount) { index ->
                             val item = contentList[index]
