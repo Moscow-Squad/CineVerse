@@ -26,9 +26,7 @@ android {
 
 dependencies {
     implementation(projects.domain)
-    implementation(libs.androidx.work.runtime.ktx)
-
-    /** Data Store **/
+    //Data Store
     implementation(libs.androidx.datastore.core)
     implementation(libs.androidx.datastore.preferences)
 
@@ -38,31 +36,18 @@ dependencies {
 
     // Retrofit
     implementation(libs.retrofit)
-
-    // OkHttp
+    //OkHttp
     implementation(libs.okhttp)
     implementation(libs.logging.interceptor)
-
-    // Kotlinx Serialization
+    //Kotlinx Serialization
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.retrofit2.kotlinx.serialization.converter)
-
+    //Room
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
-    testImplementation(libs.junit.jupiter)
     ksp(libs.androidx.room.compiler)
-    testImplementation(libs.bundles.room.testing)
-
+    //gson
     implementation(libs.gson)
+    //date time
     implementation(libs.kotlinx.datetime)
-
-
-
-    //unit test
-    testImplementation(libs.mockk)
-    testImplementation(libs.truth)
-    testImplementation (libs.junit)
-    testImplementation (libs.kotlinx.coroutines.test)
-    testImplementation (libs.mockk.v11310)
-
 }

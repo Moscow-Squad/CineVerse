@@ -28,6 +28,7 @@ import com.moscow.cineverse.designSystem.component.ViewMode
 import com.moscow.cineverse.designSystem.component.ViewModeToggle
 import com.moscow.cineverse.mapper.toMediaItemUi
 import com.moscow.cineverse.navigation.LocalNavController
+import com.moscow.cineverse.navigation.routes.MovieDetailsRoute
 import com.moscow.cinverse.presentation.R
 import com.moscow.domain.model.Movie
 
@@ -46,8 +47,18 @@ fun RecommendationMoviesScreen(
         viewModel.uiEffect.collect { event ->
             when(event){
                 RecommendationMoviesEffect.NavigateBack -> {
-                    navController::navigateUp
+                    navController.popBackStack()
                 }
+
+                is RecommendationMoviesEffect.MovieClicked -> {
+                    navController.navigate(
+                        MovieDetailsRoute(event.movieId)
+                    )
+                }
+
+              /*  is RecommendationMoviesEffect.NavigateToMovieDetailsBack -> {
+                    navController.navigate(MovieDetailsRoute(event.movieId))
+                }*/
             }
         }
     }

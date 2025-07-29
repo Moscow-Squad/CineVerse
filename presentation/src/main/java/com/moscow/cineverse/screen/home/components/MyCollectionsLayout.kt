@@ -1,0 +1,74 @@
+package com.moscow.cineverse.screen.home.components
+
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
+import com.moscow.cineverse.designSystem.theme.Theme
+import com.moscow.cineverse.design_system.R
+import com.moscow.cineverse.screen.home.CollectionUiState
+
+@Composable
+fun MyCollectionsLayout(
+    items: List<CollectionUiState>,
+    onCollectionClick: (Int) -> Unit,
+    onShowMoreClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val itemsRowSize = (items.size + 1) / 2
+    Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(12.dp)) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Text(
+                text = stringResource(R.string.your_collections),
+                style = Theme.textStyle.title.small,
+                color = Theme.colors.shade.primary
+            )
+
+            Text(
+                text = stringResource(R.string.show_more),
+                style = Theme.textStyle.body.medium.medium,
+                color = Theme.colors.brand.primary,
+                modifier = Modifier.clickable(onClick = onShowMoreClick)
+            )
+        }
+
+        LazyRow(
+            modifier = Modifier.fillMaxWidth(),
+            contentPadding = PaddingValues(start = 16.dp)
+        ) {
+            items(items.take(itemsRowSize)) { itemState ->
+                MyCollectionCard(
+                    state = itemState,
+                    onClick = { onCollectionClick(itemState.id) },
+                )
+            }
+        }
+
+        LazyRow(
+            modifier = Modifier.fillMaxWidth(),
+            contentPadding = PaddingValues(start = 16.dp)
+        ) {
+            items(items.drop(itemsRowSize)) { itemState ->
+                MyCollectionCard(
+                    state = itemState,
+                    onClick = { onCollectionClick(itemState.id) },
+                )
+            }
+        }
+
+
+    }
+
+}

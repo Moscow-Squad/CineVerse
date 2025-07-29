@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="forgot_password">نسيت كلمة المرور؟</string>
+    <string name="your_collections">Your Collections</string>
+    <string name="shows">Shows</string>
 </resources>

@@ -1,5 +1,6 @@
 package com.moscow.cineverse.navigation
 
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.staticCompositionLocalOf
@@ -21,22 +22,32 @@ import com.moscow.cineverse.navigation.routes.homeRoute
 import com.moscow.cineverse.navigation.routes.loginRoute
 import com.moscow.cineverse.navigation.routes.matchRoute
 import com.moscow.cineverse.navigation.routes.profileRoute
+import com.moscow.cineverse.navigation.routes.seeMoreRoute
+
 
 val LocalNavController =
     staticCompositionLocalOf<NavHostController> { error("No NavController provided") }
+val LocalScaffoldPaddingValues =
+    staticCompositionLocalOf<PaddingValues> { error("No ScaffoldPadding provided") }
 
 @Composable
 fun CineVerseNavGraph(
-    modifier : Modifier,
+    modifier: Modifier,
     navViewModel: NavViewModel,
-    navController: NavHostController
+    navController: NavHostController,
+    scaffoldPaddingValues: PaddingValues,
 ) {
     val startDestination = navViewModel.startDestination.value ?: return
 
     CompositionLocalProvider(
-        LocalNavController provides navController
+        LocalNavController provides navController,
+        LocalScaffoldPaddingValues provides scaffoldPaddingValues
     ) {
-        NavHost(modifier = modifier, navController = navController, startDestination = startDestination) {
+        NavHost(
+            modifier = modifier,
+            navController = navController,
+            startDestination = startDestination
+        ) {
             exploreRoute()
             loginRoute()
             RecommendationsRoute()
@@ -54,6 +65,7 @@ fun CineVerseNavGraph(
                 navigateBack = navController::navigateUp
             )
             homeRoute()
+            seeMoreRoute()
             matchRoute()
             profileRoute()
 

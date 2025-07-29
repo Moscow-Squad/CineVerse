@@ -2,9 +2,9 @@ package com.moscow.cineverse.component.bottomNavigationBar
 
 import com.moscow.cineverse.navigation.AppDestination
 import com.moscow.cineverse.navigation.routes.ExploreRoute
-import com.moscow.cineverse.navigation.routes.HomeRoute
 import com.moscow.cineverse.navigation.routes.MatchRoute
 import com.moscow.cineverse.navigation.routes.ProfileRoute
+import com.moscow.cineverse.navigation.routes.HomeRoute
 import com.moscow.cinverse.presentation.R
 
 sealed class BottomNavItem(

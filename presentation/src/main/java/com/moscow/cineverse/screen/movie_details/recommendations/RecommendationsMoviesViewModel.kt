@@ -39,7 +39,7 @@ class RecommendationsMoviesViewModel @Inject constructor(
     }
 
     override fun onMovieClick(movieId: Int) {
-
+        sendEvent(RecommendationMoviesEffect.MovieClicked(movieId))
     }
 
     override fun backButtonClick() {

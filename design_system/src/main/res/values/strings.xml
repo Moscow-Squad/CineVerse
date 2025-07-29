@@ -49,5 +49,7 @@
     <string name="empty_state_icon">empty state icon</string>
 
     <string name="unsuitable_image">"unsuitable image "</string>
+    <string name="your_collections">Your Collections</string>
+    <string name="shows">Shows</string>
 
 </resources>

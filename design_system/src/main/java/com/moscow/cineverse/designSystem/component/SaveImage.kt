@@ -1,8 +1,10 @@
 package com.moscow.cineverse.designSystem.component
 
+import androidx.compose.animation.scaleIn
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -23,7 +25,10 @@ fun SaveImage(
         imageUrl = posterUrl ?: "",
         modifier = modifier,
         placeholderContent = {
-            RemoteImagePlaceholder(Modifier.fillMaxSize())
+            RemoteImagePlaceholder(
+                Modifier
+                    .fillMaxSize()
+            )
         },
         errorContent = {
             RemoteImagePlaceholder(Modifier.fillMaxSize())

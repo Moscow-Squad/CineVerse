@@ -5,7 +5,6 @@ import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -20,6 +19,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -29,6 +29,7 @@ import androidx.compose.ui.zIndex
 import com.moscow.cineverse.design_system.R
 import com.moscow.cineverse.designSystem.theme.CineVerseTheme
 import com.moscow.cineverse.designSystem.theme.Theme
+import com.moscow.cineverse.designSystem.utils.noRibbleClick
 
 
 @Composable
@@ -40,6 +41,7 @@ fun ViewModeToggle(
     Box(
         modifier = modifier
             .padding(1.dp)
+            .clip(RoundedCornerShape(Theme.radius.large))
             .background(Theme.colors.background.card, shape = RoundedCornerShape(Theme.radius.large))
             .border(
                 width = 1.dp,
@@ -108,7 +110,7 @@ private fun ViewModeButton(
                     shape = RoundedCornerShape(Theme.radius.large)
                 ) else Modifier
             )
-            .clickable { onClick() },
+            .noRibbleClick{ onClick() },
         contentAlignment = Alignment.Center
     ) {
         content()

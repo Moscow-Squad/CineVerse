@@ -49,5 +49,6 @@ fun Series.toUi() = MediaItemUiState(
     genres = emptyList(),
     releaseDate = firstAirDate.toString(),
     duration = "",
-    mediaType = MediaType.Tv
+    mediaType = MediaType.Tv,
+    backdropPath = this.backdropPath
 )
