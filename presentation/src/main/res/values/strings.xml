@@ -77,6 +77,6 @@
     <string name="username_length_invalid">Username must be 4–32 characters</string>
     <string name="no_double_spaces">No multiple spaces allowed</string>
     <string name="no_leading_trailing_spaces">No leading or trailing spaces</string>
-    <string name="username_invalid_chars">Username must be Only letters, numbers, underscores, and spaces</string>
+    <string name="username_invalid_chars">Username must be Only letters, numbers and underscores</string>
 
 </resources>

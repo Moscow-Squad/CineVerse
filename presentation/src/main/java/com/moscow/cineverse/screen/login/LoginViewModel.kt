@@ -114,6 +114,7 @@ class LoginViewModel @Inject constructor(
     }
 
     private fun onJoinAsGuestFailed(error: Throwable) {
+        updateState { it.copy(isJoinAsGuest = false) }
         sendEvent(LoginScreenEvents.ShowError(StringValue.StringResource(resId = R.string.oops_no_internet)))
     }
 
@@ -162,7 +163,7 @@ class LoginViewModel @Inject constructor(
             val error = when {
                 input.isEmpty() -> null
 
-                input != trimmed -> {
+                !isPassword && input != trimmed -> {
                     StringValue.StringResource(R.string.no_leading_trailing_spaces)
                 }
 
@@ -170,11 +171,11 @@ class LoginViewModel @Inject constructor(
                     StringValue.StringResource(R.string.username_length_invalid)
                 }
 
-                isPassword && trimmed.length !in 4..100 -> {
+                isPassword && input.length !in 4..100 -> {
                     StringValue.StringResource(R.string.password_can_only_4_100_characters)
                 }
 
-                !isPassword && !trimmed.all { it.isLetterOrDigit() || it == '_' || it == ' ' } -> {
+                !isPassword && !trimmed.all { it.isLetterOrDigit() || it == '_'} -> {
                     StringValue.StringResource(R.string.username_invalid_chars)
                 }
 

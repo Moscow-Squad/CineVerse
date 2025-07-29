@@ -77,5 +77,5 @@
     <string name="username_length_invalid">يجب أن يكون اسم المستخدم من 4 إلى 32 حرفًا</string>
     <string name="no_double_spaces">يجب ان لا يحتوي على عدة مسافات</string>
     <string name="no_leading_trailing_spaces">لا يجب ان يحتوي مسافات في البداية أو النهاية</string>
-    <string name="username_invalid_chars">يجب أن يتكون اسم المستخدم من أحرف وأرقام وشرطات سفلية ومسافات فقط</string>
+    <string name="username_invalid_chars">يجب أن يتكون اسم المستخدم من أحرف وأرقام وشرطات سفلية فقط</string>
 </resources>
