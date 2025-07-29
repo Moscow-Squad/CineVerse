@@ -5,6 +5,7 @@ import com.moscow.cineverse.designSystem.component.ViewMode
 
 data class ShowAllActorMoviesState(
     val actorId: Int = 0,
+    val actorName: String = "",
     val isLoading: Boolean = false,
     val error: String? = null,
     val viewMode: ViewMode = ViewMode.GRID,

@@ -9,8 +9,9 @@ import com.moscow.remote.dto.toDomain
 import com.moscow.domain.model.Collection
 import com.moscow.domain.model.MediaItem
 import com.moscow.domain.model.MediaType
+import javax.inject.Inject
 
-class CollectionsRepositoryImpl(
+class CollectionsRepositoryImpl @Inject constructor(
     private val collectionRemoteDataSource: CollectionRemoteDataSource
 ) : CollectionsRepository {
     override suspend fun getCollections(page: Int): List<Collection> {

@@ -7,8 +7,9 @@ import com.moscow.remote.dto.CreateCollectionDto
 import com.moscow.remote.services.CollectionsService
 import com.moscow.utils.ApiResponse
 import com.moscow.utils.handleApi
+import javax.inject.Inject
 
-class CollectionRemoteDataSourceImpl(
+class CollectionRemoteDataSourceImpl  @Inject constructor(
     private val collectionsService: CollectionsService
 ) : CollectionRemoteDataSource {
     override suspend fun getMyCollections(

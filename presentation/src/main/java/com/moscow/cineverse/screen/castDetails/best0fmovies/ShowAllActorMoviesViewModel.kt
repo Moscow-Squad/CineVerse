@@ -1,20 +1,32 @@
 package com.moscow.cineverse.screen.castDetails.best0fmovies
 
+import androidx.lifecycle.SavedStateHandle
 import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.cineverse.designSystem.component.ViewMode
 import com.moscow.cineverse.mapper.toUi
+import com.moscow.cineverse.navigation.routes.CastBestOfMovieRoute
+import com.moscow.cineverse.navigation.routes.SeriesDetailsRoute
 import com.moscow.domain.model.Movie
 import com.moscow.domain.usecase.actor.GetActorBestMoviesUseCase
 import com.moscow.domain.usecase.genre.GenreUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import javax.inject.Inject
 
-class ShowAllActorMoviesViewModel(
+@HiltViewModel
+class ShowAllActorMoviesViewModel @Inject constructor(
     private val getActorBestMoviesUseCase: GetActorBestMoviesUseCase,
-    actorId: Int,
-    private val genreUseCase: GenreUseCase
+    private val genreUseCase: GenreUseCase,
+    savedStateHandle: SavedStateHandle
 ) : BaseViewModel<ShowAllActorMoviesState, ShowAllActorMoviesEffect>(ShowAllActorMoviesState()),
     ShowAllActorMoviesInteractionListener {
+    val seriesId = savedStateHandle.get<Int>(SeriesDetailsRoute.SERIES_ID) ?: 0
+
+    private val actorId = savedStateHandle.get<Int>(CastBestOfMovieRoute.CAST_ID) ?: 0
+    private val actorName = savedStateHandle.get<String>(CastBestOfMovieRoute.CAST_NAME) ?: ""
+
     init {
+        updateState { it.copy(actorId = actorId, actorName = actorName) }
         updateState { it.copy(actorId = actorId) }
         getActorMovies()
     }

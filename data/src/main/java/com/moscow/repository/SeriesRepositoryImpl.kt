@@ -11,8 +11,9 @@ import com.moscow.domain.model.details.SeriesDetail
 import com.moscow.domain.repository.SeriesRepository
 import com.moscow.mapper.toDomain
 import com.moscow.remote.dto.review.RatingRequestDto
+import javax.inject.Inject
 
-class SeriesRepositoryImpl(
+class SeriesRepositoryImpl @Inject constructor(
     private val seriesRemoteDataSource: SeriesRemoteDataSource,
     private val detailsLocalDataSource: DetailsLocalDataSource
 ): SeriesRepository {

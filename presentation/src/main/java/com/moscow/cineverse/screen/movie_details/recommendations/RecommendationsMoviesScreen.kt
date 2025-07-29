@@ -16,21 +16,21 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.moscow.cineverse.component.MoviePosterCard
-import com.moscow.domain.model.Movie
 import com.moscow.cineverse.designSystem.component.MovieAppBar
 import com.moscow.cineverse.designSystem.component.MovieScaffold
 import com.moscow.cineverse.designSystem.component.ViewMode
 import com.moscow.cineverse.designSystem.component.ViewModeToggle
-import com.moscow.cineverse.navigation.LocalNavController
 import com.moscow.cineverse.mapper.toMediaItemUi
+import com.moscow.cineverse.navigation.LocalNavController
 import com.moscow.cineverse.navigation.routes.MovieDetailsRoute
 import com.moscow.cinverse.presentation.R
-import org.koin.androidx.compose.koinViewModel
+import com.moscow.domain.model.Movie
 
 @Composable
 fun RecommendationMoviesScreen(
@@ -38,7 +38,7 @@ fun RecommendationMoviesScreen(
     title: String,
     modifier: Modifier = Modifier,
     navController: NavHostController = LocalNavController.current,
-    viewModel: RecommendationsMoviesViewModel = koinViewModel(),
+    viewModel: RecommendationsMoviesViewModel = hiltViewModel(),
 ) {
     val recommendations = viewModel.getRecommendations(movieId).collectAsLazyPagingItems()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()

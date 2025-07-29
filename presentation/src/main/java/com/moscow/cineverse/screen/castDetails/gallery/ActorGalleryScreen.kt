@@ -12,6 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import com.moscow.cineverse.designSystem.component.CineVersePreviews
@@ -24,18 +25,14 @@ import com.moscow.cineverse.designSystem.component.cast_details.CastGallery
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.navigation.LocalNavController
 import com.moscow.cinverse.presentation.R
-import org.koin.androidx.compose.koinViewModel
-import org.koin.core.parameter.parametersOf
 
 @Composable
 fun ActorGalleryScreen(
-    actorId: Int,
-    title: String,
     modifier: Modifier = Modifier,
     navController: NavHostController = LocalNavController.current,
 
     ) {
-    val viewModel: ActorGalleryViewModel = koinViewModel(parameters = { parametersOf(actorId, title) })
+    val viewModel: ActorGalleryViewModel = hiltViewModel()
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 

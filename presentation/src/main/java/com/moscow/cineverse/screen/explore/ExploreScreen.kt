@@ -13,6 +13,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.paging.compose.LazyPagingItems
@@ -29,13 +30,12 @@ import com.moscow.cineverse.screen.explore.component.ExploreTabsSection
 import com.moscow.cineverse.screen.explore.component.GenresRow
 import com.moscow.cineverse.screen.explore.component.SearchSuggestionsSection
 import com.moscow.cineverse.screen.explore.component.ViewModeToggleButton
-import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun ExploreScreen(
     modifier: Modifier = Modifier,
     navController: NavHostController = LocalNavController.current,
-    viewModel: ExploreViewModel = koinViewModel(),
+    viewModel: ExploreViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val contentList = viewModel.contentList.collectAsLazyPagingItems()
