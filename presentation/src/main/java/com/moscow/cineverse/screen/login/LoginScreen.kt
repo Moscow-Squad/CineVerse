@@ -8,11 +8,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
@@ -35,8 +32,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavHostController
-import com.moscow.cineverse.design_system.R
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.moscow.cineverse.designSystem.component.AppTextField
 import com.moscow.cineverse.designSystem.component.MessageInfoBox
 import com.moscow.cineverse.designSystem.component.MovieButton
@@ -44,15 +40,12 @@ import com.moscow.cineverse.designSystem.component.bottomsheet.CineVerseBottomSh
 import com.moscow.cineverse.designSystem.component.login.WebViewBrowser
 import com.moscow.cineverse.designSystem.theme.CineVerseTheme
 import com.moscow.cineverse.designSystem.theme.Theme
-import com.moscow.cineverse.navigation.LocalNavController
-import com.moscow.cineverse.navigation.routes.HomeRoute
-import com.moscow.cineverse.navigation.routes.LoginRoute
-import org.koin.androidx.compose.koinViewModel
+import com.moscow.cineverse.design_system.R
 
 @Composable
 fun LoginScreen(
-    navController: NavHostController = LocalNavController.current,
-    viewModel: LoginViewModel = koinViewModel()
+    viewModel: LoginViewModel = hiltViewModel(),
+    navigateToHome: () -> Unit,
 ) {
     val state by viewModel.uiState.collectAsState()
     val context = LocalContext.current
@@ -65,14 +58,8 @@ fun LoginScreen(
                 }
 
                 is LoginScreenEvents.NavigateTo -> {
-                    val canGoBack = navController.previousBackStackEntry != null
-                    if (canGoBack) {
-                        navController.popBackStack()
-                    } else {
-                        navController.navigate(HomeRoute) {
-                            popUpTo(LoginRoute) { inclusive = true }
-                        }
-                    }
+                    navigateToHome()
+
                 }
             }
         }
@@ -175,7 +162,7 @@ private fun LoginScreenContent(
             onClick = interactionListener::onClickLogin,
             buttonColor = Theme.colors.button.primary,
             isLoading = state.isLoading,
-            enable = state.usernameError == null && state.passwordError == null
+            enable = (state.username.isNotBlank() && state.password.length >= 4) && (state.usernameError == null && state.passwordError == null)
         )
         MovieButton(
             modifier = Modifier
@@ -186,11 +173,12 @@ private fun LoginScreenContent(
             textStyle = Theme.textStyle.body.medium.medium,
             onClick = interactionListener::onClickJoinAsGuest,
             buttonColor = Theme.colors.button.secondary,
+            isLoading = state.isJoinAsGuest
         )
         Spacer(modifier = Modifier.weight(1f))
         MovieButton(
             modifier = Modifier
-                .padding(vertical = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding() + 24.dp)
+                .padding(vertical = 24.dp)
                 .align(Alignment.CenterHorizontally),
             buttonText = stringResource(com.moscow.cinverse.presentation.R.string.create_a_new_account),
             textColor = Theme.colors.button.onSecondary,
@@ -217,7 +205,6 @@ private fun LoginScreenContent(
 fun SignUpBottomSheet(interactionListener: LoginInteractionListener) {
     CineVerseBottomSheet(
         onClose = interactionListener::onDismissOrCancelSignUpBottomSheet,
-        expanded = false,
         onDismissRequest = interactionListener::onDismissOrCancelSignUpBottomSheet,
         showCancelIcon = false,
     ) {
@@ -238,6 +225,6 @@ fun SignUpBottomSheet(interactionListener: LoginInteractionListener) {
 @Composable()
 fun LoginScreenPreview() {
     CineVerseTheme {
-        LoginScreen()
+        LoginScreen(navigateToHome = {})
     }
 }

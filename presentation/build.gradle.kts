@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.cineverse.android.compose)
     alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.hiltAndroid)
+    alias(libs.plugins.ksp)
 }
 
 android {
@@ -13,14 +15,19 @@ dependencies {
     implementation(projects.domain)
 
     implementation(libs.coil3.compose)
+    implementation(libs.coil.network.okhttp)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.material3)
-    // Koin
-    implementation(platform(libs.koin.bom))
-    implementation(libs.bundles.koin)
+    debugImplementation(libs.androidx.ui.tooling)
+    debugImplementation(libs.androidx.ui.test.manifest)
+
+    /** DaggerHilt */
+    implementation(libs.hilt.android)
+    implementation(libs.androidx.hilt.navigation.compose)
+    ksp(libs.hilt.android.compiler)
     //kotlin date
     implementation(libs.kotlinx.datetime)
     //paging

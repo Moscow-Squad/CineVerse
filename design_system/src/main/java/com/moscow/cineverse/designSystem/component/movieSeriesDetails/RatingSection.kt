@@ -1,6 +1,7 @@
 package com.moscow.cineverse.designSystem.component.movieSeriesDetails
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -16,20 +17,22 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
-import com.moscow.cineverse.design_system.R
 import com.moscow.cineverse.designSystem.theme.CineVerseTheme
 import com.moscow.cineverse.designSystem.theme.Theme
+import com.moscow.cineverse.design_system.R
 
 @Composable
 fun RatingSection(
     icon: Int,
     title: String,
     caption: String,
-    onClickArrow: () -> Unit,
+    onClick: () -> Unit,
     ratingStars : Int,
     modifier: Modifier = Modifier
 ) {
@@ -39,10 +42,10 @@ fun RatingSection(
 
     Column(
         verticalArrangement = Arrangement.spacedBy(12.dp),
-        modifier = modifier
+        modifier = modifier.clickable { onClick() }
     ) {
         Text(
-            text = "Did You Watch it?",
+            text = stringResource(R.string.did_you_watch_it),
             style = Theme.textStyle.title.small,
             color = Theme.colors.shade.primary
         )
@@ -96,9 +99,13 @@ fun RatingSection(
                 )
             }
 
-            IconButton(onClick = onClickArrow) {
+            IconButton(onClick = onClick) {
                 Icon(
-                    painter = painterResource(R.drawable.outline_alt_arrow_right),
+                    painter = if (LocalLayoutDirection.current == LayoutDirection.Rtl) {
+                        painterResource(R.drawable.outline_alt_arrow_left)
+                    } else {
+                        painterResource(R.drawable.outline_alt_arrow_right)
+                    },
                     contentDescription = "Arrow Icon",
                     tint = Theme.colors.shade.tertiary,
                 )
@@ -115,7 +122,7 @@ private fun RatingSectionPreview() {
             icon = R.drawable.due_tone_magic_stick,
             title = "Give it Stars!",
             caption = "Let the world know how you felt.",
-            onClickArrow = {},
+            onClick = {},
             ratingStars = 4
         )
     }

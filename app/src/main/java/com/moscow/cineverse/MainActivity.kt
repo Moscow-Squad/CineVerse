@@ -1,16 +1,22 @@
 package com.moscow.cineverse
 
+import android.os.Build
 import android.os.Bundle
+import android.view.WindowInsets
+import android.view.WindowInsetsController
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.core.view.WindowCompat
 import com.moscow.cineverse.navigation.NavViewModel
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
-    private val navViewModel: NavViewModel by viewModel()
+    private val navViewModel: NavViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -22,8 +28,20 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
-        setContent {
+        WindowCompat.setDecorFitsSystemWindows(window, false)
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            window.insetsController?.apply {
+                hide(WindowInsets.Type.navigationBars())
+                systemBarsBehavior = WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+            }
+        } else {
+            @Suppress("DEPRECATION")
+            window.decorView.systemUiVisibility =
+                android.view.View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+        }
+
+        setContent {
             CineVerseRoot(navViewModel)
         }
     }

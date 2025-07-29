@@ -1,5 +1,6 @@
 package com.moscow.cineverse.screen.home.components
 
+import android.graphics.BlurMaskFilter
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
@@ -26,8 +27,15 @@ import androidx.compose.ui.BiasAlignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Paint
+import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.graphics.drawOutline
+import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.lerp
 import androidx.compose.ui.util.lerp
@@ -57,6 +65,18 @@ fun HomeHeaderSlider(items: List<MediaItemUiState>, modifier: Modifier = Modifie
         label = "ratingAnimation"
     )
 
+    val pageOffset by remember {
+        derivedStateOf { pagerState.currentPageOffsetFraction.absoluteValue.coerceIn(0f, 0.5f) }
+    }
+    val normalizedOffset = pageOffset * 2f
+    val factor = (1f - normalizedOffset).coerceIn(0f, 1f)
+
+    val shadowBlur = lerp(40.dp, 80.dp, factor)
+    val shadowAlpha = lerp(0f, 0.4f, factor)
+    val shadowOffset = lerp(20.dp, 25.dp, factor)
+
+
+
     LaunchedEffect(pagerState) {
         while (true) {
             delay(3000)
@@ -76,7 +96,14 @@ fun HomeHeaderSlider(items: List<MediaItemUiState>, modifier: Modifier = Modifie
     Box(modifier = modifier.fillMaxWidth()) {
         HorizontalPager(
             state = pagerState,
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .doubleShadowDrop(
+                    shape = RoundedCornerShape(Theme.radius.extraLarge),
+                    blur = shadowBlur,
+                    alpha = shadowAlpha,
+                    offset = shadowOffset
+                ),
             contentPadding = PaddingValues(horizontal = 32.dp),
             pageSpacing = (-40).dp,
             verticalAlignment = Alignment.CenterVertically,
@@ -89,13 +116,8 @@ fun HomeHeaderSlider(items: List<MediaItemUiState>, modifier: Modifier = Modifie
             val animatedHeight = lerp(230.dp, 200.dp, 1f - pageOffset)
             val animatedWidth = lerp(360.dp, 312.dp, 1f - pageOffset)
 
-            // Calculate alpha based on whether it's current page
             val cardAlpha = lerp(0.6f, 1f, 1f - pageOffset)
             val textAlpha = 1f - pageOffset * 3f
-
-            // Only apply shadow to current page (when pageOffset is very close to 0)
-            val isCurrentPage = pageOffset < 0.1f
-            val shadowElevation = if (isCurrentPage) 20.dp else 0.dp
 
             Box(
                 modifier = Modifier
@@ -109,39 +131,27 @@ fun HomeHeaderSlider(items: List<MediaItemUiState>, modifier: Modifier = Modifie
                         .fillMaxWidth()
                         .align(BiasAlignment(0f, pageOffset - 1f))
                         .alpha(cardAlpha)
-                        .then(
-                            if (isCurrentPage) {
-                                Modifier.shadow(
-                                    elevation = shadowElevation,
-                                    shape = RoundedCornerShape(Theme.radius.extraLarge),
-                                    spotColor = Theme.colors.shade.primary.copy(alpha = 0.5f),
-                                )
-                            } else {
-                                Modifier
-                            }
-                        )
                         .size(width = animatedWidth, height = animatedHeight)
                         .clip(RoundedCornerShape(Theme.radius.extraLarge)),
                     showBackdrop = true,
-                    showTitle = false
+                    showTitle = false,
                 )
 
                 if (textAlpha > 0) {
                     Column(
                         modifier = Modifier
                             .align(Alignment.BottomCenter)
-                            .padding(bottom = 24.dp)
+                            .padding(bottom = 32.dp)
                             .fillMaxWidth(0.8f)
                             .alpha(textAlpha),
                         verticalArrangement = Arrangement.spacedBy(4.dp),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        // Text content remains the same
                         Text(
                             text = items[page].title,
                             color = Theme.colors.shade.primary,
                             style = Theme.textStyle.body.medium.medium,
-                            textAlign = TextAlign.Center
+                            textAlign = TextAlign.Center,
                         )
                         Text(
                             text = items[page].genres.joinToString(),
@@ -159,8 +169,42 @@ fun HomeHeaderSlider(items: List<MediaItemUiState>, modifier: Modifier = Modifie
             alpha = 1f,
             modifier = Modifier
                 .align(Alignment.TopEnd)
-                .padding(12.dp)
-                .padding(end = 24.dp)
+                .padding(top = 4.dp, end = 32.dp)
         )
     }
 }
+
+private fun Modifier.dropShadow(
+    shape: Shape,
+    color: Color = Color.Black,
+    blur: Dp = 80.dp,
+    offsetY: Dp = 4.dp,
+    offsetX: Dp = 0.dp,
+    spread: Dp = 0.dp,
+) = this.drawBehind {
+    val shadowSize = Size(size.width + spread.toPx(), size.height + spread.toPx())
+    val shadowOutline = shape.createOutline(shadowSize, layoutDirection, this)
+    val paint = Paint()
+    paint.color = color
+    if (blur.toPx() > 0) {
+        paint.asFrameworkPaint().apply {
+            maskFilter = BlurMaskFilter(blur.toPx(), BlurMaskFilter.Blur.NORMAL)
+        }
+    }
+
+    drawIntoCanvas { canvas ->
+        canvas.save()
+        canvas.translate(offsetX.toPx(), offsetY.toPx())
+        canvas.drawOutline(shadowOutline, paint)
+        canvas.restore()
+    }
+}
+
+fun Modifier.doubleShadowDrop(
+    shape: Shape,
+    offset: Dp = 6.dp,
+    blur: Dp = 80.dp,
+    alpha: Float = 0.6f
+) = this
+    .dropShadow(shape, Color.Black.copy(alpha), blur = blur, offsetY = -offset)
+    .dropShadow(shape, Color.White.copy(alpha), blur = blur, offsetY = offset)

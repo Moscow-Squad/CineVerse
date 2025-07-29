@@ -12,9 +12,12 @@ class CineVerseInterceptor(
         val originalRequest = chain.request()
         val originalUrl = originalRequest.url
 
+        val newUrl = originalUrl.newBuilder()
+            .addQueryParameter("language", languageProvider.getCurrentLanguage())
+            .build()
+
         val newRequest = originalRequest.newBuilder()
-            .url(originalUrl)
-            .header("Accept-Language", languageProvider.getCurrentLanguage())
+            .url(newUrl)
             .header("Authorization", "Bearer ${BuildConfig.BEARER_TOKEN}")
             .build()
 

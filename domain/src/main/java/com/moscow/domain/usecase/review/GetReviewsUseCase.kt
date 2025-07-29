@@ -3,8 +3,9 @@ package com.moscow.domain.usecase.review
 import com.moscow.domain.model.Review
 import com.moscow.domain.repository.MovieRepository
 import com.moscow.domain.repository.SeriesRepository
+import javax.inject.Inject
 
-class GetReviewsUseCase(
+class GetReviewsUseCase @Inject constructor(
     private val movieRepository: MovieRepository,
     private val seriesRepository: SeriesRepository
 ) {

@@ -1,17 +1,20 @@
 package com.moscow.cineverse.screen.login
 
 import androidx.lifecycle.viewModelScope
-import com.moscow.cineverse.utlis.StringValue
 import com.moscow.cineverse.base.BaseViewModel
+import com.moscow.cineverse.utlis.StringValue
 import com.moscow.cinverse.presentation.R
 import com.moscow.domain.model.LoginData
 import com.moscow.domain.usecase.login.LoginAsGuestUseCase
 import com.moscow.domain.usecase.login.LoginWithUsernameAndPasswordUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class LoginViewModel(
+@HiltViewModel
+class LoginViewModel @Inject constructor(
     private val loginWithUsernameAndPasswordUseCase: LoginWithUsernameAndPasswordUseCase,
     private val loginAsGuestUseCase: LoginAsGuestUseCase
 ) : BaseViewModel<LoginScreenState, LoginScreenEvents>(LoginScreenState()),
@@ -26,13 +29,12 @@ class LoginViewModel(
         }
         usernameValidationJob?.cancel()
 
-        usernameValidationJob = validateInputWithDelay(
+        usernameValidationJob = validateInput(
             input = username,
-            isValid = { it.length in 4..32 && it.all { char -> char.isLetterOrDigit() || char == '_' } },
+            isPassword = false,
             onResult = { error ->
                 updateState { it.copy(usernameError = error) }
-            },
-            errorMessage = StringValue.StringResource(resId = R.string.usernames_can_only_4_32_letters_and_numbers)
+            }
         )
     }
 
@@ -42,13 +44,12 @@ class LoginViewModel(
         }
         passwordValidationJob?.cancel()
 
-        passwordValidationJob = validateInputWithDelay(
+        passwordValidationJob = validateInput(
             input = password,
-            isValid = { it.length in 4..100 },
+            isPassword = true,
             onResult = { error ->
                 updateState { it.copy(passwordError = error) }
-            },
-            errorMessage = StringValue.StringResource(resId = R.string.password_can_only_4_100_characters)
+            }
         )
     }
 
@@ -82,8 +83,11 @@ class LoginViewModel(
     }
 
     private fun onLoginFailed(error: Throwable) {
-        updateState { it.copy(isLoading = false) }
-        sendEvent(LoginScreenEvents.ShowError(StringValue.DynamicString(error.message.toString())))
+        updateState {
+            it.copy(
+                isLoading = false,
+                passwordError = StringValue.StringResource(resId = R.string.incorrect_username_or_password_please_try_again)
+            ) }
     }
 
     private fun onStartLogin() {
@@ -91,6 +95,7 @@ class LoginViewModel(
     }
 
     override fun onClickJoinAsGuest() {
+        updateState { it.copy(isJoinAsGuest = true) }
         launchWithResult(
             action = { loginAsGuestUseCase.invoke() },
             onSuccess = ::onJoinAsGuestSuccess,
@@ -100,6 +105,7 @@ class LoginViewModel(
 
 
     private fun onJoinAsGuestSuccess(isSuccess: Boolean) {
+        updateState { it.copy(isJoinAsGuest = false) }
         if (isSuccess) {
             sendEvent(LoginScreenEvents.NavigateTo)
         } else {
@@ -108,7 +114,8 @@ class LoginViewModel(
     }
 
     private fun onJoinAsGuestFailed(error: Throwable) {
-        sendEvent(LoginScreenEvents.ShowError(StringValue.DynamicString(error.message.toString())))
+        updateState { it.copy(isJoinAsGuest = false) }
+        sendEvent(LoginScreenEvents.ShowError(StringValue.StringResource(resId = R.string.oops_no_internet)))
     }
 
     override fun onClickCreateNewAccount() {
@@ -142,19 +149,39 @@ class LoginViewModel(
         updateState { it.copy(showWebView = false) }
     }
 
-    private fun validateInputWithDelay(
+    private fun validateInput(
         input: String,
+        isPassword: Boolean,
         delayMillis: Long = 100,
-        isValid: (String) -> Boolean,
-        onResult: (StringValue?) -> Unit,
-        errorMessage: StringValue
+        onResult: (StringValue?) -> Unit
     ): Job {
         return viewModelScope.launch {
             delay(delayMillis)
-            val trimmedInput = input.trim()
-            val isInputValid = isValid(trimmedInput)
 
-            val error = if (!isInputValid && trimmedInput.isNotEmpty()) errorMessage else null
+            val trimmed = input.trim()
+
+            val error = when {
+                input.isEmpty() -> null
+
+                !isPassword && input != trimmed -> {
+                    StringValue.StringResource(R.string.no_leading_trailing_spaces)
+                }
+
+                !isPassword && trimmed.length !in 4..32 -> {
+                    StringValue.StringResource(R.string.username_length_invalid)
+                }
+
+                isPassword && input.length !in 4..100 -> {
+                    StringValue.StringResource(R.string.password_can_only_4_100_characters)
+                }
+
+                !isPassword && !trimmed.all { it.isLetterOrDigit() || it == '_'} -> {
+                    StringValue.StringResource(R.string.username_invalid_chars)
+                }
+
+                else -> null
+            }
+
             onResult(error)
         }
     }

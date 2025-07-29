@@ -10,31 +10,30 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.moscow.cineverse.designSystem.component.MovieAppBar
 import com.moscow.cineverse.designSystem.component.MovieButton
 import com.moscow.cineverse.designSystem.component.MovieCircularProgressBar
 import com.moscow.cineverse.designSystem.component.MovieScaffold
 import com.moscow.cineverse.designSystem.component.MovieText
 import com.moscow.cineverse.designSystem.theme.Theme
-import com.moscow.cineverse.navigation.LocalNavController
-import com.moscow.cineverse.screen.series_details.SeriesDetailsScreenState
-import com.moscow.cineverse.screen.series_details.SeriesDetailsScreenScreenViewModel
 import com.moscow.cineverse.screen.series_details.SeriesDetailsScreenInteractionListener
-import com.moscow.cinverse.presentation.R
-import androidx.compose.runtime.getValue
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.moscow.cineverse.screen.series_details.SeriesDetailsScreenScreenViewModel
+import com.moscow.cineverse.screen.series_details.SeriesDetailsScreenState
 import com.moscow.cineverse.screen.series_details.component.SeasonCard
+import com.moscow.cinverse.presentation.R
 
 @Composable
 fun SeriesSeasonsScreen(
-    viewModel: SeriesDetailsScreenScreenViewModel,
     modifier: Modifier = Modifier,
-    navController: NavHostController = LocalNavController.current,
+    viewModel: SeriesDetailsScreenScreenViewModel = hiltViewModel(),
+    navigateBack: () -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -42,7 +41,7 @@ fun SeriesSeasonsScreen(
         uiState = uiState,
         interactionListener = viewModel,
         modifier = modifier,
-        onNavigateBack = {navController.popBackStack()},
+        onNavigateBack = navigateBack,
     )
 }
 
@@ -84,13 +83,14 @@ fun SeriesSeasonsScreenContent(
                 else -> {
                     Column(modifier = Modifier.fillMaxSize()) {
                         MovieAppBar(
-                            caption = stringResource(R.string.because_you_watched),
-                            title = uiState.seriesDetail.title,
+                            title = stringResource(R.string.seasons),
                             backButtonClick = onNavigateBack,
                         )
                         LazyColumn (
                             verticalArrangement = Arrangement.spacedBy(12.dp),
-                            modifier = Modifier.fillMaxSize().padding(16.dp)
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(16.dp)
                         ) {
                             items(uiState.seriesDetail.seasons) { season ->
                                 SeasonCard(

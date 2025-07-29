@@ -6,11 +6,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import coil3.compose.rememberAsyncImagePainter
-import com.moscow.cineverse.design_system.R
 import com.moscow.cineverse.designSystem.component.SectionTitle
 import com.moscow.cineverse.designSystem.component.movieSeriesDetails.MovieRatingBottomSheet
 import com.moscow.cineverse.designSystem.component.movieSeriesDetails.MovieReviewCard
 import com.moscow.cineverse.designSystem.component.movieSeriesDetails.RatingSection
+import com.moscow.cineverse.design_system.R
 import com.moscow.cineverse.mapper.formatReviewDate
 import com.moscow.cineverse.screen.movie_details.MovieDetailsInteractionListener
 import com.moscow.cineverse.screen.movie_details.MovieScreenState
@@ -25,7 +25,7 @@ fun MovieRatingSection(
         icon = R.drawable.due_tone_star,
         title = stringResource(com.moscow.cinverse.presentation.R.string.give_it_stars),
         caption = stringResource(com.moscow.cinverse.presentation.R.string.let_the_world_know_how_you_felt),
-        onClickArrow = { interactionListener.showRatingBottomSheet() },
+        onClick = { interactionListener.showRatingBottomSheet() },
         ratingStars = uiState.starsRating,
         modifier = modifier.padding(start = 16.dp, end = 16.dp, top = 24.dp),
     )

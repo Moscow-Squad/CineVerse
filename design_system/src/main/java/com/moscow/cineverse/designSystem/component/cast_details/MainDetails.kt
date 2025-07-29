@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
@@ -31,12 +32,12 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.moscow.cineverse.design_system.R
-import com.moscow.cineverse.image_viewer.component.SafeImageViewer
 import com.moscow.cineverse.designSystem.component.blur.OnBlurContent
 import com.moscow.cineverse.designSystem.component.blur.RemoteImagePlaceholder
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.designSystem.utils.noRibbleClick
+import com.moscow.cineverse.design_system.R
+import com.moscow.cineverse.image_viewer.component.SafeImageViewer
 
 @Composable
 fun MainDetails(
@@ -68,12 +69,14 @@ fun MainDetails(
     Card(
         shape = RoundedCornerShape(Theme.radius.extraLarge),
         colors = CardDefaults.cardColors(containerColor = Theme.colors.background.card),
-        modifier = modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 24.dp).fillMaxWidth()
+        modifier = modifier
+            .padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 24.dp)
+            .fillMaxWidth()
     ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(4.dp)
+                .padding(16.dp)
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
@@ -83,6 +86,7 @@ fun MainDetails(
                 SafeImageViewer(
                     imageUrl = profileImage,
                     modifier = Modifier
+                        .width(68.dp)
                         .size(imageSize)
                         .clip(if (isCollapsed) CircleShape else RoundedCornerShape(cornerSize)),
                     placeholderContent = { RemoteImagePlaceholder() },
@@ -181,7 +185,7 @@ private fun SocialMediaPill(
             .height(32.dp)
             .clip(RoundedCornerShape(Theme.radius.full))
             .background(backgroundColor)
-            .noRibbleClick{ url?.let { onClick(it) } }
+            .noRibbleClick { url?.let { onClick(it) } }
             .padding(horizontal = 10.dp, vertical = 8.dp),
         contentAlignment = Alignment.Center
     ) {

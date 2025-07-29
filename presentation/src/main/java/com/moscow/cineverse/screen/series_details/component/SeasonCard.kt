@@ -41,7 +41,7 @@ fun SeasonCard(
 ) {
     Column(
         modifier = modifier
-            .width(328.dp)
+            .fillMaxWidth()
             .clip(RoundedCornerShape(Theme.radius.large))
             .background(Theme.colors.background.card)
             .padding(12.dp),

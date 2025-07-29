@@ -1,9 +1,8 @@
 package com.moscow.cineverse.navigation.routes
 
 import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavType
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
-import androidx.navigation.navArgument
 import com.moscow.cineverse.navigation.AppDestination
 import com.moscow.cineverse.screen.see_more.SeeMoreHomeScreen
 import kotlinx.serialization.Serializable
@@ -11,19 +10,28 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class SeeMoreRoute(val category: String) : AppDestination {
     companion object {
-        const val route = "see_more/{category}"
-        fun createRoute(category: String) = "see_more/$category"
+        const val CATEGORY = "category"
     }
 }
 
-fun NavGraphBuilder.seeMoreRoute() {
-    composable(
-        route = SeeMoreRoute.route,
-        arguments = listOf(
-            navArgument("category") { type = NavType.StringType }
+fun NavGraphBuilder.seeMoreRoute(navController: NavHostController) {
+    composable<SeeMoreRoute> {
+        SeeMoreHomeScreen(
+            navigateToMovieDetails = { movieId ->
+                navController.navigate(MovieDetailsRoute(movieId))
+
+            },
+            navigateToSeriesDetails = { seriesId ->
+                navController.navigate(SeriesDetailsRoute(seriesId))
+
+            },
+            navigateToCastDetails = { actorId ->
+                navController.navigate(CastDetailsRoute(actorId))
+
+            },
+            navigateBack = {
+                navController.navigateUp()
+            },
         )
-    ) {
-        val category = it.arguments?.getString("category") ?: ""
-        SeeMoreHomeScreen()
     }
 }

@@ -4,6 +4,9 @@ import com.moscow.domain.model.Actor
 import com.moscow.domain.model.ActorDetails
 import com.moscow.domain.model.Gender
 import com.moscow.domain.model.Genre
+import com.moscow.domain.model.MediaItem
+import com.moscow.domain.model.MediaType
+import com.moscow.domain.model.Movie
 import com.moscow.domain.model.Series
 import com.moscow.remote.dto.GenreDto
 import com.moscow.remote.dto.MediaItemDto
@@ -18,9 +21,6 @@ import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
-import com.moscow.domain.model.MediaItem
-import com.moscow.domain.model.MediaType
-import com.moscow.domain.model.Movie
 
 fun MediaItemDto.toDomain() =
     MediaItem(
@@ -103,7 +103,7 @@ fun ActorDetailsDto.toDomain(youtubeLink: String, facebookLink: String, instagra
             LocalDate.parse(birthday)
         },
         placeOfBirth = placeOfBirth.orEmpty(),
-        youtubeLink = "https://www.youtube.com/user/$youtubeLink",
+        youtubeLink = "https://www.youtube.com/@$youtubeLink",
         facebookLink = "https://www.facebook.com/$facebookLink",
         instagramLink = "https://www.instagram.com/$instagramLink",
         biography = biography.orEmpty(),

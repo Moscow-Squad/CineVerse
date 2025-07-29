@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.cineverse.android.library)
     alias(libs.plugins.ksp)
     alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.hiltAndroid)
 }
 
 val localProperties = Properties()
@@ -28,11 +29,15 @@ dependencies {
     //Data Store
     implementation(libs.androidx.datastore.core)
     implementation(libs.androidx.datastore.preferences)
-    //Koin
-    implementation(libs.bundles.koin)
-    //Retrofit
+
+    /** DaggerHilt */
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.android.compiler)
+
+    // Retrofit
     implementation(libs.retrofit)
-    //
+    //OkHttp
+    implementation(libs.okhttp)
     implementation(libs.logging.interceptor)
     //Kotlinx Serialization
     implementation(libs.kotlinx.serialization.json)
@@ -43,9 +48,6 @@ dependencies {
     ksp(libs.androidx.room.compiler)
     //gson
     implementation(libs.gson)
-    //work manager
-    implementation(libs.koin.androidx.workmanager)
-    implementation(libs.androidx.work.runtime.ktx)
     //date time
     implementation(libs.kotlinx.datetime)
 }

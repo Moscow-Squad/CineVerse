@@ -11,65 +11,75 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.paging.LoadState
+import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.collectAsLazyPagingItems
+import com.moscow.cineverse.component.MoviePosterCard
 import com.moscow.cineverse.designSystem.component.MovieAppBar
 import com.moscow.cineverse.designSystem.component.MovieButton
 import com.moscow.cineverse.designSystem.component.MovieCircularProgressBar
 import com.moscow.cineverse.designSystem.component.MovieScaffold
-import com.moscow.cineverse.designSystem.component.MovieText
 import com.moscow.cineverse.designSystem.component.ViewMode
-import com.moscow.cineverse.designSystem.component.ViewModeToggle
 import com.moscow.cineverse.designSystem.theme.Theme
-import com.moscow.cineverse.navigation.LocalNavController
-import com.moscow.cineverse.component.MoviePosterCard
-import com.moscow.cineverse.screen.series_details.SeriesDetailsScreenState
-import com.moscow.cineverse.screen.series_details.SeriesDetailsScreenScreenViewModel
-import com.moscow.cineverse.screen.series_details.SeriesDetailsScreenInteractionListener
-import com.moscow.cinverse.presentation.R
-import androidx.compose.runtime.getValue
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.paging.compose.LazyPagingItems
-import androidx.paging.compose.collectAsLazyPagingItems
 import com.moscow.cineverse.mapper.toUi
+import com.moscow.cineverse.screen.explore.component.ViewModeToggleButton
+import com.moscow.cinverse.presentation.R
 import com.moscow.domain.model.Series
 
 @Composable
 fun SeriesRecommendationScreen(
-    viewModel: SeriesDetailsScreenScreenViewModel,
     modifier: Modifier = Modifier,
-    navController: NavHostController = LocalNavController.current,
+    viewModel: SeriesRecommendationViewModel = hiltViewModel(),
+    navigateBack: () -> Unit,
+    navigateToSeriesDetails: (Int) -> Unit
     ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    val recommendations = viewModel.getRecommendations(uiState.seriesDetail.id).collectAsLazyPagingItems()
+    val recommendations = viewModel.getRecommendations(viewModel.seriesId).collectAsLazyPagingItems()
+
+    LaunchedEffect(viewModel) {
+        viewModel.uiEffect.collect { event ->
+            when (event) {
+                is SeriesRecommendationEffects.NavigateToSeriesDetailsScreen -> {
+                    navigateToSeriesDetails(event.seriesId)
+                }
+            }
+        }
+    }
 
     SeriesRecommendationScreenContent(
+        title = viewModel.seriesName,
         uiState = uiState,
         recommendations = recommendations,
         interactionListener = viewModel,
         modifier = modifier,
-        onNavigateBack = {navController.popBackStack()},
+        onNavigateBack = navigateBack
     )
 }
 
 @Composable
 fun SeriesRecommendationScreenContent(
-    uiState: SeriesDetailsScreenState,
+    title: String,
+    uiState: SeriesRecommendationScreenState,
     recommendations: LazyPagingItems<Series>,
-    interactionListener: SeriesDetailsScreenInteractionListener,
+    interactionListener: SeriesRecommendationInteractionListener,
     onNavigateBack : () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     MovieScaffold {
         Box(modifier = modifier.fillMaxSize()) {
-            when {
-                uiState.isLoading -> {
+            when (recommendations.loadState.append) {
+                is LoadState.Loading -> {
                     MovieCircularProgressBar(modifier = Modifier.align(Alignment.Center))
                 }
-                uiState.errorMessage != "" -> {
+                is LoadState.Error -> {
                     Box(
                         modifier = Modifier.fillMaxSize(),
                         contentAlignment = Alignment.Center
@@ -77,10 +87,6 @@ fun SeriesRecommendationScreenContent(
                         Column(
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
-                            MovieText(
-                                text = uiState.errorMessage,
-                                color = Theme.colors.shade.primary
-                            )
                             Spacer(modifier = Modifier.height(16.dp))
                             MovieButton(
                                 buttonText = stringResource(R.string.retry),
@@ -91,10 +97,11 @@ fun SeriesRecommendationScreenContent(
                         }
                     }
                 }
-                else -> {
+                is LoadState.NotLoading -> {
                     Column(modifier = Modifier.fillMaxSize()) {
                         MovieAppBar(
-                            title = uiState.seriesDetail.title,
+                            caption = stringResource(R.string.because_you_watched),
+                            title = title,
                             backButtonClick = onNavigateBack,
                         )
                         LazyVerticalGrid(
@@ -126,7 +133,7 @@ fun SeriesRecommendationScreenContent(
                             }
                         }
                     }
-                    ViewModeToggle(
+                    ViewModeToggleButton(
                         selectedMode = uiState.viewMode,
                         onModeSelected = interactionListener::onViewModeChanged,
                         modifier = Modifier

@@ -4,8 +4,9 @@ import com.moscow.data_source.remote.GenreRemoteDataSource
 import com.moscow.domain.model.Genre
 import com.moscow.domain.repository.GenreRepository
 import com.moscow.mapper.toDomain
+import javax.inject.Inject
 
-class GenreRepositoryImpl(
+class GenreRepositoryImpl @Inject constructor(
     private val genreRemoteDataSource: GenreRemoteDataSource,
 ): GenreRepository {
     override suspend fun getSeriesGenres(): List<Genre> {

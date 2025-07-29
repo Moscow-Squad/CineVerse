@@ -39,7 +39,7 @@ data class SeriesDetailDto(
     @SerialName("name")
     val name: String,
     @SerialName("next_episode_to_air")
-    val nextEpisodeToAir: String? = null,
+    val nextEpisodeToAir: LastEpisodeToAirDto? = null,
     @SerialName("networks")
     val networks: List<NetworkDto>,
     @SerialName("number_of_episodes")

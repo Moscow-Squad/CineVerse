@@ -1,18 +1,26 @@
 package com.moscow.cineverse.navigation.routes
 
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
-import com.moscow.cineverse.screen.series_details.SeriesDetailsScreenScreenViewModel
 import com.moscow.cineverse.screen.series_details.series_recommendation.SeriesRecommendationScreen
 import kotlinx.serialization.Serializable
-import org.koin.androidx.compose.koinViewModel
 
 @Serializable
-data class SeriesRecommendationRoute(val seriesId: Int)
+data class SeriesRecommendationRoute(val seriesId: Int, val seriesName: String) {
+    companion object {
+        const val SERIES_ID = "seriesId"
+        const val SERIES_NAME = "seriesName"
+    }
+}
 
-fun NavGraphBuilder.SeriesRecommendationRoute() {
+fun NavGraphBuilder.SeriesRecommendationRoute(navController: NavHostController) {
     composable<SeriesRecommendationRoute>{
-        val viewModel: SeriesDetailsScreenScreenViewModel = koinViewModel()
-        SeriesRecommendationScreen(viewModel = viewModel)
+        SeriesRecommendationScreen(
+            navigateBack = { navController.navigateUp() },
+            navigateToSeriesDetails = { seriesId ->
+                navController.navigate(SeriesDetailsRoute(seriesId))
+            }
+        )
     }
 }

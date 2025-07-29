@@ -1,6 +1,7 @@
 package com.moscow.cineverse.navigation.routes
 
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.dialog
 import com.moscow.cineverse.screen.collections.CollectionsBottomSheetScreen
 import kotlinx.serialization.Serializable
@@ -17,15 +18,14 @@ data class CollectionsBottomSheetRoute(
 }
 
 fun NavGraphBuilder.collectionsBottomSheetRoute(
-    onAddNewCollectionClick: () -> Unit,
-    onCreateCollectionClicked: () -> Unit,
-    navigateBack: () -> Unit
+    navController: NavHostController
 ) {
     dialog<CollectionsBottomSheetRoute> {
         CollectionsBottomSheetScreen(
-            onAddNewCollectionClick = onAddNewCollectionClick,
-            onCreateCollectionClicked = onCreateCollectionClicked,
-            navigateBack = navigateBack
+            onAddNewCollectionClick = {},
+            onCreateCollectionClicked = {},
+            navigateBack = navController::navigateUp,
+            onLogIn = { navController.navigate(LoginRoute) }
         )
     }
 }
