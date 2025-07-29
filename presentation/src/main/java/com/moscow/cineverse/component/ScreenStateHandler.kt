@@ -1,6 +1,7 @@
 package com.moscow.cineverse.component
 
 import android.util.Log
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -25,7 +26,7 @@ fun ScreenStateHandler(
     modifier: Modifier = Modifier,
     content: @Composable () -> Unit,
 ) {
-    Box(modifier = modifier.fillMaxSize()) {
+    Box(modifier = modifier.fillMaxSize().background(Theme.colors.background.screen)) {
         when {
             isLoading -> {
                 MovieCircularProgressBar(

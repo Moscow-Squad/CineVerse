@@ -65,6 +65,7 @@
     <string name="mind_bending_stories">قصص تحيّر العقل</string>
     <string name="family_night_picks">ليلة أفلام عائلية</string>
     <string name="late_night_thrills">إثارة ليلية</string>
+    <string name="incorrect_username_or_password_please_try_again">اسم المستخدم أو كلمة المرور غير صحيحة. يُرجى المحاولة مرة أخرى.</string>
     <string name="join_cineverse">انضم إلى سينيفيرس</string>
     <string name="let_us_choose_message">نوفّر عليك وقت البحث ونرشح لك الأفضل</string>
     <string name="let_us_choose_for_you">خلينا نختار لك!</string>
@@ -73,4 +74,8 @@
     <string name="browse_everything">استعرض الكل</string>
     <string name="browse_everything_message">استكشف كل الأفلام والمسلسلات حسب النوع أو ابحث عن اللي يعجبك</string>
     <string name="guest">ضيف</string>
+    <string name="username_length_invalid">يجب أن يكون اسم المستخدم من 4 إلى 32 حرفًا</string>
+    <string name="no_double_spaces">يجب ان لا يحتوي على عدة مسافات</string>
+    <string name="no_leading_trailing_spaces">لا يجب ان يحتوي مسافات في البداية أو النهاية</string>
+    <string name="username_invalid_chars">يجب أن يتكون اسم المستخدم من أحرف وأرقام وشرطات سفلية فقط</string>
 </resources>
