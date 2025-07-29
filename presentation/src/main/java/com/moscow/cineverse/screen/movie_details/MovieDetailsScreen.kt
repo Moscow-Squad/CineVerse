@@ -5,7 +5,9 @@ import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
@@ -13,13 +15,14 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.moscow.cineverse.component.NoInternetScreen
 import com.moscow.cineverse.designSystem.component.MovieAppBar
 import com.moscow.cineverse.designSystem.component.MovieScaffold
 import com.moscow.cineverse.designSystem.theme.Theme
-import com.moscow.cineverse.screen.movie_details.component.ErrorContent
 import com.moscow.cineverse.screen.movie_details.component.LoadingContent
 import com.moscow.cineverse.screen.movie_details.component.MovieCastSection
 import com.moscow.cineverse.screen.movie_details.component.MovieCollapsedHeaderSection
@@ -76,15 +79,17 @@ private fun MovieDetailsContent(
 ) {
     MovieScaffold {
         when {
-            uiState.movieDetailsUiState == null -> {
+            uiState.isLoading -> {
                 LoadingContent(modifier = modifier)
             }
 
             uiState.shouldShowError -> {
-                ErrorContent(
-                    onRetry = { /* TODO: Add retry logic */ },
-                    modifier = modifier
-                )
+                Box(
+                    modifier = Modifier.fillMaxSize().background(Theme.colors.background.screen),
+                    contentAlignment = Alignment.Center
+                ) {
+                    NoInternetScreen(onRetry = interactionListener::onRetry)
+                }
             }
 
             else -> {
@@ -150,38 +155,38 @@ private fun MovieDetailsMainContent(
                 )
             }
 
-            item {
-                MovieCastSection(
-                    uiState = uiState,
-                    interactionListener = interactionListener
-                )
-            }
+                    item {
+                        MovieCastSection(
+                            uiState = uiState,
+                            interactionListener = interactionListener
+                        )
+                    }
 
-            item {
-                MovieStaffInfoSection(uiState = uiState)
-            }
+                    item {
+                        MovieStaffInfoSection(uiState = uiState)
+                    }
 
-            item {
-                MovieRecommendationsSection(
-                    uiState = uiState,
-                    interactionListener = interactionListener
-                )
-            }
+                    item {
+                        MovieRecommendationsSection(
+                            uiState = uiState,
+                            interactionListener = interactionListener
+                        )
+                    }
 
-            item {
-                MovieRatingSection(
-                    uiState = uiState,
-                    interactionListener = interactionListener
-                )
-            }
+                    item {
+                        MovieRatingSection(
+                            uiState = uiState,
+                            interactionListener = interactionListener
+                        )
+                    }
 
-            item {
-                MovieReviewsSection(
-                    uiState = uiState,
-                    interactionListener = interactionListener
-                )
-            }
-        }
+                    item {
+                        MovieReviewsSection(
+                            uiState = uiState,
+                            interactionListener = interactionListener
+                        )
+                    }
+                }
 
         MovieRatingBottomSheetSection(
             uiState = uiState,
