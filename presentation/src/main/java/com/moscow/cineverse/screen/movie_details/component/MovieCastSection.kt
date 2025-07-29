@@ -17,6 +17,7 @@ import com.moscow.cineverse.designSystem.component.movieSeriesDetails.StarCastSe
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.screen.movie_details.MovieDetailsInteractionListener
 import com.moscow.cineverse.screen.movie_details.MovieScreenState
+import com.moscow.cinverse.presentation.R
 
 @Composable
 fun MovieCastSection(
@@ -53,10 +54,10 @@ fun MovieStaffInfoSection(
 ) {
     StaffInfoSection(
         staffInfo = listOf(
-            "Characters" to uiState.characters.joinToString(","),
-            "Director, Screenplay, Story" to uiState.director.joinToString(","),
-            "Producer" to uiState.produce.joinToString(","),
-            "Writer" to uiState.writer.joinToString(",")
+            stringResource(R.string.characters) to uiState.characters.joinToString(","),
+            stringResource(R.string.director_screenplay_story) to uiState.director.joinToString(","),
+            stringResource(R.string.producer) to uiState.produce.joinToString(","),
+            stringResource(R.string.writer) to uiState.writer.joinToString(",")
         ),
         modifier = modifier.padding(top = 24.dp, start = 16.dp, end = 16.dp)
     )

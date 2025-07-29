@@ -4,8 +4,8 @@ import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.cineverse.mapper.toMediaItemUi
-import com.moscow.cineverse.navigation.routes.MovieDetailsRoute
 import com.moscow.cineverse.mapper.toUi
+import com.moscow.cineverse.navigation.routes.MovieDetailsRoute
 import com.moscow.domain.model.CreditsDetails
 import com.moscow.domain.model.Movie
 import com.moscow.domain.model.Review
@@ -15,7 +15,6 @@ import com.moscow.domain.usecase.movie.GetMovieDetailsUseCase
 import com.moscow.domain.usecase.movie.GetMovieRecommendationsUseCase
 import com.moscow.domain.usecase.movie.RateMovieUseCase
 import com.moscow.domain.usecase.review.GetReviewsUseCase
-import kotlin.collections.take
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 

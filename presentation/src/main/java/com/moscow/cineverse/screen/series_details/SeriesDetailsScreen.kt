@@ -286,7 +286,7 @@ fun SeriesDetailsContent(
                                 icon = Theme.icons.dueTone.star,
                                 title = stringResource(R.string.give_it_stars),
                                 caption = stringResource(R.string.let_the_world_know_how_you_felt),
-                                onClickArrow = interactionListener::showRatingBottomSheet,
+                                onClick = interactionListener::showRatingBottomSheet,
                                 ratingStars = uiState.starsRating,
                                 modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 24.dp),
                             )

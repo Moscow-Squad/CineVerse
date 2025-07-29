@@ -36,7 +36,8 @@ fun CollectionsBottomSheetScreen(
     viewModel: CollectionsBottomSheetViewModel = hiltViewModel(),
     onAddNewCollectionClick: () -> Unit,
     onCreateCollectionClicked: () -> Unit,
-    navigateBack: () -> Unit
+    navigateBack: () -> Unit,
+    onLogIn: () -> Unit
 ) {
 
     val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
@@ -49,7 +50,6 @@ fun CollectionsBottomSheetScreen(
         onDismissBottomSheet = navigateBack,
         onCloseBottomSheet = navigateBack,
         onNotNow = navigateBack,
-        onLogIn = {}
     )
 
     LaunchedEffect(Unit) {
@@ -58,7 +58,8 @@ fun CollectionsBottomSheetScreen(
                 event = event,
                 onCreateCollectionClicked = onCreateCollectionClicked,// user already log in - navigate to collections screen
                 navigateBack = navigateBack,
-                context = context
+                context = context,
+                onLogIn = onLogIn
             )
         }
     }
@@ -69,11 +70,12 @@ private fun handleEvents(
     event: CollectionsBottomSheetEffect,
     onCreateCollectionClicked: () -> Unit,
     navigateBack: () -> Unit,
+    onLogIn: () -> Unit,
     context: Context
 ) {
     when (event) {
         CollectionsBottomSheetEffect.OnCreateCollectionClicked -> onCreateCollectionClicked()
-        CollectionsBottomSheetEffect.OnLoginClicked -> {}
+        CollectionsBottomSheetEffect.OnLoginClicked -> onLogIn()
         is CollectionsBottomSheetEffect.OnMovieAddedSuccessfully -> {
             Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
             navigateBack()
@@ -88,7 +90,6 @@ private fun CollectionsBottomSheetContent(
     onDismissBottomSheet: () -> Unit,
     onCloseBottomSheet: () -> Unit,
     onNotNow: () -> Unit,
-    onLogIn: () -> Unit,
     uiState: CollectionsBottomSheetScreenState,
     interactionListener: CollectionsBottomSheetInteractionListener
 ) {
@@ -100,7 +101,7 @@ private fun CollectionsBottomSheetContent(
         onAddNewCollectionClick = onAddNewCollectionClick
     ) {
         when {
-            uiState.createCollection -> {
+            uiState.isLoggedIn == false -> {
                 MessageInfoBox(
                     title = stringResource(R.string.you_re_almost_there),
                     description = stringResource(R.string.log_in_to_save_movies_create_collections_and_get_personalized_recommendations),
@@ -109,8 +110,8 @@ private fun CollectionsBottomSheetContent(
                     firstButtonText = stringResource(R.string.not_now),
                     onClickFirstButton = onNotNow,
                     secondButtonText = stringResource(R.string.log_in),
-                    onClickSecondButton = onLogIn,
-                    modifier = Modifier.padding(bottom = 16.dp)
+                    onClickSecondButton = { interactionListener.navigateToLogin() },
+                    modifier = Modifier.padding(bottom = 16.dp),
                 )
             }
 
@@ -164,7 +165,8 @@ private fun CollectionsBottomSheetContent(
                         onClickFirstButton = {},
                         secondButtonText = stringResource(R.string.create_collection),
                         onClickSecondButton = { interactionListener.onCreateCollectionClicked() },
-                        modifier = Modifier.padding(bottom = 16.dp)
+                        modifier = Modifier.padding(bottom = 16.dp),
+                        firstButtonLoading = uiState.isLoading
                     )
                 } else {
                     LazyColumn(

@@ -77,7 +77,7 @@ fun MovieCollapsedHeaderSection(
             sharedTransitionScope = sharedTransitionScope,
             onSaveClick = {
                 interactionListener.onAddToCollection(it.id)
-            },
+            }
         )
     }
 }

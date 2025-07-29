@@ -173,7 +173,7 @@ private fun MovieDetailsMainContent(
                         uiState = uiState,
                         interactionListener = interactionListener,
                         animatedVisibilityScope = this@AnimatedContent,
-                        sharedTransitionScope = this@SharedTransitionLayout
+                        sharedTransitionScope = this@SharedTransitionLayout,
                     )
                 }
             }
@@ -212,4 +212,3 @@ private fun MovieDetailsMainContent(
         )
     }
 }
-
