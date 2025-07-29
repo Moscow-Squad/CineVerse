@@ -11,6 +11,7 @@ import com.moscow.domain.model.MediaItem
 import com.moscow.domain.model.MediaType
 import com.moscow.domain.model.UserType
 import com.moscow.domain.repository.PreferenceRepository
+import com.moscow.utils.CineVerseExceptions
 import javax.inject.Inject
 
 class CollectionsRepositoryImpl @Inject constructor(
@@ -34,14 +35,14 @@ class CollectionsRepositoryImpl @Inject constructor(
     override suspend fun addNewCollection(
         collectionName: String,
         collectionDescription: String?
-    ): String {
+    ): Int {
         val collection =
             CreateCollectionDto(name = collectionName, description = collectionDescription)
         val response = collectionRemoteDataSource.addNewCollection(
             collection = collection,
             sessionId = preferenceRepository.getSessionId()
         )
-        return response.statusMessage ?: "Unexpected Error happened"
+        return response.listId ?: throw CineVerseExceptions(response.statusCode?:0,response.statusMessage?:"")
     }
 
     override suspend fun addMediaItemToCollection(

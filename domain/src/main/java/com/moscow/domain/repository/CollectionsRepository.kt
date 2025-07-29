@@ -9,7 +9,7 @@ interface CollectionsRepository {
     suspend fun addNewCollection(
         collectionName: String,
         collectionDescription: String?
-    ): String
+    ): Int
 
     suspend fun addMediaItemToCollection(
         mediaItemId: Int,

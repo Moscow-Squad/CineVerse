@@ -1,5 +1,6 @@
 package com.moscow.remote.services
 
+import com.moscow.remote.dto.AddCollectionDto
 import com.moscow.remote.dto.AddMediaItemToCollectionRequestDto
 import com.moscow.remote.dto.CollectionDto
 import com.moscow.remote.dto.CreateCollectionDto
@@ -30,7 +31,7 @@ interface CollectionsService {
     suspend fun addNewCollection(
         @Body collection: CreateCollectionDto,
         @Query(SESSION_ID) sessionId: String
-    ): Response<ApiResponse<Nothing>>
+    ): Response<AddCollectionDto>
 
     @POST("$LIST/{collection_id}/$ADD_ITEM")
     suspend fun addMediaItemToCollection(

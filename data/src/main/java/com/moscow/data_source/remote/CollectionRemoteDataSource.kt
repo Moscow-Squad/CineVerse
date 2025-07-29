@@ -1,5 +1,6 @@
 package com.moscow.data_source.remote
 
+import com.moscow.remote.dto.AddCollectionDto
 import com.moscow.remote.dto.AddMediaItemToCollectionRequestDto
 import com.moscow.remote.dto.CollectionDto
 import com.moscow.remote.dto.CreateCollectionDto
@@ -16,7 +17,7 @@ interface CollectionRemoteDataSource {
     suspend fun addNewCollection(
         collection: CreateCollectionDto,
         sessionId: String
-    ): ApiResponse<Nothing>
+    ): AddCollectionDto
 
     suspend fun addMediaItemToCollection(
         item: AddMediaItemToCollectionRequestDto,

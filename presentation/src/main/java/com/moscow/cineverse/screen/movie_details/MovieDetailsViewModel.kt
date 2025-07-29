@@ -7,9 +7,13 @@ import com.moscow.cineverse.mapper.toMediaItemUi
 import com.moscow.cineverse.mapper.toUi
 import com.moscow.cineverse.navigation.routes.MovieDetailsRoute
 import com.moscow.domain.model.CreditsDetails
+import com.moscow.domain.model.MediaType
 import com.moscow.domain.model.Movie
 import com.moscow.domain.model.Review
 import com.moscow.domain.model.details.MovieDetail
+import com.moscow.domain.usecase.collection.AddMediaItemToCollectionUseCase
+import com.moscow.domain.usecase.collection.GetCurrentUserUseCase
+import com.moscow.domain.usecase.local.GetUserDetailsUseCase
 import com.moscow.domain.usecase.movie.GetMovieCreditsUseCase
 import com.moscow.domain.usecase.movie.GetMovieDetailsUseCase
 import com.moscow.domain.usecase.movie.GetMovieRecommendationsUseCase
@@ -24,6 +28,8 @@ class MovieDetailsViewModel @Inject constructor(
     private val getReviewsUseCase: GetReviewsUseCase,
     private val getMovieCreditsUseCase: GetMovieCreditsUseCase,
     private val getMovieRecommendationsUseCase: GetMovieRecommendationsUseCase,
+    private val addMediaItemToCollectionUseCase: AddMediaItemToCollectionUseCase,
+    private val getUserDetailsUseCase: GetUserDetailsUseCase,
     private val rateMovieUseCase: RateMovieUseCase,
     saveStateHandle: SavedStateHandle,
 ) : BaseViewModel<MovieScreenState, MovieDetailsScreenEffect>(MovieScreenState()),
@@ -31,12 +37,31 @@ class MovieDetailsViewModel @Inject constructor(
 
     private val movieId = saveStateHandle.get<Int>(MovieDetailsRoute.MOVIE_ID) ?: 0
 
+
+
     init {
+        getUserDetails()
         updateState { it.copy(isLoading = true) }
+        addMovieToRecentlyViewedCollection(movieId)
         getMovieDetails(movieId)
         getReviews(movieId)
         getCredits(movieId)
         getRecommendations(movieId)
+    }
+    fun getUserDetails(){
+        launchWithResult(
+            action = {getUserDetailsUseCase()},
+            onSuccess ={user -> updateState { it.copy(recentlyViewedCollectionId = user.recentlyCollectionId) }} ,
+            onError = {},
+
+        )
+    }
+    fun addMovieToRecentlyViewedCollection(movieId:Int){
+        launchWithResult(
+            action = {addMediaItemToCollectionUseCase.invoke(movieId,MediaType.Movie,uiState.value.recentlyViewedCollectionId)},
+            onSuccess = { Log.d("TAG", "addMovieToRecentlyViewedCollection: Success")},
+            onError = {}
+        )
     }
     fun getMovieDetails(movieID: Int) {
         updateState { it.copy(isLoading = true) }
