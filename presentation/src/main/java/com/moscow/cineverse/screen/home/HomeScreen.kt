@@ -14,7 +14,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -23,12 +22,12 @@ import com.moscow.cineverse.component.ScreenStateHandler
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.navigation.LocalNavController
 import com.moscow.cineverse.navigation.LocalScaffoldPaddingValues
-import com.moscow.cineverse.screen.home.components.FeaturedCollectionsSection
 import com.moscow.cineverse.navigation.navigateToNewGraph
 import com.moscow.cineverse.navigation.routes.ExploreRoute
 import com.moscow.cineverse.navigation.routes.MatchRoute
 import com.moscow.cineverse.navigation.routes.MovieDetailsRoute
 import com.moscow.cineverse.navigation.routes.SeriesDetailsRoute
+import com.moscow.cineverse.screen.home.components.FeaturedCollectionsSection
 import com.moscow.cineverse.screen.home.components.FeaturedMovies
 import com.moscow.cineverse.screen.home.components.HomeHeader
 import com.moscow.cineverse.screen.home.components.HomeHeaderSlider
@@ -116,9 +115,12 @@ fun HomeContent(
                     .weight(1f)
                     .verticalScroll(rememberScrollState()),
                 verticalArrangement = Arrangement.spacedBy(32.dp)
-
             ) {
-                HomeHeaderSlider(items = state.sliderItems)
+
+                HomeHeaderSlider(
+                    items = state.sliderItems,
+                    modifier = Modifier.padding(top = 16.dp)
+                )
 
                 FeaturedMovies(
                     displayMovies = state.recentlyReleasedMovies,
