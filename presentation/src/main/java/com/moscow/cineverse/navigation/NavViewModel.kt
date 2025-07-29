@@ -6,11 +6,14 @@ import androidx.lifecycle.viewModelScope
 import com.moscow.cineverse.navigation.routes.HomeRoute
 import com.moscow.cineverse.navigation.routes.LoginRoute
 import com.moscow.domain.repository.PreferenceRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
+import javax.inject.Inject
 
-class NavViewModel(
+@HiltViewModel
+class NavViewModel @Inject constructor(
     private val preferenceRepository: PreferenceRepository
 ): ViewModel() {
 

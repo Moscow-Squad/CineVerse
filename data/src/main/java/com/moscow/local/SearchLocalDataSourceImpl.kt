@@ -12,9 +12,10 @@ import com.moscow.local.entity.MovieEntity
 import com.moscow.local.entity.SearchHistoryEntity
 import com.moscow.local.entity.SeriesEntity
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 import kotlin.collections.map
 
-class SearchLocalDataSourceImpl(
+class SearchLocalDataSourceImpl  @Inject constructor(
     private val searchHistoryDao: SearchHistoryDao,
     private val movieDao: MovieDao,
     private val actorDao: ActorDao,

@@ -11,8 +11,11 @@ import com.moscow.cineverse.paging.BasePagingSource
 import com.moscow.domain.model.Movie
 import com.moscow.domain.usecase.movie.GetMovieRecommendationsUseCase
 import kotlinx.coroutines.flow.Flow
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class RecommendationsMoviesViewModel (
+@HiltViewModel
+class RecommendationsMoviesViewModel @Inject constructor(
     private val getMovieRecommendationsUseCase: GetMovieRecommendationsUseCase,
 ): BaseViewModel<RecommendationsMoviesState,
         RecommendationMoviesEffect>(RecommendationsMoviesState()),

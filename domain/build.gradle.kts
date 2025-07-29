@@ -1,11 +1,15 @@
 plugins {
     alias(libs.plugins.cineverse.kotlin)
+    alias(libs.plugins.ksp)
+    kotlin("kapt")
 }
 
 dependencies{
     //kotlin datetime
     implementation(libs.kotlinx.datetime)
-    //Koin
-    implementation(platform(libs.koin.bom))
-    implementation(libs.koin.core)
+
+    /** Dagger */
+    implementation(libs.dagger.android)
+    kapt(libs.dagger.compiler)
+
 }

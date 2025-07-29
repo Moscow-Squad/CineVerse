@@ -1,8 +1,9 @@
 package com.moscow.domain.usecase.series
 
 import com.moscow.domain.repository.SeriesRepository
+import javax.inject.Inject
 
-class RateSeriesUseCase(
+class RateSeriesUseCase @Inject constructor(
     private val seriesRepository: SeriesRepository
 ) {
     suspend fun rateSeriesUse(

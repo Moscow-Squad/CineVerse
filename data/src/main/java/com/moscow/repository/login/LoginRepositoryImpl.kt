@@ -5,8 +5,9 @@ import com.moscow.domain.model.LoginData
 import com.moscow.domain.model.UserType
 import com.moscow.domain.repository.LoginRepository
 import com.moscow.domain.repository.PreferenceRepository
+import javax.inject.Inject
 
-class LoginRepositoryImpl(
+class LoginRepositoryImpl @Inject constructor(
     private val loginRemoteDataSource: LoginRemoteDataSource,
     private val preferenceRepository: PreferenceRepository
 ): LoginRepository {

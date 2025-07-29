@@ -1,5 +1,6 @@
 package com.moscow.cineverse.screen.login
 
+import android.content.Context
 import androidx.lifecycle.viewModelScope
 import com.moscow.cineverse.utlis.StringValue
 import com.moscow.cineverse.base.BaseViewModel
@@ -10,8 +11,13 @@ import com.moscow.domain.usecase.login.LoginWithUsernameAndPasswordUseCase
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
+import javax.inject.Inject
 
-class LoginViewModel(
+@HiltViewModel
+class LoginViewModel @Inject constructor(
+    @ApplicationContext private val context: Context,
     private val loginWithUsernameAndPasswordUseCase: LoginWithUsernameAndPasswordUseCase,
     private val loginAsGuestUseCase: LoginAsGuestUseCase
 ) : BaseViewModel<LoginScreenState, LoginScreenEvents>(LoginScreenState()),

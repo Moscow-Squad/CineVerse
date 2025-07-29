@@ -9,8 +9,9 @@ import com.moscow.domain.model.details.MovieDetail
 import com.moscow.domain.repository.MovieRepository
 import com.moscow.mapper.toDomain
 import com.moscow.remote.dto.review.RatingRequestDto
+import javax.inject.Inject
 
-class MovieRepositoryImpl(
+class MovieRepositoryImpl @Inject constructor(
     private val movieRemoteDataSource: MovieRemoteDataSource,
     private val detailLocalDataSource: DetailsLocalDataSource
 ) : MovieRepository {

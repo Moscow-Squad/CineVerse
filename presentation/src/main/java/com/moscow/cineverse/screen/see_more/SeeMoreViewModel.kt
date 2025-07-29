@@ -22,14 +22,16 @@ import com.moscow.domain.usecase.home.GetMatchesYourVibesMoviesUseCase
 import com.moscow.domain.usecase.home.GetRecentlyReleasedMoviesUseCase
 import com.moscow.domain.usecase.home.GetTopRatedTVShowsUseCase
 import com.moscow.domain.usecase.home.GetUpcomingMoviesUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
-
-class SeeMoreViewModel(
+import javax.inject.Inject
+@HiltViewModel
+class SeeMoreViewModel @Inject constructor(
     private val getMatchesYourVibesMoviesUseCase: GetMatchesYourVibesMoviesUseCase,
     private val getRecentlyReleasedMoviesUseCase: GetRecentlyReleasedMoviesUseCase,
     private val getTopRatedTVShowsUseCase: GetTopRatedTVShowsUseCase,
@@ -62,27 +64,31 @@ class SeeMoreViewModel(
                             fetchData = { page -> getRecentlyReleasedMoviesUseCase(page) },
                         )
                     }
+
                     HomeFeaturedItems.UPCOMING_MOVIES.name -> {
                         createPagingFlow(
                             pageSize = pageSize,
                             fetchData = { page -> getUpcomingMoviesUseCase(page) }, // Replace with getUpcomingMovies when available
                         )
                     }
+
                     HomeFeaturedItems.MATCHES_YOUR_VIBE.name -> {
                         // Using genre ID 28 for Action, same as in HomeViewModel
                         createPagingFlow(
                             pageSize = pageSize,
                             fetchData = { page -> getMatchesYourVibesMoviesUseCase(28, page) },
 
-                        )
+                            )
                     }
+
                     HomeFeaturedItems.TOP_RATED_TV_SHOWS.name -> {
                         createPagingFlow(
                             pageSize = pageSize,
                             fetchData = { page -> getTopRatedTVShowsUseCase(page) },
 
-                        )
+                            )
                     }
+
                     HomeFeaturedItems.YOU_RECENTLY_VIEWED.name -> {
                         createPagingFlow(
                             pageSize = pageSize,
@@ -90,6 +96,7 @@ class SeeMoreViewModel(
 
                         )
                     }
+
                     else -> emptyFlow()
                 }
 
@@ -123,7 +130,6 @@ class SeeMoreViewModel(
             }
             .cachedIn(viewModelScope)
     }
-
 
 
     override fun onRefresh() {

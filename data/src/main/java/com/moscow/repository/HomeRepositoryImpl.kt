@@ -6,8 +6,9 @@ import com.data_source.remote.HomeRemoteDataSource
 import com.moscow.domain.model.Movie
 import com.moscow.domain.model.Series
 import com.moscow.mapper.toDomain
+import javax.inject.Inject
 
-class HomeRepositoryImpl(
+class HomeRepositoryImpl @Inject constructor(
     private val homeRemoteDataSource: HomeRemoteDataSource
 ) : HomeRepository {
     override suspend fun getTrendingMovies(time: String?): List<Movie> =
