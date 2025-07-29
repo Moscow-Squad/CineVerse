@@ -78,6 +78,6 @@
     <string name="producer">Producer</string>
     <string name="writer">Writer</string>
     <string name="latest_seasons">Latest Seasons</string>
-    <string name="error_in_loading_series_details">Error in loading series details</string>
+    <string name="seasons">Seasons</string>
 
 </resources>

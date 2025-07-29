@@ -10,11 +10,11 @@ data class CreatedByDto(
     @SerialName("credit_id")
     val creditId: String,
     @SerialName("name")
-    val name: String,
+    val name: String?,
     @SerialName("original_name")
-    val originalName: String,
+    val originalName: String?,
     @SerialName("gender")
-    val gender: Int,
+    val gender: Int?,
     @SerialName("profile_path")
-    val profilePath: String,
+    val profilePath: String?,
 )

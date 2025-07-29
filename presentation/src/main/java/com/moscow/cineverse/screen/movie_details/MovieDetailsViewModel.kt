@@ -32,12 +32,14 @@ class MovieDetailsViewModel @Inject constructor(
     private val movieId = saveStateHandle.get<Int>(MovieDetailsRoute.MOVIE_ID) ?: 0
 
     init {
+        updateState { it.copy(isLoading = true) }
         getMovieDetails(movieId)
         getReviews(movieId)
         getCredits(movieId)
         getRecommendations(movieId)
     }
     fun getMovieDetails(movieID: Int) {
+        updateState { it.copy(isLoading = true) }
         launchWithResult(
             action = { getMovieDetailsUseCase.invoke(movieID) },
             onSuccess = ::onGetMovieDetailsSuccess,
@@ -50,11 +52,12 @@ class MovieDetailsViewModel @Inject constructor(
     }
 
     private fun onGetMovieDetailsSuccess(movieDetails: MovieDetail) {
-        updateState { it.copy(movieDetailsUiState = movieDetails.toUi()) }
+        updateState { it.copy(isLoading = false, movieDetailsUiState = movieDetails.toUi()) }
         Log.d("TAG", "onGetMovieDetailsSuccess: ${uiState}")
     }
 
     fun getReviews(movieID: Int) {
+        updateState { it.copy(isLoading = true) }
         launchWithResult(
             action = { getReviewsUseCase(movieID, 1, true) },
             onSuccess = ::onGetReviewSuccess,
@@ -66,10 +69,11 @@ class MovieDetailsViewModel @Inject constructor(
     }
 
     private fun onGetReviewSuccess(reviews: List<Review>) {
-        updateState { it.copy(reviewsFlow = reviews.take(3).map { it.toUi() }) }
+        updateState { it.copy(isLoading = false, reviewsFlow = reviews.take(3).map { it.toUi() }) }
 
     }
         fun getCredits(movieID: Int) {
+            updateState { it.copy(isLoading = true) }
             launchWithResult(
                 action = { getMovieCreditsUseCase(movieID) },
                 onSuccess = ::onGetCreditsSuccess,
@@ -82,6 +86,7 @@ class MovieDetailsViewModel @Inject constructor(
             val crew = creditsDetails.behindTheScene.map { it.toUi() }
             updateState {
                 it.copy(
+                    isLoading = false,
                     starCast = creditsDetails.actors.map { it.toUi() },
                     characters = crew.filter { it.job == "Characters" }.map { it.name },
                     director = crew.filter { it.job in (listOf("Director", "Screenplay", "Story")) }
@@ -93,6 +98,7 @@ class MovieDetailsViewModel @Inject constructor(
         }
 
         fun getRecommendations(movieID: Int) {
+            updateState { it.copy(isLoading = true) }
             launchWithResult(
                 action = { getMovieRecommendationsUseCase(movieID, 1) },
                 onSuccess = ::onGetRecommendationsSuccess,
@@ -103,6 +109,7 @@ class MovieDetailsViewModel @Inject constructor(
         private fun onGetRecommendationsSuccess(recommendations: List<Movie>) {
             updateState {
                 it.copy(
+                    isLoading = false,
                     recommendations = recommendations.take(6).map { it.toMediaItemUi() }
                 )
             }
@@ -118,28 +125,24 @@ class MovieDetailsViewModel @Inject constructor(
         }
 
         private fun getMovieDetailsFailed(error: Throwable) {
-            updateState { it.copy(errorMessage = error.message.toString(), shouldShowError = true) }
+            updateState { it.copy(errorMessage = error.message.toString(), shouldShowError = true, isLoading = false) }
         }
 
         private fun getReviewFailed(error: Throwable) {
-            updateState { it.copy(errorMessage = error.message.toString(), shouldShowError = true) }
+            updateState { it.copy(errorMessage = error.message.toString(), shouldShowError = true, isLoading = false) }
         }
 
         private fun getCreditsFailed(error: Throwable) {
-            updateState { it.copy(errorMessage = error.message.toString(), shouldShowError = true) }
+            updateState { it.copy(errorMessage = error.message.toString(), shouldShowError = true, isLoading = false) }
         }
 
         private fun getRecommendationsFailed(error: Throwable) {
-            updateState { it.copy(errorMessage = error.message.toString(), shouldShowError = true) }
+            updateState { it.copy(errorMessage = error.message.toString(), shouldShowError = true, isLoading = false) }
         }
 
         override fun onBackPressed() {
             sendEvent(MovieDetailsScreenEffect.NavigateBack)
         }
-
-    override fun onShowMoreCast() {
-        //TODO:send event when user clicked on show more star cast
-    }
 
     override fun onShowMoreRecommendations(movieId: Int, movieTitle: String) {
         sendEvent(MovieDetailsScreenEffect.NavigateToFullMovieList(movieId, movieTitle))
@@ -158,7 +161,15 @@ class MovieDetailsViewModel @Inject constructor(
     }
 
     override fun onMovieClicked(movieId: Int) {
-        sendEvent(MovieDetailsScreenEffect.NavigateToMovieDetails(movieId))
+        sendEvent(MovieDetailsScreenEffect.NavigateMovieDetails(movieId))
+    }
+
+    override fun onRetry() {
+        updateState { it.copy(isLoading = true, shouldShowError = false, errorMessage = "") }
+        getMovieDetails(movieId)
+        getReviews(movieId)
+        getCredits(movieId)
+        getRecommendations(movieId)
     }
 
     override fun showRatingBottomSheet() {

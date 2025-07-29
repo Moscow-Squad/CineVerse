@@ -17,9 +17,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.moscow.cineverse.designSystem.theme.CineVerseTheme
 import com.moscow.cineverse.designSystem.theme.Theme
@@ -99,7 +101,11 @@ fun RatingSection(
 
             IconButton(onClick = onClick) {
                 Icon(
-                    painter = painterResource(R.drawable.outline_alt_arrow_right),
+                    painter = if (LocalLayoutDirection.current == LayoutDirection.Rtl) {
+                        painterResource(R.drawable.outline_alt_arrow_left)
+                    } else {
+                        painterResource(R.drawable.outline_alt_arrow_right)
+                    },
                     contentDescription = "Arrow Icon",
                     tint = Theme.colors.shade.tertiary,
                 )
