@@ -9,16 +9,24 @@ import com.moscow.remote.dto.toDomain
 import com.moscow.domain.model.Collection
 import com.moscow.domain.model.MediaItem
 import com.moscow.domain.model.MediaType
+import com.moscow.domain.model.UserType
+import com.moscow.domain.repository.PreferenceRepository
 import javax.inject.Inject
 
 class CollectionsRepositoryImpl @Inject constructor(
-    private val collectionRemoteDataSource: CollectionRemoteDataSource
+    private val collectionRemoteDataSource: CollectionRemoteDataSource,
+    private val preferenceRepository: PreferenceRepository
 ) : CollectionsRepository {
     override suspend fun getCollections(page: Int): List<Collection> {
+        val user = preferenceRepository.getUser()
+        val accountId = when (user) {
+            is UserType.AuthenticatedUser -> user.id
+            is UserType.GuestUser -> "0"
+        }
         val response = collectionRemoteDataSource.getMyCollections(
-            accountId = 22117857,
-            sessionId = "31044f799b3ccf5e970b994ca0022ef8865c1e35",
-            page = 1
+            accountId = accountId,
+            sessionId = preferenceRepository.getSessionId(),
+            page = page
         )
         return response.results?.map { it.toDomain() } ?: emptyList()
     }
@@ -31,7 +39,7 @@ class CollectionsRepositoryImpl @Inject constructor(
             CreateCollectionDto(name = collectionName, description = collectionDescription)
         val response = collectionRemoteDataSource.addNewCollection(
             collection = collection,
-            sessionId = "31044f799b3ccf5e970b994ca0022ef8865c1e35"
+            sessionId = preferenceRepository.getSessionId()
         )
         return response.statusMessage ?: "Unexpected Error happened"
     }
@@ -49,7 +57,7 @@ class CollectionsRepositoryImpl @Inject constructor(
         val response = collectionRemoteDataSource.addMediaItemToCollection(
             item = item,
             collectionId = collectionId,
-            sessionId = "31044f799b3ccf5e970b994ca0022ef8865c1e35"
+            sessionId = preferenceRepository.getSessionId()
         )
         return response.statusMessage ?: "Unexpected Error happened"
     }
@@ -57,7 +65,7 @@ class CollectionsRepositoryImpl @Inject constructor(
     override suspend fun getCollectionDetails(collectionId: Int): List<MediaItem> {
         val response = collectionRemoteDataSource.getCollectionDetails(
             collectionId = collectionId,
-            sessionId = "31044f799b3ccf5e970b994ca0022ef8865c1e35"
+            sessionId = preferenceRepository.getSessionId()
         )
         return response.results?.map { it.toDomain() } ?: emptyList()
     }

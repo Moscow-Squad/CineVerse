@@ -8,7 +8,7 @@ import com.moscow.utils.ApiResponse
 
 interface CollectionRemoteDataSource {
     suspend fun getMyCollections(
-        accountId: Int,
+        accountId: String,
         sessionId: String,
         page: Int
     ): ApiResponse<CollectionDto>
