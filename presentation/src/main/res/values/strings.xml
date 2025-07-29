@@ -30,10 +30,10 @@
     <string name="try_again">Try Again</string>
     <string name="oops_no_internet">Oops! No Internet</string>
     <string name="offline_reconnect">Looks like you\'re offline. Let\'s reconnect so you don\'t miss out!</string>
-    <string name="welcome">welcome</string>
+    <string name="welcome">Welcome</string>
     <string name="show_more">Show More</string>
     <string name="recently_released">Recently Released</string>
-    <string name="upcoming_movies">Upcoming movies</string>
+    <string name="upcoming_movies">Upcoming Movies</string>
     <string name="matches_your_vibe">Matches your Vibe</string>
     <string name="top_rated_tv_shows">Top Rated TV Shows</string>
     <string name="you_recently_viewed">You Recently Viewed</string>
@@ -47,7 +47,7 @@
     <string name="join_as_guest">Join as Guest</string>
     <string name="create_a_new_account">Create a New Account</string>
     <string name="usernames_can_only_4_32_letters_and_numbers">Usernames can only 4–32 letters and numbers</string>
-    <string name="password_can_only_4_100_characters">Password can only 4-100 characters</string>
+    <string name="password_can_only_4_100_characters">Password can only 4–100 characters</string>
     <string name="sorry_we_cannot_check_your_information_now">Sorry, we cannot check your information now</string>
     <string name="sorry_you_cannot_enter_as_a_guest_now_try_to_create_a_new_account">Sorry, you cannot enter as a guest now, try to create a new account</string>
     <string name="let_s_get_you_set_up_we_ll_take_you_to_the_website_to_create_your_account">Let’s get you set up! We’ll take you to the website to create your account.</string>
@@ -72,5 +72,6 @@
     <string name="mind_bending_stories">Mind-Bending Stories</string>
     <string name="family_night_picks">Family Night Picks</string>
     <string name="late_night_thrills">Late-Night Thrills</string>
+    <string name="guest">Guest</string>
 
 </resources>

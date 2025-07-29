@@ -36,8 +36,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavHostController
-import com.moscow.cineverse.design_system.R
 import com.moscow.cineverse.designSystem.component.AppTextField
 import com.moscow.cineverse.designSystem.component.MessageInfoBox
 import com.moscow.cineverse.designSystem.component.MovieButton
@@ -45,14 +43,12 @@ import com.moscow.cineverse.designSystem.component.bottomsheet.CineVerseBottomSh
 import com.moscow.cineverse.designSystem.component.login.WebViewBrowser
 import com.moscow.cineverse.designSystem.theme.CineVerseTheme
 import com.moscow.cineverse.designSystem.theme.Theme
-import com.moscow.cineverse.navigation.LocalNavController
-import com.moscow.cineverse.navigation.routes.HomeRoute
-import com.moscow.cineverse.navigation.routes.LoginRoute
+import com.moscow.cineverse.design_system.R
 
 @Composable
 fun LoginScreen(
-    navController: NavHostController = LocalNavController.current,
-    viewModel: LoginViewModel = hiltViewModel()
+    viewModel: LoginViewModel = hiltViewModel(),
+    navigateToHome: () -> Unit,
 ) {
     val state by viewModel.uiState.collectAsState()
     val context = LocalContext.current
@@ -65,14 +61,8 @@ fun LoginScreen(
                 }
 
                 is LoginScreenEvents.NavigateTo -> {
-                    val canGoBack = navController.previousBackStackEntry != null
-                    if (canGoBack) {
-                        navController.popBackStack()
-                    } else {
-                        navController.navigate(HomeRoute) {
-                            popUpTo(LoginRoute) { inclusive = true }
-                        }
-                    }
+                    navigateToHome()
+
                 }
             }
         }
@@ -190,7 +180,10 @@ private fun LoginScreenContent(
         Spacer(modifier = Modifier.weight(1f))
         MovieButton(
             modifier = Modifier
-                .padding(vertical = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding() + 24.dp)
+                .padding(
+                    vertical = WindowInsets.navigationBars.asPaddingValues()
+                        .calculateBottomPadding() + 24.dp
+                )
                 .align(Alignment.CenterHorizontally),
             buttonText = stringResource(com.moscow.cinverse.presentation.R.string.create_a_new_account),
             textColor = Theme.colors.button.onSecondary,
@@ -238,6 +231,6 @@ fun SignUpBottomSheet(interactionListener: LoginInteractionListener) {
 @Composable()
 fun LoginScreenPreview() {
     CineVerseTheme {
-        LoginScreen()
+        LoginScreen(navigateToHome = {})
     }
 }

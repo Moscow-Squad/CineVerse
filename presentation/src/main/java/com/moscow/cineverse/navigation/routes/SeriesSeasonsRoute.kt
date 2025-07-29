@@ -1,6 +1,7 @@
 package com.moscow.cineverse.navigation.routes
 
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import com.moscow.cineverse.screen.series_details.series_seasons.SeriesSeasonsScreen
 import kotlinx.serialization.Serializable
@@ -8,8 +9,10 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class SeriesSeasonsRoute(val seriesId: Int)
 
-fun NavGraphBuilder.SeriesSeasonsRoute() {
+fun NavGraphBuilder.SeriesSeasonsRoute(navController: NavHostController) {
     composable<SeriesSeasonsRoute>{
-        SeriesSeasonsScreen()
+        SeriesSeasonsScreen(
+            navigateBack = { navController.navigateUp() }
+        )
     }
 }

@@ -83,7 +83,7 @@ fun SafeImageViewer(
                         modifier = Modifier
                             .fillMaxSize()
                             .cloudy(radius = blurRadius, enabled = isHaram),
-                        contentScale = ContentScale.Crop,
+                        contentScale = ContentScale.FillBounds,
                     )
                 }
             }
