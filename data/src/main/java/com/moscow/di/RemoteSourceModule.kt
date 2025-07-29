@@ -1,4 +1,4 @@
-package com.di
+package com.moscow.di
 
 
 import com.data_source.remote.HomeRemoteDataSource
