@@ -27,6 +27,7 @@ interface CollectionRemoteDataSource {
 
     suspend fun getCollectionDetails(
         collectionId: Int,
-        sessionId: String
+        sessionId: String,
+        page: Int
     ): ApiResponse<MovieDto>
 }

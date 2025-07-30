@@ -49,11 +49,13 @@ class CollectionRemoteDataSourceImpl  @Inject constructor(
 
     override suspend fun getCollectionDetails(
         collectionId: Int,
-        sessionId: String
+        sessionId: String,
+        page:Int
     ): ApiResponse<MovieDto> = handleApi {
         collectionsService.getCollectionDetails(
             collectionId,
-            sessionId
+            sessionId,
+            page
         )
     }
 }

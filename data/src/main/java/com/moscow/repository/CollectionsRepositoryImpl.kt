@@ -60,10 +60,11 @@ class CollectionsRepositoryImpl @Inject constructor(
         return response.statusMessage ?: "Unexpected Error happened"
     }
 
-    override suspend fun getCollectionDetails(collectionId: Int): List<Movie> {
+    override suspend fun getCollectionDetails(collectionId: Int,page:Int): List<Movie> {
         val response = collectionRemoteDataSource.getCollectionDetails(
             collectionId = collectionId,
-            sessionId = preferenceRepository.getSessionId()
+            sessionId = preferenceRepository.getSessionId(),
+            page = page
         )
         return response.items?.map { it.toDomain() } ?: emptyList()
     }

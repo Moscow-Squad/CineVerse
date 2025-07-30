@@ -43,6 +43,7 @@ interface CollectionsService {
     @GET("$LIST/{collection_id}")
     suspend fun getCollectionDetails(
         @Path("collection_id") collectionId: Int,
-        @Query(SESSION_ID) sessionId: String
+        @Query(SESSION_ID) sessionId: String,
+        @Query(PAGE)page:Int,
     ): Response<ApiResponse<MovieDto>>
 }

@@ -18,5 +18,5 @@ interface CollectionsRepository {
         collectionId: Int
     ): String
 
-    suspend fun getCollectionDetails(collectionId: Int): List<Movie>
+    suspend fun getCollectionDetails(collectionId: Int,page: Int): List<Movie>
 }

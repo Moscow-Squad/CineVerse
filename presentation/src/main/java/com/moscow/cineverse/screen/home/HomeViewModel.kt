@@ -77,7 +77,7 @@ class HomeViewModel @Inject constructor(
             is UserType.AuthenticatedUser -> {
                 updateState { it.copy(userName = user.username) }
                 launchWithResult(
-                    action = { getCollectionDetailsUseCase(user.recentlyCollectionId) },
+                    action = { getCollectionDetailsUseCase(user.recentlyCollectionId,1) },
                     onSuccess = { result ->
                         updateState {
                             it.copy(
