@@ -1,6 +1,5 @@
 package com.moscow.cineverse.screen.series_details.series_recommendation
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -28,7 +27,6 @@ import com.moscow.cineverse.designSystem.component.MovieAppBar
 import com.moscow.cineverse.designSystem.component.MovieCircularProgressBar
 import com.moscow.cineverse.designSystem.component.MovieScaffold
 import com.moscow.cineverse.designSystem.component.ViewMode
-import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.mapper.toUi
 import com.moscow.cineverse.screen.explore.component.ViewModeToggleButton
 import com.moscow.cinverse.presentation.R
@@ -76,70 +74,83 @@ fun SeriesRecommendationScreenContent(
 ) {
     MovieScaffold {
         Box(modifier = modifier.fillMaxSize()) {
-            Column(modifier = Modifier.fillMaxSize()) {
-                MovieAppBar(
-                    caption = stringResource(R.string.because_you_watched),
-                    title = title,
-                    backButtonClick = onNavigateBack,
-                )
-                LazyVerticalGrid(
-                    columns = if (uiState.viewMode == ViewMode.GRID)
-                        GridCells.Fixed(2)
-                    else
-                        GridCells.Fixed(1),
-                    contentPadding = PaddingValues(
-                        vertical = 16.dp,
-                        horizontal = 16.dp
-                    ),
-                    verticalArrangement = Arrangement.spacedBy(16.dp),
-                    horizontalArrangement = Arrangement.spacedBy(12.dp),
-                    modifier = Modifier.fillMaxSize()
+            if (recommendations.loadState.refresh is LoadState.Loading){
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
                 ) {
-                    items(recommendations.itemCount) { index ->
-                        val recommendation = recommendations[index]?.toUi()
-                        if (recommendation != null) {
-                            MoviePosterCard(
-                                movie = recommendation,
-                                viewMode = uiState.viewMode,
-                                onMovieClick = {
-                                    interactionListener.onSeriesClicked(
-                                        recommendation.id
-                                    )
-                                }
-                            )
-                        }
-                    }
-                    if (recommendations.loadState.append is LoadState.Loading
-                        || recommendations.loadState.refresh is LoadState.Loading
+                    MovieCircularProgressBar()
+                }
+            }
+            else if(recommendations.loadState.refresh is LoadState.Error){
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    NoInternetScreen(onRetry = { recommendations.retry() })
+                }
+            }else{
+                Column(modifier = Modifier.fillMaxSize()) {
+                    MovieAppBar(
+                        caption = stringResource(R.string.because_you_watched),
+                        title = title,
+                        backButtonClick = onNavigateBack,
+                    )
+                    LazyVerticalGrid(
+                        columns = if (uiState.viewMode == ViewMode.GRID)
+                            GridCells.Fixed(2)
+                        else
+                            GridCells.Fixed(1),
+                        contentPadding = PaddingValues(
+                            vertical = 16.dp,
+                            horizontal = 16.dp
+                        ),
+                        verticalArrangement = Arrangement.spacedBy(16.dp),
+                        horizontalArrangement = Arrangement.spacedBy(12.dp),
+                        modifier = Modifier.fillMaxSize()
                     ) {
-                        item(span = {GridItemSpan(maxLineSpan)}){
-                            Box(
-                                modifier = Modifier.fillMaxSize(),
-                                contentAlignment = Alignment.Center
-                            ) {
-                                MovieCircularProgressBar()
+                        items(recommendations.itemCount) { index ->
+                            val recommendation = recommendations[index]?.toUi()
+                            if (recommendation != null) {
+                                MoviePosterCard(
+                                    movie = recommendation,
+                                    viewMode = uiState.viewMode,
+                                    onMovieClick = {
+                                        interactionListener.onSeriesClicked(
+                                            recommendation.id
+                                        )
+                                    }
+                                )
+                            }
+                        }
+                        if (recommendations.loadState.append is LoadState.Loading) {
+                            item(span = {GridItemSpan(maxLineSpan)}){
+                                Box(
+                                    modifier = Modifier.fillMaxSize(),
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    MovieCircularProgressBar(Modifier.padding(top = 100.dp))
+                                }
+                            }
+                        }
+                        if (recommendations.loadState.append is LoadState.Error) {
+                            item(span = { GridItemSpan(maxLineSpan) }) {
+                                NoInternetScreen(
+                                    modifier = Modifier.align(Alignment.CenterHorizontally),
+                                    onRetry = { recommendations.retry() }
+                                )
                             }
                         }
                     }
-                    if (recommendations.loadState.append is LoadState.Error
-                        || recommendations.loadState.refresh is LoadState.Error
-                    ) {
-                        item(span = { GridItemSpan(maxLineSpan) }) {
-                            NoInternetScreen(
-                                modifier = Modifier.align(Alignment.CenterHorizontally),
-                                onRetry = { recommendations.retry() }
-                                )
-                        }
-                    }
                 }
+                ViewModeToggleButton(
+                    selectedMode = uiState.viewMode,
+                    onModeSelected = interactionListener::onViewModeChanged,
+                    modifier = Modifier
+                        .align(Alignment.BottomEnd)
+                        .padding(16.dp)
+                )
             }
-            ViewModeToggleButton(
-                selectedMode = uiState.viewMode,
-                onModeSelected = interactionListener::onViewModeChanged,
-                modifier = Modifier
-                    .align(Alignment.BottomEnd)
-                    .padding(16.dp)
-            )
         }
     }
 }
