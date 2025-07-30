@@ -63,7 +63,6 @@ class ExploreViewModel @Inject constructor(
     private lateinit var _seriesSearch: Flow<PagingData<MediaItemUiState>>
     private lateinit var _actorSearch: Flow<PagingData<ActorUiState>>
 
-    // Track empty states for each tab separately
     private var isMoviesEmpty = false
     private var isSeriesEmpty = false
     private var isActorsEmpty = false
@@ -90,7 +89,7 @@ class ExploreViewModel @Inject constructor(
                         viewModelScope.launch {
                             val isEmpty = result.isEmpty()
                             isMoviesEmpty = isEmpty
-                            // Update content empty state if currently on movies tab
+
                             if (uiState.value.selectedTab == ExploreTabsPages.MOVIES) {
                                 updateState {
                                     it.copy(isContentEmpty = isEmpty)
@@ -127,7 +126,7 @@ class ExploreViewModel @Inject constructor(
                         viewModelScope.launch {
                             val isEmpty = result.isEmpty()
                             isSeriesEmpty = isEmpty
-                            // Update content empty state if currently on series tab
+
                             if (uiState.value.selectedTab == ExploreTabsPages.SERIES) {
                                 updateState {
                                     it.copy(isContentEmpty = isEmpty)
@@ -168,7 +167,7 @@ class ExploreViewModel @Inject constructor(
                         viewModelScope.launch {
                             val isEmpty = result.isEmpty()
                             isActorsEmpty = isEmpty
-                            // Update content empty state if currently on actors tab
+
                             if (uiState.value.selectedTab == ExploreTabsPages.ACTORS) {
                                 updateState {
                                     it.copy(isContentEmpty = isEmpty)

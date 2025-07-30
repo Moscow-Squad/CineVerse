@@ -21,6 +21,7 @@ fun ActorPosterCard(
         viewMode = viewMode,
         titleTextAlign = titleTextAlign,
         showRating = false,
+        showTitle = true, 
         getId = { it.id },
         getTitle = { it.title },
         getPosterUrl = { it.profilePath },
