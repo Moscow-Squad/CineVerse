@@ -3,10 +3,12 @@ package com.moscow.data.remote.data_source
 import com.google.common.truth.Truth.assertThat
 import com.moscow.data_source.remote.CollectionRemoteDataSource
 import com.moscow.remote.data_source.CollectionRemoteDataSourceImpl
+import com.moscow.remote.dto.AddCollectionDto
 import com.moscow.remote.dto.AddMediaItemToCollectionRequestDto
 import com.moscow.remote.dto.CollectionDto
 import com.moscow.remote.dto.CreateCollectionDto
 import com.moscow.remote.dto.MediaItemDto
+import com.moscow.remote.dto.MovieDto
 import com.moscow.remote.services.CollectionsService
 import com.moscow.utils.ApiResponse
 import com.moscow.utils.CineVerseExceptions
@@ -37,7 +39,7 @@ class CollectionRemoteDataSourceImplTest {
 
     @Test
     fun `given accountId and sessionId when getMyCollections returns success should return my collections`() = runTest {
-        val accountId = 123
+        val accountId = "123"
         val sessionId = "abc"
         val page = 1
         val expected = ApiResponse<CollectionDto>(
@@ -60,7 +62,7 @@ class CollectionRemoteDataSourceImplTest {
 
     @Test
     fun `when getMyCollections fails should throws exception`() = runTest {
-        val accountId = 123
+        val accountId = "123"
         val sessionId = "abc"
         val page = 1
 
@@ -86,7 +88,7 @@ class CollectionRemoteDataSourceImplTest {
     fun `given sessionId and new collection when addNewCollection returns success then add new collection`() = runTest {
         val sessionId = "abc"
         val dto = CreateCollectionDto(name = "New Collection", description = null)
-        val response = ApiResponse<Nothing>()
+        val response = AddCollectionDto(122,201,"",true)
 
         coEvery { collectionService.addNewCollection(dto, sessionId) } returns Response.success(response)
 
@@ -102,8 +104,8 @@ class CollectionRemoteDataSourceImplTest {
     fun `given sessionId and collectionId when addMediaItemToCollection returns success then add new media item to selected collection`() = runTest {
         val sessionId = "abc"
         val collectionId = 123
-        val dto = AddMediaItemToCollectionRequestDto(mediaId = 1, mediaType = "movie")
-        val response = ApiResponse<Nothing>()
+        val dto = AddMediaItemToCollectionRequestDto(mediaId = 1)
+        val response = ApiResponse<Unit>()
 
         coEvery { collectionService.addMediaItemToCollection(dto, collectionId , sessionId) } returns Response.success(response)
 
@@ -119,18 +121,18 @@ class CollectionRemoteDataSourceImplTest {
     fun `given sessionId and collectionId when getCollectionDetails returns success then return collection details`() = runTest {
         val sessionId = "abc"
         val collectionId = 123
-        val dto = MediaItemDto(id = 1, name = "Batman")
-        val response = ApiResponse<MediaItemDto>(
+        val dto = MovieDto(id = 1, name = "Batman")
+        val response = ApiResponse<MovieDto>(
             results = listOf(dto)
         )
 
-        coEvery { collectionService.getCollectionDetails(collectionId , sessionId) } returns Response.success(response)
+        coEvery { collectionService.getCollectionDetails(collectionId , sessionId,1) } returns Response.success(response)
 
-        val result = collectionRemoteDataSource.getCollectionDetails(collectionId, sessionId)
+        val result = collectionRemoteDataSource.getCollectionDetails(collectionId, sessionId,1)
 
         assertThat(response).isEqualTo(result)
         coVerify (exactly = 1){
-            collectionService.getCollectionDetails( collectionId , sessionId)
+            collectionService.getCollectionDetails( collectionId , sessionId,1)
         }
     }
 

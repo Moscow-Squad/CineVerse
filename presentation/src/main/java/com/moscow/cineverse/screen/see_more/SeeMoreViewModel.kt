@@ -17,10 +17,13 @@ import com.moscow.cineverse.paging.BasePagingSource
 import com.moscow.cineverse.screen.home.HomeFeaturedItems
 import com.moscow.domain.model.Movie
 import com.moscow.domain.model.Series
+import com.moscow.domain.model.UserType
+import com.moscow.domain.usecase.collection.GetCollectionDetailsUseCase
 import com.moscow.domain.usecase.home.GetMatchesYourVibesMoviesUseCase
 import com.moscow.domain.usecase.home.GetRecentlyReleasedMoviesUseCase
 import com.moscow.domain.usecase.home.GetTopRatedTVShowsUseCase
 import com.moscow.domain.usecase.home.GetUpcomingMoviesUseCase
+import com.moscow.domain.usecase.local.GetUserDetailsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -35,6 +38,8 @@ class SeeMoreViewModel @Inject constructor(
     private val getRecentlyReleasedMoviesUseCase: GetRecentlyReleasedMoviesUseCase,
     private val getTopRatedTVShowsUseCase: GetTopRatedTVShowsUseCase,
     private val getUpcomingMoviesUseCase: GetUpcomingMoviesUseCase,
+    private val getUserDetailsUseCase: GetUserDetailsUseCase,
+    private val getCollectionDetailsUseCase: GetCollectionDetailsUseCase,
     private val savedStateHandle: SavedStateHandle
 ) : BaseViewModel<SeeMoreUiState, SeeMoreEvent>(SeeMoreUiState()), SeeMoreInteractionListener {
 
@@ -86,11 +91,16 @@ class SeeMoreViewModel @Inject constructor(
                     }
 
                     HomeFeaturedItems.YOU_RECENTLY_VIEWED.name -> {
-                        createPagingFlow(
-                            pageSize = pageSize,
-                            fetchData = { page -> getRecentlyReleasedMoviesUseCase(page) }, // Replace with getRecentlyViewed when available
-
-                        )
+                        val user = getUserDetailsUseCase()
+                        when (user) {
+                            is UserType.AuthenticatedUser -> {
+                                createPagingFlow(
+                                    pageSize = 20,
+                                    fetchData = { page -> getCollectionDetailsUseCase(user.recentlyCollectionId, page) }
+                                )
+                            }
+                            is UserType.GuestUser -> emptyFlow()
+                        }
                     }
 
                     else -> emptyFlow()
@@ -103,6 +113,7 @@ class SeeMoreViewModel @Inject constructor(
             }
         }
     }
+
 
     private fun <T : Any> createPagingFlow(
         pageSize: Int,

@@ -115,7 +115,7 @@ fun <T : Any> SeeMoreContent(
                             }
                         }
 
-                        if (contentList.loadState.append is LoadState.Loading) {
+                        if (contentList.loadState.append is LoadState.Loading && contentList.itemCount > 20) {
                             item {
                                 Box(
                                     modifier = Modifier
