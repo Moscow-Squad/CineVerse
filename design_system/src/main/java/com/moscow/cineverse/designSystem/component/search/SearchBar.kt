@@ -22,6 +22,7 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -37,9 +38,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.moscow.cineverse.design_system.R
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.designSystem.utils.noRibbleClick
+import com.moscow.cineverse.design_system.R
 import kotlinx.coroutines.delay
 
 @Composable
@@ -53,9 +54,10 @@ fun SearchBar(
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
     onCancelButtonClicked: () -> Unit = {},
-    onFirstFocus: () -> Unit = {}
+    onFirstFocus: () -> Unit = {},
+    focusState: MutableState<Boolean> = mutableStateOf(false)
 ) {
-    var isFocused by remember { mutableStateOf(false) }
+    var isFocused by focusState
     var blockRefocus by remember { mutableStateOf(false) }
     val focusRequester = remember { FocusRequester() }
     val focusManager = LocalFocusManager.current
@@ -142,7 +144,7 @@ fun SearchBar(
                 )
             },
             trailingIcon = {
-                if (isFocused || value.isNotEmpty()) {
+                if (isFocused && value.isNotEmpty()) {
                     Icon(
                         painter = painterResource(Theme.icons.outline.xClose),
                         contentDescription = stringResource(R.string.search_icon),
@@ -151,7 +153,6 @@ fun SearchBar(
                             .size(20.dp)
                             .noRibbleClick{
                                 onValueChange("")
-                                onCancelButtonClicked()
                             }
                     )
                 } else {
