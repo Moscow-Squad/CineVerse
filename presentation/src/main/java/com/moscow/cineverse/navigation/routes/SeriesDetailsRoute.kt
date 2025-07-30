@@ -23,8 +23,8 @@ fun NavGraphBuilder.SeriesDetailsRoute(navController: NavHostController) {
                 navController.navigate(CollectionsBottomSheetRoute(mediaItemId = seriesId))
 
             },
-            navigateToSeriesRecommendation = { seriesId ->
-                navController.navigate(SeriesRecommendationRoute(seriesId))
+            navigateToSeriesRecommendation = { seriesId, seriesName ->
+                navController.navigate(SeriesRecommendationRoute(seriesId, seriesName))
             },
             navigateToReviews = { seriesId ->
                 navController.navigate(ReviewsRoute(seriesId, false))

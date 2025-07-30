@@ -61,8 +61,6 @@ private fun handleEffects(
     navigateToCastDetails: (Int) -> Unit,
     navigateToMovieDetails: (Int) -> Unit,
     navigateToSeriesDetails: (Int) -> Unit,
-
-
 ) {
     when (event) {
         is ExploreScreenEffects.ActorClicked -> {

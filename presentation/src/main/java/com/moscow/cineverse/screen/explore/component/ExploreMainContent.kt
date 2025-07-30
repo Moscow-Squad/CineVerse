@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -35,17 +36,6 @@ fun ExploreMainContent(
     interactionListener: ExploreInteractionListener,
     modifier: Modifier = Modifier
 ) {
-    val gridColumns = remember(uiState.viewMode, uiState.selectedTab) {
-        if (uiState.viewMode == ViewMode.GRID) {
-            when (uiState.selectedTab) {
-                ExploreTabsPages.ACTORS -> GridCells.Adaptive(minSize = 98.dp)
-                ExploreTabsPages.MOVIES, ExploreTabsPages.SERIES -> GridCells.Adaptive(minSize = 160.dp)
-            }
-        } else {
-            GridCells.Fixed(1)
-        }
-    }
-
     when {
         uiState.isLoading -> {
             Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
@@ -75,6 +65,19 @@ fun ExploreMainContent(
         }
 
         else -> {
+            val gridColumns = remember(uiState.viewMode, uiState.selectedTab) {
+                if (uiState.viewMode == ViewMode.GRID) {
+                    when (uiState.selectedTab) {
+                        ExploreTabsPages.ACTORS -> GridCells.Adaptive(minSize = 98.dp)
+                        ExploreTabsPages.MOVIES, ExploreTabsPages.SERIES -> GridCells.Adaptive(
+                            minSize = 160.dp
+                        )
+                    }
+                } else {
+                    GridCells.Fixed(1)
+                }
+            }
+
             LazyVerticalGrid(
                 state = gridState,
                 columns = gridColumns,
@@ -91,21 +94,23 @@ fun ExploreMainContent(
                 items(contentList.itemCount) { index ->
                     val item = contentList[index]
                     if (item != null) {
-                        when (item) {
-                            is MediaItemUiState -> {
-                                MoviePosterCard(
-                                    movie = item,
-                                    viewMode = uiState.viewMode,
-                                    onMovieClick = { interactionListener.onMediaItemClicked(item) }
-                                )
-                            }
+                        Box(modifier = Modifier.fillMaxWidth()) {
+                            when (item) {
+                                is MediaItemUiState -> {
+                                    MoviePosterCard(
+                                        movie = item,
+                                        viewMode = uiState.viewMode,
+                                        onMovieClick = { interactionListener.onMediaItemClicked(item) }
+                                    )
+                                }
 
-                            is ExploreScreenState.ActorUiState -> {
-                                ActorPosterCard(
-                                    actor = item,
-                                    viewMode = uiState.viewMode,
-                                    onActorClicked = interactionListener::onActorClick
-                                )
+                                is ExploreScreenState.ActorUiState -> {
+                                    ActorPosterCard(
+                                        actor = item,
+                                        viewMode = uiState.viewMode,
+                                        onActorClicked = interactionListener::onActorClick
+                                    )
+                                }
                             }
                         }
                     }

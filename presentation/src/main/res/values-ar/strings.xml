@@ -78,4 +78,10 @@
     <string name="no_double_spaces">يجب ان لا يحتوي على عدة مسافات</string>
     <string name="no_leading_trailing_spaces">لا يجب ان يحتوي مسافات في البداية أو النهاية</string>
     <string name="username_invalid_chars">يجب أن يتكون اسم المستخدم من أحرف وأرقام وشرطات سفلية فقط</string>
+    <string name="seasons">المواسم</string>
+    <string name="latest_seasons">آخر المواسم</string>
+    <string name="characters">الشخصيات</string>
+    <string name="director_screenplay_story">المخرج, سيناريو, القصة</string>
+    <string name="producer">المنتج</string>
+    <string name="writer">الكاتب</string>
 </resources>

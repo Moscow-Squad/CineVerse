@@ -222,6 +222,7 @@ private fun <T> GridMovieCard(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 8.dp)
+                    .clickable { onMovieClick(getId(movieData)) }
             )
         }
     }
