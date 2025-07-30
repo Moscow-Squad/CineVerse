@@ -23,7 +23,7 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import com.moscow.cineverse.component.MoviePosterCard
 import com.moscow.cineverse.designSystem.component.MovieAppBar
 import com.moscow.cineverse.designSystem.component.MovieScaffold
-import com.moscow.cineverse.designSystem.component.ViewMode
+import com.moscow.cineverse.utlis.ViewMode
 import com.moscow.cineverse.mapper.toMediaItemUi
 import com.moscow.cineverse.screen.explore.component.ViewModeToggleButton
 import com.moscow.cinverse.presentation.R

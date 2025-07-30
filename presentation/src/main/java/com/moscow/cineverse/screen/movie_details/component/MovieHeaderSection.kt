@@ -19,8 +19,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.moscow.cineverse.designSystem.component.movieSeriesDetails.MainMovieCard
-import com.moscow.cineverse.designSystem.component.movieSeriesDetails.MovieCardDetails
+import com.moscow.cineverse.screen.movieSeriesDetails.MainMovieCard
+import com.moscow.cineverse.screen.movieSeriesDetails.MovieCardDetails
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.mapper.toFormattedReleasedDate
 import com.moscow.cineverse.mapper.toHourMinuteFormat

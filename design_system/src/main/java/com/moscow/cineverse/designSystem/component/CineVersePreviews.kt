@@ -2,6 +2,7 @@ package com.moscow.cineverse.designSystem.component
 
 import android.content.res.Configuration
 import androidx.compose.ui.tooling.preview.Preview
+
 @Preview(
     showBackground = true,
     locale = "en",

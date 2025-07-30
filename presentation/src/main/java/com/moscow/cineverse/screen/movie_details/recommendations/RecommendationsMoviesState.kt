@@ -1,7 +1,7 @@
 package com.moscow.cineverse.screen.movie_details.recommendations
 
 import com.moscow.cineverse.common_ui_state.MediaItemUiState
-import com.moscow.cineverse.designSystem.component.ViewMode
+import com.moscow.cineverse.utlis.ViewMode
 
 data class RecommendationsMoviesState(
     val movieId: Int = 0,

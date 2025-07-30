@@ -20,7 +20,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
-import com.moscow.cineverse.designSystem.component.tabs.ExploreTabsPages
+import com.moscow.cineverse.screen.explore.ExploreTabsPages
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.screen.explore.component.ExploreMainContent
 import com.moscow.cineverse.screen.explore.component.ExploreSearchBarSection

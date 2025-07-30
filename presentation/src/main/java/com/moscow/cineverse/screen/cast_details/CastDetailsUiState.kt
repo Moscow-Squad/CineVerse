@@ -1,6 +1,5 @@
 package com.moscow.cineverse.screen.cast_details
 
-import com.moscow.cineverse.designSystem.component.cast_details.SocialMediaLinks
 import com.moscow.domain.model.ActorDetails
 import com.moscow.domain.model.Movie
 
@@ -15,4 +14,10 @@ data class CastDetailsUiState(
     val isContentEmpty: Boolean = false,
     val isLoadingMovies: Boolean = false,
     val isLoadingImages: Boolean = false
-)
+) {
+    data class SocialMediaLinks(
+        val youtube: String? = null,
+        val facebook: String? = null,
+        val instagram: String? = null
+    )
+}

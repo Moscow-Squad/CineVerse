@@ -14,7 +14,7 @@ data class CastDetailsRoute(val castId: Int){
     }
 }
 
-fun NavGraphBuilder.CastDetailsRoute(navController: NavHostController) {
+fun NavGraphBuilder.castDetailsRoute(navController: NavHostController) {
     composable<CastDetailsRoute>{
         CastDetailsScreen(
             navigateBack = { navController.navigateUp() },

@@ -14,7 +14,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
-import com.moscow.cineverse.designSystem.component.search.SearchBar
 import com.moscow.cineverse.screen.explore.ExploreInteractionListener
 import com.moscow.cineverse.screen.explore.ExploreScreenState
 

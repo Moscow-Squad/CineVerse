@@ -18,10 +18,10 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.moscow.cineverse.designSystem.component.MovieAppBar
-import com.moscow.cineverse.designSystem.component.MovieButton
+import com.moscow.cineverse.designSystem.component.button.MovieButton
 import com.moscow.cineverse.designSystem.component.MovieCircularProgressBar
 import com.moscow.cineverse.designSystem.component.MovieScaffold
-import com.moscow.cineverse.designSystem.component.MovieText
+import com.moscow.cineverse.designSystem.component.wrapper.MovieText
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.screen.series_details.SeriesDetailsScreenInteractionListener
 import com.moscow.cineverse.screen.series_details.SeriesDetailsScreenScreenViewModel

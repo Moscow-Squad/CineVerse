@@ -1,6 +1,6 @@
 package com.moscow.cineverse.screen.see_more
 
-import com.moscow.cineverse.designSystem.component.ViewMode
+import com.moscow.cineverse.utlis.ViewMode
 
 
 interface SeeMoreInteractionListener {

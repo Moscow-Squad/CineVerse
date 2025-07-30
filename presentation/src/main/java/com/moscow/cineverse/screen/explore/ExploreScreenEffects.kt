@@ -1,8 +1,8 @@
 package com.moscow.cineverse.screen.explore
 
 import com.moscow.domain.model.Genre
-import com.moscow.cineverse.designSystem.component.ViewMode
-import com.moscow.cineverse.designSystem.component.tabs.ExploreTabsPages
+import com.moscow.cineverse.utlis.ViewMode
+import com.moscow.cineverse.screen.explore.ExploreTabsPages
 
 sealed class ExploreScreenEffects {
     data class GenreSelected(val genre: Genre) : ExploreScreenEffects()

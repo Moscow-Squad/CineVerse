@@ -8,9 +8,6 @@ import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.compose.collectAsLazyPagingItems
-import com.moscow.cineverse.navigation.routes.CastDetailsRoute
-import com.moscow.cineverse.navigation.routes.MovieDetailsRoute
-import com.moscow.cineverse.navigation.routes.SeriesDetailsRoute
 
 @Composable
 fun SeeMoreHomeScreen(

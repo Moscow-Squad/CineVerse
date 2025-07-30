@@ -17,10 +17,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.moscow.cineverse.component.MoviePosterCard
 import com.moscow.cineverse.designSystem.component.MovieAppBar
-import com.moscow.cineverse.designSystem.component.MovieButton
+import com.moscow.cineverse.designSystem.component.button.MovieButton
 import com.moscow.cineverse.designSystem.component.MovieCircularProgressBar
-import com.moscow.cineverse.designSystem.component.MovieText
-import com.moscow.cineverse.designSystem.component.ViewMode
+import com.moscow.cineverse.designSystem.component.wrapper.MovieText
+import com.moscow.cineverse.utlis.ViewMode
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.screen.cast_details.best_of_movies.ShowAllActorMoviesInteractionListener
 import com.moscow.cineverse.screen.cast_details.best_of_movies.ShowAllActorMoviesState

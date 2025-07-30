@@ -1,6 +1,6 @@
 package com.moscow.cineverse.screen.explore
 
-import com.moscow.cineverse.designSystem.component.tabs.ExploreTabsPages
+import com.moscow.cineverse.screen.explore.ExploreTabsPages
 import com.moscow.cineverse.screen.explore.ExploreScreenState.ActorUiState
 import com.moscow.cineverse.screen.explore.ExploreScreenState.GenreUiState
 import com.moscow.cineverse.common_ui_state.MediaItemUiState

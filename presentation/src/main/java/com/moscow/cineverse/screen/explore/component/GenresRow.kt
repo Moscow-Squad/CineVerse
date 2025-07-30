@@ -6,28 +6,34 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
-import com.moscow.cineverse.designSystem.component.PillLabel
-import com.moscow.cineverse.designSystem.component.tabs.ExploreTabsPages
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.screen.explore.ExploreInteractionListener
 import com.moscow.cineverse.screen.explore.ExploreScreenState
+import com.moscow.cineverse.screen.explore.ExploreTabsPages
 
 @Composable
 fun GenresRow(
@@ -117,6 +123,49 @@ private fun GenresRowContent(
                     }
                 }
             )
+        }
+    }
+}
+
+@Composable
+fun PillLabel(
+    text: String,
+    onClick: () -> Unit,
+    isActive: Boolean,
+    modifier: Modifier = Modifier,
+    prefixIcon: @Composable () -> Unit = {},
+    suffixIcon: @Composable () -> Unit = {}
+) {
+    Box(
+        modifier = modifier
+            .clip(RoundedCornerShape(Theme.radius.full))
+            .background(if (isActive) Theme.colors.brand.tertiary else Theme.colors.background.card)
+            .then(
+                if (isActive) {
+                    Modifier.border(
+                        width = 1.dp,
+                        color = Theme.colors.brand.secondary,
+                        shape = RoundedCornerShape(Theme.radius.full)
+                    )
+                } else Modifier
+            )
+            .clickable { onClick() }
+            .padding(horizontal = 12.dp, vertical = 8.dp),
+        contentAlignment = Alignment.Center
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(6.dp)
+        ) {
+            prefixIcon()
+
+            Text(
+                text = text,
+                color = if (isActive) Theme.colors.brand.primary else Theme.colors.shade.secondary,
+                style = Theme.textStyle.label.medium.medium
+            )
+
+            suffixIcon()
         }
     }
 }

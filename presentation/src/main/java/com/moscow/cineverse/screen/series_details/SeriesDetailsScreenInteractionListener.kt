@@ -1,6 +1,6 @@
 package com.moscow.cineverse.screen.series_details
 
-import com.moscow.cineverse.designSystem.component.ViewMode
+import com.moscow.cineverse.utlis.ViewMode
 
 interface SeriesDetailsScreenInteractionListener {
     fun addToCollection()

@@ -9,11 +9,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.moscow.cineverse.component.MoviePosterCard
-import com.moscow.cineverse.designSystem.component.MovieListSection
-import com.moscow.cineverse.designSystem.component.ViewMode
-import com.moscow.cineverse.designSystem.component.movieSeriesDetails.CastCard
-import com.moscow.cineverse.designSystem.component.movieSeriesDetails.StaffInfoSection
-import com.moscow.cineverse.designSystem.component.movieSeriesDetails.StarCastSection
+import com.moscow.cineverse.MovieListSection
+import com.moscow.cineverse.utlis.ViewMode
+import com.moscow.cineverse.screen.movieSeriesDetails.CastCard
+import com.moscow.cineverse.screen.movieSeriesDetails.StaffInfoSection
+import com.moscow.cineverse.screen.movieSeriesDetails.StarCastSection
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.screen.movie_details.MovieDetailsInteractionListener
 import com.moscow.cineverse.screen.movie_details.MovieScreenState
@@ -27,7 +27,7 @@ fun MovieCastSection(
 ) {
     AnimatedVisibility(!uiState.starCast.isNullOrEmpty()) {
         StarCastSection(
-            title = stringResource(com.moscow.cinverse.presentation.R.string.star_cast),
+            title = stringResource(R.string.star_cast),
             modifier = modifier
                 .background(Theme.colors.background.screen)
                 .padding(top = 24.dp, start = 16.dp, end = 16.dp),
@@ -72,7 +72,7 @@ fun MovieRecommendationsSection(
     uiState.movieDetailsUiState?.let { movieDetails ->
         AnimatedVisibility(uiState.recommendations.isNotEmpty()) {
             MovieListSection(
-                title = stringResource(com.moscow.cinverse.presentation.R.string.you_might_also_like),
+                title = stringResource(R.string.you_might_also_like),
                 movies = uiState.recommendations,
                 onClickShowMore = {
                     interactionListener.onShowMoreRecommendations(
