@@ -51,7 +51,7 @@ fun ActorMoviesSection(
     if (uiState.movies.isNotEmpty()) {
         MovieListSection(
             title = "Best of ${uiState.actorDetails?.name ?: ""}",
-            movies = uiState.movies,
+            movies = uiState.movies.take(10),
             paddingHorizontal = 20,
             onClickShowMore = {
                 interactionListener.onShowMoreMovies()

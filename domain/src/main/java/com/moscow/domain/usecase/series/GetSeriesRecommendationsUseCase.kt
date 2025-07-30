@@ -7,5 +7,5 @@ class GetSeriesRecommendationsUseCase @Inject constructor(
     private val seriesRepository: SeriesRepository
 ) {
     suspend operator fun invoke(id: Int, page: Int) =
-        seriesRepository.getSeriesRecommendations(id, page)
+        seriesRepository.getSeriesRecommendations(id, page).distinctBy { it.id }
 }
