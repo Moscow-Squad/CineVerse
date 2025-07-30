@@ -15,8 +15,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.moscow.cineverse.component.NoInternetScreen
+import com.moscow.cineverse.designSystem.component.MovieCircularProgressBar
 import com.moscow.cineverse.designSystem.component.tabs.ExploreTabsPages
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.screen.explore.component.ExploreMainContent
@@ -106,8 +109,27 @@ private fun ExploreScreenContent(
                 ExploreSearchBarSection(uiState, interactionListener)
                 ExploreTabsSection(uiState.selectedTab, interactionListener::onTabSelected, uiState.searchKeyWord.isNotEmpty())
                 Box(modifier = Modifier.fillMaxSize()) {
-                    ExploreMainContent(uiState, gridState, contentList, interactionListener)
-                    GenresRow(uiState, genresState, interactionListener, modifier = Modifier.align(Alignment.TopCenter))
+                    when (contentList.loadState.append){
+                        is LoadState.Error -> {
+                            Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                                NoInternetScreen(onRetry = interactionListener::onRefresh)
+                            }
+                        }
+                        LoadState.Loading -> {
+                            Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                                MovieCircularProgressBar(
+                                    gradientColors = listOf(
+                                        Theme.colors.brand.primary,
+                                        Theme.colors.brand.tertiary
+                                    )
+                                )
+                            }
+                        }
+                        is LoadState.NotLoading -> {
+                            ExploreMainContent(uiState, gridState, contentList, interactionListener)
+                            GenresRow(uiState, genresState, interactionListener, modifier = Modifier.align(Alignment.TopCenter))
+                        }
+                    }
                 }
             }
             SearchSuggestionsSection(uiState, interactionListener)

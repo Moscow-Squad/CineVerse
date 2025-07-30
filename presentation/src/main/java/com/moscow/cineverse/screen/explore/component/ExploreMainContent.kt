@@ -36,13 +36,13 @@ fun ExploreMainContent(
     modifier: Modifier = Modifier
 ) {
     val gridColumns = remember(uiState.viewMode, uiState.selectedTab) {
-        if (uiState.viewMode == ViewMode.GRID) {
-            when (uiState.selectedTab) {
-                ExploreTabsPages.ACTORS -> GridCells.Fixed(3)
-                ExploreTabsPages.MOVIES, ExploreTabsPages.SERIES -> GridCells.Adaptive(minSize = 160.dp)
-            }
-        } else {
-            GridCells.Fixed(1)
+        when (uiState.selectedTab) {
+            ExploreTabsPages.ACTORS -> GridCells.Fixed(3)
+            ExploreTabsPages.MOVIES, ExploreTabsPages.SERIES ->
+                if (uiState.viewMode == ViewMode.GRID)
+                    GridCells.Fixed(2)
+                else
+                    GridCells.Fixed(1)
         }
     }
 
@@ -104,7 +104,7 @@ fun ExploreMainContent(
                 columns = gridColumns,
                 contentPadding = contentPadding,
                 verticalArrangement = Arrangement.spacedBy(if (uiState.selectedTab == ExploreTabsPages.ACTORS) 40.dp else 16.dp),
-                horizontalArrangement = Arrangement.spacedBy(if (uiState.selectedTab == ExploreTabsPages.ACTORS) 16.dp else 16.dp),
+                horizontalArrangement = Arrangement.spacedBy(if (uiState.selectedTab == ExploreTabsPages.ACTORS) 16.dp else 12.dp),
                 modifier = modifier.fillMaxSize()
 
             ) {
@@ -123,7 +123,6 @@ fun ExploreMainContent(
                             is ExploreScreenState.ActorUiState -> {
                                 ActorPosterCard(
                                     actor = item,
-                                    viewMode = uiState.viewMode,
                                     onActorClicked = interactionListener::onActorClick,
                                     modifier = Modifier.aspectRatio(1f)
                                 )
