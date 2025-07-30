@@ -134,39 +134,41 @@ fun SeriesDetailsContent(
             else ->{
                 Column(modifier = Modifier.fillMaxSize().background(Theme.colors.background.screen)) {
                     MovieAppBar(backButtonClick = onNavigateBack, showBackButton = true)
-                    SharedTransitionLayout {
-                        AnimatedContent(
-                            targetState = isCollapsed,
-                            label = "basic_transition"
-                        ) { target ->
-                            if (!target) {
-                                MovieCardDetails(
-                                    posterUrl = detail.posterPath,
-                                    title = detail.title,
-                                    genres = detail.genre,
-                                    rating = detail.rating,
-                                    duration = detail.duration,
-                                    releaseDate = detail.releaseDate,
-                                    type = detail.type,
-                                    animatedVisibilityScope = this@AnimatedContent,
-                                    sharedTransitionScope = this@SharedTransitionLayout,
-                                    onSaveClick = { interactionListener.addToCollection() }
-                                )
-                            } else {
-                                MainMovieCard(
-                                    posterUrl = detail.posterPath,
-                                    title = detail.title,
-                                    animatedVisibilityScope = this@AnimatedContent,
-                                    sharedTransitionScope = this@SharedTransitionLayout,
-                                    onSaveClick = { interactionListener.addToCollection() }
-                                )
-                            }
-                        }
-                    }
                     LazyColumn(
                         state = scrollState,
                         modifier = Modifier.background(Theme.colors.background.screen)
                     ){
+                        item {
+                            SharedTransitionLayout {
+                                AnimatedContent(
+                                    targetState = isCollapsed,
+                                    label = "basic_transition"
+                                ) { target ->
+                                    if (!target) {
+                                        MovieCardDetails(
+                                            posterUrl = detail.posterPath,
+                                            title = detail.title,
+                                            genres = detail.genre,
+                                            rating = detail.rating,
+                                            duration = detail.duration,
+                                            releaseDate = detail.releaseDate,
+                                            type = detail.type,
+                                            animatedVisibilityScope = this@AnimatedContent,
+                                            sharedTransitionScope = this@SharedTransitionLayout,
+                                            onSaveClick = { interactionListener.addToCollection() }
+                                        )
+                                    } else {
+                                        MainMovieCard(
+                                            posterUrl = detail.posterPath,
+                                            title = detail.title,
+                                            animatedVisibilityScope = this@AnimatedContent,
+                                            sharedTransitionScope = this@SharedTransitionLayout,
+                                            onSaveClick = { interactionListener.addToCollection() }
+                                        )
+                                    }
+                                }
+                            }
+                        }
                         item {
                             Text(
                                 text = stringResource(R.string.storyline),

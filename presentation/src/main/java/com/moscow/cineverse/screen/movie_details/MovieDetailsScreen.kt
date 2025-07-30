@@ -131,58 +131,61 @@ private fun MovieDetailsMainContent(
     Column(modifier = modifier.background(Theme.colors.background.screen)) {
         MovieAppBar(backButtonClick = onNavigateBack, showBackButton = true)
 
-        SharedTransitionLayout {
-            AnimatedContent(
-                targetState = isCollapsed,
-                transitionSpec = {
-                    slideInVertically(
-                        animationSpec = spring(
-                            dampingRatio = Spring.DampingRatioMediumBouncy,
-                            stiffness = Spring.StiffnessLow
-                        ),
-                        initialOffsetY = { fullHeight -> fullHeight }
-                    ) + fadeIn(
-                        animationSpec = spring(
-                            dampingRatio = Spring.DampingRatioMediumBouncy,
-                            stiffness = Spring.StiffnessLow
-                        )
-                    ) with
-                            slideOutVertically(
-                                animationSpec = spring(
-                                    dampingRatio = Spring.DampingRatioMediumBouncy,
-                                    stiffness = Spring.StiffnessLow
-                                ),
-                                targetOffsetY = { fullHeight -> -fullHeight }
-                            ) + fadeOut(
-                        animationSpec = spring(
-                            dampingRatio = Spring.DampingRatioMediumBouncy,
-                            stiffness = Spring.StiffnessLow
-                        )
-                    )
-                }
-            ) { target ->
-                if (!target) {
-                    MovieHeaderSection(
-                        uiState = uiState,
-                        interactionListener = interactionListener,
-                        animatedVisibilityScope = this@AnimatedContent,
-                        sharedTransitionScope = this@SharedTransitionLayout
-                    )
-                } else {
-                    MovieCollapsedHeaderSection(
-                        uiState = uiState,
-                        interactionListener = interactionListener,
-                        animatedVisibilityScope = this@AnimatedContent,
-                        sharedTransitionScope = this@SharedTransitionLayout,
-                    )
-                }
-            }
-        }
+
 
         LazyColumn(
             state = scrollState,
             modifier = Modifier.background(Theme.colors.background.screen)
         ) {
+            item {
+                SharedTransitionLayout {
+                    AnimatedContent(
+                        targetState = isCollapsed,
+                        transitionSpec = {
+                            slideInVertically(
+                                animationSpec = spring(
+                                    dampingRatio = Spring.DampingRatioMediumBouncy,
+                                    stiffness = Spring.StiffnessLow
+                                ),
+                                initialOffsetY = { fullHeight -> fullHeight }
+                            ) + fadeIn(
+                                animationSpec = spring(
+                                    dampingRatio = Spring.DampingRatioMediumBouncy,
+                                    stiffness = Spring.StiffnessLow
+                                )
+                            ) with
+                                    slideOutVertically(
+                                        animationSpec = spring(
+                                            dampingRatio = Spring.DampingRatioMediumBouncy,
+                                            stiffness = Spring.StiffnessLow
+                                        ),
+                                        targetOffsetY = { fullHeight -> -fullHeight }
+                                    ) + fadeOut(
+                                animationSpec = spring(
+                                    dampingRatio = Spring.DampingRatioMediumBouncy,
+                                    stiffness = Spring.StiffnessLow
+                                )
+                            )
+                        }
+                    ) { target ->
+                        if (!target) {
+                            MovieHeaderSection(
+                                uiState = uiState,
+                                interactionListener = interactionListener,
+                                animatedVisibilityScope = this@AnimatedContent,
+                                sharedTransitionScope = this@SharedTransitionLayout
+                            )
+                        } else {
+                            MovieCollapsedHeaderSection(
+                                uiState = uiState,
+                                interactionListener = interactionListener,
+                                animatedVisibilityScope = this@AnimatedContent,
+                                sharedTransitionScope = this@SharedTransitionLayout,
+                            )
+                        }
+                    }
+                }
+            }
             item {
                 MovieStorylineSection(uiState = uiState)
             }
