@@ -109,26 +109,26 @@ private fun ExploreScreenContent(
                 ExploreSearchBarSection(uiState, interactionListener)
                 ExploreTabsSection(uiState.selectedTab, interactionListener::onTabSelected, uiState.searchKeyWord.isNotEmpty())
                 Box(modifier = Modifier.fillMaxSize()) {
-                    when (contentList.loadState.append){
-                        is LoadState.Error -> {
-                            Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                                NoInternetScreen(onRetry = interactionListener::onRefresh)
-                            }
+                    if (contentList.loadState.refresh is LoadState.Loading){
+                        Box(
+                            modifier = Modifier.fillMaxSize(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            MovieCircularProgressBar()
                         }
-                        LoadState.Loading -> {
-                            Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                                MovieCircularProgressBar(
-                                    gradientColors = listOf(
-                                        Theme.colors.brand.primary,
-                                        Theme.colors.brand.tertiary
-                                    )
-                                )
-                            }
+                    }
+                    else if(contentList.loadState.refresh is LoadState.Error){
+                        Box(
+                            modifier = Modifier.fillMaxSize(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            NoInternetScreen(onRetry = interactionListener::onRefresh)
                         }
-                        is LoadState.NotLoading -> {
-                            ExploreMainContent(uiState, gridState, contentList, interactionListener)
-                            GenresRow(uiState, genresState, interactionListener, modifier = Modifier.align(Alignment.TopCenter))
-                        }
+                    }else{
+                        ExploreMainContent(uiState, gridState, contentList, interactionListener)
+                    }
+                    if (uiState.genres.isNotEmpty()){
+                        GenresRow(uiState, genresState, interactionListener, modifier = Modifier.align(Alignment.TopCenter))
                     }
                 }
             }
