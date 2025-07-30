@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -18,10 +19,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.moscow.cineverse.component.MoviePosterCard
+import com.moscow.cineverse.component.NoInternetScreen
 import com.moscow.cineverse.designSystem.component.MovieAppBar
+import com.moscow.cineverse.designSystem.component.MovieCircularProgressBar
 import com.moscow.cineverse.designSystem.component.MovieScaffold
 import com.moscow.cineverse.designSystem.component.ViewMode
 import com.moscow.cineverse.mapper.toMediaItemUi
@@ -103,35 +107,31 @@ fun RecommendationMoviesContent(
                                 viewMode = uiState.viewMode,
                                 onMovieClick = interactionListener::onMovieClick
                             )
-
-
                         }
                     }
-
-                    when (recommendations.loadState.append) {
-                        is androidx.paging.LoadState.Loading -> {
-                            item {
-                                Text(
-                                    "Loading more...",
-                                    modifier = Modifier.padding(16.dp)
-                                )
+                    if (recommendations.loadState.append is LoadState.Loading
+                        || recommendations.loadState.refresh is LoadState.Loading
+                    ) {
+                        item(span = {GridItemSpan(maxLineSpan)}){
+                            Box(
+                                modifier = Modifier.fillMaxSize(),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                MovieCircularProgressBar()
                             }
                         }
-
-                        is androidx.paging.LoadState.Error -> {
-                            item {
-                                Text(
-                                    "Error loading more data.",
-                                    modifier = Modifier.padding(16.dp),
-
-                                    )
-                            }
+                    }
+                    if (recommendations.loadState.append is LoadState.Error
+                        || recommendations.loadState.refresh is LoadState.Error
+                    ) {
+                        item(span = { GridItemSpan(maxLineSpan) }) {
+                            NoInternetScreen(
+                                modifier = Modifier.align(Alignment.CenterHorizontally),
+                                onRetry = { recommendations.retry() }
+                            )
                         }
-
-                        else -> {}
                     }
                 }
-
             }
             ViewModeToggleButton(
                 selectedMode = uiState.viewMode,
