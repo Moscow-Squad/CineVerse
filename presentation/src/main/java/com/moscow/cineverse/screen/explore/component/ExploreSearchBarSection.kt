@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import com.moscow.cineverse.designSystem.component.search.SearchBar
 import com.moscow.cineverse.screen.explore.ExploreInteractionListener
 import com.moscow.cineverse.screen.explore.ExploreScreenState
+import com.moscow.cinverse.presentation.R
 
 @Composable
 fun ExploreSearchBarSection(
@@ -42,7 +43,8 @@ fun ExploreSearchBarSection(
             onNext = { interactionListener.onKeyboardClick() },
             onSearch = {
                 if (uiState.searchKeyWord.isBlank())
-                    Toast.makeText(context, "Search can't be empty!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context,
+                        context.getString(R.string.search_can_t_be_empty), Toast.LENGTH_SHORT).show()
                 else interactionListener.onSearchQuery()
             }
         ),

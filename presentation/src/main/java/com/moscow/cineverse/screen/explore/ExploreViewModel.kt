@@ -308,11 +308,7 @@ class ExploreViewModel @Inject constructor(
 
     override fun onCancelButtonClicked() {
         if (uiState.value.selectedTab == ExploreTabsPages.ACTORS) {
-            updateState {
-                it.copy(
-                    selectedTab = ExploreTabsPages.MOVIES
-                )
-            }
+            updateState { it.copy(selectedTab = ExploreTabsPages.MOVIES) }
         }
 
         isMoviesEmpty = false
@@ -321,6 +317,7 @@ class ExploreViewModel @Inject constructor(
 
         updateState {
             it.copy(
+                isSearch = false,
                 searchKeyWord = "",
                 showHistory = false,
                 showSuggestions = false,
@@ -375,7 +372,7 @@ class ExploreViewModel @Inject constructor(
     }
 
     override fun onClickSuggestion(suggestion: SuggestItemUiState) {
-        updateState { it.copy(searchKeyWord = suggestion.title, isContentEmpty = false) }
+        updateState { it.copy(searchKeyWord = suggestion.title, isContentEmpty = false, isSearch = true) }
         resetSearchResults()
         launchAndForget(
             action = {
@@ -401,6 +398,7 @@ class ExploreViewModel @Inject constructor(
     override fun onSearchQuery() {
         updateState {
             it.copy(
+                isSearch = true,
                 showHistory = false,
                 showSuggestions = false,
                 isLoading = true,
@@ -428,7 +426,7 @@ class ExploreViewModel @Inject constructor(
     }
 
     private fun onSearchQueryError(e: Throwable) {
-        updateState { it.copy(shouldShowError = true, isLoading = false, error = e.message) }
+        updateState { it.copy(shouldShowError = true, isLoading = false, error = e.message, isSearch = false) }
     }
 
     override fun clearAllLocalSuggestions() {
