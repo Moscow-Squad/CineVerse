@@ -1,24 +1,27 @@
 package com.moscow.cineverse.screen.home
 
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.cineverse.common_ui_state.MediaItemUiState
 import com.moscow.cineverse.mapper.toGenreUi
 import com.moscow.cineverse.mapper.toUi
 import com.moscow.domain.model.Genre
+import com.moscow.domain.model.MediaItem
 import com.moscow.domain.model.MediaType
 import com.moscow.domain.model.Movie
 import com.moscow.domain.model.Series
 import com.moscow.domain.model.UserType
+import com.moscow.domain.usecase.collection.GetCollectionDetailsUseCase
 import com.moscow.domain.usecase.genre.GenreUseCase
 import com.moscow.domain.usecase.home.GetMatchesYourVibesMoviesUseCase
 import com.moscow.domain.usecase.home.GetRecentlyReleasedMoviesUseCase
 import com.moscow.domain.usecase.home.GetTopRatedTVShowsUseCase
 import com.moscow.domain.usecase.home.GetTrendingMoviesUseCase
 import com.moscow.domain.usecase.home.GetUpcomingMoviesUseCase
-import dagger.hilt.android.lifecycle.HiltViewModel
 import com.moscow.domain.usecase.local.GetUserDetailsUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
@@ -32,7 +35,8 @@ class HomeViewModel @Inject constructor(
     private val getUpcomingMoviesUseCase: GetUpcomingMoviesUseCase,
     private val genreUseCase: GenreUseCase,
     private val getTrendingMoviesUseCase: GetTrendingMoviesUseCase,
-    private val getUserDetailsUseCase: GetUserDetailsUseCase
+    private val getUserDetailsUseCase: GetUserDetailsUseCase,
+    private val getCollectionDetailsUseCase: GetCollectionDetailsUseCase
 ) : BaseViewModel<HomeUiState, HomeEvent>(HomeUiState()), HomeInteractionListener {
 
     init {
@@ -40,7 +44,7 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun loadHomeData() {
-        updateState { it.copy(isLoading = true,error = null) }
+        updateState { it.copy(isLoading = true, error = null) }
 
 
         viewModelScope.launch {
@@ -72,6 +76,17 @@ class HomeViewModel @Inject constructor(
         when (user) {
             is UserType.AuthenticatedUser -> {
                 updateState { it.copy(userName = user.username) }
+                launchWithResult(
+                    action = { getCollectionDetailsUseCase(user.recentlyCollectionId) },
+                    onSuccess = { result ->
+                        updateState {
+                            it.copy(
+                                youRecentlyViewed = result.reversed().toMediaItemUiState()
+                            )
+                        }
+                    },
+                    onError = {}
+                )
             }
 
             is UserType.GuestUser -> {
@@ -81,7 +96,7 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun onGetUserDetailsError(throwable: Throwable) {
-        updateState { it.copy(error = throwable.message, ) }
+        updateState { it.copy(error = throwable.message) }
     }
 
     private suspend fun getGenres() {
@@ -111,8 +126,7 @@ class HomeViewModel @Inject constructor(
     private fun onGetGenresSuccess(genres: List<Genre>) {
         updateState {
             it.copy(
-                genres = genres.map { genre -> genre.toGenreUi() },
-
+                genres = genres.map { genre -> genre.toGenreUi() }
             )
         }
     }
@@ -132,11 +146,11 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun onFetchTrendingMoviesSuccess(movies: List<Movie>) {
-        updateState { it.copy(sliderItems = movies.toUi(uiState.value.genres), ) }
+        updateState { it.copy(sliderItems = movies.toUi(uiState.value.genres)) }
     }
 
     private fun onFetchTrendingMoviesError(throwable: Throwable) {
-        updateState { it.copy(error = throwable.message, ) }
+        updateState { it.copy(error = throwable.message) }
     }
 
     private fun fetchRecentlyReleasedMovies() {
@@ -152,12 +166,12 @@ class HomeViewModel @Inject constructor(
             it.copy(
                 recentlyReleasedMovies = movies.toUi(uiState.value.genres),
 
-            )
+                )
         }
     }
 
     private fun onFetchRecentlyReleasedMoviesError(throwable: Throwable) {
-        updateState { it.copy(error = throwable.message, ) }
+        updateState { it.copy(error = throwable.message) }
     }
 
     private fun fetchUpcomingMovies() {
@@ -173,12 +187,12 @@ class HomeViewModel @Inject constructor(
             it.copy(
                 upcomingMovies = movies.toUi(uiState.value.genres),
 
-            )
+                )
         }
     }
 
     private fun onFetchUpcomingMoviesError(throwable: Throwable) {
-        updateState { it.copy(error = throwable.message, ) }
+        updateState { it.copy(error = throwable.message) }
     }
 
     private fun fetchTopRatedTVShows() {
@@ -190,11 +204,11 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun onFetchTopRatedTVShowsSuccess(tvShows: List<Series>) {
-        updateState { it.copy(topRatedTvShows = tvShows.toUi(), ) }
+        updateState { it.copy(topRatedTvShows = tvShows.toUi()) }
     }
 
     private fun onFetchTopRatedTVShowsError(throwable: Throwable) {
-        updateState { it.copy(error = throwable.message, ) }
+        updateState { it.copy(error = throwable.message) }
     }
 
     private fun fetchMatchesYourVibesMovies() {
@@ -216,7 +230,7 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun onFetchMatchesYourVibesMoviesError(throwable: Throwable) {
-        updateState { it.copy(error = throwable.message, ) }
+        updateState { it.copy(error = throwable.message) }
     }
 
 
@@ -254,4 +268,29 @@ class HomeViewModel @Inject constructor(
     override fun onRefresh() {
         loadHomeData()
     }
+}
+
+
+fun Movie.toMediaItemUiState(
+    genreMap: Map<Int, String> = emptyMap(),
+    formatDuration: (Movie) -> String = { "" }
+): MediaItemUiState {
+    return MediaItemUiState(
+        id = id,
+        title = name,
+        posterPath = posterPath,
+        rating = rating,
+        genres = genreIds.mapNotNull { genreId -> genreMap[genreId] },
+        releaseDate = releaseDate.toString(), // Convert LocalDate to String
+        duration = formatDuration(this),
+        mediaType = MediaType.Movie, // Explicitly set to Movie type
+        backdropPath = backdropPath
+    )
+}
+
+fun List<Movie>.toMediaItemUiState(
+    genreMap: Map<Int, String> = emptyMap(),
+    formatDuration: (Movie) -> String = { "" }
+): List<MediaItemUiState> {
+    return map { it.toMediaItemUiState(genreMap, formatDuration) }
 }

@@ -4,7 +4,7 @@ import com.moscow.remote.dto.AddCollectionDto
 import com.moscow.remote.dto.AddMediaItemToCollectionRequestDto
 import com.moscow.remote.dto.CollectionDto
 import com.moscow.remote.dto.CreateCollectionDto
-import com.moscow.remote.dto.MediaItemDto
+import com.moscow.remote.dto.MovieDto
 import com.moscow.utils.ApiResponse
 
 interface CollectionRemoteDataSource {
@@ -23,10 +23,10 @@ interface CollectionRemoteDataSource {
         item: AddMediaItemToCollectionRequestDto,
         collectionId: Int,
         sessionId: String
-    ): ApiResponse<Nothing>
+    ): ApiResponse<Unit>
 
     suspend fun getCollectionDetails(
         collectionId: Int,
         sessionId: String
-    ): ApiResponse<MediaItemDto>
+    ): ApiResponse<MovieDto>
 }

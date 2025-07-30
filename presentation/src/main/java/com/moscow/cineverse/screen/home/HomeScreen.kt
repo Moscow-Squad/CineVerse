@@ -21,11 +21,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.moscow.cineverse.component.ScreenStateHandler
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.navigation.LocalScaffoldPaddingValues
-import com.moscow.cineverse.navigation.navigateToNewGraph
-import com.moscow.cineverse.navigation.routes.ExploreRoute
-import com.moscow.cineverse.navigation.routes.MatchRoute
-import com.moscow.cineverse.navigation.routes.MovieDetailsRoute
-import com.moscow.cineverse.navigation.routes.SeriesDetailsRoute
 import com.moscow.cineverse.screen.home.components.FeaturedCollectionsSection
 import com.moscow.cineverse.screen.home.components.FeaturedMovies
 import com.moscow.cineverse.screen.home.components.HomeHeader
@@ -174,7 +169,7 @@ fun HomeContent(
                 )
 
                 FeaturedMovies(
-                    displayMovies = state.matchesYourVibe,
+                    displayMovies = state.youRecentlyViewed,
                     onMovieClick = listener::onMediaItemClicked,
                     onShowMoreClick = listener::onSeeAllClick,
                     modifier = Modifier,

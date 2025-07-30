@@ -3,6 +3,7 @@ package com.moscow.domain.repository
 import com.moscow.domain.model.Collection
 import com.moscow.domain.model.MediaItem
 import com.moscow.domain.model.MediaType
+import com.moscow.domain.model.Movie
 
 interface CollectionsRepository {
     suspend fun getCollections(page: Int): List<Collection>
@@ -17,5 +18,5 @@ interface CollectionsRepository {
         collectionId: Int
     ): String
 
-    suspend fun getCollectionDetails(collectionId: Int): List<MediaItem>
+    suspend fun getCollectionDetails(collectionId: Int): List<Movie>
 }

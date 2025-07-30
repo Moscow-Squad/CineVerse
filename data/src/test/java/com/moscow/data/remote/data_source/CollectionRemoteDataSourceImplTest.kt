@@ -102,7 +102,7 @@ class CollectionRemoteDataSourceImplTest {
     fun `given sessionId and collectionId when addMediaItemToCollection returns success then add new media item to selected collection`() = runTest {
         val sessionId = "abc"
         val collectionId = 123
-        val dto = AddMediaItemToCollectionRequestDto(mediaId = 1, mediaType = "movie")
+        val dto = AddMediaItemToCollectionRequestDto(mediaId = 1)
         val response = ApiResponse<Nothing>()
 
         coEvery { collectionService.addMediaItemToCollection(dto, collectionId , sessionId) } returns Response.success(response)

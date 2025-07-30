@@ -4,7 +4,7 @@ import com.moscow.remote.dto.AddCollectionDto
 import com.moscow.remote.dto.AddMediaItemToCollectionRequestDto
 import com.moscow.remote.dto.CollectionDto
 import com.moscow.remote.dto.CreateCollectionDto
-import com.moscow.remote.dto.MediaItemDto
+import com.moscow.remote.dto.MovieDto
 import com.moscow.utils.ACCOUNT
 import com.moscow.utils.ADD_ITEM
 import com.moscow.utils.ApiResponse
@@ -33,16 +33,16 @@ interface CollectionsService {
         @Query(SESSION_ID) sessionId: String
     ): Response<AddCollectionDto>
 
-    @POST("$LIST/{collection_id}/$ADD_ITEM")
+    @POST("$LIST/{list_id}/$ADD_ITEM")
     suspend fun addMediaItemToCollection(
         @Body item: AddMediaItemToCollectionRequestDto,
-        @Path("collection_id") collectionId: Int,
+        @Path("list_id") collectionId: Int,
         @Query(SESSION_ID) sessionId: String
-    ): Response<ApiResponse<Nothing>>
+    ): Response<ApiResponse<Unit>>
 
     @GET("$LIST/{collection_id}")
     suspend fun getCollectionDetails(
         @Path("collection_id") collectionId: Int,
         @Query(SESSION_ID) sessionId: String
-    ): Response<ApiResponse<MediaItemDto>>
+    ): Response<ApiResponse<MovieDto>>
 }
