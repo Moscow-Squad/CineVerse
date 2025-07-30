@@ -128,6 +128,12 @@ fun DetailCard(
     onSaveClick: () -> Unit = {},
     onPlayClick: () -> Unit = {},
 ) {
+    val formattedRating = try {
+        val ratingValue = rating.toDouble()
+        String.format("%.1f", ratingValue)
+    } catch (e: NumberFormatException) {
+        "0.0"
+    }
 
     Row(
         horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -167,10 +173,17 @@ fun DetailCard(
             ) {
                 InfoTextWithIcon(
                     R.drawable.due_tone_star,
-                    rating,
+                    formattedRating,
                     Theme.colors.additional.primary.yellow
                 )
-                InfoTextWithIcon(R.drawable.due_tone_clock, duration, Theme.colors.shade.secondary)
+                if (duration.isNotBlank() && duration != "N/A" && duration != "null") {
+                    InfoTextWithIcon(
+                        R.drawable.due_tone_clock,
+                        duration,
+                        Theme.colors.shade.secondary
+                    )
+                }
+
                 InfoTextWithIcon(
                     R.drawable.due_tone_calendar,
                     releaseDate,
@@ -197,6 +210,8 @@ fun DetailCard(
         }
     }
 }
+
+
 
 @Composable
 fun InfoTextWithIcon(icon: Int, text: String, tint: Color) {
@@ -297,14 +312,9 @@ fun DetailCardPreview() {
     DetailCard(
         title = "Supernatural",
         genres = "Drama, Mystery, Sci-Fi & Fantasy",
-        rating = "8.5",
+        rating = "8.531",
         duration = "2h 32m",
         releaseDate = "2008, Jul 18",
         type = "SERIES",
     )
 }
-
-
-
-
-

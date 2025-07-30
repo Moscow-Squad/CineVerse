@@ -105,7 +105,7 @@ fun MovieStorylineSection(
                     withStyle(
                         style = SpanStyle(
                             color = textColor,
-                            fontWeight = FontWeight.Medium,
+                            fontWeight = FontWeight.Normal,
                             fontSize = 12.sp,
                             letterSpacing = 0.sp
                         )

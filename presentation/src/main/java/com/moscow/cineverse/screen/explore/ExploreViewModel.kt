@@ -1,5 +1,6 @@
 package com.moscow.cineverse.screen.explore
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
@@ -25,6 +26,7 @@ import com.moscow.domain.usecase.search.SuggestionUseCase
 import com.moscow.domain.usecase.series.GetPopularSeriesUseCase
 import com.moscow.domain.usecase.series.GetSeriesByGenreIdUseCase
 import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -61,6 +63,9 @@ class ExploreViewModel @Inject constructor(
     private lateinit var _seriesSearch: Flow<PagingData<MediaItemUiState>>
     private lateinit var _actorSearch: Flow<PagingData<ActorUiState>>
 
+    private var isMoviesEmpty = false
+    private var isSeriesEmpty = false
+    private var isActorsEmpty = false
 
     init {
         getMoviesGenres()
@@ -71,11 +76,29 @@ class ExploreViewModel @Inject constructor(
     }
 
     override fun searchMovie(isHistory: Boolean) {
+        var isFirstLoad = true
+
         _moviesSearch = Pager(
             config = PagingConfig(pageSize = 20),
             pagingSourceFactory = {
                 BasePagingSource { page ->
-                    searchUseCase.searchMovie(uiState.value.searchKeyWord, page, isHistory).first()
+                    val result = searchUseCase.searchMovie(uiState.value.searchKeyWord, page, isHistory).first()
+
+                    if (page == 1 && isFirstLoad) {
+                        isFirstLoad = false
+                        viewModelScope.launch {
+                            val isEmpty = result.isEmpty()
+                            isMoviesEmpty = isEmpty
+
+                            if (uiState.value.selectedTab == ExploreTabsPages.MOVIES) {
+                                updateState {
+                                    it.copy(isContentEmpty = isEmpty)
+                                }
+                            }
+                        }
+                    }
+
+                    result
                 }
             }
         ).flow
@@ -83,29 +106,77 @@ class ExploreViewModel @Inject constructor(
             .cachedIn(viewModelScope)
 
         updateState { it.copy(isLoading = false) }
+
+        if (uiState.value.selectedTab == ExploreTabsPages.MOVIES) {
+            updateContentList()
+        }
     }
 
     override fun searchSeries(isHistory: Boolean) {
+        var isFirstLoad = true
+
         _seriesSearch = Pager(
             config = PagingConfig(pageSize = 20),
             pagingSourceFactory = {
                 BasePagingSource { page ->
-                    searchUseCase.searchSeries(uiState.value.searchKeyWord, page, isHistory).first()
+                    val result = searchUseCase.searchSeries(uiState.value.searchKeyWord, page, isHistory).first()
+
+                    if (page == 1 && isFirstLoad) {
+                        isFirstLoad = false
+                        viewModelScope.launch {
+                            val isEmpty = result.isEmpty()
+                            isSeriesEmpty = isEmpty
+
+                            if (uiState.value.selectedTab == ExploreTabsPages.SERIES) {
+                                updateState {
+                                    it.copy(isContentEmpty = isEmpty)
+                                }
+                            }
+                        }
+                    }
+
+                    result
                 }
             }
         ).flow
-            .map { pagingData -> pagingData.map { it.toUi(uiState.value.seriesGenres) } }
+            .map { pagingData ->
+                pagingData.map {
+                    it.toUi(uiState.value.seriesGenres + uiState.value.moviesGenres)
+                }
+            }
             .cachedIn(viewModelScope)
 
         updateState { it.copy(isLoading = false) }
+
+        if (uiState.value.selectedTab == ExploreTabsPages.SERIES) {
+            updateContentList()
+        }
     }
 
     override fun searchActor(isHistory: Boolean) {
+        var isFirstLoad = true
+
         _actorSearch = Pager(
             config = PagingConfig(pageSize = 20),
             pagingSourceFactory = {
                 BasePagingSource { page ->
-                    searchUseCase.searchActor(uiState.value.searchKeyWord, page, isHistory).first()
+                    val result = searchUseCase.searchActor(uiState.value.searchKeyWord, page, isHistory).first()
+
+                    if (page == 1 && isFirstLoad) {
+                        isFirstLoad = false
+                        viewModelScope.launch {
+                            val isEmpty = result.isEmpty()
+                            isActorsEmpty = isEmpty
+
+                            if (uiState.value.selectedTab == ExploreTabsPages.ACTORS) {
+                                updateState {
+                                    it.copy(isContentEmpty = isEmpty)
+                                }
+                            }
+                        }
+                    }
+
+                    result
                 }
             }
         ).flow
@@ -113,6 +184,33 @@ class ExploreViewModel @Inject constructor(
             .cachedIn(viewModelScope)
 
         updateState { it.copy(isLoading = false) }
+
+        if (uiState.value.selectedTab == ExploreTabsPages.ACTORS) {
+            updateContentList()
+        }
+    }
+
+    private fun resetSearchResults() {
+        if (::_moviesSearch.isInitialized) {
+            _moviesSearch = Pager(
+                config = PagingConfig(pageSize = 20, initialLoadSize = 20),
+                pagingSourceFactory = { BasePagingSource { page -> emptyList<MediaItemUiState>() } }
+            ).flow.cachedIn(viewModelScope)
+        }
+
+        if (::_seriesSearch.isInitialized) {
+            _seriesSearch = Pager(
+                config = PagingConfig(pageSize = 20, initialLoadSize = 20),
+                pagingSourceFactory = { BasePagingSource { page -> emptyList<MediaItemUiState>() } }
+            ).flow.cachedIn(viewModelScope)
+        }
+
+        if (::_actorSearch.isInitialized) {
+            _actorSearch = Pager(
+                config = PagingConfig(pageSize = 20, initialLoadSize = 20),
+                pagingSourceFactory = { BasePagingSource { page -> emptyList<ActorUiState>() } }
+            ).flow.cachedIn(viewModelScope)
+        }
     }
 
     override fun getMoviesByGenreId(genreId: Int) {
@@ -217,6 +315,10 @@ class ExploreViewModel @Inject constructor(
             }
         }
 
+        isMoviesEmpty = false
+        isSeriesEmpty = false
+        isActorsEmpty = false
+
         updateState {
             it.copy(
                 searchKeyWord = "",
@@ -224,6 +326,7 @@ class ExploreViewModel @Inject constructor(
                 showSuggestions = false,
                 isLoading = false,
                 remoteSuggestions = emptyList(),
+                isContentEmpty = false
             )
         }
         updateContentList()
@@ -235,7 +338,8 @@ class ExploreViewModel @Inject constructor(
                 searchKeyWord = text,
                 showSuggestions = true,
                 showHistory = text.isBlank(),
-                remoteSuggestions = emptyList()
+                remoteSuggestions = emptyList(),
+                isContentEmpty = false
             )
         }
         updateDisplayedSuggestions()
@@ -263,7 +367,6 @@ class ExploreViewModel @Inject constructor(
             val mappedRemoteSuggestions = state.remoteSuggestions
                 .map { SuggestItemUiState(it, isHistory = false) }
 
-
             state.copy(
                 localSuggestions = filteredLocalSuggestions,
                 remoteSuggestions = mappedRemoteSuggestions.map { it.title }
@@ -272,7 +375,8 @@ class ExploreViewModel @Inject constructor(
     }
 
     override fun onClickSuggestion(suggestion: SuggestItemUiState) {
-        updateState { it.copy(searchKeyWord = suggestion.title) }
+        updateState { it.copy(searchKeyWord = suggestion.title, isContentEmpty = false) }
+        resetSearchResults()
         launchAndForget(
             action = {
                 suggestion.isHistory.let {
@@ -299,9 +403,11 @@ class ExploreViewModel @Inject constructor(
             it.copy(
                 showHistory = false,
                 showSuggestions = false,
-                isLoading = true
+                isLoading = true,
+                isContentEmpty = false
             )
         }
+        resetSearchResults()
         launchAndForget(
             action = {
                 uiState.value.localSuggestions.any { it.title == uiState.value.searchKeyWord }
@@ -387,6 +493,7 @@ class ExploreViewModel @Inject constructor(
                     )
                 ) + genres.map { genre -> genre.toUi() })
         }
+        Log.d("TAG", "onSeriesGenresSuccess: $genres")
     }
 
     private fun onSeriesGenresFailed(e: Throwable) {
@@ -426,8 +533,27 @@ class ExploreViewModel @Inject constructor(
 
     override fun onTabSelected(tab: ExploreTabsPages) {
         if (uiState.value.selectedTab == tab) return
-        updateState { it.copy(selectedTab = tab) }
+
+        val isEmpty = if (uiState.value.searchKeyWord.isNotBlank()) {
+            when (tab) {
+                ExploreTabsPages.MOVIES -> isMoviesEmpty
+                ExploreTabsPages.SERIES -> isSeriesEmpty
+                ExploreTabsPages.ACTORS -> isActorsEmpty
+            }
+        } else false
+
+        updateState {
+            it.copy(
+                selectedTab = tab,
+                isContentEmpty = isEmpty
+            )
+        }
         updateContentList()
+
+        viewModelScope.launch {
+            delay(500)
+            checkEmptyStateForCurrentTab()
+        }
     }
 
     override fun onRefresh() {
@@ -435,9 +561,15 @@ class ExploreViewModel @Inject constructor(
             it.copy(
                 isLoading = true,
                 shouldShowError = false,
-                errorMessage = ""
+                errorMessage = "",
+                isContentEmpty = false
             )
         }
+
+        isMoviesEmpty = false
+        isSeriesEmpty = false
+        isActorsEmpty = false
+
         if (uiState.value.searchKeyWord != "") {
             onSearchQuery()
         } else {
@@ -482,25 +614,38 @@ class ExploreViewModel @Inject constructor(
         if (uiState.value.searchKeyWord.isNotBlank()) {
             updateState { it.copy(shouldShowGenres = false) }
             contentList = when (uiState.value.selectedTab) {
-                ExploreTabsPages.MOVIES -> _moviesSearch
-                ExploreTabsPages.SERIES -> _seriesSearch
-                ExploreTabsPages.ACTORS -> _actorSearch
-            } as Flow<PagingData<Any>>
+                ExploreTabsPages.MOVIES -> _moviesSearch.map { it as PagingData<Any> }
+                ExploreTabsPages.SERIES -> _seriesSearch.map { it as PagingData<Any> }
+                ExploreTabsPages.ACTORS -> _actorSearch.map { it as PagingData<Any> }
+            }
         } else {
             contentList = when (uiState.value.selectedTab) {
-                ExploreTabsPages.MOVIES -> _movies
-                ExploreTabsPages.SERIES -> _series
-                ExploreTabsPages.ACTORS -> null
-            } as Flow<PagingData<Any>>
+                ExploreTabsPages.MOVIES -> _movies.map { it as PagingData<Any> }
+                ExploreTabsPages.SERIES -> _series.map { it as PagingData<Any> }
+                ExploreTabsPages.ACTORS -> throw IllegalStateException("Actors tab should not be available without search")
+            }
 
             updateState {
                 it.copy(
                     genres = if (uiState.value.selectedTab == ExploreTabsPages.MOVIES)
                         it.moviesGenres else it.seriesGenres,
-                    shouldShowGenres = true
+                    shouldShowGenres = true,
+                    isContentEmpty = false
                 )
             }
         }
+    }
+
+    private fun checkEmptyStateForCurrentTab() {
+        if (uiState.value.searchKeyWord.isBlank()) return
+
+        val isEmpty = when (uiState.value.selectedTab) {
+            ExploreTabsPages.MOVIES -> isMoviesEmpty
+            ExploreTabsPages.SERIES -> isSeriesEmpty
+            ExploreTabsPages.ACTORS -> isActorsEmpty
+        }
+
+        updateState { it.copy(isContentEmpty = isEmpty) }
     }
 
     override fun <T> checkEmptySearchResult(list: List<T>) {

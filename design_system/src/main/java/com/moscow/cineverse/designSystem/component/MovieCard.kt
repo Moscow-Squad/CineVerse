@@ -138,7 +138,7 @@ private fun <T> GridMovieCard(
     ) {
         Card(
             modifier = Modifier
-                .height(225.dp)
+                .height(180.dp)
                 .fillMaxWidth()
                 .clip(RoundedCornerShape(Theme.radius.large))
                 .clickable { onMovieClick(getId(movieData)) },
@@ -201,7 +201,7 @@ private fun <T> GridMovieCard(
                                 contentDescription = "Rating",
                                 tint = Theme.colors.additional.primary.yellow,
                                 modifier = Modifier
-                                    .size(16.dp)
+                                    .size(23.dp)
                                     .padding(start = 4.dp)
                             )
                         }
