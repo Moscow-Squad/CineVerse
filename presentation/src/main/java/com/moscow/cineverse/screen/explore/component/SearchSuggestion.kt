@@ -9,6 +9,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -30,7 +31,7 @@ fun SearchSuggestion(
         stringResource(R.string.history)
     else
         stringResource(R.string.search_suggestions)
-    val actionTitle = if (isHistory)
+    val actionTitle = if (isHistory && suggestionList.isNotEmpty())
         stringResource(R.string.clear_all_history)
     else
         null
@@ -59,6 +60,7 @@ private fun SuggestItems(
     onClickSuggestion: (SuggestItemUiState) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val focusManager = LocalFocusManager.current
     Column(modifier = modifier) {
         suggestItems.forEachIndexed { index, item ->
             val title = item.title
@@ -67,7 +69,10 @@ private fun SuggestItems(
             SuggestItem(
                 title = title,
                 icon = icon,
-                modifier = Modifier.clickable(onClick = { onClickSuggestion(item) }),
+                modifier = Modifier.clickable(onClick = {
+                    focusManager.clearFocus()
+                    onClickSuggestion(item)
+                }),
             )
         }
     }
