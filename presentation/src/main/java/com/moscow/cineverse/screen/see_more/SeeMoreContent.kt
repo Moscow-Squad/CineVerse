@@ -41,7 +41,7 @@ fun <T : Any> SeeMoreContent(
 ) {
     val gridColumns = remember(uiState.viewMode) {
         if (uiState.viewMode == ViewMode.GRID) {
-            GridCells.Adaptive(minSize = 160.dp)
+            GridCells.Fixed(2)
         } else {
             GridCells.Fixed(1)
         }
