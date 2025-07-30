@@ -10,6 +10,9 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -95,19 +98,36 @@ private fun ExploreScreenContent(
     val gridState = rememberLazyGridState()
     val genresState = rememberLazyListState()
 
+    var genresVisible by remember { mutableStateOf(true) }
+
     LaunchedEffect(uiState.selectedTab) {
         gridState.animateScrollToItem(0)
-        val genreId = if (uiState.selectedTab == ExploreTabsPages.MOVIES)
-            uiState.selectedMovieGenre else uiState.selectedSeriesGenre
+        val genreId = if (uiState.selectedTab == ExploreTabsPages.MOVIES) {
+            uiState.selectedMovieGenre
+        } else {
+            uiState.selectedSeriesGenre
+        }
         val targetIndex = uiState.genres.indexOfFirst { it.id == genreId }
         if (targetIndex >= 0) genresState.animateScrollToItem(targetIndex)
+        genresVisible = true
+    }
+
+    LaunchedEffect(uiState.shouldShowGenres) {
+        if (uiState.shouldShowGenres) {
+            genresVisible = true
+        }
     }
 
     Surface(modifier = modifier.fillMaxSize(), color = Theme.colors.background.screen) {
         Box(modifier = Modifier.fillMaxSize()) {
             Column(modifier = Modifier.fillMaxSize()) {
                 ExploreSearchBarSection(uiState, interactionListener)
-                ExploreTabsSection(uiState.selectedTab, interactionListener::onTabSelected, uiState.searchKeyWord.isNotEmpty())
+                ExploreTabsSection(
+                    selectedTab = uiState.selectedTab,
+                    onTabSelected = interactionListener::onTabSelected,
+                    showAllTabs = uiState.searchKeyWord.isNotEmpty()
+                )
+
                 Box(modifier = Modifier.fillMaxSize()) {
                     if (contentList.loadState.refresh is LoadState.Loading){
                         Box(
@@ -125,14 +145,29 @@ private fun ExploreScreenContent(
                             NoInternetScreen(onRetry = interactionListener::onRefresh)
                         }
                     }else{
-                        ExploreMainContent(uiState, gridState, contentList, interactionListener)
+                        ExploreMainContent(
+                            uiState = uiState,
+                            gridState = gridState,
+                            contentList = contentList,
+                            interactionListener = interactionListener,
+                            onGenresVisibilityChange = { shouldShow ->
+                                genresVisible = shouldShow
+                            }
+                        )
                     }
                     if (uiState.genres.isNotEmpty()){
-                        GenresRow(uiState, genresState, interactionListener, modifier = Modifier.align(Alignment.TopCenter))
+                        GenresRow(
+                            uiState = uiState,
+                            genresState = genresState,
+                            interactionListener = interactionListener,
+                            isVisible = genresVisible,
+                            modifier = Modifier.align(Alignment.TopCenter)
+                        )
                     }
                 }
             }
             SearchSuggestionsSection(uiState, interactionListener)
+
             if (uiState.selectedTab != ExploreTabsPages.ACTORS) {
                 ViewModeToggleButton(
                     selectedMode = uiState.viewMode,
@@ -145,4 +180,3 @@ private fun ExploreScreenContent(
         }
     }
 }
-
