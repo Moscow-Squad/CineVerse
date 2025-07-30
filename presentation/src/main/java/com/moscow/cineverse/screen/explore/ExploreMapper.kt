@@ -32,7 +32,9 @@ fun Series.toUi(genresList: List<GenreUiState>): MediaItemUiState =
         title = name,
         posterPath = posterPath,
         rating = rating,
-        genres = genreIds.map { it -> genresList.first { genre -> genre.id == it }.name },
+        genres = genreIds.map { it ->
+            genresList.firstOrNull { genre -> genre.id == it }?.name ?: ""
+        },
         releaseDate = firstAirDate.formatWith(YYYY_MMM_DD) ?: "",
         duration = "",
         mediaType = MediaType.Tv,

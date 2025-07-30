@@ -3,8 +3,8 @@ package com.moscow.cineverse.screen.explore.component
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -27,7 +27,6 @@ import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.screen.explore.ExploreInteractionListener
 import com.moscow.cineverse.screen.explore.ExploreScreenState
 import com.moscow.cinverse.presentation.R
-
 @Composable
 fun ExploreMainContent(
     uiState: ExploreScreenState,
@@ -36,6 +35,41 @@ fun ExploreMainContent(
     interactionListener: ExploreInteractionListener,
     modifier: Modifier = Modifier
 ) {
+    val gridColumns = remember(uiState.viewMode, uiState.selectedTab) {
+        if (uiState.viewMode == ViewMode.GRID) {
+            when (uiState.selectedTab) {
+                ExploreTabsPages.ACTORS -> GridCells.Fixed(3)
+                ExploreTabsPages.MOVIES, ExploreTabsPages.SERIES -> GridCells.Adaptive(minSize = 160.dp)
+            }
+        } else {
+            GridCells.Fixed(1)
+        }
+    }
+
+    val contentPadding = remember(uiState.selectedTab) {
+        when (uiState.selectedTab) {
+            ExploreTabsPages.ACTORS -> PaddingValues(
+                top = 16.dp,
+                start = 20.dp,
+                end = 20.dp,
+                bottom = 100.dp
+            )
+            ExploreTabsPages.MOVIES, ExploreTabsPages.SERIES -> PaddingValues(
+                top = 16.dp,
+                start = 16.dp,
+                end = 16.dp,
+                bottom = 100.dp
+            )
+        }
+    }
+
+    val spacing = remember(uiState.selectedTab) {
+        when (uiState.selectedTab) {
+            ExploreTabsPages.ACTORS -> 16.dp
+            ExploreTabsPages.MOVIES, ExploreTabsPages.SERIES -> 16.dp
+        }
+    }
+
     when {
         uiState.isLoading -> {
             Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
@@ -65,52 +99,34 @@ fun ExploreMainContent(
         }
 
         else -> {
-            val gridColumns = remember(uiState.viewMode, uiState.selectedTab) {
-                if (uiState.viewMode == ViewMode.GRID) {
-                    when (uiState.selectedTab) {
-                        ExploreTabsPages.ACTORS -> GridCells.Adaptive(minSize = 98.dp)
-                        ExploreTabsPages.MOVIES, ExploreTabsPages.SERIES -> GridCells.Adaptive(
-                            minSize = 160.dp
-                        )
-                    }
-                } else {
-                    GridCells.Fixed(1)
-                }
-            }
-
             LazyVerticalGrid(
                 state = gridState,
                 columns = gridColumns,
-                contentPadding = PaddingValues(
-                    top = 16.dp,
-                    start = 16.dp,
-                    end = 16.dp,
-                    bottom = 100.dp
-                ),
-                verticalArrangement = Arrangement.spacedBy(16.dp),
-                horizontalArrangement = Arrangement.spacedBy(16.dp),
+                contentPadding = contentPadding,
+                verticalArrangement = Arrangement.spacedBy(if (uiState.selectedTab == ExploreTabsPages.ACTORS) 40.dp else 16.dp),
+                horizontalArrangement = Arrangement.spacedBy(if (uiState.selectedTab == ExploreTabsPages.ACTORS) 16.dp else 16.dp),
                 modifier = modifier.fillMaxSize()
+
             ) {
                 items(contentList.itemCount) { index ->
                     val item = contentList[index]
                     if (item != null) {
-                        Box(modifier = Modifier.fillMaxWidth()) {
-                            when (item) {
-                                is MediaItemUiState -> {
-                                    MoviePosterCard(
-                                        movie = item,
-                                        viewMode = uiState.viewMode,
-                                        onMovieClick = { interactionListener.onMediaItemClicked(item) }
-                                    )
-                                }
+                        when (item) {
+                            is MediaItemUiState -> {
+                                MoviePosterCard(
+                                    movie = item,
+                                    viewMode = uiState.viewMode,
+                                    onMovieClick = { interactionListener.onMediaItemClicked(item) }
+                                )
+                            }
 
-                                is ExploreScreenState.ActorUiState -> {
-                                    ActorPosterCard(
-                                        actor = item,
-                                        viewMode = uiState.viewMode,
-                                        onActorClicked = interactionListener::onActorClick
-                                    )
-                                }
+                            is ExploreScreenState.ActorUiState -> {
+                                ActorPosterCard(
+                                    actor = item,
+                                    viewMode = uiState.viewMode,
+                                    onActorClicked = interactionListener::onActorClick,
+                                    modifier = Modifier.aspectRatio(1f)
+                                )
                             }
                         }
                     }
