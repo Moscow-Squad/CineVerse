@@ -1,5 +1,7 @@
 package com.moscow.cineverse.screen.explore.component
 
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -9,7 +11,14 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -27,14 +36,45 @@ import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.screen.explore.ExploreInteractionListener
 import com.moscow.cineverse.screen.explore.ExploreScreenState
 import com.moscow.cinverse.presentation.R
+import kotlinx.coroutines.flow.distinctUntilChanged
+
 @Composable
 fun ExploreMainContent(
     uiState: ExploreScreenState,
     gridState: LazyGridState,
     contentList: LazyPagingItems<Any>,
     interactionListener: ExploreInteractionListener,
+    onGenresVisibilityChange: (Boolean) -> Unit = {},
     modifier: Modifier = Modifier
 ) {
+    var lastScrollOffset by remember { mutableFloatStateOf(0f) }
+    var isScrollingDown by remember { mutableStateOf(false) }
+
+    val shouldShowGenres by remember {
+        derivedStateOf {
+            val firstVisibleItemIndex = gridState.firstVisibleItemIndex
+            val firstVisibleItemScrollOffset = gridState.firstVisibleItemScrollOffset
+
+            if (firstVisibleItemIndex == 0 && firstVisibleItemScrollOffset < 100) {
+                true
+            } else if (isScrollingDown) {
+                false
+            } else {
+                true
+            }
+        }
+    }
+
+    LaunchedEffect(gridState) {
+        snapshotFlow { gridState.firstVisibleItemScrollOffset.toFloat() + gridState.firstVisibleItemIndex * 1000f }
+            .distinctUntilChanged()
+            .collect { currentOffset ->
+                isScrollingDown = currentOffset > lastScrollOffset
+                lastScrollOffset = currentOffset
+                onGenresVisibilityChange(shouldShowGenres && uiState.shouldShowGenres)
+            }
+    }
+
     val gridColumns = remember(uiState.viewMode, uiState.selectedTab) {
         if (uiState.viewMode == ViewMode.GRID) {
             when (uiState.selectedTab) {
@@ -46,27 +86,28 @@ fun ExploreMainContent(
         }
     }
 
-    val contentPadding = remember(uiState.selectedTab) {
+    val genresHeight = if (uiState.shouldShowGenres) 56.dp else 0.dp
+    val paddingTop by animateDpAsState(
+        targetValue = if (uiState.shouldShowGenres) genresHeight + 16.dp else 16.dp,
+        animationSpec = tween(300),
+        label = "paddingTop"
+    )
+
+    val contentPadding = remember(uiState.selectedTab, paddingTop) {
         when (uiState.selectedTab) {
             ExploreTabsPages.ACTORS -> PaddingValues(
-                top = 16.dp,
+                top = paddingTop,
                 start = 20.dp,
                 end = 20.dp,
                 bottom = 100.dp
             )
+
             ExploreTabsPages.MOVIES, ExploreTabsPages.SERIES -> PaddingValues(
-                top = 16.dp,
+                top = paddingTop,
                 start = 16.dp,
                 end = 16.dp,
                 bottom = 100.dp
             )
-        }
-    }
-
-    val spacing = remember(uiState.selectedTab) {
-        when (uiState.selectedTab) {
-            ExploreTabsPages.ACTORS -> 16.dp
-            ExploreTabsPages.MOVIES, ExploreTabsPages.SERIES -> 16.dp
         }
     }
 
@@ -103,10 +144,13 @@ fun ExploreMainContent(
                 state = gridState,
                 columns = gridColumns,
                 contentPadding = contentPadding,
-                verticalArrangement = Arrangement.spacedBy(if (uiState.selectedTab == ExploreTabsPages.ACTORS) 40.dp else 16.dp),
-                horizontalArrangement = Arrangement.spacedBy(if (uiState.selectedTab == ExploreTabsPages.ACTORS) 16.dp else 16.dp),
+                verticalArrangement = Arrangement.spacedBy(
+                    if (uiState.selectedTab == ExploreTabsPages.ACTORS) 40.dp else 16.dp
+                ),
+                horizontalArrangement = Arrangement.spacedBy(
+                    if (uiState.selectedTab == ExploreTabsPages.ACTORS) 16.dp else 16.dp
+                ),
                 modifier = modifier.fillMaxSize()
-
             ) {
                 items(contentList.itemCount) { index ->
                     val item = contentList[index]
