@@ -8,5 +8,5 @@ class GetActorBestMoviesUseCase @Inject constructor(
     private val actorRepository: ActorRepository
 ) {
     suspend operator fun invoke(actorId: Int): List<Movie> =
-        actorRepository.getBestOfMovies(actorId)
+        actorRepository.getBestOfMovies(actorId).distinctBy { it.id }
 }

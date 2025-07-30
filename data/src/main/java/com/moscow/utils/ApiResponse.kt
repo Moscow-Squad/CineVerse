@@ -11,6 +11,9 @@ class ApiResponse<T>(
     @SerialName("results")
     val results: List<T>? = null,
 
+    @SerialName("items")
+    val items: List<T>? = null,
+
     @SerialName("total_pages")
     val totalPages: Int? = null,
 

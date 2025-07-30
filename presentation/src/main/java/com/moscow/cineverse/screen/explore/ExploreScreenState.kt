@@ -10,7 +10,7 @@ import com.moscow.cineverse.screen.explore.ExploreTabsPages
 data class ExploreScreenState(
 
     val searchKeyWord: String = "",
-
+    val isSearch: Boolean = false,
     val remoteSuggestions: List<String> = emptyList(),
     val localSuggestions: List<SuggestItemUiState> = listOf(),
     val isSearchBarClickedOn: Boolean = false,

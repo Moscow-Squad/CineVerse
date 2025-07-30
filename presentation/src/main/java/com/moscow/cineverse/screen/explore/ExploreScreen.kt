@@ -18,8 +18,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.moscow.cineverse.component.NoInternetScreen
+import com.moscow.cineverse.designSystem.component.MovieCircularProgressBar
+import com.moscow.cineverse.designSystem.component.tabs.ExploreTabsPages
 import com.moscow.cineverse.screen.explore.ExploreTabsPages
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.screen.explore.component.ExploreMainContent
@@ -122,27 +126,45 @@ private fun ExploreScreenContent(
                 ExploreTabsSection(
                     selectedTab = uiState.selectedTab,
                     onTabSelected = interactionListener::onTabSelected,
-                    showAllTabs = uiState.searchKeyWord.isNotEmpty()
+                    showAllTabs = uiState.isSearch
                 )
 
                 Box(modifier = Modifier.fillMaxSize()) {
-                    ExploreMainContent(
-                        uiState = uiState,
-                        gridState = gridState,
-                        contentList = contentList,
-                        interactionListener = interactionListener,
-                        onGenresVisibilityChange = { shouldShow ->
-                            genresVisible = shouldShow
+                    if (contentList.loadState.refresh is LoadState.Loading){
+                        Box(
+                            modifier = Modifier.fillMaxSize(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            MovieCircularProgressBar()
                         }
-                    )
-
-                    GenresRow(
-                        uiState = uiState,
-                        genresState = genresState,
-                        interactionListener = interactionListener,
-                        isVisible = genresVisible,
-                        modifier = Modifier.align(Alignment.TopCenter)
-                    )
+                    }
+                    else if(contentList.loadState.refresh is LoadState.Error){
+                        Box(
+                            modifier = Modifier.fillMaxSize(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            NoInternetScreen(onRetry = interactionListener::onRefresh)
+                        }
+                    }else{
+                        ExploreMainContent(
+                            uiState = uiState,
+                            gridState = gridState,
+                            contentList = contentList,
+                            interactionListener = interactionListener,
+                            onGenresVisibilityChange = { shouldShow ->
+                                genresVisible = shouldShow
+                            }
+                        )
+                    }
+                    if (uiState.genres.isNotEmpty()){
+                        GenresRow(
+                            uiState = uiState,
+                            genresState = genresState,
+                            interactionListener = interactionListener,
+                            isVisible = genresVisible,
+                            modifier = Modifier.align(Alignment.TopCenter)
+                        )
+                    }
                 }
             }
             SearchSuggestionsSection(uiState, interactionListener)

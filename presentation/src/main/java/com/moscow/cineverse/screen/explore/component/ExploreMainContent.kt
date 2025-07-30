@@ -10,9 +10,11 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.CircleShape
@@ -34,6 +36,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import com.moscow.cineverse.common_ui_state.MediaItemUiState
 import com.moscow.cineverse.component.MoviePosterCard
@@ -85,13 +88,13 @@ fun ExploreMainContent(
     }
 
     val gridColumns = remember(uiState.viewMode, uiState.selectedTab) {
-        if (uiState.viewMode == ViewMode.GRID) {
-            when (uiState.selectedTab) {
-                ExploreTabsPages.ACTORS -> GridCells.Fixed(3)
-                ExploreTabsPages.MOVIES, ExploreTabsPages.SERIES -> GridCells.Adaptive(minSize = 160.dp)
-            }
-        } else {
-            GridCells.Fixed(1)
+        when (uiState.selectedTab) {
+            ExploreTabsPages.ACTORS -> GridCells.Fixed(3)
+            ExploreTabsPages.MOVIES, ExploreTabsPages.SERIES ->
+                if (uiState.viewMode == ViewMode.GRID)
+                    GridCells.Fixed(2)
+                else
+                    GridCells.Fixed(1)
         }
     }
 
@@ -157,7 +160,7 @@ fun ExploreMainContent(
                     if (uiState.selectedTab == ExploreTabsPages.ACTORS) 40.dp else 16.dp
                 ),
                 horizontalArrangement = Arrangement.spacedBy(
-                    if (uiState.selectedTab == ExploreTabsPages.ACTORS) 16.dp else 16.dp
+                    if (uiState.selectedTab == ExploreTabsPages.ACTORS) 16.dp else 12.dp
                 ),
                 modifier = modifier.fillMaxSize()
             ) {
@@ -176,12 +179,26 @@ fun ExploreMainContent(
                             is ExploreScreenState.ActorUiState -> {
                                 ActorPosterCard(
                                     actor = item,
-                                    viewMode = uiState.viewMode,
                                     onActorClicked = interactionListener::onActorClick,
                                     modifier = Modifier.aspectRatio(1f)
                                 )
                             }
                         }
+                    }
+                }
+                if (contentList.loadState.append is LoadState.Loading) {
+                    item(span = {GridItemSpan(maxLineSpan)}){
+                        Box(
+                            modifier = Modifier.fillMaxSize(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            MovieCircularProgressBar()
+                        }
+                    }
+                }
+                if (contentList.loadState.append is LoadState.Error) {
+                    item(span = { GridItemSpan(maxLineSpan) }) {
+                        NoInternetScreen(onRetry = { contentList.retry() })
                     }
                 }
             }

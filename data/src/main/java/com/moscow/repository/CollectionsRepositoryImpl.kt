@@ -1,5 +1,6 @@
 package com.moscow.repository
 
+import android.util.Log
 import com.moscow.data_source.remote.CollectionRemoteDataSource
 import com.moscow.domain.repository.CollectionsRepository
 import com.moscow.mapper.toDomain
@@ -7,18 +8,27 @@ import com.moscow.remote.dto.AddMediaItemToCollectionRequestDto
 import com.moscow.remote.dto.CreateCollectionDto
 import com.moscow.remote.dto.toDomain
 import com.moscow.domain.model.Collection
-import com.moscow.domain.model.MediaItem
 import com.moscow.domain.model.MediaType
+import com.moscow.domain.model.Movie
+import com.moscow.domain.model.UserType
+import com.moscow.domain.repository.PreferenceRepository
+import com.moscow.utils.CineVerseExceptions
 import javax.inject.Inject
 
 class CollectionsRepositoryImpl @Inject constructor(
-    private val collectionRemoteDataSource: CollectionRemoteDataSource
+    private val collectionRemoteDataSource: CollectionRemoteDataSource,
+    private val preferenceRepository: PreferenceRepository
 ) : CollectionsRepository {
     override suspend fun getCollections(page: Int): List<Collection> {
+        val user = preferenceRepository.getUser()
+        val accountId = when (user) {
+            is UserType.AuthenticatedUser -> user.id
+            is UserType.GuestUser -> "0"
+        }
         val response = collectionRemoteDataSource.getMyCollections(
-            accountId = 22117857,
-            sessionId = "31044f799b3ccf5e970b994ca0022ef8865c1e35",
-            page = 1
+            accountId = accountId,
+            sessionId = preferenceRepository.getSessionId(),
+            page = page
         )
         return response.results?.map { it.toDomain() } ?: emptyList()
     }
@@ -26,14 +36,14 @@ class CollectionsRepositoryImpl @Inject constructor(
     override suspend fun addNewCollection(
         collectionName: String,
         collectionDescription: String?
-    ): String {
+    ): Int {
         val collection =
             CreateCollectionDto(name = collectionName, description = collectionDescription)
         val response = collectionRemoteDataSource.addNewCollection(
             collection = collection,
-            sessionId = "31044f799b3ccf5e970b994ca0022ef8865c1e35"
+            sessionId = preferenceRepository.getSessionId()
         )
-        return response.statusMessage ?: "Unexpected Error happened"
+        return response.listId ?: throw CineVerseExceptions(response.statusCode?:0,response.statusMessage?:"")
     }
 
     override suspend fun addMediaItemToCollection(
@@ -41,24 +51,21 @@ class CollectionsRepositoryImpl @Inject constructor(
         mediaItemType: MediaType,
         collectionId: Int
     ): String {
-        val item =
-            AddMediaItemToCollectionRequestDto(
-                mediaId = mediaItemId,
-                mediaType = mediaItemType.name
-            )
+        val item = AddMediaItemToCollectionRequestDto(mediaId = mediaItemId)
         val response = collectionRemoteDataSource.addMediaItemToCollection(
             item = item,
             collectionId = collectionId,
-            sessionId = "31044f799b3ccf5e970b994ca0022ef8865c1e35"
+            sessionId = preferenceRepository.getSessionId()
         )
         return response.statusMessage ?: "Unexpected Error happened"
     }
 
-    override suspend fun getCollectionDetails(collectionId: Int): List<MediaItem> {
+    override suspend fun getCollectionDetails(collectionId: Int,page:Int): List<Movie> {
         val response = collectionRemoteDataSource.getCollectionDetails(
             collectionId = collectionId,
-            sessionId = "31044f799b3ccf5e970b994ca0022ef8865c1e35"
+            sessionId = preferenceRepository.getSessionId(),
+            page = page
         )
-        return response.results?.map { it.toDomain() } ?: emptyList()
+        return response.items?.map { it.toDomain() } ?: emptyList()
     }
 }
