@@ -24,14 +24,11 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import com.moscow.cineverse.component.MoviePosterCard
 import com.moscow.cineverse.component.NoInternetScreen
 import com.moscow.cineverse.designSystem.component.MovieAppBar
-import com.moscow.cineverse.designSystem.component.button.MovieButton
 import com.moscow.cineverse.designSystem.component.MovieCircularProgressBar
 import com.moscow.cineverse.designSystem.component.MovieScaffold
-import com.moscow.cineverse.designSystem.component.ViewMode
-import com.moscow.cineverse.utlis.ViewMode
-import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.mapper.toUi
 import com.moscow.cineverse.screen.explore.component.ViewModeToggleButton
+import com.moscow.cineverse.utlis.ViewMode
 import com.moscow.cinverse.presentation.R
 import com.moscow.domain.model.Series
 
@@ -77,22 +74,21 @@ fun SeriesRecommendationScreenContent(
 ) {
     MovieScaffold {
         Box(modifier = modifier.fillMaxSize()) {
-            if (recommendations.loadState.refresh is LoadState.Loading){
+            if (recommendations.loadState.refresh is LoadState.Loading) {
                 Box(
                     modifier = Modifier.fillMaxSize(),
                     contentAlignment = Alignment.Center
                 ) {
                     MovieCircularProgressBar()
                 }
-            }
-            else if(recommendations.loadState.refresh is LoadState.Error){
+            } else if (recommendations.loadState.refresh is LoadState.Error) {
                 Box(
                     modifier = Modifier.fillMaxSize(),
                     contentAlignment = Alignment.Center
                 ) {
                     NoInternetScreen(onRetry = { recommendations.retry() })
                 }
-            }else{
+            } else {
                 Column(modifier = Modifier.fillMaxSize()) {
                     MovieAppBar(
                         caption = stringResource(R.string.because_you_watched),
@@ -127,7 +123,7 @@ fun SeriesRecommendationScreenContent(
                             }
                         }
                         if (recommendations.loadState.append is LoadState.Loading) {
-                            item(span = {GridItemSpan(maxLineSpan)}){
+                            item(span = { GridItemSpan(maxLineSpan) }) {
                                 Box(
                                     modifier = Modifier.fillMaxSize(),
                                     contentAlignment = Alignment.Center

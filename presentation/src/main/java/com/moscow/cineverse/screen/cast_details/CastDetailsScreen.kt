@@ -154,7 +154,7 @@ fun ActorMoviesSection(
     if (uiState.movies.isNotEmpty()) {
         MovieListSection(
             title = "Best of ${uiState.actorDetails?.name.orEmpty()}",
-            movies = uiState.movies,
+            movies = uiState.movies.take(10),
             paddingHorizontal = 20,
             onClickShowMore = interactionListener::onShowMoreMovies,
             onClickPoster = interactionListener::onMovieClick,
@@ -179,16 +179,25 @@ fun ActorGallerySection(
     interactionListener: CastDetailsInteractionListener,
     modifier: Modifier = Modifier
 ) {
-    val galleryImages = uiState.images.takeIf { it.size >= 3 }?.take(3) ?: return
+    if (uiState.images.isNotEmpty() && uiState.images.size >= 3) {
+        Column(
+            modifier = modifier
+        ) {
+            SectionTitle(
+                title = "Gallery",
+                onClick = {
+                    interactionListener.onShowMoreGallery()
+                },
+                modifier = Modifier.padding(horizontal = 20.dp)
+            )
 
-    Column(modifier = modifier) {
-        SectionTitle(
-            title = "Gallery",
-            onClick = interactionListener::onShowMoreGallery,
-            modifier = Modifier.padding(horizontal = 20.dp)
-        )
-        Spacer(modifier = Modifier.height(12.dp))
-        GallerySection(images = galleryImages, modifier = Modifier.padding(horizontal = 20.dp))
+            Spacer(modifier = Modifier.height(12.dp))
+
+            GallerySection(
+                images = uiState.images.take(3),
+                modifier = Modifier.padding(horizontal = 20.dp)
+            )
+        }
     }
 }
 
@@ -197,17 +206,21 @@ fun ActorBiographySection(
     uiState: CastDetailsUiState,
     modifier: Modifier = Modifier
 ) {
-    uiState.actorDetails?.biography?.takeIf { it.isNotBlank() }?.let { biography ->
-        Box(modifier = modifier) {
-            InfoSection(
-                title = "Biography",
-                description = biography,
-                showGenres = false,
-                maxDescriptionLines = Int.MAX_VALUE,
-                paddingBetween = 8.dp,
-                showRating = false,
-                modifier = Modifier.padding(16.dp)
-            )
+    uiState.actorDetails?.let { actorDetails ->
+        if (actorDetails.biography.isNotEmpty()) {
+            Box(
+                modifier = modifier
+            ) {
+                InfoSection(
+                    title = "Biography",
+                    description = actorDetails.biography,
+                    showGenres = false,
+                    maxDescriptionLines = Int.MAX_VALUE,
+                    paddingBetween = 8.dp,
+                    modifier = Modifier.padding(16.dp),
+                    showRating = false
+                )
+            }
         }
     }
 }

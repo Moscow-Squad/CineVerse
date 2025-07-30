@@ -23,8 +23,6 @@ import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.moscow.cineverse.component.NoInternetScreen
 import com.moscow.cineverse.designSystem.component.MovieCircularProgressBar
-import com.moscow.cineverse.designSystem.component.tabs.ExploreTabsPages
-import com.moscow.cineverse.screen.explore.ExploreTabsPages
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.screen.explore.component.ExploreMainContent
 import com.moscow.cineverse.screen.explore.component.ExploreSearchBarSection
@@ -130,22 +128,21 @@ private fun ExploreScreenContent(
                 )
 
                 Box(modifier = Modifier.fillMaxSize()) {
-                    if (contentList.loadState.refresh is LoadState.Loading){
+                    if (contentList.loadState.refresh is LoadState.Loading) {
                         Box(
                             modifier = Modifier.fillMaxSize(),
                             contentAlignment = Alignment.Center
                         ) {
                             MovieCircularProgressBar()
                         }
-                    }
-                    else if(contentList.loadState.refresh is LoadState.Error){
+                    } else if (contentList.loadState.refresh is LoadState.Error) {
                         Box(
                             modifier = Modifier.fillMaxSize(),
                             contentAlignment = Alignment.Center
                         ) {
                             NoInternetScreen(onRetry = interactionListener::onRefresh)
                         }
-                    }else{
+                    } else {
                         ExploreMainContent(
                             uiState = uiState,
                             gridState = gridState,
@@ -156,7 +153,7 @@ private fun ExploreScreenContent(
                             }
                         )
                     }
-                    if (uiState.genres.isNotEmpty()){
+                    if (uiState.genres.isNotEmpty()) {
                         GenresRow(
                             uiState = uiState,
                             genresState = genresState,
