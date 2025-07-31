@@ -29,7 +29,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -171,12 +170,7 @@ private fun <T> GridMovieCard(
                     }
                 ) {
                     OnBlurContent(
-                        icon = painterResource(R.drawable.icon_eye_slash),
-                        hintText = stringResource(R.string.unsuitable_image),
-                        textStyle = Theme.textStyle.body.small.regular.copy(
-                            color = Color(0x99FFFFFF)
-                        ),
-                        iconSize = 24.dp,
+                        hintText = stringResource(com.moscow.cinverse.presentation.R.string.sensitive_content),
                     )
                 }
 
@@ -289,13 +283,8 @@ private fun <T> ListMovieCard(
                     }
                 ) {
                     OnBlurContent(
-                        icon = painterResource(R.drawable.icon_eye_slash),
-                        hintText = stringResource(R.string.unsuitable_image),
-                        textStyle = TextStyle(
-                            fontSize = 8.sp,
-                            color = Color(0x99FFFFFF)
-                        ),
-                        iconSize = 16.dp,
+                        hintText = "",
+                        isAddedText = false
                     )
                 }
 

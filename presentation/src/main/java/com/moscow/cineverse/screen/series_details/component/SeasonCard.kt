@@ -22,13 +22,11 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.moscow.cineverse.designSystem.component.wrapper.MovieText
 import com.moscow.cineverse.designSystem.component.blur.OnBlurContent
 import com.moscow.cineverse.designSystem.component.blur.RemoteImagePlaceholder
+import com.moscow.cineverse.designSystem.component.wrapper.MovieText
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.design_system.R
 import com.moscow.cineverse.image_viewer.component.SafeImageViewer
@@ -81,12 +79,7 @@ fun SeasonCard(
             ) {
                 OnBlurContent(
                     hintText = stringResource(R.string.unsuitable_image),
-                    textStyle = TextStyle(
-                        fontSize = 8.sp,
-                        color = Color(0x99FFFFFF)
-                    ),
-                    iconSize = 16.dp,
-                    icon = painterResource(R.drawable.icon_eye_slash),
+                    isAddedText = false
                 )
             }
             Column(

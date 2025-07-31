@@ -91,12 +91,7 @@ fun MovieCardDetails(
                     errorContent = { RemoteImagePlaceholder() },
                     onBlurContent = {
                         OnBlurContent(
-                            icon = painterResource(R.drawable.icon_eye_slash),
                             hintText = stringResource(R.string.unsuitable_image),
-                            textStyle = Theme.textStyle.body.small.regular.copy(
-                                color = Color(0x99FFFFFF)
-                            ),
-                            iconSize = 24.dp,
                         )
                     }
                 )
@@ -215,7 +210,6 @@ fun DetailCard(
 }
 
 
-
 @Composable
 fun InfoTextWithIcon(icon: Int, text: String, tint: Color) {
     Row(
@@ -275,12 +269,7 @@ fun MainMovieCard(
                 }
             ) {
                 OnBlurContent(
-                    icon = painterResource(R.drawable.icon_eye_slash),
                     hintText = stringResource(R.string.unsuitable_image),
-                    textStyle = Theme.textStyle.body.small.regular.copy(
-                        color = Color(0x99FFFFFF)
-                    ),
-                    iconSize = 24.dp,
                 )
             }
             Text(
