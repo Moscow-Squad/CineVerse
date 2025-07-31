@@ -1,6 +1,5 @@
 package com.moscow.repository
 
-import android.util.Log
 import com.moscow.data_source.local.DetailsLocalDataSource
 import com.moscow.data_source.remote.SeriesRemoteDataSource
 import com.moscow.domain.model.CreditsDetails

@@ -279,8 +279,9 @@ class ExploreViewModel @Inject constructor(
         viewModelScope.launch {
             if (suggestion.isEmpty()){
                 updateState { it.copy(remoteSuggestions = listOf(uiState.value.searchKeyWord)) }
+            }else {
+                updateState { it.copy(remoteSuggestions = suggestion) }
             }
-            updateState { it.copy(remoteSuggestions = suggestion) }
         }
         updateDisplayedSuggestions()
     }
@@ -292,7 +293,7 @@ class ExploreViewModel @Inject constructor(
 
     private fun getHistoryData() {
         launchWithFlow(
-            flowAction = { getLocalSuggestionsUseCase.invoke() },
+            flowAction = { getLocalSuggestionsUseCase() },
             onSuccess = ::onGetHistoryDataSuccess,
             onError = ::onGetHistoryDataFailed,
             onStart = ::onLoading,

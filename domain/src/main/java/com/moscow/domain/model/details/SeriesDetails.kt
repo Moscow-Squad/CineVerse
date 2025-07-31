@@ -22,25 +22,10 @@ data class SeriesDetail(
     val seasons: List<Season>,
 )
 
-data class CastMember(
-    val id: Int,
-    val name: String,
-    val character: String,
-    val profilePath: String
-)
-
 data class Creator(
     val id: Int,
     val name: String,
     val profilePath: String
-)
-data class Episode(
-    val id: Int,
-    val name: String,
-    val overview: String,
-    val airDate: String,
-    val episodeNumber: Int,
-    val seasonNumber: Int,
 )
 
 data class Season(
