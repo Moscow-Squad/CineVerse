@@ -57,7 +57,7 @@ jobs:
           echo "storePassword=${{ secrets.KEYSTORE_PASSWORD }}" > gradle.properties
           echo "keyAlias=${{ secrets.KEY_ALIAS }}" >> gradle.properties
           echo "keyPassword=${{ secrets.KEY_PASSWORD }}" >> gradle.properties
-          echo "storeFile=$(pwd)/my-release-key.jks" >> gradle.properties
+          echo "storeFile=$(pwd)/app/my-release-key.jks" >> gradle.properties
           echo "android.useAndroidX=true" >> gradle.properties
           echo "android.enableJetifier=true" >> gradle.properties
 
