@@ -1,9 +1,11 @@
 package com.moscow.cineverse.screen.explore
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Surface
@@ -11,7 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -97,7 +99,8 @@ private fun ExploreScreenContent(
     val gridState = rememberLazyGridState()
     val genresState = rememberLazyListState()
 
-    var genresVisible by remember { mutableStateOf(true) }
+    var searchBarVisible by rememberSaveable { mutableStateOf(true) }
+    var genresVisible by rememberSaveable { mutableStateOf(true) }
 
     LaunchedEffect(uiState.selectedTab) {
         gridState.animateScrollToItem(0)
@@ -108,23 +111,36 @@ private fun ExploreScreenContent(
         }
         val targetIndex = uiState.genres.indexOfFirst { it.id == genreId }
         if (targetIndex >= 0) genresState.animateScrollToItem(targetIndex)
+        searchBarVisible = true
         genresVisible = true
     }
+
 
     LaunchedEffect(uiState.shouldShowGenres) {
         if (uiState.shouldShowGenres) {
             genresVisible = true
+            searchBarVisible = true
         }
     }
 
-    Surface(modifier = modifier.fillMaxSize(), color = Theme.colors.background.screen) {
+    Surface(
+        modifier = modifier
+            .background(Theme.colors.background.screen)
+            .systemBarsPadding()
+            .fillMaxSize(),
+        color = Theme.colors.background.screen
+    ) {
         Box(modifier = Modifier.fillMaxSize()) {
             Column(modifier = Modifier.fillMaxSize()) {
-                ExploreSearchBarSection(uiState, interactionListener)
+                ExploreSearchBarSection(
+                    uiState,
+                    interactionListener,
+                    isVisible = searchBarVisible
+                )
                 ExploreTabsSection(
                     selectedTab = uiState.selectedTab,
                     onTabSelected = interactionListener::onTabSelected,
-                    showAllTabs = uiState.isSearch
+                    showAllTabs = uiState.searchKeyWord.isNotEmpty()
                 )
 
                 Box(modifier = Modifier.fillMaxSize()) {
@@ -150,6 +166,8 @@ private fun ExploreScreenContent(
                             interactionListener = interactionListener,
                             onGenresVisibilityChange = { shouldShow ->
                                 genresVisible = shouldShow
+                                searchBarVisible =
+                                    if(uiState.searchKeyWord.isNotEmpty()) true else shouldShow
                             }
                         )
                     }

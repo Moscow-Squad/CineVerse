@@ -24,7 +24,7 @@ fun SearchSuggestion(
     isHistory: Boolean,
     onClearAllClicked: () -> Unit,
     modifier: Modifier = Modifier,
-    onClickSuggestion: (SuggestItemUiState) -> Unit = {},
+    onClickSuggestion: (SuggestItemUiState) -> Unit = {}
 ) {
     val title = if (isHistory)
         stringResource(R.string.history)
@@ -38,7 +38,7 @@ fun SearchSuggestion(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .padding(top = 104.dp)
+            .padding(top = 56.dp)
             .background(color = Theme.colors.background.screen)
             .padding(horizontal = 16.dp)
             .verticalScroll(rememberScrollState())

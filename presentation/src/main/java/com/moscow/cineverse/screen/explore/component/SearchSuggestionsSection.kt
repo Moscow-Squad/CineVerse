@@ -5,10 +5,8 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
-import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import com.moscow.cineverse.screen.explore.ExploreInteractionListener
 import com.moscow.cineverse.screen.explore.ExploreScreenState
 
@@ -24,7 +22,7 @@ fun SearchSuggestionsSection(
         exit = slideOutVertically(targetOffsetY = { it }) + fadeOut()
     ) {
         SearchSuggestion(
-            modifier = modifier.padding(top = 24.dp),
+            modifier = modifier,
             suggestionList = uiState.displayedSuggestions,
             isHistory = uiState.showHistory,
             onClickSuggestion = interactionListener::onClickSuggestion,
