@@ -1,4 +1,4 @@
-name: CI - Publish Release Build
+name: CI - Verify build
 
 on:
   pull_request:
@@ -43,31 +43,15 @@ jobs:
       - name: Create keys.properties
         run: |
           echo "BEARER_TOKEN=${{ secrets.BEARER_TOKEN }}" > keys.properties
-          mkdir -p data
+      - name: Create keys.properties
+        run: |
           echo "TMDB_API_KEY=\"${{ secrets.TMDB_API_KEY }}\"" > data/keys.properties
-
       - name: Create google-services.json
         run: |
           echo "${{ secrets.GOOGLE_SERVICES_JSON }}" | base64 -d > app/google-services.json
 
-
-      - name: Create Keystore
-        run: |
-          echo "${{ secrets.KEYSTORE }}" | base64 -d > my-release-key.jks
-          echo "storePassword=${{ secrets.KEYSTORE_PASSWORD }}" > gradle.properties
-          echo "keyAlias=${{ secrets.KEY_ALIAS }}" >> gradle.properties
-          echo "keyPassword=${{ secrets.KEY_PASSWORD }}" >> gradle.properties
-          echo "storeFile=$(pwd)/my-release-key.jks" >> gradle.properties
-
       - name: Setup Gradlew
         run: chmod +x ./gradlew
 
-      - name: Build (assembleRelease)
-        run: ./gradlew assembleRelease --stacktrace --info
-
-      - name: Upload Release Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: release-apk
-          path: app/build/outputs/apk/release/app-release.apk
-          retention-days: 7
+      - name: Build (assembleDebug)
+        run: ./gradlew assembleDebug --stacktrace --info
