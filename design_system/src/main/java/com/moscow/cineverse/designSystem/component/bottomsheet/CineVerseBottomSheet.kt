@@ -47,7 +47,6 @@ fun CineVerseBottomSheet(
     expanded: Boolean = true,
     showCancelIcon: Boolean = true,
     containerColor: Color = Theme.colors.background.bottomSheet,
-    scrimColor: Color = Theme.colors.background.bottomSheetContainer,
     contentHorizontalAlignment: Alignment.Horizontal = Alignment.CenterHorizontally,
     onDismissRequest: () -> Unit = {},
     onClose: () -> Unit = {},
@@ -60,10 +59,9 @@ fun CineVerseBottomSheet(
         sheetState = sheetState,
         onDismissRequest = onDismissRequest,
         containerColor = containerColor,
-        scrimColor = scrimColor,
         shape = RoundedCornerShape(Theme.radius.extraLarge),
         modifier = modifier
-            .padding(horizontal = 12.dp)
+            .padding(12.dp)
             .navigationBarsPadding(),
         dragHandle = {
             Box(
