@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
@@ -22,25 +21,19 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.ParagraphStyle
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.rememberAsyncImagePainter
+import com.moscow.cineverse.MovieListSection
 import com.moscow.cineverse.component.MoviePosterCard
 import com.moscow.cineverse.component.NoInternetScreen
+import com.moscow.cineverse.component.SectionTitle
+import com.moscow.cineverse.component.StorylineSection
 import com.moscow.cineverse.designSystem.component.MovieAppBar
 import com.moscow.cineverse.designSystem.component.MovieCircularProgressBar
-import com.moscow.cineverse.MovieListSection
 import com.moscow.cineverse.designSystem.component.MovieScaffold
-import com.moscow.cineverse.component.SectionTitle
+import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.screen.movieSeriesDetails.CastCard
 import com.moscow.cineverse.screen.movieSeriesDetails.MainMovieCard
 import com.moscow.cineverse.screen.movieSeriesDetails.MovieCardDetails
@@ -49,7 +42,6 @@ import com.moscow.cineverse.screen.movieSeriesDetails.MovieReviewCard
 import com.moscow.cineverse.screen.movieSeriesDetails.RatingSection
 import com.moscow.cineverse.screen.movieSeriesDetails.StaffInfoSection
 import com.moscow.cineverse.screen.movieSeriesDetails.StarCastSection
-import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.screen.series_details.component.SeasonCard
 import com.moscow.cinverse.presentation.R
 
@@ -117,7 +109,9 @@ fun SeriesDetailsContent(
         when {
             uiState.isLoading ->{
                 Box(
-                    modifier = Modifier.fillMaxSize().background(Theme.colors.background.screen),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(Theme.colors.background.screen),
                     contentAlignment = Alignment.Center
                 ) {
                     MovieCircularProgressBar()
@@ -125,14 +119,18 @@ fun SeriesDetailsContent(
             }
             uiState.errorMessage != "" ->{
                 Box(
-                    modifier = Modifier.fillMaxSize().background(Theme.colors.background.screen),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(Theme.colors.background.screen),
                     contentAlignment = Alignment.Center
                 ) {
                     NoInternetScreen(onRetry = interactionListener::onRetry)
                 }
             }
             else ->{
-                Column(modifier = Modifier.fillMaxSize().background(Theme.colors.background.screen)) {
+                Column(modifier = Modifier
+                    .fillMaxSize()
+                    .background(Theme.colors.background.screen)) {
                     MovieAppBar(backButtonClick = onNavigateBack, showBackButton = true)
                     LazyColumn(
                         state = scrollState,
@@ -170,33 +168,7 @@ fun SeriesDetailsContent(
                             }
                         }
                         item {
-                            Text(
-                                text = stringResource(R.string.storyline),
-                                style = Theme.textStyle.title.small,
-                                color = Theme.colors.shade.primary,
-                                modifier = Modifier.padding(16.dp, top = 24.dp, bottom = 8.dp),
-                            )
-                        }
-                        item {
-                            Text(
-                                modifier = Modifier.padding(horizontal = 16.dp),
-                                overflow = TextOverflow.Ellipsis,
-                                text = buildAnnotatedString {
-                                    withStyle(style = ParagraphStyle(lineHeight = 12.sp)) {
-                                        withStyle(
-                                            style = SpanStyle(
-                                                color = textColor,
-                                                fontWeight = FontWeight.Medium,
-                                                fontSize = 12.sp,
-                                                letterSpacing = 0.sp
-                                            )
-                                        ) {
-                                            append(detail.overview)
-                                        }
-                                    }
-                                },
-                                textAlign = TextAlign.Justify
-                            )
+                            StorylineSection(description = uiState.seriesDetail.overview)
                         }
                         item {
                             SectionTitle(

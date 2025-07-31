@@ -28,6 +28,7 @@ import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.moscow.cineverse.component.NoInternetScreen
+import com.moscow.cineverse.component.StorylineSection
 import com.moscow.cineverse.designSystem.component.MovieAppBar
 import com.moscow.cineverse.designSystem.component.MovieScaffold
 import com.moscow.cineverse.designSystem.theme.Theme
@@ -41,7 +42,6 @@ import com.moscow.cineverse.screen.movie_details.component.MovieRatingSection
 import com.moscow.cineverse.screen.movie_details.component.MovieRecommendationsSection
 import com.moscow.cineverse.screen.movie_details.component.MovieReviewsSection
 import com.moscow.cineverse.screen.movie_details.component.MovieStaffInfoSection
-import com.moscow.cineverse.screen.movie_details.component.MovieStorylineSection
 
 @Composable
 fun MovieDetailsScreen(
@@ -93,7 +93,9 @@ private fun MovieDetailsContent(
 
             uiState.shouldShowError -> {
                 Box(
-                    modifier = Modifier.fillMaxSize().background(Theme.colors.background.screen),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(Theme.colors.background.screen),
                     contentAlignment = Alignment.Center
                 ) {
                     NoInternetScreen(onRetry = interactionListener::onRetry)
@@ -186,7 +188,7 @@ private fun MovieDetailsMainContent(
                 }
             }
             item {
-                MovieStorylineSection(uiState = uiState)
+                StorylineSection(description = uiState.movieDetailsUiState?.description)
             }
             item {
                 MovieCastSection(uiState = uiState, interactionListener = interactionListener)
