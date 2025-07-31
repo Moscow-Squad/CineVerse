@@ -1,8 +1,10 @@
 package com.moscow.cineverse.mapper
 
+import android.content.Context
 import com.moscow.cineverse.common_ui_state.CrewUiState
 import com.moscow.cineverse.common_ui_state.ReviewUiState
 import com.moscow.cineverse.common_ui_state.StarCastUiState
+import com.moscow.cineverse.design_system.R
 import com.moscow.cineverse.screen.movie_details.MovieScreenState
 import com.moscow.domain.model.CastDetails
 import com.moscow.domain.model.CrewDetails
@@ -52,23 +54,53 @@ fun CrewDetails.toUi() = CrewUiState(
 )
 
 fun LocalDate.toFormattedReleasedDate(): String {
+
     return try {
-        val monthName = when (this.monthNumber) {
-            1 -> "Jan"
-            2 -> "Feb"
-            3 -> "Mar"
-            4 -> "Apr"
-            5 -> "May"
-            6 -> "Jun"
-            7 -> "Jul"
-            8 -> "Aug"
-            9 -> "Sep"
-            10 -> "Oct"
-            11 -> "Nov"
-            12 -> "Dec"
-            else -> "Unknown"
+        val isArabic = Locale.getDefault().language == "ar"
+
+        val monthName = if (isArabic) {
+            when (this.monthNumber) {
+                1 -> "يناير"
+                2 -> "فبراير"
+                3 -> "مارس"
+                4 -> "أبريل"
+                5 -> "مايو"
+                6 -> "يونيو"
+                7 -> "يوليو"
+                8 -> "أغسطس"
+                9 -> "سبتمبر"
+                10 -> "أكتوبر"
+                11 -> "نوفمبر"
+                12 -> "ديسمبر"
+                else -> "غير معروف"
+            }
+        } else {
+            when (this.monthNumber) {
+                1 -> "Jan"
+                2 -> "Feb"
+                3 -> "Mar"
+                4 -> "Apr"
+                5 -> "May"
+                6 -> "Jun"
+                7 -> "Jul"
+                8 -> "Aug"
+                9 -> "Sep"
+                10 -> "Oct"
+                11 -> "Nov"
+                12 -> "Dec"
+                else -> "Unknown"
+            }
         }
-        " ${this.year}, $monthName ${this.dayOfMonth}"
+
+        val separator = if (isArabic) "، " else ", "
+        String.format(
+            Locale.getDefault(),
+            "%d%s%s %d",
+            this.year,
+            separator,
+            monthName,
+            this.dayOfMonth
+        )
     } catch (e: Exception) {
         "$this"
     }
@@ -85,13 +117,19 @@ fun formatReviewDate(dateString: String): String {
     }
 }
 
-fun Int.toHourMinuteFormat(): String {
+fun Int.toHourMinuteFormat(context: Context): String {
     val hours = this / 60
     val minutes = this % 60
+
     return when {
-        hours > 0 && minutes > 0 -> "$hours h $minutes m"
-        hours > 0 -> "$hours h"
-        minutes > 0 -> "$minutes m"
+        hours > 0 && minutes > 0 -> context.getString(
+            R.string.duration_hours_minutes,
+            hours,
+            minutes
+        )
+
+        hours > 0 -> context.getString(R.string.duration_hours_only, hours)
+        minutes > 0 -> context.getString(R.string.duration_minutes_only, minutes)
         else -> ""
     }
 }

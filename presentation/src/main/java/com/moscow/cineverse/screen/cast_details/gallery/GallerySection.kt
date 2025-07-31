@@ -11,9 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.moscow.cineverse.designSystem.component.blur.OnBlurContent
@@ -31,7 +29,9 @@ fun GallerySection(
     require(images.size == 3) { "GallerySection requires exactly 3 images" }
 
     val flipModifier = if (isFlipped) Modifier.graphicsLayer { scaleX = -1f } else Modifier
-    val containerModifier = modifier.fillMaxWidth().then(flipModifier)
+    val containerModifier = modifier
+        .fillMaxWidth()
+        .then(flipModifier)
 
     Row(
         modifier = containerModifier,
@@ -76,10 +76,7 @@ fun GalleryImage(
         placeholderContent = { RemoteImagePlaceholder() },
         onBlurContent = {
             OnBlurContent(
-                icon = painterResource(R.drawable.icon_eye_slash),
                 hintText = stringResource(R.string.unsuitable_image),
-                iconSize = 24.dp,
-                textStyle = Theme.textStyle.body.small.regular.copy(color = Color(0x99FFFFFF))
             )
         }
     )

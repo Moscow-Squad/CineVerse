@@ -53,11 +53,11 @@ jobs:
 
       - name: Create Keystore
         run: |
-          echo "${{ secrets.KEYSTORE }}" | base64 -d > my-release-key.jks
+          echo "${{ secrets.KEYSTORE }}" | base64 -d > app/my-release-key.jks
           echo "storePassword=${{ secrets.KEYSTORE_PASSWORD }}" > gradle.properties
           echo "keyAlias=${{ secrets.KEY_ALIAS }}" >> gradle.properties
           echo "keyPassword=${{ secrets.KEY_PASSWORD }}" >> gradle.properties
-          echo "storeFile=$(pwd)/my-release-key.jks" >> gradle.properties
+          echo "storeFile=$(pwd)/app/my-release-key.jks" >> gradle.properties
           echo "android.useAndroidX=true" >> gradle.properties
           echo "android.enableJetifier=true" >> gradle.properties
 
