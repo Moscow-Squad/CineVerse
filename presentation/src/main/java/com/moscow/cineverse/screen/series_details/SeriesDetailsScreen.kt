@@ -150,7 +150,7 @@ fun SeriesDetailsContent(
                                             rating = detail.rating,
                                             duration = detail.duration,
                                             releaseDate = detail.releaseDate,
-                                            type = detail.type,
+                                            type = stringResource(R.string.series),
                                             animatedVisibilityScope = this@AnimatedContent,
                                             sharedTransitionScope = this@SharedTransitionLayout,
                                             onSaveClick = { interactionListener.addToCollection() }

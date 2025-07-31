@@ -51,23 +51,53 @@ fun CrewDetails.toUi() = CrewUiState(
 )
 
 fun LocalDate.toFormattedReleasedDate(): String {
+
     return try {
-        val monthName = when (this.monthNumber) {
-            1 -> "Jan"
-            2 -> "Feb"
-            3 -> "Mar"
-            4 -> "Apr"
-            5 -> "May"
-            6 -> "Jun"
-            7 -> "Jul"
-            8 -> "Aug"
-            9 -> "Sep"
-            10 -> "Oct"
-            11 -> "Nov"
-            12 -> "Dec"
-            else -> "Unknown"
+        val isArabic = Locale.getDefault().language == "ar"
+
+        val monthName = if (isArabic) {
+            when (this.monthNumber) {
+                1 -> "يناير"
+                2 -> "فبراير"
+                3 -> "مارس"
+                4 -> "أبريل"
+                5 -> "مايو"
+                6 -> "يونيو"
+                7 -> "يوليو"
+                8 -> "أغسطس"
+                9 -> "سبتمبر"
+                10 -> "أكتوبر"
+                11 -> "نوفمبر"
+                12 -> "ديسمبر"
+                else -> "غير معروف"
+            }
+        } else {
+            when (this.monthNumber) {
+                1 -> "Jan"
+                2 -> "Feb"
+                3 -> "Mar"
+                4 -> "Apr"
+                5 -> "May"
+                6 -> "Jun"
+                7 -> "Jul"
+                8 -> "Aug"
+                9 -> "Sep"
+                10 -> "Oct"
+                11 -> "Nov"
+                12 -> "Dec"
+                else -> "Unknown"
+            }
         }
-        " ${this.year}, $monthName ${this.dayOfMonth}"
+
+        val separator = if (isArabic) "، " else ", "
+        String.format(
+            Locale.getDefault(),
+            "%d%s%s %d",
+            this.year,
+            separator,
+            monthName,
+            this.dayOfMonth
+        )
     } catch (e: Exception) {
         "$this"
     }

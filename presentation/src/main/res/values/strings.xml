@@ -85,5 +85,6 @@
     <string name="no_leading_trailing_spaces">No leading or trailing spaces</string>
     <string name="username_invalid_chars">Username must be Only letters, numbers and underscores</string>
     <string name="search_can_t_be_empty">Search can\'t be empty!</string>
+    <string name="series">Series</string>
 
 </resources>

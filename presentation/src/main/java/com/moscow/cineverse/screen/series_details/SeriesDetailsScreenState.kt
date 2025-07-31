@@ -3,8 +3,8 @@ package com.moscow.cineverse.screen.series_details
 import com.moscow.cineverse.common_ui_state.CrewUiState
 import com.moscow.cineverse.common_ui_state.MediaItemUiState
 import com.moscow.cineverse.common_ui_state.ReviewUiState
-import com.moscow.cineverse.utlis.ViewMode
 import com.moscow.cineverse.common_ui_state.StarCastUiState
+import com.moscow.cineverse.utlis.ViewMode
 
 data class SeriesDetailsScreenState(
     val isLoading: Boolean = false,
@@ -28,7 +28,6 @@ data class SeriesDetailsUiState(
     val genre: String = "",
     val duration: String = "",
     val releaseDate: String = "",
-    val type: String = "SERIES",
     val posterPath: String = "",
     val numberOfSeasons: Int = 0,
     val numberOfEpisodes: Int = 0,
