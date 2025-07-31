@@ -85,4 +85,12 @@
     <string name="producer">المنتج</string>
     <string name="writer">الكاتب</string>
     <string name="search_can_t_be_empty">الرجاء ادخل كلمة البحث</string>
+    <string name="gallery">المعرض</string>
+    <string name="best_of">أفضل ما في %1$s</string>
+    <string name="biography">السيرة الذاتية</string>
+    <string name="youtube">يوتيوب</string>
+    <string name="facebook">فيسبوك</string>
+    <string name="instagram">إنستغرام</string>
+    <string name="born_on">وُلد في %1$s</string>
+
 </resources>
