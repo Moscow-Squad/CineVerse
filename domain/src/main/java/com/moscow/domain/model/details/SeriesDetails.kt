@@ -14,7 +14,7 @@ data class SeriesDetail(
     val rating: Double,
     val voteCount: Int,
     val releaseDate: LocalDate,
-    val runtime: String,
+    val runtime: Int,
     val type: String,
     val creators: List<Creator>,
     val numberOfSeasons: Int,
@@ -31,7 +31,7 @@ data class Creator(
 data class Season(
     val id: Int,
     val name: String,
-    val airDate: String,
+    val airDate: LocalDate,
     val episodeCount: Int,
     val posterPath: String,
     val overview: String,

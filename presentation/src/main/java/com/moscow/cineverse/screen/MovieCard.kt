@@ -34,6 +34,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.moscow.cineverse.designSystem.component.blur.OnBlurContent
 import com.moscow.cineverse.designSystem.theme.CineVerseTheme
 import com.moscow.cineverse.designSystem.theme.Theme
@@ -135,14 +136,13 @@ private fun <T> GridMovieCard(
     getRating: (T) -> Float,
 ) {
     Column(
-        modifier = modifier
+        modifier = modifier.clickable { onMovieClick(getId(movieData)) }
     ) {
         Card(
             modifier = Modifier
                 .height(180.dp)
                 .fillMaxWidth()
-                .clip(RoundedCornerShape(Theme.radius.large))
-                .clickable { onMovieClick(getId(movieData)) },
+                .clip(RoundedCornerShape(Theme.radius.large)),
             shape = RoundedCornerShape(Theme.radius.large)
         ) {
             Box {

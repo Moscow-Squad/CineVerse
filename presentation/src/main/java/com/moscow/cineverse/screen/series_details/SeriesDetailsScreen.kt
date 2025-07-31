@@ -1,5 +1,6 @@
 package com.moscow.cineverse.screen.series_details
 
+import android.content.Context
 import android.content.Intent
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.ExperimentalSharedTransitionApi
@@ -14,7 +15,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
@@ -24,26 +24,22 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.ParagraphStyle
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.core.net.toUri
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.rememberAsyncImagePainter
+import com.moscow.cineverse.MovieListSection
 import com.moscow.cineverse.component.MoviePosterCard
 import com.moscow.cineverse.component.NoInternetScreen
+import com.moscow.cineverse.component.SectionTitle
+import com.moscow.cineverse.component.StorylineSection
 import com.moscow.cineverse.designSystem.component.MovieAppBar
 import com.moscow.cineverse.designSystem.component.MovieCircularProgressBar
-import com.moscow.cineverse.MovieListSection
 import com.moscow.cineverse.designSystem.component.MovieScaffold
-import com.moscow.cineverse.component.SectionTitle
+import com.moscow.cineverse.designSystem.theme.Theme
+import com.moscow.cineverse.mapper.formatReviewDate
+import com.moscow.cineverse.mapper.toHourMinuteFormat
 import com.moscow.cineverse.screen.movieSeriesDetails.CastCard
 import com.moscow.cineverse.screen.movieSeriesDetails.MainMovieCard
 import com.moscow.cineverse.screen.movieSeriesDetails.MovieCardDetails
@@ -52,7 +48,6 @@ import com.moscow.cineverse.screen.movieSeriesDetails.MovieReviewCard
 import com.moscow.cineverse.screen.movieSeriesDetails.RatingSection
 import com.moscow.cineverse.screen.movieSeriesDetails.StaffInfoSection
 import com.moscow.cineverse.screen.movieSeriesDetails.StarCastSection
-import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.screen.series_details.component.SeasonCard
 import com.moscow.cinverse.presentation.R
 
@@ -71,30 +66,30 @@ fun SeriesDetailsScreen(
     val context = LocalContext.current
 
     LaunchedEffect(viewModel) {
-        viewModel.uiEffect.collect { effect ->
-            when (effect) {
+        viewModel.uiEffect.collect { event ->
+            when (event) {
                 is SeriesDetailsScreenEffects.AddToCollection -> {
-                    navigateToCollectionBottomSheet(effect.seriesId)
+                    navigateToCollectionBottomSheet(event.seriesId)
                 }
                 is SeriesDetailsScreenEffects.NavigateToRecommendationSeries -> {
-                    navigateToSeriesRecommendation(effect.seriesId, effect.seriesName)
+                    navigateToSeriesRecommendation(event.seriesId, event.seriesName)
                 }
                 is SeriesDetailsScreenEffects.NavigateToReviewsScreen -> {
-                    navigateToReviews(effect.seriesId)
+                    navigateToReviews(event.seriesId)
                 }
                 is SeriesDetailsScreenEffects.NavigateToSeriesSeasonsScreen -> {
-                    navigateToSeriesSeasons(effect.seriesId)
+                    navigateToSeriesSeasons(event.seriesId)
                 }
 
                 is SeriesDetailsScreenEffects.NavigateToActorDetailsScreen -> {
-                    navigateToCastDetails(effect.ActorId)
+                    navigateToCastDetails(event.ActorId)
                 }
                 is SeriesDetailsScreenEffects.NavigateToSeriesDetailsScreen -> {
-                    navigateToSeriesDetails(effect.seriesId)
+                    navigateToSeriesDetails(event.seriesId)
                 }
 
                 is SeriesDetailsScreenEffects.OpenTrailer -> {
-                    val intent = Intent(Intent.ACTION_VIEW, effect.url.toUri())
+                    val intent = Intent(Intent.ACTION_VIEW, event.url.toUri())
                     context.startActivity(intent)
                 }
             }
@@ -103,7 +98,8 @@ fun SeriesDetailsScreen(
     SeriesDetailsContent(
         uiState = uiState,
         interactionListener = viewModel,
-        onNavigateBack = navigateBack
+        onNavigateBack = navigateBack,
+        context = context
     )
 }
 
@@ -112,7 +108,8 @@ fun SeriesDetailsScreen(
 fun SeriesDetailsContent(
     uiState: SeriesDetailsScreenState,
     interactionListener: SeriesDetailsScreenInteractionListener,
-    onNavigateBack: () -> Unit
+    onNavigateBack: () -> Unit,
+    context: Context
 ) {
     val detail = uiState.seriesDetail
     val textColor = Theme.colors.shade.secondary
@@ -126,7 +123,9 @@ fun SeriesDetailsContent(
         when {
             uiState.isLoading ->{
                 Box(
-                    modifier = Modifier.fillMaxSize().background(Theme.colors.background.screen),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(Theme.colors.background.screen),
                     contentAlignment = Alignment.Center
                 ) {
                     MovieCircularProgressBar()
@@ -134,14 +133,18 @@ fun SeriesDetailsContent(
             }
             uiState.errorMessage != "" ->{
                 Box(
-                    modifier = Modifier.fillMaxSize().background(Theme.colors.background.screen),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(Theme.colors.background.screen),
                     contentAlignment = Alignment.Center
                 ) {
                     NoInternetScreen(onRetry = interactionListener::onRetry)
                 }
             }
             else ->{
-                Column(modifier = Modifier.fillMaxSize().background(Theme.colors.background.screen)) {
+                Column(modifier = Modifier
+                    .fillMaxSize()
+                    .background(Theme.colors.background.screen)) {
                     MovieAppBar(backButtonClick = onNavigateBack, showBackButton = true)
                     LazyColumn(
                         state = scrollState,
@@ -159,9 +162,9 @@ fun SeriesDetailsContent(
                                             title = detail.title,
                                             genres = detail.genre,
                                             rating = detail.rating,
-                                            duration = detail.duration,
+                                            duration = detail.duration.toHourMinuteFormat(context),
                                             releaseDate = detail.releaseDate,
-                                            type = detail.type,
+                                            type = stringResource(com.moscow.cineverse.design_system.R.string.series_type),
                                             animatedVisibilityScope = this@AnimatedContent,
                                             sharedTransitionScope = this@SharedTransitionLayout,
                                             onSaveClick = { interactionListener.addToCollection() },
@@ -180,36 +183,8 @@ fun SeriesDetailsContent(
                                 }
                             }
                         }
-                        if (detail.overview != ""){
-                            item {
-                                Text(
-                                    text = stringResource(R.string.storyline),
-                                    style = Theme.textStyle.title.small,
-                                    color = Theme.colors.shade.primary,
-                                    modifier = Modifier.padding(16.dp, top = 24.dp, bottom = 8.dp),
-                                )
-                            }
-                            item {
-                                Text(
-                                    modifier = Modifier.padding(horizontal = 16.dp),
-                                    overflow = TextOverflow.Ellipsis,
-                                    text = buildAnnotatedString {
-                                        withStyle(style = ParagraphStyle(lineHeight = 12.sp)) {
-                                            withStyle(
-                                                style = SpanStyle(
-                                                    color = textColor,
-                                                    fontWeight = FontWeight.Medium,
-                                                    fontSize = 12.sp,
-                                                    letterSpacing = 0.sp
-                                                )
-                                            ) {
-                                                append(detail.overview)
-                                            }
-                                        }
-                                    },
-                                    textAlign = TextAlign.Justify
-                                )
-                            }
+                        item {
+                            StorylineSection(description = uiState.seriesDetail.overview)
                         }
                         item {
                             SectionTitle(
@@ -261,19 +236,26 @@ fun SeriesDetailsContent(
                         }
                         if (uiState.crew.isNotEmpty() || detail.creators.isNotEmpty()) {
                             item {
-                                val staffInfo = mutableListOf<Pair<String, String>>()
-
-                                detail.creators.forEach { creator ->
-                                    staffInfo.add(creator.job to creator.name)
-                                }
-                                uiState.crew.groupBy { it.job }
-                                    .mapValues { it.value.map { member -> member.name } }
-                                    .forEach { (job, names) ->
-                                        staffInfo.add(job to names.joinToString(", "))
-                                    }
                                 StaffInfoSection(
-                                    staffInfo = staffInfo.take(5),
-                                    modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 24.dp)
+                                    staffInfo = listOf(
+                                        stringResource(R.string.characters) to uiState.characters.joinToString(
+                                            ","
+                                        ),
+                                        stringResource(R.string.director_screenplay_story) to uiState.director.joinToString(
+                                            ","
+                                        ),
+                                        stringResource(R.string.producer) to uiState.produce.joinToString(
+                                            ","
+                                        ),
+                                        stringResource(R.string.writer) to uiState.writer.joinToString(
+                                            ","
+                                        )
+                                    ),
+                                    modifier = Modifier.padding(
+                                        start = 16.dp,
+                                        end = 16.dp,
+                                        top = 24.dp
+                                    )
                                 )
                             }
                         }
@@ -303,7 +285,7 @@ fun SeriesDetailsContent(
                                 caption = stringResource(R.string.let_the_world_know_how_you_felt),
                                 onClick = interactionListener::showRatingBottomSheet,
                                 ratingStars = uiState.starsRating,
-                                modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 24.dp, bottom = 12.dp),
+                                modifier = Modifier.padding(horizontal = 16.dp, vertical = 24.dp),
                             )
                         }
                         if (uiState.reviews.isNotEmpty()) {
@@ -311,7 +293,7 @@ fun SeriesDetailsContent(
                                 SectionTitle(
                                     title = stringResource(R.string.top_reviews),
                                     onClick = {interactionListener.onShowMoreReviewsClicked(uiState.seriesDetail.id)},
-                                    modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 12.dp, top = 12.dp)
+                                    modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 12.dp)
                                 )
                             }
                             items(uiState.reviews.take(3)) { review ->
@@ -320,8 +302,8 @@ fun SeriesDetailsContent(
                                     username = "@${review.username}",
                                     reviewText = review.reviewContent,
                                     rating = review.rate.toInt(),
-                                    date = review.date,
-                                    avatar =  if (review.userImage.isEmpty()) null else rememberAsyncImagePainter(
+                                    date = formatReviewDate(review.date),
+                                    avatar = if (review.userImage.isEmpty()) null else rememberAsyncImagePainter(
                                         model = review.userImage
                                     ),
                                     modifier = Modifier.padding(

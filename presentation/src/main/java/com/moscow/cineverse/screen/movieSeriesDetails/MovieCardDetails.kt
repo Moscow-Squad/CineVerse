@@ -141,7 +141,7 @@ fun DetailCard(
             .padding(16.dp),
     ) {
         Column(
-            verticalArrangement = Arrangement.spacedBy(8.dp),
+            verticalArrangement = Arrangement.spacedBy(4.dp),
             horizontalAlignment = Alignment.Start,
             modifier = Modifier.weight(1f)
         ) {
@@ -162,7 +162,9 @@ fun DetailCard(
                 color = Theme.colors.shade.secondary
             )
 
+
             Row(
+                modifier = Modifier.padding(top = 8.dp),
                 horizontalArrangement = Arrangement.spacedBy(12.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -187,6 +189,7 @@ fun DetailCard(
             }
 
         }
+
         Column(
             verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {
@@ -212,7 +215,6 @@ fun InfoTextWithIcon(icon: Int, text: String, tint: Color) {
     Row(
         horizontalArrangement = Arrangement.spacedBy(4.dp),
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.padding(top = 8.dp)
     ) {
         Icon(
             painter = painterResource(id = icon),

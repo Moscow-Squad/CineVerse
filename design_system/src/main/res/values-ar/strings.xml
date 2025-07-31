@@ -50,4 +50,8 @@
     <string name="your_collections">مجموعاتك</string>
     <string name="shows">عروض</string>
     <string name="did_you_watch_it">قمت برؤيته ؟</string>
+    <string name="series_type">مسلسل</string>
+    <string name="duration_hours_minutes">%1$d س %2$d د</string>
+    <string name="duration_hours_only">%1$d س</string>
+    <string name="duration_minutes_only">%1$d د</string>
 </resources>

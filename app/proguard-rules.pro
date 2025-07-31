@@ -19,3 +19,26 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+# Firebase
+-keep class com.google.firebase.** { *; }
+-dontwarn com.google.firebase.**
+
+# TensorFlow Lite (if used)
+-keep class org.tensorflow.lite.** { *; }
+-dontwarn org.tensorflow.lite.**
+
+# Keep annotations and classes used by Hilt
+-keep class dagger.hilt.** { *; }
+-keep class androidx.hilt.** { *; }
+
+# Prevent R8 from removing unused classes in ML models
+-keep class com.google.mlkit.** { *; }
+-dontwarn com.google.mlkit.**
+
+# Optimize aggressively
+-assumenosideeffects class android.util.Log {
+    public static *** d(...);
+    public static *** v(...);
+    public static *** i(...);
+}
