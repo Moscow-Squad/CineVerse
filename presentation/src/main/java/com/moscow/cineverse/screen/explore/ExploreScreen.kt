@@ -1,9 +1,11 @@
 package com.moscow.cineverse.screen.explore
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Surface
@@ -97,6 +99,7 @@ private fun ExploreScreenContent(
     val gridState = rememberLazyGridState()
     val genresState = rememberLazyListState()
 
+    var searchBarVisible by remember { mutableStateOf(true) }
     var genresVisible by remember { mutableStateOf(true) }
 
     LaunchedEffect(uiState.selectedTab) {
@@ -108,6 +111,7 @@ private fun ExploreScreenContent(
         }
         val targetIndex = uiState.genres.indexOfFirst { it.id == genreId }
         if (targetIndex >= 0) genresState.animateScrollToItem(targetIndex)
+        searchBarVisible = true
         genresVisible = true
     }
 
@@ -117,14 +121,24 @@ private fun ExploreScreenContent(
         }
     }
 
-    Surface(modifier = modifier.fillMaxSize(), color = Theme.colors.background.screen) {
+    Surface(
+        modifier = modifier
+            .background(Theme.colors.background.screen)
+            .systemBarsPadding()
+            .fillMaxSize(),
+        color = Theme.colors.background.screen
+    ) {
         Box(modifier = Modifier.fillMaxSize()) {
             Column(modifier = Modifier.fillMaxSize()) {
-                ExploreSearchBarSection(uiState, interactionListener)
+                ExploreSearchBarSection(
+                    uiState,
+                    interactionListener,
+                    isVisible = genresVisible
+                )
                 ExploreTabsSection(
                     selectedTab = uiState.selectedTab,
                     onTabSelected = interactionListener::onTabSelected,
-                    showAllTabs = uiState.isSearch
+                    showAllTabs = uiState.searchKeyWord.isNotEmpty()
                 )
 
                 Box(modifier = Modifier.fillMaxSize()) {

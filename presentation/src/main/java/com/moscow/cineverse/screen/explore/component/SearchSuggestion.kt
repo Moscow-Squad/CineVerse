@@ -38,12 +38,13 @@ fun SearchSuggestion(
     Column(
         modifier = modifier
             .fillMaxSize()
+            .padding(top = 56.dp)
             .background(color = Theme.colors.background.screen)
             .padding(horizontal = 16.dp)
             .verticalScroll(rememberScrollState())
     ) {
         SectionTitle(
-            modifier = Modifier.padding(top = 16.dp),
+            modifier = Modifier.padding(top = 24.dp),
             title = title,
             actionTitle = actionTitle,
             onClick = onClearAllClicked
