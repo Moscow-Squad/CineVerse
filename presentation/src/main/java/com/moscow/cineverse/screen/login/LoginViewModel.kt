@@ -163,6 +163,10 @@ class LoginViewModel @Inject constructor(
             val error = when {
                 input.isEmpty() -> null
 
+                !isPassword && !trimmed.all { it.isLetterOrDigit() || it == '_'} -> {
+                    StringValue.StringResource(R.string.username_invalid_chars)
+                }
+
                 !isPassword && input != trimmed -> {
                     StringValue.StringResource(R.string.no_leading_trailing_spaces)
                 }
@@ -173,10 +177,6 @@ class LoginViewModel @Inject constructor(
 
                 isPassword && input.length !in 4..100 -> {
                     StringValue.StringResource(R.string.password_can_only_4_100_characters)
-                }
-
-                !isPassword && !trimmed.all { it.isLetterOrDigit() || it == '_'} -> {
-                    StringValue.StringResource(R.string.username_invalid_chars)
                 }
 
                 else -> null
