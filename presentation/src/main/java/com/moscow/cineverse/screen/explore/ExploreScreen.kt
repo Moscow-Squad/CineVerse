@@ -115,9 +115,11 @@ private fun ExploreScreenContent(
         genresVisible = true
     }
 
+
     LaunchedEffect(uiState.shouldShowGenres) {
         if (uiState.shouldShowGenres) {
             genresVisible = true
+            searchBarVisible = true
         }
     }
 
@@ -133,7 +135,7 @@ private fun ExploreScreenContent(
                 ExploreSearchBarSection(
                     uiState,
                     interactionListener,
-                    isVisible = genresVisible
+                    isVisible = searchBarVisible
                 )
                 ExploreTabsSection(
                     selectedTab = uiState.selectedTab,
@@ -164,6 +166,8 @@ private fun ExploreScreenContent(
                             interactionListener = interactionListener,
                             onGenresVisibilityChange = { shouldShow ->
                                 genresVisible = shouldShow
+                                searchBarVisible =
+                                    if(uiState.searchKeyWord.isNotEmpty()) true else shouldShow
                             }
                         )
                     }
