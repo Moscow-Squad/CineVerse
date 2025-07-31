@@ -1,14 +1,12 @@
 package com.moscow.cineverse.screen.home
 
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.cineverse.common_ui_state.MediaItemUiState
 import com.moscow.cineverse.mapper.toGenreUi
 import com.moscow.cineverse.mapper.toUi
 import com.moscow.domain.model.Genre
-import com.moscow.domain.model.MediaItem
 import com.moscow.domain.model.MediaType
 import com.moscow.domain.model.Movie
 import com.moscow.domain.model.Series
@@ -81,7 +79,7 @@ class HomeViewModel @Inject constructor(
             || uiState.value.matchesYourVibe.isEmpty()
         ) {
             wait++
-            if (wait == 15){
+            if (wait == 25){
                 updateState { it.copy(isLoading = false, error = "error loading") }
                 return
             }

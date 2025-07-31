@@ -46,7 +46,7 @@ class SeriesDetailsScreenScreenViewModel @Inject constructor(
         var wait = 0
         while (uiState.value.seriesDetail.id == 0) {
             wait++
-            if (wait == 15){
+            if (wait == 25){
                 updateState { it.copy(isLoading = false, errorMessage = "error loading", shouldShowError = true) }
                 return
             }
@@ -166,6 +166,10 @@ class SeriesDetailsScreenScreenViewModel @Inject constructor(
 
     override fun onActorClicked(actorId: Int) {
         sendEvent(SeriesDetailsScreenEffects.NavigateToActorDetailsScreen(actorId))
+    }
+
+    override fun onPlayButtonClicked() {
+        sendEvent(SeriesDetailsScreenEffects.OpenTrailer(uiState.value.seriesDetail.trailerPath))
     }
 
     override fun onRetry() {

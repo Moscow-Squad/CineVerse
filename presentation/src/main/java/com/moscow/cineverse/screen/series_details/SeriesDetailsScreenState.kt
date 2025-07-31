@@ -32,6 +32,7 @@ data class SeriesDetailsUiState(
     val rating: String = "0.0",
     val genre: String = "",
     val duration: Int = 0,
+    val trailerPath: String = "",
     val releaseDate: String = "",
     val posterPath: String = "",
     val numberOfSeasons: Int = 0,

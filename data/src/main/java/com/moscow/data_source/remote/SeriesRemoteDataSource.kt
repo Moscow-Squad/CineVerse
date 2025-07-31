@@ -6,6 +6,7 @@ import com.moscow.remote.dto.review.ReviewDto
 import com.moscow.remote.dto.series.ListOfSeriesDto
 import com.moscow.remote.dto.series.SeriesDetailDto
 import com.moscow.remote.dto.series.SeriesDto
+import com.moscow.remote.dto.details.MediaTrailersDto
 import com.moscow.utils.ApiResponse
 
 interface SeriesRemoteDataSource {
@@ -18,4 +19,5 @@ interface SeriesRemoteDataSource {
     suspend fun getSeriesRecommendations(id: Int, page: Int): ApiResponse<SeriesDto>
     suspend fun getSeriesByGenreId(genreId: Int, page: Int): ApiResponse<SeriesDto>
     suspend fun getSeriesCredits(seriesId: Int): SeriesCreditDto
+    suspend fun getSeriesTrailers(seriesId: Int): MediaTrailersDto
 }

@@ -22,9 +22,14 @@ class MovieRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getMoviesDetail(id: Int): MovieDetail {
+        val trailer = movieRemoteDataSource
+            .getMovieTrailer(id)
+            .trailers
+            .firstOrNull{ it.key != null}
+            ?.key ?: ""
         val res = movieRemoteDataSource.getMovieDetails(id)
         res.genres?.forEach { detailLocalDataSource.insertFavouriteGenre(it.id) }
-        return res.toDomain()
+        return res.toDomain(trailer)
     }
 
     override suspend fun getMovieCredits(id: Int): CreditsDetails {

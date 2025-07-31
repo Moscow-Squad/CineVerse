@@ -24,6 +24,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.core.net.toUri
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.rememberAsyncImagePainter
@@ -61,6 +63,7 @@ fun SeriesDetailsScreen(
     navigateToSeriesDetails: (Int) -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val context = LocalContext.current
 
     LaunchedEffect(viewModel) {
         viewModel.uiEffect.collect { event ->
@@ -82,7 +85,12 @@ fun SeriesDetailsScreen(
                     navigateToCastDetails(event.ActorId)
                 }
                 is SeriesDetailsScreenEffects.NavigateToSeriesDetailsScreen -> {
-                    navigateToSeriesDetails(event.seriesId)
+                    navigateToSeriesDetails(effect.seriesId)
+                }
+
+                is SeriesDetailsScreenEffects.OpenTrailer -> {
+                    val intent = Intent(Intent.ACTION_VIEW, effect.url.toUri())
+                    context.startActivity(intent)
                 }
             }
         }
@@ -90,7 +98,8 @@ fun SeriesDetailsScreen(
     SeriesDetailsContent(
         uiState = uiState,
         interactionListener = viewModel,
-        onNavigateBack = navigateBack
+        onNavigateBack = navigateBack,
+        context = context
     )
 }
 
@@ -100,7 +109,7 @@ fun SeriesDetailsContent(
     uiState: SeriesDetailsScreenState,
     interactionListener: SeriesDetailsScreenInteractionListener,
     onNavigateBack: () -> Unit,
-    context: Context = LocalContext.current
+    context: Context
 ) {
     val detail = uiState.seriesDetail
     val textColor = Theme.colors.shade.secondary
@@ -152,7 +161,8 @@ fun SeriesDetailsContent(
                                             type = stringResource(com.moscow.cineverse.design_system.R.string.series_type),
                                             animatedVisibilityScope = this@AnimatedContent,
                                             sharedTransitionScope = this@SharedTransitionLayout,
-                                            onSaveClick = { interactionListener.addToCollection() }
+                                            onSaveClick = { interactionListener.addToCollection() },
+                                            onPlayClick = interactionListener::onPlayButtonClicked
                                         )
                                     } else {
                                         MainMovieCard(
@@ -160,7 +170,8 @@ fun SeriesDetailsContent(
                                             title = detail.title,
                                             animatedVisibilityScope = this@AnimatedContent,
                                             sharedTransitionScope = this@SharedTransitionLayout,
-                                            onSaveClick = { interactionListener.addToCollection() }
+                                            onSaveClick = { interactionListener.addToCollection() },
+                                            onPlayClick = interactionListener::onPlayButtonClicked
                                         )
                                     }
                                 }
