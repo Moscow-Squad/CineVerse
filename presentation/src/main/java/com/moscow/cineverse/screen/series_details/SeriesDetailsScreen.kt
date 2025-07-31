@@ -38,17 +38,17 @@ import com.moscow.cineverse.component.MoviePosterCard
 import com.moscow.cineverse.component.NoInternetScreen
 import com.moscow.cineverse.designSystem.component.MovieAppBar
 import com.moscow.cineverse.designSystem.component.MovieCircularProgressBar
-import com.moscow.cineverse.designSystem.component.MovieListSection
+import com.moscow.cineverse.MovieListSection
 import com.moscow.cineverse.designSystem.component.MovieScaffold
-import com.moscow.cineverse.designSystem.component.SectionTitle
-import com.moscow.cineverse.designSystem.component.movieSeriesDetails.CastCard
-import com.moscow.cineverse.designSystem.component.movieSeriesDetails.MainMovieCard
-import com.moscow.cineverse.designSystem.component.movieSeriesDetails.MovieCardDetails
-import com.moscow.cineverse.designSystem.component.movieSeriesDetails.MovieRatingBottomSheet
-import com.moscow.cineverse.designSystem.component.movieSeriesDetails.MovieReviewCard
-import com.moscow.cineverse.designSystem.component.movieSeriesDetails.RatingSection
-import com.moscow.cineverse.designSystem.component.movieSeriesDetails.StaffInfoSection
-import com.moscow.cineverse.designSystem.component.movieSeriesDetails.StarCastSection
+import com.moscow.cineverse.component.SectionTitle
+import com.moscow.cineverse.screen.movieSeriesDetails.CastCard
+import com.moscow.cineverse.screen.movieSeriesDetails.MainMovieCard
+import com.moscow.cineverse.screen.movieSeriesDetails.MovieCardDetails
+import com.moscow.cineverse.screen.movieSeriesDetails.MovieRatingBottomSheet
+import com.moscow.cineverse.screen.movieSeriesDetails.MovieReviewCard
+import com.moscow.cineverse.screen.movieSeriesDetails.RatingSection
+import com.moscow.cineverse.screen.movieSeriesDetails.StaffInfoSection
+import com.moscow.cineverse.screen.movieSeriesDetails.StarCastSection
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.screen.series_details.component.SeasonCard
 import com.moscow.cinverse.presentation.R
@@ -134,39 +134,41 @@ fun SeriesDetailsContent(
             else ->{
                 Column(modifier = Modifier.fillMaxSize().background(Theme.colors.background.screen)) {
                     MovieAppBar(backButtonClick = onNavigateBack, showBackButton = true)
-                    SharedTransitionLayout {
-                        AnimatedContent(
-                            targetState = isCollapsed,
-                            label = "basic_transition"
-                        ) { target ->
-                            if (!target) {
-                                MovieCardDetails(
-                                    posterUrl = detail.posterPath,
-                                    title = detail.title,
-                                    genres = detail.genre,
-                                    rating = detail.rating,
-                                    duration = detail.duration,
-                                    releaseDate = detail.releaseDate,
-                                    type = detail.type,
-                                    animatedVisibilityScope = this@AnimatedContent,
-                                    sharedTransitionScope = this@SharedTransitionLayout,
-                                    onSaveClick = { interactionListener.addToCollection() }
-                                )
-                            } else {
-                                MainMovieCard(
-                                    posterUrl = detail.posterPath,
-                                    title = detail.title,
-                                    animatedVisibilityScope = this@AnimatedContent,
-                                    sharedTransitionScope = this@SharedTransitionLayout,
-                                    onSaveClick = { interactionListener.addToCollection() }
-                                )
-                            }
-                        }
-                    }
                     LazyColumn(
                         state = scrollState,
                         modifier = Modifier.background(Theme.colors.background.screen)
                     ){
+                        item {
+                            SharedTransitionLayout {
+                                AnimatedContent(
+                                    targetState = isCollapsed,
+                                    label = "basic_transition"
+                                ) { target ->
+                                    if (!target) {
+                                        MovieCardDetails(
+                                            posterUrl = detail.posterPath,
+                                            title = detail.title,
+                                            genres = detail.genre,
+                                            rating = detail.rating,
+                                            duration = detail.duration,
+                                            releaseDate = detail.releaseDate,
+                                            type = detail.type,
+                                            animatedVisibilityScope = this@AnimatedContent,
+                                            sharedTransitionScope = this@SharedTransitionLayout,
+                                            onSaveClick = { interactionListener.addToCollection() }
+                                        )
+                                    } else {
+                                        MainMovieCard(
+                                            posterUrl = detail.posterPath,
+                                            title = detail.title,
+                                            animatedVisibilityScope = this@AnimatedContent,
+                                            sharedTransitionScope = this@SharedTransitionLayout,
+                                            onSaveClick = { interactionListener.addToCollection() }
+                                        )
+                                    }
+                                }
+                            }
+                        }
                         item {
                             Text(
                                 text = stringResource(R.string.storyline),

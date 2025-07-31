@@ -2,15 +2,15 @@ package com.moscow.cineverse.screen.explore
 
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.Stable
-import com.moscow.cineverse.designSystem.component.ViewMode
-import com.moscow.cineverse.designSystem.component.tabs.ExploreTabsPages
+import com.moscow.cineverse.utlis.ViewMode
+import com.moscow.cineverse.screen.explore.ExploreTabsPages
 
 @Immutable
 @Stable
 data class ExploreScreenState(
 
     val searchKeyWord: String = "",
-
+    val isSearch: Boolean = false,
     val remoteSuggestions: List<String> = emptyList(),
     val localSuggestions: List<SuggestItemUiState> = listOf(),
     val isSearchBarClickedOn: Boolean = false,

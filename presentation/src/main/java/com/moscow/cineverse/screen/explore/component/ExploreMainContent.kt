@@ -1,12 +1,25 @@
 package com.moscow.cineverse.screen.explore.component
 
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
@@ -18,20 +31,22 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import com.moscow.cineverse.common_ui_state.MediaItemUiState
 import com.moscow.cineverse.component.MoviePosterCard
 import com.moscow.cineverse.component.NoInternetScreen
-import com.moscow.cineverse.designSystem.component.EmptyState
 import com.moscow.cineverse.designSystem.component.MovieCircularProgressBar
-import com.moscow.cineverse.designSystem.component.ViewMode
-import com.moscow.cineverse.designSystem.component.tabs.ExploreTabsPages
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.screen.explore.ExploreInteractionListener
 import com.moscow.cineverse.screen.explore.ExploreScreenState
+import com.moscow.cineverse.screen.explore.ExploreTabsPages
+import com.moscow.cineverse.utlis.ViewMode
 import com.moscow.cinverse.presentation.R
 import kotlinx.coroutines.flow.distinctUntilChanged
 
@@ -41,73 +56,66 @@ fun ExploreMainContent(
     gridState: LazyGridState,
     contentList: LazyPagingItems<Any>,
     interactionListener: ExploreInteractionListener,
-    onVisibilityChange: (searchBarVisible: Boolean, genresVisible: Boolean) -> Unit = { _, _ -> },
+    onGenresVisibilityChange: (Boolean) -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     var lastScrollOffset by remember { mutableFloatStateOf(0f) }
     var isScrollingDown by remember { mutableStateOf(false) }
 
-    val shouldShowSearchAndGenres by remember {
+    val shouldShowGenres by remember {
         derivedStateOf {
             val firstVisibleItemIndex = gridState.firstVisibleItemIndex
             val firstVisibleItemScrollOffset = gridState.firstVisibleItemScrollOffset
 
-            when {
-                firstVisibleItemIndex == 0 && firstVisibleItemScrollOffset < 50 -> {
-                    Pair(true, true)
-                }
-
-                isScrollingDown && (firstVisibleItemIndex > 0 || firstVisibleItemScrollOffset > 100) -> {
-                    Pair(false, false)
-                }
-
-                !isScrollingDown -> {
-                    Pair(true, true)
-                }
-
-                else -> {
-                    Pair(true, firstVisibleItemScrollOffset < 200)
-                }
+            if (firstVisibleItemIndex == 0 && firstVisibleItemScrollOffset < 100) {
+                true
+            } else if (isScrollingDown) {
+                false
+            } else {
+                true
             }
         }
     }
 
     LaunchedEffect(gridState) {
-        snapshotFlow {
-            gridState.firstVisibleItemScrollOffset.toFloat() + gridState.firstVisibleItemIndex * 1000f
-        }
+        snapshotFlow { gridState.firstVisibleItemScrollOffset.toFloat() + gridState.firstVisibleItemIndex * 1000f }
             .distinctUntilChanged()
             .collect { currentOffset ->
                 isScrollingDown = currentOffset > lastScrollOffset
                 lastScrollOffset = currentOffset
-
-                val (searchVisible, genresVisible) = shouldShowSearchAndGenres
-                onVisibilityChange(searchVisible, genresVisible)
+                onGenresVisibilityChange(shouldShowGenres && uiState.shouldShowGenres)
             }
     }
 
     val gridColumns = remember(uiState.viewMode, uiState.selectedTab) {
-        if (uiState.viewMode == ViewMode.GRID) {
-            when (uiState.selectedTab) {
-                ExploreTabsPages.ACTORS -> GridCells.Fixed(3)
-                ExploreTabsPages.MOVIES, ExploreTabsPages.SERIES -> GridCells.Adaptive(minSize = 160.dp)
-            }
-        } else {
-            GridCells.Fixed(1)
+        when (uiState.selectedTab) {
+            ExploreTabsPages.ACTORS -> GridCells.Fixed(3)
+            ExploreTabsPages.MOVIES, ExploreTabsPages.SERIES ->
+                if (uiState.viewMode == ViewMode.GRID)
+                    GridCells.Fixed(2)
+                else
+                    GridCells.Fixed(1)
         }
     }
 
-    val contentPadding = remember(uiState.selectedTab) {
+    val genresHeight = if (uiState.shouldShowGenres) 56.dp else 0.dp
+    val paddingTop by animateDpAsState(
+        targetValue = if (uiState.shouldShowGenres) genresHeight + 16.dp else 16.dp,
+        animationSpec = tween(300),
+        label = "paddingTop"
+    )
+
+    val contentPadding = remember(uiState.selectedTab, paddingTop) {
         when (uiState.selectedTab) {
             ExploreTabsPages.ACTORS -> PaddingValues(
-                top = 16.dp,
+                top = paddingTop,
                 start = 20.dp,
                 end = 20.dp,
                 bottom = 100.dp
             )
 
             ExploreTabsPages.MOVIES, ExploreTabsPages.SERIES -> PaddingValues(
-                top = 16.dp,
+                top = paddingTop,
                 start = 16.dp,
                 end = 16.dp,
                 bottom = 100.dp
@@ -151,7 +159,9 @@ fun ExploreMainContent(
                 verticalArrangement = Arrangement.spacedBy(
                     if (uiState.selectedTab == ExploreTabsPages.ACTORS) 40.dp else 16.dp
                 ),
-                horizontalArrangement = Arrangement.spacedBy(16.dp),
+                horizontalArrangement = Arrangement.spacedBy(
+                    if (uiState.selectedTab == ExploreTabsPages.ACTORS) 16.dp else 12.dp
+                ),
                 modifier = modifier.fillMaxSize()
             ) {
                 items(contentList.itemCount) { index ->
@@ -169,14 +179,80 @@ fun ExploreMainContent(
                             is ExploreScreenState.ActorUiState -> {
                                 ActorPosterCard(
                                     actor = item,
-                                    viewMode = uiState.viewMode,
-                                    onActorClicked = interactionListener::onActorClick
+                                    onActorClicked = interactionListener::onActorClick,
+                                    modifier = Modifier.aspectRatio(1f)
                                 )
                             }
                         }
                     }
                 }
+                if (contentList.loadState.append is LoadState.Loading) {
+                    item(span = {GridItemSpan(maxLineSpan)}){
+                        Box(
+                            modifier = Modifier.fillMaxSize(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            MovieCircularProgressBar()
+                        }
+                    }
+                }
+                if (contentList.loadState.append is LoadState.Error) {
+                    item(span = { GridItemSpan(maxLineSpan) }) {
+                        NoInternetScreen(onRetry = { contentList.retry() })
+                    }
+                }
             }
         }
+    }
+}
+
+@Composable
+fun EmptyState(
+    icon: Painter,
+    title: String,
+    description: String,
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = modifier
+            .width(240.dp)
+            .background(Theme.colors.background.screen),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Box(
+            contentAlignment = Alignment.Center,
+            modifier = Modifier.padding(bottom = 16.dp)
+        ) {
+            Box(
+                modifier = Modifier
+                    .size(70.dp)
+                    .background(
+                        color = Theme.colors.button.disabled,
+                        shape = CircleShape
+                    )
+            )
+
+            Icon(
+                painter = icon,
+                contentDescription = "",
+                tint = Theme.colors.brand.primary,
+                modifier = Modifier.size(30.dp)
+            )
+        }
+
+        Text(
+            text = title,
+            modifier = Modifier.padding(bottom = 8.dp),
+            style = Theme.textStyle.title.small,
+            color = Theme.colors.shade.primary
+        )
+
+        Text(
+            text = description,
+            textAlign = TextAlign.Center,
+            style = Theme.textStyle.body.small.medium,
+            color = Theme.colors.shade.secondary
+        )
     }
 }

@@ -1,0 +1,320 @@
+package com.moscow.cineverse.screen.movieSeriesDetails
+
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalInspectionMode
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import com.moscow.cineverse.design_system.R
+import com.moscow.cineverse.image_viewer.component.SafeImageViewer
+import com.moscow.cineverse.designSystem.component.button.MovieFloatingButton
+import com.moscow.cineverse.designSystem.component.blur.OnBlurContent
+import com.moscow.cineverse.designSystem.component.blur.RemoteImagePlaceholder
+import com.moscow.cineverse.designSystem.theme.Theme
+
+@OptIn(ExperimentalSharedTransitionApi::class)
+@Composable
+fun MovieCardDetails(
+    modifier: Modifier = Modifier,
+    title: String,
+    genres: String,
+    rating: String,
+    duration: String,
+    releaseDate: String,
+    posterUrl: String,
+    type: String,
+    onSaveClick: () -> Unit = {},
+    onPlayClick: () -> Unit = {},
+    sharedTransitionScope: SharedTransitionScope,
+    animatedVisibilityScope: AnimatedVisibilityScope
+) {
+    with(sharedTransitionScope) {
+        Column(
+            modifier = Modifier
+                .padding(horizontal = 16.dp)
+                .sharedBounds(
+                    rememberSharedContentState(key = "Movie Card Details"),
+                    animatedVisibilityScope = animatedVisibilityScope,
+                    enter = fadeIn() + scaleIn(),
+                    exit = fadeOut() + scaleOut(),
+                    resizeMode = SharedTransitionScope.ResizeMode.ScaleToBounds()
+                ),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            val isPreview = LocalInspectionMode.current
+            if (isPreview) {
+                Image(
+                    painter = painterResource(R.drawable.profile_image),
+                    contentDescription = "Image",
+                    modifier = Modifier
+                        .height(289.dp)
+                        .width(216.dp)
+                        .clip(RoundedCornerShape(Theme.radius.extraLarge)),
+                    contentScale = ContentScale.Crop
+                )
+            } else {
+                SafeImageViewer(
+                    imageUrl = posterUrl,
+                    modifier = Modifier
+                        .height(289.dp)
+                        .width(216.dp)
+                        .clip(RoundedCornerShape(Theme.radius.extraLarge)),
+                    placeholderContent = { RemoteImagePlaceholder() },
+                    errorContent = { RemoteImagePlaceholder() },
+                    onBlurContent = {
+                        OnBlurContent(
+                            icon = painterResource(R.drawable.icon_eye_slash),
+                            hintText = stringResource(R.string.unsuitable_image),
+                            textStyle = Theme.textStyle.body.small.regular.copy(
+                                color = Color(0x99FFFFFF)
+                            ),
+                            iconSize = 24.dp,
+                        )
+                    }
+                )
+            }
+            DetailCard(
+                modifier,
+                title,
+                genres,
+                rating,
+                duration,
+                releaseDate,
+                type,
+                onSaveClick,
+                onPlayClick
+            )
+        }
+    }
+}
+
+@Composable
+fun DetailCard(
+    modifier: Modifier = Modifier,
+    title: String,
+    genres: String,
+    rating: String,
+    duration: String,
+    releaseDate: String,
+    type: String,
+    onSaveClick: () -> Unit = {},
+    onPlayClick: () -> Unit = {},
+) {
+    val formattedRating = try {
+        val ratingValue = rating.toDouble()
+        String.format("%.1f", ratingValue)
+    } catch (e: NumberFormatException) {
+        "0.0"
+    }
+
+    Row(
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        modifier = modifier
+            .fillMaxWidth()
+            .background(
+                color = Theme.colors.background.card,
+                RoundedCornerShape(Theme.radius.large)
+            )
+            .padding(16.dp),
+    ) {
+        Column(
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+            horizontalAlignment = Alignment.Start,
+            modifier = Modifier.weight(1f)
+        ) {
+            Text(
+                text = type,
+                style = Theme.textStyle.label.medium.medium,
+                color = Theme.colors.brand.primary
+            )
+            Text(
+                text = title,
+                style = Theme.textStyle.title.medium,
+                color = Theme.colors.shade.primary
+            )
+
+            Text(
+                text = genres,
+                style = Theme.textStyle.body.small.medium,
+                color = Theme.colors.shade.secondary
+            )
+
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(12.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                InfoTextWithIcon(
+                    R.drawable.due_tone_star,
+                    formattedRating,
+                    Theme.colors.additional.primary.yellow
+                )
+                if (duration.isNotBlank() && duration != "N/A" && duration != "null") {
+                    InfoTextWithIcon(
+                        R.drawable.due_tone_clock,
+                        duration,
+                        Theme.colors.shade.secondary
+                    )
+                }
+
+                InfoTextWithIcon(
+                    R.drawable.due_tone_calendar,
+                    releaseDate,
+                    Theme.colors.shade.secondary
+                )
+            }
+
+        }
+        Column(
+            verticalArrangement = Arrangement.spacedBy(12.dp),
+        ) {
+            MovieFloatingButton(
+                R.drawable.due_tone_play,
+                { onPlayClick() },
+                Theme.colors.button.primary,
+                Theme.colors.brand.tertiary,
+            )
+            MovieFloatingButton(
+                R.drawable.due_tone_add,
+                { onSaveClick() },
+                Theme.colors.button.secondary,
+                Theme.colors.shade.primary,
+            )
+        }
+    }
+}
+
+
+
+@Composable
+fun InfoTextWithIcon(icon: Int, text: String, tint: Color) {
+    Row(
+        horizontalArrangement = Arrangement.spacedBy(4.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier.padding(top = 8.dp)
+    ) {
+        Icon(
+            painter = painterResource(id = icon),
+            contentDescription = "Info Text With Icon",
+            tint = tint
+        )
+        Text(
+            text = text,
+            style = Theme.textStyle.label.medium.regular,
+            color = Theme.colors.shade.secondary
+        )
+    }
+}
+
+@OptIn(ExperimentalSharedTransitionApi::class)
+@Composable
+fun MainMovieCard(
+    posterUrl: String,
+    title: String,
+    onSaveClick: () -> Unit = {},
+    onPlayClick: () -> Unit = {},
+    sharedTransitionScope: SharedTransitionScope,
+    animatedVisibilityScope: AnimatedVisibilityScope
+) {
+    with(sharedTransitionScope) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .padding(16.dp)
+                .sharedBounds(
+                    rememberSharedContentState(key = "Main Movie Card"),
+                    animatedVisibilityScope = animatedVisibilityScope,
+                    enter = fadeIn() + scaleIn(),
+                    exit = fadeOut() + scaleOut(),
+                    resizeMode = SharedTransitionScope.ResizeMode.ScaleToBounds()
+                )
+        ) {
+            SafeImageViewer(
+                imageUrl = posterUrl,
+                modifier = Modifier
+                    .size(40.dp)
+                    .clip(RoundedCornerShape(Theme.radius.full)),
+                placeholderContent = {
+                    RemoteImagePlaceholder(
+                        modifier = Modifier.fillMaxSize()
+                    )
+                },
+                errorContent = {
+                    RemoteImagePlaceholder(
+                        modifier = Modifier.fillMaxSize()
+                    )
+                }
+            ) {
+                OnBlurContent(
+                    icon = painterResource(R.drawable.icon_eye_slash),
+                    hintText = stringResource(R.string.unsuitable_image),
+                    textStyle = Theme.textStyle.body.small.regular.copy(
+                        color = Color(0x99FFFFFF)
+                    ),
+                    iconSize = 24.dp,
+                )
+            }
+            Text(
+                text = title,
+                style = Theme.textStyle.title.medium,
+                color = Theme.colors.shade.primary,
+                modifier = Modifier
+                    .padding(start = 12.dp)
+                    .weight(1f)
+            )
+            MovieFloatingButton(
+                R.drawable.due_tone_play,
+                { onPlayClick() },
+                Theme.colors.button.primary,
+                Theme.colors.brand.tertiary,
+                modifier = Modifier.padding(end = 8.dp)
+            )
+            MovieFloatingButton(
+                R.drawable.due_tone_add,
+                { onSaveClick() },
+                Theme.colors.button.secondary,
+                Theme.colors.shade.primary,
+            )
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun DetailCardPreview() {
+    DetailCard(
+        title = "Supernatural",
+        genres = "Drama, Mystery, Sci-Fi & Fantasy",
+        rating = "8.531",
+        duration = "2h 32m",
+        releaseDate = "2008, Jul 18",
+        type = "SERIES",
+    )
+}

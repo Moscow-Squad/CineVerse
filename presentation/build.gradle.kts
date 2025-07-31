@@ -13,6 +13,7 @@ dependencies {
 
     implementation (projects.designSystem)
     implementation(projects.domain)
+    implementation(projects.imageViewer)
 
     implementation(libs.coil3.compose)
     implementation(libs.coil.network.okhttp)

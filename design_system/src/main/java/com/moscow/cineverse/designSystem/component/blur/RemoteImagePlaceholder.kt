@@ -1,7 +1,6 @@
 package com.moscow.cineverse.designSystem.component.blur
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
@@ -14,19 +13,16 @@ import androidx.compose.ui.unit.dp
 import com.moscow.cineverse.design_system.R
 
 @Composable
-fun RemoteImagePlaceholder(modifier: Modifier = Modifier) {
-    val isDarkTheme = isSystemInDarkTheme()
-    val placeholderResId = if (isDarkTheme)
-        R.drawable.due_tone_image
-    else
-        R.drawable.due_tone_image
+fun RemoteImagePlaceholder(
+    modifier: Modifier = Modifier
+) {
     Box(
         modifier = modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
         Image(
-            painter = painterResource(id = placeholderResId),
-            contentDescription = "Remote Image Placeholder",
+            painter = painterResource(id = R.drawable.due_tone_image),
+            contentDescription = null,
             contentScale = ContentScale.None,
             modifier = modifier.size(56.dp)
         )

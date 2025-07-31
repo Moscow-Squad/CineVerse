@@ -14,9 +14,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.moscow.cineverse.designSystem.component.MovieButton
+import com.moscow.cineverse.designSystem.component.button.MovieButton
 import com.moscow.cineverse.designSystem.component.MovieCircularProgressBar
-import com.moscow.cineverse.designSystem.component.MovieText
+import com.moscow.cineverse.designSystem.component.wrapper.MovieText
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cinverse.presentation.R as PresentationR
 

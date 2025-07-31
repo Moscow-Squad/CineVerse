@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -21,13 +22,16 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.moscow.cineverse.design_system.R
-import com.moscow.cineverse.designSystem.component.MovieText
-import com.moscow.cineverse.designSystem.component.SaveImage
+import androidx.compose.ui.unit.sp
+import com.moscow.cineverse.designSystem.component.wrapper.MovieText
+import com.moscow.cineverse.designSystem.component.blur.OnBlurContent
+import com.moscow.cineverse.designSystem.component.blur.RemoteImagePlaceholder
 import com.moscow.cineverse.designSystem.theme.Theme
-
+import com.moscow.cineverse.design_system.R
+import com.moscow.cineverse.image_viewer.component.SafeImageViewer
 
 @Composable
 fun SeasonCard(
@@ -52,8 +56,8 @@ fun SeasonCard(
             horizontalArrangement = Arrangement.spacedBy(12.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            SaveImage(
-                posterUrl = posterUrl,
+            SafeImageViewer(
+                imageUrl = posterUrl ?: "",
                 modifier = Modifier
                     .width(48.dp)
                     .height(80.dp)
@@ -65,7 +69,26 @@ fun SeasonCard(
                             bottomEnd = Theme.radius.extraSmall
                         )
                     ),
-            )
+                placeholderContent = {
+                    RemoteImagePlaceholder(
+                        Modifier
+                            .fillMaxSize()
+                    )
+                },
+                errorContent = {
+                    RemoteImagePlaceholder(Modifier.fillMaxSize())
+                },
+            ) {
+                OnBlurContent(
+                    hintText = stringResource(R.string.unsuitable_image),
+                    textStyle = TextStyle(
+                        fontSize = 8.sp,
+                        color = Color(0x99FFFFFF)
+                    ),
+                    iconSize = 16.dp,
+                    icon = painterResource(R.drawable.icon_eye_slash),
+                )
+            }
             Column(
                 modifier = Modifier.weight(1f),
                 verticalArrangement = Arrangement.spacedBy(4.dp)

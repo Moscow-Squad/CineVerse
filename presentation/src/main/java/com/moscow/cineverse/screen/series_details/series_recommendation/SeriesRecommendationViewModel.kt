@@ -7,7 +7,7 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.moscow.cineverse.base.BaseViewModel
-import com.moscow.cineverse.designSystem.component.ViewMode
+import com.moscow.cineverse.utlis.ViewMode
 import com.moscow.cineverse.navigation.routes.SeriesRecommendationRoute
 import com.moscow.cineverse.paging.BasePagingSource
 import com.moscow.domain.model.Series

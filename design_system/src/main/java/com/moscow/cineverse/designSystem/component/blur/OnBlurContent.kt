@@ -20,11 +20,12 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun OnBlurContent(
-    icon: Painter,
+    modifier: Modifier = Modifier,
     hintText: String,
     textStyle: TextStyle,
-    iconSize: Dp,
-    modifier: Modifier = Modifier,
+    isAddedText: Boolean = true,
+    icon: Painter,
+    iconSize: Dp
 ) {
     Column(
         modifier = modifier
@@ -40,7 +41,7 @@ fun OnBlurContent(
             contentScale = ContentScale.Fit,
             colorFilter = ColorFilter.tint(Color(0x99FFFFFF)),
         )
-        Text(
+        if (isAddedText) Text(
             text = hintText,
             style = textStyle,
         )

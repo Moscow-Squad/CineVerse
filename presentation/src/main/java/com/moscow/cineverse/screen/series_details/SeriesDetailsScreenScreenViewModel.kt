@@ -2,7 +2,7 @@ package com.moscow.cineverse.screen.series_details
 
 import androidx.lifecycle.SavedStateHandle
 import com.moscow.cineverse.base.BaseViewModel
-import com.moscow.cineverse.designSystem.component.ViewMode
+import com.moscow.cineverse.utlis.ViewMode
 import com.moscow.cineverse.mapper.toUi
 import com.moscow.cineverse.navigation.routes.SeriesDetailsRoute
 import com.moscow.domain.model.Series

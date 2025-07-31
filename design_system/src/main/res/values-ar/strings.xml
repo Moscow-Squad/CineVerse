@@ -18,7 +18,6 @@
     <string name="icon_cross_fade">تلاشي الأيقونة</string>
     <string name="collection_image">صورة المجموعة</string>
     <string name="floating_button_icon">أيقونة الزر العائم</string>
-    <string name="close_bottom_sheet">إغلاق</string>
     <string name="show_more">عرض المزيد</string>
     <string name="behind_the_scenes">كواليس التصوير</string>
     <string name="season">"الموسم %d"</string>

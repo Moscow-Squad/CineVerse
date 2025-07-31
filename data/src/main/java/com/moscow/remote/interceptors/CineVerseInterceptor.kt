@@ -1,5 +1,6 @@
 package com.moscow.remote.interceptors
 
+import android.util.Log
 import com.moscow.data.BuildConfig
 import com.moscow.data_source.system.LanguageProvider
 import okhttp3.Interceptor
@@ -15,6 +16,7 @@ class CineVerseInterceptor(
         val newUrl = originalUrl.newBuilder()
             .addQueryParameter("language", languageProvider.getCurrentLanguage())
             .build()
+
 
         val newRequest = originalRequest.newBuilder()
             .url(newUrl)

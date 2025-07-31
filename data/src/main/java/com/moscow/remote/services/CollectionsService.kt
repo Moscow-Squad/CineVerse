@@ -1,9 +1,10 @@
 package com.moscow.remote.services
 
+import com.moscow.remote.dto.AddCollectionDto
 import com.moscow.remote.dto.AddMediaItemToCollectionRequestDto
 import com.moscow.remote.dto.CollectionDto
 import com.moscow.remote.dto.CreateCollectionDto
-import com.moscow.remote.dto.MediaItemDto
+import com.moscow.remote.dto.MovieDto
 import com.moscow.utils.ACCOUNT
 import com.moscow.utils.ADD_ITEM
 import com.moscow.utils.ApiResponse
@@ -19,9 +20,9 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface CollectionsService {
-    @GET("$ACCOUNT/{accountId}$LISTS")
+    @GET("$ACCOUNT/{account_id}$LISTS")
     suspend fun getMyCollections(
-        @Path("accountId") accountId: Int,
+        @Path("account_id") accountId: String,
         @Query(PAGE) page: Int,
         @Query(SESSION_ID) sessionId: String
     ): Response<ApiResponse<CollectionDto>>
@@ -30,18 +31,19 @@ interface CollectionsService {
     suspend fun addNewCollection(
         @Body collection: CreateCollectionDto,
         @Query(SESSION_ID) sessionId: String
-    ): Response<ApiResponse<Nothing>>
+    ): Response<AddCollectionDto>
 
-    @POST("$LIST/{collectionId}/$ADD_ITEM")
+    @POST("$LIST/{list_id}/$ADD_ITEM")
     suspend fun addMediaItemToCollection(
         @Body item: AddMediaItemToCollectionRequestDto,
-        @Path("collectionId") collectionId: Int,
+        @Path("list_id") collectionId: Int,
         @Query(SESSION_ID) sessionId: String
-    ): Response<ApiResponse<Nothing>>
+    ): Response<ApiResponse<Unit>>
 
-    @GET("$LIST/{collectionId}")
+    @GET("$LIST/{collection_id}")
     suspend fun getCollectionDetails(
-        @Path("collectionId") collectionId: Int,
-        @Query(SESSION_ID) sessionId: String
-    ): Response<ApiResponse<MediaItemDto>>
+        @Path("collection_id") collectionId: Int,
+        @Query(SESSION_ID) sessionId: String,
+        @Query(PAGE)page:Int,
+    ): Response<ApiResponse<MovieDto>>
 }

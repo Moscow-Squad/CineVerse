@@ -9,11 +9,9 @@ import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -34,64 +32,59 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.moscow.cineverse.design_system.R
-import com.moscow.cineverse.designSystem.component.MessageInfoBox
-import com.moscow.cineverse.designSystem.component.MovieText
+import com.moscow.cineverse.designSystem.component.message_info.MessageInfoBox
+import com.moscow.cineverse.designSystem.component.wrapper.MovieText
 import com.moscow.cineverse.designSystem.theme.CineVerseTheme
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.designSystem.theme.ThemeState
+import com.moscow.cineverse.design_system.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CineVerseBottomSheet(
     title: String = "",
-    onClose: () -> Unit,
     modifier: Modifier = Modifier,
-    containerColor: Color = Theme.colors.background.bottomSheet,
     expanded: Boolean = true,
-    contentHorizontalAlignment: Alignment.Horizontal = Alignment.CenterHorizontally,
-    onDismissRequest: (() -> Unit)?,
-    scrimColor: Color = Theme.colors.background.bottomSheetContainer,
     showCancelIcon: Boolean = true,
+    containerColor: Color = Theme.colors.background.bottomSheet,
+    scrimColor: Color = Theme.colors.background.bottomSheetContainer,
+    contentHorizontalAlignment: Alignment.Horizontal = Alignment.CenterHorizontally,
+    onDismissRequest: () -> Unit = {},
+    onClose: () -> Unit = {},
     onAddNewCollectionClick: () -> Unit = {},
-    content: @Composable ColumnScope.() -> Unit,
+    content: @Composable ColumnScope.() -> Unit
 ) {
-
-    val sheetState =
-        rememberModalBottomSheetState(
-            skipPartiallyExpanded = expanded,
-        )
+    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = expanded)
 
     ModalBottomSheet(
         sheetState = sheetState,
-        onDismissRequest = onDismissRequest ?: {},
-        properties = ModalBottomSheetProperties(shouldDismissOnBackPress = onDismissRequest != null),
+        onDismissRequest = onDismissRequest,
         containerColor = containerColor,
         scrimColor = scrimColor,
         shape = RoundedCornerShape(Theme.radius.extraLarge),
-        modifier = Modifier
+        modifier = modifier
             .padding(horizontal = 12.dp)
             .navigationBarsPadding(),
         dragHandle = {
             Box(
                 modifier = Modifier
-                    .padding(top = 12.dp, bottom = 20.dp)
-                    .width(48.dp)
-                    .height(3.dp)
+                    .padding(vertical = 16.dp)
+                    .size(width = 48.dp, height = 3.dp)
                     .background(
                         color = Theme.colors.shade.quaternary,
                         shape = RoundedCornerShape(8.dp)
                     )
             )
-        }
+        },
+        properties = ModalBottomSheetProperties(
+            shouldDismissOnBackPress = true
+        )
     ) {
-
         Column(
-            horizontalAlignment = contentHorizontalAlignment,
-            modifier =
-                modifier
-                    .padding(horizontal = 16.dp)
-                    .fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp),
+            horizontalAlignment = contentHorizontalAlignment
         ) {
             Row(
                 modifier = Modifier
@@ -100,29 +93,33 @@ fun CineVerseBottomSheet(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                if (title.isNotEmpty()){
+                if (title.isNotEmpty()) {
                     Text(
                         text = title,
                         style = Theme.textStyle.title.small,
                         color = Theme.colors.shade.primary
                     )
                 }
-                if (showCancelIcon) {
-                    Icon(
-                        painter = painterResource(R.drawable.outline_x),
-                        contentDescription = stringResource(R.string.close_bottom_sheet),
-                        tint = Theme.colors.shade.secondary,
-                        modifier = Modifier
-                            .size(20.dp)
-                            .clickable { onClose() }
-                    )
-                } else if (title.isNotEmpty()) {
-                    MovieText(
-                        text = stringResource(R.string.new_collection),
-                        style = Theme.textStyle.body.medium.medium,
-                        color = Theme.colors.brand.primary,
-                        modifier = Modifier.clickable { onAddNewCollectionClick }
-                    )
+                when {
+                    showCancelIcon -> {
+                        Icon(
+                            painter = painterResource(R.drawable.outline_x),
+                            contentDescription = null,
+                            tint = Theme.colors.shade.secondary,
+                            modifier = Modifier
+                                .size(20.dp)
+                                .clickable { onClose() }
+                        )
+                    }
+
+                    title.isNotEmpty() -> {
+                        MovieText(
+                            text = stringResource(R.string.new_collection),
+                            style = Theme.textStyle.body.medium.medium,
+                            color = Theme.colors.brand.primary,
+                            modifier = Modifier.clickable(onClick = onAddNewCollectionClick)
+                        )
+                    }
                 }
             }
             content()
@@ -144,13 +141,12 @@ private fun CineVerseBottomSheetPreview() {
                 .padding(100.dp),
         ) {
             Button(
-                onClick = { show = true }
-            ) {
+                onClick = { show = true }) {
                 Text("Show Bottom Sheet")
             }
 
             if (show) {
-                CineVerseTheme(state = ThemeState(isDark = true, {})) {
+                CineVerseTheme(state = ThemeState(isDark = true) {}) {
                     CineVerseBottomSheet(
                         title = "Add to Collection",
                         onClose = { show = false },
@@ -176,5 +172,4 @@ private fun CineVerseBottomSheetPreview() {
             }
         }
     }
-
 }

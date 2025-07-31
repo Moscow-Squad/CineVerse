@@ -1,6 +1,6 @@
 package com.moscow.cineverse.screen.cast_details.best_of_movies
 
-import com.moscow.cineverse.designSystem.component.ViewMode
+import com.moscow.cineverse.utlis.ViewMode
 
 interface ShowAllActorMoviesInteractionListener {
     fun onRefresh()

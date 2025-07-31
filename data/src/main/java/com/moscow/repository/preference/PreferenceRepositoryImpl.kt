@@ -4,6 +4,7 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.moscow.domain.model.UserType
 import com.moscow.domain.repository.PreferenceRepository
@@ -24,6 +25,7 @@ class PreferenceRepositoryImpl @Inject constructor(
                     preferences[USER_ID_KEY] = userType.id
                     preferences[USERNAME_KEY] = userType.username
                     preferences[SESSION_ID_KEY] = userType.sessionId
+                    preferences[RECENTLY_VIEWED_COLLECTION_ID] = userType.recentlyCollectionId
                     preferences[Is_LOGGED_IN_KEY] = true
                     preferences.remove(EXPIRED_AT_KEY)
                 }
@@ -47,10 +49,12 @@ class PreferenceRepositoryImpl @Inject constructor(
                         val id = preferences[USER_ID_KEY] ?: ""
                         val username = preferences[USERNAME_KEY] ?: ""
                         val sessionId = preferences[SESSION_ID_KEY] ?: ""
+                        val recentlyCollectionId = preferences[RECENTLY_VIEWED_COLLECTION_ID] ?: 0
                         UserType.AuthenticatedUser(
                             id = id,
                             username = username,
-                            sessionId = sessionId
+                            sessionId = sessionId,
+                            recentlyCollectionId = recentlyCollectionId
                         )
                     }
 
@@ -95,6 +99,7 @@ class PreferenceRepositoryImpl @Inject constructor(
         private val USER_ID_KEY = stringPreferencesKey("user_id")
         private val USERNAME_KEY = stringPreferencesKey("username")
         private val SESSION_ID_KEY = stringPreferencesKey("session_id")
+        private val RECENTLY_VIEWED_COLLECTION_ID = intPreferencesKey("recently_collection_id")
         private val EXPIRED_AT_KEY = stringPreferencesKey("expired_at")
         private val Is_LOGGED_IN_KEY = booleanPreferencesKey("is_logged_in")
     }

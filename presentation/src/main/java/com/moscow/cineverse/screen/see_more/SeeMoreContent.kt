@@ -26,7 +26,7 @@ import com.moscow.cineverse.component.NoInternetScreen
 import com.moscow.cineverse.designSystem.component.MovieAppBar
 import com.moscow.cineverse.designSystem.component.MovieCircularProgressBar
 import com.moscow.cineverse.designSystem.component.MovieScaffold
-import com.moscow.cineverse.designSystem.component.ViewMode
+import com.moscow.cineverse.utlis.ViewMode
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.screen.explore.component.ViewModeToggleButton
 import com.moscow.cineverse.screen.home.HomeFeaturedItems
@@ -41,7 +41,7 @@ fun <T : Any> SeeMoreContent(
 ) {
     val gridColumns = remember(uiState.viewMode) {
         if (uiState.viewMode == ViewMode.GRID) {
-            GridCells.Adaptive(minSize = 160.dp)
+            GridCells.Fixed(2)
         } else {
             GridCells.Fixed(1)
         }
@@ -115,7 +115,7 @@ fun <T : Any> SeeMoreContent(
                             }
                         }
 
-                        if (contentList.loadState.append is LoadState.Loading) {
+                        if (contentList.loadState.append is LoadState.Loading && contentList.itemCount > 20) {
                             item {
                                 Box(
                                     modifier = Modifier

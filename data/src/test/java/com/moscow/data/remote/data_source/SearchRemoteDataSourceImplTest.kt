@@ -1,8 +1,8 @@
 package com.moscow.data.remote.data_source
 
-import com.android.domain.exception.CineVerseException.IOException
 import com.google.common.truth.Truth.assertThat
 import com.moscow.data_source.remote.SearchRemoteDataSource
+import com.moscow.domain.exception.CineVerseException.IOException
 import com.moscow.remote.data_source.SearchRemoteDataSourceImpl
 import com.moscow.remote.dto.MovieDto
 import com.moscow.remote.dto.actor.ActorDto

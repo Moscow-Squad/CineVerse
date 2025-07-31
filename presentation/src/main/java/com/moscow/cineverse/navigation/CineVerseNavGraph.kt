@@ -8,10 +8,8 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import com.moscow.cineverse.navigation.routes.CastBestOfMovieRoute
-import com.moscow.cineverse.navigation.routes.CastDetailsRoute
+import com.moscow.cineverse.navigation.routes.castDetailsRoute
 import com.moscow.cineverse.navigation.routes.CastGalleryRoute
-import com.moscow.cineverse.navigation.routes.HomeRoute
-import com.moscow.cineverse.navigation.routes.LoginRoute
 import com.moscow.cineverse.navigation.routes.MovieDetailsRoute
 import com.moscow.cineverse.navigation.routes.RecommendationsRoute
 import com.moscow.cineverse.navigation.routes.ReviewsRoute
@@ -52,7 +50,7 @@ fun CineVerseNavGraph(
             loginRoute(navController)
             RecommendationsRoute(navController)
             ReviewsRoute(navController)
-            CastDetailsRoute(navController)
+            castDetailsRoute(navController)
             CastGalleryRoute(navController)
             CastBestOfMovieRoute(navController)
             MovieDetailsRoute(navController)

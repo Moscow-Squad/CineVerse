@@ -1,6 +1,6 @@
 package com.moscow.cineverse.screen.movie_details.recommendations
 
-import com.moscow.cineverse.designSystem.component.ViewMode
+import com.moscow.cineverse.utlis.ViewMode
 
 interface RecommendationsMoviesInteractionListener {
     fun onViewModeChanged(viewMode: ViewMode)

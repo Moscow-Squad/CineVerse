@@ -27,7 +27,6 @@ import com.moscow.cineverse.designSystem.theme.Theme
 import kotlin.math.cos
 import kotlin.math.sin
 
-
 @Composable
 fun MovieCircularProgressBar(
     modifier: Modifier = Modifier,
@@ -81,7 +80,6 @@ fun MovieCircularProgressBar(
 @Preview
 @Composable
 private fun ProgressPreview() {
-
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
@@ -91,9 +89,6 @@ private fun ProgressPreview() {
                 Theme.colors.brand.primary,
                 Theme.colors.brand.tertiary
             )
-
         )
     }
-
 }
-

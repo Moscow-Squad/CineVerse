@@ -3,7 +3,7 @@ package com.moscow.cineverse.screen.series_details
 import com.moscow.cineverse.common_ui_state.CrewUiState
 import com.moscow.cineverse.common_ui_state.MediaItemUiState
 import com.moscow.cineverse.common_ui_state.ReviewUiState
-import com.moscow.cineverse.designSystem.component.ViewMode
+import com.moscow.cineverse.utlis.ViewMode
 import com.moscow.cineverse.common_ui_state.StarCastUiState
 
 data class SeriesDetailsScreenState(

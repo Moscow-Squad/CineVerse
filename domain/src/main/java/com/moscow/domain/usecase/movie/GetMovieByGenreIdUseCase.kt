@@ -7,5 +7,5 @@ class GetMovieByGenreIdUseCase @Inject constructor(
     private val movieRepository: MovieRepository
 ) {
     suspend operator fun invoke(genreId: Int, page: Int) =
-        movieRepository.getMoviesByGenreId(genreId, page)
+        movieRepository.getMoviesByGenreId(genreId, page).distinctBy { it.id }
 }

@@ -3,15 +3,15 @@ package com.moscow.cineverse.screen.cast_details
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.moscow.cineverse.base.BaseViewModel
-import com.moscow.cineverse.designSystem.component.cast_details.SocialMediaLinks
 import com.moscow.cineverse.navigation.routes.CastDetailsRoute
+import com.moscow.cineverse.screen.cast_details.CastDetailsUiState.SocialMediaLinks
 import com.moscow.domain.model.ActorDetails
 import com.moscow.domain.model.Movie
 import com.moscow.domain.usecase.actor.GetActorBestMoviesUseCase
 import com.moscow.domain.usecase.actor.GetActorDetailsUseCase
 import com.moscow.domain.usecase.actor.GetActorGalleryUseCase
-import kotlinx.coroutines.launch
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -22,7 +22,7 @@ class CastDetailsViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle
 ) : BaseViewModel<CastDetailsUiState, CastDetailsEffect>(CastDetailsUiState()),
     CastDetailsInteractionListener {
-        val actorId = savedStateHandle.get<Int>(CastDetailsRoute.CAST_ID) ?: 0
+    val actorId = savedStateHandle.get<Int>(CastDetailsRoute.CAST_ID) ?: 0
 
     init {
         loadActorDetails()
@@ -76,7 +76,7 @@ class CastDetailsViewModel @Inject constructor(
                         )
                     }
                 }
-            } catch (e: Exception) {
+            } catch (_: Exception) {
                 updateState { currentState ->
                     currentState.copy(
                         images = emptyList(),
@@ -101,7 +101,7 @@ class CastDetailsViewModel @Inject constructor(
                         isLoadingMovies = false
                     )
                 }
-            } catch (e: Exception) {
+            } catch (_: Exception) {
                 updateState { currentState ->
                     currentState.copy(
                         movies = emptyList(),

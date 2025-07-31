@@ -72,7 +72,7 @@ fun HomeHeaderSlider(items: List<MediaItemUiState>, modifier: Modifier = Modifie
     val factor = (1f - normalizedOffset).coerceIn(0f, 1f)
 
     val shadowBlur = lerp(40.dp, 80.dp, factor)
-    val shadowAlpha = lerp(0f, 0.4f, factor)
+    val shadowAlpha = lerp(0f, 0.09f, factor)
     val shadowOffset = lerp(20.dp, 25.dp, factor)
 
 
