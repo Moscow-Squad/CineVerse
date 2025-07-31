@@ -73,12 +73,18 @@ class HomeViewModel @Inject constructor(
     }
 
     private suspend fun waitUntilAllDataIsReady() {
+        var wait = 0
         while (uiState.value.sliderItems.isEmpty()
             || uiState.value.recentlyReleasedMovies.isEmpty()
             || uiState.value.upcomingMovies.isEmpty()
             || uiState.value.topRatedTvShows.isEmpty()
             || uiState.value.matchesYourVibe.isEmpty()
         ) {
+            wait++
+            if (wait == 15){
+                updateState { it.copy(isLoading = false, error = "error loading") }
+                return
+            }
             delay(100)
         }
     }
