@@ -6,6 +6,7 @@ import com.moscow.remote.dto.review.ReviewDto
 import com.moscow.remote.dto.series.ListOfSeriesDto
 import com.moscow.remote.dto.series.SeriesDetailDto
 import com.moscow.remote.dto.series.SeriesDto
+import com.moscow.remote.dto.series.SeriesTrailersDto
 import com.moscow.utils.ApiResponse
 import com.moscow.utils.DISCOVER_SERIES_LIST
 import com.moscow.utils.LATEST
@@ -18,6 +19,7 @@ import com.moscow.utils.REVIEWS
 import com.moscow.utils.SERIES
 import com.moscow.utils.SERIES_CREDITS
 import com.moscow.utils.SESSION_ID
+import com.moscow.utils.TRAILERS
 import com.moscow.utils.WITH_GENRES
 import retrofit2.Response
 import retrofit2.http.Body
@@ -76,4 +78,9 @@ interface SeriesService {
     suspend fun getSeriesCredits(
         @Path("series_id") seriesId: Int
     ): Response<SeriesCreditDto>
+
+    @GET("$SERIES{series_id}$TRAILERS")
+    suspend fun getSeriesTrailers(
+        @Path("series_id") seriesId: Int
+    ): Response<SeriesTrailersDto>
 }
