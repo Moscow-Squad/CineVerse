@@ -58,6 +58,8 @@ jobs:
           echo "keyAlias=${{ secrets.KEY_ALIAS }}" >> gradle.properties
           echo "keyPassword=${{ secrets.KEY_PASSWORD }}" >> gradle.properties
           echo "storeFile=$(pwd)/my-release-key.jks" >> gradle.properties
+          echo "android.useAndroidX=true" >> gradle.properties
+          echo "android.enableJetifier=true" >> gradle.properties
 
       - name: Make gradlew executable
         run: chmod +x ./gradlew
