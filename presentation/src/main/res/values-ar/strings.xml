@@ -69,7 +69,7 @@
     <string name="join_cineverse">انضم إلى سينيفيرس</string>
     <string name="let_us_choose_message">نوفّر عليك وقت البحث ونرشح لك الأفضل</string>
     <string name="let_us_choose_for_you">خلينا نختار لك!</string>
-    <string name="what_sould_i_watch">مو عارف تشوف إيه؟</string>
+    <string name="what_sould_i_watch">مش عارف تشوف إيه؟</string>
     <string name="need_more_to_watch">تبغى تشوف شيء جديد؟</string>
     <string name="browse_everything">استعرض الكل</string>
     <string name="browse_everything_message">استكشف كل الأفلام والمسلسلات حسب النوع أو ابحث عن اللي يعجبك</string>
@@ -92,5 +92,9 @@
     <string name="facebook">فيسبوك</string>
     <string name="instagram">إنستغرام</string>
     <string name="born_on">وُلد في %1$s</string>
+    <string name="sensitive_content">محتوي حساس</string>
+    <string name="all">الكل</string>
+    <string name="search">ابحث...</string>
+    <string name="search_can_t_be_empty_1">لا تستطيع البحث بلا شئ !</string>
 
 </resources>

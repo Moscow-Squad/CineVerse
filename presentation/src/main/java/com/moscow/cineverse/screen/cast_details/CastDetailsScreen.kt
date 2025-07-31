@@ -38,15 +38,13 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.moscow.cineverse.component.MoviePosterCard
-import com.moscow.cineverse.designSystem.component.MovieAppBar
 import com.moscow.cineverse.MovieListSection
-import com.moscow.cineverse.designSystem.component.MovieScaffold
+import com.moscow.cineverse.component.MoviePosterCard
 import com.moscow.cineverse.component.SectionTitle
-import com.moscow.cineverse.utlis.ViewMode
+import com.moscow.cineverse.designSystem.component.MovieAppBar
+import com.moscow.cineverse.designSystem.component.MovieScaffold
 import com.moscow.cineverse.designSystem.component.blur.OnBlurContent
 import com.moscow.cineverse.designSystem.component.blur.RemoteImagePlaceholder
 import com.moscow.cineverse.designSystem.theme.Theme
@@ -62,6 +60,7 @@ import com.moscow.cineverse.screen.cast_details.composable.ErrorContent
 import com.moscow.cineverse.screen.cast_details.composable.LoadingContent
 import com.moscow.cineverse.screen.cast_details.gallery.GallerySection
 import com.moscow.cineverse.screen.movie_details.InfoSection
+import com.moscow.cineverse.utlis.ViewMode
 
 @Composable
 fun CastDetailsScreen(
@@ -288,7 +287,7 @@ fun MainDetails(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(start = 16.dp, bottom = 16.dp,top = 16.dp , end = 2.dp)
+                .padding(start = 16.dp, bottom = 16.dp, top = 16.dp, end = 2.dp)
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
@@ -305,12 +304,8 @@ fun MainDetails(
                     errorContent = { RemoteImagePlaceholder() },
                     onBlurContent = {
                         OnBlurContent(
-                            icon = painterResource(R.drawable.icon_eye_slash),
                             hintText = stringResource(R.string.unsuitable_image),
-                            textStyle = Theme.textStyle.body.small.regular.copy(
-                                color = Color(0x99FFFFFF)
-                            ),
-                            iconSize = 24.dp,
+                            isAddedText = false
                         )
                     }
                 )
@@ -331,7 +326,7 @@ fun MainDetails(
                                 iconTint = Theme.colors.shade.secondary,
                                 modifier = Modifier.padding(bottom = 8.dp)
                             )
-                            if(location.isNotBlank())TextWithIcon(
+                            if (location.isNotBlank()) TextWithIcon(
                                 icon = R.drawable.outline_location,
                                 text = location,
                                 iconTint = Theme.colors.shade.secondary,
@@ -406,7 +401,7 @@ private fun SocialMediaPill(
         ) {
             Image(
                 painter = painterResource(id = iconRes),
-                modifier =Modifier.size(16.dp),
+                modifier = Modifier.size(16.dp),
                 contentDescription = "$name icon"
             )
 

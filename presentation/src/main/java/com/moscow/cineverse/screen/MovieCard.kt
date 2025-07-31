@@ -2,6 +2,7 @@ package com.moscow.cineverse.screen
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -23,19 +24,18 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.moscow.cineverse.designSystem.component.blur.OnBlurContent
 import com.moscow.cineverse.designSystem.theme.CineVerseTheme
 import com.moscow.cineverse.designSystem.theme.Theme
@@ -137,7 +137,7 @@ private fun <T> GridMovieCard(
     getRating: (T) -> Float,
 ) {
     Column(
-        modifier = modifier.clickable { onMovieClick(getId(movieData)) }
+        modifier = modifier
     ) {
         Card(
             modifier = Modifier
@@ -154,7 +154,8 @@ private fun <T> GridMovieCard(
                     imageUrl = posterUrl,
                     modifier = Modifier
                         .fillMaxSize()
-                        .clip(RoundedCornerShape(Theme.radius.large)),
+                        .clip(RoundedCornerShape(Theme.radius.large))
+                        .clickable{ onMovieClick(getId(movieData)) },
                     placeholderContent = {
                         RemoteImagePlaceholder(
                             modifier = Modifier.fillMaxSize(),
@@ -171,12 +172,7 @@ private fun <T> GridMovieCard(
                     }
                 ) {
                     OnBlurContent(
-                        icon = painterResource(R.drawable.icon_eye_slash),
-                        hintText = stringResource(R.string.unsuitable_image),
-                        textStyle = Theme.textStyle.body.small.regular.copy(
-                            color = Color(0x99FFFFFF)
-                        ),
-                        iconSize = 24.dp,
+                        hintText = stringResource(com.moscow.cinverse.presentation.R.string.sensitive_content),
                     )
                 }
 
@@ -224,7 +220,11 @@ private fun <T> GridMovieCard(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 8.dp)
-                    .clickable { onMovieClick(getId(movieData)) }
+                    .clickable (
+                        indication = null,
+                        interactionSource = remember { MutableInteractionSource() },
+                        onClick = { onMovieClick(getId(movieData)) }
+                    )
             )
         }
     }
@@ -248,7 +248,7 @@ private fun <T> ListMovieCard(
             .fillMaxWidth()
             .height(95.dp)
             .clip(RoundedCornerShape(Theme.radius.large))
-            .clickable { onMovieClick(getId(movieData)) },
+           ,
         elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
         shape = RoundedCornerShape(Theme.radius.large),
         colors = CardDefaults.cardColors(containerColor = Theme.colors.background.card)
@@ -268,7 +268,9 @@ private fun <T> ListMovieCard(
                                 topEnd = Theme.radius.large,
                                 bottomStart = Theme.radius.large
                             )
-                        ),
+                        )
+                        .clickable { onMovieClick(getId(movieData)) }
+                        ,
                     placeholderContent = {
                         RemoteImagePlaceholder(
                             modifier = Modifier
@@ -289,13 +291,8 @@ private fun <T> ListMovieCard(
                     }
                 ) {
                     OnBlurContent(
-                        icon = painterResource(R.drawable.icon_eye_slash),
-                        hintText = stringResource(R.string.unsuitable_image),
-                        textStyle = TextStyle(
-                            fontSize = 8.sp,
-                            color = Color(0x99FFFFFF)
-                        ),
-                        iconSize = 16.dp,
+                        hintText = "",
+                        isAddedText = false
                     )
                 }
 

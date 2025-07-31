@@ -127,7 +127,7 @@ fun SearchBar(
             textStyle = Theme.textStyle.body.medium.medium.copy(color = Theme.colors.shade.primary),
             placeholder = {
                 Text(
-                    text = "Search...",
+                    text = stringResource(com.moscow.cinverse.presentation.R.string.search),
                     style = Theme.textStyle.body.medium.regular,
                     color = Theme.colors.shade.tertiary,
                     fontSize = 14.sp
@@ -151,7 +151,7 @@ fun SearchBar(
                         tint = Theme.colors.shade.tertiary,
                         modifier = Modifier
                             .size(20.dp)
-                            .noRibbleClick{
+                            .noRibbleClick {
                                 onValueChange("")
                             }
                     )

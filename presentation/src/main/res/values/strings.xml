@@ -92,5 +92,9 @@
     <string name="facebook">Facebook</string>
     <string name="instagram">Instagram</string>
     <string name="born_on">Born on %1$s</string>
+    <string name="sensitive_content">Sensitive Content</string>
+    <string name="all">All</string>
+    <string name="search">Search...</string>
+    <string name="search_can_t_be_empty_1">Search can\'t be empty!</string>
 
 </resources>
