@@ -331,14 +331,16 @@ class ExploreViewModel @Inject constructor(
     }
 
     override fun onSearchValueChange(text: String) {
-        updateState {
-            it.copy(
-                searchKeyWord = text,
-                showSuggestions = true,
-                showHistory = text.isBlank(),
-                remoteSuggestions = emptyList(),
-                isContentEmpty = false
-            )
+        if(text.length <= 50){
+            updateState {
+                it.copy(
+                    searchKeyWord = text,
+                    showSuggestions = true,
+                    showHistory = text.isBlank(),
+                    remoteSuggestions = emptyList(),
+                    isContentEmpty = false
+                )
+            }
         }
     }
 
