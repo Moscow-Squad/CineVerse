@@ -26,7 +26,6 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.moscow.cineverse.designSystem.component.blur.OnBlurContent
 import com.moscow.cineverse.designSystem.theme.Theme
-import com.moscow.cineverse.design_system.R
 import com.moscow.cineverse.image_viewer.component.SafeImageViewer
 import com.moscow.cineverse.screen.explore.ExploreScreenState
 
@@ -72,12 +71,7 @@ fun ActorPosterCard(
                     }
                 ) {
                     OnBlurContent(
-                        icon = painterResource(R.drawable.icon_eye_slash),
-                        hintText = stringResource(R.string.unsuitable_image),
-                        textStyle = Theme.textStyle.body.small.regular.copy(
-                            color = Color(0x99FFFFFF)
-                        ),
-                        iconSize = 24.dp,
+                        hintText = stringResource(com.moscow.cinverse.presentation.R.string.sensitive_content)
                     )
                 }
             }
