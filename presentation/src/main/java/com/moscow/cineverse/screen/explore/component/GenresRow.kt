@@ -28,12 +28,14 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.screen.explore.ExploreInteractionListener
 import com.moscow.cineverse.screen.explore.ExploreScreenState
 import com.moscow.cineverse.screen.explore.ExploreTabsPages
+import com.moscow.cinverse.presentation.R
 
 @Composable
 fun GenresRow(
@@ -113,7 +115,7 @@ private fun GenresRowContent(
     ) {
         items(uiState.genres) { genre ->
             PillLabel(
-                text = genre.name,
+                text = if (genre.name == "All") LocalContext.current.getString(R.string.all) else genre.name,
                 isActive = selectedGenre == genre.id,
                 onClick = {
                     if (uiState.selectedTab == ExploreTabsPages.SERIES) {
