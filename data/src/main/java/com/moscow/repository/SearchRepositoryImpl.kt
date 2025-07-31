@@ -1,24 +1,32 @@
 package com.moscow.repository
 
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
+import androidx.work.workDataOf
 import com.moscow.data_source.local.SearchLocalDataSource
 import com.moscow.data_source.remote.SearchRemoteDataSource
 import com.moscow.domain.model.Actor
 import com.moscow.domain.model.Movie
 import com.moscow.domain.model.Series
 import com.moscow.domain.repository.SearchRepository
+import com.moscow.local.DeleteHistoryQueryWorker
 import com.moscow.mapper.toDomain
 import com.moscow.mapper.toEntity
 import com.moscow.mapper.toModel
 import com.moscow.mapper.toSortedGenres
+import com.moscow.utils.DELETE_SEARCH_QUERY_HISTORY
+import com.moscow.utils.QUERY
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class SearchRepositoryImpl @Inject constructor(
     private val searchLocalDataSource: SearchLocalDataSource,
     private val searchRemoteDataSource: SearchRemoteDataSource,
+    private val workManager: WorkManager
 ) : SearchRepository {
     override suspend fun getLocalMoviesBySearchTerm(searchTerm: String): List<Movie> {
         return searchLocalDataSource
@@ -132,6 +140,12 @@ class SearchRepositoryImpl @Inject constructor(
 
     override suspend fun cacheSearchQuery(query: String) {
         searchLocalDataSource.insertSearchHistory(query)
+        val deleteWork = OneTimeWorkRequestBuilder<DeleteHistoryQueryWorker>()
+            .setInitialDelay(1, TimeUnit.MINUTES)
+            .setInputData(workDataOf(QUERY to query))
+            .addTag(DELETE_SEARCH_QUERY_HISTORY)
+            .build()
+        workManager.enqueue(deleteWork)
     }
 
     override suspend fun clearSearchHistory() {
