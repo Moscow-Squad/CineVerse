@@ -32,12 +32,12 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.moscow.cineverse.design_system.R
-import com.moscow.cineverse.image_viewer.component.SafeImageViewer
-import com.moscow.cineverse.designSystem.component.button.MovieFloatingButton
 import com.moscow.cineverse.designSystem.component.blur.OnBlurContent
 import com.moscow.cineverse.designSystem.component.blur.RemoteImagePlaceholder
+import com.moscow.cineverse.designSystem.component.button.MovieFloatingButton
 import com.moscow.cineverse.designSystem.theme.Theme
+import com.moscow.cineverse.design_system.R
+import com.moscow.cineverse.image_viewer.component.SafeImageViewer
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
@@ -91,12 +91,7 @@ fun MovieCardDetails(
                     errorContent = { RemoteImagePlaceholder() },
                     onBlurContent = {
                         OnBlurContent(
-                            icon = painterResource(R.drawable.icon_eye_slash),
                             hintText = stringResource(R.string.unsuitable_image),
-                            textStyle = Theme.textStyle.body.small.regular.copy(
-                                color = Color(0x99FFFFFF)
-                            ),
-                            iconSize = 24.dp,
                         )
                     }
                 )
@@ -212,7 +207,6 @@ fun DetailCard(
 }
 
 
-
 @Composable
 fun InfoTextWithIcon(icon: Int, text: String, tint: Color) {
     Row(
@@ -273,12 +267,7 @@ fun MainMovieCard(
                 }
             ) {
                 OnBlurContent(
-                    icon = painterResource(R.drawable.icon_eye_slash),
                     hintText = stringResource(R.string.unsuitable_image),
-                    textStyle = Theme.textStyle.body.small.regular.copy(
-                        color = Color(0x99FFFFFF)
-                    ),
-                    iconSize = 24.dp,
                 )
             }
             Text(

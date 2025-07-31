@@ -29,20 +29,19 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.moscow.cineverse.utlis.ViewMode
 import com.moscow.cineverse.designSystem.component.blur.OnBlurContent
 import com.moscow.cineverse.designSystem.theme.CineVerseTheme
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.design_system.R
-import com.moscow.cineverse.screen.movie_details.InfoSection
 import com.moscow.cineverse.image_viewer.component.SafeImageViewer
+import com.moscow.cineverse.screen.movie_details.InfoSection
+import com.moscow.cineverse.utlis.ViewMode
+
 @Composable
 fun <T : Any> MovieCard(
     modifier: Modifier = Modifier,
@@ -171,12 +170,7 @@ private fun <T> GridMovieCard(
                     }
                 ) {
                     OnBlurContent(
-                        icon = painterResource(R.drawable.icon_eye_slash),
-                        hintText = stringResource(R.string.unsuitable_image),
-                        textStyle = Theme.textStyle.body.small.regular.copy(
-                            color = Color(0x99FFFFFF)
-                        ),
-                        iconSize = 24.dp,
+                        hintText = stringResource(com.moscow.cinverse.presentation.R.string.sensitive_content),
                     )
                 }
 
@@ -289,13 +283,8 @@ private fun <T> ListMovieCard(
                     }
                 ) {
                     OnBlurContent(
-                        icon = painterResource(R.drawable.icon_eye_slash),
-                        hintText = stringResource(R.string.unsuitable_image),
-                        textStyle = TextStyle(
-                            fontSize = 8.sp,
-                            color = Color(0x99FFFFFF)
-                        ),
-                        iconSize = 16.dp,
+                        hintText = "",
+                        isAddedText = false
                     )
                 }
 

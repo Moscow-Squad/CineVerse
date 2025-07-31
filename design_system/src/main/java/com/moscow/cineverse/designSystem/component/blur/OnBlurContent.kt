@@ -12,20 +12,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import com.moscow.cineverse.designSystem.theme.Theme
+import com.moscow.cineverse.design_system.R
 
 @Composable
 fun OnBlurContent(
     modifier: Modifier = Modifier,
     hintText: String,
-    textStyle: TextStyle,
     isAddedText: Boolean = true,
-    icon: Painter,
-    iconSize: Dp
 ) {
     Column(
         modifier = modifier
@@ -35,15 +32,15 @@ fun OnBlurContent(
         verticalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterVertically)
     ) {
         Image(
-            painter = icon,
+            painter = painterResource(R.drawable.icon_eye_slash),
             contentDescription = null,
-            modifier = Modifier.size(iconSize),
+            modifier = Modifier.size(24.dp),
             contentScale = ContentScale.Fit,
-            colorFilter = ColorFilter.tint(Color(0x99FFFFFF)),
+            colorFilter = ColorFilter.tint(Color(0xFFE1E1E3)),
         )
         if (isAddedText) Text(
             text = hintText,
-            style = textStyle,
+            style = Theme.textStyle.body.small.medium.copy(color = Color(0xFFE1E1E3)),
         )
     }
 }

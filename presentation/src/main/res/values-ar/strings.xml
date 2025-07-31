@@ -92,5 +92,6 @@
     <string name="facebook">فيسبوك</string>
     <string name="instagram">إنستغرام</string>
     <string name="born_on">وُلد في %1$s</string>
+    <string name="sensitive_content">محتوي حساس</string>
 
 </resources>
