@@ -1,6 +1,7 @@
 package com.moscow.cineverse.screen.series_details
 
 import android.content.Context
+import android.content.Intent
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionLayout
@@ -24,7 +25,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.core.net.toUri
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -85,11 +85,11 @@ fun SeriesDetailsScreen(
                     navigateToCastDetails(event.ActorId)
                 }
                 is SeriesDetailsScreenEffects.NavigateToSeriesDetailsScreen -> {
-                    navigateToSeriesDetails(effect.seriesId)
+                    navigateToSeriesDetails(event.seriesId)
                 }
 
                 is SeriesDetailsScreenEffects.OpenTrailer -> {
-                    val intent = Intent(Intent.ACTION_VIEW, effect.url.toUri())
+                    val intent = Intent(Intent.ACTION_VIEW, event.url.toUri())
                     context.startActivity(intent)
                 }
             }
@@ -123,7 +123,9 @@ fun SeriesDetailsContent(
         when {
             uiState.isLoading ->{
                 Box(
-                    modifier = Modifier.fillMaxSize().background(Theme.colors.background.screen),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(Theme.colors.background.screen),
                     contentAlignment = Alignment.Center
                 ) {
                     MovieCircularProgressBar()
@@ -131,14 +133,18 @@ fun SeriesDetailsContent(
             }
             uiState.errorMessage != "" ->{
                 Box(
-                    modifier = Modifier.fillMaxSize().background(Theme.colors.background.screen),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(Theme.colors.background.screen),
                     contentAlignment = Alignment.Center
                 ) {
                     NoInternetScreen(onRetry = interactionListener::onRetry)
                 }
             }
             else ->{
-                Column(modifier = Modifier.fillMaxSize().background(Theme.colors.background.screen)) {
+                Column(modifier = Modifier
+                    .fillMaxSize()
+                    .background(Theme.colors.background.screen)) {
                     MovieAppBar(backButtonClick = onNavigateBack, showBackButton = true)
                     LazyColumn(
                         state = scrollState,
