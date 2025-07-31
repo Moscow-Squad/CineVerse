@@ -14,8 +14,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.moscow.cineverse.design_system.R
 import com.moscow.cineverse.designSystem.theme.Theme
+import com.moscow.cineverse.design_system.R
 
 @Composable
 fun MovieFloatingButton(
@@ -26,10 +26,10 @@ fun MovieFloatingButton(
     modifier: Modifier = Modifier
 ) {
     Button(
-        modifier = modifier.size(56.dp),
+        modifier = modifier.size(40.dp),
         onClick = onClick,
         shape = RoundedCornerShape(Theme.radius.large),
-        contentPadding = PaddingValues(16.dp),
+        contentPadding = PaddingValues(10.dp),
         colors = buttonColors(
             containerColor = backgroundColor,
             contentColor = Color.Unspecified
@@ -37,7 +37,7 @@ fun MovieFloatingButton(
     ) {
 
         Icon(
-            modifier = Modifier.size(24.dp),
+            modifier = Modifier.size(20.dp),
             painter = painterResource(buttonIcon),
             tint = iconColor,
             contentDescription = stringResource(R.string.floating_button_icon)

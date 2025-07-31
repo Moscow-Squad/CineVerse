@@ -25,9 +25,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.moscow.cineverse.component.NoInternetScreen
+import com.moscow.cineverse.component.StorylineSection
 import com.moscow.cineverse.designSystem.component.MovieAppBar
 import com.moscow.cineverse.designSystem.component.MovieScaffold
 import com.moscow.cineverse.designSystem.theme.Theme
@@ -41,7 +43,6 @@ import com.moscow.cineverse.screen.movie_details.component.MovieRatingSection
 import com.moscow.cineverse.screen.movie_details.component.MovieRecommendationsSection
 import com.moscow.cineverse.screen.movie_details.component.MovieReviewsSection
 import com.moscow.cineverse.screen.movie_details.component.MovieStaffInfoSection
-import com.moscow.cineverse.screen.movie_details.component.MovieStorylineSection
 
 @Composable
 fun MovieDetailsScreen(
@@ -55,6 +56,7 @@ fun MovieDetailsScreen(
     navigateToMovieDetails: (Int) -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val context = LocalContext.current
 
     LaunchedEffect(viewModel) {
         viewModel.uiEffect.collect { effect ->
@@ -65,7 +67,8 @@ fun MovieDetailsScreen(
                 navigateToReviews = navigateToReviews,
                 navigateToCastDetails = navigateToCastDetails,
                 navigateToCollectionsBottomSheet = navigateToCollectionsBottomSheet,
-                navigateToMovieDetails = navigateToMovieDetails
+                navigateToMovieDetails = navigateToMovieDetails,
+                context = context
             )
         }
     }
@@ -183,10 +186,8 @@ private fun MovieDetailsMainContent(
                     }
                 }
             }
-            if (uiState.movieDetailsUiState?.description != ""){
-                item {
-                    MovieStorylineSection(uiState = uiState)
-                }
+            item {
+                StorylineSection(description = uiState.movieDetailsUiState?.description)
             }
             item {
                 MovieCastSection(uiState = uiState, interactionListener = interactionListener)

@@ -9,11 +9,12 @@ data class SeriesDetail(
     val overview: String,
     val posterPath: String,
     val backdropPath: String?,
+    val trailerPath: String,
     val genres: List<Genre>,
     val rating: Double,
     val voteCount: Int,
     val releaseDate: LocalDate,
-    val runtime: String,
+    val runtime: Int,
     val type: String,
     val creators: List<Creator>,
     val numberOfSeasons: Int,
@@ -21,31 +22,16 @@ data class SeriesDetail(
     val seasons: List<Season>,
 )
 
-data class CastMember(
-    val id: Int,
-    val name: String,
-    val character: String,
-    val profilePath: String
-)
-
 data class Creator(
     val id: Int,
     val name: String,
     val profilePath: String
 )
-data class Episode(
-    val id: Int,
-    val name: String,
-    val overview: String,
-    val airDate: String,
-    val episodeNumber: Int,
-    val seasonNumber: Int,
-)
 
 data class Season(
     val id: Int,
     val name: String,
-    val airDate: String,
+    val airDate: LocalDate,
     val episodeCount: Int,
     val posterPath: String,
     val overview: String,
