@@ -1,8 +1,10 @@
 package com.moscow.cineverse.mapper
 
+import android.content.Context
 import com.moscow.cineverse.common_ui_state.CrewUiState
 import com.moscow.cineverse.common_ui_state.ReviewUiState
 import com.moscow.cineverse.common_ui_state.StarCastUiState
+import com.moscow.cineverse.design_system.R
 import com.moscow.cineverse.screen.movie_details.MovieScreenState
 import com.moscow.domain.model.CastDetails
 import com.moscow.domain.model.CrewDetails
@@ -114,13 +116,19 @@ fun formatReviewDate(dateString: String): String {
     }
 }
 
-fun Int.toHourMinuteFormat(): String {
+fun Int.toHourMinuteFormat(context: Context): String {
     val hours = this / 60
     val minutes = this % 60
+
     return when {
-        hours > 0 && minutes > 0 -> "$hours h $minutes m"
-        hours > 0 -> "$hours h"
-        minutes > 0 -> "$minutes m"
+        hours > 0 && minutes > 0 -> context.getString(
+            R.string.duration_hours_minutes,
+            hours,
+            minutes
+        )
+
+        hours > 0 -> context.getString(R.string.duration_hours_only, hours)
+        minutes > 0 -> context.getString(R.string.duration_minutes_only, minutes)
         else -> ""
     }
 }
