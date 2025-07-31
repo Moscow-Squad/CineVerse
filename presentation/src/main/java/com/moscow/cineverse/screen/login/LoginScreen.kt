@@ -117,7 +117,7 @@ private fun LoginScreenContent(
             leadingIcon = R.drawable.outline_user,
             leadingIconTint = Theme.colors.shade.tertiary,
             maxLines = 1,
-            isError = state.usernameError != null,
+            isError = state.usernameError != null || state.loginError != null,
             errorMessage = state.usernameError?.asString(context = context),
             keyboardOptions = KeyboardOptions(
                 imeAction = ImeAction.Next,
