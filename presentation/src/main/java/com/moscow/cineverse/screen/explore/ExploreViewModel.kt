@@ -283,7 +283,6 @@ class ExploreViewModel @Inject constructor(
                 updateState { it.copy(remoteSuggestions = suggestion) }
             }
         }
-        updateDisplayedSuggestions()
     }
 
     override fun onSearchBarClickedOn() {
@@ -304,7 +303,6 @@ class ExploreViewModel @Inject constructor(
     private fun onGetHistoryDataSuccess(suggestions: List<String>) {
         val suggestions = suggestions.map { SuggestItemUiState(it, isHistory = true) }
         updateState { it.copy(localSuggestions = suggestions, showHistory = true) }
-        updateDisplayedSuggestions()
     }
 
     private fun onGetHistoryDataFailed(e: Throwable) {
@@ -343,7 +341,6 @@ class ExploreViewModel @Inject constructor(
                 isContentEmpty = false
             )
         }
-        updateDisplayedSuggestions()
     }
 
     override fun onSearchWordDetected(searchKeyWord: List<String>) {
@@ -351,26 +348,6 @@ class ExploreViewModel @Inject constructor(
             it.copy(
                 searchKeyWord = searchKeyWord[0],
                 showSuggestions = true,
-            )
-        }
-    }
-
-    private fun updateDisplayedSuggestions() {
-        updateState { state ->
-            val filteredLocalSuggestions = if (state.searchKeyWord.isBlank()) state.localSuggestions
-            else state.localSuggestions.filter {
-                it.title.contains(
-                    state.searchKeyWord,
-                    ignoreCase = true
-                )
-            }
-
-            val mappedRemoteSuggestions = state.remoteSuggestions
-                .map { SuggestItemUiState(it, isHistory = false) }
-
-            state.copy(
-                localSuggestions = filteredLocalSuggestions,
-                remoteSuggestions = mappedRemoteSuggestions.map { it.title }
             )
         }
     }
