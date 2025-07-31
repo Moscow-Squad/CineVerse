@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.cineverse.android.application)
 
@@ -19,34 +21,39 @@ android {
         checkReleaseBuilds = false
         abortOnError = false
     }
-    signingConfigs {
-        create("release") {
-            storeFile = file(System.getProperty("storeFile") ?: "my-release-key.jks")
-            storePassword = System.getProperty("storePassword")
-            keyAlias = System.getProperty("keyAlias")
-            keyPassword = System.getProperty("keyPassword")
-        }
+    val keystoreProperties = Properties()
+    val keystorePropertiesFile = rootProject.file("keys.properties")
+    if (keystorePropertiesFile.exists()) {
+        keystoreProperties.load(keystorePropertiesFile.inputStream())
     }
-    buildTypes {
-        release {
-            isDebuggable = false
-            isMinifyEnabled = true
-            isShrinkResources = true
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
-            signingConfig = signingConfigs.getByName("release")
-            manifestPlaceholders["crashlytics_enabled"] = "true"
-            manifestPlaceholders["analytics_enabled"] = "true"
+        signingConfigs {
+            create("release") {
+                storeFile = file(System.getProperty("storeFile") ?: "my-release-key.jks")
+                storePassword = keystoreProperties["KEYSTORE_PASSWORD"] as String
+                keyAlias = keystoreProperties["KEY_ALIAS"] as String
+                keyPassword = keystoreProperties["KEY_PASSWORD"] as String
+            }
         }
-        debug {
-            isDebuggable = true
-            isMinifyEnabled = false
-            manifestPlaceholders["crashlytics_debug"] = "true"
-            manifestPlaceholders["analytics_debug"] = "true"
+        buildTypes {
+            release {
+                signingConfig = signingConfigs.getByName("release")
+                isDebuggable = false
+                isMinifyEnabled = true
+                isShrinkResources = true
+                proguardFiles(
+                    getDefaultProguardFile("proguard-android-optimize.txt"),
+                    "proguard-rules.pro"
+                )
+                manifestPlaceholders["crashlytics_enabled"] = "true"
+                manifestPlaceholders["analytics_enabled"] = "true"
+            }
+            debug {
+                isDebuggable = true
+                isMinifyEnabled = false
+                manifestPlaceholders["crashlytics_debug"] = "true"
+                manifestPlaceholders["analytics_debug"] = "true"
+            }
         }
-    }
 }
 
 firebaseAppDistribution {
