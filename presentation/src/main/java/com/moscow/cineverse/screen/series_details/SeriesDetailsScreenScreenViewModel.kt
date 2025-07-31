@@ -3,16 +3,15 @@ package com.moscow.cineverse.screen.series_details
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.moscow.cineverse.base.BaseViewModel
-import com.moscow.cineverse.utlis.ViewMode
 import com.moscow.cineverse.mapper.toUi
 import com.moscow.cineverse.navigation.routes.SeriesDetailsRoute
+import com.moscow.cineverse.utlis.ViewMode
 import com.moscow.domain.model.Series
 import com.moscow.domain.usecase.review.GetReviewsUseCase
 import com.moscow.domain.usecase.series.GetSeriesCreditsDetailsUseCase
 import com.moscow.domain.usecase.series.GetSeriesDetailUseCase
 import com.moscow.domain.usecase.series.GetSeriesRecommendationsUseCase
 import com.moscow.domain.usecase.series.RateSeriesUseCase
-import kotlin.collections.map
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -73,10 +72,21 @@ class SeriesDetailsScreenScreenViewModel @Inject constructor(
         launchWithResult(
             action = { getSeriesCreditsDetailsUseCase(seriesId) },
             onSuccess = { credits ->
+                val crew = credits.behindTheScene.map { it.toUi() }
                 updateState {
                     it.copy(
-                        cast = credits.actors.map { it.toUi() },
-                        crew = credits.behindTheScene.map { it.toUi() },
+                        isLoading = false,
+                        starCast = credits.actors.map { it.toUi() },
+                        characters = crew.filter { it.job == "Characters" }.take(3).map { it.name },
+                        director = crew.filter {
+                            it.job in (listOf(
+                                "Director",
+                                "Screenplay",
+                                "Story"
+                            ))
+                        }.take(3).map { it.name },
+                        writer = crew.filter { it.job == "Producer" }.take(3).map { it.name },
+                        produce = crew.filter { it.job == "Writer" }.take(3).map { it.name }
                     )
                 }
             },

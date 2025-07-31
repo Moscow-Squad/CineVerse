@@ -23,7 +23,6 @@ import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
-import kotlin.collections.map
 
 fun SeriesDetailDto.toDomain(trailer: String): SeriesDetail {
     return SeriesDetail(
@@ -34,8 +33,9 @@ fun SeriesDetailDto.toDomain(trailer: String): SeriesDetail {
         trailerPath = "https://youtu.be/$trailer",
         genres = genres.map { it.toDomain() },
         rating = (voteAverage * 10).toInt() / 10.0,
-        runtime = formatRuntime(episodeRunTime) ?: "0m",
-        releaseDate = if (firstAirDate == null) Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
+        runtime = episodeRunTime.toSeriesEpisodeDuration(),
+        releaseDate = if (firstAirDate == null) Clock.System.now()
+            .toLocalDateTime(TimeZone.currentSystemDefault()).date
         else LocalDate.parse(firstAirDate),
         type = type,
         creators = createdBy.map { it.toDomain() },
@@ -59,7 +59,9 @@ internal fun SeasonDto.toDomain(): Season {
     return Season(
         id = id,
         name = name ?: "",
-        airDate = airDate ?: "",
+        airDate = if (airDate == null) Clock.System.now()
+            .toLocalDateTime(TimeZone.currentSystemDefault()).date
+        else LocalDate.parse(airDate),
         episodeCount = episodeCount ?: 0,
         posterPath = IMAGES_URL + posterPath.orEmpty(),
         overview = overview ?: "",
@@ -101,6 +103,7 @@ fun SeriesCastDto.toDomain() = CastDetails(
     characterName = roles.firstOrNull()?.character ?: "",
     profileImg = IMAGES_URL + profilePath
 )
+
 fun SeriesCrewDto.toDomain() = CrewDetails(
     id = id,
     name = originalName ?: "",
@@ -114,9 +117,9 @@ fun SeriesRecommendationDto.toDomain() = Series(
     rating = voteAverage?.toFloat() ?: 0f,
     adult = adult ?: false,
     backdropPath = IMAGES_URL + backdropPath.orEmpty(),
-    firstAirDate = if (firstAirDate != null){
+    firstAirDate = if (firstAirDate != null) {
         LocalDate.parse(firstAirDate)
-    } else  {
+    } else {
         Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
     },
     genreIds = genreIds,
@@ -127,15 +130,12 @@ fun SeriesRecommendationDto.toDomain() = Series(
     posterPath = IMAGES_URL + posterPath.orEmpty()
 )
 
-private fun formatRuntime(runtimeMinutes: List<Int>): String? {
-    if (runtimeMinutes.isEmpty()) return null
-    val totalMinutes = runtimeMinutes.firstOrNull() ?: return null
-    val hours = totalMinutes / 60
-    val minutes = totalMinutes % 60
-
+private fun List<Int>.toSeriesEpisodeDuration(): Int {
     return when {
-        hours > 0 && minutes > 0 -> "${hours}h ${minutes}m"
-        hours > 0 -> "${hours}h"
-        else -> "${minutes}m"
+        this.isEmpty() -> 0
+        this.size == 1 -> this.first()
+        else -> {
+            this.sum().toInt()
+        }
     }
 }

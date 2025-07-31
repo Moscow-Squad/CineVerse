@@ -36,13 +36,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.moscow.cineverse.utlis.ViewMode
 import com.moscow.cineverse.designSystem.component.blur.OnBlurContent
 import com.moscow.cineverse.designSystem.theme.CineVerseTheme
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.design_system.R
-import com.moscow.cineverse.screen.movie_details.InfoSection
 import com.moscow.cineverse.image_viewer.component.SafeImageViewer
+import com.moscow.cineverse.screen.movie_details.InfoSection
+import com.moscow.cineverse.utlis.ViewMode
+
 @Composable
 fun <T : Any> MovieCard(
     modifier: Modifier = Modifier,
@@ -136,14 +137,13 @@ private fun <T> GridMovieCard(
     getRating: (T) -> Float,
 ) {
     Column(
-        modifier = modifier
+        modifier = modifier.clickable { onMovieClick(getId(movieData)) }
     ) {
         Card(
             modifier = Modifier
                 .height(180.dp)
                 .fillMaxWidth()
-                .clip(RoundedCornerShape(Theme.radius.large))
-                .clickable { onMovieClick(getId(movieData)) },
+                .clip(RoundedCornerShape(Theme.radius.large)),
             shape = RoundedCornerShape(Theme.radius.large)
         ) {
             Box {
