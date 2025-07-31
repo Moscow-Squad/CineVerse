@@ -33,6 +33,8 @@ dependencies {
     /** DaggerHilt */
     implementation(libs.hilt.android)
     ksp(libs.hilt.android.compiler)
+    implementation(libs.androidx.hilt.work)
+    ksp(libs.androidx.hilt.compiler)
 
     // Retrofit
     implementation(libs.retrofit)
@@ -50,4 +52,6 @@ dependencies {
     implementation(libs.gson)
     //date time
     implementation(libs.kotlinx.datetime)
+    // Background
+    implementation(libs.androidx.work.runtime.ktx)
 }

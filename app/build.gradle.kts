@@ -65,6 +65,8 @@ dependencies {
     // DI & platform
     implementation(libs.hilt.android)
     ksp(libs.hilt.android.compiler)
+    implementation(libs.androidx.hilt.work)
+    ksp(libs.androidx.hilt.compiler)
 
     // Core
     implementation(libs.androidx.core.ktx)
