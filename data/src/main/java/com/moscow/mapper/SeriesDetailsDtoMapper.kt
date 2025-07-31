@@ -27,12 +27,13 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import kotlin.collections.map
 
-fun SeriesDetailDto.toDomain(): SeriesDetail {
+fun SeriesDetailDto.toDomain(trailer: String): SeriesDetail {
     return SeriesDetail(
         id = id,
         title = name,
         overview = overview,
         posterPath = IMAGES_URL + posterPath.orEmpty(),
+        trailerPath = "https://youtu.be/$trailer",
         genres = genres.map { it.toDomain() },
         rating = (voteAverage * 10).toInt() / 10.0,
         runtime = formatRuntime(episodeRunTime) ?: "0m",

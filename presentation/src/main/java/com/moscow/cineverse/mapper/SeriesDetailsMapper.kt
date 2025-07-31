@@ -14,6 +14,7 @@ fun SeriesDetail.toUi() = SeriesDetailsUiState(
     id = id,
     title = title,
     overview = overview,
+    trailerPath = trailerPath,
     rating = rating.toString(),
     genre = genres.joinToString(", ") { it.name },
     duration = runtime,

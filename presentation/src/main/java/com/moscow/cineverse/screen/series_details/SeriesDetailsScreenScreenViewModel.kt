@@ -158,6 +158,10 @@ class SeriesDetailsScreenScreenViewModel @Inject constructor(
         sendEvent(SeriesDetailsScreenEffects.NavigateToActorDetailsScreen(actorId))
     }
 
+    override fun onPlayButtonClicked() {
+        sendEvent(SeriesDetailsScreenEffects.OpenTrailer(uiState.value.seriesDetail.trailerPath))
+    }
+
     override fun onRetry() {
         viewModelScope.launch {
             updateState { it.copy(isLoading = true, errorMessage = "") }

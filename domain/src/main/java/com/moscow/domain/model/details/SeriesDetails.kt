@@ -9,6 +9,7 @@ data class SeriesDetail(
     val overview: String,
     val posterPath: String,
     val backdropPath: String?,
+    val trailerPath: String,
     val genres: List<Genre>,
     val rating: Double,
     val voteCount: Int,
