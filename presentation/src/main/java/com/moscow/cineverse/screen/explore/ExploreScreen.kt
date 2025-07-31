@@ -13,7 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -99,8 +99,8 @@ private fun ExploreScreenContent(
     val gridState = rememberLazyGridState()
     val genresState = rememberLazyListState()
 
-    var searchBarVisible by remember { mutableStateOf(true) }
-    var genresVisible by remember { mutableStateOf(true) }
+    var searchBarVisible by rememberSaveable { mutableStateOf(true) }
+    var genresVisible by rememberSaveable { mutableStateOf(true) }
 
     LaunchedEffect(uiState.selectedTab) {
         gridState.animateScrollToItem(0)
