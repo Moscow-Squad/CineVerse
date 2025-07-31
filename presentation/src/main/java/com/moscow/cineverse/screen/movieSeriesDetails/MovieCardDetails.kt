@@ -131,7 +131,6 @@ fun DetailCard(
     }
 
     Row(
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
         modifier = modifier
             .fillMaxWidth()
             .background(
@@ -139,6 +138,7 @@ fun DetailCard(
                 RoundedCornerShape(Theme.radius.large)
             )
             .padding(16.dp),
+        verticalAlignment = Alignment.CenterVertically
     ) {
         Column(
             verticalArrangement = Arrangement.spacedBy(4.dp),
@@ -243,7 +243,7 @@ fun MainMovieCard(
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
-                .padding(16.dp)
+                .padding(horizontal = 16.dp)
                 .sharedBounds(
                     rememberSharedContentState(key = "Main Movie Card"),
                     animatedVisibilityScope = animatedVisibilityScope,
@@ -293,7 +293,9 @@ fun MainMovieCard(
                 { onPlayClick() },
                 Theme.colors.button.primary,
                 Theme.colors.brand.tertiary,
-                modifier = Modifier.padding(end = 8.dp, start = 8.dp).size(40.dp)
+                modifier = Modifier
+                    .padding(start = 8.dp)
+                    .size(40.dp)
             )
         }
     }
