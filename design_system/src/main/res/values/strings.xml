@@ -50,5 +50,8 @@
     <string name="your_collections">Your Collections</string>
     <string name="shows">Shows</string>
     <string name="did_you_watch_it">Did You Watch it?</string>
-
+    <string name="series_type">Series</string>
+    <string name="duration_hours_minutes">%1$d h %2$d m</string>
+    <string name="duration_hours_only">%1$d h</string>
+    <string name="duration_minutes_only">%1$d m</string>
 </resources>
