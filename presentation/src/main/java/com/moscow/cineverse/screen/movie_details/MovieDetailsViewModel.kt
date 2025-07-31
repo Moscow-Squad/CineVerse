@@ -250,11 +250,17 @@ class MovieDetailsViewModel @Inject constructor(
     }
 
     override fun onRetry() {
-        updateState { it.copy(isLoading = true, shouldShowError = false, errorMessage = "") }
-        getMovieDetails(movieId)
-        getReviews(movieId)
-        getCredits(movieId)
-        getRecommendations(movieId)
+        viewModelScope.launch {
+            getUserDetails()
+            updateState { it.copy(isLoading = true) }
+            addMovieToRecentlyViewedCollection(movieId)
+            getMovieDetails(movieId)
+            getReviews(movieId)
+            getCredits(movieId)
+            getRecommendations(movieId)
+            waitUntilAllDataIsReady()
+            updateState { it.copy(isLoading = false) }
+        }
     }
 
     override fun showRatingBottomSheet() {
