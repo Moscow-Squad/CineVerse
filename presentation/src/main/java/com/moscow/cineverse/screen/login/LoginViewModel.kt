@@ -25,7 +25,12 @@ class LoginViewModel @Inject constructor(
 
     override fun onUsernameValueChanged(username: String) {
         if (username.length <= 33) {
-            updateState { it.copy(username = username) }
+            updateState {
+                it.copy(
+                    username = username,
+                    loginError = null
+                )
+            }
         }
         usernameValidationJob?.cancel()
 
@@ -40,7 +45,12 @@ class LoginViewModel @Inject constructor(
 
     override fun onPasswordValueChanged(password: String) {
         if(password.length <= 100){
-            updateState { it.copy(password = password) }
+            updateState {
+                it.copy(
+                    password = password,
+                    loginError = null
+                )
+            }
         }
         passwordValidationJob?.cancel()
 
@@ -86,7 +96,7 @@ class LoginViewModel @Inject constructor(
         updateState {
             it.copy(
                 isLoading = false,
-                passwordError = StringValue.StringResource(resId = R.string.incorrect_username_or_password_please_try_again)
+                loginError = StringValue.StringResource(resId = R.string.incorrect_username_or_password_please_try_again)
             ) }
     }
 

@@ -79,6 +79,9 @@ private fun LoginScreenContent(
     context: Context
 ) {
     val focusManager = LocalFocusManager.current
+    val isError = state.passwordError != null || state.loginError != null
+    val errorMessage = if(state.passwordError != null) state.passwordError.asString(context)
+    else state.loginError?.asString(context)
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -137,8 +140,8 @@ private fun LoginScreenContent(
             placeholder = stringResource(com.moscow.cinverse.presentation.R.string.enter_your_password),
             leadingIcon = R.drawable.outline_lock,
             leadingIconTint = Theme.colors.shade.tertiary,
-            isError = state.passwordError != null,
-            errorMessage = state.passwordError?.asString(context),
+            isError = isError,
+            errorMessage = errorMessage,
             keyboardOptions = KeyboardOptions(
                 imeAction = ImeAction.Done,
                 keyboardType = KeyboardType.Password,
@@ -161,7 +164,9 @@ private fun LoginScreenContent(
             onClick = interactionListener::onClickLogin,
             buttonColor = Theme.colors.button.primary,
             isLoading = state.isLoading,
-            enable = (state.username.isNotBlank() && state.password.length >= 4) && (state.usernameError == null && state.passwordError == null)
+            enable = (state.username.isNotBlank() && state.password.length >= 4)
+                    && (state.usernameError == null && state.passwordError == null)
+                    && state.loginError == null
         )
         MovieButton(
             modifier = Modifier
