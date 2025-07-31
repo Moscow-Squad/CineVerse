@@ -4,6 +4,7 @@ import android.content.res.Configuration.UI_MODE_NIGHT_NO
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -162,7 +163,10 @@ fun AppTextField(
                     textDecoration = TextDecoration.Underline,
                     style = Theme.textStyle.body.medium.regular,
                     color = Theme.colors.shade.secondary,
-                    modifier = Modifier.clickable {
+                    modifier = Modifier.clickable(
+                        interactionSource =  remember { MutableInteractionSource() },
+                        indication = null
+                    ) {
                         if (forgotPasswordClick != null) {
                             forgotPasswordClick()
                         }
