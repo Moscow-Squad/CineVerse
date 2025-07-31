@@ -6,7 +6,6 @@ import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.cineverse.mapper.toMediaItemUi
 import com.moscow.cineverse.mapper.toUi
 import com.moscow.cineverse.navigation.routes.MovieDetailsRoute
-import com.moscow.cineverse.screen.series_details.SeriesDetailsScreenEffects
 import com.moscow.domain.model.CreditsDetails
 import com.moscow.domain.model.MediaType
 import com.moscow.domain.model.Movie

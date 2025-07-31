@@ -15,7 +15,6 @@ import com.moscow.utils.POPULAR
 import com.moscow.utils.RATING
 import com.moscow.utils.RECOMMENDATIONS
 import com.moscow.utils.REVIEWS
-import com.moscow.utils.SERIES
 import com.moscow.utils.SESSION_ID
 import com.moscow.utils.TRAILERS
 import com.moscow.utils.WITH_GENRES

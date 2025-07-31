@@ -10,7 +10,6 @@ import androidx.paging.map
 import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.cineverse.common_ui_state.MediaItemUiState
 import com.moscow.cineverse.utlis.ViewMode
-import com.moscow.cineverse.screen.explore.ExploreTabsPages
 import com.moscow.cineverse.paging.BasePagingSource
 import com.moscow.cineverse.screen.explore.ExploreScreenState.ActorUiState
 import com.moscow.domain.model.Genre
