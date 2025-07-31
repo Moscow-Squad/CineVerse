@@ -140,7 +140,7 @@ private fun ExploreScreenContent(
                 ExploreTabsSection(
                     selectedTab = uiState.selectedTab,
                     onTabSelected = interactionListener::onTabSelected,
-                    showAllTabs = uiState.searchKeyWord.isNotEmpty()
+                    showAllTabs = uiState.isSearch
                 )
 
                 Box(modifier = Modifier.fillMaxSize()) {

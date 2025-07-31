@@ -141,7 +141,7 @@ class SearchRepositoryImpl @Inject constructor(
     override suspend fun cacheSearchQuery(query: String) {
         searchLocalDataSource.insertSearchHistory(query)
         val deleteWork = OneTimeWorkRequestBuilder<DeleteHistoryQueryWorker>()
-            .setInitialDelay(1, TimeUnit.MINUTES)
+            .setInitialDelay(1, TimeUnit.HOURS)
             .setInputData(workDataOf(QUERY to query))
             .addTag(DELETE_SEARCH_QUERY_HISTORY)
             .build()
