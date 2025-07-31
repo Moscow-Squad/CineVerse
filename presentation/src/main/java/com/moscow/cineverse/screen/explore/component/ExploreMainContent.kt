@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -100,7 +99,7 @@ fun ExploreMainContent(
 
     val genresHeight = if (uiState.shouldShowGenres) 56.dp else 0.dp
     val paddingTop by animateDpAsState(
-        targetValue = if (uiState.shouldShowGenres) genresHeight + 16.dp else 16.dp,
+        targetValue = if (uiState.shouldShowGenres) genresHeight + 8.dp else 16.dp,
         animationSpec = tween(300),
         label = "paddingTop"
     )
@@ -157,7 +156,7 @@ fun ExploreMainContent(
                 columns = gridColumns,
                 contentPadding = contentPadding,
                 verticalArrangement = Arrangement.spacedBy(
-                    if (uiState.selectedTab == ExploreTabsPages.ACTORS) 40.dp else 16.dp
+                    if (uiState.selectedTab == ExploreTabsPages.ACTORS) 16.dp else 16.dp
                 ),
                 horizontalArrangement = Arrangement.spacedBy(
                     if (uiState.selectedTab == ExploreTabsPages.ACTORS) 16.dp else 12.dp
@@ -180,7 +179,6 @@ fun ExploreMainContent(
                                 ActorPosterCard(
                                     actor = item,
                                     onActorClicked = interactionListener::onActorClick,
-                                    modifier = Modifier.aspectRatio(1f)
                                 )
                             }
                         }
