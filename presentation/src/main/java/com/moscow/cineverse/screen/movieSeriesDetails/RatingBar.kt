@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import com.moscow.cineverse.design_system.R
 import com.moscow.cineverse.designSystem.theme.CineVerseTheme
 import com.moscow.cineverse.designSystem.theme.Theme
+import com.moscow.cineverse.designSystem.utils.noRibbleClick
 
 @Composable
 fun MovieRatingBar(
@@ -49,7 +50,7 @@ fun MovieRatingBar(
                 modifier =
                     Modifier
                         .size(starSize)
-                        .clickable { onRatingChanged(i.toFloat()) },
+                        .noRibbleClick{ onRatingChanged(i.toFloat()) },
                 tint = animatedTint
             )
         }
