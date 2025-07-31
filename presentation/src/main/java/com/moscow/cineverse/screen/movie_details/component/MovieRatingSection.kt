@@ -27,7 +27,7 @@ fun MovieRatingSection(
         caption = stringResource(com.moscow.cinverse.presentation.R.string.let_the_world_know_how_you_felt),
         onClick = { interactionListener.showRatingBottomSheet() },
         ratingStars = uiState.starsRating,
-        modifier = modifier.padding(start = 16.dp, end = 16.dp, top = 24.dp),
+        modifier = modifier.padding(start = 16.dp, end = 16.dp, top = 24.dp, bottom = 12.dp),
     )
 }
 
@@ -49,7 +49,7 @@ fun MovieReviewsSection(
                 start = 16.dp,
                 end = 16.dp,
                 bottom = 12.dp,
-                top = 24.dp
+                top = 12.dp
             )
         )
 

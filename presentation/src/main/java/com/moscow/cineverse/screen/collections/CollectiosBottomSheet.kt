@@ -1,6 +1,7 @@
 package com.moscow.cineverse.screen.collections
 
 import android.content.Context
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -100,13 +101,16 @@ private fun CollectionsBottomSheetContent(
         showCancelIcon = uiState.collections.isEmpty(),
         onAddNewCollectionClick = onAddNewCollectionClick
     ) {
+        Log.d("TAG", "isLogged: ${uiState.isLoggedIn} ")
         when {
-            uiState.isLoggedIn == false -> {
+
+            uiState.isLoggedIn != true -> {
                 MessageInfoBox(
                     title = stringResource(R.string.you_re_almost_there),
                     description = stringResource(R.string.log_in_to_save_movies_create_collections_and_get_personalized_recommendations),
                     icon = painterResource(Theme.icons.dueTone.videoLibrary),
                     showButtonsGroup = true,
+
                     firstButtonText = stringResource(R.string.not_now),
                     onClickFirstButton = onNotNow,
                     secondButtonText = stringResource(R.string.log_in),

@@ -130,8 +130,6 @@ private fun MovieDetailsMainContent(
     Column(modifier = modifier.background(Theme.colors.background.screen)) {
         MovieAppBar(backButtonClick = onNavigateBack, showBackButton = true)
 
-
-
         LazyColumn(
             state = scrollState,
             modifier = Modifier.background(Theme.colors.background.screen)
@@ -185,8 +183,10 @@ private fun MovieDetailsMainContent(
                     }
                 }
             }
-            item {
-                MovieStorylineSection(uiState = uiState)
+            if (uiState.movieDetailsUiState?.description != ""){
+                item {
+                    MovieStorylineSection(uiState = uiState)
+                }
             }
             item {
                 MovieCastSection(uiState = uiState, interactionListener = interactionListener)

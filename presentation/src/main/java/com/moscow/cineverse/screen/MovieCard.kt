@@ -2,6 +2,7 @@ package com.moscow.cineverse.screen
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -40,9 +41,8 @@ import com.moscow.cineverse.designSystem.component.blur.OnBlurContent
 import com.moscow.cineverse.designSystem.theme.CineVerseTheme
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.design_system.R
-import com.moscow.cineverse.image_viewer.component.SafeImageViewer
 import com.moscow.cineverse.screen.movie_details.InfoSection
-
+import com.moscow.cineverse.image_viewer.component.SafeImageViewer
 @Composable
 fun <T : Any> MovieCard(
     modifier: Modifier = Modifier,
@@ -246,7 +246,7 @@ private fun <T> ListMovieCard(
     Card(
         modifier = modifier
             .fillMaxWidth()
-            .height(88.dp)
+            .height(95.dp)
             .clip(RoundedCornerShape(Theme.radius.large))
             .clickable { onMovieClick(getId(movieData)) },
         elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
@@ -303,6 +303,7 @@ private fun <T> ListMovieCard(
                     modifier = Modifier
                         .weight(1f)
                         .padding(vertical = 12.5.dp, horizontal = 12.dp),
+                    verticalArrangement = Arrangement.Center
                 ) {
                     InfoSection(
                         title = getTitle(movieData),

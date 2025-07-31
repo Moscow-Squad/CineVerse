@@ -42,7 +42,7 @@ fun RatingSection(
 
     Column(
         verticalArrangement = Arrangement.spacedBy(12.dp),
-        modifier = modifier.clickable { onClick() }
+        modifier = modifier
     ) {
         Text(
             text = stringResource(R.string.did_you_watch_it),
@@ -52,7 +52,8 @@ fun RatingSection(
         Row(
             modifier = Modifier
                 .clip(RoundedCornerShape(Theme.radius.large))
-                .background(Theme.colors.background.card),
+                .background(Theme.colors.background.card)
+                .clickable { onClick() },
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
