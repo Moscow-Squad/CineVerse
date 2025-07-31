@@ -9,7 +9,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -189,7 +189,7 @@ fun ExploreMainContent(
                 if (contentList.loadState.append is LoadState.Loading) {
                     item(span = {GridItemSpan(maxLineSpan)}){
                         Box(
-                            modifier = Modifier.fillMaxSize(),
+                            modifier = Modifier.height(214.dp),
                             contentAlignment = Alignment.Center
                         ) {
                             MovieCircularProgressBar()

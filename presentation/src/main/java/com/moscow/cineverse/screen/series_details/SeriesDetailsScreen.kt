@@ -169,34 +169,36 @@ fun SeriesDetailsContent(
                                 }
                             }
                         }
-                        item {
-                            Text(
-                                text = stringResource(R.string.storyline),
-                                style = Theme.textStyle.title.small,
-                                color = Theme.colors.shade.primary,
-                                modifier = Modifier.padding(16.dp, top = 24.dp, bottom = 8.dp),
-                            )
-                        }
-                        item {
-                            Text(
-                                modifier = Modifier.padding(horizontal = 16.dp),
-                                overflow = TextOverflow.Ellipsis,
-                                text = buildAnnotatedString {
-                                    withStyle(style = ParagraphStyle(lineHeight = 12.sp)) {
-                                        withStyle(
-                                            style = SpanStyle(
-                                                color = textColor,
-                                                fontWeight = FontWeight.Medium,
-                                                fontSize = 12.sp,
-                                                letterSpacing = 0.sp
-                                            )
-                                        ) {
-                                            append(detail.overview)
+                        if (detail.overview != ""){
+                            item {
+                                Text(
+                                    text = stringResource(R.string.storyline),
+                                    style = Theme.textStyle.title.small,
+                                    color = Theme.colors.shade.primary,
+                                    modifier = Modifier.padding(16.dp, top = 24.dp, bottom = 8.dp),
+                                )
+                            }
+                            item {
+                                Text(
+                                    modifier = Modifier.padding(horizontal = 16.dp),
+                                    overflow = TextOverflow.Ellipsis,
+                                    text = buildAnnotatedString {
+                                        withStyle(style = ParagraphStyle(lineHeight = 12.sp)) {
+                                            withStyle(
+                                                style = SpanStyle(
+                                                    color = textColor,
+                                                    fontWeight = FontWeight.Medium,
+                                                    fontSize = 12.sp,
+                                                    letterSpacing = 0.sp
+                                                )
+                                            ) {
+                                                append(detail.overview)
+                                            }
                                         }
-                                    }
-                                },
-                                textAlign = TextAlign.Justify
-                            )
+                                    },
+                                    textAlign = TextAlign.Justify
+                                )
+                            }
                         }
                         item {
                             SectionTitle(
@@ -290,7 +292,7 @@ fun SeriesDetailsContent(
                                 caption = stringResource(R.string.let_the_world_know_how_you_felt),
                                 onClick = interactionListener::showRatingBottomSheet,
                                 ratingStars = uiState.starsRating,
-                                modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 24.dp),
+                                modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 24.dp, bottom = 12.dp),
                             )
                         }
                         if (uiState.reviews.isNotEmpty()) {
@@ -298,7 +300,7 @@ fun SeriesDetailsContent(
                                 SectionTitle(
                                     title = stringResource(R.string.top_reviews),
                                     onClick = {interactionListener.onShowMoreReviewsClicked(uiState.seriesDetail.id)},
-                                    modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 12.dp, top = 24.dp)
+                                    modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 12.dp, top = 12.dp)
                                 )
                             }
                             items(uiState.reviews.take(3)) { review ->
