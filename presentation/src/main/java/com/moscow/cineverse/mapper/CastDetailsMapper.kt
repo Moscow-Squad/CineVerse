@@ -22,9 +22,9 @@ fun LocalDate.toFormattedBirthDate(): String {
             12 -> "Dec"
             else -> "Unknown"
         }
-        "Born on $monthName ${this.dayOfMonth}, ${this.year}"
+        "$monthName ${this.dayOfMonth}, ${this.year}"
     } catch (e: Exception) {
-        "Born on $this"
+        "$this"
     }
 }
 

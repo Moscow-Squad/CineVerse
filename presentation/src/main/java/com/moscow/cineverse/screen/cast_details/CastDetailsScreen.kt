@@ -153,7 +153,10 @@ fun ActorMoviesSection(
 ) {
     if (uiState.movies.isNotEmpty()) {
         MovieListSection(
-            title = "Best of ${uiState.actorDetails?.name.orEmpty()}",
+            title = stringResource(
+                com.moscow.cinverse.presentation.R.string.best_of,
+                uiState.actorDetails?.name.orEmpty()
+            ),
             movies = uiState.movies.take(10),
             paddingHorizontal = 20,
             onClickShowMore = interactionListener::onShowMoreMovies,
@@ -184,7 +187,7 @@ fun ActorGallerySection(
             modifier = modifier
         ) {
             SectionTitle(
-                title = "Gallery",
+                title = stringResource(com.moscow.cinverse.presentation.R.string.gallery),
                 onClick = {
                     interactionListener.onShowMoreGallery()
                 },
@@ -212,7 +215,7 @@ fun ActorBiographySection(
                 modifier = modifier
             ) {
                 InfoSection(
-                    title = "Biography",
+                    title = stringResource(com.moscow.cinverse.presentation.R.string.biography),
                     description = actorDetails.biography,
                     showGenres = false,
                     maxDescriptionLines = Int.MAX_VALUE,
@@ -236,7 +239,10 @@ fun ActorMainDetailsSection(
             modifier = modifier,
             profileImage = actor.profileImg,
             name = actor.name,
-            date = actor.birthDate.toFormattedBirthDate(),
+            date = stringResource(
+                com.moscow.cinverse.presentation.R.string.born_on,
+                actor.birthDate.toFormattedBirthDate()
+            ),
             location = actor.placeOfBirth,
             scrollState = null,
             socialMediaLinks = uiState.socialMediaLinks,
@@ -282,7 +288,7 @@ fun MainDetails(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp)
+                .padding(start = 16.dp, bottom = 16.dp,top = 16.dp , end = 2.dp)
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
@@ -325,7 +331,7 @@ fun MainDetails(
                                 iconTint = Theme.colors.shade.secondary,
                                 modifier = Modifier.padding(bottom = 8.dp)
                             )
-                            TextWithIcon(
+                            if(location.isNotBlank())TextWithIcon(
                                 icon = R.drawable.outline_location,
                                 text = location,
                                 iconTint = Theme.colors.shade.secondary,
@@ -344,7 +350,7 @@ fun MainDetails(
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
             ) {
                 SocialMediaPill(
-                    name = "YouTube",
+                    name = stringResource(com.moscow.cinverse.presentation.R.string.youtube),
                     iconRes = R.drawable.colored_youtube,
                     url = socialMediaLinks.youtube,
                     onClick = { onSocialMediaClick("youtube", it) },
@@ -352,7 +358,7 @@ fun MainDetails(
                 )
 
                 SocialMediaPill(
-                    name = "Facebook",
+                    name = stringResource(com.moscow.cinverse.presentation.R.string.facebook),
                     iconRes = R.drawable.colored_facebook,
                     url = socialMediaLinks.facebook,
                     onClick = { onSocialMediaClick("facebook", it) },
@@ -360,7 +366,7 @@ fun MainDetails(
                 )
 
                 SocialMediaPill(
-                    name = "Instagram",
+                    name = stringResource(com.moscow.cinverse.presentation.R.string.instagram),
                     iconRes = R.drawable.colored_instagram,
                     url = socialMediaLinks.instagram,
                     onClick = { onSocialMediaClick("instagram", it) },
@@ -388,7 +394,6 @@ private fun SocialMediaPill(
 
     Box(
         modifier = modifier
-            .height(32.dp)
             .clip(RoundedCornerShape(Theme.radius.full))
             .background(backgroundColor)
             .noRibbleClick { url?.let { onClick(it) } }
@@ -401,6 +406,7 @@ private fun SocialMediaPill(
         ) {
             Image(
                 painter = painterResource(id = iconRes),
+                modifier =Modifier.size(16.dp),
                 contentDescription = "$name icon"
             )
 
@@ -408,7 +414,6 @@ private fun SocialMediaPill(
                 text = name,
                 color = textColor,
                 style = Theme.textStyle.label.medium.medium,
-                fontSize = 12.sp
             )
         }
     }
