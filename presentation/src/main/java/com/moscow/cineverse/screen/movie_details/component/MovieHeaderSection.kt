@@ -1,5 +1,6 @@
 package com.moscow.cineverse.screen.movie_details.component
 
+import android.content.Context
 import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionScope
@@ -9,6 +10,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.ParagraphStyle
 import androidx.compose.ui.text.SpanStyle
@@ -19,11 +21,11 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.moscow.cineverse.screen.movieSeriesDetails.MainMovieCard
-import com.moscow.cineverse.screen.movieSeriesDetails.MovieCardDetails
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.mapper.toFormattedReleasedDate
 import com.moscow.cineverse.mapper.toHourMinuteFormat
+import com.moscow.cineverse.screen.movieSeriesDetails.MainMovieCard
+import com.moscow.cineverse.screen.movieSeriesDetails.MovieCardDetails
 import com.moscow.cineverse.screen.movie_details.MovieDetailsInteractionListener
 import com.moscow.cineverse.screen.movie_details.MovieScreenState
 import com.moscow.cinverse.presentation.R
@@ -35,7 +37,8 @@ fun MovieHeaderSection(
     interactionListener: MovieDetailsInteractionListener,
     animatedVisibilityScope: AnimatedVisibilityScope,
     sharedTransitionScope: SharedTransitionScope,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    context: Context = LocalContext.current
 ) {
     uiState.movieDetailsUiState?.let {
         MovieCardDetails(
@@ -45,7 +48,7 @@ fun MovieHeaderSection(
             title = it.title,
             genres = it.genres.joinToString(", "),
             rating = it.rating.toString(),
-            duration = it.duration.toHourMinuteFormat(),
+            duration = it.duration.toHourMinuteFormat(context),
             releaseDate = it.releaseDate.toFormattedReleasedDate(),
             type = stringResource(R.string.movie),
             onSaveClick = {

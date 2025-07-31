@@ -32,12 +32,12 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.moscow.cineverse.design_system.R
-import com.moscow.cineverse.image_viewer.component.SafeImageViewer
-import com.moscow.cineverse.designSystem.component.button.MovieFloatingButton
 import com.moscow.cineverse.designSystem.component.blur.OnBlurContent
 import com.moscow.cineverse.designSystem.component.blur.RemoteImagePlaceholder
+import com.moscow.cineverse.designSystem.component.button.MovieFloatingButton
 import com.moscow.cineverse.designSystem.theme.Theme
+import com.moscow.cineverse.design_system.R
+import com.moscow.cineverse.image_viewer.component.SafeImageViewer
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
@@ -146,7 +146,7 @@ fun DetailCard(
             .padding(16.dp),
     ) {
         Column(
-            verticalArrangement = Arrangement.spacedBy(8.dp),
+            verticalArrangement = Arrangement.spacedBy(4.dp),
             horizontalAlignment = Alignment.Start,
             modifier = Modifier.weight(1f)
         ) {
@@ -167,7 +167,9 @@ fun DetailCard(
                 color = Theme.colors.shade.secondary
             )
 
+
             Row(
+                modifier = Modifier.padding(top = 8.dp),
                 horizontalArrangement = Arrangement.spacedBy(12.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -192,6 +194,7 @@ fun DetailCard(
             }
 
         }
+
         Column(
             verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {
@@ -218,7 +221,6 @@ fun InfoTextWithIcon(icon: Int, text: String, tint: Color) {
     Row(
         horizontalArrangement = Arrangement.spacedBy(4.dp),
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.padding(top = 8.dp)
     ) {
         Icon(
             painter = painterResource(id = icon),
