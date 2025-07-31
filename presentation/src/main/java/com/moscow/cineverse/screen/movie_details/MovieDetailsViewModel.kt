@@ -1,6 +1,7 @@
 package com.moscow.cineverse.screen.movie_details
 
 import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.viewModelScope
 import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.cineverse.mapper.toMediaItemUi
 import com.moscow.cineverse.mapper.toUi
@@ -19,6 +20,8 @@ import com.moscow.domain.usecase.movie.GetMovieRecommendationsUseCase
 import com.moscow.domain.usecase.movie.RateMovieUseCase
 import com.moscow.domain.usecase.review.GetReviewsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -38,13 +41,29 @@ class MovieDetailsViewModel @Inject constructor(
 
 
     init {
-        getUserDetails()
-        updateState { it.copy(isLoading = true) }
-        addMovieToRecentlyViewedCollection(movieId)
-        getMovieDetails(movieId)
-        getReviews(movieId)
-        getCredits(movieId)
-        getRecommendations(movieId)
+        viewModelScope.launch {
+            getUserDetails()
+            updateState { it.copy(isLoading = true) }
+            addMovieToRecentlyViewedCollection(movieId)
+            getMovieDetails(movieId)
+            getReviews(movieId)
+            getCredits(movieId)
+            getRecommendations(movieId)
+            waitUntilAllDataIsReady()
+            updateState { it.copy(isLoading = false) }
+        }
+    }
+
+    private suspend fun waitUntilAllDataIsReady() {
+        var wait = 0
+        while (uiState.value.movieDetailsUiState == null) {
+            wait++
+            if (wait == 15){
+                updateState { it.copy(isLoading = false, errorMessage = "error loading", shouldShowError = true) }
+                return
+            }
+            delay(100)
+        }
     }
 
     fun getUserDetails() {
@@ -231,11 +250,17 @@ class MovieDetailsViewModel @Inject constructor(
     }
 
     override fun onRetry() {
-        updateState { it.copy(isLoading = true, shouldShowError = false, errorMessage = "") }
-        getMovieDetails(movieId)
-        getReviews(movieId)
-        getCredits(movieId)
-        getRecommendations(movieId)
+        viewModelScope.launch {
+            getUserDetails()
+            updateState { it.copy(isLoading = true) }
+            addMovieToRecentlyViewedCollection(movieId)
+            getMovieDetails(movieId)
+            getReviews(movieId)
+            getCredits(movieId)
+            getRecommendations(movieId)
+            waitUntilAllDataIsReady()
+            updateState { it.copy(isLoading = false) }
+        }
     }
 
     override fun showRatingBottomSheet() {

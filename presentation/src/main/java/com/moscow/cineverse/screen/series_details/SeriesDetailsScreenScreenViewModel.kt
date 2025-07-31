@@ -1,6 +1,7 @@
 package com.moscow.cineverse.screen.series_details
 
 import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.viewModelScope
 import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.cineverse.utlis.ViewMode
 import com.moscow.cineverse.mapper.toUi
@@ -13,6 +14,8 @@ import com.moscow.domain.usecase.series.GetSeriesRecommendationsUseCase
 import com.moscow.domain.usecase.series.RateSeriesUseCase
 import kotlin.collections.map
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -29,11 +32,27 @@ class SeriesDetailsScreenScreenViewModel @Inject constructor(
     val seriesId = savedStateHandle.get<Int>(SeriesDetailsRoute.SERIES_ID) ?: 0
 
     init {
-        updateState { it.copy(isLoading = true) }
-        loadSeriesDetails(seriesId)
-        loadSeriesCredits(seriesId)
-        getSeriesRecommendations(seriesId, page = 1)
-        loadReviews(seriesId, page = 1)
+        viewModelScope.launch {
+            updateState { it.copy(isLoading = true) }
+            loadSeriesDetails(seriesId)
+            loadSeriesCredits(seriesId)
+            getSeriesRecommendations(seriesId, page = 1)
+            loadReviews(seriesId, page = 1)
+            waitUntilAllDataIsReady()
+            updateState { it.copy(isLoading = false) }
+        }
+    }
+
+    private suspend fun waitUntilAllDataIsReady() {
+        var wait = 0
+        while (uiState.value.seriesDetail.id == 0) {
+            wait++
+            if (wait == 15){
+                updateState { it.copy(isLoading = false, errorMessage = "error loading", shouldShowError = true) }
+                return
+            }
+            delay(100)
+        }
     }
 
     private fun loadSeriesDetails(seriesId: Int) {
@@ -41,7 +60,7 @@ class SeriesDetailsScreenScreenViewModel @Inject constructor(
         launchWithResult(
             action = { getSeriesDetailUseCase(seriesId) },
             onSuccess = { detail ->
-                updateState { it.copy(seriesDetail = detail.toUi(), isLoading = false) }
+                updateState { it.copy(seriesDetail = detail.toUi()) }
             },
             onError = { error ->
                 updateState { it.copy(errorMessage = error.message.toString(), isLoading = false) }
@@ -58,7 +77,6 @@ class SeriesDetailsScreenScreenViewModel @Inject constructor(
                     it.copy(
                         cast = credits.actors.map { it.toUi() },
                         crew = credits.behindTheScene.map { it.toUi() },
-                        isLoading = false
                     )
                 }
             },
@@ -73,7 +91,7 @@ class SeriesDetailsScreenScreenViewModel @Inject constructor(
         launchWithResult(
             action = { getReviewsPageUseCase(seriesId, page, isMovie = false) },
             onSuccess = { reviews ->
-                updateState { it.copy(reviews = reviews.map { it.toUi() }, isLoading = false) }
+                updateState { it.copy(reviews = reviews.map { it.toUi() }) }
             },
             onError = { error ->
                 updateState { it.copy(errorMessage = error.message.toString(), isLoading = false) }
@@ -141,10 +159,14 @@ class SeriesDetailsScreenScreenViewModel @Inject constructor(
     }
 
     override fun onRetry() {
-        updateState { it.copy(isLoading = true, errorMessage = "") }
-        loadSeriesDetails(seriesId)
-        loadSeriesCredits(seriesId)
-        getSeriesRecommendations(seriesId, page = 1)
-        loadReviews(seriesId, page = 1)
+        viewModelScope.launch {
+            updateState { it.copy(isLoading = true, errorMessage = "") }
+            loadSeriesDetails(seriesId)
+            loadSeriesCredits(seriesId)
+            getSeriesRecommendations(seriesId, page = 1)
+            loadReviews(seriesId, page = 1)
+            waitUntilAllDataIsReady()
+            updateState { it.copy(isLoading = false) }
+        }
     }
 }

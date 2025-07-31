@@ -277,6 +277,9 @@ class ExploreViewModel @Inject constructor(
 
     private fun onSuccessLoadingSuggestions(suggestion: List<String>) {
         viewModelScope.launch {
+            if (suggestion.isEmpty()){
+                updateState { it.copy(remoteSuggestions = listOf(uiState.value.searchKeyWord)) }
+            }
             updateState { it.copy(remoteSuggestions = suggestion) }
         }
         updateDisplayedSuggestions()

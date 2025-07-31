@@ -23,6 +23,7 @@ import com.moscow.domain.usecase.home.GetUpcomingMoviesUseCase
 import com.moscow.domain.usecase.local.GetUserDetailsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
 import javax.inject.Inject
@@ -40,27 +41,51 @@ class HomeViewModel @Inject constructor(
 ) : BaseViewModel<HomeUiState, HomeEvent>(HomeUiState()), HomeInteractionListener {
 
     init {
+        updateState { it.copy(isLoading = true) }
         loadHomeData()
     }
 
     private fun loadHomeData() {
         updateState { it.copy(isLoading = true, error = null) }
-
-
-        viewModelScope.launch {
-            getGenres()
-            coroutineScope {
-                val jobs = listOf(
-                    launch { getUserDetails() },
-                    launch { fetchTrendingMovies() },
-                    launch { fetchRecentlyReleasedMovies() },
-                    launch { fetchUpcomingMovies() },
-                    launch { fetchTopRatedTVShows() },
-                    launch { fetchMatchesYourVibesMovies() }
-                )
-                jobs.forEach { it.join() }
+        launchAndForget(
+            action = {
+                viewModelScope.launch {
+                    getGenres()
+                    coroutineScope {
+                        val jobs = listOf(
+                            launch { getUserDetails() },
+                            launch { fetchTrendingMovies() },
+                            launch { fetchRecentlyReleasedMovies() },
+                            launch { fetchUpcomingMovies() },
+                            launch { fetchTopRatedTVShows() },
+                            launch { fetchMatchesYourVibesMovies() }
+                        )
+                        jobs.forEach { it.join() }
+                    }
+                    waitUntilAllDataIsReady()
+                    updateState { it.copy(isLoading = false) }
+                }
+            },
+            onError = { e ->
+                updateState { it.copy(isLoading = false, error = e.message) }
             }
-            updateState { it.copy(isLoading = false) }
+        )
+    }
+
+    private suspend fun waitUntilAllDataIsReady() {
+        var wait = 0
+        while (uiState.value.sliderItems.isEmpty()
+            || uiState.value.recentlyReleasedMovies.isEmpty()
+            || uiState.value.upcomingMovies.isEmpty()
+            || uiState.value.topRatedTvShows.isEmpty()
+            || uiState.value.matchesYourVibe.isEmpty()
+        ) {
+            wait++
+            if (wait == 15){
+                updateState { it.copy(isLoading = false, error = "error loading") }
+                return
+            }
+            delay(100)
         }
     }
 

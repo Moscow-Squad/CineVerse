@@ -53,7 +53,10 @@ fun ExploreSearchBarSection(
         trailingIcon = {
             VoiceRecognitionIcon(
                 modifier = Modifier.size(20.dp),
-                onResult = { interactionListener.onSearchWordDetected(it) },
+                onResult = {
+                    interactionListener.onSearchWordDetected(it)
+                    interactionListener.onSearchBarClickedOn()
+                           },
                 onError = {}
             )
         },
