@@ -58,7 +58,7 @@ class MovieDetailsViewModel @Inject constructor(
         var wait = 0
         while (uiState.value.movieDetailsUiState == null) {
             wait++
-            if (wait == 15){
+            if (wait == 25){
                 updateState { it.copy(isLoading = false, errorMessage = "error loading", shouldShowError = true) }
                 return
             }

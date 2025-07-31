@@ -81,7 +81,7 @@ class HomeViewModel @Inject constructor(
             || uiState.value.matchesYourVibe.isEmpty()
         ) {
             wait++
-            if (wait == 15){
+            if (wait == 25){
                 updateState { it.copy(isLoading = false, error = "error loading") }
                 return
             }
