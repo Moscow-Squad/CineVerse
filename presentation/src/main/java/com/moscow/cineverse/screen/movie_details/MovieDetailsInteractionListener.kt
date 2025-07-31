@@ -10,5 +10,6 @@ interface MovieDetailsInteractionListener {
     fun onRatingSubmit(rating: Int, movieId: Int)
     fun onActorClicked(actorId: Int)
     fun onMovieClicked(movieId: Int)
+    fun onPlayButtonClicked()
     fun onRetry()
 }

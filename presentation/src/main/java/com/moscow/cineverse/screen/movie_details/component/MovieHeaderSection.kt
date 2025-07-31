@@ -51,6 +51,7 @@ fun MovieHeaderSection(
             onSaveClick = {
                 interactionListener.onAddToCollection(it.id)
             },
+            onPlayClick = interactionListener::onPlayButtonClicked,
             modifier = modifier
                 .graphicsLayer {
                     alpha = 1f
@@ -77,7 +78,8 @@ fun MovieCollapsedHeaderSection(
             sharedTransitionScope = sharedTransitionScope,
             onSaveClick = {
                 interactionListener.onAddToCollection(it.id)
-            }
+            },
+            onPlayClick = interactionListener::onPlayButtonClicked
         )
     }
 }

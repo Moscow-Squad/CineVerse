@@ -17,6 +17,7 @@ fun MovieDetail.toUi(): MovieScreenState.MovieDetailsUiState =
         id = id,
         title = title,
         posterPath = posterPath,
+        trailerPath = trailerPath,
         rating = (voteAverage * 10).toInt() / 10.0,
         genres = genres,
         releaseDate = releaseDate,

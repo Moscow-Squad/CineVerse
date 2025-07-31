@@ -7,7 +7,7 @@ import com.moscow.remote.dto.review.ReviewDto
 import com.moscow.remote.dto.series.ListOfSeriesDto
 import com.moscow.remote.dto.series.SeriesDetailDto
 import com.moscow.remote.dto.series.SeriesDto
-import com.moscow.remote.dto.series.SeriesTrailersDto
+import com.moscow.remote.dto.details.MediaTrailersDto
 import com.moscow.remote.services.SeriesService
 import com.moscow.utils.ApiResponse
 import com.moscow.utils.handleApi
@@ -72,7 +72,7 @@ class SeriesRemoteDataSourceImpl  @Inject constructor(
             seriesService.getSeriesCredits(seriesId)
         }
 
-    override suspend fun getSeriesTrailers(seriesId: Int): SeriesTrailersDto =
+    override suspend fun getSeriesTrailers(seriesId: Int): MediaTrailersDto =
         handleApi {
             seriesService.getSeriesTrailers(seriesId)
         }

@@ -1,11 +1,11 @@
-package com.moscow.remote.dto.series
+package com.moscow.remote.dto.details
 
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class SeriesTrailersDto(
+data class MediaTrailersDto(
     @SerialName("id")
     val id: Int,
     @SerialName("results")

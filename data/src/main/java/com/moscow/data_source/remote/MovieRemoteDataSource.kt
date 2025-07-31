@@ -2,6 +2,7 @@ package com.moscow.data_source.remote
 
 import com.moscow.remote.dto.CreditsDetailsDto
 import com.moscow.remote.dto.MovieDto
+import com.moscow.remote.dto.details.MediaTrailersDto
 import com.moscow.remote.dto.details.MovieDetailDto
 import com.moscow.remote.dto.review.RatingRequestDto
 import com.moscow.remote.dto.review.ReviewDto
@@ -15,4 +16,5 @@ interface MovieRemoteDataSource {
     suspend fun getMovieCredits(id: Int): CreditsDetailsDto
     suspend fun getMoviesRecommendations(id: Int, page: Int): ApiResponse<MovieDto>
     suspend fun getMoviesByGenreId(genreId: Int, page: Int): ApiResponse<MovieDto>
+    suspend fun getMovieTrailer(id: Int): MediaTrailersDto
 }

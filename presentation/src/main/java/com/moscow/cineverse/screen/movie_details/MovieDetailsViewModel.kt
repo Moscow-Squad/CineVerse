@@ -6,6 +6,7 @@ import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.cineverse.mapper.toMediaItemUi
 import com.moscow.cineverse.mapper.toUi
 import com.moscow.cineverse.navigation.routes.MovieDetailsRoute
+import com.moscow.cineverse.screen.series_details.SeriesDetailsScreenEffects
 import com.moscow.domain.model.CreditsDetails
 import com.moscow.domain.model.MediaType
 import com.moscow.domain.model.Movie
@@ -247,6 +248,12 @@ class MovieDetailsViewModel @Inject constructor(
 
     override fun onMovieClicked(movieId: Int) {
         sendEvent(MovieDetailsScreenEffect.NavigateMovieDetails(movieId))
+    }
+
+    override fun onPlayButtonClicked() {
+        uiState.value.movieDetailsUiState?.let {
+            sendEvent(MovieDetailsScreenEffect.OpenTrailer(it.trailerPath))
+        }
     }
 
     override fun onRetry() {

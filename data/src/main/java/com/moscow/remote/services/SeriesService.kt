@@ -6,7 +6,7 @@ import com.moscow.remote.dto.review.ReviewDto
 import com.moscow.remote.dto.series.ListOfSeriesDto
 import com.moscow.remote.dto.series.SeriesDetailDto
 import com.moscow.remote.dto.series.SeriesDto
-import com.moscow.remote.dto.series.SeriesTrailersDto
+import com.moscow.remote.dto.details.MediaTrailersDto
 import com.moscow.utils.ApiResponse
 import com.moscow.utils.DISCOVER_SERIES_LIST
 import com.moscow.utils.LATEST
@@ -82,5 +82,5 @@ interface SeriesService {
     @GET("$SERIES{series_id}$TRAILERS")
     suspend fun getSeriesTrailers(
         @Path("series_id") seriesId: Int
-    ): Response<SeriesTrailersDto>
+    ): Response<MediaTrailersDto>
 }

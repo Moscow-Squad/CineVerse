@@ -27,10 +27,10 @@ data class MovieScreenState(
     val starsRating: Int = 0
 
     ) {
-
     data class MovieDetailsUiState(
         val id: Int ,
         val title: String ,
+        val trailerPath: String,
         val posterPath: String,
         val rating: Double,
         val genres: List<String>,
