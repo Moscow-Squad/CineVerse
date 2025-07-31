@@ -57,7 +57,7 @@ fun AppTextField(
     label: String? = null,
     forgotPasswordClick: (() -> Unit)? = null
 ) {
-    var passwordVisible by remember { mutableStateOf(true) }
+    var passwordVisible by remember { mutableStateOf(false) }
 
     Column(
         verticalArrangement = Arrangement.spacedBy(8.dp),
