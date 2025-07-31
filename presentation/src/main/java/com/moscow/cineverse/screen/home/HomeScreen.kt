@@ -120,6 +120,7 @@ fun HomeContent(
 
                 HomeHeaderSlider(
                     items = state.sliderItems,
+                    onSliderClick = listener::onMediaItemClicked,
                     modifier = Modifier.padding(top = 16.dp)
                 )
 

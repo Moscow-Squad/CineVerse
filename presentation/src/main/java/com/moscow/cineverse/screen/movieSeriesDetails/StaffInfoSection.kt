@@ -53,7 +53,7 @@ fun StaffInfoSection(
             verticalArrangement = Arrangement.spacedBy(18.dp)
         ) {
             staffInfo.forEachIndexed { index, item ->
-                StaffInfoItem(
+               if(item.second.isNotBlank()) StaffInfoItem(
                     role = item.first,
                     name = item.second,
                     isDividerVisible = index != staffInfo.lastIndex

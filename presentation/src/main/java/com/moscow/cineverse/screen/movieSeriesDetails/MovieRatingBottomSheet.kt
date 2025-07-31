@@ -88,7 +88,8 @@ fun MovieRatingBottomSheet(
                     enable = selectedRating > 0 && !isLoading,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 12.dp)
+                        .padding(horizontal = 16.dp)
+
                 )
 
                 if (isEditMode) {
@@ -106,7 +107,8 @@ fun MovieRatingBottomSheet(
                         enable = !isLoading,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(horizontal = 16.dp, vertical = 12.dp)
+                            .padding(horizontal = 16.dp)
+
                     )
                 }
             }

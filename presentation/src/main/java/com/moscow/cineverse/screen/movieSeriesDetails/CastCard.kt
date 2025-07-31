@@ -37,10 +37,11 @@ fun <T> CastCard(
 ) {
     val isPreview = LocalInspectionMode.current
     Row(
-        modifier = modifier
+        modifier = Modifier
             .width(200.dp)
             .clip(RoundedCornerShape(Theme.radius.large))
             .background(Theme.colors.background.card)
+            .then(modifier)
     ) {
         if (isPreview) {
             Image(
