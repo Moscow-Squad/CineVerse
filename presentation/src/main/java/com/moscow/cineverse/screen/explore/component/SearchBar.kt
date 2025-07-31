@@ -63,7 +63,7 @@ fun SearchBar(
     val focusManager = LocalFocusManager.current
 
     val paddingStart by animateDpAsState(
-        targetValue = if (isFocused || value.isNotEmpty()) 20.dp else 0.dp,
+        targetValue = if (isFocused || value.isNotEmpty()) 10.dp else 0.dp,
         animationSpec = tween(300)
     )
 

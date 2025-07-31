@@ -54,7 +54,8 @@ fun MovieStaffInfoSection(
 ) {
     StaffInfoSection(
         staffInfo = listOf(
-            stringResource(R.string.characters) to uiState.characters.joinToString(","),
+
+            stringResource(R.string.characters) to uiState.characters.joinToString(",") ,
             stringResource(R.string.director_screenplay_story) to uiState.director.joinToString(","),
             stringResource(R.string.producer) to uiState.produce.joinToString(","),
             stringResource(R.string.writer) to uiState.writer.joinToString(",")

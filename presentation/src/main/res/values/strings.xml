@@ -85,4 +85,12 @@
     <string name="no_leading_trailing_spaces">No leading or trailing spaces</string>
     <string name="username_invalid_chars">Username must be Only letters, numbers and underscores</string>
     <string name="search_can_t_be_empty">Search can\'t be empty!</string>
+    <string name="gallery">Gallery</string>
+    <string name="best_of">Best of %1$s</string>
+    <string name="biography">Biography</string>
+    <string name="youtube">YouTube</string>
+    <string name="facebook">Facebook</string>
+    <string name="instagram">Instagram</string>
+    <string name="born_on">Born on %1$s</string>
+
 </resources>

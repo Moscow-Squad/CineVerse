@@ -291,18 +291,19 @@ fun MainMovieCard(
                     .padding(start = 12.dp)
                     .weight(1f)
             )
+
+            MovieFloatingButton(
+                R.drawable.due_tone_add,
+                { onSaveClick() },
+                Theme.colors.button.secondary,
+                Theme.colors.shade.primary,
+            )
             MovieFloatingButton(
                 R.drawable.due_tone_play,
                 { onPlayClick() },
                 Theme.colors.button.primary,
                 Theme.colors.brand.tertiary,
                 modifier = Modifier.padding(end = 8.dp)
-            )
-            MovieFloatingButton(
-                R.drawable.due_tone_add,
-                { onSaveClick() },
-                Theme.colors.button.secondary,
-                Theme.colors.shade.primary,
             )
         }
     }

@@ -68,15 +68,12 @@ fun SeriesDetailsScreen(
                 is SeriesDetailsScreenEffects.AddToCollection -> {
                     navigateToCollectionBottomSheet(event.seriesId)
                 }
-
                 is SeriesDetailsScreenEffects.NavigateToRecommendationSeries -> {
                     navigateToSeriesRecommendation(event.seriesId, event.seriesName)
                 }
-
                 is SeriesDetailsScreenEffects.NavigateToReviewsScreen -> {
                     navigateToReviews(event.seriesId)
                 }
-
                 is SeriesDetailsScreenEffects.NavigateToSeriesSeasonsScreen -> {
                     navigateToSeriesSeasons(event.seriesId)
                 }
@@ -84,7 +81,6 @@ fun SeriesDetailsScreen(
                 is SeriesDetailsScreenEffects.NavigateToActorDetailsScreen -> {
                     navigateToCastDetails(event.ActorId)
                 }
-
                 is SeriesDetailsScreenEffects.NavigateToSeriesDetailsScreen -> {
                     navigateToSeriesDetails(event.seriesId)
                 }
@@ -114,41 +110,31 @@ fun SeriesDetailsContent(
             scrollState.firstVisibleItemScrollOffset > 10 || scrollState.firstVisibleItemIndex > 0
         }
     }
-    MovieScaffold {
+    MovieScaffold{
         when {
-            uiState.isLoading -> {
+            uiState.isLoading ->{
                 Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(Theme.colors.background.screen),
+                    modifier = Modifier.fillMaxSize().background(Theme.colors.background.screen),
                     contentAlignment = Alignment.Center
                 ) {
                     MovieCircularProgressBar()
                 }
             }
-
-            uiState.errorMessage != "" -> {
+            uiState.errorMessage != "" ->{
                 Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(Theme.colors.background.screen),
+                    modifier = Modifier.fillMaxSize().background(Theme.colors.background.screen),
                     contentAlignment = Alignment.Center
                 ) {
                     NoInternetScreen(onRetry = interactionListener::onRetry)
                 }
             }
-
-            else -> {
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(Theme.colors.background.screen)
-                ) {
+            else ->{
+                Column(modifier = Modifier.fillMaxSize().background(Theme.colors.background.screen)) {
                     MovieAppBar(backButtonClick = onNavigateBack, showBackButton = true)
                     LazyColumn(
                         state = scrollState,
                         modifier = Modifier.background(Theme.colors.background.screen)
-                    ) {
+                    ){
                         item {
                             SharedTransitionLayout {
                                 AnimatedContent(
@@ -186,7 +172,7 @@ fun SeriesDetailsContent(
                         item {
                             SectionTitle(
                                 title = stringResource(R.string.latest_seasons),
-                                onClick = { interactionListener.onShowMoreSeasonsClicked(uiState.seriesDetail.id) },
+                                onClick = {interactionListener.onShowMoreSeasonsClicked(uiState.seriesDetail.id)},
                                 modifier = Modifier.padding(
                                     start = 16.dp,
                                     end = 16.dp,
@@ -219,13 +205,9 @@ fun SeriesDetailsContent(
                                         .background(Theme.colors.background.screen)
                                         .padding(top = 24.dp, start = 16.dp, end = 16.dp),
                                     cast = uiState.cast.take(10),
-                                    castContent = { actor ->
+                                    castContent = {actor->
                                         CastCard(
-                                            modifier = Modifier.clickable {
-                                                interactionListener.onActorClicked(
-                                                    actor.id
-                                                )
-                                            },
+                                            modifier = Modifier.clickable{interactionListener.onActorClicked(actor.id)},
                                             castMember = actor,
                                             getOriginalName = { it.originalName },
                                             getCharacterName = { it.characterName },
@@ -260,28 +242,19 @@ fun SeriesDetailsContent(
                                 )
                             }
                         }
-                        if (uiState.recommendation.isNotEmpty()) {
+                        if (uiState.recommendation.isNotEmpty()){
                             item {
                                 MovieListSection(
                                     title = stringResource(R.string.you_might_also_like),
                                     movies = uiState.recommendation.take(6),
-                                    onClickShowMore = {
-                                        interactionListener.onShowMoreRecommendationsClicked(
-                                            uiState.seriesDetail.id,
-                                            uiState.seriesDetail.title
-                                        )
-                                    },
+                                    onClickShowMore = {interactionListener.onShowMoreRecommendationsClicked(uiState.seriesDetail.id, uiState.seriesDetail.title)},
                                     onClickPoster = { series -> },
                                     modifier = Modifier.padding(top = 16.dp),
                                     paddingHorizontal = 16,
                                     movieCardContent = { series, modifier, onClick ->
                                         MoviePosterCard(
                                             movie = series,
-                                            onMovieClick = {
-                                                interactionListener.onSeriesClicked(
-                                                    series.id
-                                                )
-                                            },
+                                            onMovieClick = {interactionListener.onSeriesClicked(series.id)},
                                             modifier = modifier
                                         )
                                     }
@@ -295,22 +268,15 @@ fun SeriesDetailsContent(
                                 caption = stringResource(R.string.let_the_world_know_how_you_felt),
                                 onClick = interactionListener::showRatingBottomSheet,
                                 ratingStars = uiState.starsRating,
-                                modifier = Modifier.padding(
-                                    horizontal = 16.dp,
-                                    vertical = 24.dp
-                                ),
+                                modifier = Modifier.padding(horizontal = 16.dp, vertical = 24.dp),
                             )
                         }
                         if (uiState.reviews.isNotEmpty()) {
                             item {
                                 SectionTitle(
                                     title = stringResource(R.string.top_reviews),
-                                    onClick = { interactionListener.onShowMoreReviewsClicked(uiState.seriesDetail.id) },
-                                    modifier = Modifier.padding(
-                                        start = 16.dp,
-                                        end = 16.dp,
-                                        bottom = 12.dp,
-                                    )
+                                    onClick = {interactionListener.onShowMoreReviewsClicked(uiState.seriesDetail.id)},
+                                    modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 12.dp)
                                 )
                             }
                             items(uiState.reviews.take(3)) { review ->
@@ -336,12 +302,7 @@ fun SeriesDetailsContent(
                 MovieRatingBottomSheet(
                     isVisible = uiState.showRatingBottomSheet,
                     onDismiss = interactionListener::onDismissOrCancelRatingBottomSheet,
-                    onRatingSubmit = { rating ->
-                        interactionListener.onRatingSubmit(
-                            rating,
-                            detail.id
-                        )
-                    },
+                    onRatingSubmit = { rating -> interactionListener.onRatingSubmit(rating, detail.id) },
                     onRatingRemove = { interactionListener.onRatingSubmit(0, detail.id) },
                     initialRating = uiState.starsRating,
                     hasExistingRating = uiState.starsRating != 0,

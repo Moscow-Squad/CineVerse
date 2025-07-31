@@ -19,8 +19,27 @@ android {
         checkReleaseBuilds = false
         abortOnError = false
     }
-
+    signingConfigs {
+        create("release") {
+            storeFile = file(System.getProperty("storeFile") ?: "my-release-key.jks")
+            storePassword = System.getProperty("storePassword")
+            keyAlias = System.getProperty("keyAlias")
+            keyPassword = System.getProperty("keyPassword")
+        }
+    }
     buildTypes {
+        release {
+            isDebuggable = false
+            isMinifyEnabled = true
+            isShrinkResources = true
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+            signingConfig = signingConfigs.getByName("release")
+            manifestPlaceholders["crashlytics_enabled"] = "true"
+            manifestPlaceholders["analytics_enabled"] = "true"
+        }
         debug {
             isDebuggable = true
             isMinifyEnabled = false

@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
@@ -125,10 +126,10 @@ fun SeriesRecommendationScreenContent(
                         if (recommendations.loadState.append is LoadState.Loading) {
                             item(span = { GridItemSpan(maxLineSpan) }) {
                                 Box(
-                                    modifier = Modifier.fillMaxSize(),
+                                    modifier = Modifier.height(214.dp),
                                     contentAlignment = Alignment.Center
                                 ) {
-                                    MovieCircularProgressBar(Modifier.padding(top = 100.dp))
+                                    MovieCircularProgressBar()
                                 }
                             }
                         }

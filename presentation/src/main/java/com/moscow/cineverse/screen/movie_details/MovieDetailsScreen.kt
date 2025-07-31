@@ -93,9 +93,7 @@ private fun MovieDetailsContent(
 
             uiState.shouldShowError -> {
                 Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(Theme.colors.background.screen),
+                    modifier = Modifier.fillMaxSize().background(Theme.colors.background.screen),
                     contentAlignment = Alignment.Center
                 ) {
                     NoInternetScreen(onRetry = interactionListener::onRetry)
@@ -131,8 +129,6 @@ private fun MovieDetailsMainContent(
 
     Column(modifier = modifier.background(Theme.colors.background.screen)) {
         MovieAppBar(backButtonClick = onNavigateBack, showBackButton = true)
-
-
 
         LazyColumn(
             state = scrollState,
