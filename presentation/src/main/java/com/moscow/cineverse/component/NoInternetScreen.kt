@@ -75,6 +75,7 @@ fun NoInternetScreen(
         }
         MovieButton(
             modifier = Modifier
+                .padding(top = 24.dp)
                 .width(240.dp)
                 .height(40.dp),
             buttonText = stringResource(R.string.try_again),
