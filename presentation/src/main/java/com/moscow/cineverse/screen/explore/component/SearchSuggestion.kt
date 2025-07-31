@@ -44,7 +44,6 @@ fun SearchSuggestion(
             .verticalScroll(rememberScrollState())
     ) {
         SectionTitle(
-            modifier = Modifier.padding(top = 24.dp),
             title = title,
             actionTitle = actionTitle,
             onClick = onClearAllClicked
