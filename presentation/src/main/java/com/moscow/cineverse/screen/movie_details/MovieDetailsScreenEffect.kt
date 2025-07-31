@@ -7,9 +7,8 @@ sealed class MovieDetailsScreenEffect {
         MovieDetailsScreenEffect()
 
     data class NavigateToFullReviews(val movieID: Int) : MovieDetailsScreenEffect()
-    data object NavigateToFullActors : MovieDetailsScreenEffect()
-    data object NavigateToFullCast : MovieDetailsScreenEffect()
     data class AddToCollection(val movieId: Int) : MovieDetailsScreenEffect()
     data class NavigateCastDetails(val castId: Int) : MovieDetailsScreenEffect()
     data class NavigateMovieDetails(val movieId: Int) : MovieDetailsScreenEffect()
+    data class OpenTrailer(val url: String) : MovieDetailsScreenEffect()
 }

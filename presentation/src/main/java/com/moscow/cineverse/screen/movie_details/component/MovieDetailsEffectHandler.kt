@@ -1,5 +1,8 @@
 package com.moscow.cineverse.screen.movie_details.component
 
+import android.content.Context
+import android.content.Intent
+import androidx.core.net.toUri
 import com.moscow.cineverse.screen.movie_details.MovieDetailsScreenEffect
 
 object MovieDetailsEffectHandler {
@@ -12,6 +15,7 @@ object MovieDetailsEffectHandler {
         navigateToCastDetails: (Int) -> Unit,
         navigateToCollectionsBottomSheet: (Int) -> Unit,
         navigateToMovieDetails: (Int) -> Unit,
+        context: Context
     ) {
         when (effect) {
             is MovieDetailsScreenEffect.NavigateBack -> {
@@ -30,10 +34,6 @@ object MovieDetailsEffectHandler {
 
             }
 
-            is MovieDetailsScreenEffect.NavigateToFullActors -> {
-                // TODO: Implement navigation to full actors list
-            }
-
             is MovieDetailsScreenEffect.NavigateToFullReviews -> {
                 navigateToReviews(effect.movieID)
 
@@ -48,12 +48,13 @@ object MovieDetailsEffectHandler {
 
             }
 
-            MovieDetailsScreenEffect.NavigateToFullCast -> {
-                // TODO: Implement navigation to full cast
-            }
-
             is MovieDetailsScreenEffect.NavigateMovieDetails -> {
                 navigateToMovieDetails(effect.movieId)
+            }
+
+            is MovieDetailsScreenEffect.OpenTrailer -> {
+                val intent = Intent(Intent.ACTION_VIEW, effect.url.toUri())
+                context.startActivity(intent)
             }
         }
     }

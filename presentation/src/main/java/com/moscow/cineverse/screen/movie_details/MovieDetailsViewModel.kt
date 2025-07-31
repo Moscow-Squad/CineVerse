@@ -58,7 +58,7 @@ class MovieDetailsViewModel @Inject constructor(
         var wait = 0
         while (uiState.value.movieDetailsUiState == null) {
             wait++
-            if (wait == 15){
+            if (wait == 25){
                 updateState { it.copy(isLoading = false, errorMessage = "error loading", shouldShowError = true) }
                 return
             }
@@ -247,6 +247,12 @@ class MovieDetailsViewModel @Inject constructor(
 
     override fun onMovieClicked(movieId: Int) {
         sendEvent(MovieDetailsScreenEffect.NavigateMovieDetails(movieId))
+    }
+
+    override fun onPlayButtonClicked() {
+        uiState.value.movieDetailsUiState?.let {
+            sendEvent(MovieDetailsScreenEffect.OpenTrailer(it.trailerPath))
+        }
     }
 
     override fun onRetry() {

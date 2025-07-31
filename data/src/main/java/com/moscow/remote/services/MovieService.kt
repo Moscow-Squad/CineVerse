@@ -2,6 +2,7 @@ package com.moscow.remote.services
 
 import com.moscow.remote.dto.CreditsDetailsDto
 import com.moscow.remote.dto.MovieDto
+import com.moscow.remote.dto.details.MediaTrailersDto
 import com.moscow.remote.dto.details.MovieDetailDto
 import com.moscow.remote.dto.review.RatingRequestDto
 import com.moscow.remote.dto.review.ReviewDto
@@ -15,6 +16,7 @@ import com.moscow.utils.RATING
 import com.moscow.utils.RECOMMENDATIONS
 import com.moscow.utils.REVIEWS
 import com.moscow.utils.SESSION_ID
+import com.moscow.utils.TRAILERS
 import com.moscow.utils.WITH_GENRES
 import retrofit2.Response
 import retrofit2.http.Body
@@ -64,4 +66,9 @@ interface MovieService {
         @Query(WITH_GENRES) genreId: Int,
         @Query(PAGE) page: Int
     ): Response<ApiResponse<MovieDto>>
+
+    @GET("$MOVIE{movie_id}$TRAILERS")
+    suspend fun getMovieTrailers(
+        @Path("movie_id") seriesId: Int
+    ): Response<MediaTrailersDto>
 }

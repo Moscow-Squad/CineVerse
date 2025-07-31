@@ -15,11 +15,12 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import kotlin.collections.map
 
-fun MovieDetailDto.toDomain(): MovieDetail {
+fun MovieDetailDto.toDomain(trailer: String): MovieDetail {
     return MovieDetail(
         id = id ?: 0,
         title = title ?: "",
         overview = overview ?: "",
+        trailerPath = "https://youtu.be/$trailer",
         posterPath = IMAGES_URL + posterPath,
         releaseDate = if (releaseDate == null) Clock.System.now()
             .toLocalDateTime(TimeZone.currentSystemDefault()).date else LocalDate.parse(releaseDate),

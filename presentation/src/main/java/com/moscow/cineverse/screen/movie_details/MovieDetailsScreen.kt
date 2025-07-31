@@ -25,6 +25,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.moscow.cineverse.component.NoInternetScreen
@@ -55,6 +56,7 @@ fun MovieDetailsScreen(
     navigateToMovieDetails: (Int) -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val context = LocalContext.current
 
     LaunchedEffect(viewModel) {
         viewModel.uiEffect.collect { effect ->
@@ -65,7 +67,8 @@ fun MovieDetailsScreen(
                 navigateToReviews = navigateToReviews,
                 navigateToCastDetails = navigateToCastDetails,
                 navigateToCollectionsBottomSheet = navigateToCollectionsBottomSheet,
-                navigateToMovieDetails = navigateToMovieDetails
+                navigateToMovieDetails = navigateToMovieDetails,
+                context = context
             )
         }
     }

@@ -5,13 +5,11 @@ import com.moscow.domain.model.CreditsDetails
 import com.moscow.domain.model.CrewDetails
 import com.moscow.domain.model.Series
 import com.moscow.domain.model.details.Creator
-import com.moscow.domain.model.details.Episode
 import com.moscow.domain.model.details.ListOfSeries
 import com.moscow.domain.model.details.Season
 import com.moscow.domain.model.details.SeriesDetail
 import com.moscow.domain.model.details.SeriesItem
 import com.moscow.remote.dto.details.CreatedByDto
-import com.moscow.remote.dto.details.LastEpisodeToAirDto
 import com.moscow.remote.dto.details.SeriesCastDto
 import com.moscow.remote.dto.details.SeriesCreditDto
 import com.moscow.remote.dto.details.SeriesCrewDto
@@ -27,12 +25,13 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import kotlin.collections.map
 
-fun SeriesDetailDto.toDomain(): SeriesDetail {
+fun SeriesDetailDto.toDomain(trailer: String): SeriesDetail {
     return SeriesDetail(
         id = id,
         title = name,
         overview = overview,
         posterPath = IMAGES_URL + posterPath.orEmpty(),
+        trailerPath = "https://youtu.be/$trailer",
         genres = genres.map { it.toDomain() },
         rating = (voteAverage * 10).toInt() / 10.0,
         runtime = formatRuntime(episodeRunTime) ?: "0m",

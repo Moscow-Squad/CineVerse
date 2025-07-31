@@ -1,5 +1,6 @@
 package com.moscow.cineverse.screen.series_details
 
+import android.content.Intent
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionLayout
@@ -21,6 +22,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.ParagraphStyle
 import androidx.compose.ui.text.SpanStyle
@@ -31,6 +33,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.net.toUri
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.rememberAsyncImagePainter
@@ -65,28 +68,34 @@ fun SeriesDetailsScreen(
     navigateToSeriesDetails: (Int) -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val context = LocalContext.current
 
     LaunchedEffect(viewModel) {
-        viewModel.uiEffect.collect { event ->
-            when (event) {
+        viewModel.uiEffect.collect { effect ->
+            when (effect) {
                 is SeriesDetailsScreenEffects.AddToCollection -> {
-                    navigateToCollectionBottomSheet(event.seriesId)
+                    navigateToCollectionBottomSheet(effect.seriesId)
                 }
                 is SeriesDetailsScreenEffects.NavigateToRecommendationSeries -> {
-                    navigateToSeriesRecommendation(event.seriesId, event.seriesName)
+                    navigateToSeriesRecommendation(effect.seriesId, effect.seriesName)
                 }
                 is SeriesDetailsScreenEffects.NavigateToReviewsScreen -> {
-                    navigateToReviews(event.seriesId)
+                    navigateToReviews(effect.seriesId)
                 }
                 is SeriesDetailsScreenEffects.NavigateToSeriesSeasonsScreen -> {
-                    navigateToSeriesSeasons(event.seriesId)
+                    navigateToSeriesSeasons(effect.seriesId)
                 }
 
                 is SeriesDetailsScreenEffects.NavigateToActorDetailsScreen -> {
-                    navigateToCastDetails(event.ActorId)
+                    navigateToCastDetails(effect.ActorId)
                 }
                 is SeriesDetailsScreenEffects.NavigateToSeriesDetailsScreen -> {
-                    navigateToSeriesDetails(event.seriesId)
+                    navigateToSeriesDetails(effect.seriesId)
+                }
+
+                is SeriesDetailsScreenEffects.OpenTrailer -> {
+                    val intent = Intent(Intent.ACTION_VIEW, effect.url.toUri())
+                    context.startActivity(intent)
                 }
             }
         }
@@ -155,7 +164,8 @@ fun SeriesDetailsContent(
                                             type = detail.type,
                                             animatedVisibilityScope = this@AnimatedContent,
                                             sharedTransitionScope = this@SharedTransitionLayout,
-                                            onSaveClick = { interactionListener.addToCollection() }
+                                            onSaveClick = { interactionListener.addToCollection() },
+                                            onPlayClick = interactionListener::onPlayButtonClicked
                                         )
                                     } else {
                                         MainMovieCard(
@@ -163,7 +173,8 @@ fun SeriesDetailsContent(
                                             title = detail.title,
                                             animatedVisibilityScope = this@AnimatedContent,
                                             sharedTransitionScope = this@SharedTransitionLayout,
-                                            onSaveClick = { interactionListener.addToCollection() }
+                                            onSaveClick = { interactionListener.addToCollection() },
+                                            onPlayClick = interactionListener::onPlayButtonClicked
                                         )
                                     }
                                 }

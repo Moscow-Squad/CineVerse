@@ -3,6 +3,7 @@ package com.moscow.remote.data_source
 import com.moscow.data_source.remote.MovieRemoteDataSource
 import com.moscow.remote.dto.CreditsDetailsDto
 import com.moscow.remote.dto.MovieDto
+import com.moscow.remote.dto.details.MediaTrailersDto
 import com.moscow.remote.dto.details.MovieDetailDto
 import com.moscow.remote.dto.review.RatingRequestDto
 import com.moscow.remote.dto.review.ReviewDto
@@ -56,5 +57,10 @@ class MovieRemoteDataSourceImpl  @Inject constructor(
     override suspend fun getMoviesByGenreId(genreId: Int, page: Int): ApiResponse<MovieDto> =
         handleApi {
             movieService.getMoviesByGenreId(genreId, page)
+        }
+
+    override suspend fun getMovieTrailer(id: Int): MediaTrailersDto =
+        handleApi {
+            movieService.getMovieTrailers(id)
         }
 }
