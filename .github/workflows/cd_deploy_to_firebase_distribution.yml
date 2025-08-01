@@ -1,4 +1,4 @@
-name: CD - Deploy to Firebase App Distribution
+name: CD deploy to Firebase Distribution
 
 on:
   push:
@@ -11,15 +11,15 @@ permissions:
 
 jobs:
   deploy:
-    name: 📱 Distribute Release APK to Firebase App Distribution
+    name: 📱 Distribute Debug APK to Firebase App Distribution
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4 # Updated to latest version
+        uses: actions/checkout@v4
 
       - name: Set up JDK 17
-        uses: actions/setup-java@v4 # Updated to latest version
+        uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
           java-version: '17'
@@ -32,31 +32,23 @@ jobs:
       - name: Create google-services.json
         run: |
           echo "${{ secrets.GOOGLE_SERVICES_JSON }}" | base64 -d > app/google-services.json
+      - name: Set up Gradle
+        uses: gradle/gradle-build-action@v3
 
-      - name: Create keys.properties
+      - name: Generate keys.properties
         run: |
           echo "BEARER_TOKEN=${{ secrets.BEARER_TOKEN }}" > keys.properties
-          mkdir -p data
-          echo "TMDB_API_KEY=\"${{ secrets.TMDB_API_KEY }}\"" > data/keys.properties
-
-      - name: Create Keystore
-        run: |
-          echo "${{ secrets.KEYSTORE }}" | base64 -d > app/my-release-key.jks
-          echo "KEYSTORE_PASSWORD=${{ secrets.KEYSTORE_PASSWORD }}" >> keystore.properties
-          echo "KEY_ALIAS=${{ secrets.KEY_ALIAS }}" >> keystore.properties
-          echo "KEY_PASSWORD=${{ secrets.KEY_PASSWORD }}" >> keystore.properties
-
       - name: Make gradlew executable
         run: chmod +x ./gradlew
 
-      - name: Build Release APK
-        run: ./gradlew assembleRelease --stacktrace --info -Dorg.gradle.jvmargs=-Xmx4g
+      - name: Build Debug APK
+        run: ./gradlew assembleDebug
+
       - name: Set Release Notes
         id: set-release-notes
         run: |
           echo "RELEASE_NOTES=Push to develop: ${{ github.sha }}" >> $GITHUB_ENV
-
-      - name: Distribute Release APK to Firebase App Distribution
-        run: ./gradlew appDistributionUploadRelease --stacktrace
+      - name: Distribute Debug APK to Firebase App Distribution
+        run: ./gradlew appDistributionUploadDebug --stacktrace
         env:
           FIREBASE_APP_ID: ${{ secrets.FIREBASE_APP_ID }}
