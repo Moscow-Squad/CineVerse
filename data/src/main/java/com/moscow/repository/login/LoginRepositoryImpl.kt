@@ -32,12 +32,14 @@ class LoginRepositoryImpl @Inject constructor(
                 description = "A personalized list for recently viewed items"
             ), sessionId.sessionId ?: ""
         )
+
         preferenceRepository.saveUser(
             UserType.AuthenticatedUser(
                 id = userId.toString(),
                 username = loginData.username,
                 sessionId = sessionId.sessionId ?: "",
-                recentlyCollectionId = response.listId ?: 0
+                recentlyCollectionId = response.listId ?: 0,
+
             )
         )
         return true
