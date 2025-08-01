@@ -22,8 +22,8 @@ fun MovieDetailDto.toDomain(trailer: String): MovieDetail {
         overview = overview ?: "",
         trailerPath = "https://youtu.be/$trailer",
         posterPath = IMAGES_URL + posterPath,
-        releaseDate = if (releaseDate == null) Clock.System.now()
-            .toLocalDateTime(TimeZone.currentSystemDefault()).date else LocalDate.parse(releaseDate),
+        releaseDate = releaseDate?.takeIf { it.isNotBlank() }
+            ?.let { LocalDate.parse(it) },
         voteAverage = voteAverage ?: 0.0,
         genres = genres?.map { it.name } ?: emptyList(),
         duration = runtime ?: 0

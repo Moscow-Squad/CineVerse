@@ -1,6 +1,7 @@
 package com.moscow.cineverse.screen.movie_details
 
 
+import android.util.Log
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.ExperimentalSharedTransitionApi
@@ -90,12 +91,13 @@ private fun MovieDetailsContent(
     modifier: Modifier = Modifier
 ) {
     MovieScaffold {
+        Log.d("TAG", "MovieDetailsContent: ${uiState.toString()}")
         when {
-            uiState.isLoading -> {
+            uiState.isLoading == true -> {
                 LoadingContent(modifier = modifier)
             }
 
-            uiState.shouldShowError -> {
+            uiState.shouldShowError == true -> {
                 Box(
                     modifier = Modifier
                         .fillMaxSize()

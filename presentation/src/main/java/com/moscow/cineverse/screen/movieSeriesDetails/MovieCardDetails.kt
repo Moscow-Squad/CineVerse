@@ -168,7 +168,8 @@ fun DetailCard(
                 horizontalArrangement = Arrangement.spacedBy(12.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                InfoTextWithIcon(
+                if(formattedRating != "0.0")
+                    InfoTextWithIcon(
                     R.drawable.due_tone_star,
                     formattedRating,
                     Theme.colors.additional.primary.yellow
@@ -181,7 +182,8 @@ fun DetailCard(
                     )
                 }
 
-                InfoTextWithIcon(
+                if(releaseDate.isNotBlank())
+                    InfoTextWithIcon(
                     R.drawable.due_tone_calendar,
                     releaseDate,
                     Theme.colors.shade.secondary

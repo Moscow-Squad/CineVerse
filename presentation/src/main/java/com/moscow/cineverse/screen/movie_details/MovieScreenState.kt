@@ -34,7 +34,7 @@ data class MovieScreenState(
         val posterPath: String,
         val rating: Double,
         val genres: List<String>,
-        val releaseDate: LocalDate,
+        val releaseDate: LocalDate?,
         val duration: Int,
         val description: String
     )

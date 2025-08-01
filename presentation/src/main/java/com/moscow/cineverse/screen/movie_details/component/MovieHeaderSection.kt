@@ -49,7 +49,7 @@ fun MovieHeaderSection(
             genres = it.genres.joinToString(", "),
             rating = it.rating.toString(),
             duration = it.duration.toHourMinuteFormat(context),
-            releaseDate = it.releaseDate.toFormattedReleasedDate(),
+            releaseDate = it.releaseDate?.toFormattedReleasedDate()?:"",
             type = stringResource(R.string.movie),
             onSaveClick = {
                 interactionListener.onAddToCollection(it.id)
