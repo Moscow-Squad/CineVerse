@@ -5,8 +5,6 @@ import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionLayout
-import androidx.compose.animation.core.Spring
-import androidx.compose.animation.core.spring
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
@@ -99,7 +97,9 @@ private fun MovieDetailsContent(
 
             uiState.shouldShowError -> {
                 Box(
-                    modifier = Modifier.fillMaxSize().background(Theme.colors.background.screen),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(Theme.colors.background.screen),
                     contentAlignment = Alignment.Center
                 ) {
                     NoInternetScreen(onRetry = interactionListener::onRetry)
@@ -146,29 +146,11 @@ private fun MovieDetailsMainContent(
                         targetState = isCollapsed,
                         transitionSpec = {
                             slideInVertically(
-                                animationSpec = spring(
-                                    dampingRatio = Spring.DampingRatioMediumBouncy,
-                                    stiffness = Spring.StiffnessLow
-                                ),
                                 initialOffsetY = { fullHeight -> fullHeight }
-                            ) + fadeIn(
-                                animationSpec = spring(
-                                    dampingRatio = Spring.DampingRatioMediumBouncy,
-                                    stiffness = Spring.StiffnessLow
-                                )
-                            ) with
+                            ) + fadeIn() with
                                     slideOutVertically(
-                                        animationSpec = spring(
-                                            dampingRatio = Spring.DampingRatioMediumBouncy,
-                                            stiffness = Spring.StiffnessLow
-                                        ),
                                         targetOffsetY = { fullHeight -> -fullHeight }
-                                    ) + fadeOut(
-                                animationSpec = spring(
-                                    dampingRatio = Spring.DampingRatioMediumBouncy,
-                                    stiffness = Spring.StiffnessLow
-                                )
-                            )
+                                    ) + fadeOut()
                         }
                     ) { target ->
                         if (!target) {

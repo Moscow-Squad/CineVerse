@@ -9,9 +9,9 @@ import androidx.paging.cachedIn
 import androidx.paging.map
 import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.cineverse.common_ui_state.MediaItemUiState
-import com.moscow.cineverse.utlis.ViewMode
 import com.moscow.cineverse.paging.BasePagingSource
 import com.moscow.cineverse.screen.explore.ExploreScreenState.ActorUiState
+import com.moscow.cineverse.utlis.ViewMode
 import com.moscow.domain.model.Genre
 import com.moscow.domain.model.MediaType
 import com.moscow.domain.usecase.genre.GenreUseCase
@@ -24,6 +24,7 @@ import com.moscow.domain.usecase.search.SearchUseCase
 import com.moscow.domain.usecase.search.SuggestionUseCase
 import com.moscow.domain.usecase.series.GetPopularSeriesUseCase
 import com.moscow.domain.usecase.series.GetSeriesByGenreIdUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -35,7 +36,6 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
@@ -300,7 +300,7 @@ class ExploreViewModel @Inject constructor(
     }
 
     private fun onGetHistoryDataSuccess(suggestions: List<String>) {
-        val suggestions = suggestions.map { SuggestItemUiState(it, isHistory = true) }
+        val suggestions = suggestions.map { SuggestItemUiState(it, isHistory = true) }.reversed()
         updateState { it.copy(localSuggestions = suggestions, showHistory = true) }
     }
 
