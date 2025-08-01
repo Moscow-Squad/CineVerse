@@ -1,11 +1,13 @@
 package com.moscow.cineverse.screen.collections
 
+import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.cineverse.navigation.routes.CollectionsBottomSheetRoute
 import com.moscow.cineverse.screen.collections.CollectionsBottomSheetEffect.OnLoginClicked
 import com.moscow.domain.model.Collection
 import com.moscow.domain.model.MediaType
+import com.moscow.domain.repository.PreferenceRepository
 import com.moscow.domain.usecase.collection.AddMediaItemToCollectionUseCase
 import com.moscow.domain.usecase.collection.GetCurrentUserUseCase
 import com.moscow.domain.usecase.collection.GetUserCollectionsUseCase
@@ -27,14 +29,17 @@ class CollectionsBottomSheetViewModel @Inject constructor(
         savedStateHandle.get<String>(CollectionsBottomSheetRoute.MEDIA_TYPE) ?: "movie"
     )
 
-    private fun isUserLoggedIn() {
+     fun isUserLoggedIn() {
         launchWithResult(
-            action = { getCurrentUserUseCase.isLoggedIn() },
+            action = {
+                getCurrentUserUseCase()
+               },
             onSuccess = { isLoggedIn ->
                 isLoading(false)
                 updateState { it.copy(isLoggedIn = isLoggedIn) }
             },
-            onError = { e -> isLoading(false) },
+            onError = { e ->
+                isLoading(false) },
             onStart = { isLoading(true) },
             onFinally = {}
         )

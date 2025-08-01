@@ -44,6 +44,7 @@ fun CollectionsBottomSheetScreen(
     val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
 
     val context = LocalContext.current
+
     CollectionsBottomSheetContent(
         interactionListener = viewModel,
         onAddNewCollectionClick = onAddNewCollectionClick,
@@ -54,6 +55,7 @@ fun CollectionsBottomSheetScreen(
     )
 
     LaunchedEffect(Unit) {
+        viewModel.isUserLoggedIn()
         viewModel.uiEffect.collect { event ->
             handleEvents(
                 event = event,

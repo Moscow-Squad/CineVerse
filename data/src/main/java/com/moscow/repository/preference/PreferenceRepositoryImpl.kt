@@ -1,5 +1,6 @@
 package com.moscow.repository.preference
 
+import android.util.Log
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
@@ -33,12 +34,13 @@ class PreferenceRepositoryImpl @Inject constructor(
                     preferences[USER_TYPE_KEY] = GUEST_USER
                     preferences[SESSION_ID_KEY] = userType.sessionId
                     preferences[EXPIRED_AT_KEY] = userType.expiredAt.toString()
-                    preferences[Is_LOGGED_IN_KEY] = true
+                    preferences[Is_LOGGED_IN_KEY] = false
                     preferences.remove(USER_ID_KEY)
                     preferences.remove(USERNAME_KEY)
                 }
             }
         }
+
     }
 
     override suspend fun getUser(): UserType {
@@ -89,7 +91,7 @@ class PreferenceRepositoryImpl @Inject constructor(
     }
 
     override suspend fun isLoggedIn(): Boolean {
-        return dataStore.data.map { it[Is_LOGGED_IN_KEY] }.firstOrNull() == true
+        return dataStore.data.map {it[Is_LOGGED_IN_KEY] }.first() == true
     }
 
     companion object {
