@@ -8,7 +8,7 @@ data class MovieDetail(
     val overview: String,
     val trailerPath: String,
     val posterPath: String,
-    val releaseDate: LocalDate,
+    val releaseDate: LocalDate?,
     val voteAverage: Double,
     val genres: List<String>,
     val duration:Int,
