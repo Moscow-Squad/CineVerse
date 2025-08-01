@@ -21,24 +21,40 @@
 #-renamesourcefileattribute SourceFile
 
 # Firebase
--keep class com.google.firebase.** { *; }
--dontwarn com.google.firebase.**
+#-keep class com.google.firebase.** { *; }
+#-dontwarn com.google.firebase.**
+#
+## TensorFlow Lite (if used)
+#-keep class org.tensorflow.lite.** { *; }
+#-dontwarn org.tensorflow.lite.**
+#
+## Keep annotations and classes used by Hilt
+#-keep class dagger.hilt.** { *; }
+#-keep class androidx.hilt.** { *; }
+#
+## Prevent R8 from removing unused classes in ML models
+#-keep class com.google.mlkit.** { *; }
+#-dontwarn com.google.mlkit.**
+#
+## Optimize aggressively
+#-assumenosideeffects class android.util.Log {
+#    public static *** d(...);
+#    public static *** v(...);
+#    public static *** i(...);
+#}
+# Keep Composables
+-keep class * {
+    @androidx.compose.runtime.Composable <methods>;
+}
 
-# TensorFlow Lite (if used)
--keep class org.tensorflow.lite.** { *; }
--dontwarn org.tensorflow.lite.**
+# If using Navigation Compose:
+-keep class androidx.navigation.** { *; }
+-keepclassmembers class * {
+    @androidx.navigation.* <methods>;
+}
 
-# Keep annotations and classes used by Hilt
--keep class dagger.hilt.** { *; }
--keep class androidx.hilt.** { *; }
-
-# Prevent R8 from removing unused classes in ML models
--keep class com.google.mlkit.** { *; }
--dontwarn com.google.mlkit.**
-
-# Optimize aggressively
--assumenosideeffects class android.util.Log {
-    public static *** d(...);
-    public static *** v(...);
-    public static *** i(...);
+# If using Hilt/Koin
+-keep class * {
+    @dagger.* <methods>;
+    @org.koin.* <methods>;
 }
