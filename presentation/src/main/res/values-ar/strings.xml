@@ -96,5 +96,13 @@
     <string name="all">الكل</string>
     <string name="search">ابحث...</string>
     <string name="search_can_t_be_empty_1">لا تستطيع البحث بلا شئ !</string>
+    <string name="my_profile">ملفي الشخصي</string>
+    <string name="my_ratings">تقييمي</string>
+    <string name="settings">الإعدادات</string>
+    <string name="login_or_sign_up">تسجيل الدخول أو إنشاء حساب</string>
+    <string name="to_personalize_your_experience">لتخصيص تجربتك!</string>
+    <string name="dark_mode">الوضع الداكن</string>
+    <string name="logout">تسجيل الخروج</string>
+    <string name="language">اللغة</string>
 
 </resources>

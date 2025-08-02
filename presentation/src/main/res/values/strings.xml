@@ -96,5 +96,13 @@
     <string name="all">All</string>
     <string name="search">Search...</string>
     <string name="search_can_t_be_empty_1">Search can\'t be empty!</string>
+    <string name="my_profile">My Profile</string>
+    <string name="my_ratings">My Ratings</string>
+    <string name="settings">Settings</string>
+    <string name="login_or_sign_up">Login or Sign up</string>
+    <string name="to_personalize_your_experience">to personalize your experience!</string>
+    <string name="dark_mode">Dark Mode</string>
+    <string name="logout">Logout</string>
+    <string name="language">Language</string>
 
 </resources>

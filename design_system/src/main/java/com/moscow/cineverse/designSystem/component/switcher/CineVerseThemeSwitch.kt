@@ -45,7 +45,7 @@ fun CineVerseSwitch(
         thumbContent = {
             Box(
                 modifier = Modifier
-                    .size(24.dp)
+                    .size(18.dp)
                     .clip(CircleShape)
                     .background(
                         color = when {

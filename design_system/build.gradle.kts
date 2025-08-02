@@ -17,4 +17,5 @@ dependencies {
     implementation(libs.readmore.material3)
 
     implementation(libs.accompanist.webview)
+    testImplementation(kotlin("test"))
 }
