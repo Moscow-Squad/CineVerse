@@ -1,8 +1,7 @@
 package com.moscow.cineverse.screen.explore
 
-import com.moscow.cineverse.utlis.ViewMode
-import com.moscow.cineverse.screen.explore.ExploreTabsPages
 import com.moscow.cineverse.common_ui_state.MediaItemUiState
+import com.moscow.cineverse.utlis.ViewMode
 
 interface ExploreInteractionListener {
     fun onMovieGenreSelected(genreId: Int)
@@ -12,9 +11,9 @@ interface ExploreInteractionListener {
     fun onActorClick(actorId: Int)
     fun onTabSelected(tab: ExploreTabsPages)
     fun onRefresh()
-    fun searchMovie(isHistory: Boolean = false)
-    fun searchSeries(isHistory: Boolean = false)
-    fun searchActor(isHistory: Boolean = false)
+    fun searchMovie()
+    fun searchSeries()
+    fun searchActor()
     fun onSearchBarClickedOn()
     fun onCancelButtonClicked()
     fun onSearchValueChange(text: String)
