@@ -19,4 +19,7 @@ interface CollectionsRepository {
     ): String
 
     suspend fun getCollectionDetails(collectionId: Int,page: Int): List<Movie>
+    suspend fun getCollectionDetailsV4(collectionId: Int, page: Int): List<MediaItem>
+    suspend fun deleteMediaFromCollectionV4(collectionId: Int, mediaId: Int, mediaType: MediaType)
+    suspend fun addMediaFromCollectionV4(collectionId: Int, mediaId: Int, mediaType: MediaType)
 }

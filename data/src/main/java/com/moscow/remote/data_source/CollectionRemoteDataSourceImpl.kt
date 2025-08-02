@@ -1,10 +1,13 @@
 package com.moscow.remote.data_source
 
 import com.moscow.data_source.remote.CollectionRemoteDataSource
+import com.moscow.domain.model.MediaType
 import com.moscow.remote.dto.AddMediaItemToCollectionRequestDto
 import com.moscow.remote.dto.CollectionDto
 import com.moscow.remote.dto.CreateCollectionDto
 import com.moscow.remote.dto.MovieDto
+import com.moscow.remote.dto.collections_v4.CollectionDetailsV4Dto
+import com.moscow.remote.dto.collections_v4.EmptyCollectionApiResponse
 import com.moscow.remote.services.CollectionsService
 import com.moscow.utils.ApiResponse
 import com.moscow.utils.handleApi
@@ -57,5 +60,28 @@ class CollectionRemoteDataSourceImpl  @Inject constructor(
             sessionId,
             page
         )
+    }
+
+    override suspend fun getCollectionDetailsV4(
+        collectionId: Int,
+        page: Int
+    ): CollectionDetailsV4Dto {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun deleteMediaFromCollectionV4(
+        collectionId: Int,
+        mediaId: Int,
+        mediaType: MediaType
+    ): EmptyCollectionApiResponse {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun addMediaFromCollectionV4(
+        collectionId: Int,
+        mediaId: Int,
+        mediaType: MediaType
+    ): EmptyCollectionApiResponse {
+        TODO("Not yet implemented")
     }
 }

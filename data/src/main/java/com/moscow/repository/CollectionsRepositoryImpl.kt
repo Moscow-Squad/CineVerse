@@ -1,6 +1,5 @@
 package com.moscow.repository
 
-import android.util.Log
 import com.moscow.data_source.remote.CollectionRemoteDataSource
 import com.moscow.domain.repository.CollectionsRepository
 import com.moscow.mapper.toDomain
@@ -12,6 +11,7 @@ import com.moscow.domain.model.MediaType
 import com.moscow.domain.model.Movie
 import com.moscow.domain.model.UserType
 import com.moscow.domain.repository.PreferenceRepository
+import com.moscow.remote.dto.collections_v4.toDomain
 import com.moscow.utils.CineVerseExceptions
 import javax.inject.Inject
 
@@ -43,7 +43,10 @@ class CollectionsRepositoryImpl @Inject constructor(
             collection = collection,
             sessionId = preferenceRepository.getSessionId()
         )
-        return response.listId ?: throw CineVerseExceptions(response.statusCode?:0,response.statusMessage?:"")
+        return response.listId ?: throw CineVerseExceptions(
+            response.statusCode ?: 0,
+            response.statusMessage ?: ""
+        )
     }
 
     override suspend fun addMediaItemToCollection(
@@ -60,12 +63,31 @@ class CollectionsRepositoryImpl @Inject constructor(
         return response.statusMessage ?: "Unexpected Error happened"
     }
 
-    override suspend fun getCollectionDetails(collectionId: Int,page:Int): List<Movie> {
+    override suspend fun getCollectionDetails(collectionId: Int, page: Int): List<Movie> {
         val response = collectionRemoteDataSource.getCollectionDetails(
             collectionId = collectionId,
             sessionId = preferenceRepository.getSessionId(),
             page = page
         )
         return response.items?.map { it.toDomain() } ?: emptyList()
+    }
+
+    override suspend fun getCollectionDetailsV4(collectionId: Int, page: Int) =
+        collectionRemoteDataSource.getCollectionDetailsV4(collectionId, page).toDomain()
+
+    override suspend fun deleteMediaFromCollectionV4(
+        collectionId: Int,
+        mediaId: Int,
+        mediaType: MediaType
+    ) {
+        collectionRemoteDataSource.deleteMediaFromCollectionV4(collectionId, mediaId, mediaType)
+    }
+
+    override suspend fun addMediaFromCollectionV4(
+        collectionId: Int,
+        mediaId: Int,
+        mediaType: MediaType
+    ) {
+        collectionRemoteDataSource.addMediaFromCollectionV4(collectionId, mediaId, mediaType)
     }
 }
