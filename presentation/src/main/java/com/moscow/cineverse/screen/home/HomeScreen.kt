@@ -169,8 +169,7 @@ fun HomeContent(
                     type = HomeFeaturedItems.TOP_RATED_TV_SHOWS
                 )
 
-                if(state.userName != null && state.youRecentlyViewed.isEmpty() == false)
-                FeaturedMovies(
+                if(state.userName != null && state.youRecentlyViewed.isEmpty() == false) FeaturedMovies(
                     displayMovies = state.youRecentlyViewed,
                     onMovieClick = listener::onMediaItemClicked,
                     onShowMoreClick = listener::onSeeAllClick,
@@ -178,7 +177,6 @@ fun HomeContent(
                     type = HomeFeaturedItems.YOU_RECENTLY_VIEWED
                 )
 
-                if(false)
                 MyCollectionsLayout(
                     items = state.collections,
                     onCollectionClick = listener::onCollectionClick,

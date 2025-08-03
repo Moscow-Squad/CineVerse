@@ -1,6 +1,7 @@
 package com.moscow.cineverse.screen.profile.component
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -8,6 +9,7 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -31,25 +33,31 @@ internal fun ProfileChips(
     items: List<ProfileChipItem>,
 ) {
 
-    LazyRow(
-        horizontalArrangement = Arrangement.spacedBy(8.dp), modifier = modifier.fillMaxWidth()
+    Box(
+        modifier = modifier,
+        contentAlignment = Alignment.Center
     ) {
-        items(items) { item ->
-            PillLabel(
-                text = stringResource(item.labelResId),
-                isActive = false,
-                onClick = { item.onClick() },
-                prefixIcon = {
-                    Icon(
-                        painter = painterResource(item.iconResId),
-                        tint = Theme.colors.brand.primary,
-                        contentDescription = "chip icon",
-                        modifier = Modifier.size(16.dp)
-                    )
-                }
-            )
+        LazyRow(
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
+            items(items) { item ->
+                PillLabel(
+                    text = stringResource(item.labelResId),
+                    isActive = false,
+                    onClick = { item.onClick() },
+                    prefixIcon = {
+                        Icon(
+                            painter = painterResource(item.iconResId),
+                            tint = Theme.colors.brand.primary,
+                            contentDescription = "chip icon",
+                            modifier = Modifier.size(16.dp)
+                        )
+                    }
+                )
+            }
         }
     }
+
 }
 
 @Preview

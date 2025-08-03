@@ -272,6 +272,7 @@ fun MainMovieCard(
             ) {
                 OnBlurContent(
                     hintText = stringResource(R.string.unsuitable_image),
+                    isAddedText = false
                 )
             }
             Text(

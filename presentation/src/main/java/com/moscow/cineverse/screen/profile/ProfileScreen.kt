@@ -25,8 +25,7 @@ import com.moscow.cinverse.presentation.R
 @Composable
 fun ProfileScreen(
     modifier: Modifier = Modifier,
-)
-{
+){
     ProfileContent(modifier)
 }
 
@@ -47,9 +46,11 @@ fun ProfileContent(
         item {
             MovieAppBar(
                 showBackButton = false,
+                modifier = Modifier.padding(vertical = 17.dp),
                 title = stringResource(R.string.my_profile)
             )
         }
+
         item {
             UserInfo(
                 name = "Shrouk Mohamed",
@@ -60,20 +61,23 @@ fun ProfileContent(
 
         item{
             ProfileChips(
-                modifier = Modifier.
-                    padding(top = 12.dp, bottom = 24.dp),
-                listOf(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 12.dp, bottom = 24.dp),
+                items = listOf(
                     ProfileChipItem(
                         R.string.history,
-                        com.moscow.cineverse.design_system.R.drawable.due_tone_history,
-                        {}),
+                        R.drawable.due_tone_history,
+                        {}
+                    ),
                     ProfileChipItem(
                         R.string.my_collections,
-                        com.moscow.cineverse.design_system.R.drawable.due_tone_video_library,
-                        {}),
+                        R.drawable.due_tone_video_library,
+                        {}
+                    ),
                     ProfileChipItem(
                         R.string.my_ratings,
-                        com.moscow.cineverse.design_system.R.drawable.due_tone_star,
+                        R.drawable.due_tone_star,
                         {}
                     )
                 )
@@ -114,5 +118,4 @@ private fun ProfilePreview() {
     CineVerseTheme {
         ProfileScreen()
     }
-    
 }

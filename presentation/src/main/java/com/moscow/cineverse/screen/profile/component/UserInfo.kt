@@ -30,7 +30,7 @@ import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cinverse.presentation.R
 
 @Composable
-internal fun UserInfo( //isGuest ?
+internal fun UserInfo(
     modifier: Modifier = Modifier,
     name: String? = null,
     username: String? = null,
@@ -41,7 +41,6 @@ internal fun UserInfo( //isGuest ?
     Row(
         modifier
             .fillMaxWidth()
-            .padding(top = 16.dp)
             .background(
                 color = Theme.colors.background.card,
                 shape = RoundedCornerShape(Theme.radius.large)

@@ -56,10 +56,7 @@ internal fun Settings(
                     modifier = Modifier.size(
                         width = 40.dp,
                         height = 20.dp
-                    ),
-                    checked = true,
-                    onCheckedChange = {},
-                    isEnabled = true
+                    )
                 )
             })
 

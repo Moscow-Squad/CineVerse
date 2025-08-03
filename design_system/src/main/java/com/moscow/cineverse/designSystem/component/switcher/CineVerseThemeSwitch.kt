@@ -31,17 +31,15 @@ import com.moscow.cineverse.designSystem.theme.Theme
 
 @Composable
 fun CineVerseSwitch(
-    checked: Boolean,
-    onCheckedChange: (Boolean) -> Unit,
-    isEnabled: Boolean,
     modifier: Modifier = Modifier,
 ) {
     val isDarkTheme = isSystemInDarkTheme()
+    var isChecked by remember { mutableStateOf(true) }
 
     Switch(
-        checked = checked,
-        onCheckedChange = onCheckedChange,
-        enabled = isEnabled,
+        checked = isChecked,
+        onCheckedChange = { isChecked = it },
+        enabled = true,
         thumbContent = {
             Box(
                 modifier = Modifier
@@ -49,8 +47,7 @@ fun CineVerseSwitch(
                     .clip(CircleShape)
                     .background(
                         color = when {
-                            !isEnabled -> Theme.colors.shade.tertiary
-                            checked -> Color.White
+                            isChecked -> Color.White
                             isDarkTheme -> Theme.colors.shade.secondary
                             else -> Theme.colors.shade.tertiary
                         }
@@ -86,10 +83,6 @@ fun CineVerseSwitch(
 @Preview(name = "Dark Mode", uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
 @Composable
 private fun CineVerseSwitchPreview() {
-    var enabledChecked by remember { mutableStateOf(true) }
-    var enabledUnchecked by remember { mutableStateOf(false) }
-    var disabledChecked by remember { mutableStateOf(true) }
-    var disabledUnchecked by remember { mutableStateOf(false) }
 
     CineVerseTheme {
         Surface(
@@ -111,11 +104,7 @@ private fun CineVerseSwitchPreview() {
                     horizontalArrangement = Arrangement.spacedBy(16.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    CineVerseSwitch(
-                        checked = enabledChecked,
-                        onCheckedChange = { enabledChecked = it },
-                        isEnabled = true
-                    )
+                    CineVerseSwitch()
                     Text(
                         "Enabled - Checked",
                         color = MaterialTheme.colorScheme.onBackground
@@ -127,9 +116,6 @@ private fun CineVerseSwitchPreview() {
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     CineVerseSwitch(
-                        checked = enabledUnchecked,
-                        onCheckedChange = { enabledUnchecked = it },
-                        isEnabled = true
                     )
                     Text(
                         "Enabled - Unchecked",
@@ -148,9 +134,6 @@ private fun CineVerseSwitchPreview() {
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     CineVerseSwitch(
-                        checked = disabledChecked,
-                        onCheckedChange = { },
-                        isEnabled = false
                     )
                     Text(
                         "Disabled - Checked",
@@ -163,56 +146,12 @@ private fun CineVerseSwitchPreview() {
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     CineVerseSwitch(
-                        checked = disabledUnchecked,
-                        onCheckedChange = { },
-                        isEnabled = false
                     )
                     Text(
                         "Disabled - Unchecked",
                         color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f)
                     )
                 }
-            }
-        }
-    }
-}
-
-@Preview(name = "Compact Layout - Dark", uiMode = Configuration.UI_MODE_NIGHT_YES)
-@Preview(name = "Compact Layout - Light", uiMode = Configuration.UI_MODE_NIGHT_NO)
-@Composable
-private fun CineVerseSwitchCompactPreview() {
-    CineVerseTheme {
-        Surface(
-            color = MaterialTheme.colorScheme.background,
-            modifier = Modifier.padding(16.dp)
-        ) {
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(16.dp),
-                modifier = Modifier.padding(16.dp)
-            ) {
-                CineVerseSwitch(
-                    checked = true,
-                    onCheckedChange = { },
-                    isEnabled = true
-                )
-
-                CineVerseSwitch(
-                    checked = false,
-                    onCheckedChange = { },
-                    isEnabled = true
-                )
-
-                CineVerseSwitch(
-                    checked = false,
-                    onCheckedChange = { },
-                    isEnabled = false
-                )
-
-                CineVerseSwitch(
-                    checked = true,
-                    onCheckedChange = { },
-                    isEnabled = false
-                )
             }
         }
     }
