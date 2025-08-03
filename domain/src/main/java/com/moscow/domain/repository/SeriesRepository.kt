@@ -6,11 +6,14 @@ import com.moscow.domain.model.Series
 import com.moscow.domain.model.details.ListOfSeries
 import com.moscow.domain.model.details.Season
 import com.moscow.domain.model.details.SeriesDetail
+import com.moscow.domain.usecase.series.GetRatedSeriesUseCase.RatedSeriesResult
 
 interface SeriesRepository {
     suspend fun getPopularSeries(page: Int): List<Series>
     suspend fun getSeriesDetail(id: Int): SeriesDetail
     suspend fun rateSeries(id: Int, rating: Float)
+    suspend fun deleteRatingSeries(seriesId: Int)
+    suspend fun getRatedSeries(userId: Int, page: Int): List<RatedSeriesResult>
     suspend fun getLatestSeasons(): List<Season>
     suspend fun getListOfSeries(id: Int, page: Int): List<ListOfSeries>
     suspend fun getSeriesRecommendations(id: Int, page: Int): List<Series>

@@ -1,6 +1,8 @@
 package com.moscow.remote.data_source
 
+import android.R.attr.rating
 import com.moscow.data_source.remote.SeriesRemoteDataSource
+import com.moscow.domain.repository.PreferenceRepository
 import com.moscow.remote.dto.details.SeriesCreditDto
 import com.moscow.remote.dto.review.RatingRequestDto
 import com.moscow.remote.dto.review.ReviewDto
@@ -8,13 +10,15 @@ import com.moscow.remote.dto.series.ListOfSeriesDto
 import com.moscow.remote.dto.series.SeriesDetailDto
 import com.moscow.remote.dto.series.SeriesDto
 import com.moscow.remote.dto.details.MediaTrailersDto
+import com.moscow.remote.dto.rating.series.RatedSeriesDto
 import com.moscow.remote.services.SeriesService
 import com.moscow.utils.ApiResponse
 import com.moscow.utils.handleApi
 import javax.inject.Inject
 
 class SeriesRemoteDataSourceImpl  @Inject constructor(
-    private val seriesService: SeriesService
+    private val seriesService: SeriesService,
+    private val preferenceRepository: PreferenceRepository
 ) : SeriesRemoteDataSource {
 
     override suspend fun getPopularSeries(page: Int): ApiResponse<SeriesDto> =
@@ -27,14 +31,40 @@ class SeriesRemoteDataSourceImpl  @Inject constructor(
             seriesService.getSeriesDetails(id)
         }
 
-    override suspend fun rateSeries(rating: RatingRequestDto, id: Int) =
+    override suspend fun rateSeries(rating: RatingRequestDto, id: Int): ApiResponse<Nothing> {
+        val sessionId = preferenceRepository.getSessionId()
         handleApi {
             seriesService.rateSeries(
                 id,
-                "31044f799b3ccf5e970b994ca0022ef8865c1e35",
+                sessionId,
                 rating
             )
         }
+    }
+
+    override suspend fun deleteRatingSeries(seriesId: Int): ApiResponse<Nothing> {
+        val sessionId = preferenceRepository.getSessionId()
+        handleApi {
+            seriesService.deleteRatingSeries(
+                seriesId,
+                sessionId
+            )
+        }
+    }
+
+    override suspend fun getRatedSeries(
+        userId: Int,
+        page: Int
+    ): ApiResponse<RatedSeriesDto> {
+        val sessionId = preferenceRepository.getSessionId()
+        return handleApi {
+            seriesService.getRatedSeries(
+                userId,
+                sessionId,
+                page
+            )
+        }
+    }
 
     override suspend fun getLatestSeasons(): SeriesDetailDto =
         handleApi {
