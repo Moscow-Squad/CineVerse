@@ -25,12 +25,6 @@ class LanguageProviderImpl @Inject constructor(
         }
     }
 
-    override suspend fun getCurrentLanguage(): String {
-        val lang = dataStore.data.first()[LANGUAGE_KEY] ?: DEFAULT_LANGUAGE
-        cachedLanguage = lang
-        return lang
-    }
-
     override suspend fun setLanguage(language: String) {
         setLanguageInternal(language)
     }

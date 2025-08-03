@@ -20,12 +20,6 @@ class ThemeProviderImpl @Inject constructor(
         cachedIsDark = prefs[DARK_THEME_KEY] ?: DEFAULT_IS_DARK
     }
 
-    override suspend fun getCurrentTheme(): Boolean {
-        val isDark = dataStore.data.first()[DARK_THEME_KEY] ?: DEFAULT_IS_DARK
-        cachedIsDark = isDark
-        return isDark
-    }
-
     override suspend fun changeAppTheme(isDark: Boolean) {
         dataStore.edit { it[DARK_THEME_KEY] = isDark }
         cachedIsDark = isDark

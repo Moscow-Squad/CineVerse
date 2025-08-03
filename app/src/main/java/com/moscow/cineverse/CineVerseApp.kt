@@ -15,7 +15,6 @@ import javax.inject.Inject
 @HiltAndroidApp
 class CineVerseApp : Application(), Configuration.Provider {
 
-    @Inject lateinit var languageRepository: LanguageProvider
     @Inject lateinit var workerFactory: HiltWorkerFactory
 
     override val workManagerConfiguration: Configuration
@@ -23,15 +22,5 @@ class CineVerseApp : Application(), Configuration.Provider {
             .setWorkerFactory(workerFactory)
             .setMinimumLoggingLevel(Log.DEBUG)
             .build()
-
-    override fun onCreate() {
-        super.onCreate()
-
-        CoroutineScope(Dispatchers.IO).launch {
-            languageRepository.initializeLanguage(
-                Locale.getDefault().language
-            )
-        }
-    }
 }
 

@@ -13,13 +13,14 @@ import com.moscow.cineverse.designSystem.icon.CineVerseIcons
 import com.moscow.cineverse.designSystem.icon.LocalCineVerseIcons
 import com.moscow.cineverse.designSystem.radius.CineVerseRadius
 import com.moscow.cineverse.designSystem.radius.LocalCineVerseRadius
+import com.moscow.cineverse.designSystem.theme.Theme.state
 import com.moscow.cineverse.designSystem.typography.CineVerseTextStyle
 import com.moscow.cineverse.designSystem.typography.DefaultTextStyle
 import com.moscow.cineverse.designSystem.typography.LocalCineVerseTextStyle
 
 @Composable
 fun CineVerseTheme(
-    state: ThemeState = ThemeState(isDark = isSystemInDarkTheme(), onThemeChanged = {}),
+    state: ThemeState = ThemeState(isDark = isSystemInDarkTheme()),
     content: @Composable () -> Unit
 ) {
     val colorScheme = when {
@@ -64,4 +65,4 @@ object Theme {
         get() = LocalCineVerseRadius.current
 }
 
-internal val LocalThemeState = compositionLocalOf { ThemeState(false) {} }
+internal val LocalThemeState = compositionLocalOf { ThemeState(false) }
