@@ -14,7 +14,7 @@ data class ReviewsRoute(val id: Int, val isMovie: Boolean) {
     }
 }
 
-fun NavGraphBuilder.ReviewsRoute(navController: NavHostController) {
+fun NavGraphBuilder.reviewsRoute(navController: NavHostController) {
     composable<ReviewsRoute>{
         ReviewsScreen(
             navigateBack = { navController.navigateUp() },

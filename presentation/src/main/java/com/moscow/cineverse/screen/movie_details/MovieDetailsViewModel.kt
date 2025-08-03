@@ -13,7 +13,6 @@ import com.moscow.domain.model.Review
 import com.moscow.domain.model.UserType
 import com.moscow.domain.model.details.MovieDetail
 import com.moscow.domain.usecase.collection.AddMediaItemToCollectionUseCase
-import com.moscow.domain.usecase.collection.GetCurrentUserUseCase
 import com.moscow.domain.usecase.local.GetUserDetailsUseCase
 import com.moscow.domain.usecase.movie.GetMovieCreditsUseCase
 import com.moscow.domain.usecase.movie.GetMovieDetailsUseCase

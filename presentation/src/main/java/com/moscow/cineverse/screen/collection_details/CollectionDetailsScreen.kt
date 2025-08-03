@@ -15,7 +15,11 @@ import com.moscow.cineverse.screen.collections.composable.SwipeToDeleteItem
 import com.moscow.cineverse.utlis.ViewMode
 
 @Composable
-fun CollectionDetailsScreen(){
+fun CollectionDetailsScreen(
+    navigateBack: () -> Unit,
+    navigateToMovieDetails: (Int) -> Unit,
+    navigateToSeriesDetails: (Int) -> Unit
+){
     MovieScaffold(
         movieAppBar = {
             MovieAppBar(
@@ -58,5 +62,9 @@ fun CollectionDetailsScreen(){
 @Preview
 @Composable
 private fun CollectionDetailsScreenPreview(){
-    CollectionDetailsScreen()
+    CollectionDetailsScreen(
+        navigateBack = {},
+        navigateToMovieDetails = {},
+        navigateToSeriesDetails = {}
+    )
 }

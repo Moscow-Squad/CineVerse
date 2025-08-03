@@ -38,7 +38,7 @@ data class CollectionDetailsV4Dto(
     @SerialName("public")
     val `public`: Boolean? = null,
     @SerialName("results")
-    val results: List<Result>,
+    val results: List<ResultMediaItem>,
     @SerialName("revenue")
     val revenue: Long? = null,
     @SerialName("runtime")
@@ -70,7 +70,7 @@ data class CreatedBy(
 
 
 @Serializable
-data class Result(
+data class ResultMediaItem(
     @SerialName("id")
     val id: Int,
     @SerialName("adult")
