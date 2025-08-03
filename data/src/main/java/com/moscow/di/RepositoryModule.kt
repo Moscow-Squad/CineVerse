@@ -1,5 +1,6 @@
 package com.moscow.di
 
+import com.moscow.data_source.language.LanguageProvider
 import com.moscow.domain.repository.ActorRepository
 import com.moscow.domain.repository.CollectionsRepository
 import com.moscow.domain.repository.GenreRepository
@@ -9,6 +10,7 @@ import com.moscow.domain.repository.MovieRepository
 import com.moscow.domain.repository.PreferenceRepository
 import com.moscow.domain.repository.SearchRepository
 import com.moscow.domain.repository.SeriesRepository
+import com.moscow.preference.LanguageProviderImpl
 import com.moscow.repository.ActorRepositoryImpl
 import com.moscow.repository.CollectionsRepositoryImpl
 import com.moscow.repository.GenreRepositoryImpl
@@ -59,6 +61,11 @@ abstract class RepositoryModule {
     @Binds
     @Singleton
     abstract fun bindPreferenceRepository(impl: PreferenceRepositoryImpl): PreferenceRepository
+
+
+    @Binds
+    @Singleton
+    abstract fun bindLanguageProvider(impl: LanguageProviderImpl): LanguageProvider
 
     @Binds
     @Singleton
