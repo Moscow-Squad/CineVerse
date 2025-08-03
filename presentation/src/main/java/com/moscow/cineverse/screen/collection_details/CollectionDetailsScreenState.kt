@@ -4,4 +4,5 @@ data class CollectionDetailsScreenState(
     val isLoading: Boolean = false,
     val isError: Boolean = false,
     val errorMsg: String = "",
+    val showTip: Boolean = true,
 )
