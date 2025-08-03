@@ -7,4 +7,5 @@ interface CollectionDetailsInteractionListener {
     fun onMediaItemClicked(mediaId: Int, mediaType: MediaType)
     fun onItemDeletedIconClicked(mediaId: Int, mediaType: MediaType)
     fun onTipCancelIconClicked()
+    fun onRefresh()
 }
