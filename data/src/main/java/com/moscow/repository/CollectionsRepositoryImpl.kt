@@ -72,7 +72,7 @@ class CollectionsRepositoryImpl @Inject constructor(
         return response.items?.map { it.toDomain() } ?: emptyList()
     }
 
-    override suspend fun getCollectionDetailsV4(collectionId: Int, page: Int) =
+    override suspend fun getCollectionMediaItemsV4(collectionId: Int, page: Int) =
         collectionRemoteDataSource.getCollectionDetailsV4(collectionId, page).toDomain()
 
     override suspend fun deleteMediaFromCollectionV4(
