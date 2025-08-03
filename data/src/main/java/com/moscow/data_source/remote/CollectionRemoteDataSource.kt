@@ -45,7 +45,7 @@ interface CollectionRemoteDataSource {
         mediaType: MediaType
     ): EmptyCollectionApiResponse
 
-    suspend fun addMediaFromCollectionV4(
+    suspend fun addMediaToCollectionV4(
         collectionId: Int,
         mediaId: Int,
         mediaType: MediaType

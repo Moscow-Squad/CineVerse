@@ -83,11 +83,11 @@ class CollectionsRepositoryImpl @Inject constructor(
         collectionRemoteDataSource.deleteMediaFromCollectionV4(collectionId, mediaId, mediaType)
     }
 
-    override suspend fun addMediaFromCollectionV4(
+    override suspend fun addMediaToCollectionV4(
         collectionId: Int,
         mediaId: Int,
         mediaType: MediaType
     ) {
-        collectionRemoteDataSource.addMediaFromCollectionV4(collectionId, mediaId, mediaType)
+        collectionRemoteDataSource.addMediaToCollectionV4(collectionId, mediaId, mediaType)
     }
 }

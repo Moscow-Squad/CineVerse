@@ -77,7 +77,7 @@ class CollectionRemoteDataSourceImpl  @Inject constructor(
         TODO("Not yet implemented")
     }
 
-    override suspend fun addMediaFromCollectionV4(
+    override suspend fun addMediaToCollectionV4(
         collectionId: Int,
         mediaId: Int,
         mediaType: MediaType
