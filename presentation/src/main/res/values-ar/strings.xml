@@ -96,7 +96,6 @@
     <string name="all">الكل</string>
     <string name="search">ابحث...</string>
     <string name="search_can_t_be_empty_1">لا تستطيع البحث بلا شئ !</string>
-    <string name="no_history_yet">لا يوجد سجل بعد</string>
-    <string name="history_empty_message">يبدو أن المكان هادئ هنا... ابدأ بالمشاهدة وسنتابع أجلك.</string>
-    <string name="find_something_to_watch">ابحث عن شيء لمشاهدته</string>
+    <string name="tip_swipe_left_to_remove_movies_from_your_collection">نصيحة: اسحب إلى اليسار لمسح الفيلم من مجموعتك</string>
+
 </resources>

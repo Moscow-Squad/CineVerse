@@ -13,7 +13,7 @@ data class MovieDetailsRoute(val movieId: Int) {
     }
 }
 
-fun NavGraphBuilder.MovieDetailsRoute(navController: NavHostController) {
+fun NavGraphBuilder.movieDetailsRoute(navController: NavHostController) {
     composable<MovieDetailsRoute>{
         MovieDetailsScreen(
             navigateBack = { navController.navigateUp() },

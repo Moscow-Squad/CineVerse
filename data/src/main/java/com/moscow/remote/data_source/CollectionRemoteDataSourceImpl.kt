@@ -58,4 +58,28 @@ class CollectionRemoteDataSourceImpl  @Inject constructor(
             page
         )
     }
+
+    override suspend fun deleteMediaItemFromCollection(
+        item: AddMediaItemToCollectionRequestDto,
+        collectionId: Int,
+        sessionId: String
+    ) = handleApi {
+        collectionsService.deleteMediaItemFromCollection(
+            item,
+            collectionId,
+            sessionId
+        )
+    }
+
+    override suspend fun clearCollection(
+        collectionId: Int,
+        sessionId: String,
+        confirm: Boolean
+    ) = handleApi {
+        collectionsService.clearCollection(
+            collectionId,
+            sessionId,
+            confirm
+        )
+    }
 }
