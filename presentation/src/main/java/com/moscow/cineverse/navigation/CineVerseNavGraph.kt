@@ -8,7 +8,6 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import com.moscow.cineverse.navigation.routes.CastBestOfMovieRoute
-import com.moscow.cineverse.navigation.routes.castDetailsRoute
 import com.moscow.cineverse.navigation.routes.CastGalleryRoute
 import com.moscow.cineverse.navigation.routes.MovieDetailsRoute
 import com.moscow.cineverse.navigation.routes.RecommendationsRoute
@@ -16,11 +15,14 @@ import com.moscow.cineverse.navigation.routes.ReviewsRoute
 import com.moscow.cineverse.navigation.routes.SeriesDetailsRoute
 import com.moscow.cineverse.navigation.routes.SeriesRecommendationRoute
 import com.moscow.cineverse.navigation.routes.SeriesSeasonsRoute
+import com.moscow.cineverse.navigation.routes.castDetailsRoute
 import com.moscow.cineverse.navigation.routes.collectionsBottomSheetRoute
+import com.moscow.cineverse.navigation.routes.createCollectionDialogRoute
 import com.moscow.cineverse.navigation.routes.exploreRoute
 import com.moscow.cineverse.navigation.routes.homeRoute
 import com.moscow.cineverse.navigation.routes.loginRoute
 import com.moscow.cineverse.navigation.routes.matchRoute
+import com.moscow.cineverse.navigation.routes.myCollections
 import com.moscow.cineverse.navigation.routes.profileRoute
 import com.moscow.cineverse.navigation.routes.seeMoreRoute
 
@@ -62,7 +64,8 @@ fun CineVerseNavGraph(
             seeMoreRoute(navController)
             matchRoute(navController)
             profileRoute(navController)
-
+            myCollections(navController)
+            createCollectionDialogRoute(navController)
         }
     }
 }

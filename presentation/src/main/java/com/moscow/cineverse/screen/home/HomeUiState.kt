@@ -1,5 +1,6 @@
 package com.moscow.cineverse.screen.home
 
+import com.moscow.cineverse.common_ui_state.MyCollectionUiState
 import com.moscow.cineverse.common_ui_state.MediaItemUiState
 
 data class HomeUiState(
@@ -13,17 +14,13 @@ data class HomeUiState(
     val matchesYourVibe: List<MediaItemUiState> = emptyList(),
     val topRatedTvShows: List<MediaItemUiState> = emptyList(),
     val youRecentlyViewed: List<MediaItemUiState> = emptyList(),
-    val collections: List<CollectionUiState> = emptyList()
-){
+    val collections: List<MyCollectionUiState> = emptyList(),
+) {
     data class GenreUi(
         val id: Int,
-        val name: String
+        val name: String,
     )
 }
 
 
-data class CollectionUiState(
-    val id: Int,
-    val title: String,
-    val numberOfShows: Int,
-)
+

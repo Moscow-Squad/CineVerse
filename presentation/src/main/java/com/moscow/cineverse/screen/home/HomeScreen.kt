@@ -37,7 +37,7 @@ fun HomeScreen(
     navigateToSeeMoreHome: (category: String) -> Unit,
     navigateToSeriesDetails: (seriesId: Int) -> Unit,
     navigateToBrowseSuggestion: () -> Unit,
-    navigateToWatchingSuggestion: () -> Unit
+    navigateToWatchingSuggestion: () -> Unit,
 ) {
     val state by viewmodel.uiState.collectAsStateWithLifecycle()
     LaunchedEffect(Unit) {
@@ -84,7 +84,7 @@ fun HomeScreen(
 fun HomeContent(
     modifier: Modifier = Modifier,
     state: HomeUiState,
-    listener: HomeInteractionListener
+    listener: HomeInteractionListener,
 ) {
 
     ScreenStateHandler(
@@ -169,22 +169,22 @@ fun HomeContent(
                     type = HomeFeaturedItems.TOP_RATED_TV_SHOWS
                 )
 
-                if(state.userName != null && state.youRecentlyViewed.isEmpty() == false)
-                FeaturedMovies(
-                    displayMovies = state.youRecentlyViewed,
-                    onMovieClick = listener::onMediaItemClicked,
-                    onShowMoreClick = listener::onSeeAllClick,
-                    modifier = Modifier,
-                    type = HomeFeaturedItems.YOU_RECENTLY_VIEWED
-                )
+                if (state.userName != null && state.youRecentlyViewed.isEmpty() == false)
+                    FeaturedMovies(
+                        displayMovies = state.youRecentlyViewed,
+                        onMovieClick = listener::onMediaItemClicked,
+                        onShowMoreClick = listener::onSeeAllClick,
+                        modifier = Modifier,
+                        type = HomeFeaturedItems.YOU_RECENTLY_VIEWED
+                    )
 
-                if(false)
-                MyCollectionsLayout(
-                    items = state.collections,
-                    onCollectionClick = listener::onCollectionClick,
-                    modifier = Modifier.padding(horizontal = 16.dp),
-                    onShowMoreClick = listener::onCollectionsShowMoreClick,
-                )
+                if (false)
+                    MyCollectionsLayout(
+                        items = state.collections,
+                        onCollectionClick = listener::onCollectionClick,
+                        modifier = Modifier.padding(horizontal = 16.dp),
+                        onShowMoreClick = listener::onCollectionsShowMoreClick,
+                    )
 
                 SuggestionWithHeader(
                     modifier = Modifier
