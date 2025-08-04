@@ -4,14 +4,12 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
-import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.cineverse.navigation.routes.CollectionDetailsRoute
 import com.moscow.cineverse.paging.BasePagingSource
 import com.moscow.cineverse.screen.explore.toUi
 import com.moscow.domain.model.MediaType
-import com.moscow.domain.model.Movie
 import com.moscow.domain.usecase.collection.ClearCollectionUseCase
 import com.moscow.domain.usecase.collection.CloseCollectionDetailsTipUseCase
 import com.moscow.domain.usecase.collection.DeleteMediaItemFromCollectionUseCase
@@ -19,7 +17,6 @@ import com.moscow.domain.usecase.collection.GetCollectionDetailsUseCase
 import com.moscow.domain.usecase.collection.GetShowCollectionDetailsTipUseCase
 import com.moscow.domain.usecase.genre.GenreUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 @HiltViewModel
@@ -42,6 +39,7 @@ class CollectionDetailsViewModel @Inject constructor(
     init {
         getMoviesGenres()
         getShowTip()
+        getMovies()
     }
 
     private fun getMoviesGenres() {
@@ -92,15 +90,30 @@ class CollectionDetailsViewModel @Inject constructor(
         )
     }
 
-    fun getMediaItems(): Flow<PagingData<Movie>> {
-        return Pager(
-            config = PagingConfig(pageSize = 20),
-            pagingSourceFactory = {
-                BasePagingSource { page ->
-                    getCollectionMediaItemsV4UseCase(collectionId, page)
+    fun getMovies() {
+        launchWithResult(
+            action = {
+                return@launchWithResult Pager(
+                    config = PagingConfig(pageSize = 20),
+                    pagingSourceFactory = {
+                        BasePagingSource { page ->
+                            getCollectionMediaItemsV4UseCase(collectionId, page)
+                        }
+                    }
+                ).flow.cachedIn(viewModelScope)
+            },
+            onSuccess = { res ->
+                updateState { it.copy(movies = res) }
+            },
+            onError = { e ->
+                updateState {
+                    it.copy(
+                        isError = true,
+                        errorMsg = e.message.toString()
+                    )
                 }
-            }
-        ).flow.cachedIn(viewModelScope)
+            },
+        )
     }
 
     override fun onBackButtonClicked() {

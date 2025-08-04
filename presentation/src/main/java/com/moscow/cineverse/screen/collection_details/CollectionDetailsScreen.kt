@@ -42,7 +42,7 @@ fun CollectionDetailsScreen(
 ) {
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    val mediaItems = viewModel.getMediaItems().collectAsLazyPagingItems()
+    val mediaItems = uiState.movies.collectAsLazyPagingItems()
 
     LaunchedEffect(viewModel) {
         viewModel.uiEffect.collect { event ->
