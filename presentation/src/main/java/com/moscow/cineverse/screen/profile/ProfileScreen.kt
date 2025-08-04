@@ -1,6 +1,5 @@
 package com.moscow.cineverse.screen.profile
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -46,7 +45,9 @@ fun ProfileScreen(
         modifier,
         profileViewModel,
         isDarkTheme = state.isDarkTheme,
-        onThemeChange = profileViewModel::updateAppTheme
+        onThemeChange = profileViewModel::updateAppTheme,
+        appLanguage = state.appLanguage,
+        onLanguageChange = profileViewModel::updateAppLanguage
     )
 }
 
@@ -55,7 +56,9 @@ fun ProfileContent(
     modifier: Modifier = Modifier,
     listener: ProfileInteractionListener,
     isDarkTheme: Boolean,
-    onThemeChange: (Boolean) -> Unit
+    onThemeChange: (Boolean) -> Unit,
+    appLanguage: String,
+    onLanguageChange: (String) -> Unit,
 ) {
 
     LazyColumn(
@@ -119,7 +122,9 @@ fun ProfileContent(
                 modifier = Modifier.padding(top = 12.dp, bottom = 24.dp),
                 isGuest = false,
                 isDarkTheme = isDarkTheme,
-                onThemeChange = onThemeChange
+                onThemeChange = onThemeChange,
+                appLanguage = appLanguage,
+                onLanguageChange = onLanguageChange,
             )
         }
 
@@ -130,7 +135,6 @@ fun ProfileContent(
                 color = Theme.colors.shade.tertiary,
                 style = Theme.textStyle.body.small.regular,
                 textAlign = TextAlign.Center
-
             )
         }
 

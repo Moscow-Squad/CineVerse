@@ -13,7 +13,7 @@ class CineVerseInterceptor(
         val originalUrl = originalRequest.url
 
         val newUrl = originalUrl.newBuilder()
-            .addQueryParameter("language", languageProvider.getCachedLanguage())
+            .addQueryParameter("language", languageProvider.languageFlow.toString())
             .build()
 
 

@@ -1,5 +1,6 @@
 package com.moscow.cineverse.screen.profile.component
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -30,7 +31,9 @@ internal fun Settings(
     modifier: Modifier = Modifier,
     isGuest: Boolean,
     isDarkTheme: Boolean,
-    onThemeChange: (Boolean) -> Unit
+    onThemeChange: (Boolean) -> Unit,
+    appLanguage: String,
+    onLanguageChange: (String) -> Unit
 ) {
     Column(
         modifier = modifier
@@ -71,7 +74,11 @@ internal fun Settings(
         SettingItem(
             title = stringResource(R.string.language),
             titleColor = Theme.colors.shade.primary,
-            onClick = {},
+            onClick = {
+                var language = if(appLanguage == "ar") "en" else "ar"
+                onLanguageChange(language)
+                Log.d("language", "$language -- $appLanguage")
+            },
             prefixIcon = {
                 Icon(
                     painter = painterResource(com.moscow.cineverse.design_system.R.drawable.due_tone_language),

@@ -17,6 +17,8 @@ import com.moscow.cineverse.navigation.NavViewModel
 import com.moscow.preference.ThemeProviderImpl
 import dagger.hilt.android.AndroidEntryPoint
 import jakarta.inject.Inject
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.runBlocking
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -24,18 +26,17 @@ class MainActivity : ComponentActivity() {
     @Inject
     lateinit var themeProvider: ThemeProviderImpl
 
+    private val mainActivityViewModel: MainActivityViewModel by viewModels()
+
     private val navViewModel: NavViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
         val splashScreen = installSplashScreen()
-        splashScreen.setKeepOnScreenCondition {
-            navViewModel.startDestination.value == null
-        }
 
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-
+1
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
@@ -44,18 +45,21 @@ class MainActivity : ComponentActivity() {
                 systemBarsBehavior = WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
             }
         } else {
-            @Suppress("DEPRECATION") window.decorView.systemUiVisibility =
-                android.view.View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+            @Suppress("DEPRECATION")
+            window.decorView.systemUiVisibility = android.view.View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
         }
 
         setContent {
-            val isDarkTheme = themeProvider.themeFlow.collectAsState(initial = true)
-            CineVerseTheme(
-                state = ThemeState(isDark = isDarkTheme.value)
-            ) {
+
+            var state = mainActivityViewModel.state.collectAsState()
+
+            splashScreen.setKeepOnScreenCondition {
+                state.value.isLoading
+            }
+
+            CineVerseTheme(state = ThemeState(isDark = state.value.isDarkTheme)) {
                 CineVerseRoot(navViewModel)
             }
         }
-
     }
 }
