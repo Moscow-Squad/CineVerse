@@ -96,5 +96,6 @@
     <string name="all">All</string>
     <string name="search">Search...</string>
     <string name="search_can_t_be_empty_1">Search can\'t be empty!</string>
+    <string name="my_ratings">My Ratings</string>
 
 </resources>

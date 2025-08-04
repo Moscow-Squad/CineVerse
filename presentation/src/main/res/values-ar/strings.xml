@@ -96,5 +96,6 @@
     <string name="all">الكل</string>
     <string name="search">ابحث...</string>
     <string name="search_can_t_be_empty_1">لا تستطيع البحث بلا شئ !</string>
+    <string name="my_ratings">تقييماتي</string>
 
 </resources>

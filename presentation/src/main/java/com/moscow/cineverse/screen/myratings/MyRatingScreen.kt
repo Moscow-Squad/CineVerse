@@ -6,22 +6,29 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.paging.compose.collectAsLazyPagingItems
 
 @Composable
 fun MyRatingScreen(
     modifier: Modifier = Modifier,
     viewModel: MyRatingsViewModel = hiltViewModel(),
-    navigateBack: () -> Unit
+    navigateBack: () -> Unit,
+    navigateToMovieDetails: (Int) -> Unit,
+    navigateToSeriesDetails: (Int) -> Unit,
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
+    val contentList = viewModel.contentList.collectAsLazyPagingItems()
 
     LaunchedEffect(Unit) {
         viewModel.uiEffect.collect { effect ->
             when (effect) {
-                is MyRatingsEffect.MovieClicked -> TODO()
+                is MyRatingsEffect.MovieClicked -> {
+                    navigateToMovieDetails(effect.movieId)
+                }
 
-                is MyRatingsEffect.SeriesClicked -> TODO()
-
+                is MyRatingsEffect.SeriesClicked -> {
+                    navigateToSeriesDetails(effect.seriesId)
+                }
                 is MyRatingsEffect.NavigateBack -> {
                     navigateBack()
                 }
@@ -29,5 +36,10 @@ fun MyRatingScreen(
         }
     }
 
-    MyRatingsContent()
+    MyRatingsContent(
+        uiState = state,
+        contentList = contentList,
+        interactionListener = viewModel,
+        modifier = modifier
+    )
 }
