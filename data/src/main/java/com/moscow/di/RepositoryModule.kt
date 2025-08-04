@@ -9,6 +9,7 @@ import com.moscow.domain.repository.HomeRepository
 import com.moscow.domain.repository.LoginRepository
 import com.moscow.domain.repository.MovieRepository
 import com.moscow.domain.repository.PreferenceRepository
+import com.moscow.domain.repository.ProfileRepository
 import com.moscow.domain.repository.SearchRepository
 import com.moscow.domain.repository.SeriesRepository
 import com.moscow.preference.LanguageProviderImpl
@@ -18,6 +19,7 @@ import com.moscow.repository.CollectionsRepositoryImpl
 import com.moscow.repository.GenreRepositoryImpl
 import com.moscow.repository.HomeRepositoryImpl
 import com.moscow.repository.MovieRepositoryImpl
+import com.moscow.repository.ProfileRepositoryImpl
 import com.moscow.repository.SearchRepositoryImpl
 import com.moscow.repository.SeriesRepositoryImpl
 import com.moscow.repository.login.LoginRepositoryImpl
@@ -72,6 +74,10 @@ abstract class RepositoryModule {
     @Binds
     @Singleton
     abstract fun bindThemeProvider(impl: ThemeProviderImpl): ThemeProvider
+
+    @Binds
+    @Singleton
+    abstract fun bindProfileRepository(impl: ProfileRepositoryImpl): ProfileRepository
 
     @Binds
     @Singleton

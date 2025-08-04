@@ -7,11 +7,14 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.moscow.cineverse.designSystem.component.MovieAppBar
 import com.moscow.cineverse.designSystem.component.wrapper.MovieText
 import com.moscow.cineverse.designSystem.theme.CineVerseTheme
@@ -25,13 +28,27 @@ import com.moscow.cinverse.presentation.R
 @Composable
 fun ProfileScreen(
     modifier: Modifier = Modifier,
+    profileViewModel: ProfileViewModel = hiltViewModel(),
+    navigateToLogout:(String)->Unit,
+    navigateToEditProfile:(String, String)->Unit
 ){
-    ProfileContent(modifier)
+
+    LaunchedEffect(Unit) {
+        profileViewModel.getAccountDetails(
+            accountId = "22117857",
+            sessionId = "bdaff8b9113d11df4ac7bdb9665e5800d15bb9f3"
+        )
+    }
+    ProfileContent(
+        modifier,
+        profileViewModel
+    )
 }
 
 @Composable
 fun ProfileContent(
     modifier: Modifier = Modifier,
+    listener: ProfileInteractionListener
     )
 {
 
@@ -55,7 +72,8 @@ fun ProfileContent(
             UserInfo(
                 name = "Shrouk Mohamed",
                 username = "shrouk_mohamed16",
-                onClick = {}
+                onClick = {listener.onClickEditProfile()}
+
             )
         }
 
@@ -112,10 +130,3 @@ fun ProfileContent(
 
 }
 
-@Preview
-@Composable
-private fun ProfilePreview() {
-    CineVerseTheme {
-        ProfileScreen()
-    }
-}

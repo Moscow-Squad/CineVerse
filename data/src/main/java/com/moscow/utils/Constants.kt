@@ -20,6 +20,7 @@ const val USERNAME = "username"
 const val PASSWORD = "password"
 const val REQUEST_TOKEN = "request_token"
 const val NEW_GUEST_SESSION = "${AUTHENTICATION}guest_session/new"
+
 const val SESSION_ID_WITH_EQUAL = "session_id="
 const val SEARCH = "search/"
 const val SEARCH_MOVIE = "${SEARCH}movie"

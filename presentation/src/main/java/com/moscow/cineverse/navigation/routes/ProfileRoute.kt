@@ -12,6 +12,9 @@ object ProfileRoute : AppDestination
 
 fun NavGraphBuilder.profileRoute(navController: NavHostController) {
     composable<ProfileRoute>{
-        ProfileScreen()
+        ProfileScreen(
+            navigateToEditProfile = {accountId, sessionId -> },
+            navigateToLogout = {sessionId -> }
+        )
     }
 }
