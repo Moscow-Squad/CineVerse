@@ -1,5 +1,6 @@
 package com.moscow.cineverse.screen.profile
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -8,16 +9,15 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.moscow.cineverse.designSystem.component.MovieAppBar
 import com.moscow.cineverse.designSystem.component.wrapper.MovieText
-import com.moscow.cineverse.designSystem.theme.CineVerseTheme
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.screen.profile.component.ProfileChipItem
 import com.moscow.cineverse.screen.profile.component.ProfileChips
@@ -29,9 +29,9 @@ import com.moscow.cinverse.presentation.R
 fun ProfileScreen(
     modifier: Modifier = Modifier,
     profileViewModel: ProfileViewModel = hiltViewModel(),
-    navigateToLogout:(String)->Unit,
-    navigateToEditProfile:(String, String)->Unit
-){
+    navigateToLogout: (String) -> Unit,
+    navigateToEditProfile: (String, String) -> Unit
+) {
 
     LaunchedEffect(Unit) {
         profileViewModel.getAccountDetails(
@@ -39,18 +39,24 @@ fun ProfileScreen(
             sessionId = "bdaff8b9113d11df4ac7bdb9665e5800d15bb9f3"
         )
     }
+
+    val state by profileViewModel.uiState.collectAsState()
+
     ProfileContent(
         modifier,
-        profileViewModel
+        profileViewModel,
+        isDarkTheme = state.isDarkTheme,
+        onThemeChange = profileViewModel::updateAppTheme
     )
 }
 
 @Composable
 fun ProfileContent(
     modifier: Modifier = Modifier,
-    listener: ProfileInteractionListener
-    )
-{
+    listener: ProfileInteractionListener,
+    isDarkTheme: Boolean,
+    onThemeChange: (Boolean) -> Unit
+) {
 
     LazyColumn(
         modifier = modifier
@@ -72,12 +78,12 @@ fun ProfileContent(
             UserInfo(
                 name = "Shrouk Mohamed",
                 username = "shrouk_mohamed16",
-                onClick = {listener.onClickEditProfile()}
+                onClick = { listener.onClickEditProfile() }
 
             )
         }
 
-        item{
+        item {
             ProfileChips(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -107,11 +113,13 @@ fun ProfileContent(
                 text = stringResource(R.string.settings),
                 color = Theme.colors.shade.primary,
                 style = Theme.textStyle.title.medium
-                
+
             )
             Settings(
                 modifier = Modifier.padding(top = 12.dp, bottom = 24.dp),
-                isGuest = false
+                isGuest = false,
+                isDarkTheme = isDarkTheme,
+                onThemeChange = onThemeChange
             )
         }
 

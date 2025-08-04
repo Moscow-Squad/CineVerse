@@ -1,18 +1,40 @@
 package com.moscow.cineverse.screen.profile
 
+import androidx.lifecycle.viewModelScope
 import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.domain.model.profile.AccountDetails
+import com.moscow.domain.repository.theme.ThemeProvider
 import com.moscow.domain.usecase.profile.GetAccountDetailsUseCase
 import com.moscow.domain.usecase.profile.LogoutUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
     private val logoutUseCase: LogoutUseCase,
-    private val getAccountDetailsUseCase: GetAccountDetailsUseCase
+    private val getAccountDetailsUseCase: GetAccountDetailsUseCase,
+    private val themeProvider: ThemeProvider
 ) : BaseViewModel<ProfileUIState, ProfileScreenEffects>(ProfileUIState()),
     ProfileInteractionListener {
+
+    init {
+        observeTheme()
+    }
+
+    private fun observeTheme() {
+        viewModelScope.launch {
+            themeProvider.themeFlow.collect { isDark ->
+                updateState { it.copy(isDarkTheme = isDark) }
+            }
+        }
+    }
+
+    fun updateAppTheme(isDark: Boolean) {
+        viewModelScope.launch {
+            themeProvider.changeAppTheme(isDark = isDark)
+        }
+    }
 
     fun getAccountDetails(accountId: String, sessionId: String) {
         launchWithResult(
@@ -54,6 +76,5 @@ class ProfileViewModel @Inject constructor(
     override fun onClickLogout() {
         sendEvent(ProfileScreenEffects.navigateToLogout)
     }
-
 
 }

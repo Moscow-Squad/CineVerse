@@ -19,11 +19,9 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.moscow.cineverse.designSystem.component.switcher.CineVerseSwitch
 import com.moscow.cineverse.designSystem.component.wrapper.MovieText
-import com.moscow.cineverse.designSystem.theme.CineVerseTheme
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cinverse.presentation.R
 
@@ -31,6 +29,8 @@ import com.moscow.cinverse.presentation.R
 internal fun Settings(
     modifier: Modifier = Modifier,
     isGuest: Boolean,
+    isDarkTheme: Boolean,
+    onThemeChange: (Boolean) -> Unit
 ) {
     Column(
         modifier = modifier
@@ -56,7 +56,9 @@ internal fun Settings(
                     modifier = Modifier.size(
                         width = 40.dp,
                         height = 20.dp
-                    )
+                    ),
+                    isDarkTheme = isDarkTheme,
+                    onThemeChange = onThemeChange
                 )
             })
 
@@ -117,7 +119,7 @@ internal fun SettingItem(
     modifier: Modifier = Modifier,
     title: String,
     titleColor: Color,
-    onClick:()->Unit,
+    onClick: () -> Unit,
     prefixIcon: @Composable () -> Unit = {},
     suffixIcon: @Composable () -> Unit = {}
 ) {
@@ -125,7 +127,7 @@ internal fun SettingItem(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .clickable{onClick()},
+            .clickable { onClick() },
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(8.dp)
 
@@ -144,15 +146,3 @@ internal fun SettingItem(
     }
 
 }
-
-@Preview
-@Composable
-private fun SettingsPreview() {
-    CineVerseTheme {
-        Settings(
-            isGuest = false
-        )
-    }
-
-}
-

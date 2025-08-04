@@ -8,16 +8,15 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
+import androidx.compose.runtime.collectAsState
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
-import androidx.lifecycle.lifecycleScope
 import com.moscow.cineverse.designSystem.theme.CineVerseTheme
 import com.moscow.cineverse.designSystem.theme.ThemeState
 import com.moscow.cineverse.navigation.NavViewModel
 import com.moscow.preference.ThemeProviderImpl
 import dagger.hilt.android.AndroidEntryPoint
 import jakarta.inject.Inject
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -45,20 +44,18 @@ class MainActivity : ComponentActivity() {
                 systemBarsBehavior = WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
             }
         } else {
-            @Suppress("DEPRECATION")
-            window.decorView.systemUiVisibility =
+            @Suppress("DEPRECATION") window.decorView.systemUiVisibility =
                 android.view.View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
         }
 
-        lifecycleScope.launch {
-            themeProvider.initializeTheme()
-            setContent {
-                CineVerseTheme(
-                    state = ThemeState(isDark = themeProvider.getCachedTheme())
-                ) {
-                    CineVerseRoot(navViewModel)
-                }
+        setContent {
+            val isDarkTheme = themeProvider.themeFlow.collectAsState(initial = true)
+            CineVerseTheme(
+                state = ThemeState(isDark = isDarkTheme.value)
+            ) {
+                CineVerseRoot(navViewModel)
             }
         }
+
     }
 }
