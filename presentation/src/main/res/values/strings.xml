@@ -96,5 +96,8 @@
     <string name="all">All</string>
     <string name="search">Search...</string>
     <string name="search_can_t_be_empty_1">Search can\'t be empty!</string>
+    <string name="no_history_yet">No History Yet</string>
+    <string name="history_empty_message">It’s quiet in here... Start watching and we’ll keep track for you.</string>
+    <string name="find_something_to_watch">Find Something to Watch</string>
 
 </resources>

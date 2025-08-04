@@ -96,5 +96,7 @@
     <string name="all">الكل</string>
     <string name="search">ابحث...</string>
     <string name="search_can_t_be_empty_1">لا تستطيع البحث بلا شئ !</string>
-
+    <string name="no_history_yet">لا يوجد سجل بعد</string>
+    <string name="history_empty_message">يبدو أن المكان هادئ هنا... ابدأ بالمشاهدة وسنتابع أجلك.</string>
+    <string name="find_something_to_watch">ابحث عن شيء لمشاهدته</string>
 </resources>
