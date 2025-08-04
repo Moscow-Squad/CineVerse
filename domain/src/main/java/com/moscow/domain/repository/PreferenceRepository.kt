@@ -10,4 +10,6 @@ interface PreferenceRepository {
     suspend fun clearUser()
     suspend fun isGuest(): Boolean
     suspend fun isLoggedIn(): Boolean
+    suspend fun showCategoryDetailsTip(): Boolean
+    suspend fun closeCategoryDetailsTip()
 }

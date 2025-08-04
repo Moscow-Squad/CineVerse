@@ -19,13 +19,13 @@ import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.moscow.cineverse.component.NoInternetScreen
+import com.moscow.cineverse.component.SwipeToDelete
 import com.moscow.cineverse.designSystem.component.MovieAppBar
 import com.moscow.cineverse.designSystem.component.MovieCircularProgressBar
 import com.moscow.cineverse.designSystem.component.MovieScaffold
 import com.moscow.cineverse.designSystem.component.message_info.InfoCard
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.screen.MovieCard
-import com.moscow.cineverse.screen.collections.composable.SwipeToDeleteItem
 import com.moscow.cineverse.screen.explore.toUi
 import com.moscow.cineverse.utlis.ViewMode
 import com.moscow.domain.model.Movie
@@ -129,7 +129,7 @@ private fun CollectionDetailsScreenContent(
                     items(mediaItems.itemCount) { index ->
                         val media = mediaItems[index]?.toUi(uiState.moviesGenres)
                         if (media != null) {
-                            SwipeToDeleteItem(
+                            SwipeToDelete(
                                 modifier = Modifier.padding(bottom = 16.dp),
                                 onDelete = {
                                     interactionListener.onItemDeletedIconClicked(

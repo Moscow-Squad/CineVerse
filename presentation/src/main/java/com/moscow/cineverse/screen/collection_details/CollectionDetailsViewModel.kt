@@ -13,8 +13,10 @@ import com.moscow.cineverse.screen.explore.toUi
 import com.moscow.domain.model.MediaType
 import com.moscow.domain.model.Movie
 import com.moscow.domain.usecase.collection.ClearCollectionUseCase
+import com.moscow.domain.usecase.collection.CloseCollectionDetailsTipUseCase
 import com.moscow.domain.usecase.collection.DeleteMediaItemFromCollectionUseCase
 import com.moscow.domain.usecase.collection.GetCollectionDetailsUseCase
+import com.moscow.domain.usecase.collection.GetShowCollectionDetailsTipUseCase
 import com.moscow.domain.usecase.genre.GenreUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
@@ -26,6 +28,8 @@ class CollectionDetailsViewModel @Inject constructor(
     private val getCollectionMediaItemsV4UseCase: GetCollectionDetailsUseCase,
     private val clearCollectionUseCase: ClearCollectionUseCase,
     private val genreUseCase: GenreUseCase,
+    private val getShowCollectionDetailsTipUseCase: GetShowCollectionDetailsTipUseCase,
+    private val closeCollectionDetailsTipUseCase: CloseCollectionDetailsTipUseCase,
     savedStateHandle: SavedStateHandle
 ) : BaseViewModel<CollectionDetailsScreenState, CollectionDetailsEffect>(
     CollectionDetailsScreenState()
@@ -37,6 +41,7 @@ class CollectionDetailsViewModel @Inject constructor(
 
     init {
         getMoviesGenres()
+        getShowTip()
     }
 
     private fun getMoviesGenres() {
@@ -60,6 +65,30 @@ class CollectionDetailsViewModel @Inject constructor(
                 }
             },
             onStart = { updateState { it.copy(isLoading = true) } },
+        )
+    }
+
+    private fun getShowTip() {
+        launchWithResult(
+            action = getShowCollectionDetailsTipUseCase::invoke,
+            onSuccess = { res ->
+                updateState {
+                    it.copy(
+                        showTip = res,
+                        isLoading = false
+                    )
+                }
+            },
+            onError = { e ->
+                updateState {
+                    it.copy(
+                        isError = true,
+                        isLoading = false,
+                        errorMsg = e.message.toString()
+                    )
+                }
+            },
+            onStart = { updateState { it.copy(isLoading = true) } }
         )
     }
 
@@ -135,7 +164,18 @@ class CollectionDetailsViewModel @Inject constructor(
     }
 
     override fun onTipCancelIconClicked() {
-        updateState { it.copy(showTip = false) }
+        launchAndForget(
+            action = { closeCollectionDetailsTipUseCase() },
+            onSuccess = { updateState { it.copy(showTip = false) } },
+            onError = { e ->
+                updateState {
+                    it.copy(
+                        isError = true,
+                        errorMsg = e.message.toString()
+                    )
+                }
+            }
+        )
     }
 
     override fun onRefresh() {
