@@ -7,15 +7,16 @@ import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
-import com.moscow.cineverse.navigation.routes.CastBestOfMovieRoute
-import com.moscow.cineverse.navigation.routes.CastGalleryRoute
-import com.moscow.cineverse.navigation.routes.MovieDetailsRoute
-import com.moscow.cineverse.navigation.routes.RecommendationsRoute
-import com.moscow.cineverse.navigation.routes.ReviewsRoute
-import com.moscow.cineverse.navigation.routes.SeriesDetailsRoute
-import com.moscow.cineverse.navigation.routes.SeriesRecommendationRoute
-import com.moscow.cineverse.navigation.routes.SeriesSeasonsRoute
+import com.moscow.cineverse.navigation.routes.castBestOfMovieRoute
 import com.moscow.cineverse.navigation.routes.castDetailsRoute
+import com.moscow.cineverse.navigation.routes.castGalleryRoute
+import com.moscow.cineverse.navigation.routes.collectionDetailsRoute
+import com.moscow.cineverse.navigation.routes.movieDetailsRoute
+import com.moscow.cineverse.navigation.routes.recommendationsRoute
+import com.moscow.cineverse.navigation.routes.reviewsRoute
+import com.moscow.cineverse.navigation.routes.seriesDetailsRoute
+import com.moscow.cineverse.navigation.routes.seriesRecommendationRoute
+import com.moscow.cineverse.navigation.routes.seriesSeasonsRoute
 import com.moscow.cineverse.navigation.routes.collectionsBottomSheetRoute
 import com.moscow.cineverse.navigation.routes.createCollectionDialogRoute
 import com.moscow.cineverse.navigation.routes.exploreRoute
@@ -50,20 +51,21 @@ fun CineVerseNavGraph(
 
             exploreRoute(navController)
             loginRoute(navController)
-            RecommendationsRoute(navController)
-            ReviewsRoute(navController)
+            recommendationsRoute(navController)
+            reviewsRoute(navController)
             castDetailsRoute(navController)
-            CastGalleryRoute(navController)
-            CastBestOfMovieRoute(navController)
-            MovieDetailsRoute(navController)
-            SeriesDetailsRoute(navController)
-            SeriesRecommendationRoute(navController)
-            SeriesSeasonsRoute(navController)
+            castGalleryRoute(navController)
+            castBestOfMovieRoute(navController)
+            movieDetailsRoute(navController)
+            seriesDetailsRoute(navController)
+            seriesRecommendationRoute(navController)
+            seriesSeasonsRoute(navController)
             collectionsBottomSheetRoute(navController)
             homeRoute(navController)
             seeMoreRoute(navController)
             matchRoute(navController)
             profileRoute(navController)
+            collectionDetailsRoute(navController)
             myCollections(navController)
             createCollectionDialogRoute(navController)
         }

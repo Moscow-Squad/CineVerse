@@ -9,7 +9,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class SeriesSeasonsRoute(val seriesId: Int)
 
-fun NavGraphBuilder.SeriesSeasonsRoute(navController: NavHostController) {
+fun NavGraphBuilder.seriesSeasonsRoute(navController: NavHostController) {
     composable<SeriesSeasonsRoute>{
         SeriesSeasonsScreen(
             navigateBack = { navController.navigateUp() }
