@@ -30,4 +30,16 @@ interface CollectionRemoteDataSource {
         sessionId: String,
         page: Int
     ): ApiResponse<MovieDto>
+
+    suspend fun deleteMediaItemFromCollection(
+        item: AddMediaItemToCollectionRequestDto,
+        collectionId: Int,
+        sessionId: String
+    ): ApiResponse<Unit>
+
+    suspend fun clearCollection(
+        collectionId: Int,
+        sessionId: String,
+        confirm: Boolean = false,
+    ): ApiResponse<Unit>
 }
