@@ -8,6 +8,9 @@ import com.moscow.remote.dto.MovieDto
 import com.moscow.utils.ACCOUNT
 import com.moscow.utils.ADD_ITEM
 import com.moscow.utils.ApiResponse
+import com.moscow.utils.CLEAR
+import com.moscow.utils.CONFIRM
+import com.moscow.utils.DELETE_ITEM
 import com.moscow.utils.LIST
 import com.moscow.utils.LISTS
 import com.moscow.utils.PAGE
@@ -46,4 +49,18 @@ interface CollectionsService {
         @Query(SESSION_ID) sessionId: String,
         @Query(PAGE)page:Int,
     ): Response<ApiResponse<MovieDto>>
+
+    @POST("$LIST/{collection_id}/$CLEAR")
+    suspend fun clearCollection(
+        @Path("collection_id") collectionId: Int,
+        @Query(SESSION_ID) sessionId: String,
+        @Query(CONFIRM) confirm: Boolean = false,
+    ): Response<ApiResponse<Unit>>
+
+    @POST("$LIST/{list_id}/$DELETE_ITEM")
+    suspend fun deleteMediaItemToCollection(
+        @Body item: AddMediaItemToCollectionRequestDto,
+        @Path("list_id") collectionId: Int,
+        @Query(SESSION_ID) sessionId: String
+    ): Response<ApiResponse<Unit>>
 }
