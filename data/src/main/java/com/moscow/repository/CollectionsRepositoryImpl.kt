@@ -7,11 +7,9 @@ import com.moscow.remote.dto.AddMediaItemToCollectionRequestDto
 import com.moscow.remote.dto.CreateCollectionDto
 import com.moscow.remote.dto.toDomain
 import com.moscow.domain.model.Collection
-import com.moscow.domain.model.MediaType
 import com.moscow.domain.model.Movie
 import com.moscow.domain.model.UserType
 import com.moscow.domain.repository.PreferenceRepository
-import com.moscow.remote.dto.collections_v4.toDomain
 import com.moscow.utils.CineVerseExceptions
 import javax.inject.Inject
 
@@ -51,11 +49,23 @@ class CollectionsRepositoryImpl @Inject constructor(
 
     override suspend fun addMediaItemToCollection(
         mediaItemId: Int,
-        mediaItemType: MediaType,
         collectionId: Int
     ): String {
         val item = AddMediaItemToCollectionRequestDto(mediaId = mediaItemId)
         val response = collectionRemoteDataSource.addMediaItemToCollection(
+            item = item,
+            collectionId = collectionId,
+            sessionId = preferenceRepository.getSessionId()
+        )
+        return response.statusMessage ?: "Unexpected Error happened"
+    }
+
+    override suspend fun deleteMediaItemFromCollection(
+        mediaItemId: Int,
+        collectionId: Int
+    ): String {
+        val item = AddMediaItemToCollectionRequestDto(mediaId = mediaItemId)
+        val response = collectionRemoteDataSource.deleteMediaItemFromCollection(
             item = item,
             collectionId = collectionId,
             sessionId = preferenceRepository.getSessionId()
@@ -72,22 +82,15 @@ class CollectionsRepositoryImpl @Inject constructor(
         return response.items?.map { it.toDomain() } ?: emptyList()
     }
 
-    override suspend fun getCollectionMediaItemsV4(collectionId: Int, page: Int) =
-        collectionRemoteDataSource.getCollectionDetailsV4(collectionId, page).toDomain()
-
-    override suspend fun deleteMediaFromCollectionV4(
+    override suspend fun clearCollection(
         collectionId: Int,
-        mediaId: Int,
-        mediaType: MediaType
-    ) {
-        collectionRemoteDataSource.deleteMediaFromCollectionV4(collectionId, mediaId, mediaType)
-    }
-
-    override suspend fun addMediaToCollectionV4(
-        collectionId: Int,
-        mediaId: Int,
-        mediaType: MediaType
-    ) {
-        collectionRemoteDataSource.addMediaToCollectionV4(collectionId, mediaId, mediaType)
+        confirm: Boolean
+    ): String {
+        val response = collectionRemoteDataSource.clearCollection(
+            collectionId = collectionId,
+            sessionId = preferenceRepository.getSessionId(),
+            confirm = confirm
+        )
+        return response.statusMessage ?: "Unexpected Error happened"
     }
 }

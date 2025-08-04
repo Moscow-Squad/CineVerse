@@ -7,6 +7,7 @@ data class CollectionDetailsScreenState(
     val isError: Boolean = false,
     val errorMsg: String = "",
     val showTip: Boolean = true,
+    val confirmClear: Boolean = false,
     val moviesGenres: List<GenreUiState> = emptyList(),
     val seriesGenres: List<GenreUiState> = emptyList(),
 )

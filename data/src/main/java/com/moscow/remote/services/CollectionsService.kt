@@ -58,7 +58,7 @@ interface CollectionsService {
     ): Response<ApiResponse<Unit>>
 
     @POST("$LIST/{list_id}/$DELETE_ITEM")
-    suspend fun deleteMediaItemToCollection(
+    suspend fun deleteMediaItemFromCollection(
         @Body item: AddMediaItemToCollectionRequestDto,
         @Path("list_id") collectionId: Int,
         @Query(SESSION_ID) sessionId: String

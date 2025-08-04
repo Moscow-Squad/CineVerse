@@ -22,11 +22,11 @@ import com.moscow.cineverse.designSystem.component.MovieAppBar
 import com.moscow.cineverse.designSystem.component.MovieCircularProgressBar
 import com.moscow.cineverse.designSystem.component.MovieScaffold
 import com.moscow.cineverse.designSystem.component.message_info.InfoCard
-import com.moscow.cineverse.mapper.toUi
 import com.moscow.cineverse.screen.MovieCard
 import com.moscow.cineverse.screen.collections.composable.SwipeToDeleteItem
+import com.moscow.cineverse.screen.explore.toUi
 import com.moscow.cineverse.utlis.ViewMode
-import com.moscow.domain.model.MediaItem
+import com.moscow.domain.model.Movie
 
 @Composable
 fun CollectionDetailsScreen(
@@ -68,7 +68,7 @@ fun CollectionDetailsScreen(
 private fun CollectionDetailsScreenContent(
     title: String,
     uiState: CollectionDetailsScreenState,
-    mediaItems: LazyPagingItems<MediaItem>,
+    mediaItems: LazyPagingItems<Movie>,
     interactionListener: CollectionDetailsInteractionListener,
 ) {
     if (uiState.isLoading){
@@ -121,10 +121,7 @@ private fun CollectionDetailsScreenContent(
                         )
                     }
                     items(mediaItems.itemCount) { index ->
-                        val media = mediaItems[index]?.toUi(
-                            movieGenre = uiState.moviesGenres,
-                            seriesGenre = uiState.seriesGenres
-                        )
+                        val media = mediaItems[index]?.toUi(uiState.moviesGenres)
                         if (media != null) {
                             SwipeToDeleteItem(
                                 onDelete = {

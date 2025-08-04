@@ -7,19 +7,9 @@ import com.moscow.domain.model.Movie
 
 interface CollectionsRepository {
     suspend fun getCollections(page: Int): List<Collection>
-    suspend fun addNewCollection(
-        collectionName: String,
-        collectionDescription: String?
-    ): Int
-
-    suspend fun addMediaItemToCollection(
-        mediaItemId: Int,
-        mediaItemType: MediaType,
-        collectionId: Int
-    ): String
-
+    suspend fun addNewCollection(collectionName: String, collectionDescription: String?): Int
+    suspend fun addMediaItemToCollection(mediaItemId: Int, collectionId: Int): String
+    suspend fun deleteMediaItemFromCollection(mediaItemId: Int, collectionId: Int): String
     suspend fun getCollectionDetails(collectionId: Int,page: Int): List<Movie>
-    suspend fun getCollectionMediaItemsV4(collectionId: Int, page: Int): List<MediaItem>
-    suspend fun deleteMediaFromCollectionV4(collectionId: Int, mediaId: Int, mediaType: MediaType)
-    suspend fun addMediaToCollectionV4(collectionId: Int, mediaId: Int, mediaType: MediaType)
+    suspend fun clearCollection(collectionId: Int,confirm: Boolean): String
 }

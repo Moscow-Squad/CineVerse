@@ -10,16 +10,18 @@ import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.cineverse.navigation.routes.CollectionDetailsRoute
 import com.moscow.cineverse.paging.BasePagingSource
 import com.moscow.cineverse.screen.explore.toUi
-import com.moscow.domain.model.MediaItem
 import com.moscow.domain.model.MediaType
-import com.moscow.domain.usecase.collection.DeleteMediaFromCollectionV4UseCase
-import com.moscow.domain.usecase.collection.GetCollectionMediaItemsV4UseCase
+import com.moscow.domain.model.Movie
+import com.moscow.domain.usecase.collection.ClearCollectionUseCase
+import com.moscow.domain.usecase.collection.DeleteMediaItemFromCollectionUseCase
+import com.moscow.domain.usecase.collection.GetCollectionDetailsUseCase
 import com.moscow.domain.usecase.genre.GenreUseCase
 import kotlinx.coroutines.flow.Flow
 
 class CollectionDetailsViewModel(
-    private val deleteMediaFromCollectionV4UseCase: DeleteMediaFromCollectionV4UseCase,
-    private val getCollectionMediaItemsV4UseCase: GetCollectionMediaItemsV4UseCase,
+    private val deleteMediaFromCollectionV4UseCase: DeleteMediaItemFromCollectionUseCase,
+    private val getCollectionMediaItemsV4UseCase: GetCollectionDetailsUseCase,
+    private val clearCollectionUseCase: ClearCollectionUseCase,
     private val genreUseCase: GenreUseCase,
     savedStateHandle: SavedStateHandle
 ) : BaseViewModel<CollectionDetailsScreenState, CollectionDetailsEffect>(
@@ -32,7 +34,6 @@ class CollectionDetailsViewModel(
 
     init {
         getMoviesGenres()
-        getSeriesGenres()
     }
 
     private fun getMoviesGenres() {
@@ -47,31 +48,19 @@ class CollectionDetailsViewModel(
                 }
             },
             onError = { e ->
-                updateState { it.copy(isError = true, isLoading = false, errorMsg = e.message.toString()) }
-            },
-            onStart = { updateState { it.copy(isLoading = true) } },
-        )
-    }
-
-    private fun getSeriesGenres() {
-        launchWithResult(
-            action = { genreUseCase.getSeriesGenres() },
-            onSuccess = { genres ->
                 updateState {
                     it.copy(
-                        seriesGenres = genres.map { genre -> genre.toUi() },
-                        isLoading = false
+                        isError = true,
+                        isLoading = false,
+                        errorMsg = e.message.toString()
                     )
                 }
             },
-            onError = { e ->
-                updateState { it.copy(isError = true, isLoading = false, errorMsg = e.message.toString()) }
-            },
             onStart = { updateState { it.copy(isLoading = true) } },
         )
     }
 
-    fun getMediaItems(): Flow<PagingData<MediaItem>> {
+    fun getMediaItems(): Flow<PagingData<Movie>> {
         return Pager(
             config = PagingConfig(pageSize = 20),
             pagingSourceFactory = {
@@ -103,7 +92,34 @@ class CollectionDetailsViewModel(
     ) {
         updateState { it.copy(isLoading = true, isError = false, errorMsg = "") }
         launchAndForget(
-            action = { deleteMediaFromCollectionV4UseCase(collectionId, mediaId, mediaType) },
+            action = {
+                deleteMediaFromCollectionV4UseCase(
+                    collectionId = collectionId,
+                    mediaItemId = mediaId
+                )
+            },
+            onSuccess = { updateState { it.copy(isLoading = false) } },
+            onError = { e ->
+                updateState {
+                    it.copy(
+                        isLoading = false,
+                        isError = true,
+                        errorMsg = e.message.toString()
+                    )
+                }
+            }
+        )
+    }
+
+    override fun clearCollection() {
+        updateState { it.copy(isLoading = true, isError = false, errorMsg = "") }
+        launchAndForget(
+            action = {
+                clearCollectionUseCase(
+                    collectionId = collectionId,
+                    confirm = uiState.value.confirmClear
+                )
+            },
             onSuccess = { updateState { it.copy(isLoading = false) } },
             onError = { e ->
                 updateState {
@@ -130,6 +146,5 @@ class CollectionDetailsViewModel(
             )
         }
         getMoviesGenres()
-        getSeriesGenres()
     }
 }

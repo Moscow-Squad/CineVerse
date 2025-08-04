@@ -78,7 +78,6 @@ class MovieDetailsViewModel @Inject constructor(
                     action = {
                         addMediaItemToCollectionUseCase(
                             movieId,
-                            MediaType.Movie,
                             collectionId = collectionId ?: throw IllegalArgumentException("User must logged in")
                         )
                     },

@@ -1,13 +1,10 @@
 package com.moscow.data_source.remote
 
-import com.moscow.domain.model.MediaType
 import com.moscow.remote.dto.AddCollectionDto
 import com.moscow.remote.dto.AddMediaItemToCollectionRequestDto
 import com.moscow.remote.dto.CollectionDto
 import com.moscow.remote.dto.CreateCollectionDto
 import com.moscow.remote.dto.MovieDto
-import com.moscow.remote.dto.collections_v4.CollectionDetailsV4Dto
-import com.moscow.remote.dto.collections_v4.EmptyCollectionApiResponse
 import com.moscow.utils.ApiResponse
 
 interface CollectionRemoteDataSource {
@@ -34,20 +31,15 @@ interface CollectionRemoteDataSource {
         page: Int
     ): ApiResponse<MovieDto>
 
-    suspend fun getCollectionDetailsV4(
+    suspend fun deleteMediaItemFromCollection(
+        item: AddMediaItemToCollectionRequestDto,
         collectionId: Int,
-        page: Int
-    ): CollectionDetailsV4Dto
+        sessionId: String
+    ): ApiResponse<Unit>
 
-    suspend fun deleteMediaFromCollectionV4(
+    suspend fun clearCollection(
         collectionId: Int,
-        mediaId: Int,
-        mediaType: MediaType
-    ): EmptyCollectionApiResponse
-
-    suspend fun addMediaToCollectionV4(
-        collectionId: Int,
-        mediaId: Int,
-        mediaType: MediaType
-    ): EmptyCollectionApiResponse
+        sessionId: String,
+        confirm: Boolean = false,
+    ): ApiResponse<Unit>
 }

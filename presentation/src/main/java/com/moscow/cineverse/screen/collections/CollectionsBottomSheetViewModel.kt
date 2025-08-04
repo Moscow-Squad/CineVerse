@@ -57,7 +57,6 @@ class CollectionsBottomSheetViewModel @Inject constructor(
             action = {
                 addMediaItemToCollectionUseCase.invoke(
                     mediaItemId = mediaItemId,
-                    mediaItemType = mediaItemType,
                     collectionId = collectionId
                 )
             },
