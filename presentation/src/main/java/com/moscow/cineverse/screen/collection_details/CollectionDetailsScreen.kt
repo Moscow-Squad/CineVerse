@@ -3,6 +3,7 @@ package com.moscow.cineverse.screen.collection_details
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -175,7 +176,7 @@ private fun CollectionDetailsScreenContent(
                     if (mediaItems.loadState.append is LoadState.Loading) {
                         item{
                             Box(
-                                modifier = Modifier.height(214.dp),
+                                modifier = Modifier.fillMaxWidth().height(214.dp),
                                 contentAlignment = Alignment.Center
                             ) {
                                 MovieCircularProgressBar()
