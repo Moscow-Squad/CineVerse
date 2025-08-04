@@ -90,7 +90,6 @@ fun NoHistoryScreen (
             onClick = { onContinue()}
         )
     }
-
 }
 @Preview
 @Composable
