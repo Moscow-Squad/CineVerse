@@ -4,14 +4,17 @@ import com.moscow.remote.dto.CreditsDetailsDto
 import com.moscow.remote.dto.MovieDto
 import com.moscow.remote.dto.details.MediaTrailersDto
 import com.moscow.remote.dto.details.MovieDetailDto
+import com.moscow.remote.dto.rating.movie.RatedMovieDto
 import com.moscow.remote.dto.review.RatingRequestDto
 import com.moscow.remote.dto.review.ReviewDto
+import com.moscow.utils.ACCOUNT
 import com.moscow.utils.ApiResponse
 import com.moscow.utils.CREDITS
 import com.moscow.utils.DISCOVER_MOVIE_LIST
 import com.moscow.utils.MOVIE
 import com.moscow.utils.PAGE
 import com.moscow.utils.POPULAR
+import com.moscow.utils.RATED_MOVIES
 import com.moscow.utils.RATING
 import com.moscow.utils.RECOMMENDATIONS
 import com.moscow.utils.REVIEWS
@@ -20,6 +23,7 @@ import com.moscow.utils.TRAILERS
 import com.moscow.utils.WITH_GENRES
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
@@ -43,6 +47,19 @@ interface MovieService {
         @Query(SESSION_ID) sessionId: String,
         @Body rating: RatingRequestDto
     ): Response<Nothing>
+
+    @DELETE("$MOVIE{movie_id}$RATING")
+    suspend fun deleteRatingMovie(
+        @Path("movie_id") movieId: Int,
+        @Query(SESSION_ID) sessionId: String
+    ): Response<Nothing>
+
+    @GET("$ACCOUNT/{account_id}$RATED_MOVIES")
+    suspend fun getRatedMovies(
+        @Path("account_id") id: Int,
+        @Query(SESSION_ID) sessionId: String,
+        @Query(PAGE) page: Int,
+    ): Response<ApiResponse<RatedMovieDto>>
 
     @GET("$MOVIE{movie_id}$CREDITS")
     suspend fun getMovieCredits(

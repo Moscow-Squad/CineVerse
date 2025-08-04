@@ -7,12 +7,15 @@ import com.moscow.remote.dto.series.ListOfSeriesDto
 import com.moscow.remote.dto.series.SeriesDetailDto
 import com.moscow.remote.dto.series.SeriesDto
 import com.moscow.remote.dto.details.MediaTrailersDto
+import com.moscow.remote.dto.rating.series.RatedSeriesDto
+import com.moscow.utils.ACCOUNT
 import com.moscow.utils.ApiResponse
 import com.moscow.utils.DISCOVER_SERIES_LIST
 import com.moscow.utils.LATEST
 import com.moscow.utils.LISTS
 import com.moscow.utils.PAGE
 import com.moscow.utils.POPULAR
+import com.moscow.utils.RATED_SERIES
 import com.moscow.utils.RATING
 import com.moscow.utils.RECOMMENDATIONS
 import com.moscow.utils.REVIEWS
@@ -23,6 +26,7 @@ import com.moscow.utils.TRAILERS
 import com.moscow.utils.WITH_GENRES
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
@@ -45,6 +49,19 @@ interface SeriesService {
         @Query(SESSION_ID) sessionId: String,
         @Body rating: RatingRequestDto
     ): Response<Nothing>
+
+    @DELETE("$SERIES{series_id}$RATING")
+    suspend fun deleteRatingSeries(
+        @Path("series_id") seriesId: Int,
+        @Query(SESSION_ID) sessionId: String
+    ): Response<Nothing>
+
+    @GET("$ACCOUNT/{account_id}$RATED_SERIES")
+    suspend fun getRatedSeries(
+        @Path("account_id") id: Int,
+        @Query(SESSION_ID) sessionId: String,
+        @Query(PAGE) page: Int
+    ): Response<ApiResponse<RatedSeriesDto>>
 
     @GET("$SERIES$LATEST")
     suspend fun getLatestSeasons()

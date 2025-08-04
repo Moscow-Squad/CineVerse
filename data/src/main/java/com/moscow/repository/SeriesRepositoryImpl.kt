@@ -9,7 +9,9 @@ import com.moscow.domain.model.details.ListOfSeries
 import com.moscow.domain.model.details.Season
 import com.moscow.domain.model.details.SeriesDetail
 import com.moscow.domain.repository.SeriesRepository
+import com.moscow.domain.usecase.series.GetRatedSeriesUseCase
 import com.moscow.mapper.toDomain
+import com.moscow.mapper.toOutputResult
 import com.moscow.remote.dto.review.RatingRequestDto
 import javax.inject.Inject
 
@@ -40,6 +42,18 @@ class SeriesRepositoryImpl @Inject constructor(
             id = id,
             rating = RatingRequestDto(value = rating)
         )
+    }
+
+    override suspend fun deleteRatingSeries(seriesId: Int) {
+        seriesRemoteDataSource.deleteRatingSeries(seriesId)
+    }
+
+    override suspend fun getRatedSeries(
+        userId: Int,
+        page: Int
+    ): List<GetRatedSeriesUseCase.RatedSeriesResult> {
+        val response = seriesRemoteDataSource.getRatedSeries(userId, page)
+        return response.results?.mapNotNull { it.toOutputResult() } ?: emptyList()
     }
 
     override suspend fun getLatestSeasons(): List<Season> {
