@@ -16,9 +16,12 @@ import com.moscow.domain.usecase.collection.ClearCollectionUseCase
 import com.moscow.domain.usecase.collection.DeleteMediaItemFromCollectionUseCase
 import com.moscow.domain.usecase.collection.GetCollectionDetailsUseCase
 import com.moscow.domain.usecase.genre.GenreUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
-class CollectionDetailsViewModel(
+@HiltViewModel
+class CollectionDetailsViewModel @Inject constructor(
     private val deleteMediaFromCollectionV4UseCase: DeleteMediaItemFromCollectionUseCase,
     private val getCollectionMediaItemsV4UseCase: GetCollectionDetailsUseCase,
     private val clearCollectionUseCase: ClearCollectionUseCase,
@@ -90,7 +93,7 @@ class CollectionDetailsViewModel(
         mediaId: Int,
         mediaType: MediaType
     ) {
-        updateState { it.copy(isLoading = true, isError = false, errorMsg = "") }
+        updateState { it.copy(isError = false, errorMsg = "") }
         launchAndForget(
             action = {
                 deleteMediaFromCollectionV4UseCase(
@@ -98,11 +101,9 @@ class CollectionDetailsViewModel(
                     mediaItemId = mediaId
                 )
             },
-            onSuccess = { updateState { it.copy(isLoading = false) } },
             onError = { e ->
                 updateState {
                     it.copy(
-                        isLoading = false,
                         isError = true,
                         errorMsg = e.message.toString()
                     )

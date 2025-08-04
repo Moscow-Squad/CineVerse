@@ -1,5 +1,6 @@
 package com.moscow.cineverse.screen.collection_details
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -22,6 +23,7 @@ import com.moscow.cineverse.designSystem.component.MovieAppBar
 import com.moscow.cineverse.designSystem.component.MovieCircularProgressBar
 import com.moscow.cineverse.designSystem.component.MovieScaffold
 import com.moscow.cineverse.designSystem.component.message_info.InfoCard
+import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.screen.MovieCard
 import com.moscow.cineverse.screen.collections.composable.SwipeToDeleteItem
 import com.moscow.cineverse.screen.explore.toUi
@@ -60,7 +62,8 @@ fun CollectionDetailsScreen(
         title = viewModel.collectionName,
         uiState = uiState,
         mediaItems = mediaItems,
-        interactionListener = viewModel
+        interactionListener = viewModel,
+        navigateBack = navigateBack
     )
 }
 
@@ -70,10 +73,11 @@ private fun CollectionDetailsScreenContent(
     uiState: CollectionDetailsScreenState,
     mediaItems: LazyPagingItems<Movie>,
     interactionListener: CollectionDetailsInteractionListener,
+    navigateBack: () -> Unit,
 ) {
     if (uiState.isLoading){
         Box(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier.fillMaxSize().background(Theme.colors.background.screen),
             contentAlignment = Alignment.Center
         ) {
             MovieCircularProgressBar()
@@ -81,7 +85,7 @@ private fun CollectionDetailsScreenContent(
     }
     else if(uiState.isError){
         Box(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier.fillMaxSize().background(Theme.colors.background.screen),
             contentAlignment = Alignment.Center
         ) {
             NoInternetScreen(onRetry = { mediaItems.retry() })
@@ -89,7 +93,7 @@ private fun CollectionDetailsScreenContent(
     }else{
         if (mediaItems.loadState.refresh is LoadState.Loading) {
             Box(
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier.fillMaxSize().background(Theme.colors.background.screen),
                 contentAlignment = Alignment.Center
             ) {
                 MovieCircularProgressBar()
@@ -97,7 +101,7 @@ private fun CollectionDetailsScreenContent(
         }
         else if (mediaItems.loadState.refresh is LoadState.Error) {
             Box(
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier.fillMaxSize().background(Theme.colors.background.screen),
                 contentAlignment = Alignment.Center
             ) {
                 NoInternetScreen(onRetry = { mediaItems.retry() })
@@ -107,23 +111,26 @@ private fun CollectionDetailsScreenContent(
             MovieScaffold(
                 movieAppBar = {
                     MovieAppBar(
-                        modifier = Modifier.padding(top = 40.dp),
-                        backButtonClick = {},
+                        backButtonClick = navigateBack,
                         title = title,
                     )
                 }
             ) {
                 LazyColumn(modifier = Modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp)) {
-                    item {
-                        InfoCard(
-                            text = "Tip: Swipe left to remove movies from your collection.",
-                            onDismiss = interactionListener::onTipCancelIconClicked
-                        )
+                    if (uiState.showTip){
+                        item {
+                            InfoCard(
+                                modifier = Modifier.padding(bottom = 24.dp),
+                                text = "Tip: Swipe left to remove movies from your collection.",
+                                onDismiss = interactionListener::onTipCancelIconClicked
+                            )
+                        }
                     }
                     items(mediaItems.itemCount) { index ->
                         val media = mediaItems[index]?.toUi(uiState.moviesGenres)
                         if (media != null) {
                             SwipeToDeleteItem(
+                                modifier = Modifier.padding(bottom = 16.dp),
                                 onDelete = {
                                     interactionListener.onItemDeletedIconClicked(
                                         mediaId = media.id,
