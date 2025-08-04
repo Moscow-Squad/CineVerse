@@ -164,6 +164,7 @@ class CollectionDetailsViewModel @Inject constructor(
     }
 
     override fun onTipCancelIconClicked() {
+        updateState { it.copy(isLoading = false) }
         launchAndForget(
             action = { closeCollectionDetailsTipUseCase() },
             onSuccess = { updateState { it.copy(showTip = false) } },

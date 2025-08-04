@@ -11,6 +11,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -28,6 +29,7 @@ import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.screen.MovieCard
 import com.moscow.cineverse.screen.explore.toUi
 import com.moscow.cineverse.utlis.ViewMode
+import com.moscow.cinverse.presentation.R
 import com.moscow.domain.model.Movie
 
 @Composable
@@ -77,7 +79,9 @@ private fun CollectionDetailsScreenContent(
 ) {
     if (uiState.isLoading){
         Box(
-            modifier = Modifier.fillMaxSize().background(Theme.colors.background.screen),
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Theme.colors.background.screen),
             contentAlignment = Alignment.Center
         ) {
             MovieCircularProgressBar()
@@ -85,7 +89,9 @@ private fun CollectionDetailsScreenContent(
     }
     else if(uiState.isError){
         Box(
-            modifier = Modifier.fillMaxSize().background(Theme.colors.background.screen),
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Theme.colors.background.screen),
             contentAlignment = Alignment.Center
         ) {
             NoInternetScreen(onRetry = { mediaItems.retry() })
@@ -93,7 +99,9 @@ private fun CollectionDetailsScreenContent(
     }else{
         if (mediaItems.loadState.refresh is LoadState.Loading) {
             Box(
-                modifier = Modifier.fillMaxSize().background(Theme.colors.background.screen),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Theme.colors.background.screen),
                 contentAlignment = Alignment.Center
             ) {
                 MovieCircularProgressBar()
@@ -101,7 +109,9 @@ private fun CollectionDetailsScreenContent(
         }
         else if (mediaItems.loadState.refresh is LoadState.Error) {
             Box(
-                modifier = Modifier.fillMaxSize().background(Theme.colors.background.screen),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Theme.colors.background.screen),
                 contentAlignment = Alignment.Center
             ) {
                 NoInternetScreen(onRetry = { mediaItems.retry() })
@@ -121,7 +131,7 @@ private fun CollectionDetailsScreenContent(
                         item {
                             InfoCard(
                                 modifier = Modifier.padding(bottom = 24.dp),
-                                text = "Tip: Swipe left to remove movies from your collection.",
+                                text = stringResource(R.string.tip_swipe_left_to_remove_movies_from_your_collection),
                                 onDismiss = interactionListener::onTipCancelIconClicked
                             )
                         }
