@@ -1,8 +1,6 @@
 package com.moscow.domain.repository
 
 import com.moscow.domain.model.Collection
-import com.moscow.domain.model.MediaItem
-import com.moscow.domain.model.MediaType
 import com.moscow.domain.model.Movie
 
 interface CollectionsRepository {

@@ -1,6 +1,5 @@
 package com.moscow.domain.usecase.collection
 
-import com.moscow.domain.model.MediaType
 import com.moscow.domain.repository.CollectionsRepository
 import javax.inject.Inject
 

@@ -104,5 +104,6 @@ class PreferenceRepositoryImpl @Inject constructor(
         private val RECENTLY_VIEWED_COLLECTION_ID = intPreferencesKey("recently_collection_id")
         private val EXPIRED_AT_KEY = stringPreferencesKey("expired_at")
         private val Is_LOGGED_IN_KEY = booleanPreferencesKey("is_logged_in")
+        private val SHOW_COLLECTION_DETAILS_TIP = booleanPreferencesKey("is_tip_collection_details")
     }
 }
