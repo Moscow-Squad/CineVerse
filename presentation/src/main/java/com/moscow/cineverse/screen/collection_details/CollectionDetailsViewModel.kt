@@ -21,8 +21,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CollectionDetailsViewModel @Inject constructor(
-    private val deleteMediaFromCollectionV4UseCase: DeleteMediaItemFromCollectionUseCase,
-    private val getCollectionMediaItemsV4UseCase: GetCollectionDetailsUseCase,
+    private val deleteMediaFromCollectionUseCase: DeleteMediaItemFromCollectionUseCase,
+    private val getCollectionMediaItemsUseCase: GetCollectionDetailsUseCase,
     private val clearCollectionUseCase: ClearCollectionUseCase,
     private val genreUseCase: GenreUseCase,
     private val getShowCollectionDetailsTipUseCase: GetShowCollectionDetailsTipUseCase,
@@ -90,14 +90,14 @@ class CollectionDetailsViewModel @Inject constructor(
         )
     }
 
-    fun getMovies() {
+    private fun getMovies() {
         launchWithResult(
             action = {
                 return@launchWithResult Pager(
                     config = PagingConfig(pageSize = 20),
                     pagingSourceFactory = {
                         BasePagingSource { page ->
-                            getCollectionMediaItemsV4UseCase(collectionId, page)
+                            getCollectionMediaItemsUseCase(collectionId, page)
                         }
                     }
                 ).flow.cachedIn(viewModelScope)
@@ -138,7 +138,7 @@ class CollectionDetailsViewModel @Inject constructor(
         updateState { it.copy(isError = false, errorMsg = "") }
         launchAndForget(
             action = {
-                deleteMediaFromCollectionV4UseCase(
+                deleteMediaFromCollectionUseCase(
                     collectionId = collectionId,
                     mediaItemId = mediaId
                 )
