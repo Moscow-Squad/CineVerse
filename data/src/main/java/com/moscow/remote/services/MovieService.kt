@@ -46,7 +46,7 @@ interface MovieService {
         @Path("movie_id") id: Int,
         @Query(SESSION_ID) sessionId: String,
         @Body rating: RatingRequestDto
-    ): Response<Nothing>
+    ): Response<Unit>
 
     @DELETE("$MOVIE{movie_id}$RATING")
     suspend fun deleteRatingMovie(
