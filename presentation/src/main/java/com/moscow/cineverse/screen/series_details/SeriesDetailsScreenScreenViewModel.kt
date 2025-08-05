@@ -7,6 +7,7 @@ import com.moscow.cineverse.mapper.toUi
 import com.moscow.cineverse.navigation.routes.SeriesDetailsRoute
 import com.moscow.cineverse.utlis.ViewMode
 import com.moscow.domain.model.Series
+import com.moscow.domain.repository.PreferenceRepository
 import com.moscow.domain.usecase.review.GetReviewsUseCase
 import com.moscow.domain.usecase.series.GetSeriesCreditsDetailsUseCase
 import com.moscow.domain.usecase.series.GetSeriesDetailUseCase
@@ -24,6 +25,7 @@ class SeriesDetailsScreenScreenViewModel @Inject constructor(
     private val rateSeriesUseCase: RateSeriesUseCase,
     private val getSeriesCreditsDetailsUseCase: GetSeriesCreditsDetailsUseCase,
     private val getSeriesRecommendationsUseCase: GetSeriesRecommendationsUseCase,
+    private val preferences: PreferenceRepository,
     savedStateHandle: SavedStateHandle,
 ) : BaseViewModel<SeriesDetailsScreenState, SeriesDetailsScreenEffects>(SeriesDetailsScreenState()),
     SeriesDetailsScreenInteractionListener {
@@ -125,7 +127,27 @@ class SeriesDetailsScreenScreenViewModel @Inject constructor(
         updateState { it.copy(errorMessage = error.message.toString(), shouldShowError = true) }
     }
     override fun showRatingBottomSheet() {
-        updateState { it.copy(showRatingBottomSheet = true) }
+        launchWithResult(
+            action = { preferences.isLoggedIn() },
+            onSuccess = { isLoggedIn ->
+                if (isLoggedIn) {
+                    updateState { it.copy(showRatingBottomSheet = true) }
+                } else {
+                    updateState { it.copy(showLoginBottomSheet = true) }
+                }
+            },
+            onError = {
+                updateState { it.copy(showLoginBottomSheet = true) }
+            }
+        )
+    }
+
+    override fun onDismissLoginBottomSheet() {
+        updateState { it.copy(showLoginBottomSheet = false) }
+    }
+
+    override fun navigateToLogin() {
+        sendEvent(SeriesDetailsScreenEffects.NavigateToLogin)
     }
 
     override fun onDismissOrCancelRatingBottomSheet() {

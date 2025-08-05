@@ -8,4 +8,5 @@ sealed interface SeriesDetailsScreenEffects {
     data class NavigateToSeriesDetailsScreen(val seriesId: Int) : SeriesDetailsScreenEffects
     data class NavigateToActorDetailsScreen(val ActorId: Int) : SeriesDetailsScreenEffects
     data class OpenTrailer(val url: String) : SeriesDetailsScreenEffects
+    data object NavigateToLogin : SeriesDetailsScreenEffects
 }

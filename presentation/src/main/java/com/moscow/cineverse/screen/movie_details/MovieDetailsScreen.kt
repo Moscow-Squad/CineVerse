@@ -55,7 +55,8 @@ fun MovieDetailsScreen(
     navigateToReviews: (Int) -> Unit,
     navigateToCastDetails: (Int) -> Unit,
     navigateToCollectionsBottomSheet: (Int) -> Unit,
-    navigateToMovieDetails: (Int) -> Unit
+    navigateToMovieDetails: (Int) -> Unit,
+    navigateToLogin: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val context = LocalContext.current
@@ -70,6 +71,7 @@ fun MovieDetailsScreen(
                 navigateToCastDetails = navigateToCastDetails,
                 navigateToCollectionsBottomSheet = navigateToCollectionsBottomSheet,
                 navigateToMovieDetails = navigateToMovieDetails,
+                navigateToLogin = navigateToLogin,
                 context = context
             )
         }
@@ -82,7 +84,6 @@ fun MovieDetailsScreen(
         modifier = modifier,
     )
 }
-
 @Composable
 private fun MovieDetailsContent(
     uiState: MovieScreenState,
