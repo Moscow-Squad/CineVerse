@@ -41,13 +41,19 @@ fun HomeScreen(
     navigateToSeeMoreHome: (category: String) -> Unit,
     navigateToSeriesDetails: (seriesId: Int) -> Unit,
     navigateToBrowseSuggestion: () -> Unit,
-    navigateToWatchingSuggestion: () -> Unit
+    navigateToWatchingSuggestion: () -> Unit,
+    navigateToCollectionDetails: (collectionId: Int, collectionName: String) -> Unit,
 ) {
     val state by viewmodel.uiState.collectAsStateWithLifecycle()
     LaunchedEffect(Unit) {
         viewmodel.uiEffect.collect { effect ->
             when (effect) {
-                is HomeEvent.CollectionClicked -> {}
+                is HomeEvent.CollectionClicked -> {
+                    navigateToCollectionDetails(
+                        effect.collectionId,
+                        effect.collectionName
+                    )
+                }
                 is HomeEvent.MovieClicked -> {
                     navigateToMovieDetails(
                         effect.movieId
@@ -192,19 +198,19 @@ fun HomeContent(
                     type = HomeFeaturedItems.TOP_RATED_TV_SHOWS
                 )
 
-                if(state.userName != null && !state.youRecentlyViewed.isEmpty())
-                FeaturedMovies(
-                    displayMovies = state.youRecentlyViewed,
-                    onMovieClick = listener::onMediaItemClicked,
-                    onShowMoreClick = listener::onSeeAllClick,
-                    modifier = Modifier,
-                    type = HomeFeaturedItems.YOU_RECENTLY_VIEWED
-                )
+                if(state.userName != null && !state.youRecentlyViewed.isEmpty()) {
+                    FeaturedMovies(
+                        displayMovies = state.youRecentlyViewed,
+                        onMovieClick = listener::onMediaItemClicked,
+                        onShowMoreClick = listener::onSeeAllClick,
+                        modifier = Modifier,
+                        type = HomeFeaturedItems.YOU_RECENTLY_VIEWED
+                    )
+                }
 
                 MyCollectionsLayout(
-                    items = state.collections,
+                    items = state.collections.take(4),
                     onCollectionClick = listener::onCollectionClick,
-                    modifier = Modifier.padding(horizontal = 16.dp),
                     onShowMoreClick = listener::onCollectionsShowMoreClick,
                 )
 

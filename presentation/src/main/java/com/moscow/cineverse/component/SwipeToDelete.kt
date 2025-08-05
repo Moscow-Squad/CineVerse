@@ -59,10 +59,10 @@ fun SwipeToDelete(
     var showDeleteAnimation by remember { mutableStateOf(false) }
 
     val handleDelete = {
-        showDeleteAnimation = true
         coroutineScope.launch {
             delay(deleteDelayMs)
             onDelete()
+            showDeleteAnimation = true
         }
     }
 

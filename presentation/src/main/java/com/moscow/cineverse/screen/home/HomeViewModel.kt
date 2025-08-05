@@ -12,6 +12,7 @@ import com.moscow.domain.model.Movie
 import com.moscow.domain.model.Series
 import com.moscow.domain.model.UserType
 import com.moscow.domain.usecase.collection.GetCollectionDetailsUseCase
+import com.moscow.domain.usecase.collection.GetUserCollectionsUseCase
 import com.moscow.domain.usecase.genre.GenreUseCase
 import com.moscow.domain.usecase.home.GetMatchesYourVibesMoviesUseCase
 import com.moscow.domain.usecase.home.GetRecentlyReleasedMoviesUseCase
@@ -35,7 +36,8 @@ class HomeViewModel @Inject constructor(
     private val genreUseCase: GenreUseCase,
     private val getTrendingMoviesUseCase: GetTrendingMoviesUseCase,
     private val getUserDetailsUseCase: GetUserDetailsUseCase,
-    private val getCollectionDetailsUseCase: GetCollectionDetailsUseCase
+    private val getCollectionDetailsUseCase: GetCollectionDetailsUseCase,
+    private val getUserCollectionsUseCase: GetUserCollectionsUseCase
 ) : BaseViewModel<HomeUiState, HomeEvent>(HomeUiState()), HomeInteractionListener {
 
     init {
@@ -56,7 +58,8 @@ class HomeViewModel @Inject constructor(
                             launch { fetchRecentlyReleasedMovies() },
                             launch { fetchUpcomingMovies() },
                             launch { fetchTopRatedTVShows() },
-                            launch { fetchMatchesYourVibesMovies() }
+                            launch { fetchMatchesYourVibesMovies() },
+                            launch { getUserCollection() }
                         )
                         jobs.forEach { it.join() }
                     }
@@ -79,12 +82,24 @@ class HomeViewModel @Inject constructor(
             || uiState.value.matchesYourVibe.isEmpty()
         ) {
             wait++
-            if (wait == 25){
+            if (wait == 25) {
                 updateState { it.copy(isLoading = false, error = "error loading") }
                 return
             }
             delay(100)
         }
+    }
+
+    private fun getUserCollection() {
+        launchWithResult(
+            action = { getUserCollectionsUseCase(1) },
+            onSuccess = { collections ->
+                updateState { it.copy(collections = collections.map { it.toUi() }) }
+            },
+            onError = {e ->
+                updateState { it.copy(isLoading = false, error = e.message) }
+            },
+        )
     }
 
     private fun getUserDetails() {
@@ -98,7 +113,12 @@ class HomeViewModel @Inject constructor(
     private fun onGetUserDetailsSuccess(user: UserType) {
         when (user) {
             is UserType.AuthenticatedUser -> {
-                updateState { it.copy(userName = user.username, recentlyCollectionId = user.recentlyCollectionId) }
+                updateState {
+                    it.copy(
+                        userName = user.username,
+                        recentlyCollectionId = user.recentlyCollectionId
+                    )
+                }
                 getRecentlyViewedMovies(user.recentlyCollectionId)
             }
 
@@ -112,9 +132,9 @@ class HomeViewModel @Inject constructor(
         updateState { it.copy(error = throwable.message) }
     }
 
-    fun getRecentlyViewedMovies(recentlyCollectionId: Int){
+    fun getRecentlyViewedMovies(recentlyCollectionId: Int) {
         launchWithResult(
-            action = { getCollectionDetailsUseCase(recentlyCollectionId,1) },
+            action = { getCollectionDetailsUseCase(recentlyCollectionId, 1) },
             onSuccess = { result ->
                 updateState {
                     it.copy(
@@ -276,8 +296,8 @@ class HomeViewModel @Inject constructor(
     override fun onCollectionsShowMoreClick() {
     }
 
-    override fun onCollectionClick(collectionId: Int) {
-        sendEvent(HomeEvent.CollectionClicked(collectionId))
+    override fun onCollectionClick(collectionId: Int, collectionName: String) {
+        sendEvent(HomeEvent.CollectionClicked(collectionId, collectionName))
     }
 
     override fun onPromotionClick(promotionId: Int) {
