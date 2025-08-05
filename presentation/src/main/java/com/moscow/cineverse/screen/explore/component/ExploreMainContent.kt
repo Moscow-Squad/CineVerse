@@ -37,6 +37,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.itemKey
 import com.moscow.cineverse.common_ui_state.MediaItemUiState
 import com.moscow.cineverse.component.MoviePosterCard
 import com.moscow.cineverse.component.NoInternetScreen
@@ -163,7 +164,20 @@ fun ExploreMainContent(
                 ),
                 modifier = modifier.fillMaxSize()
             ) {
-                items(contentList.itemCount) { index ->
+                items(
+                    count = contentList.itemCount,
+                    key = contentList.itemKey {
+                        when (it) {
+                            is MediaItemUiState -> {
+                                it.id
+                            }
+                            is ExploreScreenState.ActorUiState -> {
+                                it.id
+                            }
+                            else -> it.toString()
+                        }
+                    }
+                ) { index ->
                     val item = contentList[index]
                     if (item != null) {
                         when (item) {
@@ -185,7 +199,7 @@ fun ExploreMainContent(
                     }
                 }
                 if (contentList.loadState.append is LoadState.Loading) {
-                    item(span = {GridItemSpan(maxLineSpan)}){
+                    item(span = { GridItemSpan(maxLineSpan) }) {
                         Box(
                             modifier = Modifier.height(214.dp),
                             contentAlignment = Alignment.Center
