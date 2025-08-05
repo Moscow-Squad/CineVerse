@@ -1,5 +1,6 @@
 package com.moscow.cineverse.screen.collections
 
+import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.cineverse.mapper.toUi
@@ -27,6 +28,10 @@ class CollectionsBottomSheetViewModel @Inject constructor(
     val mediaItemType: MediaType = MediaType.toMediaType(
         savedStateHandle.get<String>(CollectionsBottomSheetRoute.MEDIA_TYPE) ?: "movie"
     )
+    init {
+        isUserLoggedIn()
+        loadUserCollections()
+    }
 
      fun isUserLoggedIn() {
         launchWithResult(
@@ -77,6 +82,7 @@ class CollectionsBottomSheetViewModel @Inject constructor(
     }
 
     private fun onAddMediaItemToCollectionSuccess(message: String) {
+        Log.d("sssssssssssss", message)
         sendEvent(CollectionsBottomSheetEffect.OnMovieAddedSuccessfully("Movie added successfully"))
     }
 

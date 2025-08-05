@@ -55,7 +55,6 @@ fun CollectionsBottomSheetScreen(
     )
 
     LaunchedEffect(Unit) {
-        viewModel.isUserLoggedIn()
         viewModel.uiEffect.collect { event ->
             handleEvents(
                 event = event,
