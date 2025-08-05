@@ -101,5 +101,6 @@
     <string name="history_empty_message">It’s quiet in here... Start watching and we’ll keep track for you.</string>
     <string name="find_something_to_watch">Find Something to Watch</string>
     <string name="history_tip_message">Tip: Swipe left to remove movies from your history.</string>
+    <string name="movie_swiped_tip_message">Tip: Swipe left to remove movies from your collection.</string>
 
 </resources>

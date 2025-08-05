@@ -101,5 +101,6 @@
     <string name="history_empty_message">يبدو أن المكان هادئ هنا... ابدأ بالمشاهدة وسنتابع أجلك.</string>
     <string name="find_something_to_watch">ابحث عن شيء لمشاهدته</string>
     <string name="history_tip_message">تنويه: اسحب لليسار لإزالة الأفلام من السجل.</string>
+    <string name="movie_swiped_tip_message">تنويه: اسحب لليسار لحذف الأفلام من مجموعتك.</string>
 
 </resources>
