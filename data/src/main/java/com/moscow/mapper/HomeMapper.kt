@@ -9,7 +9,7 @@ const val ITEM_SERIES = "series"
 
 fun Movie.toHomeItemEntity(categoryType: String): HomeItemEntity {
     return HomeItemEntity(
-        id = this.id,
+        itemId = this.id,
         categoryType = categoryType,
         name = this.name,
         posterPath = this.posterPath,
@@ -23,7 +23,7 @@ fun Movie.toHomeItemEntity(categoryType: String): HomeItemEntity {
 
 fun Series.toHomeItemEntity(categoryType: String): HomeItemEntity {
     return HomeItemEntity(
-        id = this.id,
+        itemId = this.id,
         categoryType = categoryType,
         name = this.name,
         posterPath = this.posterPath,
@@ -43,7 +43,7 @@ fun HomeItemEntity.toMovie(
     video: Boolean = false
 ): Movie {
     return Movie(
-        id = this.id,
+        id = this.itemId,
         name = this.name,
         genreIds = this.genreIds,
         rating = this.rating,
@@ -67,7 +67,7 @@ fun HomeItemEntity.toSeries(
     overview: String = ""
 ): Series {
     return Series(
-        id = this.id,
+        id = this.itemId,
         name = this.name,
         rating = this.rating,
         adult = adult,

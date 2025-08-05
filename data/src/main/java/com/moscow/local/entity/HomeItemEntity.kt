@@ -6,8 +6,9 @@ import kotlinx.datetime.LocalDate
 
 @Entity(tableName = "home_item")
 data class HomeItemEntity(
-    @PrimaryKey
-    val id: Int,
+    @PrimaryKey(autoGenerate = true)
+    val id: Int = 0,
+    val itemId: Int,
     val categoryType: String,
     val name: String,
     val posterPath: String,
