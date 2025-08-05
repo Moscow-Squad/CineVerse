@@ -182,7 +182,7 @@ private fun CollectionsBottomSheetContent(
                     ) {
                         items(uiState.collections) { currentCollection ->
                             CollectionItem(
-                                collectionName = currentCollection.name,
+                                collectionName = currentCollection.title,
                                 showProgressBars = currentCollection.isLoading,
                                 onItemClicked = {
                                     interactionListener.onCollectionClicked(currentCollection.id)
