@@ -23,7 +23,6 @@ import com.moscow.cineverse.designSystem.theme.CineVerseTheme
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cinverse.presentation.R
 
-
 @Composable
 fun HistoryTip(
     modifier: Modifier = Modifier,
@@ -59,7 +58,7 @@ fun HistoryTip(
                 text = stringResource(R.string.history_tip_message),
                 style = Theme.textStyle.body.small.medium,
                 color = Theme.colors.shade.primary,
-
+                modifier = Modifier.weight(1f)
             )
 
             IconButton(
@@ -70,8 +69,7 @@ fun HistoryTip(
                     painter = painterResource(Theme.icons.outline.xClose),
                     contentDescription = "Close tip",
                     tint = Theme.colors.shade.secondary,
-                    modifier = Modifier.size(16.dp)
-
+                    modifier = Modifier.size(12.dp)
                 )
             }
         }
