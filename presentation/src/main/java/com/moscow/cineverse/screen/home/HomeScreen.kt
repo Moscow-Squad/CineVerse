@@ -54,13 +54,12 @@ fun HomeScreen(
                         effect.collectionName
                     )
                 }
+
                 is HomeEvent.MovieClicked -> {
                     navigateToMovieDetails(
                         effect.movieId
                     )
-                    state.recentlyCollectionId?.let {
-                        viewmodel.getRecentlyViewedMovies(it)
-                    }
+                    viewmodel.getRecentlyViewedMovies()
                 }
 
                 is HomeEvent.PromotionClicked -> {}
@@ -93,9 +92,7 @@ fun HomeScreen(
     DisposableEffect(Unit) {
         val observer = LifecycleEventObserver { _, event ->
             if (event == Lifecycle.Event.ON_RESUME) {
-                state.recentlyCollectionId?.let {
-                    viewmodel.getRecentlyViewedMovies(it)
-                }
+                viewmodel.getRecentlyViewedMovies()
             }
         }
 
@@ -198,7 +195,7 @@ fun HomeContent(
                     type = HomeFeaturedItems.TOP_RATED_TV_SHOWS
                 )
 
-                if(state.userName != null && !state.youRecentlyViewed.isEmpty()) {
+                if (!state.youRecentlyViewed.isEmpty()) {
                     FeaturedMovies(
                         displayMovies = state.youRecentlyViewed,
                         onMovieClick = listener::onMediaItemClicked,
@@ -208,11 +205,13 @@ fun HomeContent(
                     )
                 }
 
-                MyCollectionsLayout(
-                    items = state.collections.take(4),
-                    onCollectionClick = listener::onCollectionClick,
-                    onShowMoreClick = listener::onCollectionsShowMoreClick,
-                )
+                if (state.userName != null) {
+                    MyCollectionsLayout(
+                        items = state.collections.take(4),
+                        onCollectionClick = listener::onCollectionClick,
+                        onShowMoreClick = listener::onCollectionsShowMoreClick,
+                    )
+                }
 
                 SuggestionWithHeader(
                     modifier = Modifier
