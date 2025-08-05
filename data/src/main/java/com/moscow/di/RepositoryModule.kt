@@ -7,6 +7,7 @@ import com.moscow.domain.repository.HomeRepository
 import com.moscow.domain.repository.LoginRepository
 import com.moscow.domain.repository.MovieRepository
 import com.moscow.domain.repository.PreferenceRepository
+import com.moscow.domain.repository.RecentlyViewedRepository
 import com.moscow.domain.repository.SearchRepository
 import com.moscow.domain.repository.SeriesRepository
 import com.moscow.repository.ActorRepositoryImpl
@@ -14,6 +15,7 @@ import com.moscow.repository.CollectionsRepositoryImpl
 import com.moscow.repository.GenreRepositoryImpl
 import com.moscow.repository.HomeRepositoryImpl
 import com.moscow.repository.MovieRepositoryImpl
+import com.moscow.repository.RecentlyViewedRepositoryImpl
 import com.moscow.repository.SearchRepositoryImpl
 import com.moscow.repository.SeriesRepositoryImpl
 import com.moscow.repository.login.LoginRepositoryImpl
@@ -64,4 +66,7 @@ abstract class RepositoryModule {
     @Singleton
     abstract fun bindHomeRepository(impl: HomeRepositoryImpl): HomeRepository
 
+    @Binds
+    @Singleton
+    abstract fun bindRecentlyViewedRepository(impl: RecentlyViewedRepositoryImpl): RecentlyViewedRepository
 }
