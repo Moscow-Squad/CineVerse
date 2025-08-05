@@ -32,9 +32,10 @@ import com.moscow.cinverse.presentation.R
 @Composable
 internal fun UserInfo(
     modifier: Modifier = Modifier,
-    name: String? = null,
-    username: String? = null,
+    name: String = "",
+    username: String = "",
     userImage: Painter? = null,
+    isGuest: Boolean,
     onClick: () -> Unit
 
 ) {
@@ -74,14 +75,14 @@ internal fun UserInfo(
         ) {
 
             MovieText(
-                text = if (!name.isNullOrBlank()) name else stringResource(R.string.login_or_sign_up),
+                text = if(!isGuest) name else stringResource(R.string.login_or_sign_up),
                 style = Theme.textStyle.body.large.medium,
                 color = Theme.colors.shade.primary,
                 maxLines = 1,
             )
 
             MovieText(
-                text = if (!username.isNullOrBlank()) username else stringResource(R.string.to_personalize_your_experience),
+                text = if(!isGuest) username else stringResource(R.string.to_personalize_your_experience),
                 style = Theme.textStyle.body.small.medium,
                 color = Theme.colors.shade.secondary,
                 maxLines = 1,
@@ -106,6 +107,7 @@ private fun ProfileDataPreview() {
         UserInfo(
             name = "Shrouk Mohamed",
             username = "shrouk_mohamed16",
+            isGuest = false,
             onClick = {}
         )
     }

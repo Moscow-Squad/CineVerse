@@ -31,6 +31,8 @@ import com.moscow.cinverse.presentation.R
 internal fun Settings(
     modifier: Modifier = Modifier,
     isGuest: Boolean,
+    onLogoutClick:()->Unit, 
+    onLanguageClick:()->Unit,
 ) {
     Column(
         modifier = modifier
@@ -69,7 +71,7 @@ internal fun Settings(
         SettingItem(
             title = stringResource(R.string.language),
             titleColor = Theme.colors.shade.primary,
-            onClick = {},
+            onClick =  { onLanguageClick() },
             prefixIcon = {
                 Icon(
                     painter = painterResource(com.moscow.cineverse.design_system.R.drawable.due_tone_language),
@@ -93,7 +95,7 @@ internal fun Settings(
         if (!isGuest) SettingItem(
             title = stringResource(R.string.logout),
             titleColor = Theme.colors.additional.primary.red,
-            onClick = {},
+            onClick = { onLogoutClick() },
             prefixIcon = {
                 Icon(
                     painter = painterResource(com.moscow.cineverse.design_system.R.drawable.due_tone_logout),
@@ -125,7 +127,7 @@ internal fun SettingItem(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .clickable{onClick()},
+            .clickable { onClick() },
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(8.dp)
 
@@ -150,7 +152,9 @@ internal fun SettingItem(
 private fun SettingsPreview() {
     CineVerseTheme {
         Settings(
-            isGuest = false
+            isGuest = false,
+            onLogoutClick = {},
+            onLanguageClick = {}
         )
     }
 

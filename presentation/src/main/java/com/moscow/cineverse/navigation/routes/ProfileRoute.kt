@@ -14,7 +14,10 @@ fun NavGraphBuilder.profileRoute(navController: NavHostController) {
     composable<ProfileRoute>{
         ProfileScreen(
             navigateToEditProfile = {accountId, sessionId -> },
-            navigateToLogout = {sessionId -> }
+            navigateToHome = { -> },
+            navigateToMyRatings = {},
+            navigateToMyCollections = {},
+            navigateToMyHistory = {}
         )
     }
 }

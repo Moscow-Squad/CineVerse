@@ -7,6 +7,7 @@ import com.moscow.domain.model.UserType
 import com.moscow.domain.repository.LoginRepository
 import com.moscow.domain.repository.PreferenceRepository
 import com.moscow.remote.dto.CreateCollectionDto
+import com.moscow.utils.IMAGES_URL
 import javax.inject.Inject
 
 class LoginRepositoryImpl @Inject constructor(
@@ -26,19 +27,21 @@ class LoginRepositoryImpl @Inject constructor(
         val sessionId =
             loginRemoteDataSource.createAuthenticatedUserSession(requestToken.requestToken ?: "")
         val userId = loginRemoteDataSource.getUserId(sessionId.sessionId ?: "")
-        val response  = collectionRemoteDataSource.addNewCollection(
+      /*  val response  = collectionRemoteDataSource.addNewCollection(
             CreateCollectionDto(
-                name = "Recently Viewed",
+                name = "My Recently Viewed List",
                 description = "A personalized list for recently viewed items"
             ), sessionId.sessionId ?: ""
-        )
+        )*/
 
         preferenceRepository.saveUser(
             UserType.AuthenticatedUser(
-                id = userId.toString(),
+                id = userId.id.toString(),
                 username = loginData.username,
+                name = userId.name.orEmpty(),
                 sessionId = sessionId.sessionId ?: "",
-                recentlyCollectionId = response.listId ?: 0,
+                image = userId.avatar?.tmdb?.avatarPath?.let { IMAGES_URL + it },
+                recentlyCollectionId = /*response.listId ?:*/ 0,
 
             )
         )

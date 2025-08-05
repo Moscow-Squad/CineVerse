@@ -3,16 +3,39 @@ package com.moscow.cineverse.screen.profile
 object ProfileScreenEffectHandler {
     fun handleEffect(
         effects: ProfileScreenEffects,
-        navigateToLogoutBottomSheet:(String)-> Unit,
-        navigateToEditProfileBottomSheet:(String, String) -> Unit
+        navigateToLogin:()-> Unit,
+        navigateToEditProfileBottomSheet:(String, String) -> Unit,
+        navigateToMyRatings: () -> Unit,
+        navigateToMyCollections: () -> Unit,
+        navigateToMyHistory: () -> Unit,
     ){
         when(effects){
-            ProfileScreenEffects.navigateToEditProfile -> {
+            ProfileScreenEffects.showEditProfileBottomSheet -> {
                // navigateToEditProfileBottomSheet()
             }
-            ProfileScreenEffects.navigateToLogout -> {
-               // navigateToLogoutBottomSheet()
+            ProfileScreenEffects.showLogoutBottomSheet -> {
+                navigateToLogin()
             }
+
+            ProfileScreenEffects.navigateToHistory -> {
+                navigateToMyHistory()
+            }
+            ProfileScreenEffects.navigateToMyCollections -> {
+                navigateToMyCollections()
+            }
+            ProfileScreenEffects.navigateToMyRating -> {
+                navigateToMyRatings()
+            }
+
+            ProfileScreenEffects.onLogoutSuccessfully -> {
+
+            }
+
+            ProfileScreenEffects.onLogoutFailed -> {
+
+            }
+
+            ProfileScreenEffects.showLanguageBottomSheet -> TODO()
         }
     }
 }

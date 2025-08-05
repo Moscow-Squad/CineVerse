@@ -1,9 +1,14 @@
 package com.moscow.cineverse.screen.profile
 
 data class ProfileUIState(
-    private val name:String? = null,
-    private val username:String? = null,
-    private val image:String? = null,
-    private val isLoading: Boolean = false,
-    private val errorMessage:String? = null
+     val name:String? = null,
+     val username:String? = null,
+     val image:String? = null,
+     val sessionId:String = "",
+     val isLoading: Boolean = false,
+     val errorMessage:String? = null,
+     val isGuest:Boolean = false,
+     val showLogoutBottomSheet: Boolean = false,
+     val showEditProfileBottomSheet: Boolean = false,
+     val showLanguageBottomSheet:Boolean = false
 )

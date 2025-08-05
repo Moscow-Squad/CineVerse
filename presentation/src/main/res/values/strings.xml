@@ -104,5 +104,7 @@
     <string name="dark_mode">Dark Mode</string>
     <string name="logout">Logout</string>
     <string name="language">Language</string>
+    <string name="are_you_sure_you_want_to_logout">Are you sure you want to logout?</string>
+    <string name="you_can_always_sign_back_in_with_your_account">You can always sign back in with your account.</string>
 
 </resources>

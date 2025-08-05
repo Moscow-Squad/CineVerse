@@ -2,12 +2,10 @@ package com.moscow.remote.services
 
 import com.moscow.remote.dto.profile.AccountDto
 import com.moscow.remote.dto.profile.LogoutDto
-import com.moscow.remote.dto.profile.LogoutRequestDto
 import com.moscow.utils.ACCOUNT
 import com.moscow.utils.AUTHENTICATION
 import com.moscow.utils.SESSION_ID
 import retrofit2.Response
-import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -23,6 +21,6 @@ interface ProfileService {
 
     @DELETE("${AUTHENTICATION}session")
     suspend fun logout(
-        @Body logoutRequestDto: LogoutRequestDto
+        @Query("session_id") sessionId: String
     ): Response<LogoutDto>
 }

@@ -20,6 +20,6 @@ class ProfileRemoteDataSourceImpl @Inject constructor(
     }
 
     override suspend fun logout(sessionId: String): LogoutDto  = handleApi {
-        profileService.logout(LogoutRequestDto(sessionId))
+        profileService.logout(sessionId)
     }
 }
