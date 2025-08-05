@@ -3,10 +3,14 @@ package com.moscow.cineverse.screen.movie_details.component
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import coil3.compose.rememberAsyncImagePainter
 import com.moscow.cineverse.component.SectionTitle
+import com.moscow.cineverse.designSystem.component.bottomsheet.CineVerseBottomSheet
+import com.moscow.cineverse.designSystem.component.message_info.MessageInfoBox
+import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.design_system.R
 import com.moscow.cineverse.mapper.formatReviewDate
 import com.moscow.cineverse.screen.movieSeriesDetails.MovieRatingBottomSheet
@@ -94,5 +98,27 @@ fun MovieRatingBottomSheetSection(
             isLoading = uiState.isLoading,
             modifier = modifier
         )
+
+        if (uiState.showLoginBottomSheet) {
+            CineVerseBottomSheet(
+                title = stringResource(com.moscow.cinverse.presentation.R.string.you_re_almost_there),
+                onClose = { interactionListener.onDismissLoginBottomSheet() },
+                onDismissRequest = { interactionListener.onDismissLoginBottomSheet() },
+                showCancelIcon = true,
+                onAddNewCollectionClick = {}
+            ) {
+                MessageInfoBox(
+                    title = stringResource(com.moscow.cinverse.presentation.R.string.you_re_almost_there),
+                    description = stringResource(com.moscow.cinverse.presentation.R.string.log_in_to_save_movies_create_collections_and_get_personalized_recommendations),
+                    icon = painterResource(Theme.icons.dueTone.videoLibrary),
+                    showButtonsGroup = true,
+                    firstButtonText = stringResource(com.moscow.cinverse.presentation.R.string.not_now),
+                    onClickFirstButton = { interactionListener.onDismissLoginBottomSheet() },
+                    secondButtonText = stringResource(com.moscow.cinverse.presentation.R.string.log_in),
+                    onClickSecondButton = { interactionListener.navigateToLogin() },
+                    modifier = Modifier.padding(bottom = 16.dp),
+                )
+            }
+        }
     }
 }
