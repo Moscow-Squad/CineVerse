@@ -99,18 +99,8 @@ class HomeViewModel @Inject constructor(
     private fun onGetUserDetailsSuccess(user: UserType) {
         when (user) {
             is UserType.AuthenticatedUser -> {
-                updateState { it.copy(userName = user.username) }
-                launchWithResult(
-                    action = { getCollectionDetailsUseCase(user.recentlyCollectionId,1) },
-                    onSuccess = { result ->
-                        updateState {
-                            it.copy(
-                                youRecentlyViewed = result.reversed().toMediaItemUiState()
-                            )
-                        }
-                    },
-                    onError = {}
-                )
+                updateState { it.copy(userName = user.username, recentlyCollectionId = user.recentlyCollectionId) }
+                getRecentlyViewedMovies(user.recentlyCollectionId)
             }
 
             is UserType.GuestUser -> {
@@ -121,6 +111,20 @@ class HomeViewModel @Inject constructor(
 
     private fun onGetUserDetailsError(throwable: Throwable) {
         updateState { it.copy(error = throwable.message) }
+    }
+
+    fun getRecentlyViewedMovies(recentlyCollectionId: Int){
+        launchWithResult(
+            action = { getCollectionDetailsUseCase(recentlyCollectionId,1) },
+            onSuccess = { result ->
+                updateState {
+                    it.copy(
+                        youRecentlyViewed = result.reversed().toMediaItemUiState()
+                    )
+                }
+            },
+            onError = {}
+        )
     }
 
     private suspend fun getGenres() {

@@ -1,4 +1,4 @@
-package com.data_source.remote
+package com.moscow.data_source.remote
 
 import com.moscow.remote.dto.MovieDto
 import com.moscow.remote.dto.series.SeriesDto
