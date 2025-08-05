@@ -37,6 +37,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.itemKey
 import com.moscow.cineverse.common_ui_state.MediaItemUiState
 import com.moscow.cineverse.component.MoviePosterCard
 import com.moscow.cineverse.component.NoInternetScreen
@@ -185,7 +186,7 @@ fun ExploreMainContent(
                     }
                 }
                 if (contentList.loadState.append is LoadState.Loading) {
-                    item(span = {GridItemSpan(maxLineSpan)}){
+                    item(span = { GridItemSpan(maxLineSpan) }) {
                         Box(
                             modifier = Modifier.height(214.dp),
                             contentAlignment = Alignment.Center

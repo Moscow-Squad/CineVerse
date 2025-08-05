@@ -55,7 +55,6 @@ fun CollectionsBottomSheetScreen(
     )
 
     LaunchedEffect(Unit) {
-        viewModel.isUserLoggedIn()
         viewModel.uiEffect.collect { event ->
             handleEvents(
                 event = event,
@@ -182,7 +181,7 @@ private fun CollectionsBottomSheetContent(
                     ) {
                         items(uiState.collections) { currentCollection ->
                             CollectionItem(
-                                collectionName = currentCollection.name,
+                                collectionName = currentCollection.title,
                                 showProgressBars = currentCollection.isLoading,
                                 onItemClicked = {
                                     interactionListener.onCollectionClicked(currentCollection.id)
