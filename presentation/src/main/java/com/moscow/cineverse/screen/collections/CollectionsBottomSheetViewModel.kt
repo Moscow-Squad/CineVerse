@@ -82,8 +82,11 @@ class CollectionsBottomSheetViewModel @Inject constructor(
     }
 
     private fun onAddMediaItemToCollectionSuccess(message: String) {
-        Log.d("sssssssssssss", message)
-        sendEvent(CollectionsBottomSheetEffect.OnMovieAddedSuccessfully("Movie added successfully"))
+        if (message.contains("success")){
+            sendEvent(CollectionsBottomSheetEffect.OnMovieAddedSuccessfully("Movie added successfully"))
+        }else{
+            sendEvent(CollectionsBottomSheetEffect.OnMovieAddedSuccessfully("Error on adding Movie. try again later!"))
+        }
     }
 
     private fun onAddMediaItemToCollectionFailed(e: Throwable) {
