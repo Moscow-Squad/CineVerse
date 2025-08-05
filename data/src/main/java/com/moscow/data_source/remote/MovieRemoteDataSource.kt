@@ -10,11 +10,11 @@ import com.moscow.remote.dto.review.ReviewDto
 import com.moscow.utils.ApiResponse
 
 interface MovieRemoteDataSource {
-    suspend fun getPopularMovies(page:Int): ApiResponse<MovieDto>
+    suspend fun getPopularMovies(page: Int): ApiResponse<MovieDto>
     suspend fun getMovieDetails(id: Int): MovieDetailDto
-    suspend fun rateMovie(rating: RatingRequestDto, id: Int): ApiResponse<Nothing>
+    suspend fun rateMovie(rating: RatingRequestDto, id: Int)
     suspend fun deleteRatingMovie(movieId: Int): ApiResponse<Nothing>
-    suspend fun getRatedMovies(userId: Int, page : Int): ApiResponse<RatedMovieDto>
+    suspend fun getRatedMovies(userId: Int, page: Int): ApiResponse<RatedMovieDto>
     suspend fun getMovieReviews(id: Int, page: Int): ApiResponse<ReviewDto>
     suspend fun getMovieCredits(id: Int): CreditsDetailsDto
     suspend fun getMoviesRecommendations(id: Int, page: Int): ApiResponse<MovieDto>

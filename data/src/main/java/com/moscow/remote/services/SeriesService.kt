@@ -48,7 +48,7 @@ interface SeriesService {
         @Path("series_id") id: Int,
         @Query(SESSION_ID) sessionId: String,
         @Body rating: RatingRequestDto
-    ): Response<Nothing>
+    ): Response<Unit>
 
     @DELETE("$SERIES{series_id}$RATING")
     suspend fun deleteRatingSeries(

@@ -77,14 +77,11 @@ class MyRatingsViewModel @Inject constructor(
             config = PagingConfig(pageSize = 20),
             pagingSourceFactory = {
                 BasePagingSource { page ->
-                    ratedMoviesUseCase(
-                        12,  //TODO UserId
-                        page = page
-                    )
+                    ratedMoviesUseCase.invoke(page)
                 }
             }
         ).flow.map { pagingData ->
-            pagingData.map { movie -> movie.toUi() }
+            pagingData.map { movie -> movie.toUi(uiState.value.movieGenres) }
         }.cachedIn(viewModelScope)
 
         updateContentList()
@@ -95,14 +92,11 @@ class MyRatingsViewModel @Inject constructor(
             config = PagingConfig(pageSize = 20),
             pagingSourceFactory = {
                 BasePagingSource { page ->
-                    ratedSeriesUseCase(
-                        13, //TODO UserId
-                        page
-                    )
+                    ratedSeriesUseCase.invoke(page)
                 }
             }
         ).flow.map { pagingData ->
-            pagingData.map { series -> series.toUi() }
+            pagingData.map { series -> series.toUi(uiState.value.seriesGenres) }
         }.cachedIn(viewModelScope)
 
         updateContentList()
