@@ -3,6 +3,7 @@ package com.moscow.local
 import com.google.common.truth.Truth
 import com.moscow.local.dao.search.FavouriteGenreDao
 import com.moscow.local.dao.search.SearchHistoryDao
+import com.moscow.local.data_source.SearchLocalDataSourceImpl
 import com.moscow.local.entity.FavouriteGenreEntity
 import com.moscow.local.entity.SearchHistoryEntity
 import io.mockk.coEvery
