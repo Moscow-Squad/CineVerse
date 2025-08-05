@@ -5,7 +5,7 @@ import androidx.room.PrimaryKey
 import kotlinx.datetime.LocalDate
 
 @Entity(tableName = "home_item")
-data class HomeItemEntity(
+data class MediaItemEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
     val itemId: Int,
