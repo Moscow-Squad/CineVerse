@@ -1,6 +1,7 @@
 package com.moscow.cineverse.screen.collections
 
-import com.moscow.cineverse.screen.home.CollectionUiState
+import com.moscow.cineverse.common_ui_state.CollectionUiState
+
 
 data class CollectionsBottomSheetScreenState(
     val isLoading: Boolean = false,

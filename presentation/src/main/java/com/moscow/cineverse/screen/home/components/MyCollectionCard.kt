@@ -19,9 +19,9 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.moscow.cineverse.common_ui_state.CollectionUiState
 import com.moscow.cineverse.design_system.R
 import com.moscow.cineverse.designSystem.theme.Theme
-import com.moscow.cineverse.screen.home.CollectionUiState
 
 @Composable
 fun MyCollectionCard(
