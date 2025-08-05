@@ -1,4 +1,4 @@
-package com.moscow.local
+package com.moscow.local.data_source
 
 import com.moscow.data_source.local.DetailsLocalDataSource
 import com.moscow.local.dao.search.FavouriteGenreDao

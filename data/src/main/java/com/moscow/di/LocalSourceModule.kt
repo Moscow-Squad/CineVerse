@@ -7,9 +7,11 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStoreFile
 import androidx.room.Room
 import com.moscow.data_source.local.DetailsLocalDataSource
+import com.moscow.data_source.local.HomeLocalDataSource
 import com.moscow.data_source.local.SearchLocalDataSource
-import com.moscow.local.DetailsLocalDataSourceImpl
-import com.moscow.local.SearchLocalDataSourceImpl
+import com.moscow.local.data_source.DetailsLocalDataSourceImpl
+import com.moscow.local.data_source.HomeLocalDataSourceImpl
+import com.moscow.local.data_source.SearchLocalDataSourceImpl
 import com.moscow.local.database.CineVerseDataBase
 import dagger.Binds
 import dagger.Module
@@ -33,6 +35,10 @@ abstract class LocalSourceModule {
     @Binds
     @Singleton
     abstract fun bindDetailsLocalDataSource(impl: DetailsLocalDataSourceImpl): DetailsLocalDataSource
+
+    @Binds
+    @Singleton
+    abstract fun bindHomeLocalDataSource(impl: HomeLocalDataSourceImpl): HomeLocalDataSource
 
     companion object {
         @Provides
@@ -69,11 +75,14 @@ abstract class LocalSourceModule {
 
         @Provides
         @Singleton
+        fun provideHomeCacheDao(database: CineVerseDataBase) = database.homeCacheDao()
+
+        @Provides
+        @Singleton
         fun provideDataStore(@ApplicationContext context: Context): DataStore<Preferences> {
             return PreferenceDataStoreFactory.create(
                 produceFile = { context.preferencesDataStoreFile("cineverse_preferences") }
             )
-
         }
     }
 }

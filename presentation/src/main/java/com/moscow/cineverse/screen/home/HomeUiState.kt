@@ -7,6 +7,7 @@ data class HomeUiState(
     val error: String? = null,
     val genres: List<GenreUi> = emptyList(),
     val userName: String? = null,
+    val recentlyCollectionId: Int? = null,
     val sliderItems: List<MediaItemUiState> = emptyList(),
     val recentlyReleasedMovies: List<MediaItemUiState> = emptyList(),
     val upcomingMovies: List<MediaItemUiState> = emptyList(),

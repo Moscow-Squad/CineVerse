@@ -1,7 +1,6 @@
 package com.moscow.cineverse.screen.movie_details
 
 
-import android.util.Log
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.ExperimentalSharedTransitionApi
@@ -10,10 +9,9 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
-import androidx.compose.animation.with
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -91,13 +89,12 @@ private fun MovieDetailsContent(
     modifier: Modifier = Modifier
 ) {
     MovieScaffold {
-        Log.d("TAG", "MovieDetailsContent: ${uiState.toString()}")
         when {
-            uiState.isLoading == true -> {
+            uiState.isLoading -> {
                 LoadingContent(modifier = modifier)
             }
 
-            uiState.shouldShowError == true -> {
+            uiState.shouldShowError -> {
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
@@ -135,74 +132,78 @@ private fun MovieDetailsMainContent(
         }
     }
 
-    Column(modifier = modifier.background(Theme.colors.background.screen)) {
-        MovieAppBar(backButtonClick = onNavigateBack, showBackButton = true)
+    LaunchedEffect(key1 = Unit) {
+        scrollState.animateScrollToItem(0)
+    }
 
-        LazyColumn(
-            state = scrollState,
-            modifier = Modifier.background(Theme.colors.background.screen)
-        ) {
-            item {
-                SharedTransitionLayout {
-                    AnimatedContent(
-                        targetState = isCollapsed,
-                        transitionSpec = {
-                            slideInVertically(
-                                initialOffsetY = { fullHeight -> fullHeight }
-                            ) + fadeIn() with
-                                    slideOutVertically(
-                                        targetOffsetY = { fullHeight -> -fullHeight }
-                                    ) + fadeOut()
-                        }
-                    ) { target ->
-                        if (!target) {
-                            MovieHeaderSection(
-                                uiState = uiState,
-                                interactionListener = interactionListener,
-                                animatedVisibilityScope = this@AnimatedContent,
-                                sharedTransitionScope = this@SharedTransitionLayout
-                            )
-                        } else {
-                            MovieCollapsedHeaderSection(
-                                uiState = uiState,
-                                interactionListener = interactionListener,
-                                animatedVisibilityScope = this@AnimatedContent,
-                                sharedTransitionScope = this@SharedTransitionLayout,
-                            )
-                        }
+    LazyColumn(
+        state = scrollState,
+        modifier = modifier.background(Theme.colors.background.screen)
+    ) {
+        stickyHeader {
+            MovieAppBar(backButtonClick = onNavigateBack, showBackButton = true)
+        }
+        item {
+            SharedTransitionLayout {
+                AnimatedContent(
+                    targetState = isCollapsed,
+                    transitionSpec = {
+                        slideInVertically(
+                            initialOffsetY = { fullHeight -> fullHeight }
+                        ) + fadeIn() togetherWith
+                                slideOutVertically(
+                                    targetOffsetY = { fullHeight -> -fullHeight }
+                                ) + fadeOut()
+                    }
+                ) { target ->
+                    if (!target) {
+                        MovieHeaderSection(
+                            uiState = uiState,
+                            interactionListener = interactionListener,
+                            animatedVisibilityScope = this@AnimatedContent,
+                            sharedTransitionScope = this@SharedTransitionLayout
+                        )
+                    } else {
+                        MovieCollapsedHeaderSection(
+                            uiState = uiState,
+                            interactionListener = interactionListener,
+                            animatedVisibilityScope = this@AnimatedContent,
+                            sharedTransitionScope = this@SharedTransitionLayout,
+                        )
                     }
                 }
             }
-            item {
-                StorylineSection(description = uiState.movieDetailsUiState?.description)
-            }
-            item {
-                MovieCastSection(uiState = uiState, interactionListener = interactionListener)
-            }
-            item {
-                MovieStaffInfoSection(uiState = uiState)
-            }
-            item {
-                MovieRecommendationsSection(
-                    uiState = uiState,
-                    interactionListener = interactionListener
-                )
-            }
-            item {
-                MovieRatingSection(uiState = uiState, interactionListener = interactionListener)
-            }
-            item {
-                if (uiState.reviewsFlow?.isEmpty() == true) {
-                    Spacer(modifier = Modifier.height(50.dp))
-                } else {
-                    MovieReviewsSection(uiState = uiState, interactionListener = interactionListener)
-                }
+        }
+        item {
+            StorylineSection(description = uiState.movieDetailsUiState?.description)
+        }
+        item {
+            MovieCastSection(uiState = uiState, interactionListener = interactionListener)
+        }
+        item {
+            MovieStaffInfoSection(uiState = uiState)
+        }
+        item {
+            MovieRecommendationsSection(
+                uiState = uiState,
+                interactionListener = interactionListener
+            )
+        }
+        item {
+            MovieRatingSection(uiState = uiState, interactionListener = interactionListener)
+        }
+        item {
+            if (uiState.reviewsFlow?.isEmpty() == true) {
+                Spacer(modifier = Modifier.height(50.dp))
+            } else {
+                MovieReviewsSection(uiState = uiState, interactionListener = interactionListener)
             }
         }
-
-        MovieRatingBottomSheetSection(
-            uiState = uiState,
-            interactionListener = interactionListener
-        )
     }
+
+    MovieRatingBottomSheetSection(
+        uiState = uiState,
+        interactionListener = interactionListener
+    )
+
 }
