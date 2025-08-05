@@ -14,7 +14,7 @@ interface SeriesRemoteDataSource {
     suspend fun getPopularSeries(page: Int): ApiResponse<SeriesDto>
     suspend fun getSeriesDetails(id: Int): SeriesDetailDto
     suspend fun rateSeries(rating: RatingRequestDto, id: Int)
-    suspend fun deleteRatingSeries(seriesId: Int): ApiResponse<Nothing>
+    suspend fun deleteRatingSeries(seriesId: Int)
     suspend fun getRatedSeries(userId: Int, page: Int): ApiResponse<RatedSeriesDto>
     suspend fun getSeriesReviews(id: Int, page: Int): ApiResponse<ReviewDto>
     suspend fun getListOfSeries(id: Int, page: Int): ListOfSeriesDto

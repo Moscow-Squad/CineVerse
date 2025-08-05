@@ -10,6 +10,7 @@ import com.moscow.remote.dto.details.MediaTrailersDto
 import com.moscow.remote.dto.rating.series.RatedSeriesDto
 import com.moscow.utils.ACCOUNT
 import com.moscow.utils.ApiResponse
+import com.moscow.utils.DESCENDING
 import com.moscow.utils.DISCOVER_SERIES_LIST
 import com.moscow.utils.LATEST
 import com.moscow.utils.LISTS
@@ -22,6 +23,7 @@ import com.moscow.utils.REVIEWS
 import com.moscow.utils.SERIES
 import com.moscow.utils.SERIES_CREDITS
 import com.moscow.utils.SESSION_ID
+import com.moscow.utils.SORTED_BY
 import com.moscow.utils.TRAILERS
 import com.moscow.utils.WITH_GENRES
 import retrofit2.Response
@@ -54,13 +56,14 @@ interface SeriesService {
     suspend fun deleteRatingSeries(
         @Path("series_id") seriesId: Int,
         @Query(SESSION_ID) sessionId: String
-    ): Response<Nothing>
+    ): Response<Unit>
 
     @GET("$ACCOUNT/{account_id}$RATED_SERIES")
     suspend fun getRatedSeries(
         @Path("account_id") id: Int,
         @Query(SESSION_ID) sessionId: String,
-        @Query(PAGE) page: Int
+        @Query(PAGE) page: Int,
+        @Query(SORTED_BY) sortBy: String = DESCENDING
     ): Response<ApiResponse<RatedSeriesDto>>
 
     @GET("$SERIES$LATEST")

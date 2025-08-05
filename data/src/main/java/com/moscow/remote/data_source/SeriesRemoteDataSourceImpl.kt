@@ -41,7 +41,7 @@ class SeriesRemoteDataSourceImpl @Inject constructor(
         }
     }
 
-    override suspend fun deleteRatingSeries(seriesId: Int): ApiResponse<Nothing> {
+    override suspend fun deleteRatingSeries(seriesId: Int){
         val sessionId = preferenceRepository.getSessionId()
         handleApi {
             seriesService.deleteRatingSeries(

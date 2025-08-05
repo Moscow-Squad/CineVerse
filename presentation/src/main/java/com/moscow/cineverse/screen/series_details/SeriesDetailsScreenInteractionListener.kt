@@ -7,6 +7,7 @@ interface SeriesDetailsScreenInteractionListener {
     fun showRatingBottomSheet()
     fun onDismissOrCancelRatingBottomSheet()
     fun onRatingSubmit(rating: Int, seriesId: Int)
+    fun onDeleteRatingSeries(seriesId: Int)
     fun onShowMoreRecommendationsClicked(seriesId: Int, seriesName: String)
     fun onShowMoreReviewsClicked(seriesId: Int)
     fun onShowMoreSeasonsClicked(seriesId: Int)

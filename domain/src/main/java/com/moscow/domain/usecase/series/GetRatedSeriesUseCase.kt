@@ -14,7 +14,11 @@ class GetRatedSeriesUseCase @Inject constructor(
     suspend operator fun invoke(page: Int): List<RatedSeriesResult> {
         val user = preferenceRepository.getUser()
         val userid = if (user is UserType.AuthenticatedUser) user.id else "0"
-        return seriesRepository.getRatedSeries(userid.toInt(), page)
+        val parseUserid = userid.substring(
+            startIndex = userid.indexOfFirst { it == '=' } + 1,
+            endIndex = userid.indexOfFirst { it == ',' }
+        )
+        return seriesRepository.getRatedSeries(parseUserid.toInt(), page)
     }
 
 

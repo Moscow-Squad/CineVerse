@@ -13,7 +13,11 @@ class GetRatedMoviesUseCase @Inject constructor(
     suspend operator fun invoke(page: Int): List<RatedMovieResult> {
         val user = preferenceRepository.getUser()
         val userid = if (user is UserType.AuthenticatedUser) user.id else "0"
-        return movieRepository.getRatedMovies(userid.toInt(), page)
+        val parseUserid = userid.substring(
+            startIndex = userid.indexOfFirst { it == '=' } + 1,
+            endIndex = userid.indexOfFirst { it == ',' }
+        )
+        return movieRepository.getRatedMovies(parseUserid.toInt(), page)
     }
 
     data class RatedMovieResult(

@@ -8,6 +8,7 @@ import com.moscow.cineverse.navigation.routes.SeriesDetailsRoute
 import com.moscow.cineverse.utlis.ViewMode
 import com.moscow.domain.model.Series
 import com.moscow.domain.usecase.review.GetReviewsUseCase
+import com.moscow.domain.usecase.series.DeleteRatingSeriesUseCase
 import com.moscow.domain.usecase.series.GetSeriesCreditsDetailsUseCase
 import com.moscow.domain.usecase.series.GetSeriesDetailUseCase
 import com.moscow.domain.usecase.series.GetSeriesRecommendationsUseCase
@@ -24,6 +25,7 @@ class SeriesDetailsScreenScreenViewModel @Inject constructor(
     private val rateSeriesUseCase: RateSeriesUseCase,
     private val getSeriesCreditsDetailsUseCase: GetSeriesCreditsDetailsUseCase,
     private val getSeriesRecommendationsUseCase: GetSeriesRecommendationsUseCase,
+    private val deleteRatingSeriesUseCase: DeleteRatingSeriesUseCase,
     savedStateHandle: SavedStateHandle,
 ) : BaseViewModel<SeriesDetailsScreenState, SeriesDetailsScreenEffects>(SeriesDetailsScreenState()),
     SeriesDetailsScreenInteractionListener {
@@ -136,7 +138,15 @@ class SeriesDetailsScreenScreenViewModel @Inject constructor(
         launchAndForget(
             action = { rateSeriesUseCase.rateSeriesUse(rating.toFloat(), seriesId) },
             onSuccess = { updateState { it.copy(starsRating = rating, showRatingBottomSheet = false) } },
-            onError = { updateState { it.copy(starsRating = rating, showRatingBottomSheet = false) } },
+            onError = { }, // TODO: Show Toast
+        )
+    }
+
+    override fun onDeleteRatingSeries(seriesId: Int) {
+        launchAndForget(
+            action = { deleteRatingSeriesUseCase(seriesId) },
+            onSuccess = { updateState { it.copy(starsRating = 0, showRatingBottomSheet = false) } },
+            onError = { }, // TODO: Show Toast
         )
     }
 

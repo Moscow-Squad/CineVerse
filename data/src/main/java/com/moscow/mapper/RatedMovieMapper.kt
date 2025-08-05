@@ -25,7 +25,7 @@ fun RatedMovieDto.toOutputResult(): RatedMovieResult? {
     val posterPath = this.posterPath ?: ""
     val video = (this.video == true)
     val poster = this.posterPath ?: ""
-    val rating = this.rating ?: 0
+    val rating = this.rating?.toFloat() ?: 0f
 
     return RatedMovieResult(
         movie = Movie(
@@ -43,6 +43,6 @@ fun RatedMovieDto.toOutputResult(): RatedMovieResult? {
             video = video,
             poster = poster
         ),
-        rating = rating.toFloat()
+        rating = rating
     )
 }
