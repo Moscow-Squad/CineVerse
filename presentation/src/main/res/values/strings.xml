@@ -97,5 +97,6 @@
     <string name="search">Search...</string>
     <string name="search_can_t_be_empty_1">Search can\'t be empty!</string>
     <string name="my_ratings">My Ratings</string>
+    <string name="you_gave_it">You gave it</string>
 
 </resources>
