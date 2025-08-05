@@ -115,11 +115,6 @@ private fun ExploreScreenContent(
         genresVisible = true
     }
 
-    LaunchedEffect(contentList.loadState.refresh == LoadState.Loading) {
-        gridState.animateScrollToItem(0)
-    }
-
-
     LaunchedEffect(uiState.shouldShowGenres) {
         if (uiState.shouldShowGenres) {
             genresVisible = true

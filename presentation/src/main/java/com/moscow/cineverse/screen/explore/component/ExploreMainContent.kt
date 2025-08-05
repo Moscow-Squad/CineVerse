@@ -164,20 +164,7 @@ fun ExploreMainContent(
                 ),
                 modifier = modifier.fillMaxSize()
             ) {
-                items(
-                    count = contentList.itemCount,
-                    key = contentList.itemKey {
-                        when (it) {
-                            is MediaItemUiState -> {
-                                it.id
-                            }
-                            is ExploreScreenState.ActorUiState -> {
-                                it.id
-                            }
-                            else -> it.toString()
-                        }
-                    }
-                ) { index ->
+                items(contentList.itemCount) { index ->
                     val item = contentList[index]
                     if (item != null) {
                         when (item) {
