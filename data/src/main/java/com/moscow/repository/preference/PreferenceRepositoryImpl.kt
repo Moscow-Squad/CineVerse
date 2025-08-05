@@ -1,6 +1,5 @@
 package com.moscow.repository.preference
 
-import android.util.Log
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
@@ -28,6 +27,7 @@ class PreferenceRepositoryImpl @Inject constructor(
                     preferences[SESSION_ID_KEY] = userType.sessionId
                     preferences[RECENTLY_VIEWED_COLLECTION_ID] = userType.recentlyCollectionId
                     preferences[Is_LOGGED_IN_KEY] = true
+                    preferences[SHOW_COLLECTION_DETAILS_TIP] = true
                     preferences.remove(EXPIRED_AT_KEY)
                 }
                 is UserType.GuestUser -> {
@@ -35,6 +35,7 @@ class PreferenceRepositoryImpl @Inject constructor(
                     preferences[SESSION_ID_KEY] = userType.sessionId
                     preferences[EXPIRED_AT_KEY] = userType.expiredAt.toString()
                     preferences[Is_LOGGED_IN_KEY] = false
+                    preferences[SHOW_COLLECTION_DETAILS_TIP] = true
                     preferences.remove(USER_ID_KEY)
                     preferences.remove(USERNAME_KEY)
                 }
@@ -94,6 +95,16 @@ class PreferenceRepositoryImpl @Inject constructor(
         return dataStore.data.map {it[Is_LOGGED_IN_KEY] }.first() == true
     }
 
+    override suspend fun showCategoryDetailsTip(): Boolean {
+        return dataStore.data.map {it[SHOW_COLLECTION_DETAILS_TIP] }.first() ?: true
+    }
+
+    override suspend fun closeCategoryDetailsTip() {
+        dataStore.edit { preferences ->
+            preferences[SHOW_COLLECTION_DETAILS_TIP] = false
+        }
+    }
+
     companion object {
         private const val AUTHENTICATED_USER = "authenticated"
         private const val GUEST_USER = "guest"
@@ -104,5 +115,6 @@ class PreferenceRepositoryImpl @Inject constructor(
         private val RECENTLY_VIEWED_COLLECTION_ID = intPreferencesKey("recently_collection_id")
         private val EXPIRED_AT_KEY = stringPreferencesKey("expired_at")
         private val Is_LOGGED_IN_KEY = booleanPreferencesKey("is_logged_in")
+        private val SHOW_COLLECTION_DETAILS_TIP = booleanPreferencesKey("is_tip_collection_details")
     }
 }

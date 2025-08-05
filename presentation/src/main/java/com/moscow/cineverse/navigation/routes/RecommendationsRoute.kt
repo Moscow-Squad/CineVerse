@@ -14,7 +14,7 @@ data class RecommendationsRoute(val movieId: Int, val movieTitle: String) {
     }
 }
 
-fun NavGraphBuilder.RecommendationsRoute(navController: NavHostController) {
+fun NavGraphBuilder.recommendationsRoute(navController: NavHostController) {
     composable<RecommendationsRoute> {
         RecommendationMoviesScreen(
             navigateBack = { navController.navigateUp() },

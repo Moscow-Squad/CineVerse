@@ -7,13 +7,11 @@ import com.moscow.cineverse.mapper.toMediaItemUi
 import com.moscow.cineverse.mapper.toUi
 import com.moscow.cineverse.navigation.routes.MovieDetailsRoute
 import com.moscow.domain.model.CreditsDetails
-import com.moscow.domain.model.MediaType
 import com.moscow.domain.model.Movie
 import com.moscow.domain.model.Review
 import com.moscow.domain.model.UserType
 import com.moscow.domain.model.details.MovieDetail
 import com.moscow.domain.usecase.collection.AddMediaItemToCollectionUseCase
-import com.moscow.domain.usecase.collection.GetCurrentUserUseCase
 import com.moscow.domain.usecase.local.GetUserDetailsUseCase
 import com.moscow.domain.usecase.movie.GetMovieCreditsUseCase
 import com.moscow.domain.usecase.movie.GetMovieDetailsUseCase
@@ -79,7 +77,6 @@ class MovieDetailsViewModel @Inject constructor(
                     action = {
                         addMediaItemToCollectionUseCase(
                             movieId,
-                            MediaType.Movie,
                             collectionId = collectionId ?: throw IllegalArgumentException("User must logged in")
                         )
                     },
