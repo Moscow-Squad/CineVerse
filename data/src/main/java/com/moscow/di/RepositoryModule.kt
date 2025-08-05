@@ -1,7 +1,7 @@
 package com.moscow.di
 
-import com.moscow.data_source.language.LanguageProvider
-import com.moscow.data_source.theme.ThemeProvider
+import com.moscow.domain.repository.language.LanguageProvider
+import com.moscow.domain.repository.theme.ThemeProvider
 import com.moscow.domain.repository.ActorRepository
 import com.moscow.domain.repository.CollectionsRepository
 import com.moscow.domain.repository.GenreRepository

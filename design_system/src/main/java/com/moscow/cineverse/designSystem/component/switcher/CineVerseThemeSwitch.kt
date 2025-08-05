@@ -1,44 +1,47 @@
 package com.moscow.cineverse.designSystem.component.switcher
 
-import android.content.res.Configuration
+import android.util.Log
 import androidx.compose.foundation.background
-import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.moscow.cineverse.designSystem.theme.CineVerseTheme
 import com.moscow.cineverse.designSystem.theme.Theme
 
 @Composable
 fun CineVerseSwitch(
     modifier: Modifier = Modifier,
+    isDarkTheme: Boolean,
+    onThemeChange: (Boolean) -> Unit
 ) {
-    val isDarkTheme = isSystemInDarkTheme()
-    var isChecked by remember { mutableStateOf(true) }
+    var isChecked by rememberSaveable { mutableStateOf(isDarkTheme) }
+
+    LaunchedEffect(isDarkTheme) {
+        if (isChecked != isDarkTheme) {
+            isChecked = isDarkTheme
+        }
+    }
+
+    Log.d("theme", "$isChecked -- ")
 
     Switch(
         checked = isChecked,
-        onCheckedChange = { isChecked = it },
+        onCheckedChange = { checked ->
+            isChecked = checked
+            onThemeChange(checked)
+        },
         enabled = true,
         thumbContent = {
             Box(
@@ -77,82 +80,4 @@ fun CineVerseSwitch(
         ),
         modifier = modifier
     )
-}
-
-@Preview(name = "Light Mode", uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true)
-@Preview(name = "Dark Mode", uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
-@Composable
-private fun CineVerseSwitchPreview() {
-
-    CineVerseTheme {
-        Surface(
-            color = MaterialTheme.colorScheme.background,
-            modifier = Modifier.padding(16.dp)
-        ) {
-            Column(
-                verticalArrangement = Arrangement.spacedBy(24.dp),
-                modifier = Modifier.padding(16.dp)
-            ) {
-                // Enabled states
-                Text(
-                    "Enabled States",
-                    style = MaterialTheme.typography.titleMedium,
-                    color = MaterialTheme.colorScheme.onBackground
-                )
-
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(16.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    CineVerseSwitch()
-                    Text(
-                        "Enabled - Checked",
-                        color = MaterialTheme.colorScheme.onBackground
-                    )
-                }
-
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(16.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    CineVerseSwitch(
-                    )
-                    Text(
-                        "Enabled - Unchecked",
-                        color = MaterialTheme.colorScheme.onBackground
-                    )
-                }
-
-                Text(
-                    "Disabled States",
-                    style = MaterialTheme.typography.titleMedium,
-                    color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f)
-                )
-
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(16.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    CineVerseSwitch(
-                    )
-                    Text(
-                        "Disabled - Checked",
-                        color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f)
-                    )
-                }
-
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(16.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    CineVerseSwitch(
-                    )
-                    Text(
-                        "Disabled - Unchecked",
-                        color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f)
-                    )
-                }
-            }
-        }
-    }
 }

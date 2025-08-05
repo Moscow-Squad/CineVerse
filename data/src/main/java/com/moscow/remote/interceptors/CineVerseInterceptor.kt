@@ -1,7 +1,7 @@
 package com.moscow.remote.interceptors
 
 import com.moscow.data.BuildConfig
-import com.moscow.data_source.language.LanguageProvider
+import com.moscow.domain.repository.language.LanguageProvider
 import okhttp3.Interceptor
 import okhttp3.Response
 
@@ -13,7 +13,7 @@ class CineVerseInterceptor(
         val originalUrl = originalRequest.url
 
         val newUrl = originalUrl.newBuilder()
-            .addQueryParameter("language", languageProvider.getCachedLanguage())
+            .addQueryParameter("language", languageProvider.languageFlow.toString())
             .build()
 
 

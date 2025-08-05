@@ -1,5 +1,7 @@
 package com.moscow.cineverse.screen.profile
 
+import java.util.Locale
+
 data class ProfileUIState(
      val name:String? = null,
      val username:String? = null,
@@ -11,4 +13,6 @@ data class ProfileUIState(
      val showLogoutBottomSheet: Boolean = false,
      val showEditProfileBottomSheet: Boolean = false,
      val showLanguageBottomSheet:Boolean = false
+     val isDarkTheme:Boolean = true,
+     val appLanguage:String = Locale.getDefault().language
 )

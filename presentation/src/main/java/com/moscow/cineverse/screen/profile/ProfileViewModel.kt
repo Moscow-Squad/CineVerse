@@ -1,13 +1,19 @@
 package com.moscow.cineverse.screen.profile
 
+import androidx.lifecycle.viewModelScope
 import android.util.Log
 import com.moscow.cineverse.base.BaseViewModel
+import com.moscow.domain.model.profile.AccountDetails
+import com.moscow.domain.repository.language.LanguageProvider
+import com.moscow.domain.repository.theme.ThemeProvider
 import com.moscow.domain.model.UserType
 import com.moscow.domain.usecase.local.GetUserDetailsUseCase
 import com.moscow.domain.usecase.local.RemoveUserDetailsUseCase
 import com.moscow.domain.usecase.profile.GetAccountDetailsUseCase
 import com.moscow.domain.usecase.profile.LogoutUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
+import java.util.Locale
 import javax.inject.Inject
 
 @HiltViewModel
@@ -15,7 +21,9 @@ class ProfileViewModel @Inject constructor(
     private val getUserDetailsUseCase: GetUserDetailsUseCase,
     private val logoutUseCase: LogoutUseCase,
     private val removeUserDetailsUseCase: RemoveUserDetailsUseCase,
-    private val getAccountDetailsUseCase: GetAccountDetailsUseCase
+    private val getAccountDetailsUseCase: GetAccountDetailsUseCase,
+    private val themeProvider: ThemeProvider,
+    private val languageProvider: LanguageProvider
 ) : BaseViewModel<ProfileUIState, ProfileScreenEffects>(ProfileUIState()),
     ProfileInteractionListener {
 
@@ -45,6 +53,42 @@ class ProfileViewModel @Inject constructor(
     }
 
     fun removeUserDetails() {
+    init {
+        observeTheme()
+        observeLanguage()
+    }
+
+    private fun observeTheme() {
+        viewModelScope.launch {
+            themeProvider.themeFlow.collect { isDark ->
+                updateState { it.copy(isDarkTheme = isDark) }
+            }
+        }
+    }
+
+    private fun observeLanguage() {
+        viewModelScope.launch {
+            val deviceLanguage = Locale.getDefault().language
+            languageProvider.initializeLanguage(deviceLanguage)
+            languageProvider.languageFlow.collect { language ->
+                updateState { it.copy(appLanguage = language) }
+            }
+        }
+    }
+
+    fun updateAppTheme(isDark: Boolean) {
+        viewModelScope.launch {
+            themeProvider.changeAppTheme(isDark = isDark)
+        }
+    }
+
+    fun updateAppLanguage(language: String) {
+        viewModelScope.launch {
+            languageProvider.setLanguage(language = language)
+        }
+    }
+
+    fun getAccountDetails(accountId: String, sessionId: String) {
         launchWithResult(
             action = { removeUserDetailsUseCase() },
             onSuccess = {sendEvent(ProfileScreenEffects.onLogoutSuccessfully)},
@@ -137,6 +181,5 @@ class ProfileViewModel @Inject constructor(
         sendEvent(ProfileScreenEffects.navigateToHistory)
 
     }
-
 
 }

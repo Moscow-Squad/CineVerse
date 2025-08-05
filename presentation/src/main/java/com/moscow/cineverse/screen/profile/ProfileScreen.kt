@@ -9,12 +9,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.moscow.cineverse.designSystem.component.MovieAppBar
 import com.moscow.cineverse.designSystem.component.wrapper.MovieText
 import com.moscow.cineverse.designSystem.theme.Theme
@@ -23,7 +23,6 @@ import com.moscow.cineverse.screen.profile.component.ProfileChips
 import com.moscow.cineverse.screen.profile.component.Settings
 import com.moscow.cineverse.screen.profile.component.UserInfo
 import com.moscow.cinverse.presentation.R
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.res.painterResource
 import coil3.compose.rememberAsyncImagePainter
 import com.moscow.cineverse.designSystem.component.bottomsheet.CineVerseBottomSheet
@@ -53,12 +52,23 @@ fun ProfileScreen(
         modifier,
         state,
         profileViewModel
+        profileViewModel,
+        isDarkTheme = state.isDarkTheme,
+        onThemeChange = profileViewModel::updateAppTheme,
+        appLanguage = state.appLanguage,
+        onLanguageChange = profileViewModel::updateAppLanguage
     )
 }
 
 @Composable
 fun ProfileContent(
     modifier: Modifier = Modifier,
+    listener: ProfileInteractionListener,
+    isDarkTheme: Boolean,
+    onThemeChange: (Boolean) -> Unit,
+    appLanguage: String,
+    onLanguageChange: (String) -> Unit,
+) {
     uiState: ProfileUIState,
     listener: ProfileInteractionListener
 ) {
@@ -138,20 +148,24 @@ fun ProfileContent(
                     )
                 }
 
-                item {
-                    MovieText(
-                        text = stringResource(R.string.settings),
-                        color = Theme.colors.shade.primary,
-                        style = Theme.textStyle.title.medium
+        item {
+            MovieText(
+                text = stringResource(R.string.settings),
+                color = Theme.colors.shade.primary,
+                style = Theme.textStyle.title.medium
 
-                    )
-                    Settings(
-                        modifier = Modifier.padding(top = 12.dp, bottom = 24.dp),
-                        isGuest = false,
-                        onLogoutClick = {listener.onShowLogoutBottomSheet()},
-                        onLanguageClick = {}
-                    )
-                }
+            )
+            Settings(
+                modifier = Modifier.padding(top = 12.dp, bottom = 24.dp),
+                isGuest = false,
+                isDarkTheme = isDarkTheme,
+                onThemeChange = onThemeChange,
+                appLanguage = appLanguage,
+                onLanguageChange = onLanguageChange,
+                onLogoutClick = {listener.onShowLogoutBottomSheet()},
+
+                )
+        }
 
                 item {
                     MovieText(
