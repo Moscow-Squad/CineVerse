@@ -1,7 +1,6 @@
 package com.moscow.cineverse.screen.home
 
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.cineverse.common_ui_state.MediaItemUiState
@@ -95,7 +94,6 @@ class HomeViewModel @Inject constructor(
         launchWithResult(
             action = { getUserCollectionsUseCase(1) },
             onSuccess = { collections ->
-                Log.d("sssssssssssssssssss", collections.toString())
                 updateState { it.copy(collections = collections.map { it.toUi() }) }
             },
             onError = {e ->
