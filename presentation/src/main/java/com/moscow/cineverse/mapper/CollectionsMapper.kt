@@ -17,5 +17,5 @@ fun Collection.toMyCollectionUi() =
     MyCollectionUiState(
         id = id,
         title = name,
-        numberOfShows = itemCount
+        itemCount = itemCount
     )
