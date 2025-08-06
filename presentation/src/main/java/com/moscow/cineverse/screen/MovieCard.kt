@@ -231,7 +231,7 @@ private fun <T> GridMovieCard(
 }
 
 @Composable
-private fun <T> ListMovieCard(
+fun <T> ListMovieCard(
     movieData: T,
     onMovieClick: (Int) -> Unit,
     modifier: Modifier = Modifier,
