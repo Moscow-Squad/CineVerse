@@ -35,4 +35,14 @@ class Converters {
     @TypeConverter
     fun toLocalDate(dateString: String): LocalDate = LocalDate.parse(dateString)
 
+    @TypeConverter
+    fun fromGenreList(genres: List<String>): String {
+        return genres.joinToString(separator = ",")
+    }
+
+    @TypeConverter
+    fun toGenreList(genresString: String): List<String> {
+        return if (genresString.isEmpty()) emptyList()
+        else genresString.split(",")
+    }
 }

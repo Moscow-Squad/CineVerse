@@ -96,6 +96,7 @@
     <string name="all">الكل</string>
     <string name="search">ابحث...</string>
     <string name="search_can_t_be_empty_1">لا تستطيع البحث بلا شئ !</string>
+    <string name="tip_swipe_left_to_remove_movies_from_your_collection">نصيحة: اسحب إلى اليسار لمسح الفيلم من مجموعتك</string>
     <string name="welcome_to_your_movie_universe">مرحباً بك في عالم الأفلام الخاص بك</string>
     <string name="discover_track_and_rate_your_favorite_movies_series">اكتشف، وتتبع، وقم بتقييم أفلامك ومسلسلاتك المفضلة.</string>
     <string name="track_everything">تتبع كل شيء</string>

@@ -3,11 +3,11 @@ package com.moscow.cineverse.screen.collections
 import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import com.moscow.cineverse.base.BaseViewModel
+import com.moscow.cineverse.mapper.toUi
 import com.moscow.cineverse.navigation.routes.CollectionsBottomSheetRoute
 import com.moscow.cineverse.screen.collections.CollectionsBottomSheetEffect.OnLoginClicked
 import com.moscow.domain.model.Collection
 import com.moscow.domain.model.MediaType
-import com.moscow.domain.repository.PreferenceRepository
 import com.moscow.domain.usecase.collection.AddMediaItemToCollectionUseCase
 import com.moscow.domain.usecase.collection.GetCurrentUserUseCase
 import com.moscow.domain.usecase.collection.GetUserCollectionsUseCase
@@ -28,6 +28,10 @@ class CollectionsBottomSheetViewModel @Inject constructor(
     val mediaItemType: MediaType = MediaType.toMediaType(
         savedStateHandle.get<String>(CollectionsBottomSheetRoute.MEDIA_TYPE) ?: "movie"
     )
+    init {
+        isUserLoggedIn()
+        loadUserCollections()
+    }
 
      fun isUserLoggedIn() {
         launchWithResult(
@@ -57,7 +61,6 @@ class CollectionsBottomSheetViewModel @Inject constructor(
             action = {
                 addMediaItemToCollectionUseCase.invoke(
                     mediaItemId = mediaItemId,
-                    mediaItemType = mediaItemType,
                     collectionId = collectionId
                 )
             },
@@ -79,7 +82,11 @@ class CollectionsBottomSheetViewModel @Inject constructor(
     }
 
     private fun onAddMediaItemToCollectionSuccess(message: String) {
-        sendEvent(CollectionsBottomSheetEffect.OnMovieAddedSuccessfully("Movie added successfully"))
+        if (message.contains("success")){
+            sendEvent(CollectionsBottomSheetEffect.OnMovieAddedSuccessfully("Movie added successfully"))
+        }else{
+            sendEvent(CollectionsBottomSheetEffect.OnMovieAddedSuccessfully("Error on adding Movie. try again later!"))
+        }
     }
 
     private fun onAddMediaItemToCollectionFailed(e: Throwable) {

@@ -96,6 +96,7 @@
     <string name="all">All</string>
     <string name="search">Search...</string>
     <string name="search_can_t_be_empty_1">Search can\'t be empty!</string>
+    <string name="tip_swipe_left_to_remove_movies_from_your_collection">Tip: Swipe left to remove movies from your collection.</string>
     <string name="welcome_to_your_movie_universe">Welcome to Your Movie Universe</string>
     <string name="discover_track_and_rate_your_favorite_movies_series">Discover, track, and rate your favorite movies &amp; series.</string>
     <string name="track_everything">Track Everything</string>

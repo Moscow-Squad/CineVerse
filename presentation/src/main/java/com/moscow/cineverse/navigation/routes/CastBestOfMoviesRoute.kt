@@ -14,7 +14,7 @@ data class CastBestOfMovieRoute(val castId: Int, val castName: String){
     }
 }
 
-fun NavGraphBuilder.CastBestOfMovieRoute(navController: NavHostController) {
+fun NavGraphBuilder.castBestOfMovieRoute(navController: NavHostController) {
     composable<CastBestOfMovieRoute>{
         ShowAllActorMoviesScreen(
             navigateMovieDetails = { movieId ->

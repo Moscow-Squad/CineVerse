@@ -6,6 +6,6 @@ import javax.inject.Inject
 class GetTrendingMoviesUseCase @Inject constructor(
     private val homeRepository: HomeRepository
 ) {
-    suspend operator fun invoke(time: String? = null) =
-        homeRepository.getTrendingMovies(time)
+    suspend operator fun invoke(time: String? = null, forceRefresh: Boolean = false) =
+        homeRepository.getTrendingMovies(time, forceRefresh)
 }

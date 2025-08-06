@@ -6,19 +6,16 @@ import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.cineverse.mapper.toMediaItemUi
 import com.moscow.cineverse.mapper.toUi
 import com.moscow.cineverse.navigation.routes.MovieDetailsRoute
+import com.moscow.domain.mapper.toMovie
 import com.moscow.domain.model.CreditsDetails
-import com.moscow.domain.model.MediaType
 import com.moscow.domain.model.Movie
 import com.moscow.domain.model.Review
-import com.moscow.domain.model.UserType
 import com.moscow.domain.model.details.MovieDetail
-import com.moscow.domain.usecase.collection.AddMediaItemToCollectionUseCase
-import com.moscow.domain.usecase.collection.GetCurrentUserUseCase
-import com.moscow.domain.usecase.local.GetUserDetailsUseCase
 import com.moscow.domain.usecase.movie.GetMovieCreditsUseCase
 import com.moscow.domain.usecase.movie.GetMovieDetailsUseCase
 import com.moscow.domain.usecase.movie.GetMovieRecommendationsUseCase
 import com.moscow.domain.usecase.movie.RateMovieUseCase
+import com.moscow.domain.usecase.recently_viewed.AddRecentlyViewedMovieUseCase
 import com.moscow.domain.usecase.review.GetReviewsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
@@ -31,9 +28,8 @@ class MovieDetailsViewModel @Inject constructor(
     private val getReviewsUseCase: GetReviewsUseCase,
     private val getMovieCreditsUseCase: GetMovieCreditsUseCase,
     private val getMovieRecommendationsUseCase: GetMovieRecommendationsUseCase,
-    private val addMediaItemToCollectionUseCase: AddMediaItemToCollectionUseCase,
-    private val getUserDetailsUseCase: GetUserDetailsUseCase,
     private val rateMovieUseCase: RateMovieUseCase,
+    private val addRecentlyViewedMovieUseCase: AddRecentlyViewedMovieUseCase,
     saveStateHandle: SavedStateHandle,
 ) : BaseViewModel<MovieScreenState, MovieDetailsScreenEffect>(MovieScreenState()),
     MovieDetailsInteractionListener {
@@ -43,9 +39,7 @@ class MovieDetailsViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            getUserDetails()
             updateState { it.copy(isLoading = true) }
-            addMovieToRecentlyViewedCollection(movieId)
             getMovieDetails(movieId)
             getReviews(movieId)
             getCredits(movieId)
@@ -59,40 +53,18 @@ class MovieDetailsViewModel @Inject constructor(
         var wait = 0
         while (uiState.value.movieDetailsUiState == null) {
             wait++
-            if (wait == 25){
-                updateState { it.copy(isLoading = false, errorMessage = "error loading", shouldShowError = true) }
+            if (wait == 25) {
+                updateState {
+                    it.copy(
+                        isLoading = false,
+                        errorMessage = "error loading",
+                        shouldShowError = true
+                    )
+                }
                 return
             }
             delay(100)
         }
-    }
-
-    fun getUserDetails() {
-        launchWithResult(
-            action = { getUserDetailsUseCase() },
-            onSuccess = { user ->
-                val collectionId = when (user) {
-                    is UserType.AuthenticatedUser -> user.recentlyCollectionId
-                    is UserType.GuestUser -> null
-                }
-                launchWithResult(
-                    action = {
-                        addMediaItemToCollectionUseCase(
-                            movieId,
-                            MediaType.Movie,
-                            collectionId = collectionId ?: throw IllegalArgumentException("User must logged in")
-                        )
-                    },
-                    onSuccess = { },
-                    onError = { }
-                )
-            },
-            onError = {}
-        )
-    }
-
-    fun addMovieToRecentlyViewedCollection(movieId: Int) {
-
     }
 
     fun getMovieDetails(movieID: Int) {
@@ -103,13 +75,16 @@ class MovieDetailsViewModel @Inject constructor(
             onStart = ::onLoading,
             onError = ::getMovieDetailsFailed,
             onFinally = ::onFinally
-
         )
-
     }
 
     private fun onGetMovieDetailsSuccess(movieDetails: MovieDetail) {
         updateState { it.copy(isLoading = false, movieDetailsUiState = movieDetails.toUi()) }
+        launchWithResult(
+            action = { addRecentlyViewedMovieUseCase(movieDetails.toMovie()) },
+            onError = {},
+            onSuccess = {}
+        )
     }
 
     fun getReviews(movieID: Int) {
@@ -258,9 +233,7 @@ class MovieDetailsViewModel @Inject constructor(
 
     override fun onRetry() {
         viewModelScope.launch {
-            getUserDetails()
             updateState { it.copy(isLoading = true) }
-            addMovieToRecentlyViewedCollection(movieId)
             getMovieDetails(movieId)
             getReviews(movieId)
             getCredits(movieId)
