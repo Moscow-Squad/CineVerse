@@ -35,7 +35,7 @@ class ProfileViewModel @Inject constructor(
 
     private fun getAccountDetails() {
         launchWithResult(
-            action = { getAccountDetailsUseCase(uiState.value.sessionId, uiState.value.accountId) },
+            action = { getAccountDetailsUseCase( uiState.value.accountId,uiState.value.sessionId) },
             onStart = ::onLoading,
             onSuccess = ::onGetAccountDetailsSuccess,
             onError = {e->
