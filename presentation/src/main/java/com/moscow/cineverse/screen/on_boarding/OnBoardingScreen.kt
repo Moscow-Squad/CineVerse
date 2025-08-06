@@ -25,7 +25,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.moscow.cineverse.designSystem.theme.Theme
@@ -84,11 +86,15 @@ fun OnBoardingScreenContent(
             pageSpacing = (-20).dp,
             beyondViewportPageCount = 1,
         ) { pageIndex ->
+            val layoutDirection = LocalLayoutDirection.current
+            val isRtl = layoutDirection == LayoutDirection.Rtl
+
             val offset = (pageIndex - pagerState.currentPage) + pagerState.currentPageOffsetFraction
 
-            val rotationDegrees by remember(offset) {
+            val rotationDegrees by remember(offset, isRtl) {
                 derivedStateOf {
-                    if (offset != 0f) offset * 18f else 0f
+                    val base = if (offset != 0f) offset * 18f else 0f
+                    if (isRtl) -base else base
                 }
             }
 
