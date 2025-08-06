@@ -3,7 +3,6 @@ package com.moscow.cineverse.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -38,23 +37,18 @@ fun NoHistoryScreen (
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Box(
+        Icon(
+            painter = painterResource(Theme.icons.dueTone.history),
+            contentDescription = "no history yet",
+            tint = Theme.colors.brand.primary,
             modifier = Modifier
                 .padding(bottom = 16.dp)
                 .size(64.dp)
                 .clip(CircleShape)
-                .background(shape = CircleShape, color = Theme.colors.additional.secondary.red)
+                .background(Theme.colors.button.disabled)
+                .padding(18.dp)
 
-        ) {
-            Icon(
-                painter = painterResource(Theme.icons.dueTone.history),
-                contentDescription = "no history yet",
-                tint = Theme.colors.additional.primary.red,
-                modifier = Modifier
-                    .size(20.dp)
-                    .align(Alignment.Center)
-            )
-        }
+        )
         Column (
             modifier = Modifier.width(240.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp),
@@ -83,9 +77,8 @@ fun NoHistoryScreen (
             buttonText = stringResource(R.string.find_something_to_watch),
             textColor = Theme.colors.button.onPrimary,
             buttonColor = Theme.colors.button.primary,
-            textStyle = Theme.textStyle.body.small.medium.copy(
-                textAlign = TextAlign.Center,
-                fontSize = 12.sp
+            textStyle = Theme.textStyle.body.small.medium.copy(textAlign = TextAlign.Center,
+
             ),
             onClick = { onContinue()}
         )
