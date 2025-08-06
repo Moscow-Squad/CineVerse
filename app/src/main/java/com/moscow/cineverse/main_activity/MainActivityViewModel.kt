@@ -45,13 +45,5 @@ class MainActivityViewModel @Inject constructor(
                 _state.update { it.copy(isDarkTheme = isDarkTheme) }
             }
         }
-
-        viewModelScope.launch {
-            languageProvider.languageFlow.collect { lang ->
-                _state.update {
-                    it.copy(language = lang, isLoading = false)
-                }
-            }
-        }
     }
 }
