@@ -13,7 +13,6 @@ import com.moscow.cineverse.designSystem.icon.CineVerseIcons
 import com.moscow.cineverse.designSystem.icon.LocalCineVerseIcons
 import com.moscow.cineverse.designSystem.radius.CineVerseRadius
 import com.moscow.cineverse.designSystem.radius.LocalCineVerseRadius
-import com.moscow.cineverse.designSystem.theme.Theme.state
 import com.moscow.cineverse.designSystem.typography.CineVerseTextStyle
 import com.moscow.cineverse.designSystem.typography.DefaultTextStyle
 import com.moscow.cineverse.designSystem.typography.LocalCineVerseTextStyle
