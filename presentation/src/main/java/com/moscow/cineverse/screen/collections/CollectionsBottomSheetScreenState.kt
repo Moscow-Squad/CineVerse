@@ -1,5 +1,7 @@
 package com.moscow.cineverse.screen.collections
 
+import com.moscow.cineverse.common_ui_state.CollectionUiState
+
 data class CollectionsBottomSheetScreenState(
     val isLoading: Boolean = false,
     val errorMessage: String = "",
@@ -9,9 +11,3 @@ data class CollectionsBottomSheetScreenState(
     val isLoggedIn: Boolean? = null,
 
     )
-
-data class CollectionUiState(
-    val id: Int,
-    val name: String,
-    val isLoading: Boolean = false
-)

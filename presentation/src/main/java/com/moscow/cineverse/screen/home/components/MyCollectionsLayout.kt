@@ -20,7 +20,7 @@ import com.moscow.cineverse.design_system.R
 @Composable
 fun MyCollectionsLayout(
     items: List<MyCollectionUiState>,
-    onCollectionClick: (Int) -> Unit,
+    onCollectionClick: (collectionId: Int, collectionName: String) -> Unit,
     onShowMoreClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -51,7 +51,7 @@ fun MyCollectionsLayout(
             items(items.take(itemsRowSize)) { itemState ->
                 MyCollectionCard(
                     state = itemState,
-                    onClick = { onCollectionClick(itemState.id) },
+                    onClick = { onCollectionClick(itemState.id, itemState.title) },
                 )
             }
         }
@@ -63,7 +63,7 @@ fun MyCollectionsLayout(
             items(items.drop(itemsRowSize)) { itemState ->
                 MyCollectionCard(
                     state = itemState,
-                    onClick = { onCollectionClick(itemState.id) },
+                    onClick = { onCollectionClick(itemState.id, itemState.title) },
                 )
             }
         }
