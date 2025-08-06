@@ -1,12 +1,11 @@
 package com.moscow.cineverse.screen.profile
 
 sealed class ProfileScreenEffects {
-    data object showLanguageBottomSheet: ProfileScreenEffects()
-    data object showEditProfileBottomSheet: ProfileScreenEffects()
-    data object showLogoutBottomSheet: ProfileScreenEffects()
-    data object navigateToMyRating: ProfileScreenEffects()
-    data object navigateToMyCollections: ProfileScreenEffects()
-    data object navigateToHistory: ProfileScreenEffects()
-    data object onLogoutSuccessfully: ProfileScreenEffects()
-    data object onLogoutFailed: ProfileScreenEffects()
+    data class  GoToWebView(val url:String): ProfileScreenEffects()
+    data object OnLoginClick: ProfileScreenEffects()
+    data object NavigateToMyRating: ProfileScreenEffects()
+    data object NavigateToMyCollections: ProfileScreenEffects()
+    data object NavigateToHistory: ProfileScreenEffects()
+    data object OnLogoutSuccessfully: ProfileScreenEffects()
+    data object OnLogoutFailed: ProfileScreenEffects()
 }

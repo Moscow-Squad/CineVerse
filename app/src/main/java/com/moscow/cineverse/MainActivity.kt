@@ -8,7 +8,9 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.platform.LocalContext
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
 import com.moscow.cineverse.designSystem.theme.CineVerseTheme
@@ -57,9 +59,12 @@ class MainActivity : ComponentActivity() {
                 state.value.isLoading
             }
 
-            CineVerseTheme(state = ThemeState(isDark = state.value.isDarkTheme)) {
-                CineVerseRoot(navViewModel)
-            }
+
+
+                CineVerseTheme(state = ThemeState(isDark = state.value.isDarkTheme)) {
+                    CineVerseRoot(navViewModel)
+                }
+
         }
     }
 }

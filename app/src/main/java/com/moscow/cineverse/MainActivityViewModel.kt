@@ -8,12 +8,14 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import androidx.lifecycle.viewModelScope
+import com.moscow.domain.repository.language.LanguageProvider
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
 class MainActivityViewModel @Inject constructor(
-    private val themeProvider: ThemeProvider
+    private val themeProvider: ThemeProvider,
+
 ): ViewModel() {
 
     private val _state = MutableStateFlow(MainActivityUiState())
@@ -34,6 +36,7 @@ class MainActivityViewModel @Inject constructor(
                     )
                 }
             }
+
         }
     }
 

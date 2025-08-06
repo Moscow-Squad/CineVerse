@@ -31,8 +31,7 @@ internal fun Settings(
     isGuest: Boolean,
     isDarkTheme: Boolean,
     onThemeChange: (Boolean) -> Unit,
-    appLanguage: String,
-    onLanguageChange: (String) -> Unit
+    onLanguageClick: () -> Unit,
     onLogoutClick:()->Unit,
 
 ) {
@@ -76,9 +75,7 @@ internal fun Settings(
             title = stringResource(R.string.language),
             titleColor = Theme.colors.shade.primary,
             onClick = {
-                var language = if(appLanguage == "ar") "en" else "ar"
-                onLanguageChange(language)
-                Log.d("language", "$language -- $appLanguage")
+                onLanguageClick()
             },
             prefixIcon = {
                 Icon(
@@ -94,7 +91,7 @@ internal fun Settings(
                     contentDescription = "language arrow icon"
                 )
             })
-        Spacer(
+        if (!isGuest)   Spacer(
             modifier = Modifier
                 .height(1.dp)
                 .fillMaxWidth()

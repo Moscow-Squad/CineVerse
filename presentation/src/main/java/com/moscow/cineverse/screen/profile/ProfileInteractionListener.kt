@@ -6,6 +6,8 @@ interface ProfileInteractionListener {
     fun onShowLanguageBottomSheet()
     fun onClickEditProfile()
     fun onClickLogout()
+    fun onClickLogin()
+    fun onExitWebView()
     fun onSelectedLanguage(language:String)
     fun onCancelLanguageBottomSheet()
     fun onCancelEditProfileBottomSheet()

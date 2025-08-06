@@ -23,130 +23,121 @@ import com.moscow.cineverse.screen.profile.component.ProfileChips
 import com.moscow.cineverse.screen.profile.component.Settings
 import com.moscow.cineverse.screen.profile.component.UserInfo
 import com.moscow.cinverse.presentation.R
-import androidx.compose.ui.res.painterResource
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.rememberAsyncImagePainter
-import com.moscow.cineverse.designSystem.component.bottomsheet.CineVerseBottomSheet
-import com.moscow.cineverse.designSystem.component.message_info.MessageInfoBox
+import androidx.compose.runtime.getValue
+import com.moscow.cineverse.screen.login.WebViewBrowser
+import com.moscow.cineverse.screen.profile.component.EditProfileBottomSheet
+import com.moscow.cineverse.screen.profile.component.LanguageBottomSheet
+import com.moscow.cineverse.screen.profile.component.LogoutBottomSheet
 
 @Composable
 fun ProfileScreen(
     modifier: Modifier = Modifier,
     profileViewModel: ProfileViewModel = hiltViewModel(),
-    navigateToHome: () -> Unit,
-    navigateToEditProfile: (String, String) -> Unit,
+    navigateToLogin: () -> Unit,
+    navigateToWebSite: (String) -> Unit,
     navigateToMyRatings: () -> Unit,
     navigateToMyCollections: () -> Unit,
     navigateToMyHistory: () -> Unit,
 ) {
     val state by profileViewModel.uiState.collectAsStateWithLifecycle()
 
-    /*LaunchedEffect(profileViewModel) {
+    LaunchedEffect(profileViewModel) {
+        profileViewModel.getUserDetails()
         profileViewModel.uiEffect.collect { effect ->
             ProfileScreenEffectHandler.handleEffect(
                effect,
+                navigateToLogin,
+                {},
+                {s,s1-> },
+                {},
+                {},
+                {}
 
             )
         }
-    }*/
+    }
     ProfileContent(
         modifier,
         state,
-        profileViewModel
-        profileViewModel,
+        listener = profileViewModel,
         isDarkTheme = state.isDarkTheme,
         onThemeChange = profileViewModel::updateAppTheme,
-        appLanguage = state.appLanguage,
-        onLanguageChange = profileViewModel::updateAppLanguage
     )
 }
 
 @Composable
 fun ProfileContent(
     modifier: Modifier = Modifier,
+    uiState: ProfileUIState,
     listener: ProfileInteractionListener,
     isDarkTheme: Boolean,
     onThemeChange: (Boolean) -> Unit,
-    appLanguage: String,
-    onLanguageChange: (String) -> Unit,
 ) {
-    uiState: ProfileUIState,
-    listener: ProfileInteractionListener
-) {
-    Log.d("TAG", "ProfileContent: $uiState")
-/*
-    when {
+    Log.d("TAG", "ProfileContent: $uiState")/*
+        when {
 
 
-        uiState.isLoading -> {
-            MovieCircularProgressBar(modifier = modifier)
-        }
-
-
-        !uiState.errorMessage.isNullOrBlank() -> {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(Theme.colors.background.screen),
-                contentAlignment = Alignment.Center
-            ) {
-                NoInternetScreen(onRetry = {})
+            uiState.isLoading -> {
+                MovieCircularProgressBar(modifier = modifier)
             }
+
+
+            !uiState.errorMessage.isNullOrBlank() -> {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(Theme.colors.background.screen),
+                    contentAlignment = Alignment.Center
+                ) {
+                    NoInternetScreen(onRetry = {})
+                }
+            }
+
+            else -> {*/
+    LazyColumn(
+        modifier = modifier
+            .fillMaxSize()
+            .background(Theme.colors.background.screen),
+        contentPadding = PaddingValues(16.dp)
+
+    ) {
+
+        item {
+            MovieAppBar(
+                showBackButton = false,
+                modifier = Modifier.padding(vertical = 17.dp),
+                title = stringResource(R.string.my_profile)
+            )
         }
 
-        else -> {*/
-            LazyColumn(
-                modifier = modifier
-                    .fillMaxSize()
-                    .background(Theme.colors.background.screen),
-                contentPadding = PaddingValues(16.dp)
+        item {
+            UserInfo(
+                name = if (!uiState.name.isNullOrBlank()) uiState.name else uiState.username.orEmpty(),
+                username = uiState.username.orEmpty(),
+                userImage = if (uiState.image.isNullOrEmpty()) null else rememberAsyncImagePainter(
+                    model = uiState.image
+                ),
+                isGuest = uiState.isGuest,
+                onClick = { listener.onShowEditProfileBottomSheet() }
 
-            ) {
+            )
+        }
 
-                item {
-                    MovieAppBar(
-                        showBackButton = false,
-                        modifier = Modifier.padding(vertical = 17.dp),
-                        title = stringResource(R.string.my_profile)
-                    )
-                }
-
-                item {
-                    UserInfo(
-                        name = if (!uiState.name.isNullOrBlank()) uiState.name else uiState.username.orEmpty(),
-                        username = uiState.username.orEmpty(),
-                        userImage = if (uiState.image.isNullOrEmpty()) null else rememberAsyncImagePainter(
-                            model = uiState.image
-                        ),
-                        isGuest = uiState.isGuest,
-                        onClick = { listener.onShowEditProfileBottomSheet() }
-
-                    )
-                }
-
-                item {
-                    ProfileChips(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(top = 12.dp, bottom = 24.dp),
-                        items = listOf(
-                            ProfileChipItem(
-                                R.string.history,
-                                R.drawable.due_tone_history,
-                                {}
-                            ),
-                            ProfileChipItem(
-                                R.string.my_collections,
-                                R.drawable.due_tone_video_library,
-                                {}
-                            ),
-                            ProfileChipItem(
-                                R.string.my_ratings,
-                                R.drawable.due_tone_star,
-                                {}
-                            )
-                        )
-                    )
-                }
+        item {
+            ProfileChips(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 12.dp, bottom = 24.dp),
+                items = listOf(
+                    ProfileChipItem(
+                        R.string.history, R.drawable.due_tone_history, {}),
+                    ProfileChipItem(
+                        R.string.my_collections, R.drawable.due_tone_video_library, {}),
+                    ProfileChipItem(
+                        R.string.my_ratings, R.drawable.due_tone_star, {})))
+        }
 
         item {
             MovieText(
@@ -157,56 +148,58 @@ fun ProfileContent(
             )
             Settings(
                 modifier = Modifier.padding(top = 12.dp, bottom = 24.dp),
-                isGuest = false,
+                isGuest = uiState.isGuest,
                 isDarkTheme = isDarkTheme,
                 onThemeChange = onThemeChange,
-                appLanguage = appLanguage,
-                onLanguageChange = onLanguageChange,
-                onLogoutClick = {listener.onShowLogoutBottomSheet()},
+                onLanguageClick = {listener.onShowLanguageBottomSheet()},
+                onLogoutClick = { listener.onShowLogoutBottomSheet() },
 
                 )
         }
 
-                item {
-                    MovieText(
-                        modifier = Modifier.fillMaxWidth(),
-                        text = "Version 1.0",
-                        color = Theme.colors.shade.tertiary,
-                        style = Theme.textStyle.body.small.regular,
-                        textAlign = TextAlign.Center
+        item {
+            MovieText(
+                modifier = Modifier.fillMaxWidth(),
+                text = "Version 1.0",
+                color = Theme.colors.shade.tertiary,
+                style = Theme.textStyle.body.small.regular,
+                textAlign = TextAlign.Center
 
-                    )
-                }
+            )
+        }
 
-                item {
+        item {
+            LogoutBottomSheet(
+                visible = uiState.showLogoutBottomSheet,
+                onDismiss = { listener.onCancelLogoutBottomSheet() },
+                onLogoutClick = { listener.onClickLogout() })
+        }
+        item {
+            LanguageBottomSheet(
+                visible = uiState.showLanguageBottomSheet,
+                selectedLanguage = uiState.appLanguage,
+                onDismiss = { listener.onCancelLanguageBottomSheet() },
+                onSelectedLanguage = { listener.onSelectedLanguage(it) })
+        }
 
-                    AnimatedVisibility(uiState.showLogoutBottomSheet) {
-                        CineVerseBottomSheet(
-                            onClose = {listener.onCancelLogoutBottomSheet()},
-                            onDismissRequest = {listener.onCancelLogoutBottomSheet()},
-                            showCancelIcon = true,
-                        ) {
-                            MessageInfoBox(
-                                title = stringResource(R.string.are_you_sure_you_want_to_logout),
-                                description = stringResource(R.string.you_can_always_sign_back_in_with_your_account),
-                                icon = painterResource(Theme.icons.dueTone.logout),
-                                showButtonsGroup = true,
-                                firstButtonText = stringResource(R.string.cancel),
-                                onClickFirstButton = {listener.onCancelLogoutBottomSheet()},
-                                secondButtonText = stringResource(R.string.logout),
-                                onClickSecondButton = {listener.onClickLogout() },
-                                modifier = Modifier.padding(bottom = 16.dp),
-                                iconColor = Theme.colors.additional.primary.red,
-                               secondButtonBackground = Theme.colors.additional.primary.red,
+        item {
 
-                            )
-
-                        }
-
-                    }
-                }
-
-
+            EditProfileBottomSheet(
+                visible = uiState.showEditProfileBottomSheet,
+                isGuest = uiState.isGuest,
+                onDismiss = { listener.onCancelEditProfileBottomSheet() },
+                onLoginClick = {listener.onClickLogin()},
+                onEditProfile = { listener.onClickEditProfile() }
+            )
+        }
+    }
+    AnimatedVisibility(uiState.goToWebView) {
+        WebViewBrowser(
+            url = uiState.editProfileURL,
+            onExitWebView = {
+                listener.onExitWebView()
+            }
+        )
     }
 
 }

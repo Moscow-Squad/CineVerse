@@ -4,6 +4,8 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import com.moscow.cineverse.navigation.AppDestination
+import com.moscow.cineverse.screen.login.LoginScreen
+import com.moscow.cineverse.screen.login.WebViewBrowser
 import com.moscow.cineverse.screen.profile.ProfileScreen
 import kotlinx.serialization.Serializable
 
@@ -13,9 +15,15 @@ object ProfileRoute : AppDestination
 fun NavGraphBuilder.profileRoute(navController: NavHostController) {
     composable<ProfileRoute>{
         ProfileScreen(
-            navigateToEditProfile = {accountId, sessionId -> },
-            navigateToHome = { -> },
-            navigateToMyRatings = {},
+            navigateToWebSite = { url->
+              //  navController.navigate(WebViewBrowser(url) { })
+            },
+            navigateToLogin = {
+                navController.navigate(LoginRoute)
+            },
+            navigateToMyRatings = {
+
+            },
             navigateToMyCollections = {},
             navigateToMyHistory = {}
         )

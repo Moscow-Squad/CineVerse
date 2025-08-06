@@ -3,10 +3,10 @@ package com.moscow.cineverse.screen.profile
 import androidx.lifecycle.viewModelScope
 import android.util.Log
 import com.moscow.cineverse.base.BaseViewModel
-import com.moscow.domain.model.profile.AccountDetails
 import com.moscow.domain.repository.language.LanguageProvider
 import com.moscow.domain.repository.theme.ThemeProvider
 import com.moscow.domain.model.UserType
+import com.moscow.domain.model.profile.AccountDetails
 import com.moscow.domain.usecase.local.GetUserDetailsUseCase
 import com.moscow.domain.usecase.local.RemoveUserDetailsUseCase
 import com.moscow.domain.usecase.profile.GetAccountDetailsUseCase
@@ -28,7 +28,33 @@ class ProfileViewModel @Inject constructor(
     ProfileInteractionListener {
 
     init {
+        observeTheme()
+        observeLanguage()
         getUserDetails()
+    }
+
+    private fun getAccountDetails() {
+        launchWithResult(
+            action = { getAccountDetailsUseCase(uiState.value.sessionId, uiState.value.accountId) },
+            onStart = ::onLoading,
+            onSuccess = ::onGetAccountDetailsSuccess,
+            onError = {e->
+
+            }
+        )
+    }
+
+    private fun onGetAccountDetailsSuccess(accountDetails: AccountDetails) {
+
+        updateState {
+            it.copy(
+                name = accountDetails.name,
+                username = accountDetails.username,
+                image = accountDetails.image,
+            )
+
+        }
+
     }
 
     private fun logout() {
@@ -37,25 +63,27 @@ class ProfileViewModel @Inject constructor(
         launchWithResult(
             action = { logoutUseCase(sessionId = uiState.value.sessionId) },
             onSuccess = ::onGetLogoutSuccess,
-            onError = { onLogoutFailed() }
-        )
+            onError = { onLogoutFailed() })
     }
 
     private fun onGetLogoutSuccess(success: Boolean) {
         if (success) {
             removeUserDetails()
+            updateState { ProfileUIState() }
         }
         onCancelLogoutBottomSheet()
     }
-    private fun onLogoutFailed(){
+
+    private fun onLogoutFailed() {
         onCancelLogoutBottomSheet()
-        sendEvent(ProfileScreenEffects.onLogoutFailed)
+        sendEvent(ProfileScreenEffects.OnLogoutFailed)
     }
 
     fun removeUserDetails() {
-    init {
-        observeTheme()
-        observeLanguage()
+        launchWithResult(
+            action = { removeUserDetailsUseCase() },
+            onSuccess = { sendEvent(ProfileScreenEffects.OnLogoutSuccessfully) },
+            onError = {})
     }
 
     private fun observeTheme() {
@@ -88,22 +116,14 @@ class ProfileViewModel @Inject constructor(
         }
     }
 
-    fun getAccountDetails(accountId: String, sessionId: String) {
-        launchWithResult(
-            action = { removeUserDetailsUseCase() },
-            onSuccess = {sendEvent(ProfileScreenEffects.onLogoutSuccessfully)},
-            onError = {}
-        )
-    }
     fun getUserDetails() {
         launchWithResult(
             action = { getUserDetailsUseCase() },
-            onSuccess = ::onGetAccountDetailsSuccess,
-            onError = {}
-        )
+            onSuccess = ::onGetUserDetailsSuccess,
+            onError = {})
     }
 
-    private fun onGetAccountDetailsSuccess(userType: UserType) {
+    private fun onGetUserDetailsSuccess(userType: UserType) {
         when (userType) {
             is UserType.AuthenticatedUser -> {
                 updateState {
@@ -111,7 +131,8 @@ class ProfileViewModel @Inject constructor(
                         name = userType.name,
                         username = userType.username,
                         image = userType.image,
-                        sessionId = userType.sessionId
+                        sessionId = userType.sessionId,
+                        accountId = userType.id
 
                     )
                 }
@@ -133,7 +154,7 @@ class ProfileViewModel @Inject constructor(
     }
 
     override fun onShowEditProfileBottomSheet() {
-        sendEvent(ProfileScreenEffects.showEditProfileBottomSheet)
+        updateState { it.copy(showEditProfileBottomSheet = true) }
     }
 
     override fun onShowLogoutBottomSheet() {
@@ -145,15 +166,33 @@ class ProfileViewModel @Inject constructor(
     }
 
     override fun onClickEditProfile() {
-        TODO("Not yet implemented")
+        val username = uiState.value.username.orEmpty()
+        updateState {
+            it.copy(
+                showEditProfileBottomSheet = false,
+                editProfileURL = EDIT_PROFILE_URL + username,
+                goToWebView = true
+            )
+        }
     }
 
     override fun onClickLogout() {
         logout()
     }
 
+    override fun onClickLogin() {
+        sendEvent(ProfileScreenEffects.OnLoginClick)
+        updateState { ProfileUIState() }
+    }
+
+    override fun onExitWebView() {
+        getAccountDetails()
+        updateState { it.copy(goToWebView = false) }
+    }
+
     override fun onSelectedLanguage(language: String) {
-        TODO("Not yet implemented")
+        updateAppLanguage(language)
+        onCancelLanguageBottomSheet()
     }
 
     override fun onCancelLanguageBottomSheet() {
@@ -169,17 +208,21 @@ class ProfileViewModel @Inject constructor(
     }
 
     override fun onClickMyRatings() {
-        sendEvent(ProfileScreenEffects.navigateToMyRating)
+        sendEvent(ProfileScreenEffects.NavigateToMyRating)
     }
 
     override fun onClickMyCollections() {
-        sendEvent(ProfileScreenEffects.navigateToMyCollections)
+        sendEvent(ProfileScreenEffects.NavigateToMyCollections)
 
     }
 
     override fun onClickHistory() {
-        sendEvent(ProfileScreenEffects.navigateToHistory)
+        sendEvent(ProfileScreenEffects.NavigateToHistory)
 
+    }
+
+    companion object {
+        const val EDIT_PROFILE_URL = "https://www.themoviedb.org/u/"
     }
 
 }
