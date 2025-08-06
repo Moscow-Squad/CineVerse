@@ -15,6 +15,7 @@ object MovieDetailsEffectHandler {
         navigateToCastDetails: (Int) -> Unit,
         navigateToCollectionsBottomSheet: (Int) -> Unit,
         navigateToMovieDetails: (Int) -> Unit,
+        navigateToLogin: () -> Unit,
         context: Context
     ) {
         when (effect) {
@@ -31,12 +32,10 @@ object MovieDetailsEffectHandler {
                     effect.movieID,
                     effect.movieTitle
                 )
-
             }
 
             is MovieDetailsScreenEffect.NavigateToFullReviews -> {
                 navigateToReviews(effect.movieID)
-
             }
 
             is MovieDetailsScreenEffect.NavigateCastDetails -> {
@@ -45,7 +44,6 @@ object MovieDetailsEffectHandler {
 
             is MovieDetailsScreenEffect.AddToCollection -> {
                 navigateToCollectionsBottomSheet(effect.movieId)
-
             }
 
             is MovieDetailsScreenEffect.NavigateMovieDetails -> {
@@ -55,6 +53,10 @@ object MovieDetailsEffectHandler {
             is MovieDetailsScreenEffect.OpenTrailer -> {
                 val intent = Intent(Intent.ACTION_VIEW, effect.url.toUri())
                 context.startActivity(intent)
+            }
+
+            is MovieDetailsScreenEffect.NavigateToLogin -> {
+                navigateToLogin()
             }
         }
     }

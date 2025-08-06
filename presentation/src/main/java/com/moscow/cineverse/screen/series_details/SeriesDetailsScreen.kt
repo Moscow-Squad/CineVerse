@@ -23,6 +23,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
@@ -37,6 +38,8 @@ import com.moscow.cineverse.component.StorylineSection
 import com.moscow.cineverse.designSystem.component.MovieAppBar
 import com.moscow.cineverse.designSystem.component.MovieCircularProgressBar
 import com.moscow.cineverse.designSystem.component.MovieScaffold
+import com.moscow.cineverse.designSystem.component.bottomsheet.CineVerseBottomSheet
+import com.moscow.cineverse.designSystem.component.message_info.MessageInfoBox
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.mapper.formatReviewDate
 import com.moscow.cineverse.mapper.toHourMinuteFormat
@@ -61,6 +64,7 @@ fun SeriesDetailsScreen(
     navigateToSeriesSeasons: (Int) -> Unit,
     navigateToCastDetails: (Int) -> Unit,
     navigateToSeriesDetails: (Int) -> Unit,
+    navigateToLogin: () -> Unit // Add this parameter
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val context = LocalContext.current
@@ -80,17 +84,19 @@ fun SeriesDetailsScreen(
                 is SeriesDetailsScreenEffects.NavigateToSeriesSeasonsScreen -> {
                     navigateToSeriesSeasons(event.seriesId)
                 }
-
                 is SeriesDetailsScreenEffects.NavigateToActorDetailsScreen -> {
                     navigateToCastDetails(event.ActorId)
                 }
                 is SeriesDetailsScreenEffects.NavigateToSeriesDetailsScreen -> {
                     navigateToSeriesDetails(event.seriesId)
                 }
-
                 is SeriesDetailsScreenEffects.OpenTrailer -> {
                     val intent = Intent(Intent.ACTION_VIEW, event.url.toUri())
                     context.startActivity(intent)
+                }
+
+                is SeriesDetailsScreenEffects.NavigateToLogin -> {
+                    navigateToLogin()
                 }
             }
         }
@@ -316,6 +322,7 @@ fun SeriesDetailsContent(
                         }
                     }
                 }
+
                 MovieRatingBottomSheet(
                     isVisible = uiState.showRatingBottomSheet,
                     onDismiss = interactionListener::onDismissOrCancelRatingBottomSheet,
@@ -323,7 +330,30 @@ fun SeriesDetailsContent(
                     onRatingRemove = { interactionListener.onDeleteRatingSeries(detail.id) },
                     initialRating = uiState.starsRating,
                     hasExistingRating = uiState.starsRating != 0,
+                    isLoading = uiState.isLoading
                 )
+
+                if (uiState.showLoginBottomSheet) {
+                    CineVerseBottomSheet(
+                        title = stringResource(R.string.you_re_almost_there),
+                        onClose = { interactionListener.onDismissLoginBottomSheet() },
+                        onDismissRequest = { interactionListener.onDismissLoginBottomSheet() },
+                        showCancelIcon = true,
+                        onAddNewCollectionClick = {}
+                    ) {
+                        MessageInfoBox(
+                            title = stringResource(R.string.you_re_almost_there),
+                            description = stringResource(R.string.log_in_to_save_movies_create_collections_and_get_personalized_recommendations),
+                            icon = painterResource(Theme.icons.dueTone.videoLibrary),
+                            showButtonsGroup = true,
+                            firstButtonText = stringResource(R.string.not_now),
+                            onClickFirstButton = { interactionListener.onDismissLoginBottomSheet() },
+                            secondButtonText = stringResource(R.string.log_in),
+                            onClickSecondButton = { interactionListener.navigateToLogin() },
+                            modifier = Modifier.padding(bottom = 16.dp),
+                        )
+                    }
+                }
             }
         }
     }

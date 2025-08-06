@@ -24,6 +24,7 @@ data class MovieScreenState(
     val recentlyViewedCollectionId:Int = 0,
 
     val showRatingBottomSheet: Boolean = false,
+    val showLoginBottomSheet: Boolean = false,
     val starsRating: Int = 0
 
     ) {

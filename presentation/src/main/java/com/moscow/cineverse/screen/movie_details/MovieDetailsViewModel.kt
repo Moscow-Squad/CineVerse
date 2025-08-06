@@ -12,6 +12,7 @@ import com.moscow.domain.model.Movie
 import com.moscow.domain.model.Review
 import com.moscow.domain.model.UserType
 import com.moscow.domain.model.details.MovieDetail
+import com.moscow.domain.repository.PreferenceRepository
 import com.moscow.domain.usecase.collection.AddMediaItemToCollectionUseCase
 import com.moscow.domain.usecase.local.GetUserDetailsUseCase
 import com.moscow.domain.usecase.movie.GetMovieCreditsUseCase
@@ -33,6 +34,7 @@ class MovieDetailsViewModel @Inject constructor(
     private val getMovieRecommendationsUseCase: GetMovieRecommendationsUseCase,
     private val addMediaItemToCollectionUseCase: AddMediaItemToCollectionUseCase,
     private val getUserDetailsUseCase: GetUserDetailsUseCase,
+    private val preferences: PreferenceRepository,
     private val rateMovieUseCase: RateMovieUseCase,
     private val getUserRatingForMovieUseCase: GetUserRatingForMovieUseCase,
     saveStateHandle: SavedStateHandle,
@@ -285,7 +287,27 @@ class MovieDetailsViewModel @Inject constructor(
     }
 
     override fun showRatingBottomSheet() {
-        updateState { it.copy(showRatingBottomSheet = true) }
+        launchWithResult(
+            action = { preferences.isLoggedIn() },
+            onSuccess = { isLoggedIn ->
+                if (isLoggedIn) {
+                    updateState { it.copy(showRatingBottomSheet = true) }
+                } else {
+                    updateState { it.copy(showLoginBottomSheet = true) }
+                }
+            },
+            onError = {
+                updateState { it.copy(showLoginBottomSheet = true) }
+            }
+        )
+    }
+
+    override fun onDismissLoginBottomSheet() {
+        updateState { it.copy(showLoginBottomSheet = false) }
+    }
+
+    override fun navigateToLogin() {
+        sendEvent(MovieDetailsScreenEffect.NavigateToLogin)
     }
 
     override fun onDismissOrCancelRatingBottomSheet() {
