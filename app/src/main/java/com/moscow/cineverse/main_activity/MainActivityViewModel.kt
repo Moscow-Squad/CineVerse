@@ -10,7 +10,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import java.util.Locale
 
 @HiltViewModel
 class MainActivityViewModel @Inject constructor(
@@ -22,18 +21,23 @@ class MainActivityViewModel @Inject constructor(
     val state = _state.asStateFlow()
 
     init {
-        initializeLanguage()
-        observeProviders()
+        observeTheme()
+        observeLanguage()
     }
 
-    private fun initializeLanguage() {
+    private fun observeLanguage() {
+        _state.update { it.copy(isLoading = true) }
+
         viewModelScope.launch {
-            val deviceLanguage = Locale.getDefault().language
-            languageProvider.initializeLanguage(deviceLanguage)
+            languageProvider.languageFlow.collect { lang ->
+                _state.update {
+                    it.copy(language = lang, isLoading = false)
+                }
+            }
         }
     }
 
-    private fun observeProviders() {
+    private fun observeTheme() {
         _state.update { it.copy(isLoading = true) }
 
         viewModelScope.launch {
