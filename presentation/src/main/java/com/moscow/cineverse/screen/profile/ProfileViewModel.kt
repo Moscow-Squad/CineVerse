@@ -191,6 +191,7 @@ class ProfileViewModel @Inject constructor(
     }
 
     override fun onSelectedLanguage(language: String) {
+        Log.d("language", language)
         updateAppLanguage(language)
         onCancelLanguageBottomSheet()
     }

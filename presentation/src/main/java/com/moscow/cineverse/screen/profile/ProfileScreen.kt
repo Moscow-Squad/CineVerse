@@ -26,6 +26,7 @@ import com.moscow.cinverse.presentation.R
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.rememberAsyncImagePainter
 import androidx.compose.runtime.getValue
+import com.moscow.cineverse.designSystem.theme.Theme.state
 import com.moscow.cineverse.screen.login.WebViewBrowser
 import com.moscow.cineverse.screen.profile.component.EditProfileBottomSheet
 import com.moscow.cineverse.screen.profile.component.LanguageBottomSheet
@@ -54,7 +55,6 @@ fun ProfileScreen(
                 {},
                 {},
                 {}
-
             )
         }
     }
@@ -62,7 +62,6 @@ fun ProfileScreen(
         modifier,
         state,
         listener = profileViewModel,
-        isDarkTheme = state.isDarkTheme,
         onThemeChange = profileViewModel::updateAppTheme,
     )
 }
@@ -72,7 +71,6 @@ fun ProfileContent(
     modifier: Modifier = Modifier,
     uiState: ProfileUIState,
     listener: ProfileInteractionListener,
-    isDarkTheme: Boolean,
     onThemeChange: (Boolean) -> Unit,
 ) {
     Log.d("TAG", "ProfileContent: $uiState")/*
@@ -149,9 +147,9 @@ fun ProfileContent(
             Settings(
                 modifier = Modifier.padding(top = 12.dp, bottom = 24.dp),
                 isGuest = uiState.isGuest,
-                isDarkTheme = isDarkTheme,
+                isDarkTheme = uiState.isDarkTheme,
                 onThemeChange = onThemeChange,
-                onLanguageClick = {listener.onShowLanguageBottomSheet()},
+                onLanguageClick = { listener.onShowLanguageBottomSheet() },
                 onLogoutClick = { listener.onShowLogoutBottomSheet() },
 
                 )
@@ -183,7 +181,6 @@ fun ProfileContent(
         }
 
         item {
-
             EditProfileBottomSheet(
                 visible = uiState.showEditProfileBottomSheet,
                 isGuest = uiState.isGuest,
@@ -201,6 +198,4 @@ fun ProfileContent(
             }
         )
     }
-
 }
-

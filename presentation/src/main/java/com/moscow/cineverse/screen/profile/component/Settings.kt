@@ -91,7 +91,7 @@ internal fun Settings(
                     contentDescription = "language arrow icon"
                 )
             })
-        if (!isGuest)   Spacer(
+        if (!isGuest) Spacer(
             modifier = Modifier
                 .height(1.dp)
                 .fillMaxWidth()
