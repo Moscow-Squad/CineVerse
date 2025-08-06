@@ -1,13 +1,12 @@
 package com.moscow.repository
 
 
-import android.util.Log
 import com.moscow.data_source.remote.HomeRemoteDataSource
 import com.moscow.data_source.local.HomeLocalDataSource
 import com.moscow.domain.model.Movie
 import com.moscow.domain.model.Series
 import com.moscow.domain.repository.HomeRepository
-import com.moscow.local.entity.HomeItemEntity
+import com.moscow.local.entity.MediaItemEntity
 import com.moscow.mapper.toDomain
 import com.moscow.mapper.toHomeItemEntity
 import com.moscow.mapper.toMovie
@@ -47,7 +46,7 @@ class HomeRepositoryImpl @Inject constructor(
             },
             mapFromEntity = { it.toMovie() },
             forceRefresh = forceRefresh
-        ).also { Log.d("TAGE", it.size.toString()) }
+        )
     }
 
     override suspend fun getUpComingMovies(page: Int, forceRefresh: Boolean): List<Movie> {
@@ -85,7 +84,7 @@ class HomeRepositoryImpl @Inject constructor(
 
     private suspend inline fun <reified T> getCachedOrFetchHomeItems(
         categoryType: String,
-        crossinline mapFromEntity: (HomeItemEntity) -> T,
+        crossinline mapFromEntity: (MediaItemEntity) -> T,
         fetchFromRemote: suspend () -> List<T>,
         forceRefresh: Boolean = false,
         forceCache: Boolean = false

@@ -3,14 +3,14 @@ package com.moscow.local.data_source
 import com.moscow.data_source.local.HomeLocalDataSource
 import com.moscow.local.dao.home.HomeCacheDao
 import com.moscow.local.entity.HomeCategoryTimestampEntity
-import com.moscow.local.entity.HomeItemEntity
+import com.moscow.local.entity.MediaItemEntity
 import javax.inject.Inject
 
 class HomeLocalDataSourceImpl @Inject constructor(
     private val homeCacheDao: HomeCacheDao
 ) : HomeLocalDataSource {
 
-    override suspend fun insertHomeItems(homeItems: List<HomeItemEntity>) {
+    override suspend fun insertHomeItems(homeItems: List<MediaItemEntity>) {
         homeCacheDao.insertHomeItems(homeItems)
     }
 
@@ -18,7 +18,7 @@ class HomeLocalDataSourceImpl @Inject constructor(
         homeCacheDao.updateCategoryTimestamp(timestamp)
     }
 
-    override suspend fun getHomeItemsByCategory(categoryType: String): List<HomeItemEntity> {
+    override suspend fun getHomeItemsByCategory(categoryType: String): List<MediaItemEntity> {
         return homeCacheDao.getHomeItemsByCategory(categoryType)
     }
 
@@ -30,7 +30,7 @@ class HomeLocalDataSourceImpl @Inject constructor(
         homeCacheDao.clearHomeCategory(categoryType)
     }
 
-    override suspend fun refreshHomeCategory(categoryType: String, homeItems: List<HomeItemEntity>) {
+    override suspend fun refreshHomeCategory(categoryType: String, homeItems: List<MediaItemEntity>) {
         homeCacheDao.refreshHomeCategory(categoryType, homeItems)
     }
 }
