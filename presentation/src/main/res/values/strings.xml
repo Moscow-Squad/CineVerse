@@ -103,5 +103,6 @@
     <string name="collection_name">Collection Name</string>
     <string name="my_collection_name_hint">e.g. My Watchlist</string>
     <string name="create">Create</string>
+    <string name="success">Success</string>
 
 </resources>

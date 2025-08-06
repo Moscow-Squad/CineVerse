@@ -1,7 +1,5 @@
 package com.moscow.cineverse.screen.collections
 
-import com.moscow.domain.model.Collection
-
 data class CollectionsBottomSheetScreenState(
     val isLoading: Boolean = false,
     val errorMessage: String = "",
@@ -17,10 +15,3 @@ data class CollectionUiState(
     val name: String,
     val isLoading: Boolean = false
 )
-
-fun Collection.toUi() =
-    CollectionUiState(
-        id = id,
-        name = name,
-        isLoading = false
-    )

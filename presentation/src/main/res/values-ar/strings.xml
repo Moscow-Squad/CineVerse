@@ -102,6 +102,7 @@
     <string name="no_collections_yet_description">ابدأ في بناء مكتبتك الشخصية عن طريق حفظ الأفلام أو المسلسلات التي تريد تذكرها.</string>
     <string name="collection_name">اسم المجموعة</string>
     <string name="my_collection_name_hint">مثال: قائمة مشاهدتي</string>
-    <string name="create">Create</string>
+    <string name="create">إنشاء</string>
+    <string name="success">تم بنجاج</string>
 
 </resources>
