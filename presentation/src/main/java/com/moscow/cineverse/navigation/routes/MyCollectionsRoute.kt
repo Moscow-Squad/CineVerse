@@ -13,12 +13,19 @@ fun NavGraphBuilder.myCollections(navController: NavController) {
     composable<MyCollectionsRoute> {
         MyCollectionsScreen(
             onNavigateBack = navController::navigateUp,
-            navigateToCollectionDetails = {
-
+            navigateToCollectionDetails = { collectionId, collectionName ->
+                navController.navigate(
+                    CollectionDetailsRoute(
+                        collectionId = collectionId,
+                        collectionName = collectionName
+                    )
+                )
             },
             navigateToCreateCollectionDialog = {
                 navController.navigate(CreateCollectionDialogRoute)
-            }
+            },
+            navigateToExplore = { navController.navigate(ExploreRoute) },
+            currentBackStackEntry = navController.currentBackStackEntry
         )
     }
 }

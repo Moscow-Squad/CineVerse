@@ -12,7 +12,16 @@ data object CreateCollectionDialogRoute
 fun NavGraphBuilder.createCollectionDialogRoute(navController: NavController) {
     dialog<CreateCollectionDialogRoute> {
         CreateCollectionDialog(
-            onNavigateBack = navController::navigateUp,
+            onNavigateBack = { collectionId, collectionName ->
+                navController
+                    .previousBackStackEntry
+                    ?.savedStateHandle
+                    ?.apply {
+                        set("collection_name", collectionName)
+                        set("collection_Id", collectionId)
+                    }
+                navController.navigateUp()
+            },
         )
     }
 }

@@ -1,5 +1,7 @@
 package com.moscow.cineverse.screen.my_collections.create_collection_dialog
 
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -9,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -23,16 +26,18 @@ import com.moscow.cinverse.presentation.R
 @Composable
 fun CreateCollectionDialog(
     modifier: Modifier = Modifier,
-    onNavigateBack: () -> Unit,
+    onNavigateBack: (collectionId: Int?, collectionName: String?) -> Unit,
     viewModel: CreateCollectionDialogViewModel = hiltViewModel(),
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
+    val context = LocalContext.current
     LaunchedEffect(true) {
         viewModel.uiEffect.collect { event ->
             handleEvents(
                 event,
                 viewModel::onCreateClick,
-                onNavigateBack,
+                navigateBack = { onNavigateBack(state.collectionId, state.collectionName) },
+                context = context
             )
         }
     }
@@ -43,11 +48,18 @@ private fun handleEvents(
     event: CreateCollectionDialogEvent,
     onCreateCollectionClicked: () -> Unit,
     navigateBack: () -> Unit,
+    context: Context,
 ) {
     when (event) {
-        CreateCollectionDialogEvent.OnCreateCollection -> onCreateCollectionClicked()
         CreateCollectionDialogEvent.OnCancelCollectionCreation -> navigateBack()
+        is CreateCollectionDialogEvent.OnAddCollectionFailed -> {
+            Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
+        }
 
+        is CreateCollectionDialogEvent.OnCollectionAddedSuccessfully -> {
+            Toast.makeText(context, context.getString(R.string.success), Toast.LENGTH_SHORT).show()
+            navigateBack()
+        }
     }
 
 }
@@ -96,9 +108,10 @@ fun CreateCollectionDialogContent(
                     buttonText = stringResource(R.string.create),
                     textColor = if (state.collectionName.isEmpty()) Theme.colors.button.onDisabled else Theme.colors.button.onPrimary,
                     textStyle = Theme.textStyle.body.medium.medium,
-                    onClick = interactionListener::onCancelClick,
+                    onClick = interactionListener::onCreateClick,
                     buttonColor = if (state.collectionName.isEmpty()) Theme.colors.button.disabled else Theme.colors.button.primary,
-                    modifier = Modifier.weight(1f)
+                    modifier = Modifier.weight(1f),
+                    isLoading = state.isLoading
                 )
 
             }

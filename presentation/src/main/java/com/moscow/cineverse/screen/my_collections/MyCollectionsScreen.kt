@@ -24,6 +24,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavBackStackEntry
 import com.moscow.cineverse.designSystem.component.MovieAppBar
 import com.moscow.cineverse.designSystem.component.MovieCircularProgressBar
 import com.moscow.cineverse.designSystem.component.MovieScaffold
@@ -40,22 +41,55 @@ fun MyCollectionsScreen(
     onNavigateBack: () -> Unit,
     navigateToCreateCollectionDialog: () -> Unit,
     navigateToExplore: () -> Unit,
-    navigateToCollectionDetails: (Int) -> Unit,
+    navigateToCollectionDetails: (collectionId: Int, collectionName: String) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: MyCollectionsViewModel = hiltViewModel(),
+    currentBackStackEntry: NavBackStackEntry?,
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     LaunchedEffect(true) {
         viewModel.uiEffect.collect {
             when (it) {
                 MyCollectionsEvent.OnNavigateBack -> onNavigateBack.invoke()
-                is MyCollectionsEvent.OnNavigateToCollection -> navigateToCollectionDetails(it.collectionId)
+                is MyCollectionsEvent.OnNavigateToCollection -> navigateToCollectionDetails(
+                    it.collectionId,
+                    it.collectionName
+                )
+
                 MyCollectionsEvent.OnNavigateToCreateCollection -> navigateToCreateCollectionDialog()
                 MyCollectionsEvent.OnStartCollecting -> navigateToExplore()
             }
         }
     }
     MyCollectionsContent(uiState, modifier, viewModel)
+    ListenOnNewCollection(
+        currentBackStackEntry = currentBackStackEntry,
+        insertNewCollection = viewModel::insertNewCollection
+    )
+}
+
+@Composable
+private fun ListenOnNewCollection(
+    currentBackStackEntry: NavBackStackEntry?,
+    insertNewCollection: (collectionId: Int, collectionName: String) -> Unit,
+) {
+    val collectionName = currentBackStackEntry?.savedStateHandle
+        ?.getStateFlow<String?>("collection_name", null)
+        ?.collectAsStateWithLifecycle()?.value
+
+    val collectionId = currentBackStackEntry?.savedStateHandle
+        ?.getStateFlow<Int?>("collection_Id", null)
+        ?.collectAsStateWithLifecycle()?.value
+
+    LaunchedEffect(collectionId) {
+        if (collectionId == null) {
+            return@LaunchedEffect
+        } else {
+            currentBackStackEntry.savedStateHandle.remove<Int>(key = "collection_Id")
+            currentBackStackEntry.savedStateHandle.remove<String>(key = "collection_name")
+            insertNewCollection(collectionId, collectionName.toString())
+        }
+    }
 }
 
 @Composable
@@ -150,7 +184,12 @@ fun MyCollectionsContent(
                     items(state.collections) { collection ->
                         MyCollectionCard(
                             state = collection,
-                            onClick = interactionListener::onCollectionClick,
+                            onClick = {
+                                interactionListener.onCollectionClick(
+                                    collection.id,
+                                    collection.title
+                                )
+                            },
                             modifier = Modifier.padding(horizontal = 16.dp),
                         )
 

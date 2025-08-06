@@ -25,7 +25,7 @@ import com.moscow.cineverse.design_system.R
 @Composable
 fun MyCollectionCard(
     state: MyCollectionUiState,
-    onClick: (Int) -> Unit,
+    onClick: (collectionId: Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -55,7 +55,9 @@ fun MyCollectionCard(
                 color = Theme.colors.shade.primary
             )
             Text(
-                text = state.numberOfShows.toString() + " " + stringResource(R.string.shows),
+                text = state.itemCount.toString() + " " + if (state.itemCount > 1) stringResource(
+                    R.string.movies
+                ) else stringResource(R.string.movie_list_type),
                 style = Theme.textStyle.body.small.medium,
                 color = Theme.colors.shade.secondary
             )

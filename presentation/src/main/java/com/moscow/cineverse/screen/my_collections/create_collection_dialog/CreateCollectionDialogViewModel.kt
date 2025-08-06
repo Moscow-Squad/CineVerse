@@ -1,8 +1,14 @@
 package com.moscow.cineverse.screen.my_collections.create_collection_dialog
 
 import com.moscow.cineverse.base.BaseViewModel
+import com.moscow.domain.usecase.collection.AddNewCollectionUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class CreateCollectionDialogViewModel :
+@HiltViewModel
+class CreateCollectionDialogViewModel @Inject constructor(
+    private val createNewCollection: AddNewCollectionUseCase,
+) :
     BaseViewModel<CreateCollectionDialogUiState, CreateCollectionDialogEvent>(
         CreateCollectionDialogUiState()
     ), CreateCollectionDialogInteractionListener {
@@ -11,8 +17,31 @@ class CreateCollectionDialogViewModel :
     }
 
     override fun onCreateClick() {
+        launchWithResult(
+            action = {
+                createNewCollection(
+                    collectionName = uiState.value.collectionName,
+                    collectionDescription = ""
+                )
+            },
+            onSuccess = ::onCollectionSAddedSuccessfully,
+            onError = ::onAddCollectionFailed,
+            onStart = { updateState { it.copy(isLoading = true) } },
+            onFinally = {}
+        )
 
     }
+
+    private fun onCollectionSAddedSuccessfully(collectionId: Int) {
+        updateState { it.copy(isLoading = false, collectionId = collectionId) }
+        sendEvent(CreateCollectionDialogEvent.OnCollectionAddedSuccessfully)
+    }
+
+    private fun onAddCollectionFailed(error: Throwable) {
+        updateState { it.copy(isLoading = false) }
+        sendEvent(CreateCollectionDialogEvent.OnAddCollectionFailed(error.message.toString()))
+    }
+
 
     override fun onCollectionNameChange(name: String) {
         updateState {
