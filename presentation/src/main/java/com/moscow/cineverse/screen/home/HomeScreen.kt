@@ -11,12 +11,16 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.moscow.cineverse.component.ScreenStateHandler
 import com.moscow.cineverse.designSystem.theme.Theme
@@ -38,17 +42,24 @@ fun HomeScreen(
     navigateToSeriesDetails: (seriesId: Int) -> Unit,
     navigateToBrowseSuggestion: () -> Unit,
     navigateToWatchingSuggestion: () -> Unit,
+    navigateToCollectionDetails: (collectionId: Int, collectionName: String) -> Unit,
 ) {
     val state by viewmodel.uiState.collectAsStateWithLifecycle()
     LaunchedEffect(Unit) {
         viewmodel.uiEffect.collect { effect ->
             when (effect) {
-                is HomeEvent.CollectionClicked -> {}
+                is HomeEvent.CollectionClicked -> {
+                    navigateToCollectionDetails(
+                        effect.collectionId,
+                        effect.collectionName
+                    )
+                }
+
                 is HomeEvent.MovieClicked -> {
                     navigateToMovieDetails(
                         effect.movieId
                     )
-
+                    viewmodel.getRecentlyViewedMovies()
                 }
 
                 is HomeEvent.PromotionClicked -> {}
@@ -63,7 +74,6 @@ fun HomeScreen(
                     navigateToSeriesDetails(
                         effect.seriesId
                     )
-
                 }
 
                 is HomeEvent.BrowseSuggestionClicked -> {
@@ -77,6 +87,22 @@ fun HomeScreen(
             }
         }
     }
+
+    val lifecycleOwner = LocalLifecycleOwner.current
+    DisposableEffect(Unit) {
+        val observer = LifecycleEventObserver { _, event ->
+            if (event == Lifecycle.Event.ON_RESUME) {
+                viewmodel.getRecentlyViewedMovies()
+            }
+        }
+
+        lifecycleOwner.lifecycle.addObserver(observer)
+
+        onDispose {
+            lifecycleOwner.lifecycle.removeObserver(observer)
+        }
+    }
+
     HomeContent(modifier, state, viewmodel)
 }
 
@@ -84,7 +110,7 @@ fun HomeScreen(
 fun HomeContent(
     modifier: Modifier = Modifier,
     state: HomeUiState,
-    listener: HomeInteractionListener,
+    listener: HomeInteractionListener
 ) {
 
     ScreenStateHandler(
@@ -169,7 +195,7 @@ fun HomeContent(
                     type = HomeFeaturedItems.TOP_RATED_TV_SHOWS
                 )
 
-                if (state.userName != null && state.youRecentlyViewed.isEmpty() == false)
+                if (!state.youRecentlyViewed.isEmpty()) {
                     FeaturedMovies(
                         displayMovies = state.youRecentlyViewed,
                         onMovieClick = listener::onMediaItemClicked,
@@ -177,14 +203,15 @@ fun HomeContent(
                         modifier = Modifier,
                         type = HomeFeaturedItems.YOU_RECENTLY_VIEWED
                     )
+                }
 
-                if (false)
+                if (state.userName != null) {
                     MyCollectionsLayout(
-                        items = state.collections,
+                        items = state.collections.take(4),
                         onCollectionClick = listener::onCollectionClick,
-                        modifier = Modifier.padding(horizontal = 16.dp),
                         onShowMoreClick = listener::onCollectionsShowMoreClick,
                     )
+                }
 
                 SuggestionWithHeader(
                     modifier = Modifier

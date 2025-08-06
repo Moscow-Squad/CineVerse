@@ -21,7 +21,7 @@ class CollectionsRepositoryImpl @Inject constructor(
         val user = preferenceRepository.getUser()
         val accountId = when (user) {
             is UserType.AuthenticatedUser -> user.id
-            is UserType.GuestUser -> "0"
+            is UserType.GuestUser -> throw IllegalArgumentException("Guest Users not allowed to see or edit collections")
         }
         val response = collectionRemoteDataSource.getMyCollections(
             accountId = accountId,

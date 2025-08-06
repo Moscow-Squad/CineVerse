@@ -33,7 +33,10 @@ fun NavGraphBuilder.homeRoute(navController: NavHostController) {
             },
             navigateToWatchingSuggestion = {
                 navController.navigateToNewGraph(MatchRoute)
-            }
+            },
+            navigateToCollectionDetails = { id, name ->
+                navController.navigate(CollectionDetailsRoute(id, name))
+            },
         )
     }
 }
