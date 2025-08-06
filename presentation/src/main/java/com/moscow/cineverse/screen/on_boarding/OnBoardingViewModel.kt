@@ -1,10 +1,18 @@
 package com.moscow.cineverse.screen.on_boarding
 
+import androidx.lifecycle.viewModelScope
 import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.cineverse.utlis.StringValue
 import com.moscow.cinverse.presentation.R
+import com.moscow.domain.repository.PreferenceRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class OnBoardingViewModel :
+@HiltViewModel
+class OnBoardingViewModel @Inject constructor(
+    private val preferenceRepository: PreferenceRepository
+) :
     BaseViewModel<OnBoardingState, OnBoardingScreenEvents>(OnBoardingState()),
     OnBoardingInteractionListener {
 
@@ -56,6 +64,9 @@ class OnBoardingViewModel :
     }
 
     override fun onClickGetStartedButton() {
-        // go to login screen
+        viewModelScope.launch {
+            preferenceRepository.setOnBoardingCompleted()
+            sendEvent(OnBoardingScreenEvents.NavigateToLoginScreen)
+        }
     }
 }

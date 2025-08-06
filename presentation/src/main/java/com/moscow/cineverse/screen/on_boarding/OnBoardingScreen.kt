@@ -42,6 +42,15 @@ fun OnBoardingScreen(
         initialPage = state.currentPage,
         pageCount = { state.pages.size }
     )
+    LaunchedEffect(viewModel) {
+        viewModel.uiEffect.collect { event ->
+            when (event) {
+                is OnBoardingScreenEvents.NavigateToLoginScreen -> {
+                    navigateToLogin()
+                }
+            }
+        }
+    }
     LaunchedEffect(state.currentPage) {
         if (pagerState.currentPage != state.currentPage) {
             pagerState.animateScrollToPage(

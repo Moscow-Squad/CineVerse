@@ -21,6 +21,7 @@ import com.moscow.cineverse.navigation.routes.exploreRoute
 import com.moscow.cineverse.navigation.routes.homeRoute
 import com.moscow.cineverse.navigation.routes.loginRoute
 import com.moscow.cineverse.navigation.routes.matchRoute
+import com.moscow.cineverse.navigation.routes.onBoardingRoute
 import com.moscow.cineverse.navigation.routes.profileRoute
 import com.moscow.cineverse.navigation.routes.seeMoreRoute
 
@@ -48,6 +49,7 @@ fun CineVerseNavGraph(
 
             exploreRoute(navController)
             loginRoute(navController)
+            onBoardingRoute(navController)
             RecommendationsRoute(navController)
             ReviewsRoute(navController)
             castDetailsRoute(navController)
