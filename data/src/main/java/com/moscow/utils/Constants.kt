@@ -9,6 +9,8 @@ const val INCLUDE_ADULT = "include_adult"
 const val WITH_GENRES = "with_genres"
 const val DELETE_SEARCH_QUERY_HISTORY = "delete_search_query_history"
 const val SESSION_ID = "session_id"
+const val SORTED_BY = "sort_by"
+const val DESCENDING = "created_at.desc"
 
 //Endpoints
 const val AUTHENTICATION = "authentication/"
@@ -54,3 +56,4 @@ const val TOP_RATED = "top_rated"
 const val TRAILERS = "/videos"
 const val RATED_MOVIES = "/rated/movies"
 const val RATED_SERIES = "/rated/tv"
+const val ACCOUNT_STATES = "/account_states"

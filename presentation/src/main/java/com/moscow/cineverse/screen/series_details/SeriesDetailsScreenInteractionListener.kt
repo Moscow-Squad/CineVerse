@@ -9,6 +9,7 @@ interface SeriesDetailsScreenInteractionListener {
     fun onDismissLoginBottomSheet()
     fun navigateToLogin()
     fun onRatingSubmit(rating: Int, seriesId: Int)
+    fun onDeleteRatingSeries(seriesId: Int)
     fun onShowMoreRecommendationsClicked(seriesId: Int, seriesName: String)
     fun onShowMoreReviewsClicked(seriesId: Int)
     fun onShowMoreSeasonsClicked(seriesId: Int)

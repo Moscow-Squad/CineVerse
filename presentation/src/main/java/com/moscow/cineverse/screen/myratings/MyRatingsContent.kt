@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -101,13 +102,18 @@ private fun MyRatingsList(
     modifier: Modifier = Modifier
 ) {
     LazyColumn(
-        modifier = modifier.padding(horizontal = 16.dp)
+        contentPadding = PaddingValues(16.dp),
+        verticalArrangement = Arrangement.spacedBy(20.dp)
     ) {
         items(contentList.itemCount) { index ->
             contentList[index]?.let { mediaItem ->
-                Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
+                Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
                     Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                        Text("You gave it")
+                        Text(
+                            text = stringResource(R.string.you_gave_it),
+                            style = Theme.textStyle.body.small.medium,
+                            color = Theme.colors.shade.primary
+                        )
                         MovieRatingBar(
                             mediaItem.rating,
                             onRatingChanged = {},

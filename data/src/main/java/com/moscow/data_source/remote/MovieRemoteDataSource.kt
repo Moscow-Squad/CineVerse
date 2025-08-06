@@ -4,6 +4,7 @@ import com.moscow.remote.dto.CreditsDetailsDto
 import com.moscow.remote.dto.MovieDto
 import com.moscow.remote.dto.details.MediaTrailersDto
 import com.moscow.remote.dto.details.MovieDetailDto
+import com.moscow.remote.dto.rating.UserRatingResponse
 import com.moscow.remote.dto.rating.movie.RatedMovieDto
 import com.moscow.remote.dto.review.RatingRequestDto
 import com.moscow.remote.dto.review.ReviewDto
@@ -15,6 +16,7 @@ interface MovieRemoteDataSource {
     suspend fun rateMovie(rating: RatingRequestDto, id: Int)
     suspend fun deleteRatingMovie(movieId: Int): ApiResponse<Nothing>
     suspend fun getRatedMovies(userId: Int, page: Int): ApiResponse<RatedMovieDto>
+    suspend fun getUserRatingForMovie(movieId: Int) : UserRatingResponse
     suspend fun getMovieReviews(id: Int, page: Int): ApiResponse<ReviewDto>
     suspend fun getMovieCredits(id: Int): CreditsDetailsDto
     suspend fun getMoviesRecommendations(id: Int, page: Int): ApiResponse<MovieDto>

@@ -24,7 +24,7 @@ data class RatedMovieDto(
     @SerialName("poster_path")
     val posterPath: String?,
     @SerialName("rating")
-    val rating: Int?,
+    val rating: Double?,
     @SerialName("release_date")
     val releaseDate: String?,
     @SerialName("title")

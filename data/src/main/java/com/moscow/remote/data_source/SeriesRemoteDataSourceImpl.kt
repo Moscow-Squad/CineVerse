@@ -4,6 +4,7 @@ import com.moscow.data_source.remote.SeriesRemoteDataSource
 import com.moscow.domain.repository.PreferenceRepository
 import com.moscow.remote.dto.details.MediaTrailersDto
 import com.moscow.remote.dto.details.SeriesCreditDto
+import com.moscow.remote.dto.rating.UserRatingResponse
 import com.moscow.remote.dto.rating.series.RatedSeriesDto
 import com.moscow.remote.dto.review.RatingRequestDto
 import com.moscow.remote.dto.review.ReviewDto
@@ -41,7 +42,7 @@ class SeriesRemoteDataSourceImpl @Inject constructor(
         }
     }
 
-    override suspend fun deleteRatingSeries(seriesId: Int): ApiResponse<Nothing> {
+    override suspend fun deleteRatingSeries(seriesId: Int){
         val sessionId = preferenceRepository.getSessionId()
         handleApi {
             seriesService.deleteRatingSeries(
@@ -61,6 +62,16 @@ class SeriesRemoteDataSourceImpl @Inject constructor(
                 userId,
                 sessionId,
                 page
+            )
+        }
+    }
+
+    override suspend fun getUserRatingForSeries(seriesId: Int): UserRatingResponse {
+        val sessionId = preferenceRepository.getSessionId()
+        return handleApi {
+            seriesService.getUserRatingForSeries(
+                seriesId,
+                sessionId
             )
         }
     }

@@ -1,5 +1,6 @@
 package com.moscow.repository
 
+import android.util.Log
 import com.moscow.data_source.local.DetailsLocalDataSource
 import com.moscow.data_source.remote.SeriesRemoteDataSource
 import com.moscow.domain.model.CreditsDetails
@@ -54,6 +55,11 @@ class SeriesRepositoryImpl @Inject constructor(
     ): List<GetRatedSeriesUseCase.RatedSeriesResult> {
         val response = seriesRemoteDataSource.getRatedSeries(userId, page)
         return response.results?.mapNotNull { it.toOutputResult() } ?: emptyList()
+    }
+
+    override suspend fun getUserRatingForSeries(seriesId: Int): Int {
+        val response = seriesRemoteDataSource.getUserRatingForSeries(seriesId)
+        return response.userRating ?: 0
     }
 
     override suspend fun getLatestSeasons(): List<Season> {

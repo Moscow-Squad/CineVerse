@@ -6,6 +6,7 @@ import com.moscow.remote.dto.CreditsDetailsDto
 import com.moscow.remote.dto.MovieDto
 import com.moscow.remote.dto.details.MediaTrailersDto
 import com.moscow.remote.dto.details.MovieDetailDto
+import com.moscow.remote.dto.rating.UserRatingResponse
 import com.moscow.remote.dto.rating.movie.RatedMovieDto
 import com.moscow.remote.dto.review.RatingRequestDto
 import com.moscow.remote.dto.review.ReviewDto
@@ -64,6 +65,15 @@ class MovieRemoteDataSourceImpl @Inject constructor(
         }
     }
 
+    override suspend fun getUserRatingForMovie(movieId: Int): UserRatingResponse {
+        val sessionId = preferenceRepository.getSessionId()
+        return handleApi {
+            movieService.getUserRatingForMovie(
+                movieId,
+                sessionId
+            )
+        }
+    }
 
     override suspend fun getMovieCredits(id: Int): CreditsDetailsDto =
         handleApi {

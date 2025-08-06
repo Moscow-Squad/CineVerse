@@ -9,9 +9,11 @@ import com.moscow.cineverse.utlis.ViewMode
 import com.moscow.domain.model.Series
 import com.moscow.domain.repository.PreferenceRepository
 import com.moscow.domain.usecase.review.GetReviewsUseCase
+import com.moscow.domain.usecase.series.DeleteRatingSeriesUseCase
 import com.moscow.domain.usecase.series.GetSeriesCreditsDetailsUseCase
 import com.moscow.domain.usecase.series.GetSeriesDetailUseCase
 import com.moscow.domain.usecase.series.GetSeriesRecommendationsUseCase
+import com.moscow.domain.usecase.series.GetUserRatingForSeriesUseCase
 import com.moscow.domain.usecase.series.RateSeriesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
@@ -25,6 +27,8 @@ class SeriesDetailsScreenScreenViewModel @Inject constructor(
     private val rateSeriesUseCase: RateSeriesUseCase,
     private val getSeriesCreditsDetailsUseCase: GetSeriesCreditsDetailsUseCase,
     private val getSeriesRecommendationsUseCase: GetSeriesRecommendationsUseCase,
+    private val deleteRatingSeriesUseCase: DeleteRatingSeriesUseCase,
+    private val getUserRatingForSeriesUseCase: GetUserRatingForSeriesUseCase,
     private val preferences: PreferenceRepository,
     savedStateHandle: SavedStateHandle,
 ) : BaseViewModel<SeriesDetailsScreenState, SeriesDetailsScreenEffects>(SeriesDetailsScreenState()),
@@ -35,6 +39,7 @@ class SeriesDetailsScreenScreenViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             updateState { it.copy(isLoading = true) }
+            getUserRating(seriesId)
             loadSeriesDetails(seriesId)
             loadSeriesCredits(seriesId)
             getSeriesRecommendations(seriesId, page = 1)
@@ -42,6 +47,18 @@ class SeriesDetailsScreenScreenViewModel @Inject constructor(
             waitUntilAllDataIsReady()
             updateState { it.copy(isLoading = false) }
         }
+    }
+
+    private fun getUserRating(seriesId: Int) {
+        launchWithResult(
+            action = { getUserRatingForSeriesUseCase.invoke(seriesId) },
+            onSuccess = { rate ->
+                updateState { it.copy(starsRating = rate) }
+            },
+            onError = {
+                updateState { it.copy(starsRating = 0) }
+            }
+        )
     }
 
     private suspend fun waitUntilAllDataIsReady() {
@@ -158,7 +175,15 @@ class SeriesDetailsScreenScreenViewModel @Inject constructor(
         launchAndForget(
             action = { rateSeriesUseCase.rateSeriesUse(rating.toFloat(), seriesId) },
             onSuccess = { updateState { it.copy(starsRating = rating, showRatingBottomSheet = false) } },
-            onError = { updateState { it.copy(starsRating = rating, showRatingBottomSheet = false) } },
+            onError = { }, // TODO: Show Toast
+        )
+    }
+
+    override fun onDeleteRatingSeries(seriesId: Int) {
+        launchAndForget(
+            action = { deleteRatingSeriesUseCase(seriesId) },
+            onSuccess = { updateState { it.copy(starsRating = 0, showRatingBottomSheet = false) } },
+            onError = { }, // TODO: Show Toast
         )
     }
 

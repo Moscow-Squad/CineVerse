@@ -327,7 +327,7 @@ fun SeriesDetailsContent(
                     isVisible = uiState.showRatingBottomSheet,
                     onDismiss = interactionListener::onDismissOrCancelRatingBottomSheet,
                     onRatingSubmit = { rating -> interactionListener.onRatingSubmit(rating, detail.id) },
-                    onRatingRemove = { interactionListener.onRatingSubmit(0, detail.id) },
+                    onRatingRemove = { interactionListener.onDeleteRatingSeries(detail.id) },
                     initialRating = uiState.starsRating,
                     hasExistingRating = uiState.starsRating != 0,
                     isLoading = uiState.isLoading

@@ -4,12 +4,15 @@ import com.moscow.remote.dto.CreditsDetailsDto
 import com.moscow.remote.dto.MovieDto
 import com.moscow.remote.dto.details.MediaTrailersDto
 import com.moscow.remote.dto.details.MovieDetailDto
+import com.moscow.remote.dto.rating.UserRatingResponse
 import com.moscow.remote.dto.rating.movie.RatedMovieDto
 import com.moscow.remote.dto.review.RatingRequestDto
 import com.moscow.remote.dto.review.ReviewDto
 import com.moscow.utils.ACCOUNT
+import com.moscow.utils.ACCOUNT_STATES
 import com.moscow.utils.ApiResponse
 import com.moscow.utils.CREDITS
+import com.moscow.utils.DESCENDING
 import com.moscow.utils.DISCOVER_MOVIE_LIST
 import com.moscow.utils.MOVIE
 import com.moscow.utils.PAGE
@@ -19,12 +22,14 @@ import com.moscow.utils.RATING
 import com.moscow.utils.RECOMMENDATIONS
 import com.moscow.utils.REVIEWS
 import com.moscow.utils.SESSION_ID
+import com.moscow.utils.SORTED_BY
 import com.moscow.utils.TRAILERS
 import com.moscow.utils.WITH_GENRES
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
+import retrofit2.http.Headers
 import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -42,6 +47,10 @@ interface MovieService {
     ): Response<MovieDetailDto>
 
     @POST("$MOVIE{movie_id}$RATING")
+    @Headers(
+        "Accept: application/json",
+        "Content-Type: application/json;charset=utf-8"
+    )
     suspend fun rateMovie(
         @Path("movie_id") id: Int,
         @Query(SESSION_ID) sessionId: String,
@@ -59,7 +68,14 @@ interface MovieService {
         @Path("account_id") id: Int,
         @Query(SESSION_ID) sessionId: String,
         @Query(PAGE) page: Int,
+        @Query(SORTED_BY) sortBy: String = DESCENDING
     ): Response<ApiResponse<RatedMovieDto>>
+
+    @GET("$MOVIE{movie_id}$ACCOUNT_STATES")
+    suspend fun getUserRatingForMovie(
+        @Path("movie_id") movieId: Int,
+        @Query(SESSION_ID) sessionId: String
+    ): Response<UserRatingResponse>
 
     @GET("$MOVIE{movie_id}$CREDITS")
     suspend fun getMovieCredits(

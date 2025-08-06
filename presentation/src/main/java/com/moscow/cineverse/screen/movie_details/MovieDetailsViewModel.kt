@@ -18,6 +18,7 @@ import com.moscow.domain.usecase.local.GetUserDetailsUseCase
 import com.moscow.domain.usecase.movie.GetMovieCreditsUseCase
 import com.moscow.domain.usecase.movie.GetMovieDetailsUseCase
 import com.moscow.domain.usecase.movie.GetMovieRecommendationsUseCase
+import com.moscow.domain.usecase.movie.GetUserRatingForMovieUseCase
 import com.moscow.domain.usecase.movie.RateMovieUseCase
 import com.moscow.domain.usecase.review.GetReviewsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -35,6 +36,7 @@ class MovieDetailsViewModel @Inject constructor(
     private val getUserDetailsUseCase: GetUserDetailsUseCase,
     private val preferences: PreferenceRepository,
     private val rateMovieUseCase: RateMovieUseCase,
+    private val getUserRatingForMovieUseCase: GetUserRatingForMovieUseCase,
     saveStateHandle: SavedStateHandle,
 ) : BaseViewModel<MovieScreenState, MovieDetailsScreenEffect>(MovieScreenState()),
     MovieDetailsInteractionListener {
@@ -46,6 +48,7 @@ class MovieDetailsViewModel @Inject constructor(
         viewModelScope.launch {
             getUserDetails()
             updateState { it.copy(isLoading = true) }
+            getUserRating(movieId)
             addMovieToRecentlyViewedCollection(movieId)
             getMovieDetails(movieId)
             getReviews(movieId)
@@ -54,6 +57,18 @@ class MovieDetailsViewModel @Inject constructor(
             waitUntilAllDataIsReady()
             updateState { it.copy(isLoading = false) }
         }
+    }
+
+    private fun getUserRating(seriesId: Int) {
+        launchWithResult(
+            action = { getUserRatingForMovieUseCase.invoke(seriesId) },
+            onSuccess = { rate ->
+                updateState { it.copy(starsRating = rate) }
+            },
+            onError = {
+                updateState { it.copy(starsRating = 0) }
+            }
+        )
     }
 
     private suspend fun waitUntilAllDataIsReady() {
