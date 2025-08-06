@@ -17,22 +17,16 @@ class MainActivityViewModel @Inject constructor(
     private val languageProvider: LanguageProvider
 ) : ViewModel() {
 
-
     private val _state = MutableStateFlow(MainActivityUiState())
     val state = _state.asStateFlow()
 
     init {
-        loadScreen()
+        observeTheme()
+        observeLanguage()
     }
 
-    private fun loadScreen() {
+    private fun observeLanguage() {
         _state.update { it.copy(isLoading = true) }
-
-        viewModelScope.launch {
-            themeProvider.themeFlow.collect { isDarkTheme ->
-                _state.update { it.copy(isDarkTheme = isDarkTheme) }
-            }
-        }
 
         viewModelScope.launch {
             languageProvider.languageFlow.collect { lang ->
@@ -43,4 +37,13 @@ class MainActivityViewModel @Inject constructor(
         }
     }
 
+    private fun observeTheme() {
+        _state.update { it.copy(isLoading = true) }
+
+        viewModelScope.launch {
+            themeProvider.themeFlow.collect { isDarkTheme ->
+                _state.update { it.copy(isDarkTheme = isDarkTheme) }
+            }
+        }
+    }
 }

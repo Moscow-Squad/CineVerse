@@ -3,6 +3,7 @@ package com.moscow.cineverse.main_activity
 import android.content.Context
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.WindowInsets
 import android.view.WindowInsetsController
@@ -76,6 +77,8 @@ class MainActivity : ComponentActivity() {
                     recreate()
                 }
             }
+
+            Log.d("Languagemain ", state.language)
 
             CineVerseTheme(state = ThemeState(isDark = state.isDarkTheme)) {
                 CineVerseRoot(navViewModel)
