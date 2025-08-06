@@ -13,7 +13,6 @@ import com.moscow.domain.usecase.profile.GetAccountDetailsUseCase
 import com.moscow.domain.usecase.profile.LogoutUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import java.util.Locale
 import javax.inject.Inject
 
 @HiltViewModel
@@ -29,7 +28,6 @@ class ProfileViewModel @Inject constructor(
 
     init {
         observeTheme()
-        observeLanguage()
         getUserDetails()
     }
 
@@ -90,16 +88,6 @@ class ProfileViewModel @Inject constructor(
         viewModelScope.launch {
             themeProvider.themeFlow.collect { isDark ->
                 updateState { it.copy(isDarkTheme = isDark) }
-            }
-        }
-    }
-
-    private fun observeLanguage() {
-        viewModelScope.launch {
-            val deviceLanguage = Locale.getDefault().language
-            languageProvider.initializeLanguage(deviceLanguage)
-            languageProvider.languageFlow.collect { language ->
-                updateState { it.copy(appLanguage = language) }
             }
         }
     }
