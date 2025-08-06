@@ -18,5 +18,6 @@ data class CollectionDto(
 
 fun CollectionDto.toDomain() = Collection(
     id = id ?: 0,
-    name = name ?: ""
+    name = name ?: "",
+    numberOfItems = itemCount ?: 0
 )

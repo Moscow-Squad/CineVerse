@@ -2,5 +2,6 @@ package com.moscow.domain.model
 
 data class Collection(
     val id: Int,
-    val name: String
+    val name: String,
+    val numberOfItems: Int
 )

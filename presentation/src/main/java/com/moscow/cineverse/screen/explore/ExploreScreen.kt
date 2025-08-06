@@ -115,7 +115,6 @@ private fun ExploreScreenContent(
         genresVisible = true
     }
 
-
     LaunchedEffect(uiState.shouldShowGenres) {
         if (uiState.shouldShowGenres) {
             genresVisible = true

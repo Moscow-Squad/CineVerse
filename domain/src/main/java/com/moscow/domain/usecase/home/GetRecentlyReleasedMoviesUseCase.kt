@@ -7,6 +7,6 @@ import javax.inject.Inject
 class GetRecentlyReleasedMoviesUseCase @Inject constructor(
     private val homeRepository: HomeRepository
 ) {
-    suspend operator fun invoke(page:Int): List<Movie> =
-        homeRepository.getRecentlyReleasedMovies(page)
+    suspend operator fun invoke(page:Int, forceRefresh: Boolean = false): List<Movie> =
+        homeRepository.getRecentlyReleasedMovies(page, forceRefresh)
 }

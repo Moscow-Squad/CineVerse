@@ -62,14 +62,14 @@ class SeeMoreViewModel @Inject constructor(
                     HomeFeaturedItems.RECENTLY_RELEASED.name -> {
                         createPagingFlow(
                             pageSize = pageSize,
-                            fetchData = { page -> getRecentlyReleasedMoviesUseCase(page) },
+                            fetchData = { page -> getRecentlyReleasedMoviesUseCase(page = page, forceRefresh = true) },
                         )
                     }
 
                     HomeFeaturedItems.UPCOMING_MOVIES.name -> {
                         createPagingFlow(
                             pageSize = pageSize,
-                            fetchData = { page -> getUpcomingMoviesUseCase(page) }, // Replace with getUpcomingMovies when available
+                            fetchData = { page -> getUpcomingMoviesUseCase(page = page, forceRefresh = true) }, // Replace with getUpcomingMovies when available
                         )
                     }
 
@@ -77,7 +77,7 @@ class SeeMoreViewModel @Inject constructor(
                         // Using genre ID 28 for Action, same as in HomeViewModel
                         createPagingFlow(
                             pageSize = pageSize,
-                            fetchData = { page -> getMatchesYourVibesMoviesUseCase(28, page) },
+                            fetchData = { page -> getMatchesYourVibesMoviesUseCase(28, page = page, forceRefresh = true) },
 
                             )
                     }
