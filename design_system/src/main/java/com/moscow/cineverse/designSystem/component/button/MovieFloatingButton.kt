@@ -13,6 +13,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.design_system.R
@@ -23,13 +24,17 @@ fun MovieFloatingButton(
     onClick: () -> Unit,
     backgroundColor: Color,
     iconColor: Color,
+    contentPadding: PaddingValues = PaddingValues(10.dp),
+    useWrapContentSize: Boolean = false,
+    buttonSize: Dp = 40.dp,
+    iconSize: Dp = 20.dp,
     modifier: Modifier = Modifier
 ) {
     Button(
-        modifier = modifier.size(40.dp),
+        modifier = if (useWrapContentSize) modifier.size(buttonSize) else modifier,
         onClick = onClick,
         shape = RoundedCornerShape(Theme.radius.large),
-        contentPadding = PaddingValues(10.dp),
+        contentPadding = contentPadding,
         colors = buttonColors(
             containerColor = backgroundColor,
             contentColor = Color.Unspecified
@@ -37,7 +42,7 @@ fun MovieFloatingButton(
     ) {
 
         Icon(
-            modifier = Modifier.size(20.dp),
+            modifier = Modifier.size(iconSize),
             painter = painterResource(buttonIcon),
             tint = iconColor,
             contentDescription = stringResource(R.string.floating_button_icon)

@@ -11,7 +11,6 @@ import com.moscow.domain.model.Genre
 import com.moscow.domain.model.MediaType
 import com.moscow.domain.model.Movie
 import com.moscow.domain.model.Series
-import kotlin.Boolean
 
 fun Genre.toGenreUi() = HomeUiState.GenreUi(
     id = id,
@@ -56,6 +55,6 @@ fun List<Series>.toUi(
 fun Collection.toUi() = CollectionUiState(
     id = id,
     title = name,
-    numberOfShows = numberOfItems,
+    numberOfItems = itemCount,
     isLoading = false
 )

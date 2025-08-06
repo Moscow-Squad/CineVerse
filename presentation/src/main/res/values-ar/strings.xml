@@ -17,7 +17,7 @@
     <string name="you_might_also_like">قد يعجبك أيضاً</string>
     <string name="because_you_watched">لأنك شاهدت</string>
     <string name="nothing_found">ما لقينا شيء</string>
-    <string name="we_searched_the_entire_universe_but_found_nothing_matching_your_query_try_something_else">فتشنا الدنيا... وما لقينا شيء يطابق بحثك. جرّب تبحث بكلمة ثانية؟</string>
+    <string name="we_searched_the_entire_universe_but_found_nothing_matching_your_query_try_something_else">فتشنا الدنيا… وما لقينا شيء يطابق بحثك. جرّب تبحث بكلمة ثانية؟</string>
     <string name="add_to_collection">أضف للمجموعة</string>
     <string name="no_collections_yet">ما عندك مجموعات حالياً</string>
     <string name="create_a_new_collection_to_start_saving_your_favorite_movies_and_series">أنشئ مجموعة واحفظ فيها أفلامك ومسلسلاتك المفضلة</string>
@@ -94,8 +94,15 @@
     <string name="born_on">وُلد في %1$s</string>
     <string name="sensitive_content">محتوي حساس</string>
     <string name="all">الكل</string>
-    <string name="search">ابحث...</string>
+    <string name="search">ابحث…</string>
     <string name="search_can_t_be_empty_1">لا تستطيع البحث بلا شئ !</string>
     <string name="tip_swipe_left_to_remove_movies_from_your_collection">نصيحة: اسحب إلى اليسار لمسح الفيلم من مجموعتك</string>
+    <string name="start_collecting">ابدأ التجميع</string>
+    <string name="create_new_collection">إنشاء مجموعة جديدة</string>
+    <string name="no_collections_yet_description">ابدأ في بناء مكتبتك الشخصية عن طريق حفظ الأفلام أو المسلسلات التي تريد تذكرها.</string>
+    <string name="collection_name">اسم المجموعة</string>
+    <string name="my_collection_name_hint">مثال: قائمة مشاهدتي</string>
+    <string name="create">إنشاء</string>
+    <string name="success">تم بنجاج</string>
 
 </resources>
