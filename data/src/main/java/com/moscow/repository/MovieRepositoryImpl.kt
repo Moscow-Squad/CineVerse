@@ -61,13 +61,17 @@ class MovieRepositoryImpl @Inject constructor(
         return response.results?.mapNotNull { it.toOutputResult() } ?: emptyList()
     }
 
+    override suspend fun getUserRatingForMovie(movieId: Int): Int {
+        val response = movieRemoteDataSource.getUserRatingForMovie(movieId)
+        return response.userRating ?: 0
+    }
+
     override suspend fun getMovieRecommendations(
         id: Int,
         page: Int
     ): List<Movie> {
         val movies = movieRemoteDataSource.getMoviesRecommendations(id, page)
         return movies.results?.mapNotNull { runCatching { it.toDomain() }.getOrNull() } ?: emptyList()
-
     }
 
     override suspend fun getMoviesByGenreId(genreId: Int, page: Int): List<Movie> {
