@@ -96,5 +96,12 @@
     <string name="all">All</string>
     <string name="search">Search...</string>
     <string name="search_can_t_be_empty_1">Search can\'t be empty!</string>
+    <string name="welcome_to_your_movie_universe">Welcome to Your Movie Universe</string>
+    <string name="discover_track_and_rate_your_favorite_movies_series">Discover, track, and rate your favorite movies &amp; series.</string>
+    <string name="track_everything">Track Everything</string>
+    <string name="your_watchlist_your_ratings_all_in_one_place">Your Watchlist. Your Ratings. All in One Place.</string>
+    <string name="personalized_recommendations">Personalized Recommendations</string>
+    <string name="answer_fun_questions_to_get_handpicked_recommendations">Answer fun questions to get handpicked recommendations.</string>
+    <string name="get_started">Get Started</string>
 
 </resources>

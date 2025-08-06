@@ -96,5 +96,11 @@
     <string name="all">الكل</string>
     <string name="search">ابحث...</string>
     <string name="search_can_t_be_empty_1">لا تستطيع البحث بلا شئ !</string>
-
+    <string name="welcome_to_your_movie_universe">مرحباً بك في عالم الأفلام الخاص بك</string>
+    <string name="discover_track_and_rate_your_favorite_movies_series">اكتشف، وتتبع، وقم بتقييم أفلامك ومسلسلاتك المفضلة.</string>
+    <string name="track_everything">تتبع كل شيء</string>
+    <string name="your_watchlist_your_ratings_all_in_one_place">قائمة مشاهداتك. تقييماتك. كل ذلك في مكان واحد.</string>
+    <string name="personalized_recommendations">توصيات مخصصة</string>
+    <string name="answer_fun_questions_to_get_handpicked_recommendations">أجب على أسئلة ممتعة للحصول على توصيات مختارة بعناية.</string>
+    <string name="get_started">لنبدأ</string>
 </resources>
