@@ -7,5 +7,4 @@ data class MyCollectionsUiState(
     val errorMessage: String = "",
     val isLoading: Boolean = false,
     val collections: List<MyCollectionUiState> = emptyList(),
-
 )
