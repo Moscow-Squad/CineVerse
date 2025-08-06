@@ -33,6 +33,7 @@ internal fun Settings(
     onThemeChange: (Boolean) -> Unit,
     onLanguageClick: () -> Unit,
     onLogoutClick:()->Unit,
+    onPreferenceClick:()->Unit
 
 ) {
     Column(
@@ -89,6 +90,33 @@ internal fun Settings(
                     painter = painterResource(com.moscow.cineverse.design_system.R.drawable.outline_alt_arrow_right),
                     tint = Theme.colors.shade.tertiary,
                     contentDescription = "language arrow icon"
+                )
+            })
+
+        Spacer(
+            modifier = Modifier
+                .height(1.dp)
+                .fillMaxWidth()
+                .background(Theme.colors.stroke.primary)
+        )
+        SettingItem(
+            title = stringResource(R.string.preferences),
+            titleColor = Theme.colors.shade.primary,
+            onClick = {
+                onPreferenceClick()
+            },
+            prefixIcon = {
+                Icon(
+                    painter = painterResource(com.moscow.cineverse.design_system.R.drawable.due_tone_color_switch),
+                    tint = Theme.colors.brand.primary,
+                    contentDescription = "preference icon"
+                )
+            },
+            suffixIcon = {
+                Icon(
+                    painter = painterResource(com.moscow.cineverse.design_system.R.drawable.outline_alt_arrow_right),
+                    tint = Theme.colors.shade.tertiary,
+                    contentDescription = "preference arrow icon"
                 )
             })
         if (!isGuest) Spacer(

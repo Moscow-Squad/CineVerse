@@ -14,8 +14,10 @@ data class ProfileUIState(
      val showLogoutBottomSheet: Boolean = false,
      val showEditProfileBottomSheet: Boolean = false,
      val showLanguageBottomSheet:Boolean = false,
+     val showPreferencesBottomSheet:Boolean = false,
      val goToWebView: Boolean = false,
      val editProfileURL :String = "",
      val isDarkTheme:Boolean = true,
-     val appLanguage:String = Locale.getDefault().language
+     val appLanguage:String = Locale.getDefault().language,
+     val selectedPreference:String = ""
 )

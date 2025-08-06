@@ -165,6 +165,10 @@ class ProfileViewModel @Inject constructor(
         updateState { it.copy(showLanguageBottomSheet = true) }
     }
 
+    override fun onShowPreferencesBottomSheet() {
+        updateState { it.copy(showPreferencesBottomSheet = true) }
+    }
+
     override fun onClickEditProfile() {
         val username = uiState.value.username.orEmpty()
         updateState {
@@ -183,6 +187,10 @@ class ProfileViewModel @Inject constructor(
     override fun onClickLogin() {
         sendEvent(ProfileScreenEffects.OnLoginClick)
         updateState { ProfileUIState() }
+    }
+
+    override fun onSelectedPreference(preference: String) {
+        TODO("Not yet implemented")
     }
 
     override fun onExitWebView() {
@@ -206,6 +214,10 @@ class ProfileViewModel @Inject constructor(
 
     override fun onCancelLogoutBottomSheet() {
         updateState { it.copy(showLogoutBottomSheet = false) }
+    }
+
+    override fun onCancelPreferencesBottomSheet() {
+        updateState { it.copy(showPreferencesBottomSheet = false) }
     }
 
     override fun onClickMyRatings() {

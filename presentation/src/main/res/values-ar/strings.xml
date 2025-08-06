@@ -104,5 +104,22 @@
     <string name="dark_mode">الوضع الداكن</string>
     <string name="logout">تسجيل الخروج</string>
     <string name="language">اللغة</string>
+    <string name="are_you_sure_you_want_to_logout">هل أنت متأكد أنك تريد تسجيل الخروج؟</string>
+    <string name="you_can_always_sign_back_in_with_your_account">يمكنك دائمًا تسجيل الدخول مرة أخرى باستخدام حسابك.</string>
+    <string name="change_language">تغيير اللغة</string>
+    <string name="english">الإنجليزية</string>
+    <string name="arabic">العربية</string>
+    <string name="edit_profile">تعديل الملف الشخصي</string>
+    <string name="you_ll_be_taken_to_the_website_to_update_your_name_username_or_profile_picture">سيتم توجيهك إلى الموقع لتحديث اسمك أو اسم المستخدم أو صورة الملف الشخصي.</string>
+    <string name="log_in_to_update_your_name_profile_picture_and_account_details">سجّل الدخول لتحديث اسمك، وصورة ملفك الشخصي، وتفاصيل الحساب.</string>
+    <string name="content_preferences">تفضيلات المحتوى</string>
+    <string name="choose_how_you_d_like_to_handle_sensitive_or_revealing_images_in_the_app">اختر كيف ترغب في التعامل مع الصور الحساسة أو الكاشفة داخل التطبيق.</string>
+    <string name="show_all_content">عرض كل المحتوى</string>
+    <string name="strict_filtering">تصفية صارمة</string>
+    <string name="hide_explicit_content">إخفاء المحتوى الصريح</string>
+    <string name="hides_revealing_or_inappropriate_posters_e_g_nudity_strong_sexual_content">يخفي الملصقات الكاشفة أو غير اللائقة (مثل العري أو المحتوى الجنسي الفاضح).</string>
+    <string name="hides_all_content_that_includes_immodest_clothing_or_behavior">يخفي جميع المحتويات التي تتضمن ملابس غير محتشمة أو سلوكًا غير لائق.</string>
+    <string name="no_filtering_all_images_and_posters_will_be_displayed">دون تصفية. سيتم عرض جميع الصور والملصقات.</string>
+    <string name="preferences">التفضيلات</string>
 
 </resources>

@@ -26,8 +26,8 @@ import com.moscow.cinverse.presentation.R
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.rememberAsyncImagePainter
 import androidx.compose.runtime.getValue
-import com.moscow.cineverse.designSystem.theme.Theme.state
 import com.moscow.cineverse.screen.login.WebViewBrowser
+import com.moscow.cineverse.screen.profile.component.ContentPreferencesBottomSheet
 import com.moscow.cineverse.screen.profile.component.EditProfileBottomSheet
 import com.moscow.cineverse.screen.profile.component.LanguageBottomSheet
 import com.moscow.cineverse.screen.profile.component.LogoutBottomSheet
@@ -151,6 +151,7 @@ fun ProfileContent(
                 onThemeChange = onThemeChange,
                 onLanguageClick = { listener.onShowLanguageBottomSheet() },
                 onLogoutClick = { listener.onShowLogoutBottomSheet() },
+                onPreferenceClick = {listener.onShowPreferencesBottomSheet()}
 
                 )
         }
@@ -187,6 +188,14 @@ fun ProfileContent(
                 onDismiss = { listener.onCancelEditProfileBottomSheet() },
                 onLoginClick = {listener.onClickLogin()},
                 onEditProfile = { listener.onClickEditProfile() }
+            )
+        }
+        item {
+            ContentPreferencesBottomSheet(
+                visible = uiState.showPreferencesBottomSheet,
+                onDismiss = { listener.onCancelPreferencesBottomSheet() },
+                onClickPreference = {preference -> listener.onSelectedPreference(preference)},
+
             )
         }
     }
