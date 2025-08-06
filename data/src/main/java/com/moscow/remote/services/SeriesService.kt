@@ -7,8 +7,10 @@ import com.moscow.remote.dto.series.ListOfSeriesDto
 import com.moscow.remote.dto.series.SeriesDetailDto
 import com.moscow.remote.dto.series.SeriesDto
 import com.moscow.remote.dto.details.MediaTrailersDto
+import com.moscow.remote.dto.rating.UserRatingResponse
 import com.moscow.remote.dto.rating.series.RatedSeriesDto
 import com.moscow.utils.ACCOUNT
+import com.moscow.utils.ACCOUNT_STATES
 import com.moscow.utils.ApiResponse
 import com.moscow.utils.DESCENDING
 import com.moscow.utils.DISCOVER_SERIES_LIST
@@ -30,6 +32,8 @@ import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
+import retrofit2.http.Header
+import retrofit2.http.Headers
 import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -57,6 +61,12 @@ interface SeriesService {
         @Path("series_id") seriesId: Int,
         @Query(SESSION_ID) sessionId: String
     ): Response<Unit>
+
+    @GET("$SERIES{series_id}$ACCOUNT_STATES")
+    suspend fun getUserRatingForSeries(
+        @Path("series_id") seriesId: Int,
+        @Query(SESSION_ID) sessionId: String
+    ): Response<UserRatingResponse>
 
     @GET("$ACCOUNT/{account_id}$RATED_SERIES")
     suspend fun getRatedSeries(

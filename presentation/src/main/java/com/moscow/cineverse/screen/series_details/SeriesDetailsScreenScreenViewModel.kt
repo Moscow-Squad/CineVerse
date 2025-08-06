@@ -12,6 +12,7 @@ import com.moscow.domain.usecase.series.DeleteRatingSeriesUseCase
 import com.moscow.domain.usecase.series.GetSeriesCreditsDetailsUseCase
 import com.moscow.domain.usecase.series.GetSeriesDetailUseCase
 import com.moscow.domain.usecase.series.GetSeriesRecommendationsUseCase
+import com.moscow.domain.usecase.series.GetUserRatingForSeriesUseCase
 import com.moscow.domain.usecase.series.RateSeriesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
@@ -26,6 +27,7 @@ class SeriesDetailsScreenScreenViewModel @Inject constructor(
     private val getSeriesCreditsDetailsUseCase: GetSeriesCreditsDetailsUseCase,
     private val getSeriesRecommendationsUseCase: GetSeriesRecommendationsUseCase,
     private val deleteRatingSeriesUseCase: DeleteRatingSeriesUseCase,
+    private val getUserRatingForSeriesUseCase: GetUserRatingForSeriesUseCase,
     savedStateHandle: SavedStateHandle,
 ) : BaseViewModel<SeriesDetailsScreenState, SeriesDetailsScreenEffects>(SeriesDetailsScreenState()),
     SeriesDetailsScreenInteractionListener {
@@ -35,6 +37,7 @@ class SeriesDetailsScreenScreenViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             updateState { it.copy(isLoading = true) }
+            getUserRating(seriesId)
             loadSeriesDetails(seriesId)
             loadSeriesCredits(seriesId)
             getSeriesRecommendations(seriesId, page = 1)
@@ -42,6 +45,18 @@ class SeriesDetailsScreenScreenViewModel @Inject constructor(
             waitUntilAllDataIsReady()
             updateState { it.copy(isLoading = false) }
         }
+    }
+
+    private fun getUserRating(seriesId: Int) {
+        launchWithResult(
+            action = { getUserRatingForSeriesUseCase.invoke(seriesId) },
+            onSuccess = { rate ->
+                updateState { it.copy(starsRating = rate) }
+            },
+            onError = {
+                updateState { it.copy(starsRating = 0) }
+            }
+        )
     }
 
     private suspend fun waitUntilAllDataIsReady() {

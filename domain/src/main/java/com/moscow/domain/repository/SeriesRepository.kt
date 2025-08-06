@@ -14,6 +14,7 @@ interface SeriesRepository {
     suspend fun rateSeries(id: Int, rating: Float)
     suspend fun deleteRatingSeries(seriesId: Int)
     suspend fun getRatedSeries(userId: Int, page: Int): List<RatedSeriesResult>
+    suspend fun getUserRatingForSeries(seriesId: Int) : Int
     suspend fun getLatestSeasons(): List<Season>
     suspend fun getListOfSeries(id: Int, page: Int): List<ListOfSeries>
     suspend fun getSeriesRecommendations(id: Int, page: Int): List<Series>
