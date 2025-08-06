@@ -1,6 +1,7 @@
 package com.moscow.cineverse.screen.my_collections
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -38,6 +39,7 @@ import com.moscow.cinverse.presentation.R
 fun MyCollectionsScreen(
     onNavigateBack: () -> Unit,
     navigateToCreateCollectionDialog: () -> Unit,
+    navigateToExplore: () -> Unit,
     navigateToCollectionDetails: (Int) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: MyCollectionsViewModel = hiltViewModel(),
@@ -49,6 +51,7 @@ fun MyCollectionsScreen(
                 MyCollectionsEvent.OnNavigateBack -> onNavigateBack.invoke()
                 is MyCollectionsEvent.OnNavigateToCollection -> navigateToCollectionDetails(it.collectionId)
                 MyCollectionsEvent.OnNavigateToCreateCollection -> navigateToCreateCollectionDialog()
+                MyCollectionsEvent.OnStartCollecting -> navigateToExplore()
             }
         }
     }
@@ -76,6 +79,7 @@ fun MyCollectionsContent(
                     buttonIcon = com.moscow.cineverse.design_system.R.drawable.outline_plus,
                     contentPadding = PaddingValues(16.dp),
                     iconSize = 24.dp,
+                    buttonSize = 56.dp,
                     useWrapContentSize = true,
                     onClick = interactionListener::onCreateCollectionClick,
                     backgroundColor = Theme.colors.brand.primary,
@@ -130,7 +134,7 @@ fun MyCollectionsContent(
                                 .fillMaxWidth(),
                             cornerRadius = Theme.radius.medium,
                             buttonColor = Theme.colors.button.primary,
-                            onClick = interactionListener::onCreateCollectionClick,
+                            onClick = interactionListener::onStartCollectingClick,
                             buttonText = stringResource(R.string.start_collecting),
                             textColor = Theme.colors.button.onPrimary,
                             textStyle = Theme.textStyle.body.small.medium,
@@ -139,7 +143,10 @@ fun MyCollectionsContent(
                     }
                 }
 
-                else -> LazyColumn(modifier = Modifier.fillMaxSize()) {
+                else -> LazyColumn(
+                    modifier = Modifier.fillMaxSize(),
+                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
                     items(state.collections) { collection ->
                         MyCollectionCard(
                             state = collection,
