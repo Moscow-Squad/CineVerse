@@ -21,7 +21,7 @@ class SplashViewModel @Inject constructor(
 
              if (!preferenceRepository.isOnBoardingCompleted()){
                 sendEvent(SplashEvent.NavigateToOnboarding)
-            }else if (preferenceRepository.isGuest() && preferenceRepository.isLoggedIn()){
+            }else if (preferenceRepository.isGuest()){
 
                 val isValid = isValidGuestSession(preferenceRepository.getSessionExpiration())
                 if (isValid) sendEvent(SplashEvent.NavigateToHome) else sendEvent(SplashEvent.NavigateToLogin)
