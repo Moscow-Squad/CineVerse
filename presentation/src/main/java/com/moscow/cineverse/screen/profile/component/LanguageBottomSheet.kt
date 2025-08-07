@@ -47,7 +47,6 @@ fun LanguageBottomSheet(
             ) { newLanguage ->
                 onSelectedLanguage(newLanguage)
             }
-
         }
     }
 }
