@@ -1,6 +1,6 @@
 package com.moscow.di
 
-import com.data_source.remote.HomeRemoteDataSource
+import com.moscow.data_source.remote.HomeRemoteDataSource
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import com.moscow.data_source.remote.ActorRemoteDataSource
 import com.moscow.data_source.remote.CollectionRemoteDataSource
@@ -29,7 +29,7 @@ import com.moscow.remote.services.ProfileService
 import com.moscow.remote.services.SearchService
 import com.moscow.remote.services.SeriesService
 import com.moscow.utils.BASE_URL
-import com.remote.data_source.HomeRemoteDataSourceImpl
+import com.moscow.remote.data_source.HomeRemoteDataSourceImpl
 import com.remote.services.HomeService
 import dagger.Binds
 import dagger.Module

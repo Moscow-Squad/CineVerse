@@ -115,7 +115,6 @@ private fun ExploreScreenContent(
         genresVisible = true
     }
 
-
     LaunchedEffect(uiState.shouldShowGenres) {
         if (uiState.shouldShowGenres) {
             genresVisible = true
@@ -144,32 +143,38 @@ private fun ExploreScreenContent(
                 )
 
                 Box(modifier = Modifier.fillMaxSize()) {
-                    if (contentList.loadState.refresh is LoadState.Loading) {
-                        Box(
-                            modifier = Modifier.fillMaxSize(),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            MovieCircularProgressBar()
-                        }
-                    } else if (contentList.loadState.refresh is LoadState.Error) {
-                        Box(
-                            modifier = Modifier.fillMaxSize(),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            NoInternetScreen(onRetry = interactionListener::onRefresh)
-                        }
-                    } else {
-                        ExploreMainContent(
-                            uiState = uiState,
-                            gridState = gridState,
-                            contentList = contentList,
-                            interactionListener = interactionListener,
-                            onGenresVisibilityChange = { shouldShow ->
-                                genresVisible = shouldShow
-                                searchBarVisible =
-                                    if(uiState.searchKeyWord.isNotEmpty()) true else shouldShow
+                    when (contentList.loadState.refresh) {
+                        is LoadState.Loading -> {
+                            Box(
+                                modifier = Modifier.fillMaxSize(),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                MovieCircularProgressBar()
                             }
-                        )
+                        }
+
+                        is LoadState.Error -> {
+                            Box(
+                                modifier = Modifier.fillMaxSize(),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                NoInternetScreen(onRetry = interactionListener::onRefresh)
+                            }
+                        }
+
+                        else -> {
+                            ExploreMainContent(
+                                uiState = uiState,
+                                gridState = gridState,
+                                contentList = contentList,
+                                interactionListener = interactionListener,
+                                onGenresVisibilityChange = { shouldShow ->
+                                    genresVisible = shouldShow
+                                    searchBarVisible =
+                                        if(uiState.searchKeyWord.isNotEmpty()) true else shouldShow
+                                }
+                            )
+                        }
                     }
                     if (uiState.genres.isNotEmpty()) {
                         GenresRow(

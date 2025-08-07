@@ -1,6 +1,5 @@
 package com.moscow.cineverse.screen.explore
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
@@ -45,8 +44,8 @@ class ExploreViewModel @Inject constructor(
     private val suggestionUseCase: SuggestionUseCase,
     private val getPopularMoviesUseCase: GetPopularMoviesUseCase,
     private val getPopularSeriesUseCase: GetPopularSeriesUseCase,
-    val getLocalSuggestionsUseCase: GetLocalSuggestionsUseCase,
-    val genreUseCase: GenreUseCase,
+    private val getLocalSuggestionsUseCase: GetLocalSuggestionsUseCase,
+    private val genreUseCase: GenreUseCase,
     private val getMovieByGenreIdUseCase: GetMovieByGenreIdUseCase,
     private val getSeriesByGenreIdUseCase: GetSeriesByGenreIdUseCase,
     private val cacheSearchQueryUseCase: CacheSearchQueryUseCase,
@@ -85,14 +84,15 @@ class ExploreViewModel @Inject constructor(
         }
     }
 
-    override fun searchMovie(isHistory: Boolean) {
+    override fun searchMovie() {
         var isFirstLoad = true
 
         _moviesSearch = Pager(
             config = PagingConfig(pageSize = 20),
             pagingSourceFactory = {
                 BasePagingSource { page ->
-                    val result = searchUseCase.searchMovie(uiState.value.searchKeyWord, page, isHistory).first()
+                    val result =
+                        searchUseCase.searchMovie(uiState.value.searchKeyWord, page).first()
 
                     if (page == 1 && isFirstLoad) {
                         isFirstLoad = false
@@ -122,14 +122,15 @@ class ExploreViewModel @Inject constructor(
         }
     }
 
-    override fun searchSeries(isHistory: Boolean) {
+    override fun searchSeries() {
         var isFirstLoad = true
 
         _seriesSearch = Pager(
             config = PagingConfig(pageSize = 20),
             pagingSourceFactory = {
                 BasePagingSource { page ->
-                    val result = searchUseCase.searchSeries(uiState.value.searchKeyWord, page, isHistory).first()
+                    val result =
+                        searchUseCase.searchSeries(uiState.value.searchKeyWord, page).first()
 
                     if (page == 1 && isFirstLoad) {
                         isFirstLoad = false
@@ -163,14 +164,15 @@ class ExploreViewModel @Inject constructor(
         }
     }
 
-    override fun searchActor(isHistory: Boolean) {
+    override fun searchActor() {
         var isFirstLoad = true
 
         _actorSearch = Pager(
             config = PagingConfig(pageSize = 20),
             pagingSourceFactory = {
                 BasePagingSource { page ->
-                    val result = searchUseCase.searchActor(uiState.value.searchKeyWord, page, isHistory).first()
+                    val result =
+                        searchUseCase.searchActor(uiState.value.searchKeyWord, page).first()
 
                     if (page == 1 && isFirstLoad) {
                         isFirstLoad = false
@@ -287,9 +289,9 @@ class ExploreViewModel @Inject constructor(
 
     private fun onSuccessLoadingSuggestions(suggestion: List<String>) {
         viewModelScope.launch {
-            if (suggestion.isEmpty()){
+            if (suggestion.isEmpty()) {
                 updateState { it.copy(remoteSuggestions = listOf(uiState.value.searchKeyWord)) }
-            }else {
+            } else {
                 updateState { it.copy(remoteSuggestions = suggestion) }
             }
         }
@@ -316,6 +318,7 @@ class ExploreViewModel @Inject constructor(
     }
 
     private fun onGetHistoryDataFailed(e: Throwable) {
+        updateState { it.copy(error = e.message) }
     }
 
     override fun onCancelButtonClicked() {
@@ -342,7 +345,7 @@ class ExploreViewModel @Inject constructor(
     }
 
     override fun onSearchValueChange(text: String) {
-        if(text.length <= 50){
+        if (text.length <= 50) {
             updateState {
                 it.copy(
                     searchKeyWord = text,
@@ -365,7 +368,13 @@ class ExploreViewModel @Inject constructor(
     }
 
     override fun onClickSuggestion(suggestion: SuggestItemUiState) {
-        updateState { it.copy(searchKeyWord = suggestion.title, isContentEmpty = false, isSearch = true) }
+        updateState {
+            it.copy(
+                searchKeyWord = suggestion.title,
+                isContentEmpty = false,
+                isSearch = true
+            )
+        }
         resetSearchResults()
         launchAndForget(
             action = {
@@ -373,9 +382,9 @@ class ExploreViewModel @Inject constructor(
                     if (!it) {
                         cacheSearchQueryUseCase.cacheSearchQuery(suggestion.title)
                     }
-                    searchMovie(it)
-                    searchSeries(it)
-                    searchActor(it)
+                    searchMovie()
+                    searchSeries()
+                    searchActor()
                 }
             },
             onSuccess = {
@@ -405,9 +414,9 @@ class ExploreViewModel @Inject constructor(
                     .let { isQueryInHistory ->
                         if (!isQueryInHistory)
                             cacheSearchQueryUseCase.cacheSearchQuery(uiState.value.searchKeyWord)
-                        searchMovie(isQueryInHistory)
-                        searchSeries(isQueryInHistory)
-                        searchActor(isQueryInHistory)
+                        searchMovie()
+                        searchSeries()
+                        searchActor()
                     }
             },
             onSuccess = {
@@ -419,7 +428,14 @@ class ExploreViewModel @Inject constructor(
     }
 
     private fun onSearchQueryError(e: Throwable) {
-        updateState { it.copy(shouldShowError = true, isLoading = false, error = e.message, isSearch = false) }
+        updateState {
+            it.copy(
+                shouldShowError = true,
+                isLoading = false,
+                error = e.message,
+                isSearch = false
+            )
+        }
     }
 
     override fun clearAllLocalSuggestions() {
@@ -484,7 +500,6 @@ class ExploreViewModel @Inject constructor(
                     )
                 ) + genres.map { genre -> genre.toUi() })
         }
-        Log.d("TAG", "onSeriesGenresSuccess: $genres")
     }
 
     private fun onSeriesGenresFailed(e: Throwable) {
@@ -605,14 +620,24 @@ class ExploreViewModel @Inject constructor(
         if (uiState.value.searchKeyWord.isNotBlank()) {
             updateState { it.copy(shouldShowGenres = false) }
             contentList = when (uiState.value.selectedTab) {
-                ExploreTabsPages.MOVIES -> _moviesSearch.map { it as PagingData<Any> }
-                ExploreTabsPages.SERIES -> _seriesSearch.map { it as PagingData<Any> }
-                ExploreTabsPages.ACTORS -> _actorSearch.map { it as PagingData<Any> }
+                ExploreTabsPages.MOVIES -> _moviesSearch.map { pagingData ->
+                    pagingData.map { item -> item as Any }
+                }
+                ExploreTabsPages.SERIES -> _seriesSearch.map { pagingData ->
+                    pagingData.map { item -> item as Any }
+                }
+                ExploreTabsPages.ACTORS -> _actorSearch.map { pagingData ->
+                    pagingData.map { item -> item as Any }
+                }
             }
         } else {
             contentList = when (uiState.value.selectedTab) {
-                ExploreTabsPages.MOVIES -> _movies.map { it as PagingData<Any> }
-                ExploreTabsPages.SERIES -> _series.map { it as PagingData<Any> }
+                ExploreTabsPages.MOVIES -> _movies.map { pagingData ->
+                    pagingData.map { item -> item as Any }
+                }
+                ExploreTabsPages.SERIES -> _series.map { pagingData ->
+                    pagingData.map { item -> item as Any }
+                }
                 ExploreTabsPages.ACTORS -> throw IllegalStateException("Actors tab should not be available without search")
             }
 
@@ -626,7 +651,6 @@ class ExploreViewModel @Inject constructor(
             }
         }
     }
-
     private fun checkEmptyStateForCurrentTab() {
         if (uiState.value.searchKeyWord.isBlank()) return
 

@@ -37,13 +37,19 @@ fun HomeScreen(
     navigateToSeeMoreHome: (category: String) -> Unit,
     navigateToSeriesDetails: (seriesId: Int) -> Unit,
     navigateToBrowseSuggestion: () -> Unit,
-    navigateToWatchingSuggestion: () -> Unit
+    navigateToWatchingSuggestion: () -> Unit,
+    navigateToCollectionDetails: (collectionId: Int, collectionName: String) -> Unit,
 ) {
     val state by viewmodel.uiState.collectAsStateWithLifecycle()
     LaunchedEffect(Unit) {
         viewmodel.uiEffect.collect { effect ->
             when (effect) {
-                is HomeEvent.CollectionClicked -> {}
+                is HomeEvent.CollectionClicked -> {
+                    navigateToCollectionDetails(
+                        effect.collectionId,
+                        effect.collectionName
+                    )
+                }
                 is HomeEvent.MovieClicked -> {
                     navigateToMovieDetails(
                         effect.movieId

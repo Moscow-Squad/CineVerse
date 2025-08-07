@@ -6,8 +6,10 @@ import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.cineverse.mapper.toUi
 import com.moscow.cineverse.navigation.routes.SeriesDetailsRoute
 import com.moscow.cineverse.utlis.ViewMode
+import com.moscow.domain.mapper.toSeries
 import com.moscow.domain.model.Series
 import com.moscow.domain.repository.blur.BlurProvider
+import com.moscow.domain.usecase.recently_viewed.AddRecentlyViewedSeriesUseCase
 import com.moscow.domain.usecase.review.GetReviewsUseCase
 import com.moscow.domain.usecase.series.GetSeriesCreditsDetailsUseCase
 import com.moscow.domain.usecase.series.GetSeriesDetailUseCase
@@ -26,6 +28,7 @@ class SeriesDetailsScreenScreenViewModel @Inject constructor(
     private val getSeriesCreditsDetailsUseCase: GetSeriesCreditsDetailsUseCase,
     private val getSeriesRecommendationsUseCase: GetSeriesRecommendationsUseCase,
     private val blurProvider: BlurProvider,
+    private val addRecentlyViewedSeriesUseCase: AddRecentlyViewedSeriesUseCase,
     savedStateHandle: SavedStateHandle,
 ) : BaseViewModel<SeriesDetailsScreenState, SeriesDetailsScreenEffects>(SeriesDetailsScreenState()),
     SeriesDetailsScreenInteractionListener {
@@ -77,6 +80,13 @@ class SeriesDetailsScreenScreenViewModel @Inject constructor(
             action = { getSeriesDetailUseCase(seriesId) },
             onSuccess = { detail ->
                 updateState { it.copy(seriesDetail = detail.toUi()) }
+                launchWithResult(
+                    action = {
+                        addRecentlyViewedSeriesUseCase(detail.toSeries())
+                    },
+                    onSuccess = {},
+                    onError = {}
+                )
             },
             onError = { error ->
                 updateState { it.copy(errorMessage = error.message.toString(), isLoading = false) }
@@ -93,7 +103,7 @@ class SeriesDetailsScreenScreenViewModel @Inject constructor(
                 updateState {
                     it.copy(
                         isLoading = false,
-                        starCast = credits.actors.map { it.toUi() },
+                        starCast = credits.actors.map { actor -> actor.toUi() },
                         characters = crew.filter { it.job == "Characters" }.take(3).map { it.name },
                         director = crew.filter {
                             it.job in (listOf(

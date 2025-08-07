@@ -2,6 +2,7 @@
 <resources>
     <string name="label">label</string>
     <string name="movies">Movies</string>
+    <string name="movie_list_type">Movie</string>
     <string name="series">Series</string>
     <string name="actors">Actors</string>
     <string name="forgot_password">Forgot Password?</string>

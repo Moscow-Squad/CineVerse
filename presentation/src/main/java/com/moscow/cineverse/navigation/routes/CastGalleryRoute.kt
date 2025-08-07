@@ -15,7 +15,7 @@ data class CastGalleryRoute(val castId: Int, val castName: String){
 }
 
 
-fun NavGraphBuilder.CastGalleryRoute(navController: NavHostController) {
+fun NavGraphBuilder.castGalleryRoute(navController: NavHostController) {
     composable<CastGalleryRoute>{
         ActorGalleryScreen(
             navigateBack = { navController.navigateUp() },

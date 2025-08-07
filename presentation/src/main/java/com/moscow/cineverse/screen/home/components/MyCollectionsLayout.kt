@@ -13,14 +13,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.moscow.cineverse.common_ui_state.MyCollectionUiState
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.design_system.R
-import com.moscow.cineverse.screen.home.CollectionUiState
 
 @Composable
 fun MyCollectionsLayout(
-    items: List<CollectionUiState>,
-    onCollectionClick: (Int) -> Unit,
+    items: List<MyCollectionUiState>,
+    onCollectionClick: (collectionId: Int, collectionName: String) -> Unit,
     onShowMoreClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -51,7 +51,7 @@ fun MyCollectionsLayout(
             items(items.take(itemsRowSize)) { itemState ->
                 MyCollectionCard(
                     state = itemState,
-                    onClick = { onCollectionClick(itemState.id) },
+                    onClick = { onCollectionClick(itemState.id, itemState.title) },
                 )
             }
         }
@@ -63,7 +63,7 @@ fun MyCollectionsLayout(
             items(items.drop(itemsRowSize)) { itemState ->
                 MyCollectionCard(
                     state = itemState,
-                    onClick = { onCollectionClick(itemState.id) },
+                    onClick = { onCollectionClick(itemState.id, itemState.title) },
                 )
             }
         }

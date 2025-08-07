@@ -1,6 +1,6 @@
-package com.remote.data_source
+package com.moscow.remote.data_source
 
-import com.data_source.remote.HomeRemoteDataSource
+import com.moscow.data_source.remote.HomeRemoteDataSource
 import com.moscow.remote.dto.MovieDto
 import com.moscow.remote.dto.series.SeriesDto
 import com.moscow.utils.ApiResponse

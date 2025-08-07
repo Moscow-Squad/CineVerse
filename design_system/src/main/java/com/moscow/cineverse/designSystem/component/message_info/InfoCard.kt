@@ -15,7 +15,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.moscow.cineverse.designSystem.theme.Theme
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
 
@@ -24,6 +26,7 @@ fun InfoCard(
     text: String,
     modifier: Modifier = Modifier,
     containerColor: Color = Theme.colors.background.card,
+    onDismiss: () -> Unit = {}
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -54,7 +57,10 @@ fun InfoCard(
         Icon(
             painter = painterResource(id = R.drawable.outline_x),
             contentDescription = "Info Icon",
-            modifier = Modifier.padding(top = 19.5.dp, end = 8.dp, bottom = 19.5.dp),
+            modifier = Modifier
+                .clip(CircleShape)
+                .clickable(onClick = onDismiss)
+                .padding(top = 19.5.dp, end = 8.dp, bottom = 19.5.dp),
             tint = Theme.colors.shade.secondary
         )
     }

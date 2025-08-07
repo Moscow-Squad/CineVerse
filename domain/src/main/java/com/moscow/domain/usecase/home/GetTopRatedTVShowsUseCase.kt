@@ -7,6 +7,6 @@ import javax.inject.Inject
 class GetTopRatedTVShowsUseCase @Inject constructor(
     private val homeRepository: HomeRepository
 ) {
-    suspend operator fun invoke(page:Int): List<Series> =
-        homeRepository.getTopRatedTVSeries(page)
+    suspend operator fun invoke(page:Int, forceRefresh: Boolean = false): List<Series> =
+        homeRepository.getTopRatedTVSeries(page, forceRefresh)
 }

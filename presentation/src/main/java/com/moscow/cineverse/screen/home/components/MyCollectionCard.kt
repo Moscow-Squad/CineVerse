@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -17,21 +18,22 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.moscow.cineverse.design_system.R
+import com.moscow.cineverse.common_ui_state.MyCollectionUiState
 import com.moscow.cineverse.designSystem.theme.Theme
-import com.moscow.cineverse.screen.home.CollectionUiState
+import com.moscow.cineverse.design_system.R
 
 @Composable
 fun MyCollectionCard(
-    state: CollectionUiState,
-    onClick: (Int) -> Unit,
+    state: MyCollectionUiState,
+    onClick: (collectionId: Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Row(
         modifier = modifier
             .fillMaxWidth()
+            .clip(RoundedCornerShape(Theme.radius.large))
             .background(color = Theme.colors.background.card)
-            .clip(RoundedCornerShape(12.dp))
+            .padding(12.dp)
             .clickable {
                 onClick(state.id)
             },
@@ -53,7 +55,9 @@ fun MyCollectionCard(
                 color = Theme.colors.shade.primary
             )
             Text(
-                text = state.numberOfShows.toString() + " " + stringResource(R.string.shows),
+                text = state.itemCount.toString() + " " + if (state.itemCount > 1) stringResource(
+                    R.string.movies
+                ) else stringResource(R.string.movie_list_type),
                 style = Theme.textStyle.body.small.medium,
                 color = Theme.colors.shade.secondary
             )

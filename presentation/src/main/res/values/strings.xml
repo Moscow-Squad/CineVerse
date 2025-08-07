@@ -94,7 +94,7 @@
     <string name="born_on">Born on %1$s</string>
     <string name="sensitive_content">Sensitive Content</string>
     <string name="all">All</string>
-    <string name="search">Search...</string>
+    <string name="search">Search…</string>
     <string name="search_can_t_be_empty_1">Search can\'t be empty!</string>
     <string name="my_profile">My Profile</string>
     <string name="my_ratings">My Ratings</string>
@@ -121,5 +121,25 @@
     <string name="hides_all_content_that_includes_immodest_clothing_or_behavior">Hides all content that includes immodest clothing or behavior</string>
     <string name="no_filtering_all_images_and_posters_will_be_displayed">No filtering. All images and posters will be displayed.</string>
     <string name="preferences">Preferences</string>
+    <string name="tip_swipe_left_to_remove_movies_from_your_collection">Tip: Swipe left to remove movies from your collection.</string>
+    <string name="no_history_yet">No History Yet</string>
+    <string name="history_empty_message">It’s quiet in here... Start watching and we’ll keep track for you.</string>
+    <string name="find_something_to_watch">Find Something to Watch</string>
+    <string name="history_tip_message">Tip: Swipe left to remove movies from your history.</string>
+    <string name="movie_swiped_tip_message">Tip: Swipe left to remove movies from your collection.</string>
+    <string name="welcome_to_your_movie_universe">Welcome to Your Movie Universe</string>
+    <string name="discover_track_and_rate_your_favorite_movies_series">Discover, track, and rate your favorite movies &amp; series.</string>
+    <string name="track_everything">Track Everything</string>
+    <string name="your_watchlist_your_ratings_all_in_one_place">Your Watchlist. Your Ratings. All in One Place.</string>
+    <string name="personalized_recommendations">Personalized Recommendations</string>
+    <string name="answer_fun_questions_to_get_handpicked_recommendations">Answer fun questions to get handpicked recommendations.</string>
+    <string name="get_started">Get Started</string>
+    <string name="start_collecting">Start Collecting</string>
+    <string name="create_new_collection">Create New Collection</string>
+    <string name="no_collections_yet_description">Start building your personal library by saving movies or series you want to remember.</string>
+    <string name="collection_name">Collection Name</string>
+    <string name="my_collection_name_hint">e.g. My Watchlist</string>
+    <string name="create">Create</string>
+    <string name="success">Success</string>
 
 </resources>
