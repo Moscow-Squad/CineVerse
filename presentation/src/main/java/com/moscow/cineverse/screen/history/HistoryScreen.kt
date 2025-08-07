@@ -134,6 +134,7 @@ fun HistoryMediaItemCard(
         getRating = { it.rating },
         getGenres = { it.genres },
         getDuration = { it.duration },
-        getReleaseDate = { it.releaseDate }
+        getReleaseDate = { it.releaseDate },
+        enableBlur = true
     )
 }
