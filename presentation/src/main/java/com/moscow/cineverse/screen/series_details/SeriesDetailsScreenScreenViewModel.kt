@@ -9,6 +9,7 @@ import com.moscow.cineverse.utlis.ViewMode
 import com.moscow.domain.mapper.toSeries
 import com.moscow.domain.model.Series
 import com.moscow.domain.repository.PreferenceRepository
+import com.moscow.domain.repository.blur.BlurProvider
 import com.moscow.domain.usecase.recently_viewed.AddRecentlyViewedSeriesUseCase
 import com.moscow.domain.usecase.review.GetReviewsUseCase
 import com.moscow.domain.usecase.series.DeleteRatingSeriesUseCase
@@ -29,6 +30,7 @@ class SeriesDetailsScreenScreenViewModel @Inject constructor(
     private val rateSeriesUseCase: RateSeriesUseCase,
     private val getSeriesCreditsDetailsUseCase: GetSeriesCreditsDetailsUseCase,
     private val getSeriesRecommendationsUseCase: GetSeriesRecommendationsUseCase,
+    private val blurProvider: BlurProvider,
     private val addRecentlyViewedSeriesUseCase: AddRecentlyViewedSeriesUseCase,
     private val deleteRatingSeriesUseCase: DeleteRatingSeriesUseCase,
     private val getUserRatingForSeriesUseCase: GetUserRatingForSeriesUseCase,
@@ -49,6 +51,15 @@ class SeriesDetailsScreenScreenViewModel @Inject constructor(
             loadReviews(seriesId, page = 1)
             waitUntilAllDataIsReady()
             updateState { it.copy(isLoading = false) }
+        }
+        observeBlur()
+    }
+
+    private fun observeBlur() {
+        viewModelScope.launch {
+            blurProvider.blurFlow.collect { enableBlur ->
+                updateState { it.copy(enableBlur = enableBlur) }
+            }
         }
     }
 
@@ -197,11 +208,24 @@ class SeriesDetailsScreenScreenViewModel @Inject constructor(
     override fun onRatingSubmit(rating: Int, seriesId: Int) {
         launchAndForget(
             action = { rateSeriesUseCase.rateSeriesUse(rating.toFloat(), seriesId) },
-            onSuccess = { updateState { it.copy(starsRating = rating, showRatingBottomSheet = false) } },
-            onError = { }, // TODO: Show Toast
+            onSuccess = {
+                updateState {
+                    it.copy(
+                        starsRating = rating,
+                        showRatingBottomSheet = false
+                    )
+                }
+            },
+            onError = {
+                updateState {
+                    it.copy(
+                        starsRating = rating,
+                        showRatingBottomSheet = false
+                    )
+                }
+            },
         )
     }
-
     override fun onDeleteRatingSeries(seriesId: Int) {
         launchAndForget(
             action = { deleteRatingSeriesUseCase(seriesId) },

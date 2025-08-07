@@ -33,6 +33,7 @@ data class ExploreScreenState(
     val shouldShowLoading: Boolean = false,
     val shouldShowError: Boolean = false,
     val errorMessage: String = "",
+    val enableBlur: Boolean = true
 ) {
     val displayedSuggestions: List<SuggestItemUiState>
         get() {

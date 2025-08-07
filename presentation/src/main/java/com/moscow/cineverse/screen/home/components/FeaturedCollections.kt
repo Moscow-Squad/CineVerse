@@ -162,16 +162,3 @@ private fun BackgroundLayer(
             .background(color = color),
     ) {}
 }
-
-@Preview(showBackground = true, backgroundColor = 0x121321)
-@Composable
-private fun FeaturedCollectionsSectionPreview() {
-    CineVerseTheme(state = ThemeState(isDark = true) {}) {
-        val collections = HomeFeaturedCollections.entries.toList()
-
-        FeaturedCollectionsSection(
-            collections = collections,
-            onCollectionClick = {}
-        )
-    }
-}

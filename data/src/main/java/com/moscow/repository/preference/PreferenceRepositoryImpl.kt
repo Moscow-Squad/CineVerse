@@ -24,6 +24,8 @@ class PreferenceRepositoryImpl @Inject constructor(
                     preferences[USER_TYPE_KEY] = AUTHENTICATED_USER
                     preferences[USER_ID_KEY] = userType.id
                     preferences[USERNAME_KEY] = userType.username
+                    preferences[NAME_KEY] = userType.name
+                    preferences[IMAGE_KEY] = userType.image.orEmpty()
                     preferences[SESSION_ID_KEY] = userType.sessionId
                     preferences[RECENTLY_VIEWED_COLLECTION_ID] = userType.recentlyCollectionId
                     preferences[Is_LOGGED_IN_KEY] = true
@@ -51,12 +53,16 @@ class PreferenceRepositoryImpl @Inject constructor(
                     AUTHENTICATED_USER -> {
                         val id = preferences[USER_ID_KEY] ?: ""
                         val username = preferences[USERNAME_KEY] ?: ""
+                        val name = preferences[NAME_KEY] ?: ""
+                        val image = preferences[IMAGE_KEY] ?: ""
                         val sessionId = preferences[SESSION_ID_KEY] ?: ""
                         val recentlyCollectionId = preferences[RECENTLY_VIEWED_COLLECTION_ID] ?: 0
                         UserType.AuthenticatedUser(
                             id = id,
                             username = username,
+                            name = name,
                             sessionId = sessionId,
+                            image = image,
                             recentlyCollectionId = recentlyCollectionId
                         )
                     }
@@ -119,6 +125,8 @@ class PreferenceRepositoryImpl @Inject constructor(
         private val USER_TYPE_KEY = stringPreferencesKey("user_type")
         private val USER_ID_KEY = stringPreferencesKey("user_id")
         private val USERNAME_KEY = stringPreferencesKey("username")
+        private val NAME_KEY = stringPreferencesKey("name")
+        private val IMAGE_KEY = stringPreferencesKey("image")
         private val SESSION_ID_KEY = stringPreferencesKey("session_id")
         private val RECENTLY_VIEWED_COLLECTION_ID = intPreferencesKey("recently_collection_id")
         private val EXPIRED_AT_KEY = stringPreferencesKey("expired_at")

@@ -12,6 +12,7 @@ import com.moscow.domain.model.MediaType
 import com.moscow.domain.model.Movie
 import com.moscow.domain.model.Series
 import com.moscow.domain.model.UserType
+import com.moscow.domain.repository.blur.BlurProvider
 import com.moscow.domain.usecase.collection.GetUserCollectionsUseCase
 import com.moscow.domain.usecase.genre.GenreUseCase
 import com.moscow.domain.usecase.home.GetMatchesYourVibesMoviesUseCase
@@ -37,13 +38,23 @@ class HomeViewModel @Inject constructor(
     private val genreUseCase: GenreUseCase,
     private val getTrendingMoviesUseCase: GetTrendingMoviesUseCase,
     private val getUserDetailsUseCase: GetUserDetailsUseCase,
+    private val blurProvider: BlurProvider,
     private val getUserCollectionsUseCase: GetUserCollectionsUseCase,
     private val getRecentlyViewedMediaUseCase: GetRecentlyViewedMediaUseCase
 ) : BaseViewModel<HomeUiState, HomeEvent>(HomeUiState()), HomeInteractionListener {
 
     init {
         updateState { it.copy(isLoading = true) }
-        loadHomeData()
+        getGenres()
+        observeBlur()
+    }
+
+    private fun observeBlur() {
+        viewModelScope.launch {
+            blurProvider.blurFlow.collect { enableBlur ->
+                updateState { it.copy(enableBlur = enableBlur) }
+            }
+        }
     }
 
     private fun loadHomeData() {
@@ -51,7 +62,6 @@ class HomeViewModel @Inject constructor(
         launchAndForget(
             action = {
                 viewModelScope.launch {
-                    getGenres()
                     coroutineScope {
                         val jobs = listOf(
                             launch { getUserDetails() },
@@ -71,6 +81,7 @@ class HomeViewModel @Inject constructor(
                 updateState { it.copy(isLoading = false, error = e.message) }
             }
         )
+
     }
 
     private suspend fun waitUntilAllDataIsReady() {
@@ -142,28 +153,17 @@ class HomeViewModel @Inject constructor(
         )
     }
 
-    private suspend fun getGenres() {
-        return suspendCancellableCoroutine { continuation ->
-            launchWithResult(
-                action = { genreUseCase.getMoviesGenres() },
-                onSuccess = {
-                    onGetGenresSuccess(it)
-                    continuation.resume(
-                        value = Unit,
-                    ) { cause, value, context ->
-
-                    }
-                },
-                onError = {
-                    onGetGenresError(it)
-                    continuation.resume(
-                        value = Unit,
-                    ) { cause, value, context ->
-
-                    }
-                },
-            )
-        }
+    private fun getGenres() {
+        launchWithResult(
+            action = { genreUseCase.getMoviesGenres() },
+            onSuccess = {
+                onGetGenresSuccess(it)
+                loadHomeData()
+            },
+            onError = {
+                onGetGenresError(it)
+            },
+        )
     }
 
     private fun onGetGenresSuccess(genres: List<Genre>) {
@@ -175,7 +175,7 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun onGetGenresError(throwable: Throwable) {
-        updateState { it.copy(error = throwable.message) }
+        updateState { it.copy(error = throwable.message, isLoading = false) }
     }
 
     private fun fetchTrendingMovies() {
@@ -309,7 +309,7 @@ class HomeViewModel @Inject constructor(
     }
 
     override fun onRefresh() {
-        loadHomeData()
+        getGenres()
     }
 }
 
@@ -349,6 +349,7 @@ fun List<Any>.toMediaItemUiState(
                 mediaType = MediaType.Tv,
                 backdropPath = item.backdropPath
             )
+
             else -> null
         }
     }

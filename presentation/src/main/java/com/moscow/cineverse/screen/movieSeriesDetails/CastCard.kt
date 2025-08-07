@@ -28,11 +28,12 @@ import com.moscow.cineverse.image_viewer.component.SafeImageViewer
 
 @Composable
 fun <T> CastCard(
+    enableBlur: Boolean,
     modifier: Modifier = Modifier,
     castMember: T,
     getOriginalName: (T) -> String,
     getCharacterName: (T) -> String,
-    getProfileImage: (T) -> String
+    getProfileImage: (T) -> String,
 ) {
     val isPreview = LocalInspectionMode.current
     Row(
@@ -69,6 +70,7 @@ fun <T> CastCard(
                             bottomStart = Theme.radius.large
                         )
                     ),
+                isBlurEnabled = enableBlur,
                 placeholderContent = { RemoteImagePlaceholder() },
                 errorContent = { RemoteImagePlaceholder() },
                 onBlurContent = {
@@ -98,33 +100,5 @@ fun <T> CastCard(
             )
         }
 
-    }
-}
-
-@Preview
-@Composable
-private fun CastCardPreview() {
-    CineVerseTheme {
-        Column(
-            modifier = Modifier
-                .background(Theme.colors.background.screen)
-                .padding(10.dp),
-            verticalArrangement = Arrangement.spacedBy(10.dp)
-        ) {
-            /*CastCard(
-                castMember = CastMember(
-                    realName = "Tom Cruise",
-                    nameInMovie = "Ethan Hunt",
-                    imageUrl = "https://wror.com/uploads/2025/05/GettyImages-1511406162.jpg?format=auto&optimize=high&width=1440"
-                )
-            )
-            CastCard(
-                castMember = CastMember(
-                    realName = "Tom Cruise",
-                    nameInMovie = "Ethan Hunt",
-                    imageUrl = null
-                )
-            )*/
-        }
     }
 }

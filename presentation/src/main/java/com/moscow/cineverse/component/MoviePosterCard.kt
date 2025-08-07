@@ -1,5 +1,6 @@
 package com.moscow.cineverse.component
 
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
@@ -15,15 +16,19 @@ fun MoviePosterCard(
     showRating: Boolean = true,
     showBackdrop: Boolean = false,
     onMovieClick: (Int) -> Unit = {},
+    enableBlur: Boolean,
     titleTextAlign: TextAlign = TextAlign.Start,
     showTitle: Boolean = true,
     getTitleOverride: ((MediaItemUiState) -> String)? = null,
 ) {
+    Log.d("blur-", "${enableBlur}")
+
     MovieCard(
         modifier = modifier,
         movieData = movie,
         viewMode = viewMode,
         showRating = showRating,
+        enableBlur = enableBlur,
         onMovieClick = onMovieClick,
         titleTextAlign = titleTextAlign,
         showTitle = showTitle,

@@ -21,10 +21,12 @@ import com.moscow.cineverse.navigation.routes.movieDetailsRoute
 import com.moscow.cineverse.navigation.routes.myCollections
 import com.moscow.cineverse.navigation.routes.myRatingsRoute
 import com.moscow.cineverse.navigation.routes.onBoardingRoute
+import com.moscow.cineverse.navigation.routes.myCollections
 import com.moscow.cineverse.navigation.routes.profileRoute
 import com.moscow.cineverse.navigation.routes.recommendationsRoute
 import com.moscow.cineverse.navigation.routes.reviewsRoute
 import com.moscow.cineverse.navigation.routes.seeMoreRoute
+import com.moscow.cineverse.navigation.routes.splashRoute
 import com.moscow.cineverse.navigation.routes.seriesDetailsRoute
 import com.moscow.cineverse.navigation.routes.seriesRecommendationRoute
 import com.moscow.cineverse.navigation.routes.seriesSeasonsRoute
@@ -51,6 +53,7 @@ fun CineVerseNavGraph(
             startDestination = startDestination
         ) {
 
+            splashRoute(navController)
             exploreRoute(navController)
             loginRoute(navController)
             onBoardingRoute(navController)
