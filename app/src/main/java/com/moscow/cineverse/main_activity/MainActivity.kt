@@ -38,7 +38,7 @@ class MainActivity : ComponentActivity() {
     private val navViewModel: NavViewModel by viewModels()
 
     override fun attachBaseContext(newBase: Context) {
-        val updatedContext = LocaleHelper.updateLocale(newBase, getSavedLanguage(newBase))
+        val updatedContext = updateLocale(newBase, getSavedLanguage(newBase))
         super.attachBaseContext(updatedContext)
     }
 
@@ -92,15 +92,15 @@ fun getSavedLanguage(context: Context): String {
     return prefs.getString("app_language", "en") ?: "en"
 }
 
-object LocaleHelper {
-    fun updateLocale(context: Context, language: String): Context {
-        val locale = Locale(language)
-        Locale.setDefault(locale)
 
-        val config = context.resources.configuration
-        config.setLocale(locale)
-        config.setLayoutDirection(locale)
+fun updateLocale(context: Context, language: String): Context {
+    val locale = Locale(language)
+    Locale.setDefault(locale)
 
-        return context.createConfigurationContext(config)
-    }
+    val config = context.resources.configuration
+    config.setLocale(locale)
+    config.setLayoutDirection(locale)
+
+    return context.createConfigurationContext(config)
 }
+
