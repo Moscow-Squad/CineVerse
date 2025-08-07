@@ -55,8 +55,8 @@ fun ExploreMainContent(
     gridState: LazyGridState,
     contentList: LazyPagingItems<Any>,
     interactionListener: ExploreInteractionListener,
+    modifier: Modifier = Modifier,
     onGenresVisibilityChange: (Boolean) -> Unit = {},
-    modifier: Modifier = Modifier
 ) {
     var lastScrollOffset by remember { mutableFloatStateOf(0f) }
     var isScrollingDown by remember { mutableStateOf(false) }
@@ -171,6 +171,7 @@ fun ExploreMainContent(
                                 MoviePosterCard(
                                     movie = item,
                                     viewMode = uiState.viewMode,
+                                    enableBlur = uiState.enableBlur,
                                     onMovieClick = { interactionListener.onMediaItemClicked(item) }
                                 )
                             }
@@ -178,6 +179,7 @@ fun ExploreMainContent(
                             is ExploreScreenState.ActorUiState -> {
                                 ActorPosterCard(
                                     actor = item,
+                                    enableBlur = uiState.enableBlur,
                                     onActorClicked = interactionListener::onActorClick,
                                 )
                             }

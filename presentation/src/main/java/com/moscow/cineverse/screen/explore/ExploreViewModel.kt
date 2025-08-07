@@ -14,6 +14,7 @@ import com.moscow.cineverse.screen.explore.ExploreScreenState.ActorUiState
 import com.moscow.cineverse.utlis.ViewMode
 import com.moscow.domain.model.Genre
 import com.moscow.domain.model.MediaType
+import com.moscow.domain.repository.blur.BlurProvider
 import com.moscow.domain.usecase.genre.GenreUseCase
 import com.moscow.domain.usecase.movie.GetMovieByGenreIdUseCase
 import com.moscow.domain.usecase.movie.GetPopularMoviesUseCase
@@ -50,6 +51,7 @@ class ExploreViewModel @Inject constructor(
     private val getSeriesByGenreIdUseCase: GetSeriesByGenreIdUseCase,
     private val cacheSearchQueryUseCase: CacheSearchQueryUseCase,
     private val clearSearchHistoryUseCase: ClearSearchHistoryUseCase,
+    private val blurProvider: BlurProvider
 ) : BaseViewModel<ExploreScreenState, ExploreScreenEffects>(ExploreScreenState()),
     ExploreInteractionListener {
 
@@ -72,6 +74,15 @@ class ExploreViewModel @Inject constructor(
         getMovies()
         getSeries()
         observeKeyword()
+        observeBlur()
+    }
+
+    private fun observeBlur() {
+        viewModelScope.launch {
+            blurProvider.blurFlow.collect { enableBlur ->
+                updateState { it.copy(enableBlur = enableBlur) }
+            }
+        }
     }
 
     override fun searchMovie(isHistory: Boolean) {
