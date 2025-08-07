@@ -7,6 +7,7 @@ import com.moscow.domain.repository.language.LanguageProvider
 import com.moscow.domain.repository.theme.ThemeProvider
 import com.moscow.domain.model.UserType
 import com.moscow.domain.model.profile.AccountDetails
+import com.moscow.domain.repository.blur.BlurProvider
 import com.moscow.domain.usecase.local.GetUserDetailsUseCase
 import com.moscow.domain.usecase.local.RemoveUserDetailsUseCase
 import com.moscow.domain.usecase.profile.GetAccountDetailsUseCase
@@ -22,13 +23,41 @@ class ProfileViewModel @Inject constructor(
     private val removeUserDetailsUseCase: RemoveUserDetailsUseCase,
     private val getAccountDetailsUseCase: GetAccountDetailsUseCase,
     private val themeProvider: ThemeProvider,
-    private val languageProvider: LanguageProvider
+    private val languageProvider: LanguageProvider,
+    private val blurProvider: BlurProvider
 ) : BaseViewModel<ProfileUIState, ProfileScreenEffects>(ProfileUIState()),
     ProfileInteractionListener {
 
     init {
         observeTheme()
+        observeLanguage()
+        observeBlur()
         getUserDetails()
+    }
+
+    private fun observeTheme() {
+        viewModelScope.launch {
+            themeProvider.themeFlow.collect { isDark ->
+                updateState { it.copy(isDarkTheme = isDark) }
+            }
+        }
+    }
+
+    private fun observeBlur() {
+        viewModelScope.launch {
+            blurProvider.blurFlow.collect { enableBlur ->
+                updateState { it.copy(selectedPreference = enableBlur) }
+                Log.d("blurview", "$enableBlur")
+            }
+        }
+    }
+
+    private fun observeLanguage() {
+        viewModelScope.launch {
+            languageProvider.languageFlow.collect { language ->
+                updateState { it.copy(appLanguage = language) }
+            }
+        }
     }
 
     private fun getAccountDetails() {
@@ -84,14 +113,6 @@ class ProfileViewModel @Inject constructor(
             onError = {})
     }
 
-    private fun observeTheme() {
-        viewModelScope.launch {
-            themeProvider.themeFlow.collect { isDark ->
-                updateState { it.copy(isDarkTheme = isDark) }
-            }
-        }
-    }
-
     fun updateAppTheme(isDark: Boolean) {
         viewModelScope.launch {
             themeProvider.changeAppTheme(isDark = isDark)
@@ -101,6 +122,12 @@ class ProfileViewModel @Inject constructor(
     fun updateAppLanguage(language: String) {
         viewModelScope.launch {
             languageProvider.setLanguage(language = language)
+        }
+    }
+
+    fun updateAppBlur(enable: Boolean) {
+        viewModelScope.launch {
+            blurProvider.changeBlur(enabled = enable)
         }
     }
 
@@ -177,8 +204,8 @@ class ProfileViewModel @Inject constructor(
         updateState { ProfileUIState() }
     }
 
-    override fun onSelectedPreference(preference: String) {
-        TODO("Not yet implemented")
+    override fun onSelectedPreference(enable: Boolean) {
+        updateAppBlur(enable = enable)
     }
 
     override fun onExitWebView() {
@@ -187,7 +214,6 @@ class ProfileViewModel @Inject constructor(
     }
 
     override fun onSelectedLanguage(language: String) {
-        Log.d("language", language)
         updateAppLanguage(language)
         onCancelLanguageBottomSheet()
     }

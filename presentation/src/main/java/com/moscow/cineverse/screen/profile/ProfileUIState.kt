@@ -19,5 +19,5 @@ data class ProfileUIState(
      val editProfileURL :String = "",
      val isDarkTheme:Boolean = true,
      val appLanguage:String = Locale.getDefault().language,
-     val selectedPreference:String = ""
+     val selectedPreference: Boolean = true
 )
