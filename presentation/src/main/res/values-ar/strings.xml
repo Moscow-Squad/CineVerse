@@ -119,6 +119,21 @@
     <string name="my_collection_name_hint">مثال: قائمة مشاهدتي</string>
     <string name="create">إنشاء</string>
     <string name="success">تم بنجاج</string>
+    <string name="bad_request">Bad Request</string>
+    <string name="faild_to_add_item_please_try_again_later">Faild to add item please try again later</string>
+    <string name="faild_to_clear_collection_please_try_again_later">Faild to clear collection please try again later</string>
+    <string name="faild_to_delete_item_from_collection_please_try_again_later">Faild to delete item from collection please try again later</string>
+    <string name="forbidden_request">Forbidden request</string>
+    <string name="no_internet_connection">No internet connection</string>
+    <string name="not_allowed_user">Not allowed user</string>
+    <string name="not_found">Not found, sorry</string>
+    <string name="server_error">Server error</string>
+    <string name="server_not_found">Server not found</string>
+    <string name="service_unavailable">sorry, service unavailable</string>
+    <string name="too_many_requests">too many requests in server, try again later</string>
+    <string name="too_much_time">took too much time</string>
+    <string name="unauthorized_request">sorry, unauthorized request</string>
+    <string name="error_accured">some error accured, try again later</string>
 
 
 </resources>
