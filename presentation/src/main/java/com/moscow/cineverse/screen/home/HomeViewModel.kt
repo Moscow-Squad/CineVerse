@@ -1,7 +1,6 @@
 package com.moscow.cineverse.screen.home
 
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.cineverse.common_ui_state.MediaItemUiState
