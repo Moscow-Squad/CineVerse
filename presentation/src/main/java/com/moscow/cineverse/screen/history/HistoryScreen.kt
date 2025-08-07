@@ -41,10 +41,10 @@ fun HistoryScreen(
     LaunchedEffect(Unit) {
         viewModel.uiEffect.collect { effect ->
             when (effect) {
-                is HistoryEffect.MovieClicked -> navigateToMovieDetails
-                HistoryEffect.NavigateBack -> navigateBack
-                is HistoryEffect.SeriesClicked -> navigateToSeriesDetails
-                HistoryEffect.WatchSomethingButtonClicked -> navigateToExploreScreen
+                is HistoryEffect.MovieClicked -> navigateToMovieDetails(effect.movieId)
+                HistoryEffect.NavigateBack -> navigateBack()
+                is HistoryEffect.SeriesClicked -> navigateToSeriesDetails(effect.seriesId)
+                HistoryEffect.WatchSomethingButtonClicked -> navigateToExploreScreen()
             }
         }
     }
@@ -61,7 +61,7 @@ fun HistoryContent(
     MovieScaffold(
         movieAppBar = {
             MovieAppBar(
-                backButtonClick =  interactionListener::onBackPressed ,
+                backButtonClick = interactionListener::onBackPressed ,
                 title = stringResource(R.string.history)
             )
         }
