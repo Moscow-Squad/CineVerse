@@ -72,6 +72,7 @@ fun SuccessContent(
     uiState: ShowAllActorMoviesState,
     interactionListener: ShowAllActorMoviesInteractionListener,
     title: String,
+    enableBlur: Boolean,
     onNavigateBack: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -85,6 +86,7 @@ fun SuccessContent(
             movies = uiState.movies,
             viewMode = uiState.viewMode,
             onMovieClick = interactionListener::onMovieClick,
+            enableBlur = enableBlur,
             modifier = Modifier.fillMaxSize()
         )
     }
@@ -94,6 +96,7 @@ fun SuccessContent(
 fun MoviesGrid(
     movies: List<com.moscow.cineverse.common_ui_state.MediaItemUiState>,
     viewMode: ViewMode,
+    enableBlur: Boolean,
     onMovieClick: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -111,7 +114,8 @@ fun MoviesGrid(
             MoviePosterCard(
                 movie = movie,
                 viewMode = viewMode,
-                onMovieClick = onMovieClick
+                onMovieClick = onMovieClick,
+                enableBlur = enableBlur
             )
         }
     }

@@ -7,5 +7,6 @@ data class SeeMoreUiState(
     val isLoading: Boolean = false,
     val isContentEmpty: Boolean = false,
     val shouldShowError: Boolean = false,
-    val viewMode: ViewMode = ViewMode.GRID
+    val viewMode: ViewMode = ViewMode.GRID,
+    val enableBlur: Boolean = true
 )

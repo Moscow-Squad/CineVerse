@@ -11,6 +11,9 @@ import com.moscow.domain.model.CreditsDetails
 import com.moscow.domain.model.Movie
 import com.moscow.domain.model.Review
 import com.moscow.domain.model.details.MovieDetail
+import com.moscow.domain.repository.blur.BlurProvider
+import com.moscow.domain.usecase.collection.AddMediaItemToCollectionUseCase
+import com.moscow.domain.usecase.local.GetUserDetailsUseCase
 import com.moscow.domain.usecase.movie.GetMovieCreditsUseCase
 import com.moscow.domain.usecase.movie.GetMovieDetailsUseCase
 import com.moscow.domain.usecase.movie.GetMovieRecommendationsUseCase
@@ -29,6 +32,7 @@ class MovieDetailsViewModel @Inject constructor(
     private val getMovieCreditsUseCase: GetMovieCreditsUseCase,
     private val getMovieRecommendationsUseCase: GetMovieRecommendationsUseCase,
     private val rateMovieUseCase: RateMovieUseCase,
+    private val blurProvider: BlurProvider,
     private val addRecentlyViewedMovieUseCase: AddRecentlyViewedMovieUseCase,
     saveStateHandle: SavedStateHandle,
 ) : BaseViewModel<MovieScreenState, MovieDetailsScreenEffect>(MovieScreenState()),
@@ -46,6 +50,15 @@ class MovieDetailsViewModel @Inject constructor(
             getRecommendations(movieId)
             waitUntilAllDataIsReady()
             updateState { it.copy(isLoading = false) }
+        }
+        observeBlur()
+    }
+
+    private fun observeBlur() {
+        viewModelScope.launch {
+            blurProvider.blurFlow.collect { enableBlur ->
+                updateState { it.copy(enableBlur = enableBlur) }
+            }
         }
     }
 

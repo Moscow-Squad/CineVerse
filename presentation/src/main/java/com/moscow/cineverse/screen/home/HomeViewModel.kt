@@ -12,6 +12,8 @@ import com.moscow.domain.model.MediaType
 import com.moscow.domain.model.Movie
 import com.moscow.domain.model.Series
 import com.moscow.domain.model.UserType
+import com.moscow.domain.repository.blur.BlurProvider
+import com.moscow.domain.usecase.collection.GetCollectionDetailsUseCase
 import com.moscow.domain.usecase.collection.GetUserCollectionsUseCase
 import com.moscow.domain.usecase.genre.GenreUseCase
 import com.moscow.domain.usecase.home.GetMatchesYourVibesMoviesUseCase
@@ -37,6 +39,7 @@ class HomeViewModel @Inject constructor(
     private val genreUseCase: GenreUseCase,
     private val getTrendingMoviesUseCase: GetTrendingMoviesUseCase,
     private val getUserDetailsUseCase: GetUserDetailsUseCase,
+    private val blurProvider: BlurProvider
     private val getUserCollectionsUseCase: GetUserCollectionsUseCase,
     private val getRecentlyViewedMediaUseCase: GetRecentlyViewedMediaUseCase
 ) : BaseViewModel<HomeUiState, HomeEvent>(HomeUiState()), HomeInteractionListener {
@@ -44,6 +47,15 @@ class HomeViewModel @Inject constructor(
     init {
         updateState { it.copy(isLoading = true) }
         loadHomeData()
+        observeBlur()
+    }
+
+    private fun observeBlur() {
+        viewModelScope.launch {
+            blurProvider.blurFlow.collect { enableBlur ->
+                updateState { it.copy(enableBlur = enableBlur) }
+            }
+        }
     }
 
     private fun loadHomeData() {

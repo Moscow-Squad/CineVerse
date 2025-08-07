@@ -1,6 +1,6 @@
 package com.moscow.data_source.remote
 
-import com.moscow.remote.dto.AccountDto
+import com.moscow.remote.dto.profile.AccountDto
 import com.moscow.remote.dto.login.GuestSessionDto
 import com.moscow.remote.dto.login.LoginDto
 import com.moscow.remote.dto.login.RequestTokenDto

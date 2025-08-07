@@ -121,7 +121,8 @@ fun RecommendationMoviesContent(
                                 MoviePosterCard(
                                     movie = recommendation,
                                     viewMode = uiState.viewMode,
-                                    onMovieClick = interactionListener::onMovieClick
+                                    onMovieClick = interactionListener::onMovieClick,
+                                    enableBlur = uiState.enableBlur,
                                 )
                             }
                         }

@@ -47,9 +47,12 @@ import kotlinx.coroutines.delay
 import kotlin.math.absoluteValue
 
 @Composable
-fun HomeHeaderSlider(items: List<MediaItemUiState>,
-                     onSliderClick:(MediaItemUiState)->Unit,
-                     modifier: Modifier = Modifier) {
+fun HomeHeaderSlider(
+    items: List<MediaItemUiState>,
+    onSliderClick:(MediaItemUiState)->Unit,
+    enableBlur: Boolean,
+    modifier: Modifier = Modifier
+) {
     if (items.isEmpty()) return
 
     val pagerState = rememberPagerState(
@@ -138,6 +141,7 @@ fun HomeHeaderSlider(items: List<MediaItemUiState>,
                     onMovieClick = {onSliderClick(items[page])},
                     showBackdrop = true,
                     showTitle = false,
+                    enableBlur = enableBlur,
                 )
 
                 if (textAlpha > 0) {

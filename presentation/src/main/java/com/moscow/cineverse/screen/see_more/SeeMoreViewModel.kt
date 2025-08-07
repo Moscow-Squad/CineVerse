@@ -18,6 +18,7 @@ import com.moscow.cineverse.screen.home.HomeFeaturedItems
 import com.moscow.domain.model.Movie
 import com.moscow.domain.model.Series
 import com.moscow.domain.model.UserType
+import com.moscow.domain.repository.blur.BlurProvider
 import com.moscow.domain.usecase.collection.GetCollectionDetailsUseCase
 import com.moscow.domain.usecase.home.GetMatchesYourVibesMoviesUseCase
 import com.moscow.domain.usecase.home.GetRecentlyReleasedMoviesUseCase
@@ -40,6 +41,7 @@ class SeeMoreViewModel @Inject constructor(
     private val getUpcomingMoviesUseCase: GetUpcomingMoviesUseCase,
     private val getUserDetailsUseCase: GetUserDetailsUseCase,
     private val getCollectionDetailsUseCase: GetCollectionDetailsUseCase,
+    private val blurProvider: BlurProvider,
     private val savedStateHandle: SavedStateHandle
 ) : BaseViewModel<SeeMoreUiState, SeeMoreEvent>(SeeMoreUiState()), SeeMoreInteractionListener {
 
@@ -50,6 +52,15 @@ class SeeMoreViewModel @Inject constructor(
     init {
         updateState { it.copy(title = category) }
         loadContent()
+        observeBlur()
+    }
+
+    private fun observeBlur() {
+        viewModelScope.launch {
+            blurProvider.blurFlow.collect { enableBlur ->
+                updateState { it.copy(enableBlur = enableBlur) }
+            }
+        }
     }
 
     private fun loadContent() {

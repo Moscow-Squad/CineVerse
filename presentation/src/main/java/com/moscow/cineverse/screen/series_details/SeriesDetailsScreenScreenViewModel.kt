@@ -8,6 +8,7 @@ import com.moscow.cineverse.navigation.routes.SeriesDetailsRoute
 import com.moscow.cineverse.utlis.ViewMode
 import com.moscow.domain.mapper.toSeries
 import com.moscow.domain.model.Series
+import com.moscow.domain.repository.blur.BlurProvider
 import com.moscow.domain.usecase.recently_viewed.AddRecentlyViewedSeriesUseCase
 import com.moscow.domain.usecase.review.GetReviewsUseCase
 import com.moscow.domain.usecase.series.GetSeriesCreditsDetailsUseCase
@@ -26,6 +27,7 @@ class SeriesDetailsScreenScreenViewModel @Inject constructor(
     private val rateSeriesUseCase: RateSeriesUseCase,
     private val getSeriesCreditsDetailsUseCase: GetSeriesCreditsDetailsUseCase,
     private val getSeriesRecommendationsUseCase: GetSeriesRecommendationsUseCase,
+    private val blurProvider: BlurProvider,
     private val addRecentlyViewedSeriesUseCase: AddRecentlyViewedSeriesUseCase,
     savedStateHandle: SavedStateHandle,
 ) : BaseViewModel<SeriesDetailsScreenState, SeriesDetailsScreenEffects>(SeriesDetailsScreenState()),
@@ -42,6 +44,15 @@ class SeriesDetailsScreenScreenViewModel @Inject constructor(
             loadReviews(seriesId, page = 1)
             waitUntilAllDataIsReady()
             updateState { it.copy(isLoading = false) }
+        }
+        observeBlur()
+    }
+
+    private fun observeBlur() {
+        viewModelScope.launch {
+            blurProvider.blurFlow.collect { enableBlur ->
+                updateState { it.copy(enableBlur = enableBlur) }
+            }
         }
     }
 
