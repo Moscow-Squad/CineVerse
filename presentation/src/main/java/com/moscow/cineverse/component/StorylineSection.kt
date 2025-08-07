@@ -36,20 +36,9 @@ fun StorylineSection(
         Text(
             modifier = Modifier.padding(horizontal = 16.dp),
             overflow = TextOverflow.Ellipsis,
-            text = buildAnnotatedString {
-                withStyle(style = ParagraphStyle(lineHeight = 12.sp)) {
-                    withStyle(
-                        style = SpanStyle(
-                            color = textColor,
-                            fontWeight = FontWeight.Normal,
-                            fontSize = 12.sp,
-                            letterSpacing = 0.sp
-                        )
-                    ) {
-                        append(description)
-                    }
-                }
-            },
+            style = Theme.textStyle.body.small.medium,
+            color = Theme.colors.shade.secondary,
+            text = description,
             textAlign = TextAlign.Justify
         )
     }
