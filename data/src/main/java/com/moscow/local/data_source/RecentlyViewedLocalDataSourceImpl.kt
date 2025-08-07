@@ -16,4 +16,8 @@ class RecentlyViewedLocalDataSourceImpl @Inject constructor(
     override suspend fun getRecentlyViewedItems(): List<HistoryItemEntity> {
         return recentlyViewedDao.getRecentlyViewedItems()
     }
+
+    override suspend fun deleteRecentlyViewedItemById(id: Int) {
+        return recentlyViewedDao.deleteRecentlyViewedItemById(id)
+    }
 }
