@@ -2,6 +2,7 @@ package com.moscow.cineverse.screen.movie_details.component
 
 import android.content.Context
 import android.content.Intent
+import android.widget.Toast
 import androidx.core.net.toUri
 import com.moscow.cineverse.screen.movie_details.MovieDetailsScreenEffect
 
@@ -15,6 +16,7 @@ object MovieDetailsEffectHandler {
         navigateToCastDetails: (Int) -> Unit,
         navigateToCollectionsBottomSheet: (Int) -> Unit,
         navigateToMovieDetails: (Int) -> Unit,
+        navigateToLogin: () -> Unit,
         context: Context
     ) {
         when (effect) {
@@ -23,7 +25,7 @@ object MovieDetailsEffectHandler {
             }
 
             is MovieDetailsScreenEffect.ShowError -> {
-                // TODO: Show error (Snackbar, Toast, etc.)
+                Toast.makeText(context, effect.message, Toast.LENGTH_SHORT).show()
             }
 
             is MovieDetailsScreenEffect.NavigateToFullMovieList -> {
@@ -31,12 +33,10 @@ object MovieDetailsEffectHandler {
                     effect.movieID,
                     effect.movieTitle
                 )
-
             }
 
             is MovieDetailsScreenEffect.NavigateToFullReviews -> {
                 navigateToReviews(effect.movieID)
-
             }
 
             is MovieDetailsScreenEffect.NavigateCastDetails -> {
@@ -45,7 +45,6 @@ object MovieDetailsEffectHandler {
 
             is MovieDetailsScreenEffect.AddToCollection -> {
                 navigateToCollectionsBottomSheet(effect.movieId)
-
             }
 
             is MovieDetailsScreenEffect.NavigateMovieDetails -> {
@@ -55,6 +54,10 @@ object MovieDetailsEffectHandler {
             is MovieDetailsScreenEffect.OpenTrailer -> {
                 val intent = Intent(Intent.ACTION_VIEW, effect.url.toUri())
                 context.startActivity(intent)
+            }
+
+            is MovieDetailsScreenEffect.NavigateToLogin -> {
+                navigateToLogin()
             }
         }
     }

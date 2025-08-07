@@ -142,6 +142,7 @@ fun HomeHeaderSlider(
                     showBackdrop = true,
                     showTitle = false,
                     enableBlur = enableBlur,
+                    useFixedHeight = true
                 )
 
                 if (textAlpha > 0) {

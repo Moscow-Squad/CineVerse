@@ -11,4 +11,5 @@ sealed class MovieDetailsScreenEffect {
     data class NavigateCastDetails(val castId: Int) : MovieDetailsScreenEffect()
     data class NavigateMovieDetails(val movieId: Int) : MovieDetailsScreenEffect()
     data class OpenTrailer(val url: String) : MovieDetailsScreenEffect()
+    data object NavigateToLogin : MovieDetailsScreenEffect()
 }
