@@ -73,6 +73,7 @@ fun OnBoardingScreenContent(
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .background(color = Theme.colors.background.screen)
             .padding(bottom = 16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Bottom

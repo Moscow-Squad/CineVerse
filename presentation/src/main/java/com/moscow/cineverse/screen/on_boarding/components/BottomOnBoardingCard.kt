@@ -72,7 +72,7 @@ fun BottomOnBoardingCard(
                     shape = RoundedCornerShape(Theme.radius.extraLarge)
                 )
                 .fillMaxWidth()
-                .height(199.dp)
+
                 .padding(
                     top = 32.dp, start = 24.dp,
                     end = 24.dp, bottom = 24.dp
@@ -113,7 +113,7 @@ fun BottomOnBoardingCard(
                     textAlign = TextAlign.Center
                 )
             }
-            Spacer(modifier = Modifier.weight(1f))
+            Spacer(modifier = Modifier.height(24.dp))
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -157,7 +157,7 @@ fun BottomOnBoardingCard(
                                 top = 14.dp,
                                 bottom = 14.dp,
                                 start = 24.dp,
-                                end = 16.dp
+                                end = 14.dp
                             ),
                             iconColor = Theme.colors.button.onPrimary,
                         )
