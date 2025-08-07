@@ -270,9 +270,7 @@ class ExploreViewModel @Inject constructor(
         launchWithResult(
             action = { suggestionUseCase.getSuggestions(keyword, page) },
             onSuccess = ::onSuccessLoadingSuggestions,
-            onError = { },
-            onStart = { },
-            onFinally = { }
+            onError = { updateState { it.copy(remoteSuggestions = listOf(uiState.value.searchKeyWord))} },
         )
     }
 
@@ -401,11 +399,11 @@ class ExploreViewModel @Inject constructor(
             action = {
                 uiState.value.localSuggestions.any { it.title == uiState.value.searchKeyWord }
                     .let { isQueryInHistory ->
-                        if (!isQueryInHistory)
-                            cacheSearchQueryUseCase.cacheSearchQuery(uiState.value.searchKeyWord)
                         searchMovie()
                         searchSeries()
                         searchActor()
+                        if (!isQueryInHistory)
+                            cacheSearchQueryUseCase.cacheSearchQuery(uiState.value.searchKeyWord)
                     }
             },
             onSuccess = {
