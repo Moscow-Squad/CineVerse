@@ -1,99 +1,93 @@
 package com.moscow.cineverse.screen.history
 
-import androidx.lifecycle.viewModelScope
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
-import androidx.paging.PagingData
-import androidx.paging.cachedIn
-import androidx.paging.map
 import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.cineverse.common_ui_state.MediaItemUiState
-import com.moscow.cineverse.mapper.toMediaItemUi
-import com.moscow.cineverse.mapper.toUi
-import com.moscow.cineverse.paging.BasePagingSource
-import com.moscow.domain.model.Movie
-import com.moscow.domain.model.Series
-import com.moscow.domain.model.UserType
-import com.moscow.domain.usecase.collection.GetCollectionDetailsUseCase
-import com.moscow.domain.usecase.local.GetUserDetailsUseCase
+import com.moscow.cineverse.screen.collection_details.CollectionDetailsEffect
+import com.moscow.cineverse.screen.home.HomeEvent
+import com.moscow.cineverse.screen.home.toMediaItemUiState
+import com.moscow.domain.model.MediaType
+import com.moscow.domain.usecase.collection.CloseCollectionDetailsTipUseCase
+import com.moscow.domain.usecase.collection.GetShowCollectionDetailsTipUseCase
+import com.moscow.domain.usecase.recently_viewed.GetRecentlyViewedMediaUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.emptyFlow
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class HistoryViewModel @Inject constructor(
-    private val getUserDetailsUseCase: GetUserDetailsUseCase,
-    private val getCollectionDetailsUseCase: GetCollectionDetailsUseCase
-): BaseViewModel<HistoryScreenState, HistoryEffect>(HistoryScreenState()),
-HistoryInteractionListener {
-    private val _pagingDataFlow = MutableStateFlow<Flow<PagingData<MediaItemUiState>>>(emptyFlow())
-    val pagingDataFlow = _pagingDataFlow.asStateFlow()
+    private val getRecentlyViewedMediaUseCase: GetRecentlyViewedMediaUseCase,
+    private val closeCollectionDetailsTipUseCase: CloseCollectionDetailsTipUseCase,
+    private val getShowCollectionDetailsTipUseCase: GetShowCollectionDetailsTipUseCase,
+) : BaseViewModel<HistoryScreenState, HistoryEffect>(HistoryScreenState()),
+    HistoryInteractionListener {
 
     init {
-        getMoviesHistory()
+        getShowTip()
+        getRecentlyViewedMovies()
     }
 
-    private fun getMoviesHistory() {
-        try {
-            updateState { it.copy(isLoading = true) }
-            val pageSize = 20
-
-            viewModelScope.launch {
-                val user = getUserDetailsUseCase()
-                val pagingFlow = when (user) {
-                    is UserType.AuthenticatedUser -> {
-                        createPagingFlow(
-                            pageSize = 20,
-                            fetchData = { page -> getCollectionDetailsUseCase(user.recentlyCollectionId, page) }
-                        )
-                    }
-                    is UserType.GuestUser -> emptyFlow()
+    private fun getRecentlyViewedMovies() {
+        launchWithResult(
+            action = { getRecentlyViewedMediaUseCase() },
+            onSuccess = { result ->
+                updateState {
+                    it.copy(
+                        youRecentlyViewed = result.toMediaItemUiState(),
+                        isContentEmpty = result.isEmpty()
+                    )
                 }
-                _pagingDataFlow.value = pagingFlow
-                updateState { it.copy(isLoading = false) }
-            }
-        } catch (e: Exception) {
-            updateState { it.copy(isLoading = false, shouldShowError = true) }
-        }
+            },
+            onError = {}
+        )
+    }
+
+    private fun getShowTip() {
+        launchWithResult(
+            action = getShowCollectionDetailsTipUseCase::invoke,
+            onSuccess = { res ->
+                updateState {
+                    it.copy(
+                        showTip = res,
+                        isLoading = false
+                    )
+                }
+            },
+            onError = { e ->
+                updateState {
+                    it.copy(
+                        isError = true,
+                        isLoading = false,
+                        errorMessage = e.message.toString()
+                    )
+                }
+            },
+            onStart = { updateState { it.copy(isLoading = true) } }
+        )
     }
 
     override fun onBackPressed() {
-
+        sendEvent(HistoryEffect.NavigateBack)
     }
 
-    override fun onRefresh() {
-        getMoviesHistory()
+    override fun onMediaItemClicked(mediaItemUiState: MediaItemUiState) {
+        if (mediaItemUiState.mediaType == MediaType.Movie)
+            sendEvent(HistoryEffect.MovieClicked(mediaItemUiState.id))
+        else
+            sendEvent(HistoryEffect.SeriesClicked(mediaItemUiState.id))
     }
 
-    override fun onMediaItemClicked() {
-        TODO("Not yet implemented")
-    }
-
-    private fun <T : Any> createPagingFlow(
-        pageSize: Int,
-        fetchData: suspend (Int) -> List<T>
-    ): Flow<PagingData<MediaItemUiState>> {
-        return Pager(
-            config = PagingConfig(
-                pageSize = pageSize,
-                enablePlaceholders = false
-            ),
-            pagingSourceFactory = { BasePagingSource(fetchData) }
-        ).flow
-            .map { pagingData ->
-                pagingData.map { item ->
-                    when (item) {
-                        is Movie -> item.toMediaItemUi()
-                        is Series -> item.toUi()
-                        else -> throw IllegalArgumentException("Unsupported type: ${item::class.java}")
-                    }
+    override fun onTipCancelIconClicked() {
+        updateState { it.copy(isLoading = false) }
+        launchAndForget(
+            action = { closeCollectionDetailsTipUseCase() },
+            onSuccess = { updateState { it.copy(showTip = false) } },
+            onError = { e ->
+                updateState {
+                    it.copy(
+                        isError = true,
+                        errorMessage = e.message.toString()
+                    )
                 }
             }
-            .cachedIn(viewModelScope)
+        )
     }
 }

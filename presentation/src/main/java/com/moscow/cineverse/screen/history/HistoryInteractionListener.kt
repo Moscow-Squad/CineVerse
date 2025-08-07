@@ -1,7 +1,9 @@
 package com.moscow.cineverse.screen.history
 
+import com.moscow.cineverse.common_ui_state.MediaItemUiState
+
 interface HistoryInteractionListener {
     fun onBackPressed()
-    fun onRefresh()
-    fun onMediaItemClicked()
+    fun onMediaItemClicked(mediaItemUiState: MediaItemUiState)
+    fun onTipCancelIconClicked()
 }
