@@ -11,12 +11,16 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.moscow.cineverse.component.ScreenStateHandler
 import com.moscow.cineverse.designSystem.theme.Theme
@@ -38,6 +42,7 @@ fun HomeScreen(
     navigateToSeriesDetails: (seriesId: Int) -> Unit,
     navigateToBrowseSuggestion: () -> Unit,
     navigateToWatchingSuggestion: () -> Unit,
+    navigateToHistoryScreen: () -> Unit,
     navigateToCollectionDetails: (collectionId: Int, collectionName: String) -> Unit,
 ) {
     val state by viewmodel.uiState.collectAsStateWithLifecycle()
@@ -80,9 +85,27 @@ fun HomeScreen(
                 HomeEvent.WatchingSuggestionClicked -> {
                     navigateToWatchingSuggestion()
                 }
+
+                HomeEvent.SeeMoreRecentlyViewed -> navigateToHistoryScreen
             }
         }
     }
+
+    val lifecycleOwner = LocalLifecycleOwner.current
+    DisposableEffect(Unit) {
+        val observer = LifecycleEventObserver { _, event ->
+            if (event == Lifecycle.Event.ON_RESUME) {
+                viewmodel.getRecentlyViewedMovies()
+            }
+        }
+
+        lifecycleOwner.lifecycle.addObserver(observer)
+
+        onDispose {
+            lifecycleOwner.lifecycle.removeObserver(observer)
+        }
+    }
+
     HomeContent(modifier, state, viewmodel)
 }
 
@@ -180,14 +203,16 @@ fun HomeContent(
                     enableBlur = uiState.enableBlur,
                 )
 
-                if(uiState.userName != null && uiState.youRecentlyViewed.isEmpty() == false) FeaturedMovies(
-                    displayMovies = uiState.youRecentlyViewed,
-                    onMovieClick = listener::onMediaItemClicked,
-                    onShowMoreClick = listener::onSeeAllClick,
-                    modifier = Modifier,
-                    type = HomeFeaturedItems.YOU_RECENTLY_VIEWED,
-                    enableBlur = uiState.enableBlur,
-                )
+                if (!uiState.youRecentlyViewed.isEmpty()) {
+                    FeaturedMovies(
+                        displayMovies = uiState.youRecentlyViewed,
+                        onMovieClick = listener::onMediaItemClicked,
+                        onSeaMoreRecentlyViewedClicked = listener::onSeeMoreRecentlyViewedClicked,
+                        modifier = Modifier,
+                        type = HomeFeaturedItems.YOU_RECENTLY_VIEWED,
+                        enableBlur = true
+                    )
+                }
 
                 MyCollectionsLayout(
                     items = uiState.collections,

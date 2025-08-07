@@ -7,18 +7,12 @@ import com.moscow.cineverse.screen.explore.YYYY_MMM_DD
 import com.moscow.cineverse.screen.explore.formatWith
 import com.moscow.cineverse.screen.home.HomeUiState
 import com.moscow.domain.model.Collection
-import com.moscow.domain.model.Genre
 import com.moscow.domain.model.MediaType
 import com.moscow.domain.model.Movie
 import com.moscow.domain.model.Series
 
-fun Genre.toGenreUi() = HomeUiState.GenreUi(
-    id = id,
-    name = name
-)
-
 fun List<Movie>.toUi(
-    genresList: List<HomeUiState.GenreUi>
+    genresList: List<HomeUiState.GenreUi> = listOf()
 ): List<MediaItemUiState> {
     return this.map { movie ->
         MediaItemUiState(
@@ -27,7 +21,8 @@ fun List<Movie>.toUi(
             posterPath = movie.posterPath,
             backdropPath = movie.backdropPath,
             rating = movie.rating,
-            genres = movie.genreIds.map { genresList.first { genre -> genre.id == it }.name },
+            genres = if (genresList.isEmpty()) listOf() else
+                movie.genreIds.map { genresList.first { genre -> genre.id == it }.name },
             releaseDate = movie.releaseDate.formatWith(YYYY_MMM_DD) ?: "",
             duration = "",
             mediaType = MediaType.Movie

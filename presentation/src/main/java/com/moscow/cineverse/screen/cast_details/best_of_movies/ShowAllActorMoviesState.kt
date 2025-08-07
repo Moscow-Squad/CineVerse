@@ -1,6 +1,7 @@
 package com.moscow.cineverse.screen.cast_details.best_of_movies
 
 import com.moscow.cineverse.common_ui_state.MediaItemUiState
+import com.moscow.cineverse.screen.explore.ExploreScreenState.GenreUiState
 import com.moscow.cineverse.utlis.ViewMode
 
 data class ShowAllActorMoviesState(
@@ -10,11 +11,6 @@ data class ShowAllActorMoviesState(
     val error: String? = null,
     val viewMode: ViewMode = ViewMode.GRID,
     val movies: List<MediaItemUiState> = emptyList(),
-    val moviesGenres: List<GenreUi> = emptyList(),
+    val moviesGenres: List<GenreUiState> = emptyList(),
     val enableBlur: Boolean = true
-) {
-    data class GenreUi(
-        val id: Int,
-        val name: String
-    )
-}
+)

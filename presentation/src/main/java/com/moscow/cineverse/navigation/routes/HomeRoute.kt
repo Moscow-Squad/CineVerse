@@ -19,6 +19,10 @@ fun NavGraphBuilder.homeRoute(navController: NavHostController) {
                     MovieDetailsRoute(movieId)
                 )
             },
+            navigateToHistoryScreen = {
+                navController.navigate(HistoryRoute)
+            },
+
             navigateToSeeMoreHome = { category ->
                 navController.navigate(SeeMoreRoute(category))
 
