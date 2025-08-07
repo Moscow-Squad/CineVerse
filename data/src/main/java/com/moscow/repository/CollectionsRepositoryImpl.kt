@@ -1,6 +1,10 @@
 package com.moscow.repository
 
 import com.moscow.data_source.remote.CollectionRemoteDataSource
+import com.moscow.domain.exception.CineVerseException.NullException
+import com.moscow.domain.exception.CineVerseException.AddMediaItemToCollectionException
+import com.moscow.domain.exception.CineVerseException.ClearCollectionException
+import com.moscow.domain.exception.CineVerseException.DeleteMediaItemFromCollectionException
 import com.moscow.domain.model.Collection
 import com.moscow.domain.model.Movie
 import com.moscow.domain.model.UserType
@@ -10,7 +14,6 @@ import com.moscow.mapper.toDomain
 import com.moscow.remote.dto.AddMediaItemToCollectionRequestDto
 import com.moscow.remote.dto.CreateCollectionDto
 import com.moscow.remote.dto.toDomain
-import com.moscow.utils.CineVerseExceptions
 import javax.inject.Inject
 
 class CollectionsRepositoryImpl @Inject constructor(
@@ -41,10 +44,7 @@ class CollectionsRepositoryImpl @Inject constructor(
             collection = collection,
             sessionId = preferenceRepository.getSessionId()
         )
-        return response.listId ?: throw CineVerseExceptions(
-            response.statusCode ?: 0,
-            response.statusMessage ?: ""
-        )
+        return response.listId ?: throw NullException
     }
 
     override suspend fun addMediaItemToCollection(
@@ -58,10 +58,7 @@ class CollectionsRepositoryImpl @Inject constructor(
             sessionId = preferenceRepository.getSessionId()
         )
         if (response.success == false)
-            throw CineVerseExceptions(
-                response.statusCode ?: 0,
-                response.statusMessage ?: ""
-            )
+            throw AddMediaItemToCollectionException
         return response.statusMessage.toString()
     }
 
@@ -76,10 +73,7 @@ class CollectionsRepositoryImpl @Inject constructor(
             sessionId = preferenceRepository.getSessionId()
         )
         if (response.success == false)
-            throw CineVerseExceptions(
-                response.statusCode ?: 0,
-                response.statusMessage ?: ""
-            )
+            throw DeleteMediaItemFromCollectionException
         return response.statusMessage.toString()
     }
 
@@ -102,10 +96,7 @@ class CollectionsRepositoryImpl @Inject constructor(
             confirm = confirm
         )
         if (response.success == false)
-            throw CineVerseExceptions(
-                response.statusCode ?: 0,
-                response.statusMessage ?: ""
-            )
+            throw ClearCollectionException
         return response.statusMessage.toString()
     }
 }
