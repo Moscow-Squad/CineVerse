@@ -11,14 +11,17 @@ import com.moscow.cineverse.utlis.ViewMode
 import com.moscow.cineverse.navigation.routes.RecommendationsRoute
 import com.moscow.cineverse.paging.BasePagingSource
 import com.moscow.domain.model.Movie
+import com.moscow.domain.repository.blur.BlurProvider
 import com.moscow.domain.usecase.movie.GetMovieRecommendationsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class RecommendationsMoviesViewModel @Inject constructor(
     private val getMovieRecommendationsUseCase: GetMovieRecommendationsUseCase,
+    private val blurProvider: BlurProvider,
     savedStateHandle: SavedStateHandle
 ) : BaseViewModel<RecommendationsMoviesState,
         RecommendationMoviesEffect>(RecommendationsMoviesState()),
@@ -30,6 +33,15 @@ class RecommendationsMoviesViewModel @Inject constructor(
 
     init {
         updateState { it.copy(movieId = movieId, movieTitle = movieTitle) }
+        observeBlur()
+    }
+
+    private fun observeBlur() {
+        viewModelScope.launch {
+            blurProvider.blurFlow.collect { enableBlur ->
+                updateState { it.copy(enableBlur = enableBlur) }
+            }
+        }
     }
 
     fun getRecommendations(): Flow<PagingData<Movie>> {

@@ -119,7 +119,8 @@ fun SeriesRecommendationScreenContent(
                                         interactionListener.onSeriesClicked(
                                             recommendation.id
                                         )
-                                    }
+                                    },
+                                    enableBlur = uiState.enableBlur,
                                 )
                             }
                         }

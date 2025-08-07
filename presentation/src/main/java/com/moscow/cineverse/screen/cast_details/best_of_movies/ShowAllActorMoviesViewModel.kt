@@ -1,22 +1,26 @@
 package com.moscow.cineverse.screen.cast_details.best_of_movies
 
 import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.viewModelScope
 import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.cineverse.utlis.ViewMode
 import com.moscow.cineverse.mapper.toUi
 import com.moscow.cineverse.navigation.routes.CastBestOfMovieRoute
 import com.moscow.cineverse.navigation.routes.SeriesDetailsRoute
 import com.moscow.domain.model.Movie
+import com.moscow.domain.repository.blur.BlurProvider
 import com.moscow.domain.usecase.actor.GetActorBestMoviesUseCase
 import com.moscow.domain.usecase.genre.GenreUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class ShowAllActorMoviesViewModel @Inject constructor(
     private val getActorBestMoviesUseCase: GetActorBestMoviesUseCase,
     private val genreUseCase: GenreUseCase,
+    private val blurProvider: BlurProvider,
     savedStateHandle: SavedStateHandle
 ) : BaseViewModel<ShowAllActorMoviesState, ShowAllActorMoviesEffect>(ShowAllActorMoviesState()),
     ShowAllActorMoviesInteractionListener {
@@ -29,6 +33,15 @@ class ShowAllActorMoviesViewModel @Inject constructor(
         updateState { it.copy(actorId = actorId, actorName = actorName) }
         updateState { it.copy(actorId = actorId) }
         getActorMovies()
+        observeBlur()
+    }
+
+    private fun observeBlur() {
+        viewModelScope.launch {
+            blurProvider.blurFlow.collect { enableBlur ->
+                updateState { it.copy(enableBlur = enableBlur) }
+            }
+        }
     }
 
 

@@ -44,6 +44,7 @@ fun MovieHeaderSection(
         MovieCardDetails(
             animatedVisibilityScope = animatedVisibilityScope,
             sharedTransitionScope = sharedTransitionScope,
+            enableBlur = uiState.enableBlur,
             posterUrl = it.posterPath,
             title = it.title,
             genres = it.genres.joinToString(", "),
@@ -75,6 +76,7 @@ fun MovieCollapsedHeaderSection(
 ) {
     uiState.movieDetailsUiState?.let {
         MainMovieCard(
+            enableBlur = uiState.enableBlur,
             posterUrl = it.posterPath,
             title = it.title,
             animatedVisibilityScope = animatedVisibilityScope,
