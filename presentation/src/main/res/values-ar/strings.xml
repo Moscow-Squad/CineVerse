@@ -98,5 +98,8 @@
     <string name="search_can_t_be_empty_1">لا تستطيع البحث بلا شئ !</string>
     <string name="my_ratings">تقييماتي</string>
     <string name="you_gave_it">لقد اعطيته</string>
+    <string name="no_ratings_yet">لا توجد تقييمات</string>
+    <string name="rate_movies_and_series_you_ve_watched_to_track_what_you_love_and_what_you_don_t">قيم الافلام و المسلسلات التي شاهدتها لكي تستطيع تتبع ما احببته و ما لم تحبه</string>
+    <string name="start_rating">ابدأ التقييم</string>
 
 </resources>

@@ -7,19 +7,20 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.grid.rememberLazyGridState
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import com.moscow.cineverse.common_ui_state.MediaItemUiState
+import com.moscow.cineverse.component.EmptyState
 import com.moscow.cineverse.component.MoviePosterCard
 import com.moscow.cineverse.component.NoInternetScreen
 import com.moscow.cineverse.designSystem.component.MovieAppBar
@@ -38,10 +39,10 @@ fun MyRatingsContent(
     uiState: MyRatingsUiState,
     contentList: LazyPagingItems<RatedMediaItem>
 ) {
-    val gridState = rememberLazyGridState()
+    val listState = rememberLazyListState()
 
     LaunchedEffect(uiState.selectedTab) {
-        gridState.animateScrollToItem(0)
+        listState.animateScrollToItem(0)
     }
 
     MovieScaffold(
@@ -82,6 +83,22 @@ fun MyRatingsContent(
                         }
                     }
 
+                    uiState.isContentEmpty -> {
+                        Box(
+                            modifier = Modifier.fillMaxSize(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            EmptyState(
+                                icon = painterResource(Theme.icons.dueTone.star),
+                                title = stringResource(R.string.no_ratings_yet),
+                                description = stringResource(R.string.rate_movies_and_series_you_ve_watched_to_track_what_you_love_and_what_you_don_t),
+                                buttonTitle = stringResource(R.string.start_rating),
+                                showButton = true,
+                                onButtonClick = interactionListener::onEmptyStateButtonClicked
+                            )
+                        }
+                    }
+
                     else -> {
                         MyRatingsList(
                             contentList = contentList,
@@ -102,6 +119,7 @@ private fun MyRatingsList(
     modifier: Modifier = Modifier
 ) {
     LazyColumn(
+        modifier = modifier,
         contentPadding = PaddingValues(16.dp),
         verticalArrangement = Arrangement.spacedBy(20.dp)
     ) {

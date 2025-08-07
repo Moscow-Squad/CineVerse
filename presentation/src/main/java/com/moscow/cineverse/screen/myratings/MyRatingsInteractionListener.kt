@@ -8,4 +8,5 @@ interface MyRatingsInteractionListener {
     fun onMediaItemClicked(mediaItemUiState: MediaItemUiState)
     fun onNavigateBack()
     fun onRefresh()
+    fun onEmptyStateButtonClicked()
 }
