@@ -14,13 +14,26 @@ class GetRatedSeriesUseCase @Inject constructor(
     suspend operator fun invoke(page: Int): List<RatedSeriesResult> {
         val user = preferenceRepository.getUser()
         val userid = if (user is UserType.AuthenticatedUser) user.id else "0"
-        val parseUserid = userid.substring(
-            startIndex = userid.indexOfFirst { it == '=' } + 1,
-            endIndex = userid.indexOfFirst { it == ',' }
-        )
-        return seriesRepository.getRatedSeries(parseUserid.toInt(), page)
-    }
 
+        val parseUserid = try {
+            val equalIndex = userid.indexOfFirst { it == '=' }
+            val commaIndex = userid.indexOfFirst { it == ',' }
+
+            when {
+                equalIndex == -1 || commaIndex == -1 || commaIndex <= equalIndex -> {
+                    userid.toIntOrNull() ?: 0
+                }
+
+                else -> {
+                    userid.substring(equalIndex + 1, commaIndex).toIntOrNull() ?: 0
+                }
+            }
+        } catch (e: Exception) {
+            0
+        }
+
+        return seriesRepository.getRatedSeries(parseUserid, page)
+    }
 
     data class RatedSeriesResult(
         val series: Series,
