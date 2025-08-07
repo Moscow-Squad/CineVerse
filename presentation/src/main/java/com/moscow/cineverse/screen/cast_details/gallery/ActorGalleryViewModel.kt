@@ -1,16 +1,20 @@
 package com.moscow.cineverse.screen.cast_details.gallery
 
 import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.viewModelScope
 import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.cineverse.navigation.routes.CastGalleryRoute
+import com.moscow.domain.repository.blur.BlurProvider
 import com.moscow.domain.usecase.actor.GetActorGalleryUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class ActorGalleryViewModel @Inject constructor(
     private val getActorGalleryUseCase: GetActorGalleryUseCase,
-                                                savedStateHandle: SavedStateHandle
+    private val blurProvider: BlurProvider,
+    savedStateHandle: SavedStateHandle
 ) : BaseViewModel<ShowAllActorMoviesState, ActorGalleryEffect>(ShowAllActorMoviesState()),
     ActorGalleryInteractionListener {
     private val castID = savedStateHandle.get<Int>(CastGalleryRoute.CAST_ID) ?: 0
@@ -19,6 +23,15 @@ class ActorGalleryViewModel @Inject constructor(
     init {
         getActor(castID, castName)
         getActorPhotos()
+        observeBlur()
+    }
+
+    private fun observeBlur() {
+        viewModelScope.launch {
+            blurProvider.blurFlow.collect { enableBlur ->
+                updateState { it.copy(enableBlur = enableBlur) }
+            }
+        }
     }
 
     fun getActor(actorId: Int, actorName: String){
