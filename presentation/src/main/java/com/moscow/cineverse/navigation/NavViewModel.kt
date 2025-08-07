@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.moscow.cineverse.navigation.routes.HomeRoute
 import com.moscow.cineverse.navigation.routes.LoginRoute
 import com.moscow.cineverse.navigation.routes.OnBoardingRoute
+import com.moscow.cineverse.navigation.routes.SplashRoute
 import com.moscow.domain.repository.PreferenceRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -25,28 +26,6 @@ class NavViewModel @Inject constructor(
         getStartDestination()
     }
 
-    private fun getStartDestination() {
-        viewModelScope.launch {
-            if (!preferenceRepository.isOnBoardingCompleted()){
-                _startDestination.value = OnBoardingRoute
-            }else if (preferenceRepository.isGuest() && preferenceRepository.isLoggedIn()){
-                val isValid = isValidGuestSession(preferenceRepository.getSessionExpiration())
-                _startDestination.value = if (isValid) HomeRoute else LoginRoute
-            }else{
-                val isLoggedIn = preferenceRepository.isLoggedIn()
-                _startDestination.value = if (isLoggedIn) HomeRoute else LoginRoute
-            }
-        }
-    }
+    private fun getStartDestination() = SplashRoute
 
-    private fun isValidGuestSession(expirationDateTime: String): Boolean{
-        if (expirationDateTime.isNotEmpty()){
-            val iso = expirationDateTime.replace(" UTC", "").replace(' ', 'T') + "Z"
-            val expiresAtInstant = Instant.parse(iso)
-            val expiresAtMillis = expiresAtInstant.toEpochMilliseconds()
-            val now = Clock.System.now().toEpochMilliseconds()
-            return now < expiresAtMillis
-        }
-        return false
-    }
 }
