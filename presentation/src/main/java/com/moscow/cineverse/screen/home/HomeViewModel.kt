@@ -61,8 +61,6 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
 
             languageProvider.languageFlow.collect { currentLanguage ->
-                Log.d("ddddddd", currentLanguage)
-                Log.d("ddddddd", uiState.value.cashLanguage)
                 if (uiState.value.cashLanguage != currentLanguage){
                     updateState { it.copy(cashLanguage = currentLanguage) }
                     clearHomeCash()
