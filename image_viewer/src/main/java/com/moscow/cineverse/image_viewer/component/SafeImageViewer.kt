@@ -99,6 +99,7 @@ fun SafeImageViewer(
             }
 
             if (bitmap != null) {
+                imageCache[imageUrl] = CachedImage(bitmap, false)
                 val shouldBlur = if (isBlurEnabled && classifier != null) {
                     withContext(Dispatchers.Default) {
                         classifier.classifyImage(bitmap)
@@ -115,7 +116,7 @@ fun SafeImageViewer(
                 requestState = RequestState.ERROR
                 onError?.invoke()
             }
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             requestState = RequestState.ERROR
             onError?.invoke()
         }
