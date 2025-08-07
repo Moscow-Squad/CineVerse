@@ -175,9 +175,6 @@ class HomeViewModel @Inject constructor(
             onError = {}
         )
     }
-    private fun onGetGenresError(throwable: Throwable) {
-        updateState { it.copy(error = throwable.message, isLoading = false) }
-    }
 
     private fun fetchTrendingMovies() {
         launchWithResult(
