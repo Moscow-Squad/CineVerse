@@ -309,6 +309,7 @@ class MovieDetailsViewModel @Inject constructor(
     }
 
     override fun navigateToLogin() {
+        updateState { it.copy(showLoginBottomSheet = false) }
         sendEvent(MovieDetailsScreenEffect.NavigateToLogin)
     }
 

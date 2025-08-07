@@ -164,6 +164,8 @@ class SeriesDetailsScreenScreenViewModel @Inject constructor(
     }
 
     override fun navigateToLogin() {
+        updateState { it.copy(showLoginBottomSheet = false) }
+        updateState { it.copy(showRatingBottomSheet = false) }
         sendEvent(SeriesDetailsScreenEffects.NavigateToLogin)
     }
 
