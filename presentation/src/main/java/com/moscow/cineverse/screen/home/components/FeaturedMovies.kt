@@ -11,8 +11,9 @@ import com.moscow.cineverse.screen.home.HomeFeaturedItems
 @Composable
 fun FeaturedMovies(
     displayMovies: List<MediaItemUiState>,
-    onShowMoreClick: (type: HomeFeaturedItems) -> Unit,
+    onShowMoreClick: (type: HomeFeaturedItems) -> Unit = {},
     onMovieClick: (MediaItemUiState) -> Unit,
+    onSeaMoreRecentlyViewedClicked: () -> Unit = {},
     type: HomeFeaturedItems,
     enableBlur: Boolean,
     modifier: Modifier = Modifier

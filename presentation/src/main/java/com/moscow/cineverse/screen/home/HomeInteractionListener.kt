@@ -11,4 +11,5 @@ interface HomeInteractionListener {
     fun onWatchSuggestionClick()
     fun onBrowseSuggestionClick()
     fun onRefresh()
+    fun onSeeMoreRecentlyViewedClicked()
 }
