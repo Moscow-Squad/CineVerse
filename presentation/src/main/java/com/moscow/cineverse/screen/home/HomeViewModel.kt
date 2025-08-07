@@ -1,18 +1,18 @@
 package com.moscow.cineverse.screen.home
 
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.cineverse.common_ui_state.MediaItemUiState
 import com.moscow.cineverse.mapper.toGenreUi
+import com.moscow.cineverse.mapper.toMyCollectionUi
 import com.moscow.cineverse.mapper.toUi
 import com.moscow.domain.model.Genre
 import com.moscow.domain.model.MediaType
 import com.moscow.domain.model.Movie
 import com.moscow.domain.model.Series
 import com.moscow.domain.model.UserType
-import com.moscow.domain.usecase.collection.GetCollectionDetailsUseCase
+import com.moscow.domain.usecase.collection.GetUserCollectionsUseCase
 import com.moscow.domain.usecase.genre.GenreUseCase
 import com.moscow.domain.usecase.home.GetMatchesYourVibesMoviesUseCase
 import com.moscow.domain.usecase.home.GetRecentlyReleasedMoviesUseCase
@@ -20,6 +20,7 @@ import com.moscow.domain.usecase.home.GetTopRatedTVShowsUseCase
 import com.moscow.domain.usecase.home.GetTrendingMoviesUseCase
 import com.moscow.domain.usecase.home.GetUpcomingMoviesUseCase
 import com.moscow.domain.usecase.local.GetUserDetailsUseCase
+import com.moscow.domain.usecase.recently_viewed.GetRecentlyViewedMediaUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
@@ -36,7 +37,8 @@ class HomeViewModel @Inject constructor(
     private val genreUseCase: GenreUseCase,
     private val getTrendingMoviesUseCase: GetTrendingMoviesUseCase,
     private val getUserDetailsUseCase: GetUserDetailsUseCase,
-    private val getCollectionDetailsUseCase: GetCollectionDetailsUseCase
+    private val getUserCollectionsUseCase: GetUserCollectionsUseCase,
+    private val getRecentlyViewedMediaUseCase: GetRecentlyViewedMediaUseCase
 ) : BaseViewModel<HomeUiState, HomeEvent>(HomeUiState()), HomeInteractionListener {
 
     init {
@@ -57,7 +59,7 @@ class HomeViewModel @Inject constructor(
                             launch { fetchRecentlyReleasedMovies() },
                             launch { fetchUpcomingMovies() },
                             launch { fetchTopRatedTVShows() },
-                            launch { fetchMatchesYourVibesMovies() }
+                            launch { fetchMatchesYourVibesMovies() },
                         )
                         jobs.forEach { it.join() }
                     }
@@ -80,12 +82,24 @@ class HomeViewModel @Inject constructor(
             || uiState.value.matchesYourVibe.isEmpty()
         ) {
             wait++
-            if (wait == 25){
+            if (wait == 25) {
                 updateState { it.copy(isLoading = false, error = "error loading") }
                 return
             }
             delay(100)
         }
+    }
+
+    private fun getUserCollection() {
+        launchWithResult(
+            action = { getUserCollectionsUseCase(1) },
+            onSuccess = { collections ->
+                updateState { it.copy(collections = collections.map { collection -> collection.toMyCollectionUi() }) }
+            },
+            onError = { e ->
+                updateState { it.copy(isLoading = false, error = e.message) }
+            },
+        )
     }
 
     private fun getUserDetails() {
@@ -100,27 +114,32 @@ class HomeViewModel @Inject constructor(
         when (user) {
             is UserType.AuthenticatedUser -> {
                 updateState { it.copy(userName = user.username) }
-                launchWithResult(
-                    action = { getCollectionDetailsUseCase(user.recentlyCollectionId,1) },
-                    onSuccess = { result ->
-                        updateState {
-                            it.copy(
-                                youRecentlyViewed = result.reversed().toMediaItemUiState()
-                            )
-                        }
-                    },
-                    onError = {}
-                )
+                getUserCollection()
             }
 
             is UserType.GuestUser -> {
                 updateState { it.copy(userName = null) }
             }
         }
+        getRecentlyViewedMovies()
     }
 
     private fun onGetUserDetailsError(throwable: Throwable) {
         updateState { it.copy(error = throwable.message) }
+    }
+
+    fun getRecentlyViewedMovies() {
+        launchWithResult(
+            action = { getRecentlyViewedMediaUseCase() },
+            onSuccess = { result ->
+                updateState {
+                    it.copy(
+                        youRecentlyViewed = result.toMediaItemUiState()
+                    )
+                }
+            },
+            onError = {}
+        )
     }
 
     private suspend fun getGenres() {
@@ -273,8 +292,8 @@ class HomeViewModel @Inject constructor(
     override fun onCollectionsShowMoreClick() {
     }
 
-    override fun onCollectionClick(collectionId: Int) {
-        sendEvent(HomeEvent.CollectionClicked(collectionId))
+    override fun onCollectionClick(collectionId: Int, collectionName: String) {
+        sendEvent(HomeEvent.CollectionClicked(collectionId, collectionName))
     }
 
     override fun onPromotionClick(promotionId: Int) {
@@ -312,9 +331,25 @@ fun Movie.toMediaItemUiState(
     )
 }
 
-fun List<Movie>.toMediaItemUiState(
+fun List<Any>.toMediaItemUiState(
     genreMap: Map<Int, String> = emptyMap(),
     formatDuration: (Movie) -> String = { "" }
 ): List<MediaItemUiState> {
-    return map { it.toMediaItemUiState(genreMap, formatDuration) }
+    return mapNotNull { item ->
+        when (item) {
+            is Movie -> item.toMediaItemUiState(genreMap, formatDuration)
+            is Series -> MediaItemUiState(
+                id = item.id,
+                title = item.name,
+                posterPath = item.posterPath,
+                rating = item.rating,
+                genres = item.genreIds.mapNotNull { genreId -> genreMap[genreId] },
+                releaseDate = item.firstAirDate.toString(),
+                duration = "",
+                mediaType = MediaType.Tv,
+                backdropPath = item.backdropPath
+            )
+            else -> null
+        }
+    }
 }

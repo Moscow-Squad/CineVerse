@@ -5,7 +5,6 @@ import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -22,13 +21,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.moscow.cineverse.designSystem.component.message_info.MessageInfoBox
-import com.moscow.cineverse.designSystem.component.button.MovieButton
 import com.moscow.cineverse.designSystem.component.MovieCircularProgressBar
-import com.moscow.cineverse.designSystem.component.wrapper.MovieText
 import com.moscow.cineverse.designSystem.component.bottomsheet.CineVerseBottomSheet
-import com.moscow.cineverse.screen.movieSeriesDetails.CollectionItem
+import com.moscow.cineverse.designSystem.component.button.MovieButton
+import com.moscow.cineverse.designSystem.component.message_info.MessageInfoBox
+import com.moscow.cineverse.designSystem.component.wrapper.MovieText
 import com.moscow.cineverse.designSystem.theme.Theme
+import com.moscow.cineverse.screen.movieSeriesDetails.CollectionItem
 import com.moscow.cinverse.presentation.R
 
 
@@ -47,7 +46,6 @@ fun CollectionsBottomSheetScreen(
 
     CollectionsBottomSheetContent(
         interactionListener = viewModel,
-        onAddNewCollectionClick = onAddNewCollectionClick,
         uiState = uiState,
         onDismissBottomSheet = navigateBack,
         onCloseBottomSheet = navigateBack,
@@ -55,7 +53,6 @@ fun CollectionsBottomSheetScreen(
     )
 
     LaunchedEffect(Unit) {
-        viewModel.isUserLoggedIn()
         viewModel.uiEffect.collect { event ->
             handleEvents(
                 event = event,
@@ -79,9 +76,13 @@ private fun handleEvents(
     when (event) {
         CollectionsBottomSheetEffect.OnCreateCollectionClicked -> onCreateCollectionClicked()
         CollectionsBottomSheetEffect.OnLoginClicked -> onLogIn()
-        is CollectionsBottomSheetEffect.OnMovieAddedSuccessfully -> {
+        is CollectionsBottomSheetEffect.OnItemAddedSuccessfully -> {
             Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
             navigateBack()
+        }
+
+        is CollectionsBottomSheetEffect.OnItemAddedFailed -> {
+            Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -89,7 +90,6 @@ private fun handleEvents(
 
 @Composable
 private fun CollectionsBottomSheetContent(
-    onAddNewCollectionClick: () -> Unit,
     onDismissBottomSheet: () -> Unit,
     onCloseBottomSheet: () -> Unit,
     onNotNow: () -> Unit,
@@ -101,12 +101,12 @@ private fun CollectionsBottomSheetContent(
         onClose = onCloseBottomSheet,
         onDismissRequest = onDismissBottomSheet,
         showCancelIcon = uiState.collections.isEmpty(),
-        onAddNewCollectionClick = onAddNewCollectionClick
+        onAddNewCollectionClick = { interactionListener.onAddNewCollectionClick() }
     ) {
         Log.d("TAG", "isLogged: ${uiState.isLoggedIn} ")
         when {
 
-            uiState.isLoggedIn != true -> {
+            uiState.isLoggedIn == false -> {
                 MessageInfoBox(
                     title = stringResource(R.string.you_re_almost_there),
                     description = stringResource(R.string.log_in_to_save_movies_create_collections_and_get_personalized_recommendations),
@@ -176,13 +176,14 @@ private fun CollectionsBottomSheetContent(
                     )
                 } else {
                     LazyColumn(
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = Modifier
+                            .height(170.dp)
+                            .fillMaxWidth(),
                         verticalArrangement = Arrangement.spacedBy(8.dp),
-                        contentPadding = PaddingValues(bottom = 16.dp)
                     ) {
                         items(uiState.collections) { currentCollection ->
                             CollectionItem(
-                                collectionName = currentCollection.name,
+                                collectionName = currentCollection.title,
                                 showProgressBars = currentCollection.isLoading,
                                 onItemClicked = {
                                     interactionListener.onCollectionClicked(currentCollection.id)
@@ -190,6 +191,7 @@ private fun CollectionsBottomSheetContent(
                             )
                         }
                     }
+                    Spacer(modifier = Modifier.height(16.dp))
                 }
             }
         }

@@ -13,7 +13,7 @@ data class SeriesDetailsRoute(val seriesId: Int) {
     }
 }
 
-fun NavGraphBuilder.SeriesDetailsRoute(navController: NavHostController) {
+fun NavGraphBuilder.seriesDetailsRoute(navController: NavHostController) {
     composable<SeriesDetailsRoute>{
         SeriesDetailsScreen(
             navigateBack = {

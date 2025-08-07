@@ -1,10 +1,12 @@
 package com.moscow.cineverse.mapper
 
 
+import com.moscow.cineverse.common_ui_state.CollectionUiState
 import com.moscow.cineverse.common_ui_state.MediaItemUiState
 import com.moscow.cineverse.screen.explore.YYYY_MMM_DD
 import com.moscow.cineverse.screen.explore.formatWith
 import com.moscow.cineverse.screen.home.HomeUiState
+import com.moscow.domain.model.Collection
 import com.moscow.domain.model.Genre
 import com.moscow.domain.model.MediaType
 import com.moscow.domain.model.Movie
@@ -49,3 +51,10 @@ fun List<Series>.toUi(
         )
     }
 }
+
+fun Collection.toUi() = CollectionUiState(
+    id = id,
+    title = name,
+    numberOfItems = itemCount,
+    isLoading = false
+)

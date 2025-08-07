@@ -11,6 +11,7 @@ const val DELETE_SEARCH_QUERY_HISTORY = "delete_search_query_history"
 const val SESSION_ID = "session_id"
 const val SORTED_BY = "sort_by"
 const val DESCENDING = "created_at.desc"
+const val CONFIRM = "confirm"
 
 //Endpoints
 const val AUTHENTICATION = "authentication/"
@@ -57,3 +58,5 @@ const val TRAILERS = "/videos"
 const val RATED_MOVIES = "/rated/movies"
 const val RATED_SERIES = "/rated/tv"
 const val ACCOUNT_STATES = "/account_states"
+const val CLEAR = "clear"
+const val DELETE_ITEM = "remove_item"

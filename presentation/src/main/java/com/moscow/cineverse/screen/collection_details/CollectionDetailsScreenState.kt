@@ -1,0 +1,18 @@
+package com.moscow.cineverse.screen.collection_details
+
+import androidx.paging.PagingData
+import com.moscow.cineverse.screen.explore.ExploreScreenState.GenreUiState
+import com.moscow.domain.model.Movie
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
+
+data class CollectionDetailsScreenState(
+    val isLoading: Boolean = false,
+    val isError: Boolean = false,
+    val errorMsg: String = "",
+    val showTip: Boolean = true,
+    val confirmClear: Boolean = false,
+    val moviesGenres: List<GenreUiState> = emptyList(),
+    val seriesGenres: List<GenreUiState> = emptyList(),
+    val movies: Flow<PagingData<Movie>> = flowOf()
+)

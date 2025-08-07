@@ -173,7 +173,7 @@ fun SeriesDetailsContent(
                                             type = stringResource(com.moscow.cineverse.design_system.R.string.series_type),
                                             animatedVisibilityScope = this@AnimatedContent,
                                             sharedTransitionScope = this@SharedTransitionLayout,
-                                            onSaveClick = { interactionListener.addToCollection() },
+                                            onSaveClick = {  },
                                             onPlayClick = interactionListener::onPlayButtonClicked
                                         )
                                     } else {
@@ -182,7 +182,7 @@ fun SeriesDetailsContent(
                                             title = detail.title,
                                             animatedVisibilityScope = this@AnimatedContent,
                                             sharedTransitionScope = this@SharedTransitionLayout,
-                                            onSaveClick = { interactionListener.addToCollection() },
+                                            onSaveClick = {  },
                                             onPlayClick = interactionListener::onPlayButtonClicked
                                         )
                                     }

@@ -2,6 +2,7 @@ package com.moscow.local
 
 import com.google.common.truth.Truth
 import com.moscow.local.dao.search.FavouriteGenreDao
+import com.moscow.local.data_source.DetailsLocalDataSourceImpl
 import com.moscow.local.entity.FavouriteGenreEntity
 import io.mockk.coEvery
 import io.mockk.coVerify

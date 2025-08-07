@@ -42,7 +42,7 @@ data class MovieDetailDto(
     @SerialName("release_date")
     val releaseDate: String?,
     @SerialName("revenue")
-    val revenue: Int?,
+    val revenue: Long?,
     @SerialName("runtime")
     val runtime: Int?,
     @SerialName("spoken_languages")
