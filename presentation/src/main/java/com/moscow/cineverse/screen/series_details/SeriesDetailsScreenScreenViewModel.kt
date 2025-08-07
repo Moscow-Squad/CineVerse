@@ -148,7 +148,11 @@ class SeriesDetailsScreenScreenViewModel @Inject constructor(
             action = { preferences.isLoggedIn() },
             onSuccess = { isLoggedIn ->
                 if (isLoggedIn) {
-                    updateState { it.copy(showRatingBottomSheet = true) }
+                    updateState { it.copy(
+                        starsRating = uiState.value.starsRating,
+                        showRatingBottomSheet = true
+                    )
+                    }
                 } else {
                     updateState { it.copy(showLoginBottomSheet = true) }
                 }
