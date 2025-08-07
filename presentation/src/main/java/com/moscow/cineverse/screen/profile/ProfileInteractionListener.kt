@@ -8,7 +8,7 @@ interface ProfileInteractionListener {
     fun onClickEditProfile()
     fun onClickLogout()
     fun onClickLogin()
-    fun onSelectedPreference(preference:String)
+    fun onSelectedPreference(enable: Boolean)
     fun onExitWebView()
     fun onSelectedLanguage(language:String)
     fun onCancelLanguageBottomSheet()
