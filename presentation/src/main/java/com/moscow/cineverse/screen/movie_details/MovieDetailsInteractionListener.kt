@@ -10,6 +10,7 @@ interface MovieDetailsInteractionListener {
     fun onDismissLoginBottomSheet()
     fun navigateToLogin()
     fun onRatingSubmit(rating: Int, movieId: Int)
+    fun onDeleteRatingMovie(movieId: Int)
     fun onActorClicked(actorId: Int)
     fun onMovieClicked(movieId: Int)
     fun onPlayButtonClicked()

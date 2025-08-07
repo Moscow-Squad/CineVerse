@@ -2,6 +2,7 @@ package com.moscow.cineverse.screen.movie_details.component
 
 import android.content.Context
 import android.content.Intent
+import android.widget.Toast
 import androidx.core.net.toUri
 import com.moscow.cineverse.screen.movie_details.MovieDetailsScreenEffect
 
@@ -24,7 +25,7 @@ object MovieDetailsEffectHandler {
             }
 
             is MovieDetailsScreenEffect.ShowError -> {
-                // TODO: Show error (Snackbar, Toast, etc.)
+                Toast.makeText(context, effect.message, Toast.LENGTH_SHORT).show()
             }
 
             is MovieDetailsScreenEffect.NavigateToFullMovieList -> {

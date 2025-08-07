@@ -47,10 +47,6 @@ interface MovieService {
     ): Response<MovieDetailDto>
 
     @POST("$MOVIE{movie_id}$RATING")
-    @Headers(
-        "Accept: application/json",
-        "Content-Type: application/json;charset=utf-8"
-    )
     suspend fun rateMovie(
         @Path("movie_id") id: Int,
         @Query(SESSION_ID) sessionId: String,
@@ -61,7 +57,7 @@ interface MovieService {
     suspend fun deleteRatingMovie(
         @Path("movie_id") movieId: Int,
         @Query(SESSION_ID) sessionId: String
-    ): Response<Nothing>
+    ): Response<Unit>
 
     @GET("$ACCOUNT/{account_id}$RATED_MOVIES")
     suspend fun getRatedMovies(

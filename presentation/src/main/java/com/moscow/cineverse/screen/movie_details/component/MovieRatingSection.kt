@@ -91,7 +91,7 @@ fun MovieRatingBottomSheetSection(
                 interactionListener.onRatingSubmit(rating, movieDetails.id)
             },
             onRatingRemove = {
-                interactionListener.onRatingSubmit(0, movieDetails.id)
+                interactionListener.onDeleteRatingMovie(movieDetails.id)
             },
             initialRating = uiState.starsRating,
             hasExistingRating = uiState.starsRating != 0,

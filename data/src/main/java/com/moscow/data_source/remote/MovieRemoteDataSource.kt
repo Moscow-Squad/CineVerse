@@ -14,7 +14,7 @@ interface MovieRemoteDataSource {
     suspend fun getPopularMovies(page: Int): ApiResponse<MovieDto>
     suspend fun getMovieDetails(id: Int): MovieDetailDto
     suspend fun rateMovie(rating: RatingRequestDto, id: Int)
-    suspend fun deleteRatingMovie(movieId: Int): ApiResponse<Nothing>
+    suspend fun deleteRatingMovie(movieId: Int)
     suspend fun getRatedMovies(userId: Int, page: Int): ApiResponse<RatedMovieDto>
     suspend fun getUserRatingForMovie(movieId: Int) : UserRatingResponse
     suspend fun getMovieReviews(id: Int, page: Int): ApiResponse<ReviewDto>
