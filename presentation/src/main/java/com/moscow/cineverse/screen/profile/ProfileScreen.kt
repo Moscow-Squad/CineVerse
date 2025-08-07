@@ -51,10 +51,10 @@ fun ProfileScreen(
                 effect,
                 navigateToLogin,
                 {},
-                { s, s1 -> },
-                {},
-                {},
-                {}
+                navigateToMyRatings,
+                navigateToMyCollections,
+                navigateToMyHistory
+
             )
         }
     }
@@ -109,11 +109,16 @@ fun ProfileContent(
                     .padding(top = 12.dp, bottom = 24.dp),
                 items = listOf(
                     ProfileChipItem(
-                        R.string.history, R.drawable.due_tone_history, {}),
+                        R.string.history, R.drawable.due_tone_history){
+                        listener.onClickHistory()
+                    },
                     ProfileChipItem(
-                        R.string.my_collections, R.drawable.due_tone_video_library, {}),
+                        R.string.my_collections, R.drawable.due_tone_video_library
+                    ) { listener.onClickMyCollections() },
                     ProfileChipItem(
-                        R.string.my_ratings, R.drawable.due_tone_star, {})
+                        R.string.my_ratings, R.drawable.due_tone_star){
+                        listener.onClickMyRatings()
+                    }
                 )
             )
         }

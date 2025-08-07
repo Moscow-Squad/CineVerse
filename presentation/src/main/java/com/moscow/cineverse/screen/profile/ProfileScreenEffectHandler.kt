@@ -5,7 +5,6 @@ object ProfileScreenEffectHandler {
         effects: ProfileScreenEffects,
         navigateToLogin:()->Unit,
         onLogoutFailed:()-> Unit,
-        navigateToEditProfileBottomSheet:(String, String) -> Unit,
         navigateToMyRatings: () -> Unit,
         navigateToMyCollections: () -> Unit,
         navigateToMyHistory: () -> Unit,
