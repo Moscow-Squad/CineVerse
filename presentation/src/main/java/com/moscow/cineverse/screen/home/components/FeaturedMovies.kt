@@ -14,6 +14,7 @@ fun FeaturedMovies(
     onShowMoreClick: (type: HomeFeaturedItems) -> Unit,
     onMovieClick: (MediaItemUiState) -> Unit,
     type: HomeFeaturedItems,
+    enableBlur: Boolean,
     modifier: Modifier = Modifier
 ) {
     MovieListSection(
@@ -30,7 +31,8 @@ fun FeaturedMovies(
             MoviePosterCard(
                 movie = movie,
                 onMovieClick = { movieId -> onMovieClick(movie) },
-                modifier = cardModifier
+                modifier = cardModifier,
+                enableBlur = enableBlur,
             )
         },
         modifier = modifier

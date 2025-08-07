@@ -16,9 +16,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.moscow.cineverse.designSystem.component.CineVersePreviews
 import com.moscow.cineverse.designSystem.component.MovieAppBar
-import com.moscow.cineverse.designSystem.component.button.MovieButton
 import com.moscow.cineverse.designSystem.component.MovieCircularProgressBar
 import com.moscow.cineverse.designSystem.component.MovieScaffold
+import com.moscow.cineverse.designSystem.component.button.MovieButton
 import com.moscow.cineverse.designSystem.component.wrapper.MovieText
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cinverse.presentation.R
@@ -27,7 +27,7 @@ import com.moscow.cinverse.presentation.R
 fun ActorGalleryScreen(
     modifier: Modifier = Modifier,
     navigateBack: () -> Unit,
-    ) {
+) {
     val viewModel: ActorGalleryViewModel = hiltViewModel()
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -93,6 +93,7 @@ fun ActorGalleryContent(
                         )
                         ActorGallery(
                             images = uiState.photos,
+                            enableBlur = uiState.enableBlur,
                             modifier = Modifier
                                 .fillMaxSize()
                                 .padding(horizontal = 16.dp),

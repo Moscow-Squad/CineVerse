@@ -7,6 +7,7 @@ import com.moscow.cineverse.navigation.routes.CastDetailsRoute
 import com.moscow.cineverse.screen.cast_details.CastDetailsUiState.SocialMediaLinks
 import com.moscow.domain.model.ActorDetails
 import com.moscow.domain.model.Movie
+import com.moscow.domain.repository.blur.BlurProvider
 import com.moscow.domain.usecase.actor.GetActorBestMoviesUseCase
 import com.moscow.domain.usecase.actor.GetActorDetailsUseCase
 import com.moscow.domain.usecase.actor.GetActorGalleryUseCase
@@ -19,6 +20,7 @@ class CastDetailsViewModel @Inject constructor(
     private val getActorDetailsUseCase: GetActorDetailsUseCase,
     private val getActorGalleryUseCase: GetActorGalleryUseCase,
     private val getActorBestMoviesUseCase: GetActorBestMoviesUseCase,
+    private val blurProvider: BlurProvider,
     savedStateHandle: SavedStateHandle
 ) : BaseViewModel<CastDetailsUiState, CastDetailsEffect>(CastDetailsUiState()),
     CastDetailsInteractionListener {
@@ -26,6 +28,15 @@ class CastDetailsViewModel @Inject constructor(
 
     init {
         loadActorDetails()
+        observeBlur()
+    }
+
+    private fun observeBlur() {
+        viewModelScope.launch {
+            blurProvider.blurFlow.collect { enableBlur ->
+                updateState { it.copy(enableBlur = enableBlur) }
+            }
+        }
     }
 
     private fun loadActorDetails() {

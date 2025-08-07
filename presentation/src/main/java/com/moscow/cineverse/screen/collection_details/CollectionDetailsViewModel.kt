@@ -10,6 +10,7 @@ import com.moscow.cineverse.navigation.routes.CollectionDetailsRoute
 import com.moscow.cineverse.paging.BasePagingSource
 import com.moscow.cineverse.screen.explore.toUi
 import com.moscow.domain.model.MediaType
+import com.moscow.domain.repository.blur.BlurProvider
 import com.moscow.domain.usecase.collection.ClearCollectionUseCase
 import com.moscow.domain.usecase.collection.CloseCollectionDetailsTipUseCase
 import com.moscow.domain.usecase.collection.DeleteMediaItemFromCollectionUseCase
@@ -17,6 +18,7 @@ import com.moscow.domain.usecase.collection.GetCollectionDetailsUseCase
 import com.moscow.domain.usecase.collection.GetShowCollectionDetailsTipUseCase
 import com.moscow.domain.usecase.genre.GenreUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -27,6 +29,7 @@ class CollectionDetailsViewModel @Inject constructor(
     private val genreUseCase: GenreUseCase,
     private val getShowCollectionDetailsTipUseCase: GetShowCollectionDetailsTipUseCase,
     private val closeCollectionDetailsTipUseCase: CloseCollectionDetailsTipUseCase,
+    private val blurProvider: BlurProvider,
     savedStateHandle: SavedStateHandle
 ) : BaseViewModel<CollectionDetailsScreenState, CollectionDetailsEffect>(
     CollectionDetailsScreenState()
@@ -40,6 +43,15 @@ class CollectionDetailsViewModel @Inject constructor(
         getMoviesGenres()
         getShowTip()
         getMovies()
+        observeBlur()
+    }
+
+    private fun observeBlur() {
+        viewModelScope.launch {
+            blurProvider.blurFlow.collect { enableBlur ->
+                updateState { it.copy(enableBlur = enableBlur) }
+            }
+        }
     }
 
     private fun getMoviesGenres() {

@@ -168,7 +168,8 @@ private fun CollectionDetailsScreenContent(
                                     getRating = { media.rating },
                                     getGenres = { media.genres },
                                     getDuration = { media.duration },
-                                    getReleaseDate = { media.releaseDate }
+                                    getReleaseDate = { media.releaseDate },
+                                    enableBlur = uiState.enableBlur,
                                 )
                             }
                         }

@@ -67,10 +67,8 @@ fun <T : Any> SeeMoreContent(
         }
     ) {
         Column(
-            modifier = modifier
-                ,
+            modifier = modifier,
             verticalArrangement = Arrangement.Center,
-
         ) {
 
             when (contentList.loadState.refresh) {
@@ -108,7 +106,8 @@ fun <T : Any> SeeMoreContent(
                                         MoviePosterCard(
                                             movie = item,
                                             viewMode = uiState.viewMode,
-                                            onMovieClick = interactionListener::onMediaItemClicked
+                                            onMovieClick = interactionListener::onMediaItemClicked,
+                                            enableBlur = uiState.enableBlur,
                                         )
                                     }
                                 }

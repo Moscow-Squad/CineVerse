@@ -96,14 +96,37 @@
     <string name="all">الكل</string>
     <string name="search">ابحث…</string>
     <string name="search_can_t_be_empty_1">لا تستطيع البحث بلا شئ !</string>
+    <string name="my_profile">ملفي الشخصي</string>
+    <string name="my_ratings">تقييمي</string>
+    <string name="settings">الإعدادات</string>
+    <string name="login_or_sign_up">تسجيل الدخول أو إنشاء حساب</string>
+    <string name="to_personalize_your_experience">لتخصيص تجربتك!</string>
+    <string name="dark_mode">الوضع الداكن</string>
+    <string name="logout">تسجيل الخروج</string>
+    <string name="language">اللغة</string>
+    <string name="are_you_sure_you_want_to_logout">هل أنت متأكد أنك تريد تسجيل الخروج؟</string>
+    <string name="you_can_always_sign_back_in_with_your_account">يمكنك دائمًا تسجيل الدخول مرة أخرى باستخدام حسابك.</string>
+    <string name="change_language">تغيير اللغة</string>
+    <string name="english">الإنجليزية</string>
+    <string name="arabic">العربية</string>
+    <string name="edit_profile">تعديل الملف الشخصي</string>
+    <string name="you_ll_be_taken_to_the_website_to_update_your_name_username_or_profile_picture">سيتم توجيهك إلى الموقع لتحديث اسمك أو اسم المستخدم أو صورة الملف الشخصي.</string>
+    <string name="log_in_to_update_your_name_profile_picture_and_account_details">سجّل الدخول لتحديث اسمك، وصورة ملفك الشخصي، وتفاصيل الحساب.</string>
+    <string name="content_preferences">تفضيلات المحتوى</string>
+    <string name="choose_how_you_d_like_to_handle_sensitive_or_revealing_images_in_the_app">اختر كيف ترغب في التعامل مع الصور الحساسة أو الكاشفة داخل التطبيق.</string>
+    <string name="show_all_content">عرض كل المحتوى</string>
+    <string name="strict_filtering">تصفية صارمة</string>
+    <string name="hide_explicit_content">إخفاء المحتوى الصريح</string>
+    <string name="hides_revealing_or_inappropriate_posters_e_g_nudity_strong_sexual_content">يخفي الملصقات الكاشفة أو غير اللائقة (مثل العري أو المحتوى الجنسي الفاضح).</string>
+    <string name="hides_all_content_that_includes_immodest_clothing_or_behavior">يخفي جميع المحتويات التي تتضمن ملابس غير محتشمة أو سلوكًا غير لائق.</string>
+    <string name="no_filtering_all_images_and_posters_will_be_displayed">دون تصفية. سيتم عرض جميع الصور والملصقات.</string>
+    <string name="preferences">التفضيلات</string>
     <string name="tip_swipe_left_to_remove_movies_from_your_collection">نصيحة: اسحب إلى اليسار لمسح الفيلم من مجموعتك</string>
-
     <string name="no_history_yet">لا يوجد سجل بعد</string>
     <string name="history_empty_message">يبدو أن المكان هادئ هنا... ابدأ بالمشاهدة وسنتابع أجلك.</string>
     <string name="find_something_to_watch">ابحث عن شيء لمشاهدته</string>
     <string name="history_tip_message">تنويه: اسحب لليسار لإزالة الأفلام من السجل.</string>
     <string name="movie_swiped_tip_message">تنويه: اسحب لليسار لحذف الأفلام من مجموعتك.</string>
-
     <string name="welcome_to_your_movie_universe">مرحباً بك في عالم الأفلام الخاص بك</string>
     <string name="discover_track_and_rate_your_favorite_movies_series">اكتشف، وتتبع، وقم بتقييم أفلامك ومسلسلاتك المفضلة.</string>
     <string name="track_everything">تتبع كل شيء</string>
@@ -111,7 +134,6 @@
     <string name="personalized_recommendations">توصيات مخصصة</string>
     <string name="answer_fun_questions_to_get_handpicked_recommendations">أجب على أسئلة ممتعة للحصول على توصيات مختارة بعناية.</string>
     <string name="get_started">لنبدأ</string>
-
     <string name="start_collecting">ابدأ التجميع</string>
     <string name="create_new_collection">إنشاء مجموعة جديدة</string>
     <string name="no_collections_yet_description">ابدأ في بناء مكتبتك الشخصية عن طريق حفظ الأفلام أو المسلسلات التي تريد تذكرها.</string>
@@ -120,6 +142,5 @@
     <string name="create">إنشاء</string>
     <string name="success">تم بنجاج</string>
     <string name="Home">الرئيسية</string>
-
 
 </resources>

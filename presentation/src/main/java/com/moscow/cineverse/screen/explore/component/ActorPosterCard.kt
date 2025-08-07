@@ -32,6 +32,7 @@ import com.moscow.cineverse.screen.explore.ExploreScreenState
 @Composable
 fun ActorPosterCard(
     actor: ExploreScreenState.ActorUiState,
+    enableBlur: Boolean,
     modifier: Modifier = Modifier,
     titleTextAlign: TextAlign = TextAlign.Center,
     showTitle: Boolean = true,
@@ -55,6 +56,7 @@ fun ActorPosterCard(
                     modifier = Modifier
                         .fillMaxSize()
                         .clip(RoundedCornerShape(Theme.radius.large)),
+                    isBlurEnabled = enableBlur,
                     placeholderContent = {
                         RemoteImagePlaceholder(
                             modifier = Modifier.fillMaxSize(),

@@ -1,22 +1,26 @@
 package com.moscow.remote.interceptors
 
-import android.util.Log
 import com.moscow.data.BuildConfig
-import com.moscow.data_source.system.LanguageProvider
+import com.moscow.domain.repository.language.LanguageProvider
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
 import okhttp3.Response
 
 class CineVerseInterceptor(
     private val languageProvider: LanguageProvider
-): Interceptor {
+) : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val originalRequest = chain.request()
         val originalUrl = originalRequest.url
 
-        val newUrl = originalUrl.newBuilder()
-            .addQueryParameter("language", languageProvider.getCurrentLanguage())
-            .build()
+        val language = runBlocking {
+            languageProvider.languageFlow.first()
+        }
 
+        val newUrl = originalUrl.newBuilder()
+            .addQueryParameter("language", language)
+            .build()
 
         val newRequest = originalRequest.newBuilder()
             .url(newUrl)
