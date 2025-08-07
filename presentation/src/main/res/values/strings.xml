@@ -141,5 +141,6 @@
     <string name="my_collection_name_hint">e.g. My Watchlist</string>
     <string name="create">Create</string>
     <string name="success">Success</string>
+    <string name="Home">Home</string>
 
 </resources>

@@ -16,7 +16,7 @@ import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.design_system.R
 
 @Composable
-fun HomeHeader(userName: String, modifier: Modifier = Modifier) {
+fun HomeHeader(userName: String?, modifier: Modifier = Modifier) {
     Row(
         modifier = modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -31,17 +31,24 @@ fun HomeHeader(userName: String, modifier: Modifier = Modifier) {
         Column(
             modifier = Modifier.weight(1f),
         ) {
-            Text(
-                text = stringResource(com.moscow.cinverse.presentation.R.string.welcome),
-                style = Theme.textStyle.body.small.regular,
-                color = Theme.colors.shade.secondary
-            )
-            Text(
-                text = userName,
-                style = Theme.textStyle.title.small,
-                color = Theme.colors.shade.primary
-            )
+            if (userName != null){
+                Text(
+                    text = stringResource(com.moscow.cinverse.presentation.R.string.welcome),
+                    style = Theme.textStyle.body.small.regular,
+                    color = Theme.colors.shade.secondary
+                )
+                Text(
+                    text = userName,
+                    style = Theme.textStyle.title.small,
+                    color = Theme.colors.shade.primary
+                )
+            }else{
+                Text(
+                    text = stringResource(com.moscow.cinverse.presentation.R.string.Home),
+                    style = Theme.textStyle.title.small,
+                    color = Theme.colors.shade.primary
+                )
+            }
         }
-
     }
 }

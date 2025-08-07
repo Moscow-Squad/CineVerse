@@ -141,5 +141,6 @@
     <string name="my_collection_name_hint">مثال: قائمة مشاهدتي</string>
     <string name="create">إنشاء</string>
     <string name="success">تم بنجاج</string>
+    <string name="Home">الرئيسية</string>
 
 </resources>

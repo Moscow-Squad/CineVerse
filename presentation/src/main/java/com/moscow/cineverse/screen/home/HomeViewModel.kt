@@ -45,7 +45,7 @@ class HomeViewModel @Inject constructor(
 
     init {
         updateState { it.copy(isLoading = true) }
-        loadHomeData()
+        getGenres()
         observeBlur()
     }
 
@@ -62,7 +62,6 @@ class HomeViewModel @Inject constructor(
         launchAndForget(
             action = {
                 viewModelScope.launch {
-                    getGenres()
                     coroutineScope {
                         val jobs = listOf(
                             launch { getUserDetails() },
@@ -82,6 +81,7 @@ class HomeViewModel @Inject constructor(
                 updateState { it.copy(isLoading = false, error = e.message) }
             }
         )
+
     }
 
     private suspend fun waitUntilAllDataIsReady() {
@@ -153,28 +153,17 @@ class HomeViewModel @Inject constructor(
         )
     }
 
-    private suspend fun getGenres() {
-        return suspendCancellableCoroutine { continuation ->
-            launchWithResult(
-                action = { genreUseCase.getMoviesGenres() },
-                onSuccess = {
-                    onGetGenresSuccess(it)
-                    continuation.resume(
-                        value = Unit,
-                    ) { cause, value, context ->
-
-                    }
-                },
-                onError = {
-                    onGetGenresError(it)
-                    continuation.resume(
-                        value = Unit,
-                    ) { cause, value, context ->
-
-                    }
-                },
-            )
-        }
+    private fun getGenres() {
+        launchWithResult(
+            action = { genreUseCase.getMoviesGenres() },
+            onSuccess = {
+                onGetGenresSuccess(it)
+                loadHomeData()
+            },
+            onError = {
+                onGetGenresError(it)
+            },
+        )
     }
 
     private fun onGetGenresSuccess(genres: List<Genre>) {
@@ -186,7 +175,7 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun onGetGenresError(throwable: Throwable) {
-        updateState { it.copy(error = throwable.message) }
+        updateState { it.copy(error = throwable.message, isLoading = false) }
     }
 
     private fun fetchTrendingMovies() {
@@ -320,7 +309,7 @@ class HomeViewModel @Inject constructor(
     }
 
     override fun onRefresh() {
-        loadHomeData()
+        getGenres()
     }
 }
 

@@ -255,7 +255,8 @@ private fun <T> ListMovieCard(
         modifier = modifier
             .fillMaxWidth()
             .height(95.dp)
-            .clip(RoundedCornerShape(Theme.radius.large)),
+            .clip(RoundedCornerShape(Theme.radius.large))
+            .clickable { onMovieClick(getId(movieData)) },
         elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
         shape = RoundedCornerShape(Theme.radius.large),
         colors = CardDefaults.cardColors(containerColor = Theme.colors.background.card)
@@ -275,8 +276,7 @@ private fun <T> ListMovieCard(
                                 topEnd = Theme.radius.large,
                                 bottomStart = Theme.radius.large
                             )
-                        )
-                        .clickable { onMovieClick(getId(movieData)) },
+                        ),
                     isBlurEnabled = enableBlur,
                     placeholderContent = {
                         RemoteImagePlaceholder(

@@ -1,6 +1,5 @@
 package com.moscow.cineverse.screen.splash
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.domain.repository.PreferenceRepository
@@ -21,7 +20,7 @@ class SplashViewModel @Inject constructor(
 
              if (!preferenceRepository.isOnBoardingCompleted()){
                 sendEvent(SplashEvent.NavigateToOnboarding)
-            }else if (preferenceRepository.isGuest() && preferenceRepository.isLoggedIn()){
+            }else if (preferenceRepository.isGuest()){
 
                 val isValid = isValidGuestSession(preferenceRepository.getSessionExpiration())
                 if (isValid) sendEvent(SplashEvent.NavigateToHome) else sendEvent(SplashEvent.NavigateToLogin)
