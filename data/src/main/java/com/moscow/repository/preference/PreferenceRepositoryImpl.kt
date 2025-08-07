@@ -105,6 +105,14 @@ class PreferenceRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun isOnBoardingCompleted(): Boolean {
+        return dataStore.data.map {it[IS_ON_BOARDING_SEEN_KEY] }.first() == true
+    }
+
+    override suspend fun setOnBoardingCompleted() {
+        dataStore.edit { it[IS_ON_BOARDING_SEEN_KEY] = true }
+    }
+
     companion object {
         private const val AUTHENTICATED_USER = "authenticated"
         private const val GUEST_USER = "guest"
@@ -116,5 +124,6 @@ class PreferenceRepositoryImpl @Inject constructor(
         private val EXPIRED_AT_KEY = stringPreferencesKey("expired_at")
         private val Is_LOGGED_IN_KEY = booleanPreferencesKey("is_logged_in")
         private val SHOW_COLLECTION_DETAILS_TIP = booleanPreferencesKey("is_tip_collection_details")
+        private val IS_ON_BOARDING_SEEN_KEY = booleanPreferencesKey("is_on_boarding_seen")
     }
 }
