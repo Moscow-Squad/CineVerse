@@ -99,7 +99,8 @@ fun SeriesSeasonsScreenContent(
                                     airDate = season.airDate,
                                     posterUrl = season.posterPath,
                                     caption = season.overview,
-                                    rate = season.rate
+                                    rate = season.rate,
+                                    enableBlur = uiState.enableBlur,
                                 )
                             }
                         }

@@ -7,6 +7,7 @@ import com.moscow.cineverse.mapper.toUi
 import com.moscow.cineverse.navigation.routes.SeriesDetailsRoute
 import com.moscow.cineverse.utlis.ViewMode
 import com.moscow.domain.model.Series
+import com.moscow.domain.repository.blur.BlurProvider
 import com.moscow.domain.usecase.review.GetReviewsUseCase
 import com.moscow.domain.usecase.series.GetSeriesCreditsDetailsUseCase
 import com.moscow.domain.usecase.series.GetSeriesDetailUseCase
@@ -24,6 +25,7 @@ class SeriesDetailsScreenScreenViewModel @Inject constructor(
     private val rateSeriesUseCase: RateSeriesUseCase,
     private val getSeriesCreditsDetailsUseCase: GetSeriesCreditsDetailsUseCase,
     private val getSeriesRecommendationsUseCase: GetSeriesRecommendationsUseCase,
+    private val blurProvider: BlurProvider,
     savedStateHandle: SavedStateHandle,
 ) : BaseViewModel<SeriesDetailsScreenState, SeriesDetailsScreenEffects>(SeriesDetailsScreenState()),
     SeriesDetailsScreenInteractionListener {
@@ -40,14 +42,29 @@ class SeriesDetailsScreenScreenViewModel @Inject constructor(
             waitUntilAllDataIsReady()
             updateState { it.copy(isLoading = false) }
         }
+        observeBlur()
+    }
+
+    private fun observeBlur() {
+        viewModelScope.launch {
+            blurProvider.blurFlow.collect { enableBlur ->
+                updateState { it.copy(enableBlur = enableBlur) }
+            }
+        }
     }
 
     private suspend fun waitUntilAllDataIsReady() {
         var wait = 0
         while (uiState.value.seriesDetail.id == 0) {
             wait++
-            if (wait == 25){
-                updateState { it.copy(isLoading = false, errorMessage = "error loading", shouldShowError = true) }
+            if (wait == 25) {
+                updateState {
+                    it.copy(
+                        isLoading = false,
+                        errorMessage = "error loading",
+                        shouldShowError = true
+                    )
+                }
                 return
             }
             delay(100)
@@ -124,6 +141,7 @@ class SeriesDetailsScreenScreenViewModel @Inject constructor(
     private fun getRecommendationsFailed(error: Throwable) {
         updateState { it.copy(errorMessage = error.message.toString(), shouldShowError = true) }
     }
+
     override fun showRatingBottomSheet() {
         updateState { it.copy(showRatingBottomSheet = true) }
     }
@@ -135,8 +153,22 @@ class SeriesDetailsScreenScreenViewModel @Inject constructor(
     override fun onRatingSubmit(rating: Int, seriesId: Int) {
         launchAndForget(
             action = { rateSeriesUseCase.rateSeriesUse(rating.toFloat(), seriesId) },
-            onSuccess = { updateState { it.copy(starsRating = rating, showRatingBottomSheet = false) } },
-            onError = { updateState { it.copy(starsRating = rating, showRatingBottomSheet = false) } },
+            onSuccess = {
+                updateState {
+                    it.copy(
+                        starsRating = rating,
+                        showRatingBottomSheet = false
+                    )
+                }
+            },
+            onError = {
+                updateState {
+                    it.copy(
+                        starsRating = rating,
+                        showRatingBottomSheet = false
+                    )
+                }
+            },
         )
     }
 
