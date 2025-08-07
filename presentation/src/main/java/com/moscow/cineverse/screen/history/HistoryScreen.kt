@@ -20,6 +20,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.moscow.cineverse.common_ui_state.MediaItemUiState
 import com.moscow.cineverse.component.HistoryTip
+import com.moscow.cineverse.component.NoHistoryScreen
 import com.moscow.cineverse.component.SwipeToDelete
 import com.moscow.cineverse.designSystem.component.MovieAppBar
 import com.moscow.cineverse.designSystem.component.MovieCircularProgressBar
@@ -36,6 +37,7 @@ fun HistoryScreen(
     navigateBack: () -> Unit,
     navigateToMovieDetails: (movieId: Int) -> Unit,
     navigateToSeriesDetails: (seriesId: Int) -> Unit,
+    navigateToExploreScreen: () -> Unit
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -45,6 +47,7 @@ fun HistoryScreen(
                 is HistoryEffect.MovieClicked -> navigateToMovieDetails
                 HistoryEffect.NavigateBack -> navigateBack
                 is HistoryEffect.SeriesClicked -> navigateToSeriesDetails
+                HistoryEffect.WatchSomethingButtonClicked -> navigateToExploreScreen
             }
         }
     }
@@ -61,7 +64,7 @@ fun HistoryContent(
     MovieScaffold(
         movieAppBar = {
             MovieAppBar(
-                backButtonClick = { interactionListener.onBackPressed() },
+                backButtonClick =  interactionListener::onBackPressed ,
                 title = stringResource(R.string.history)
             )
         }
@@ -81,11 +84,7 @@ fun HistoryContent(
 
                 state.isContentEmpty -> {
                     Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                        EmptyState(
-                            icon = painterResource(Theme.icons.dueTone.history),
-                            title = stringResource(R.string.no_history_yet),
-                            description = stringResource(R.string.we_searched_the_entire_universe_but_found_nothing_matching_your_query_try_something_else)
-                        )
+                        NoHistoryScreen(onContinue = interactionListener::onFindToSomethingToWatchButton )
                     }
                 }
 
@@ -113,7 +112,8 @@ fun HistoryContent(
                             ) {
                                 HistoryMediaItemCard(
                                     movie = item,
-                                    onMediaItemClick = { interactionListener.onMediaItemClicked(item) })
+                                    onMediaItemClick = { interactionListener.onMediaItemClicked(item) }
+                                )
                             }
                         }
                     }

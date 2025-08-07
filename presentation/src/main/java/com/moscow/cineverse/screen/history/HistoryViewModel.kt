@@ -109,4 +109,8 @@ class HistoryViewModel @Inject constructor(
             }
         )
     }
+
+    override fun onFindToSomethingToWatchButton() {
+        sendEvent(HistoryEffect.WatchSomethingButtonClicked)
+    }
 }

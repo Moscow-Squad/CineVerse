@@ -14,7 +14,8 @@ fun NavGraphBuilder.historyRoute(navController: NavHostController) {
         HistoryScreen(
             navigateBack = { navController.popBackStack() },
             navigateToMovieDetails = { movieId -> navController.navigate(MovieDetailsRoute(movieId)) },
-            navigateToSeriesDetails = { navController.navigate(SeriesDetailsRoute(it)) }
+            navigateToSeriesDetails = { navController.navigate(SeriesDetailsRoute(it)) },
+            navigateToExploreScreen = {navController.navigate(ExploreRoute)}
         )
     }
 }
