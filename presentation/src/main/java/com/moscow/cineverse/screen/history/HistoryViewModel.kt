@@ -6,6 +6,7 @@ import com.moscow.cineverse.screen.collection_details.CollectionDetailsEffect
 import com.moscow.cineverse.screen.home.HomeEvent
 import com.moscow.cineverse.screen.home.toMediaItemUiState
 import com.moscow.domain.model.MediaType
+import com.moscow.domain.usecase.DeleteRecentlyViewedItemByIdUseCase
 import com.moscow.domain.usecase.collection.CloseCollectionDetailsTipUseCase
 import com.moscow.domain.usecase.collection.GetShowCollectionDetailsTipUseCase
 import com.moscow.domain.usecase.recently_viewed.GetRecentlyViewedMediaUseCase
@@ -17,6 +18,7 @@ class HistoryViewModel @Inject constructor(
     private val getRecentlyViewedMediaUseCase: GetRecentlyViewedMediaUseCase,
     private val closeCollectionDetailsTipUseCase: CloseCollectionDetailsTipUseCase,
     private val getShowCollectionDetailsTipUseCase: GetShowCollectionDetailsTipUseCase,
+    private val deleteRecentlyViewedItemByIdUseCase: DeleteRecentlyViewedItemByIdUseCase
 ) : BaseViewModel<HistoryScreenState, HistoryEffect>(HistoryScreenState()),
     HistoryInteractionListener {
 
@@ -80,6 +82,23 @@ class HistoryViewModel @Inject constructor(
         launchAndForget(
             action = { closeCollectionDetailsTipUseCase() },
             onSuccess = { updateState { it.copy(showTip = false) } },
+            onError = { e ->
+                updateState {
+                    it.copy(
+                        isError = true,
+                        errorMessage = e.message.toString()
+                    )
+                }
+            }
+        )
+    }
+
+    override fun onItemDeletedIconClicked(mediaId: Int) {
+        updateState { it.copy(isError = false, errorMessage = "") }
+        launchAndForget(
+            action = {
+                deleteRecentlyViewedItemByIdUseCase(id = mediaId)
+            },
             onError = { e ->
                 updateState {
                     it.copy(

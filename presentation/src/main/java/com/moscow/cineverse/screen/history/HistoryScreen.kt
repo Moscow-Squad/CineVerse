@@ -19,6 +19,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.moscow.cineverse.common_ui_state.MediaItemUiState
+import com.moscow.cineverse.component.HistoryTip
+import com.moscow.cineverse.component.SwipeToDelete
 import com.moscow.cineverse.designSystem.component.MovieAppBar
 import com.moscow.cineverse.designSystem.component.MovieCircularProgressBar
 import com.moscow.cineverse.designSystem.component.MovieScaffold
@@ -39,7 +41,7 @@ fun HistoryScreen(
 
     LaunchedEffect(Unit) {
         viewModel.uiEffect.collect { effect ->
-            when(effect) {
+            when (effect) {
                 is HistoryEffect.MovieClicked -> navigateToMovieDetails
                 HistoryEffect.NavigateBack -> navigateBack
                 is HistoryEffect.SeriesClicked -> navigateToSeriesDetails
@@ -80,8 +82,8 @@ fun HistoryContent(
                 state.isContentEmpty -> {
                     Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                         EmptyState(
-                            icon = painterResource(Theme.icons.dueTone.search),
-                            title = stringResource(R.string.nothing_found),
+                            icon = painterResource(Theme.icons.dueTone.history),
+                            title = stringResource(R.string.no_history_yet),
                             description = stringResource(R.string.we_searched_the_entire_universe_but_found_nothing_matching_your_query_try_something_else)
                         )
                     }
@@ -95,20 +97,24 @@ fun HistoryContent(
                             .background(Theme.colors.background.screen),
                         contentPadding = PaddingValues(16.dp)
                     ) {
-                        if (state.showTip && state.youRecentlyViewed.isNotEmpty()){
+                        if (state.showTip && state.youRecentlyViewed.isNotEmpty()) {
                             item {
-                                InfoCard(
+                                HistoryTip(
                                     modifier = Modifier.padding(bottom = 24.dp),
-                                    text = stringResource(R.string.tip_swipe_left_to_remove_movies_from_your_collection),
                                     onDismiss = interactionListener::onTipCancelIconClicked
                                 )
                             }
                         }
 
                         items(state.youRecentlyViewed) { item ->
-                            HistoryMediaItemCard(
-                                movie = item,
-                                onMediaItemClick = { interactionListener.onMediaItemClicked(item) })
+                            SwipeToDelete(
+                                modifier = Modifier.padding(bottom = 16.dp),
+                                onDelete = { interactionListener.onItemDeletedIconClicked(item.id) }
+                            ) {
+                                HistoryMediaItemCard(
+                                    movie = item,
+                                    onMediaItemClick = { interactionListener.onMediaItemClicked(item) })
+                            }
                         }
                     }
                 }
