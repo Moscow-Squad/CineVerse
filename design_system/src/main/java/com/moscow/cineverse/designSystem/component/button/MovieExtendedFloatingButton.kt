@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults.buttonColors
@@ -14,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.moscow.cineverse.designSystem.theme.CineVerseTheme
@@ -30,7 +32,7 @@ fun MovieExtendedFloatingButton(
     contentPadding: PaddingValues
 ){
     Button(
-        modifier = modifier.height(48.dp),
+        modifier = modifier.wrapContentHeight(),
         onClick = onClick,
         shape = RoundedCornerShape(Theme.radius.large),
         contentPadding = contentPadding,
@@ -39,7 +41,10 @@ fun MovieExtendedFloatingButton(
             contentColor = Color.Unspecified
         )
     ) {
-        Text(modifier = Modifier.padding(end = 8.dp),text = buttonText, style = Theme.textStyle.body.medium.medium,
+        Text(modifier = Modifier.padding(end = 8.dp),
+            textAlign = TextAlign.Center,
+            text = buttonText,
+            style = Theme.textStyle.body.medium.medium,
             color = Theme.colors.button.onPrimary)
         Icon(
             modifier = Modifier.size(20.dp),
