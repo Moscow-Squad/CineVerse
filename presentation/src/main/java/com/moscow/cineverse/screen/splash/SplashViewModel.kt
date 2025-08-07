@@ -1,6 +1,5 @@
 package com.moscow.cineverse.screen.splash
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.domain.repository.PreferenceRepository
