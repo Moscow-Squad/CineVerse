@@ -10,7 +10,7 @@ data class CastDetailsUiState(
     val images: List<String> = emptyList(),
     val socialMediaLinks: SocialMediaLinks = SocialMediaLinks(),
     val shouldShowError: Boolean = false,
-    val errorMessage: String = "",
+    val errorMessage: Int = 0,
     val isContentEmpty: Boolean = false,
     val isLoadingMovies: Boolean = false,
     val isLoadingImages: Boolean = false

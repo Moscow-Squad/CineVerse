@@ -20,7 +20,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.moscow.cineverse.component.NoInternetScreen
 import com.moscow.cineverse.designSystem.theme.Theme
+import com.moscow.cinverse.presentation.R
 import com.moscow.cinverse.presentation.R as PresentationR
 
 @Composable
@@ -37,7 +39,7 @@ fun LoadingContent(modifier: Modifier = Modifier) {
 
 @Composable
 fun ErrorContent(
-    errorMessage: String,
+    errorMessage: Int,
     onRetry: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -45,24 +47,29 @@ fun ErrorContent(
         modifier = modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
-            Text(
-                text = errorMessage,
-                color = Theme.colors.shade.primary,
-                style = Theme.textStyle.body.medium.regular,
-                textAlign = TextAlign.Center,
-                modifier = Modifier.padding(16.dp)
-            )
+        if (errorMessage == R.string.no_internet_connection){
+            NoInternetScreen(onRetry = onRetry)
+        }
+        else{
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                Text(
+                    text = stringResource(errorMessage),
+                    color = Theme.colors.shade.primary,
+                    style = Theme.textStyle.body.medium.regular,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.padding(16.dp)
+                )
 
-            Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(16.dp))
 
-            CustomButton(
-                text = stringResource(PresentationR.string.retry),
-                onClick = onRetry
-            )
+                CustomButton(
+                    text = stringResource(PresentationR.string.retry),
+                    onClick = onRetry
+                )
+            }
         }
     }
 }
