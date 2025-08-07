@@ -7,7 +7,9 @@ import com.moscow.domain.model.Movie
 import com.moscow.domain.model.Review
 import com.moscow.domain.model.details.MovieDetail
 import com.moscow.domain.repository.MovieRepository
+import com.moscow.domain.usecase.movie.GetRatedMoviesUseCase.RatedMovieResult
 import com.moscow.mapper.toDomain
+import com.moscow.mapper.toOutputResult
 import com.moscow.remote.dto.review.RatingRequestDto
 import javax.inject.Inject
 
@@ -47,13 +49,29 @@ class MovieRepositoryImpl @Inject constructor(
         )
     }
 
+    override suspend fun deleteRatingMovie(movieId: Int) {
+        movieRemoteDataSource.deleteRatingMovie(movieId)
+    }
+
+    override suspend fun getRatedMovies(
+        userId: Int,
+        page: Int
+    ): List<RatedMovieResult> {
+        val response = movieRemoteDataSource.getRatedMovies(userId, page)
+        return response.results?.mapNotNull { it.toOutputResult() } ?: emptyList()
+    }
+
+    override suspend fun getUserRatingForMovie(movieId: Int): Int {
+        val response = movieRemoteDataSource.getUserRatingForMovie(movieId)
+        return response.userRating ?: 0
+    }
+
     override suspend fun getMovieRecommendations(
         id: Int,
         page: Int
     ): List<Movie> {
         val movies = movieRemoteDataSource.getMoviesRecommendations(id, page)
         return movies.results?.mapNotNull { runCatching { it.toDomain() }.getOrNull() } ?: emptyList()
-
     }
 
     override suspend fun getMoviesByGenreId(genreId: Int, page: Int): List<Movie> {
