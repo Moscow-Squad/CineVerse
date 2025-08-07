@@ -12,12 +12,8 @@ import com.moscow.domain.model.Movie
 import com.moscow.domain.model.Review
 import com.moscow.domain.model.details.MovieDetail
 import com.moscow.domain.repository.PreferenceRepository
-import com.moscow.domain.usecase.collection.AddMediaItemToCollectionUseCase
-import com.moscow.domain.usecase.local.GetUserDetailsUseCase
-import com.moscow.domain.usecase.movie.DeleteRatingMovieUseCase
 import com.moscow.domain.repository.blur.BlurProvider
-import com.moscow.domain.usecase.collection.AddMediaItemToCollectionUseCase
-import com.moscow.domain.usecase.local.GetUserDetailsUseCase
+import com.moscow.domain.usecase.movie.DeleteRatingMovieUseCase
 import com.moscow.domain.usecase.movie.GetMovieCreditsUseCase
 import com.moscow.domain.usecase.movie.GetMovieDetailsUseCase
 import com.moscow.domain.usecase.movie.GetMovieRecommendationsUseCase

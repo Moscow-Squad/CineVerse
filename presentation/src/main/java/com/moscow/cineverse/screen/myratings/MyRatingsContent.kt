@@ -103,7 +103,8 @@ fun MyRatingsContent(
                         MyRatingsList(
                             contentList = contentList,
                             onMediaItemClicked = interactionListener::onMediaItemClicked,
-                            modifier = Modifier.fillMaxSize()
+                            modifier = Modifier.fillMaxSize(),
+                            enableBlur = uiState.enableBlur
                         )
                     }
                 }
@@ -116,7 +117,8 @@ fun MyRatingsContent(
 private fun MyRatingsList(
     contentList: LazyPagingItems<RatedMediaItem>,
     onMediaItemClicked: (MediaItemUiState) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    enableBlur: Boolean
 ) {
     LazyColumn(
         modifier = modifier,
@@ -141,7 +143,8 @@ private fun MyRatingsList(
                     MoviePosterCard(
                         movie = mediaItem.mediaItem,
                         onMovieClick = { onMediaItemClicked(mediaItem.mediaItem) },
-                        viewMode = ViewMode.LIST
+                        viewMode = ViewMode.LIST,
+                        enableBlur = enableBlur
                     )
                 }
             }

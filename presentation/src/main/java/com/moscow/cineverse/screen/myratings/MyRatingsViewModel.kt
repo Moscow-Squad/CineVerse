@@ -11,11 +11,13 @@ import com.moscow.cineverse.paging.BasePagingSource
 import com.moscow.cineverse.screen.explore.ExploreTabsPages
 import com.moscow.cineverse.screen.explore.toUi
 import com.moscow.domain.model.MediaType
+import com.moscow.domain.repository.blur.BlurProvider
 import com.moscow.domain.usecase.genre.GenreUseCase
 import com.moscow.domain.usecase.movie.GetRatedMoviesUseCase
 import com.moscow.domain.usecase.series.GetRatedSeriesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -23,6 +25,7 @@ class MyRatingsViewModel @Inject constructor(
     private val ratedMoviesUseCase: GetRatedMoviesUseCase,
     private val ratedSeriesUseCase: GetRatedSeriesUseCase,
     private val genreUseCase: GenreUseCase,
+    private val blurProvider: BlurProvider
 ) : BaseViewModel<MyRatingsUiState, MyRatingsEffect>(MyRatingsUiState()),
     MyRatingsInteractionListener {
 
@@ -42,6 +45,15 @@ class MyRatingsViewModel @Inject constructor(
         getRatedSeries()
         getMoviesGenres()
         getSeriesGenres()
+        observeBlur()
+    }
+
+    private fun observeBlur() {
+        viewModelScope.launch {
+            blurProvider.blurFlow.collect { enableBlur ->
+                updateState { it.copy(enableBlur = enableBlur) }
+            }
+        }
     }
 
     override fun onTabSelected(tab: ExploreTabsPages) {
