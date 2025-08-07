@@ -306,6 +306,10 @@ class HomeViewModel @Inject constructor(
     override fun onRefresh() {
         loadHomeData()
     }
+
+    override fun onSeeMoreRecentlyViewedClicked() {
+        sendEvent(HomeEvent.SeeMoreRecentlyViewed)
+    }
 }
 
 

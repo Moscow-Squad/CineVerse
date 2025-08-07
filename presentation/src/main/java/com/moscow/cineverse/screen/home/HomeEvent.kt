@@ -11,4 +11,5 @@ sealed class HomeEvent {
     data class PromotionClicked(val promotionId: Int): HomeEvent()
     object BrowseSuggestionClicked : HomeEvent()
     object WatchingSuggestionClicked : HomeEvent()
+    object SeeMoreRecentlyViewed: HomeEvent()
 }
