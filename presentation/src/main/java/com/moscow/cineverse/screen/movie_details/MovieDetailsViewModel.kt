@@ -33,8 +33,6 @@ class MovieDetailsViewModel @Inject constructor(
     private val getReviewsUseCase: GetReviewsUseCase,
     private val getMovieCreditsUseCase: GetMovieCreditsUseCase,
     private val getMovieRecommendationsUseCase: GetMovieRecommendationsUseCase,
-    private val addMediaItemToCollectionUseCase: AddMediaItemToCollectionUseCase,
-    private val getUserDetailsUseCase: GetUserDetailsUseCase,
     private val rateMovieUseCase: RateMovieUseCase,
     private val deleteRatingMovieUseCase: DeleteRatingMovieUseCase,
     private val getUserRatingForMovieUseCase: GetUserRatingForMovieUseCase,
@@ -51,7 +49,6 @@ class MovieDetailsViewModel @Inject constructor(
         viewModelScope.launch {
             updateState { it.copy(isLoading = true) }
             getUserRating(movieId)
-            addMovieToRecentlyViewedCollection(movieId)
             getMovieDetails(movieId)
             getReviews(movieId)
             getCredits(movieId)
