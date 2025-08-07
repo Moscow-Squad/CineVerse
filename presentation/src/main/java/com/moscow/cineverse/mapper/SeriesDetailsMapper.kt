@@ -1,12 +1,8 @@
 package com.moscow.cineverse.mapper
 
 import com.moscow.cineverse.common_ui_state.CrewUiState
-import com.moscow.cineverse.common_ui_state.MediaItemUiState
-import com.moscow.cineverse.screen.explore.ExploreScreenState
 import com.moscow.cineverse.screen.series_details.SeasonUiState
 import com.moscow.cineverse.screen.series_details.SeriesDetailsUiState
-import com.moscow.domain.model.MediaType
-import com.moscow.domain.model.Series
 import com.moscow.domain.model.details.Creator
 import com.moscow.domain.model.details.Season
 import com.moscow.domain.model.details.SeriesDetail

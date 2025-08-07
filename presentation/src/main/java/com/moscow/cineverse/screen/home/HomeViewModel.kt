@@ -14,7 +14,6 @@ import com.moscow.domain.model.UserType
 import com.moscow.domain.repository.blur.BlurProvider
 import com.moscow.domain.repository.language.LanguageProvider
 import com.moscow.domain.usecase.collection.GetUserCollectionsUseCase
-import com.moscow.domain.usecase.genre.GenreUseCase
 import com.moscow.domain.usecase.home.ClearHomeCash
 import com.moscow.domain.usecase.home.GetMatchesYourVibesMoviesUseCase
 import com.moscow.domain.usecase.home.GetRecentlyReleasedMoviesUseCase

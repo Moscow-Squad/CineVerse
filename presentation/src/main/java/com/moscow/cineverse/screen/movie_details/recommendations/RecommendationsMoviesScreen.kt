@@ -28,7 +28,6 @@ import com.moscow.cineverse.designSystem.component.MovieAppBar
 import com.moscow.cineverse.designSystem.component.MovieCircularProgressBar
 import com.moscow.cineverse.designSystem.component.MovieScaffold
 import com.moscow.cineverse.utlis.ViewMode
-import com.moscow.cineverse.mapper.toMediaItemUi
 import com.moscow.cineverse.screen.explore.component.ViewModeToggleButton
 import com.moscow.cineverse.screen.explore.toUi
 import com.moscow.cinverse.presentation.R
