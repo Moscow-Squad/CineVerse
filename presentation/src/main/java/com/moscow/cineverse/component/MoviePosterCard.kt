@@ -20,6 +20,7 @@ fun MoviePosterCard(
     titleTextAlign: TextAlign = TextAlign.Start,
     showTitle: Boolean = true,
     getTitleOverride: ((MediaItemUiState) -> String)? = null,
+    useFixedHeight: Boolean = false,
 ) {
     Log.d("blur-", "${enableBlur}")
 
@@ -33,6 +34,7 @@ fun MoviePosterCard(
         titleTextAlign = titleTextAlign,
         showTitle = showTitle,
         showBackdrop = showBackdrop,
+        useFixedHeight = useFixedHeight,
         getId = { it.id },
         getTitle = { getTitleOverride?.invoke(it) ?: it.title },
         getPosterUrl = { it.posterPath },

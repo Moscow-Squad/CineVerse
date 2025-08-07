@@ -31,9 +31,10 @@ fun NavGraphBuilder.movieDetailsRoute(navController: NavHostController) {
             navigateToCollectionsBottomSheet = { movieId ->
                 navController.navigate(CollectionsBottomSheetRoute(movieId))
             },
-            navigateToMovieDetails = {movieId ->
+            navigateToMovieDetails = { movieId ->
                 navController.navigate(MovieDetailsRoute(movieId))
-            }
+            },
+            navigateToLogin = { navController.navigate(LoginRoute) }
         )
     }
 }

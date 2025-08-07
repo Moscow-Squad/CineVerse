@@ -22,6 +22,7 @@ data class SeriesDetailsScreenState(
     val errorMessage: String = "",
     val viewMode: ViewMode = ViewMode.GRID,
     val showRatingBottomSheet: Boolean = false,
+    val showLoginBottomSheet: Boolean = false,
     val starsRating: Int = 0,
     val enableBlur: Boolean = true
 )
