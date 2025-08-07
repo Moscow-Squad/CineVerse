@@ -31,7 +31,6 @@ fun CineVerseRoot(navViewModel: NavViewModel) {
 
         val isNavBarVisible by rememberIsInGraph(currentNavBackStackEntry, destinations.keys)
 
-        Log.d("TAG", "CineVerseRoot: $currentNavBackStackEntry")
         Scaffold(
             modifier = Modifier
                 .fillMaxSize()
