@@ -7,4 +7,5 @@ interface RecentlyViewedRepository {
     suspend fun addRecentlyViewedMovie(movie: Movie)
     suspend fun addRecentlyViewedSeries(series: Series)
     suspend fun getRecentlyViewedMedia(): List<Any> // Returns a mix of Movies and Series
+    suspend fun deleteRecentlyViewedItemById(id: Int)
 }
