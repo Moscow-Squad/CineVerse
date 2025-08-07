@@ -7,7 +7,6 @@ import com.moscow.cineverse.common_ui_state.MyCollectionUiState
 data class HomeUiState(
     val isLoading: Boolean = false,
     val error: String? = null,
-    val genres: List<GenreUi> = emptyList(),
     val userName: String? = null,
     val sliderItems: List<MediaItemUiState> = emptyList(),
     val recentlyReleasedMovies: List<MediaItemUiState> = emptyList(),
@@ -16,7 +15,8 @@ data class HomeUiState(
     val topRatedTvShows: List<MediaItemUiState> = emptyList(),
     val youRecentlyViewed: List<MediaItemUiState> = emptyList(),
     val collections: List<MyCollectionUiState> = emptyList(),
-    val enableBlur: Boolean = true
+    val enableBlur: Boolean = true,
+    val cashLanguage: String = "en",
 ){
     data class GenreUi(
         val id: Int,

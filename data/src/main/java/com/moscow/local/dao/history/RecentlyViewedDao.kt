@@ -12,4 +12,7 @@ interface RecentlyViewedDao {
 
     @Query("SELECT * FROM history_item ORDER BY cacheTimestamp DESC")
     suspend fun getRecentlyViewedItems(): List<HistoryItemEntity>
+
+    @Query("DELETE FROM history_item WHERE id = :id")
+    suspend fun deleteRecentlyViewedItemById(id: Int)
 }

@@ -10,4 +10,5 @@ interface HomeRepository {
     suspend fun getRecentlyReleasedMovies(page: Int, forceRefresh: Boolean = false): List<Movie>
     suspend fun getMatchYourVibeMovies(genreId: Int, page: Int, forceRefresh: Boolean = false): List<Movie>
     suspend fun getTopRatedTVSeries(page: Int, forceRefresh: Boolean = false): List<Series>
+    suspend fun clearHomeCash()
 }
