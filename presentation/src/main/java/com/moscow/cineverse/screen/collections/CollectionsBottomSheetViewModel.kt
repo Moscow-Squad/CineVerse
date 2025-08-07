@@ -1,9 +1,8 @@
 package com.moscow.cineverse.screen.collections
 
-import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import com.moscow.cineverse.base.BaseViewModel
-import com.moscow.cineverse.mapper.toUi
+import com.moscow.cineverse.mapper.toCollectionUi
 import com.moscow.cineverse.navigation.routes.CollectionsBottomSheetRoute
 import com.moscow.cineverse.screen.collections.CollectionsBottomSheetEffect.OnLoginClicked
 import com.moscow.domain.model.Collection
@@ -28,32 +27,37 @@ class CollectionsBottomSheetViewModel @Inject constructor(
     val mediaItemType: MediaType = MediaType.toMediaType(
         savedStateHandle.get<String>(CollectionsBottomSheetRoute.MEDIA_TYPE) ?: "movie"
     )
+
     init {
         isUserLoggedIn()
-        loadUserCollections()
     }
 
-     fun isUserLoggedIn() {
+    fun isUserLoggedIn() {
         launchWithResult(
             action = {
                 getCurrentUserUseCase()
-               },
-            onSuccess = { isLoggedIn ->
-                isLoading(false)
-                updateState { it.copy(isLoggedIn = isLoggedIn) }
             },
-            onError = { e ->
-                isLoading(false) },
-            onStart = { isLoading(true) },
+            onSuccess = ::onUserLoggedInSuccess,
+            onError = {},
+            onStart = {},
             onFinally = {}
         )
+    }
+
+    private fun onUserLoggedInSuccess(isLoggedIn: Boolean) {
+        isLoading(false)
+        updateState { it.copy(isLoggedIn = isLoggedIn) }
+        if (isLoggedIn) {
+            loadUserCollections()
+        }
     }
 
     private fun isLoading(loading: Boolean) {
         updateState { it.copy(isLoading = loading) }
     }
+
     override fun onAddNewCollectionClick() {
-        TODO("should open new bottom sheet to login or to create new collection")
+        sendEvent(CollectionsBottomSheetEffect.OnCreateCollectionClicked)
     }
 
     override fun onCollectionClicked(collectionId: Int) {
@@ -82,15 +86,11 @@ class CollectionsBottomSheetViewModel @Inject constructor(
     }
 
     private fun onAddMediaItemToCollectionSuccess(message: String) {
-        if (message.contains("success")){
-            sendEvent(CollectionsBottomSheetEffect.OnMovieAddedSuccessfully("Movie added successfully"))
-        }else{
-            sendEvent(CollectionsBottomSheetEffect.OnMovieAddedSuccessfully("Error on adding Movie. try again later!"))
-        }
+        sendEvent(CollectionsBottomSheetEffect.OnItemAddedSuccessfully(message))
     }
 
     private fun onAddMediaItemToCollectionFailed(e: Throwable) {
-
+        sendEvent(CollectionsBottomSheetEffect.OnItemAddedFailed(message = e.message.toString()))
     }
 
     private fun isAddMediaItemToCollectionLoading(collectionId: Int, isLoading: Boolean) {
@@ -107,11 +107,13 @@ class CollectionsBottomSheetViewModel @Inject constructor(
 
 
     override fun onCreateCollectionClicked() {
-        isUserLoggedIn()
+        sendEvent(CollectionsBottomSheetEffect.OnCreateCollectionClicked)
     }
+
     override fun navigateToLogin() {
         sendEvent(OnLoginClicked)
     }
+
     override fun onRefresh() {
         loadUserCollections()
     }
@@ -131,7 +133,10 @@ class CollectionsBottomSheetViewModel @Inject constructor(
     }
 
     private fun onLoadUserCollectionsSuccess(collections: List<Collection>) {
-        updateState { it.copy(collections = collections.take(5).map { collection -> collection.toUi() }) }
+        updateState {
+            it.copy(
+                collections = collections.map { collection -> collection.toCollectionUi() })
+        }
     }
 
     private fun onLoadUserCollectionsFailed(throwable: Throwable) {

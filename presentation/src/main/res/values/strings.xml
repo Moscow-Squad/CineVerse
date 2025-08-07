@@ -94,7 +94,7 @@
     <string name="born_on">Born on %1$s</string>
     <string name="sensitive_content">Sensitive Content</string>
     <string name="all">All</string>
-    <string name="search">Search...</string>
+    <string name="search">Search…</string>
     <string name="search_can_t_be_empty_1">Search can\'t be empty!</string>
     <string name="tip_swipe_left_to_remove_movies_from_your_collection">Tip: Swipe left to remove movies from your collection.</string>
     <string name="no_history_yet">No History Yet</string>
@@ -102,5 +102,12 @@
     <string name="find_something_to_watch">Find Something to Watch</string>
     <string name="history_tip_message">Tip: Swipe left to remove movies from your history.</string>
     <string name="movie_swiped_tip_message">Tip: Swipe left to remove movies from your collection.</string>
+    <string name="start_collecting">Start Collecting</string>
+    <string name="create_new_collection">Create New Collection</string>
+    <string name="no_collections_yet_description">Start building your personal library by saving movies or series you want to remember.</string>
+    <string name="collection_name">Collection Name</string>
+    <string name="my_collection_name_hint">e.g. My Watchlist</string>
+    <string name="create">Create</string>
+    <string name="success">Success</string>
 
 </resources>

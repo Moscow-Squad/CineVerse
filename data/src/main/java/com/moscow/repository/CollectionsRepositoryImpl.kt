@@ -1,15 +1,15 @@
 package com.moscow.repository
 
 import com.moscow.data_source.remote.CollectionRemoteDataSource
+import com.moscow.domain.model.Collection
+import com.moscow.domain.model.Movie
+import com.moscow.domain.model.UserType
 import com.moscow.domain.repository.CollectionsRepository
+import com.moscow.domain.repository.PreferenceRepository
 import com.moscow.mapper.toDomain
 import com.moscow.remote.dto.AddMediaItemToCollectionRequestDto
 import com.moscow.remote.dto.CreateCollectionDto
 import com.moscow.remote.dto.toDomain
-import com.moscow.domain.model.Collection
-import com.moscow.domain.model.Movie
-import com.moscow.domain.model.UserType
-import com.moscow.domain.repository.PreferenceRepository
 import com.moscow.utils.CineVerseExceptions
 import javax.inject.Inject
 
@@ -57,7 +57,12 @@ class CollectionsRepositoryImpl @Inject constructor(
             collectionId = collectionId,
             sessionId = preferenceRepository.getSessionId()
         )
-        return response.statusMessage ?: "Unexpected Error happened"
+        if (response.success == false)
+            throw CineVerseExceptions(
+                response.statusCode ?: 0,
+                response.statusMessage ?: ""
+            )
+        return response.statusMessage.toString()
     }
 
     override suspend fun deleteMediaItemFromCollection(
@@ -70,7 +75,12 @@ class CollectionsRepositoryImpl @Inject constructor(
             collectionId = collectionId,
             sessionId = preferenceRepository.getSessionId()
         )
-        return response.statusMessage ?: "Unexpected Error happened"
+        if (response.success == false)
+            throw CineVerseExceptions(
+                response.statusCode ?: 0,
+                response.statusMessage ?: ""
+            )
+        return response.statusMessage.toString()
     }
 
     override suspend fun getCollectionDetails(collectionId: Int, page: Int): List<Movie> {
@@ -91,6 +101,11 @@ class CollectionsRepositoryImpl @Inject constructor(
             sessionId = preferenceRepository.getSessionId(),
             confirm = confirm
         )
-        return response.statusMessage ?: "Unexpected Error happened"
+        if (response.success == false)
+            throw CineVerseExceptions(
+                response.statusCode ?: 0,
+                response.statusMessage ?: ""
+            )
+        return response.statusMessage.toString()
     }
 }

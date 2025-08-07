@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.cineverse.common_ui_state.MediaItemUiState
 import com.moscow.cineverse.mapper.toGenreUi
+import com.moscow.cineverse.mapper.toMyCollectionUi
 import com.moscow.cineverse.mapper.toUi
 import com.moscow.domain.model.Genre
 import com.moscow.domain.model.MediaType
@@ -93,7 +94,7 @@ class HomeViewModel @Inject constructor(
         launchWithResult(
             action = { getUserCollectionsUseCase(1) },
             onSuccess = { collections ->
-                updateState { it.copy(collections = collections.map { collection -> collection.toUi() }) }
+                updateState { it.copy(collections = collections.map { collection -> collection.toMyCollectionUi() }) }
             },
             onError = { e ->
                 updateState { it.copy(isLoading = false, error = e.message) }
