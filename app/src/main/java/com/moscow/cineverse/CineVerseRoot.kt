@@ -1,6 +1,7 @@
 package com.moscow.cineverse
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.material3.Scaffold
@@ -9,46 +10,47 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.moscow.cineverse.designSystem.theme.CineVerseTheme
+import com.moscow.cineverse.component.bottomNavigationBar.BottomNavItem.Companion.destinations
+import com.moscow.cineverse.component.bottomNavigationBar.NavBar
 import com.moscow.cineverse.navigation.CineVerseNavGraph
 import com.moscow.cineverse.navigation.NavViewModel
 import com.moscow.cineverse.navigation.navigateToNewGraph
 import com.moscow.cineverse.navigation.rememberIsInGraph
 import com.moscow.cineverse.navigation.rememberNavGraphIndex
-import com.moscow.cineverse.component.bottomNavigationBar.BottomNavItem.Companion.destinations
-import com.moscow.cineverse.component.bottomNavigationBar.NavBar
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun CineVerseRoot(navViewModel: NavViewModel) {
-    CineVerseTheme {
-        val navController = rememberNavController()
+fun CineVerseRoot(
+    navViewModel: NavViewModel
+) {
 
-        val currentNavBackStackEntry by navController.currentBackStackEntryAsState()
+    val navController = rememberNavController()
 
-        val navGraphIndex by rememberNavGraphIndex(currentNavBackStackEntry, destinations.keys)
+    val currentNavBackStackEntry by navController.currentBackStackEntryAsState()
 
-        val isNavBarVisible by rememberIsInGraph(currentNavBackStackEntry, destinations.keys)
+    val navGraphIndex by rememberNavGraphIndex(currentNavBackStackEntry, destinations.keys)
 
-        Scaffold(
-            modifier = Modifier
-                .fillMaxSize()
-                .navigationBarsPadding(), bottomBar = {
+    val isNavBarVisible by rememberIsInGraph(currentNavBackStackEntry, destinations.keys)
 
-                if (isNavBarVisible) NavBar(
-                    selectedItem = destinations.values.elementAt(navGraphIndex),
-                    onItemClick = { index, _ ->
-                        val targetGraph = destinations.keys.elementAt(index)
-                        navController.navigateToNewGraph(targetGraph)
-                    })
+    Scaffold(
+        modifier = Modifier
+            .fillMaxSize()
+            .navigationBarsPadding(), bottomBar = {
 
-            }) { paddingValues ->
-            CineVerseNavGraph(
-                modifier = Modifier,
-                navController = navController,
-                navViewModel = navViewModel,
-                scaffoldPaddingValues = paddingValues
-            )
-        }
+            if (isNavBarVisible) NavBar(
+                selectedItem = destinations.values.elementAt(navGraphIndex),
+                onItemClick = { index, _ ->
+                    val targetGraph = destinations.keys.elementAt(index)
+                    navController.navigateToNewGraph(targetGraph)
+                })
+
+        }) { paddingValues ->
+        CineVerseNavGraph(
+            modifier = Modifier,
+            navController = navController,
+            navViewModel = navViewModel,
+            scaffoldPaddingValues = paddingValues
+        )
+
     }
 }

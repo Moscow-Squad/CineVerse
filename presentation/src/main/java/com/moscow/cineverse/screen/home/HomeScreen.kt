@@ -11,16 +11,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleEventObserver
-import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.moscow.cineverse.component.ScreenStateHandler
 import com.moscow.cineverse.designSystem.theme.Theme
@@ -54,12 +50,11 @@ fun HomeScreen(
                         effect.collectionName
                     )
                 }
-
                 is HomeEvent.MovieClicked -> {
                     navigateToMovieDetails(
                         effect.movieId
                     )
-                    viewmodel.getRecentlyViewedMovies()
+
                 }
 
                 is HomeEvent.PromotionClicked -> {}
@@ -74,6 +69,7 @@ fun HomeScreen(
                     navigateToSeriesDetails(
                         effect.seriesId
                     )
+
                 }
 
                 is HomeEvent.BrowseSuggestionClicked -> {
@@ -87,35 +83,19 @@ fun HomeScreen(
             }
         }
     }
-
-    val lifecycleOwner = LocalLifecycleOwner.current
-    DisposableEffect(Unit) {
-        val observer = LifecycleEventObserver { _, event ->
-            if (event == Lifecycle.Event.ON_RESUME) {
-                viewmodel.getRecentlyViewedMovies()
-            }
-        }
-
-        lifecycleOwner.lifecycle.addObserver(observer)
-
-        onDispose {
-            lifecycleOwner.lifecycle.removeObserver(observer)
-        }
-    }
-
     HomeContent(modifier, state, viewmodel)
 }
 
 @Composable
 fun HomeContent(
     modifier: Modifier = Modifier,
-    state: HomeUiState,
+    uiState: HomeUiState,
     listener: HomeInteractionListener
 ) {
 
     ScreenStateHandler(
-        isLoading = state.isLoading,
-        errorMessage = state.error,
+        isLoading = uiState.isLoading,
+        errorMessage = uiState.error,
         onRefresh = listener::onRefresh,
     ) {
         Column(
@@ -127,7 +107,7 @@ fun HomeContent(
             Column(
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                HomeHeader(userName = state.userName ?: stringResource(R.string.guest), modifier)
+                HomeHeader(userName = uiState.userName, modifier)
                 Spacer(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -145,17 +125,19 @@ fun HomeContent(
             ) {
 
                 HomeHeaderSlider(
-                    items = state.sliderItems,
+                    items = uiState.sliderItems,
+                    enableBlur = uiState.enableBlur,
                     onSliderClick = listener::onMediaItemClicked,
                     modifier = Modifier.padding(top = 16.dp)
                 )
 
                 FeaturedMovies(
-                    displayMovies = state.recentlyReleasedMovies,
+                    displayMovies = uiState.recentlyReleasedMovies,
                     onMovieClick = listener::onMediaItemClicked,
                     onShowMoreClick = listener::onSeeAllClick,
                     type = HomeFeaturedItems.RECENTLY_RELEASED,
-                    modifier = Modifier
+                    modifier = Modifier,
+                    enableBlur = uiState.enableBlur,
                 )
 
                 SuggestionWithHeader(
@@ -167,19 +149,21 @@ fun HomeContent(
                 )
 
                 FeaturedMovies(
-                    displayMovies = state.upcomingMovies,
+                    displayMovies = uiState.upcomingMovies,
                     onMovieClick = listener::onMediaItemClicked,
                     onShowMoreClick = listener::onSeeAllClick,
                     type = HomeFeaturedItems.UPCOMING_MOVIES,
                     modifier = Modifier,
+                    enableBlur = uiState.enableBlur,
                 )
 
                 FeaturedMovies(
-                    displayMovies = state.matchesYourVibe,
+                    displayMovies = uiState.matchesYourVibe,
                     onMovieClick = listener::onMediaItemClicked,
                     onShowMoreClick = listener::onSeeAllClick,
                     modifier = Modifier,
-                    type = HomeFeaturedItems.MATCHES_YOUR_VIBE
+                    type = HomeFeaturedItems.MATCHES_YOUR_VIBE,
+                    enableBlur = uiState.enableBlur,
                 )
 
                 FeaturedCollectionsSection(
@@ -188,30 +172,29 @@ fun HomeContent(
                 )
 
                 FeaturedMovies(
-                    displayMovies = state.topRatedTvShows,
+                    displayMovies = uiState.topRatedTvShows,
                     onMovieClick = listener::onMediaItemClicked,
                     onShowMoreClick = listener::onSeeAllClick,
                     modifier = Modifier,
-                    type = HomeFeaturedItems.TOP_RATED_TV_SHOWS
+                    type = HomeFeaturedItems.TOP_RATED_TV_SHOWS,
+                    enableBlur = uiState.enableBlur,
                 )
 
-                if (!state.youRecentlyViewed.isEmpty()) {
-                    FeaturedMovies(
-                        displayMovies = state.youRecentlyViewed,
-                        onMovieClick = listener::onMediaItemClicked,
-                        onShowMoreClick = listener::onSeeAllClick,
-                        modifier = Modifier,
-                        type = HomeFeaturedItems.YOU_RECENTLY_VIEWED
-                    )
-                }
+                if(uiState.userName != null && uiState.youRecentlyViewed.isEmpty() == false) FeaturedMovies(
+                    displayMovies = uiState.youRecentlyViewed,
+                    onMovieClick = listener::onMediaItemClicked,
+                    onShowMoreClick = listener::onSeeAllClick,
+                    modifier = Modifier,
+                    type = HomeFeaturedItems.YOU_RECENTLY_VIEWED,
+                    enableBlur = uiState.enableBlur,
+                )
 
-                if (state.userName != null) {
-                    MyCollectionsLayout(
-                        items = state.collections.take(4),
-                        onCollectionClick = listener::onCollectionClick,
-                        onShowMoreClick = listener::onCollectionsShowMoreClick,
-                    )
-                }
+                MyCollectionsLayout(
+                    items = uiState.collections,
+                    onCollectionClick = listener::onCollectionClick,
+                    modifier = Modifier.padding(horizontal = 16.dp),
+                    onShowMoreClick = listener::onCollectionsShowMoreClick,
+                )
 
                 SuggestionWithHeader(
                     modifier = Modifier
@@ -226,5 +209,4 @@ fun HomeContent(
             }
         }
     }
-
 }

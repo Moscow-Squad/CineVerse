@@ -12,4 +12,6 @@ interface PreferenceRepository {
     suspend fun isLoggedIn(): Boolean
     suspend fun showCategoryDetailsTip(): Boolean
     suspend fun closeCategoryDetailsTip()
+    suspend fun isOnBoardingCompleted(): Boolean
+    suspend fun setOnBoardingCompleted()
 }

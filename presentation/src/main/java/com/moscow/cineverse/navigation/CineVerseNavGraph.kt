@@ -19,13 +19,17 @@ import com.moscow.cineverse.navigation.routes.seriesDetailsRoute
 import com.moscow.cineverse.navigation.routes.seriesRecommendationRoute
 import com.moscow.cineverse.navigation.routes.seriesSeasonsRoute
 import com.moscow.cineverse.navigation.routes.collectionsBottomSheetRoute
+import com.moscow.cineverse.navigation.routes.createCollectionDialogRoute
 import com.moscow.cineverse.navigation.routes.exploreRoute
 import com.moscow.cineverse.navigation.routes.historyRoute
 import com.moscow.cineverse.navigation.routes.homeRoute
 import com.moscow.cineverse.navigation.routes.loginRoute
 import com.moscow.cineverse.navigation.routes.matchRoute
+import com.moscow.cineverse.navigation.routes.onBoardingRoute
+import com.moscow.cineverse.navigation.routes.myCollections
 import com.moscow.cineverse.navigation.routes.profileRoute
 import com.moscow.cineverse.navigation.routes.seeMoreRoute
+import com.moscow.cineverse.navigation.routes.splashRoute
 
 val LocalScaffoldPaddingValues =
     staticCompositionLocalOf<PaddingValues> { error("No ScaffoldPadding provided") }
@@ -49,8 +53,10 @@ fun CineVerseNavGraph(
             startDestination = startDestination
         ) {
 
+            splashRoute(navController)
             exploreRoute(navController)
             loginRoute(navController)
+            onBoardingRoute(navController)
             recommendationsRoute(navController)
             reviewsRoute(navController)
             castDetailsRoute(navController)
@@ -66,6 +72,8 @@ fun CineVerseNavGraph(
             matchRoute(navController)
             profileRoute(navController)
             collectionDetailsRoute(navController)
+            myCollections(navController)
+            createCollectionDialogRoute(navController)
             historyRoute(navController)
         }
     }

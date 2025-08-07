@@ -68,16 +68,3 @@ fun CollectionItem(
         )
     }
 }
-
-@Preview
-@Composable
-private fun PreviewCollectionItem() {
-    CineVerseTheme(
-        state = ThemeState(isDark = true, onThemeChanged = {})
-    ) {
-        CollectionItem(
-            title = "My Collection",
-            description = "A collection of my favorite movies"
-        )
-    }
-}

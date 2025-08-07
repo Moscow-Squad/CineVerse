@@ -34,6 +34,7 @@ fun MovieCastSection(
             cast = uiState.starCast?.take(6) ?: emptyList(),
             castContent = { actor ->
                 CastCard(
+                    enableBlur = uiState.enableBlur,
                     modifier = Modifier.clickable {
                         interactionListener.onActorClicked(actor.id)
                     },
@@ -91,7 +92,8 @@ fun MovieRecommendationsSection(
                         onMovieClick = {interactionListener.onMovieClicked(movie.id)},
                         showTitle = true,
                         modifier = cardModifier,
-                        getTitleOverride = { it.title.take(15) + if (it.title.length > 15) "…" else "" }
+                        getTitleOverride = { it.title.take(15) + if (it.title.length > 15) "…" else "" },
+                        enableBlur = uiState.enableBlur,
                     )
                 }
             )
