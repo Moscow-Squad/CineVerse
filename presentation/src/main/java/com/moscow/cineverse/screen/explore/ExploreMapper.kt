@@ -1,6 +1,5 @@
 package com.moscow.cineverse.screen.explore
 
-import com.moscow.cineverse.screen.explore.ExploreTabsPages
 import com.moscow.cineverse.screen.explore.ExploreScreenState.ActorUiState
 import com.moscow.cineverse.screen.explore.ExploreScreenState.GenreUiState
 import com.moscow.cineverse.common_ui_state.MediaItemUiState
@@ -26,15 +25,14 @@ fun Movie.toUi(genresList: List<GenreUiState>): MediaItemUiState =
         backdropPath = this.backdropPath
     )
 
-fun Series.toUi(genresList: List<GenreUiState>): MediaItemUiState =
+fun Series.toUi(genresList: List<GenreUiState> = listOf()): MediaItemUiState =
     MediaItemUiState(
         id = id,
         title = name,
         posterPath = posterPath,
         rating = rating,
-        genres = genreIds.map { it ->
-            genresList.firstOrNull { genre -> genre.id == it }?.name ?: ""
-        },
+        genres = if (genresList.isEmpty()) emptyList() else
+            genreIds.map { it -> genresList.first { genre -> genre.id == it }.name },
         releaseDate = firstAirDate.formatWith(YYYY_MMM_DD) ?: "",
         duration = "",
         mediaType = MediaType.Tv,

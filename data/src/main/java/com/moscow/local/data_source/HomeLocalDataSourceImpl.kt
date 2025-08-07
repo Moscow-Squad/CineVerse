@@ -33,5 +33,10 @@ class HomeLocalDataSourceImpl @Inject constructor(
     override suspend fun refreshHomeCategory(categoryType: String, homeItems: List<MediaItemEntity>) {
         homeCacheDao.refreshHomeCategory(categoryType, homeItems)
     }
+
+    override suspend fun clearHomeCash() {
+        homeCacheDao.clearHomeItemCash()
+        homeCacheDao.clearHomeCategoryTimestampCash()
+    }
 }
 
