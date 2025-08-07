@@ -107,7 +107,7 @@ fun HomeContent(
             Column(
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                HomeHeader(userName = state.userName ?: stringResource(R.string.guest), modifier)
+                HomeHeader(userName = state.userName, modifier)
                 Spacer(
                     modifier = Modifier
                         .fillMaxWidth()
