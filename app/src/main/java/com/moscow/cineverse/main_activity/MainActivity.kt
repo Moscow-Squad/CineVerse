@@ -16,7 +16,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
 import com.moscow.cineverse.CineVerseRoot
 import com.moscow.cineverse.designSystem.theme.CineVerseTheme
@@ -44,8 +43,6 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
-        val splashScreen = installSplashScreen()
-
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
@@ -62,12 +59,7 @@ class MainActivity : ComponentActivity() {
         }
 
         setContent {
-
             val state by mainActivityViewModel.state.collectAsState()
-
-            splashScreen.setKeepOnScreenCondition {
-                state.isLoading
-            }
 
             val previousLanguage = remember { mutableStateOf(state.language) }
 
@@ -103,4 +95,3 @@ fun updateLocale(context: Context, language: String): Context {
 
     return context.createConfigurationContext(config)
 }
-

@@ -96,6 +96,5 @@ dependencies {
     implementation(libs.androidx.work.runtime.ktx)
 
     implementation(libs.androidx.navigation.compose)
-    // Splash
-    implementation(libs.androidx.core.splashscreen)
+
 }
