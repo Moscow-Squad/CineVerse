@@ -13,7 +13,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -25,10 +24,8 @@ import com.moscow.cineverse.component.SwipeToDelete
 import com.moscow.cineverse.designSystem.component.MovieAppBar
 import com.moscow.cineverse.designSystem.component.MovieCircularProgressBar
 import com.moscow.cineverse.designSystem.component.MovieScaffold
-import com.moscow.cineverse.designSystem.component.message_info.InfoCard
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.screen.ListMovieCard
-import com.moscow.cineverse.screen.explore.component.EmptyState
 import com.moscow.cinverse.presentation.R
 
 @Composable

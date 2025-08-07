@@ -7,7 +7,6 @@ import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
-import com.moscow.cineverse.navigation.routes.HistoryRoute
 import com.moscow.cineverse.navigation.routes.castBestOfMovieRoute
 import com.moscow.cineverse.navigation.routes.castDetailsRoute
 import com.moscow.cineverse.navigation.routes.castGalleryRoute
@@ -23,15 +22,14 @@ import com.moscow.cineverse.navigation.routes.movieDetailsRoute
 import com.moscow.cineverse.navigation.routes.myCollections
 import com.moscow.cineverse.navigation.routes.myRatingsRoute
 import com.moscow.cineverse.navigation.routes.onBoardingRoute
-import com.moscow.cineverse.navigation.routes.myCollections
 import com.moscow.cineverse.navigation.routes.profileRoute
 import com.moscow.cineverse.navigation.routes.recommendationsRoute
 import com.moscow.cineverse.navigation.routes.reviewsRoute
 import com.moscow.cineverse.navigation.routes.seeMoreRoute
-import com.moscow.cineverse.navigation.routes.splashRoute
 import com.moscow.cineverse.navigation.routes.seriesDetailsRoute
 import com.moscow.cineverse.navigation.routes.seriesRecommendationRoute
 import com.moscow.cineverse.navigation.routes.seriesSeasonsRoute
+import com.moscow.cineverse.navigation.routes.splashRoute
 
 val LocalScaffoldPaddingValues =
     staticCompositionLocalOf<PaddingValues> { error("No ScaffoldPadding provided") }
