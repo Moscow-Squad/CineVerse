@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.moscow.cineverse.navigation.routes.HomeRoute
 import com.moscow.cineverse.navigation.routes.LoginRoute
+import com.moscow.cineverse.navigation.routes.OnBoardingRoute
 import com.moscow.domain.repository.PreferenceRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -26,7 +27,9 @@ class NavViewModel @Inject constructor(
 
     private fun getStartDestination() {
         viewModelScope.launch {
-            if (preferenceRepository.isGuest() && preferenceRepository.isLoggedIn()){
+            if (!preferenceRepository.isOnBoardingCompleted()){
+                _startDestination.value = OnBoardingRoute
+            }else if (preferenceRepository.isGuest() && preferenceRepository.isLoggedIn()){
                 val isValid = isValidGuestSession(preferenceRepository.getSessionExpiration())
                 _startDestination.value = if (isValid) HomeRoute else LoginRoute
             }else{

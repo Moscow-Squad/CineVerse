@@ -24,11 +24,12 @@ fun MovieFloatingButton(
     onClick: () -> Unit,
     backgroundColor: Color,
     iconColor: Color,
-    contentPadding: PaddingValues = PaddingValues(10.dp),
+   contentPadding: PaddingValues = PaddingValues(10.dp),
     useWrapContentSize: Boolean = false,
     buttonSize: Dp = 40.dp,
     iconSize: Dp = 20.dp,
     modifier: Modifier = Modifier
+
 ) {
     Button(
         modifier = if (useWrapContentSize) modifier.size(buttonSize) else modifier,
@@ -60,6 +61,6 @@ private fun PreviewButton() {
         R.drawable.outline_plus,
         {},
         Theme.colors.brand.primary,
-        Color.Black,
+        iconColor = Color.Black,
     )
 }
