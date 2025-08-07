@@ -43,4 +43,3 @@ class ThemeProviderImpl @Inject constructor(
         private const val DEFAULT_IS_DARK = true
     }
 }
-
