@@ -12,6 +12,8 @@ import com.moscow.domain.repository.PreferenceRepository
 import com.moscow.domain.repository.ProfileRepository
 import com.moscow.domain.repository.SearchRepository
 import com.moscow.domain.repository.SeriesRepository
+import com.moscow.domain.repository.blur.BlurProvider
+import com.moscow.preference.BlurProviderImpl
 import com.moscow.preference.LanguageProviderImpl
 import com.moscow.preference.ThemeProviderImpl
 import com.moscow.repository.ActorRepositoryImpl
@@ -74,6 +76,10 @@ abstract class RepositoryModule {
     @Binds
     @Singleton
     abstract fun bindThemeProvider(impl: ThemeProviderImpl): ThemeProvider
+
+    @Binds
+    @Singleton
+    abstract fun bindBlurProvider(impl: BlurProviderImpl): BlurProvider
 
     @Binds
     @Singleton
