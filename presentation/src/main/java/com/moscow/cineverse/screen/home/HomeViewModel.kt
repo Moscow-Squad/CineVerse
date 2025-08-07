@@ -1,20 +1,21 @@
 package com.moscow.cineverse.screen.home
 
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.cineverse.common_ui_state.MediaItemUiState
-import com.moscow.cineverse.mapper.toGenreUi
 import com.moscow.cineverse.mapper.toMyCollectionUi
 import com.moscow.cineverse.mapper.toUi
-import com.moscow.domain.model.Genre
 import com.moscow.domain.model.MediaType
 import com.moscow.domain.model.Movie
 import com.moscow.domain.model.Series
 import com.moscow.domain.model.UserType
 import com.moscow.domain.repository.blur.BlurProvider
+import com.moscow.domain.repository.language.LanguageProvider
 import com.moscow.domain.usecase.collection.GetUserCollectionsUseCase
 import com.moscow.domain.usecase.genre.GenreUseCase
+import com.moscow.domain.usecase.home.ClearHomeCash
 import com.moscow.domain.usecase.home.GetMatchesYourVibesMoviesUseCase
 import com.moscow.domain.usecase.home.GetRecentlyReleasedMoviesUseCase
 import com.moscow.domain.usecase.home.GetTopRatedTVShowsUseCase
@@ -25,8 +26,8 @@ import com.moscow.domain.usecase.recently_viewed.GetRecentlyViewedMediaUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.suspendCancellableCoroutine
 import javax.inject.Inject
 
 @HiltViewModel
@@ -35,18 +36,41 @@ class HomeViewModel @Inject constructor(
     private val getRecentlyReleasedMoviesUseCase: GetRecentlyReleasedMoviesUseCase,
     private val getTopRatedTVShowsUseCase: GetTopRatedTVShowsUseCase,
     private val getUpcomingMoviesUseCase: GetUpcomingMoviesUseCase,
-    private val genreUseCase: GenreUseCase,
     private val getTrendingMoviesUseCase: GetTrendingMoviesUseCase,
     private val getUserDetailsUseCase: GetUserDetailsUseCase,
     private val blurProvider: BlurProvider,
     private val getUserCollectionsUseCase: GetUserCollectionsUseCase,
-    private val getRecentlyViewedMediaUseCase: GetRecentlyViewedMediaUseCase
+    private val getRecentlyViewedMediaUseCase: GetRecentlyViewedMediaUseCase,
+    private val clearHomeCash: ClearHomeCash,
+    private val languageProvider: LanguageProvider
 ) : BaseViewModel<HomeUiState, HomeEvent>(HomeUiState()), HomeInteractionListener {
 
     init {
         updateState { it.copy(isLoading = true) }
-        getGenres()
+
+        viewModelScope.launch {
+            val d = languageProvider.languageFlow.first()
+            updateState { it.copy(cashLanguage = d) }
+        }
+
+        observeLanguage()
+        loadHomeData()
         observeBlur()
+    }
+
+    private fun observeLanguage(){
+        viewModelScope.launch {
+
+            languageProvider.languageFlow.collect { currentLanguage ->
+                Log.d("ddddddd", currentLanguage)
+                Log.d("ddddddd", uiState.value.cashLanguage)
+                if (uiState.value.cashLanguage != currentLanguage){
+                    updateState { it.copy(cashLanguage = currentLanguage) }
+                    clearHomeCash()
+                    loadHomeData()
+                }
+            }
+        }
     }
 
     private fun observeBlur() {
@@ -152,28 +176,6 @@ class HomeViewModel @Inject constructor(
             onError = {}
         )
     }
-
-    private fun getGenres() {
-        launchWithResult(
-            action = { genreUseCase.getMoviesGenres() },
-            onSuccess = {
-                onGetGenresSuccess(it)
-                loadHomeData()
-            },
-            onError = {
-                onGetGenresError(it)
-            },
-        )
-    }
-
-    private fun onGetGenresSuccess(genres: List<Genre>) {
-        updateState {
-            it.copy(
-                genres = genres.map { genre -> genre.toGenreUi() }
-            )
-        }
-    }
-
     private fun onGetGenresError(throwable: Throwable) {
         updateState { it.copy(error = throwable.message, isLoading = false) }
     }
@@ -189,7 +191,7 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun onFetchTrendingMoviesSuccess(movies: List<Movie>) {
-        updateState { it.copy(sliderItems = movies.toUi(uiState.value.genres)) }
+        updateState { it.copy(sliderItems = movies.toUi()) }
     }
 
     private fun onFetchTrendingMoviesError(throwable: Throwable) {
@@ -207,7 +209,7 @@ class HomeViewModel @Inject constructor(
     private fun onFetchRecentlyReleasedMoviesSuccess(movies: List<Movie>) {
         updateState {
             it.copy(
-                recentlyReleasedMovies = movies.toUi(uiState.value.genres),
+                recentlyReleasedMovies = movies.toUi(),
 
                 )
         }
@@ -228,7 +230,7 @@ class HomeViewModel @Inject constructor(
     private fun onFetchUpcomingMoviesSuccess(movies: List<Movie>) {
         updateState {
             it.copy(
-                upcomingMovies = movies.toUi(uiState.value.genres),
+                upcomingMovies = movies.toUi(),
 
                 )
         }
@@ -266,7 +268,7 @@ class HomeViewModel @Inject constructor(
     private fun onFetchMatchesYourVibesMoviesSuccess(movies: List<Movie>) {
         updateState {
             it.copy(
-                matchesYourVibe = movies.toUi(uiState.value.genres),
+                matchesYourVibe = movies.toUi(),
                 error = null
             )
         }
@@ -309,7 +311,7 @@ class HomeViewModel @Inject constructor(
     }
 
     override fun onRefresh() {
-        getGenres()
+        loadHomeData()
     }
 }
 

@@ -71,6 +71,10 @@ class HomeRepositoryImpl @Inject constructor(
         )
     }
 
+    override suspend fun clearHomeCash() {
+        homeLocalDataSource.clearHomeCash()
+    }
+
     override suspend fun getMatchYourVibeMovies(genreId: Int, page: Int, forceRefresh: Boolean): List<Movie> {
         return getCachedOrFetchHomeItems(
             categoryType = CATEGORY_MATCHES_VIBE,
