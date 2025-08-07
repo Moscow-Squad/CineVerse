@@ -19,8 +19,8 @@ sealed class CineVerseException() : Exception() {
     object AddMediaItemToCollectionException : CineVerseException()
     object DeleteMediaItemFromCollectionException : CineVerseException()
     object ClearCollectionException : CineVerseException()
+    object NotAllowedUserException : CineVerseException()
 
     //only in test
     data class IOException(override val message: String = ErrorMessages.NETWORK_ERROR) : CineVerseException()
 }
-

@@ -61,9 +61,9 @@ class CollectionsBottomSheetViewModel @Inject constructor(
     }
 
     override fun onCollectionClicked(collectionId: Int) {
-        launchWithResult(
+        launchAndForget(
             action = {
-                addMediaItemToCollectionUseCase.invoke(
+                addMediaItemToCollectionUseCase(
                     mediaItemId = mediaItemId,
                     collectionId = collectionId
                 )
@@ -85,8 +85,8 @@ class CollectionsBottomSheetViewModel @Inject constructor(
         )
     }
 
-    private fun onAddMediaItemToCollectionSuccess(message: String) {
-        sendEvent(CollectionsBottomSheetEffect.OnItemAddedSuccessfully(message))
+    private fun onAddMediaItemToCollectionSuccess() {
+        sendEvent(CollectionsBottomSheetEffect.OnItemAddedSuccessfully)
     }
 
     private fun onAddMediaItemToCollectionFailed(e: Throwable) {

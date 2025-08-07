@@ -52,10 +52,14 @@ abstract class BaseViewModel<T, E>(
         action: suspend () -> Unit,
         onSuccess: () -> Unit = {},
         onError: (Throwable) -> Unit,
+        onStart: () -> Unit = {},
+        onFinally: () -> Unit = {}
     ) = viewModelScope.launch(Dispatchers.IO) {
+        onStart()
         runCatching { action() }
             .onSuccess { onSuccess() }
             .onFailure(onError)
+        onFinally()
     }
 
     protected fun <R> launchWithFlow(

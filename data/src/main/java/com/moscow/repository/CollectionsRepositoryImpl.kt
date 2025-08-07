@@ -5,6 +5,7 @@ import com.moscow.domain.exception.CineVerseException.NullException
 import com.moscow.domain.exception.CineVerseException.AddMediaItemToCollectionException
 import com.moscow.domain.exception.CineVerseException.ClearCollectionException
 import com.moscow.domain.exception.CineVerseException.DeleteMediaItemFromCollectionException
+import com.moscow.domain.exception.CineVerseException.NotAllowedUserException
 import com.moscow.domain.model.Collection
 import com.moscow.domain.model.Movie
 import com.moscow.domain.model.UserType
@@ -24,7 +25,7 @@ class CollectionsRepositoryImpl @Inject constructor(
         val user = preferenceRepository.getUser()
         val accountId = when (user) {
             is UserType.AuthenticatedUser -> user.id
-            is UserType.GuestUser -> throw IllegalArgumentException("Guest Users not allowed to see or edit collections")
+            is UserType.GuestUser -> throw NotAllowedUserException
         }
         val response = collectionRemoteDataSource.getMyCollections(
             accountId = accountId,
@@ -50,7 +51,7 @@ class CollectionsRepositoryImpl @Inject constructor(
     override suspend fun addMediaItemToCollection(
         mediaItemId: Int,
         collectionId: Int
-    ): String {
+    ){
         val item = AddMediaItemToCollectionRequestDto(mediaId = mediaItemId)
         val response = collectionRemoteDataSource.addMediaItemToCollection(
             item = item,
@@ -59,13 +60,14 @@ class CollectionsRepositoryImpl @Inject constructor(
         )
         if (response.success == false)
             throw AddMediaItemToCollectionException
-        return response.statusMessage.toString()
+        if (!response.statusMessage.toString().contains("success"))
+            throw AddMediaItemToCollectionException
     }
 
     override suspend fun deleteMediaItemFromCollection(
         mediaItemId: Int,
         collectionId: Int
-    ): String {
+    ){
         val item = AddMediaItemToCollectionRequestDto(mediaId = mediaItemId)
         val response = collectionRemoteDataSource.deleteMediaItemFromCollection(
             item = item,
@@ -74,7 +76,8 @@ class CollectionsRepositoryImpl @Inject constructor(
         )
         if (response.success == false)
             throw DeleteMediaItemFromCollectionException
-        return response.statusMessage.toString()
+        if (!response.statusMessage.toString().contains("success"))
+            throw DeleteMediaItemFromCollectionException
     }
 
     override suspend fun getCollectionDetails(collectionId: Int, page: Int): List<Movie> {
@@ -89,7 +92,7 @@ class CollectionsRepositoryImpl @Inject constructor(
     override suspend fun clearCollection(
         collectionId: Int,
         confirm: Boolean
-    ): String {
+    ){
         val response = collectionRemoteDataSource.clearCollection(
             collectionId = collectionId,
             sessionId = preferenceRepository.getSessionId(),
@@ -97,6 +100,7 @@ class CollectionsRepositoryImpl @Inject constructor(
         )
         if (response.success == false)
             throw ClearCollectionException
-        return response.statusMessage.toString()
+        if (!response.statusMessage.toString().contains("success"))
+            throw ClearCollectionException
     }
 }
