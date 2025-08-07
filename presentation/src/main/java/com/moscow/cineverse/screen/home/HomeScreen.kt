@@ -221,7 +221,6 @@ fun HomeContent(
                 MyCollectionsLayout(
                     items = uiState.collections,
                     onCollectionClick = listener::onCollectionClick,
-                    modifier = Modifier.padding(horizontal = 16.dp),
                     onShowMoreClick = listener::onCollectionsShowMoreClick,
                 )
 
