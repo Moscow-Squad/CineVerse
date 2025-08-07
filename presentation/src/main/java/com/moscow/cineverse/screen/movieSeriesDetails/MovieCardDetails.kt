@@ -50,6 +50,7 @@ fun MovieCardDetails(
     releaseDate: String,
     posterUrl: String,
     type: String,
+    enableBlur: Boolean,
     onSaveClick: () -> Unit = {},
     onPlayClick: () -> Unit = {},
     sharedTransitionScope: SharedTransitionScope,
@@ -87,6 +88,7 @@ fun MovieCardDetails(
                         .height(289.dp)
                         .width(216.dp)
                         .clip(RoundedCornerShape(Theme.radius.extraLarge)),
+                    isBlurEnabled = enableBlur,
                     placeholderContent = { RemoteImagePlaceholder() },
                     errorContent = { RemoteImagePlaceholder() },
                     onBlurContent = {
@@ -234,6 +236,7 @@ fun InfoTextWithIcon(icon: Int, text: String, tint: Color) {
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun MainMovieCard(
+    enableBlur: Boolean,
     posterUrl: String,
     title: String,
     onSaveClick: () -> Unit = {},
@@ -259,6 +262,7 @@ fun MainMovieCard(
                 modifier = Modifier
                     .size(40.dp)
                     .clip(RoundedCornerShape(Theme.radius.full)),
+                isBlurEnabled = enableBlur,
                 placeholderContent = {
                     RemoteImagePlaceholder(
                         modifier = Modifier.fillMaxSize()

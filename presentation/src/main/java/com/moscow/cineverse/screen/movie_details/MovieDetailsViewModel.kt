@@ -12,8 +12,8 @@ import com.moscow.domain.model.Movie
 import com.moscow.domain.model.Review
 import com.moscow.domain.model.UserType
 import com.moscow.domain.model.details.MovieDetail
+import com.moscow.domain.repository.blur.BlurProvider
 import com.moscow.domain.usecase.collection.AddMediaItemToCollectionUseCase
-import com.moscow.domain.usecase.collection.GetCurrentUserUseCase
 import com.moscow.domain.usecase.local.GetUserDetailsUseCase
 import com.moscow.domain.usecase.movie.GetMovieCreditsUseCase
 import com.moscow.domain.usecase.movie.GetMovieDetailsUseCase
@@ -34,6 +34,7 @@ class MovieDetailsViewModel @Inject constructor(
     private val addMediaItemToCollectionUseCase: AddMediaItemToCollectionUseCase,
     private val getUserDetailsUseCase: GetUserDetailsUseCase,
     private val rateMovieUseCase: RateMovieUseCase,
+    private val blurProvider: BlurProvider,
     saveStateHandle: SavedStateHandle,
 ) : BaseViewModel<MovieScreenState, MovieDetailsScreenEffect>(MovieScreenState()),
     MovieDetailsInteractionListener {
@@ -53,14 +54,29 @@ class MovieDetailsViewModel @Inject constructor(
             waitUntilAllDataIsReady()
             updateState { it.copy(isLoading = false) }
         }
+        observeBlur()
+    }
+
+    private fun observeBlur() {
+        viewModelScope.launch {
+            blurProvider.blurFlow.collect { enableBlur ->
+                updateState { it.copy(enableBlur = enableBlur) }
+            }
+        }
     }
 
     private suspend fun waitUntilAllDataIsReady() {
         var wait = 0
         while (uiState.value.movieDetailsUiState == null) {
             wait++
-            if (wait == 25){
-                updateState { it.copy(isLoading = false, errorMessage = "error loading", shouldShowError = true) }
+            if (wait == 25) {
+                updateState {
+                    it.copy(
+                        isLoading = false,
+                        errorMessage = "error loading",
+                        shouldShowError = true
+                    )
+                }
                 return
             }
             delay(100)
@@ -80,7 +96,8 @@ class MovieDetailsViewModel @Inject constructor(
                         addMediaItemToCollectionUseCase(
                             movieId,
                             MediaType.Movie,
-                            collectionId = collectionId ?: throw IllegalArgumentException("User must logged in")
+                            collectionId = collectionId
+                                ?: throw IllegalArgumentException("User must logged in")
                         )
                     },
                     onSuccess = { },
