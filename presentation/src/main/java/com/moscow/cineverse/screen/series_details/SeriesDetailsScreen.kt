@@ -64,7 +64,7 @@ fun SeriesDetailsScreen(
     navigateToSeriesSeasons: (Int) -> Unit,
     navigateToCastDetails: (Int) -> Unit,
     navigateToSeriesDetails: (Int) -> Unit,
-    navigateToLogin: () -> Unit // Add this parameter
+    navigateToLogin: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val context = LocalContext.current

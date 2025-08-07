@@ -148,7 +148,11 @@ class SeriesDetailsScreenScreenViewModel @Inject constructor(
             action = { preferences.isLoggedIn() },
             onSuccess = { isLoggedIn ->
                 if (isLoggedIn) {
-                    updateState { it.copy(showRatingBottomSheet = true) }
+                    updateState { it.copy(
+                        starsRating = uiState.value.starsRating,
+                        showRatingBottomSheet = true
+                    )
+                    }
                 } else {
                     updateState { it.copy(showLoginBottomSheet = true) }
                 }
@@ -164,6 +168,8 @@ class SeriesDetailsScreenScreenViewModel @Inject constructor(
     }
 
     override fun navigateToLogin() {
+        updateState { it.copy(showLoginBottomSheet = false) }
+        updateState { it.copy(showRatingBottomSheet = false) }
         sendEvent(SeriesDetailsScreenEffects.NavigateToLogin)
     }
 

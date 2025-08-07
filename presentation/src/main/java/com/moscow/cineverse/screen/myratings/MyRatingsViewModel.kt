@@ -5,7 +5,6 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import androidx.paging.map
 import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.cineverse.common_ui_state.MediaItemUiState
 import com.moscow.cineverse.paging.BasePagingSource
@@ -17,7 +16,6 @@ import com.moscow.domain.usecase.movie.GetRatedMoviesUseCase
 import com.moscow.domain.usecase.series.GetRatedSeriesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 @HiltViewModel
@@ -33,6 +31,12 @@ class MyRatingsViewModel @Inject constructor(
     private lateinit var _ratedMovies: Flow<PagingData<RatedMediaItem>>
     private lateinit var _ratedSeries: Flow<PagingData<RatedMediaItem>>
 
+    private var moviesPagingSource: BasePagingSource<RatedMediaItem>? = null
+    private var seriesPagingSource: BasePagingSource<RatedMediaItem>? = null
+
+    private var _isMoviesEmpty = false
+    private var _isSeriesEmpty = false
+
     init {
         getRatedMovies()
         getRatedSeries()
@@ -45,6 +49,7 @@ class MyRatingsViewModel @Inject constructor(
 
         updateState { it.copy(selectedTab = tab) }
         updateContentList()
+        updateEmptyContentState()
     }
 
     override fun onMediaItemClicked(mediaItemUiState: MediaItemUiState) {
@@ -64,10 +69,25 @@ class MyRatingsViewModel @Inject constructor(
             it.copy(
                 isLoading = true,
                 shouldShowError = false,
-                errorMessage = ""
+                errorMessage = "",
+                isContentEmpty = false
             )
         }
 
+        invalidateData()
+    }
+
+    override fun onEmptyStateButtonClicked() {
+        sendEvent(MyRatingsEffect.NavigateToExplore)
+    }
+
+    fun refreshDataIfNeeded() {
+        invalidateData()
+    }
+
+    private fun invalidateData() {
+        moviesPagingSource?.invalidate()
+        seriesPagingSource?.invalidate()
         getRatedMovies()
         getRatedSeries()
     }
@@ -76,13 +96,16 @@ class MyRatingsViewModel @Inject constructor(
         _ratedMovies = Pager(
             config = PagingConfig(pageSize = 20),
             pagingSourceFactory = {
-                BasePagingSource { page ->
-                    ratedMoviesUseCase.invoke(page)
-                }
+                BasePagingSource<RatedMediaItem> { page ->
+                    val result = ratedMoviesUseCase.invoke(page)
+                    if (page == 1) {
+                        _isMoviesEmpty = result.isEmpty()
+                        updateEmptyContentState()
+                    }
+                    result.map { it.toUi(uiState.value.movieGenres) }
+                }.also { moviesPagingSource = it }
             }
-        ).flow.map { pagingData ->
-            pagingData.map { movie -> movie.toUi(uiState.value.movieGenres) }
-        }.cachedIn(viewModelScope)
+        ).flow.cachedIn(viewModelScope)
 
         updateContentList()
     }
@@ -91,13 +114,16 @@ class MyRatingsViewModel @Inject constructor(
         _ratedSeries = Pager(
             config = PagingConfig(pageSize = 20),
             pagingSourceFactory = {
-                BasePagingSource { page ->
-                    ratedSeriesUseCase.invoke(page)
-                }
+                BasePagingSource<RatedMediaItem> { page ->
+                    val result = ratedSeriesUseCase.invoke(page)
+                    if (page == 1) {
+                        _isSeriesEmpty = result.isEmpty()
+                        updateEmptyContentState()
+                    }
+                    result.map { it.toUi(uiState.value.seriesGenres) }
+                }.also { seriesPagingSource = it }
             }
-        ).flow.map { pagingData ->
-            pagingData.map { series -> series.toUi(uiState.value.seriesGenres) }
-        }.cachedIn(viewModelScope)
+        ).flow.cachedIn(viewModelScope)
 
         updateContentList()
     }
@@ -107,6 +133,19 @@ class MyRatingsViewModel @Inject constructor(
             ExploreTabsPages.MOVIES -> _ratedMovies
             ExploreTabsPages.SERIES -> _ratedSeries
             ExploreTabsPages.ACTORS -> throw IllegalStateException("Actors tab should not be available in ratings")
+        }
+    }
+
+    private fun updateEmptyContentState() {
+        val currentTab = uiState.value.selectedTab
+        val isCurrentTabEmpty = when (currentTab) {
+            ExploreTabsPages.MOVIES -> _isMoviesEmpty
+            ExploreTabsPages.SERIES -> _isSeriesEmpty
+            ExploreTabsPages.ACTORS -> false
+        }
+
+        updateState {
+            it.copy(isContentEmpty = isCurrentTabEmpty)
         }
     }
 

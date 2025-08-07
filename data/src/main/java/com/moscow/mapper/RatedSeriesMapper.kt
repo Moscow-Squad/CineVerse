@@ -3,6 +3,7 @@ package com.moscow.mapper
 import com.moscow.domain.model.Series
 import com.moscow.domain.usecase.series.GetRatedSeriesUseCase.RatedSeriesResult
 import com.moscow.remote.dto.rating.series.RatedSeriesDto
+import com.moscow.utils.IMAGES_URL
 import kotlinx.datetime.toLocalDate
 
 fun RatedSeriesDto.toOutputResult(): RatedSeriesResult? {
@@ -20,7 +21,7 @@ fun RatedSeriesDto.toOutputResult(): RatedSeriesResult? {
     val originalLanguage = this.originalLanguage ?: ""
     val originalName = this.originalName ?: ""
     val overview = this.overview ?: ""
-    val posterPath = this.posterPath ?: ""
+    val posterPath = (IMAGES_URL + this.posterPath)
     val rating = this.rating?.toFloat() ?: return null
 
     return RatedSeriesResult(

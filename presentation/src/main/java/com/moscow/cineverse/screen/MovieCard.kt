@@ -155,7 +155,7 @@ private fun <T> GridMovieCard(
                     modifier = Modifier
                         .fillMaxSize()
                         .clip(RoundedCornerShape(Theme.radius.large))
-                        .clickable{ onMovieClick(getId(movieData)) },
+                        .clickable { onMovieClick(getId(movieData)) },
                     placeholderContent = {
                         RemoteImagePlaceholder(
                             modifier = Modifier.fillMaxSize(),
@@ -220,7 +220,7 @@ private fun <T> GridMovieCard(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 8.dp)
-                    .clickable (
+                    .clickable(
                         indication = null,
                         interactionSource = remember { MutableInteractionSource() },
                         onClick = { onMovieClick(getId(movieData)) }
@@ -248,6 +248,7 @@ private fun <T> ListMovieCard(
             .fillMaxWidth()
             .height(95.dp)
             .clip(RoundedCornerShape(Theme.radius.large))
+            .clickable { onMovieClick(getId(movieData)) }
            ,
         elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
         shape = RoundedCornerShape(Theme.radius.large),
@@ -269,7 +270,6 @@ private fun <T> ListMovieCard(
                                 bottomStart = Theme.radius.large
                             )
                         )
-                        .clickable { onMovieClick(getId(movieData)) }
                         ,
                     placeholderContent = {
                         RemoteImagePlaceholder(

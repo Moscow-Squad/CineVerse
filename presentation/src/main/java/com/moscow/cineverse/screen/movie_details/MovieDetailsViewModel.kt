@@ -293,7 +293,11 @@ class MovieDetailsViewModel @Inject constructor(
             action = { preferences.isLoggedIn() },
             onSuccess = { isLoggedIn ->
                 if (isLoggedIn) {
-                    updateState { it.copy(showRatingBottomSheet = true) }
+                    updateState { it.copy(
+                        starsRating = uiState.value.starsRating,
+                        showRatingBottomSheet = true
+                    )
+                    }
                 } else {
                     updateState { it.copy(showLoginBottomSheet = true) }
                 }
@@ -309,6 +313,7 @@ class MovieDetailsViewModel @Inject constructor(
     }
 
     override fun navigateToLogin() {
+        updateState { it.copy(showLoginBottomSheet = false) }
         sendEvent(MovieDetailsScreenEffect.NavigateToLogin)
     }
 

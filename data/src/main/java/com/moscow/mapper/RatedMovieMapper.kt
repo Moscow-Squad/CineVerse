@@ -3,6 +3,7 @@ package com.moscow.mapper
 import com.moscow.domain.model.Movie
 import com.moscow.domain.usecase.movie.GetRatedMoviesUseCase.RatedMovieResult
 import com.moscow.remote.dto.rating.movie.RatedMovieDto
+import com.moscow.utils.IMAGES_URL
 import kotlinx.datetime.toLocalDate
 
 fun RatedMovieDto.toOutputResult(): RatedMovieResult? {
@@ -22,7 +23,7 @@ fun RatedMovieDto.toOutputResult(): RatedMovieResult? {
     val originalLanguage = this.originalLanguage ?: ""
     val originalTitle = this.originalTitle ?: ""
     val overview = this.overview ?: ""
-    val posterPath = this.posterPath ?: ""
+    val posterPath = (IMAGES_URL + this.posterPath)
     val video = (this.video == true)
     val poster = this.posterPath ?: ""
     val rating = this.rating?.toFloat() ?: 0f
