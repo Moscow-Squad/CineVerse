@@ -13,7 +13,8 @@ data class HomeUiState(
     val matchesYourVibe: List<MediaItemUiState> = emptyList(),
     val topRatedTvShows: List<MediaItemUiState> = emptyList(),
     val youRecentlyViewed: List<MediaItemUiState> = emptyList(),
-    val collections: List<CollectionUiState> = emptyList()
+    val collections: List<CollectionUiState> = emptyList(),
+    val enableBlur: Boolean = true
 ){
     data class GenreUi(
         val id: Int,

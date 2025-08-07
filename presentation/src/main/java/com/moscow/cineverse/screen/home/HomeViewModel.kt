@@ -1,7 +1,6 @@
 package com.moscow.cineverse.screen.home
 
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.cineverse.common_ui_state.MediaItemUiState
@@ -12,6 +11,7 @@ import com.moscow.domain.model.MediaType
 import com.moscow.domain.model.Movie
 import com.moscow.domain.model.Series
 import com.moscow.domain.model.UserType
+import com.moscow.domain.repository.blur.BlurProvider
 import com.moscow.domain.usecase.collection.GetCollectionDetailsUseCase
 import com.moscow.domain.usecase.genre.GenreUseCase
 import com.moscow.domain.usecase.home.GetMatchesYourVibesMoviesUseCase
@@ -36,12 +36,22 @@ class HomeViewModel @Inject constructor(
     private val genreUseCase: GenreUseCase,
     private val getTrendingMoviesUseCase: GetTrendingMoviesUseCase,
     private val getUserDetailsUseCase: GetUserDetailsUseCase,
-    private val getCollectionDetailsUseCase: GetCollectionDetailsUseCase
+    private val getCollectionDetailsUseCase: GetCollectionDetailsUseCase,
+    private val blurProvider: BlurProvider
 ) : BaseViewModel<HomeUiState, HomeEvent>(HomeUiState()), HomeInteractionListener {
 
     init {
         updateState { it.copy(isLoading = true) }
         loadHomeData()
+        observeBlur()
+    }
+
+    private fun observeBlur() {
+        viewModelScope.launch {
+            blurProvider.blurFlow.collect { enableBlur ->
+                updateState { it.copy(enableBlur = enableBlur) }
+            }
+        }
     }
 
     private fun loadHomeData() {
@@ -80,7 +90,7 @@ class HomeViewModel @Inject constructor(
             || uiState.value.matchesYourVibe.isEmpty()
         ) {
             wait++
-            if (wait == 25){
+            if (wait == 25) {
                 updateState { it.copy(isLoading = false, error = "error loading") }
                 return
             }
@@ -101,7 +111,7 @@ class HomeViewModel @Inject constructor(
             is UserType.AuthenticatedUser -> {
                 updateState { it.copy(userName = user.username) }
                 launchWithResult(
-                    action = { getCollectionDetailsUseCase(user.recentlyCollectionId,1) },
+                    action = { getCollectionDetailsUseCase(user.recentlyCollectionId, 1) },
                     onSuccess = { result ->
                         updateState {
                             it.copy(
