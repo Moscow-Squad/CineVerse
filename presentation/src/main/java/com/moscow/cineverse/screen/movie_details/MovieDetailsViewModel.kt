@@ -15,6 +15,7 @@ import com.moscow.domain.model.details.MovieDetail
 import com.moscow.domain.repository.PreferenceRepository
 import com.moscow.domain.usecase.collection.AddMediaItemToCollectionUseCase
 import com.moscow.domain.usecase.local.GetUserDetailsUseCase
+import com.moscow.domain.usecase.movie.DeleteRatingMovieUseCase
 import com.moscow.domain.usecase.movie.GetMovieCreditsUseCase
 import com.moscow.domain.usecase.movie.GetMovieDetailsUseCase
 import com.moscow.domain.usecase.movie.GetMovieRecommendationsUseCase
@@ -36,6 +37,7 @@ class MovieDetailsViewModel @Inject constructor(
     private val getUserDetailsUseCase: GetUserDetailsUseCase,
     private val preferences: PreferenceRepository,
     private val rateMovieUseCase: RateMovieUseCase,
+    private val deleteRatingMovieUseCase: DeleteRatingMovieUseCase,
     private val getUserRatingForMovieUseCase: GetUserRatingForMovieUseCase,
     saveStateHandle: SavedStateHandle,
 ) : BaseViewModel<MovieScreenState, MovieDetailsScreenEffect>(MovieScreenState()),
@@ -326,17 +328,34 @@ class MovieDetailsViewModel @Inject constructor(
                     )
                 }
             },
-            onStart = {
-                updateState { it.copy(isLoading = true) }
-            },
             onError = {
+                updateState { it.copy(showRatingBottomSheet = false) }
+                sendEvent(
+                    MovieDetailsScreenEffect.ShowError(message = "There is a problem receiving the request from the server. Please come back later.")
+                    // TODO : Handle Arabic Message
+                )
+            }
+        )
+    }
+
+    override fun onDeleteRatingMovie(movieId: Int) {
+        launchWithResult(
+            action = { deleteRatingMovieUseCase.invoke(movieId) },
+            onSuccess = {
                 updateState {
                     it.copy(
-                        starsRating = rating,
+                        starsRating = 0,
                         showRatingBottomSheet = false,
                         isLoading = false
                     )
                 }
+            },
+            onError = {
+                updateState { it.copy(showRatingBottomSheet = false) }
+                sendEvent(
+                    MovieDetailsScreenEffect.ShowError(message = "There is a problem receiving the request from the server. Please come back later.")
+                    // TODO : Handle Arabic Message
+                )
             }
         )
     }

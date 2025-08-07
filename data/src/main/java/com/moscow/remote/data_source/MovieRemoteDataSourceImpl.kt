@@ -41,7 +41,7 @@ class MovieRemoteDataSourceImpl @Inject constructor(
         }
     }
 
-    override suspend fun deleteRatingMovie(movieId: Int): ApiResponse<Nothing> {
+    override suspend fun deleteRatingMovie(movieId: Int){
         val sessionId = preferenceRepository.getSessionId()
         handleApi {
             movieService.deleteRatingMovie(
