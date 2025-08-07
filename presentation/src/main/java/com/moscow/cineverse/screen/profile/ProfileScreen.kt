@@ -10,27 +10,27 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import coil3.compose.rememberAsyncImagePainter
 import com.moscow.cineverse.designSystem.component.MovieAppBar
 import com.moscow.cineverse.designSystem.component.wrapper.MovieText
 import com.moscow.cineverse.designSystem.theme.Theme
-import com.moscow.cineverse.screen.profile.component.ProfileChipItem
-import com.moscow.cineverse.screen.profile.component.ProfileChips
-import com.moscow.cineverse.screen.profile.component.Settings
-import com.moscow.cineverse.screen.profile.component.UserInfo
-import com.moscow.cinverse.presentation.R
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import coil3.compose.rememberAsyncImagePainter
-import androidx.compose.runtime.getValue
 import com.moscow.cineverse.screen.login.WebViewBrowser
 import com.moscow.cineverse.screen.profile.component.ContentPreferencesBottomSheet
 import com.moscow.cineverse.screen.profile.component.EditProfileBottomSheet
 import com.moscow.cineverse.screen.profile.component.LanguageBottomSheet
 import com.moscow.cineverse.screen.profile.component.LogoutBottomSheet
+import com.moscow.cineverse.screen.profile.component.ProfileChipItem
+import com.moscow.cineverse.screen.profile.component.ProfileChips
+import com.moscow.cineverse.screen.profile.component.Settings
+import com.moscow.cineverse.screen.profile.component.UserInfo
+import com.moscow.cinverse.presentation.R
 
 @Composable
 fun ProfileScreen(
@@ -48,10 +48,10 @@ fun ProfileScreen(
         profileViewModel.getUserDetails()
         profileViewModel.uiEffect.collect { effect ->
             ProfileScreenEffectHandler.handleEffect(
-               effect,
+                effect,
                 navigateToLogin,
                 {},
-                {s,s1-> },
+                { s, s1 -> },
                 {},
                 {},
                 {}
@@ -134,7 +134,9 @@ fun ProfileContent(
                     ProfileChipItem(
                         R.string.my_collections, R.drawable.due_tone_video_library, {}),
                     ProfileChipItem(
-                        R.string.my_ratings, R.drawable.due_tone_star, {})))
+                        R.string.my_ratings, R.drawable.due_tone_star, {})
+                )
+            )
         }
 
         item {
@@ -151,9 +153,9 @@ fun ProfileContent(
                 onThemeChange = onThemeChange,
                 onLanguageClick = { listener.onShowLanguageBottomSheet() },
                 onLogoutClick = { listener.onShowLogoutBottomSheet() },
-                onPreferenceClick = {listener.onShowPreferencesBottomSheet()}
+                onPreferenceClick = { listener.onShowPreferencesBottomSheet() }
 
-                )
+            )
         }
 
         item {
@@ -186,7 +188,7 @@ fun ProfileContent(
                 visible = uiState.showEditProfileBottomSheet,
                 isGuest = uiState.isGuest,
                 onDismiss = { listener.onCancelEditProfileBottomSheet() },
-                onLoginClick = {listener.onClickLogin()},
+                onLoginClick = { listener.onClickLogin() },
                 onEditProfile = { listener.onClickEditProfile() }
             )
         }
@@ -194,8 +196,8 @@ fun ProfileContent(
             ContentPreferencesBottomSheet(
                 visible = uiState.showPreferencesBottomSheet,
                 onDismiss = { listener.onCancelPreferencesBottomSheet() },
-                onClickPreference = {preference -> listener.onSelectedPreference(preference)},
-
+                selectedPreference = uiState.selectedPreference,
+                onClickPreference = { enable -> listener.onSelectedPreference(enable = enable) }
             )
         }
     }
