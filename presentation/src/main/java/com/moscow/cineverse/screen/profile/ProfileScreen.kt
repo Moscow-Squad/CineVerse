@@ -73,27 +73,6 @@ fun ProfileContent(
     listener: ProfileInteractionListener,
     onThemeChange: (Boolean) -> Unit,
 ) {
-    Log.d("TAG", "ProfileContent: $uiState")/*
-        when {
-
-
-            uiState.isLoading -> {
-                MovieCircularProgressBar(modifier = modifier)
-            }
-
-
-            !uiState.errorMessage.isNullOrBlank() -> {
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(Theme.colors.background.screen),
-                    contentAlignment = Alignment.Center
-                ) {
-                    NoInternetScreen(onRetry = {})
-                }
-            }
-
-            else -> {*/
     LazyColumn(
         modifier = modifier
             .fillMaxSize()
