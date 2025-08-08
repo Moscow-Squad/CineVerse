@@ -197,13 +197,5 @@ fun MyCollectionsContent(
                 }
             }
         }
-
-
     }
-}
-
-@Preview
-@Composable
-private fun Preview() {
-
 }

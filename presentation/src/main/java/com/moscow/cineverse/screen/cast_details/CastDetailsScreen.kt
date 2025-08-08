@@ -264,7 +264,7 @@ fun MainDetails(
     location: String,
     scrollState: ScrollState?,
     socialMediaLinks: SocialMediaLinks,
-    enableBlur: Boolean,
+    enableBlur: String,
     modifier: Modifier = Modifier,
     onSocialMediaClick: (platform: String, url: String) -> Unit = { _, _ -> },
 ) {

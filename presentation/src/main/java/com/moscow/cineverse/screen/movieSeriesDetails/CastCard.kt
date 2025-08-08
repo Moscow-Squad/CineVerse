@@ -28,7 +28,7 @@ import com.moscow.cineverse.image_viewer.component.SafeImageViewer
 
 @Composable
 fun <T> CastCard(
-    enableBlur: Boolean,
+    enableBlur: String,
     modifier: Modifier = Modifier,
     castMember: T,
     getOriginalName: (T) -> String,

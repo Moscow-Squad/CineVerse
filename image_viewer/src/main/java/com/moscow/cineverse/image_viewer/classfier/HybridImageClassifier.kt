@@ -10,9 +10,10 @@ import java.nio.ByteOrder
 import java.nio.MappedByteBuffer
 import java.nio.channels.FileChannel
 
-internal class HybridImageClassifier(context: Context) {
+internal class HybridImageClassifier(context: Context, nsfwThreshold: Float = 0.2f) {
 
     private var interpreter: Interpreter? = null
+    private var nfsw : Float = nsfwThreshold
 
     init {
         interpreter = Interpreter(loadModelFile(context))

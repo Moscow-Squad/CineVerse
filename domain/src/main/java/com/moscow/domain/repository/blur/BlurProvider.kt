@@ -3,7 +3,7 @@ package com.moscow.domain.repository.blur
 import kotlinx.coroutines.flow.Flow
 
 interface BlurProvider {
-    suspend fun changeBlur(enabled: Boolean)
+    suspend fun changeBlur(enabled: String)
     suspend fun clearBlur()
-    val blurFlow: Flow<Boolean>
+    val blurFlow: Flow<String>
 }

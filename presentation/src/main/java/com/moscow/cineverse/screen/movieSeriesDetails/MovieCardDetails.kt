@@ -50,7 +50,7 @@ fun MovieCardDetails(
     releaseDate: String,
     posterUrl: String,
     type: String,
-    enableBlur: Boolean,
+    enableBlur: String,
     onSaveClick: () -> Unit = {},
     onPlayClick: () -> Unit = {},
     sharedTransitionScope: SharedTransitionScope,
@@ -236,7 +236,7 @@ fun InfoTextWithIcon(icon: Int, text: String, tint: Color) {
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun MainMovieCard(
-    enableBlur: Boolean,
+    enableBlur: String,
     posterUrl: String,
     title: String,
     onSaveClick: () -> Unit = {},
@@ -248,7 +248,7 @@ fun MainMovieCard(
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
-                .padding(horizontal = 16.dp)
+                .padding(start = 16.dp, end = 16.dp, bottom = 16.dp)
                 .sharedBounds(
                     rememberSharedContentState(key = "Main Movie Card"),
                     animatedVisibilityScope = animatedVisibilityScope,
@@ -307,7 +307,6 @@ fun MainMovieCard(
         }
     }
 }
-
 @Preview(showBackground = true)
 @Composable
 fun DetailCardPreview() {

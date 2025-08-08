@@ -23,7 +23,7 @@ import com.moscow.cineverse.image_viewer.component.SafeImageViewer
 @Composable
 fun GallerySection(
     images: List<String>,
-    enableBlur: Boolean,
+    enableBlur: String,
     modifier: Modifier = Modifier,
     isFlipped: Boolean = false
 ) {
@@ -71,7 +71,7 @@ fun GallerySection(
 @Composable
 fun GalleryImage(
     imageUrl: String,
-    enableBlur: Boolean,
+    enableBlur: String,
     modifier: Modifier = Modifier
 ) {
     SafeImageViewer(

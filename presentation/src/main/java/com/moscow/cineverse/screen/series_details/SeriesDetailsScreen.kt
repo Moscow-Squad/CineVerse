@@ -155,17 +155,19 @@ fun SeriesDetailsContent(
             }
 
             else -> {
-                Column(
+                LazyColumn(
+                    state = scrollState,
                     modifier = Modifier
                         .fillMaxSize()
                         .background(Theme.colors.background.screen)
                 ) {
-                    MovieAppBar(backButtonClick = onNavigateBack, showBackButton = true)
-                    LazyColumn(
-                        state = scrollState,
-                        modifier = Modifier.background(Theme.colors.background.screen)
-                    ) {
-                        item {
+                    // Make the header section sticky
+                    stickyHeader {
+                        Column(
+                            modifier = Modifier.background(Theme.colors.background.screen)
+                        ) {
+                            MovieAppBar(backButtonClick = onNavigateBack, showBackButton = true)
+
                             SharedTransitionLayout {
                                 AnimatedContent(
                                     targetState = isCollapsed,
@@ -200,156 +202,157 @@ fun SeriesDetailsContent(
                                 }
                             }
                         }
+                    }
+
+                    item {
+                        StorylineSection(description = uiState.seriesDetail.overview)
+                    }
+                    item {
+                        SectionTitle(
+                            title = stringResource(R.string.latest_seasons),
+                            onClick = { interactionListener.onShowMoreSeasonsClicked(uiState.seriesDetail.id) },
+                            modifier = Modifier.padding(
+                                start = 16.dp,
+                                end = 16.dp,
+                                bottom = 12.dp,
+                                top = 24.dp
+                            )
+                        )
+                    }
+                    items(detail.seasons.reversed().take(3)) { season ->
+                        SeasonCard(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(
+                                    horizontal = 16.dp,
+                                    vertical = 8.dp
+                                ),
+                            seasonNumber = season.title,
+                            episodeCount = season.episodeCount,
+                            airDate = season.airDate,
+                            posterUrl = season.posterPath,
+                            caption = season.overview,
+                            rate = season.rate,
+                            enableBlur = uiState.enableBlur,
+                        )
+                    }
+                    if (uiState.cast.isNotEmpty()) {
                         item {
-                            StorylineSection(description = uiState.seriesDetail.overview)
+                            StarCastSection(
+                                title = stringResource(R.string.star_cast),
+                                modifier = Modifier
+                                    .background(Theme.colors.background.screen)
+                                    .padding(top = 24.dp, start = 16.dp, end = 16.dp),
+                                cast = uiState.cast.take(10),
+                                castContent = { actor ->
+                                    CastCard(
+                                        modifier = Modifier.clickable {
+                                            interactionListener.onActorClicked(
+                                                actor.id
+                                            )
+                                        },
+                                        castMember = actor,
+                                        enableBlur = uiState.enableBlur,
+                                        getOriginalName = { it.originalName },
+                                        getCharacterName = { it.characterName },
+                                        getProfileImage = { it.profileImage }
+                                    )
+                                }
+                            )
                         }
+                    }
+                    if (uiState.crew.isNotEmpty() || detail.creators.isNotEmpty()) {
                         item {
-                            SectionTitle(
-                                title = stringResource(R.string.latest_seasons),
-                                onClick = { interactionListener.onShowMoreSeasonsClicked(uiState.seriesDetail.id) },
+                            StaffInfoSection(
+                                staffInfo = listOf(
+                                    stringResource(R.string.characters) to uiState.characters.joinToString(
+                                        ","
+                                    ),
+                                    stringResource(R.string.director_screenplay_story) to uiState.director.joinToString(
+                                        ","
+                                    ),
+                                    stringResource(R.string.producer) to uiState.produce.joinToString(
+                                        ","
+                                    ),
+                                    stringResource(R.string.writer) to uiState.writer.joinToString(
+                                        ","
+                                    )
+                                ),
                                 modifier = Modifier.padding(
                                     start = 16.dp,
                                     end = 16.dp,
-                                    bottom = 12.dp,
                                     top = 24.dp
                                 )
                             )
                         }
-                        items(detail.seasons.reversed().take(3)) { season ->
-                            SeasonCard(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(
-                                        horizontal = 16.dp,
-                                        vertical = 8.dp
-                                    ),
-                                seasonNumber = season.title,
-                                episodeCount = season.episodeCount,
-                                airDate = season.airDate,
-                                posterUrl = season.posterPath,
-                                caption = season.overview,
-                                rate = season.rate,
-                                enableBlur = uiState.enableBlur,
-                            )
-                        }
-                        if (uiState.cast.isNotEmpty()) {
-                            item {
-                                StarCastSection(
-                                    title = stringResource(R.string.star_cast),
-                                    modifier = Modifier
-                                        .background(Theme.colors.background.screen)
-                                        .padding(top = 24.dp, start = 16.dp, end = 16.dp),
-                                    cast = uiState.cast.take(10),
-                                    castContent = { actor ->
-                                        CastCard(
-                                            modifier = Modifier.clickable {
-                                                interactionListener.onActorClicked(
-                                                    actor.id
-                                                )
-                                            },
-                                            castMember = actor,
-                                            enableBlur = uiState.enableBlur,
-                                            getOriginalName = { it.originalName },
-                                            getCharacterName = { it.characterName },
-                                            getProfileImage = { it.profileImage }
-                                        )
-                                    }
-                                )
-                            }
-                        }
-                        if (uiState.crew.isNotEmpty() || detail.creators.isNotEmpty()) {
-                            item {
-                                StaffInfoSection(
-                                    staffInfo = listOf(
-                                        stringResource(R.string.characters) to uiState.characters.joinToString(
-                                            ","
-                                        ),
-                                        stringResource(R.string.director_screenplay_story) to uiState.director.joinToString(
-                                            ","
-                                        ),
-                                        stringResource(R.string.producer) to uiState.produce.joinToString(
-                                            ","
-                                        ),
-                                        stringResource(R.string.writer) to uiState.writer.joinToString(
-                                            ","
-                                        )
-                                    ),
-                                    modifier = Modifier.padding(
-                                        start = 16.dp,
-                                        end = 16.dp,
-                                        top = 24.dp
-                                    )
-                                )
-                            }
-                        }
-                        if (uiState.recommendation.isNotEmpty()) {
-                            item {
-                                MovieListSection(
-                                    title = stringResource(R.string.you_might_also_like),
-                                    movies = uiState.recommendation.take(6),
-                                    onClickShowMore = {
-                                        interactionListener.onShowMoreRecommendationsClicked(
-                                            uiState.seriesDetail.id,
-                                            uiState.seriesDetail.title
-                                        )
-                                    },
-                                    onClickPoster = { series -> },
-                                    modifier = Modifier.padding(top = 16.dp),
-                                    paddingHorizontal = 16,
-                                    movieCardContent = { series, modifier, onClick ->
-                                        MoviePosterCard(
-                                            movie = series,
-                                            onMovieClick = {
-                                                interactionListener.onSeriesClicked(
-                                                    series.id
-                                                )
-                                            },
-                                            modifier = modifier,
-                                            enableBlur = uiState.enableBlur,
-                                        )
-                                    }
-                                )
-                            }
-                        }
+                    }
+                    if (uiState.recommendation.isNotEmpty()) {
                         item {
-                            RatingSection(
-                                icon = Theme.icons.dueTone.star,
-                                title = stringResource(R.string.give_it_stars),
-                                caption = stringResource(R.string.let_the_world_know_how_you_felt),
-                                onClick = interactionListener::showRatingBottomSheet,
-                                ratingStars = uiState.starsRating,
-                                modifier = Modifier.padding(horizontal = 16.dp, vertical = 24.dp),
+                            MovieListSection(
+                                title = stringResource(R.string.you_might_also_like),
+                                movies = uiState.recommendation.take(6),
+                                onClickShowMore = {
+                                    interactionListener.onShowMoreRecommendationsClicked(
+                                        uiState.seriesDetail.id,
+                                        uiState.seriesDetail.title
+                                    )
+                                },
+                                onClickPoster = { series -> },
+                                modifier = Modifier.padding(top = 16.dp),
+                                paddingHorizontal = 16,
+                                movieCardContent = { series, modifier, onClick ->
+                                    MoviePosterCard(
+                                        movie = series,
+                                        onMovieClick = {
+                                            interactionListener.onSeriesClicked(
+                                                series.id
+                                            )
+                                        },
+                                        modifier = modifier,
+                                        enableBlur = uiState.enableBlur,
+                                    )
+                                }
                             )
                         }
-                        if (uiState.reviews.isNotEmpty()) {
-                            item {
-                                SectionTitle(
-                                    title = stringResource(R.string.top_reviews),
-                                    onClick = { interactionListener.onShowMoreReviewsClicked(uiState.seriesDetail.id) },
-                                    modifier = Modifier.padding(
-                                        start = 16.dp,
-                                        end = 16.dp,
-                                        bottom = 12.dp
-                                    )
+                    }
+                    item {
+                        RatingSection(
+                            icon = Theme.icons.dueTone.star,
+                            title = stringResource(R.string.give_it_stars),
+                            caption = stringResource(R.string.let_the_world_know_how_you_felt),
+                            onClick = interactionListener::showRatingBottomSheet,
+                            ratingStars = uiState.starsRating,
+                            modifier = Modifier.padding(horizontal = 16.dp, vertical = 24.dp),
+                        )
+                    }
+                    if (uiState.reviews.isNotEmpty()) {
+                        item {
+                            SectionTitle(
+                                title = stringResource(R.string.top_reviews),
+                                onClick = { interactionListener.onShowMoreReviewsClicked(uiState.seriesDetail.id) },
+                                modifier = Modifier.padding(
+                                    start = 16.dp,
+                                    end = 16.dp,
+                                    bottom = 12.dp
                                 )
-                            }
-                            items(uiState.reviews.take(3)) { review ->
-                                MovieReviewCard(
-                                    name = review.username,
-                                    username = "@${review.username}",
-                                    reviewText = review.reviewContent,
-                                    rating = review.rate.toInt(),
-                                    date = formatReviewDate(review.date),
-                                    avatar = if (review.userImage.isEmpty()) null else rememberAsyncImagePainter(
-                                        model = review.userImage
-                                    ),
-                                    modifier = Modifier.padding(
-                                        start = 16.dp,
-                                        end = 16.dp,
-                                        bottom = 12.dp
-                                    )
+                            )
+                        }
+                        items(uiState.reviews.take(3)) { review ->
+                            MovieReviewCard(
+                                name = review.username,
+                                username = "@${review.username}",
+                                reviewText = review.reviewContent,
+                                rating = review.rate.toInt(),
+                                date = formatReviewDate(review.date),
+                                avatar = if (review.userImage.isEmpty()) null else rememberAsyncImagePainter(
+                                    model = review.userImage
+                                ),
+                                modifier = Modifier.padding(
+                                    start = 16.dp,
+                                    end = 16.dp,
+                                    bottom = 12.dp
                                 )
-                            }
+                            )
                         }
                     }
                 }

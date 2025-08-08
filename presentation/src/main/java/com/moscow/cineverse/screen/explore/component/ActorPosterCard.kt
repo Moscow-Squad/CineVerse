@@ -32,7 +32,7 @@ import com.moscow.cineverse.screen.explore.ExploreScreenState
 @Composable
 fun ActorPosterCard(
     actor: ExploreScreenState.ActorUiState,
-    enableBlur: Boolean,
+    enableBlur: String,
     modifier: Modifier = Modifier,
     titleTextAlign: TextAlign = TextAlign.Center,
     showTitle: Boolean = true,

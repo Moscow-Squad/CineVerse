@@ -125,7 +125,7 @@ class ProfileViewModel @Inject constructor(
         }
     }
 
-    fun updateAppBlur(enable: Boolean) {
+    fun updateAppBlur(enable: String) {
         viewModelScope.launch {
             blurProvider.changeBlur(enabled = enable)
         }
@@ -205,7 +205,7 @@ class ProfileViewModel @Inject constructor(
         updateState { ProfileUIState() }
     }
 
-    override fun onSelectedPreference(enable: Boolean) {
+    override fun onSelectedPreference(enable: String) {
         updateAppBlur(enable = enable)
     }
 
