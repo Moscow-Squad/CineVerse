@@ -41,6 +41,9 @@ fun NavGraphBuilder.homeRoute(navController: NavHostController) {
             navigateToCollectionDetails = { id, name ->
                 navController.navigate(CollectionDetailsRoute(id, name))
             },
+            navigateToMyCollections = {
+                navController.navigate(MyCollectionsRoute)
+            }
         )
     }
 }

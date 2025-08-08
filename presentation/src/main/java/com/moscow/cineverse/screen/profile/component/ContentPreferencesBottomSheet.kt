@@ -11,6 +11,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -65,24 +66,25 @@ fun ContentPreferencesContent(
             color = Theme.colors.shade.secondary,
             style = Theme.textStyle.body.small.regular
         )
+
         PreferenceOption(
             name = stringResource(R.string.hide_explicit_content),
             description = stringResource(R.string.hides_revealing_or_inappropriate_posters_e_g_nudity_strong_sexual_content),
-            imageRes = painterResource(com.moscow.cineverse.design_system.R.drawable.icon_eye_slash),
+            imageRes = painterResource(com.moscow.cineverse.design_system.R.drawable.icon_eye_with_slash),
             isSelected = selectedPreference == "high",
             onClick = { onPreferenceChanged("high") }
         )
         PreferenceOption(
             name = stringResource(R.string.strict_filtering),
             description = stringResource(R.string.hides_all_content_that_includes_immodest_clothing_or_behavior),
-            imageRes = painterResource(com.moscow.cineverse.design_system.R.drawable.icon_eye_slash),
+            imageRes = painterResource(com.moscow.cineverse.design_system.R.drawable.slash),
             isSelected = selectedPreference == "medium",
             onClick = { onPreferenceChanged("medium") }
         )
         PreferenceOption(
             name = stringResource(R.string.show_all_content),
             description = stringResource(R.string.no_filtering_all_images_and_posters_will_be_displayed),
-            imageRes = painterResource(com.moscow.cineverse.design_system.R.drawable.icon_eye_slash),
+            imageRes = painterResource(com.moscow.cineverse.design_system.R.drawable.icon_eye),
             isSelected = selectedPreference == "low",
             onClick = { onPreferenceChanged("low") }
         )
@@ -115,6 +117,13 @@ fun PreferenceOption(
     val backgroundColor by animateColorAsState(
         targetValue = if (isSelected) Theme.colors.brand.tertiary else Theme.colors.background.bottomSheetCard
     )
+    val iconColor by animateColorAsState(
+        targetValue = if (isSelected) Theme.colors.brand.primary else Theme.colors.shade.secondary
+    )
+
+    val iconBackground by animateColorAsState(
+        targetValue = if (isSelected) Theme.colors.brand.secondary else Theme.colors.shade.quaternary
+    )
 
     LaunchedEffect(isPressed) {
         if (isPressed) {
@@ -128,13 +137,10 @@ fun PreferenceOption(
             .scale(scale)
             .fillMaxWidth()
             .background(
-                color = backgroundColor,
-                shape = RoundedCornerShape(Theme.radius.large)
+                color = backgroundColor, shape = RoundedCornerShape(Theme.radius.large)
             )
             .border(
-                width = 1.dp,
-                color = borderColor,
-                shape = RoundedCornerShape(Theme.radius.large)
+                width = 1.dp, color = borderColor, shape = RoundedCornerShape(Theme.radius.large)
             )
             .clickable {
                 isPressed = true
@@ -142,20 +148,29 @@ fun PreferenceOption(
             }
             .padding(12.dp),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(12.dp)
-    ) {
-        Image(
-            painter = imageRes,
-            contentDescription = "preference icon",
-            colorFilter = ColorFilter.tint(if (isSelected) Theme.colors.brand.secondary else Theme.colors.shade.quaternary),
-            modifier = Modifier.size(32.dp)
-        )
+        horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+        Box(
+            modifier = Modifier
+                .size(32.dp)
+                .background(
+                    color = iconBackground, shape = RoundedCornerShape(Theme.radius.medium)
+                )
+                .padding(8.dp), contentAlignment = Alignment.Center
+        ) {
+            Icon(
+                painter = imageRes,
+                contentDescription = "preference icon",
+                tint = iconColor,
+                modifier = Modifier.size(16.dp)
+
+            )
+        }
         Column(
             verticalArrangement = Arrangement.Center
         ) {
             Text(
                 text = name,
-                color = if (isSelected) Theme.colors.brand.primary else Theme.colors.shade.primary,
+                color = if (isSelected) Theme.colors.brand.primary else Color.Transparent,
                 style = Theme.textStyle.body.medium.medium
             )
             Spacer(modifier = Modifier.height(4.dp))

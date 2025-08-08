@@ -5,10 +5,11 @@ object ProfileScreenEffectHandler {
         effects: ProfileScreenEffects,
         navigateToLogin:()->Unit,
         onLogoutFailed:()-> Unit,
-        navigateToEditProfileBottomSheet:(String, String) -> Unit,
         navigateToMyRatings: () -> Unit,
         navigateToMyCollections: () -> Unit,
         navigateToMyHistory: () -> Unit,
+        goToWebView:(String) -> Unit
+
     ){
         when(effects){
 
@@ -31,7 +32,7 @@ object ProfileScreenEffectHandler {
             }
 
             is ProfileScreenEffects.GoToWebView -> {
-
+                goToWebView(effects.url)
             }
 
             ProfileScreenEffects.OnLoginClick -> {

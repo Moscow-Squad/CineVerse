@@ -15,4 +15,5 @@ sealed class HomeEvent {
     object BrowseSuggestionClicked : HomeEvent()
     object WatchingSuggestionClicked : HomeEvent()
     object SeeMoreRecentlyViewed: HomeEvent()
+    object SeeMoreCollections: HomeEvent()
 }

@@ -6,6 +6,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Text
@@ -25,9 +27,10 @@ fun MyCollectionsLayout(
     modifier: Modifier = Modifier
 ) {
     val itemsRowSize = (items.size + 1) / 2
-    Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(12.dp)) {
+    Column(modifier = modifier.fillMaxWidth()
+        , verticalArrangement = Arrangement.spacedBy(12.dp)) {
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.padding(horizontal = 16.dp).fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text(
@@ -46,10 +49,11 @@ fun MyCollectionsLayout(
 
         LazyRow(
             modifier = Modifier.fillMaxWidth(),
-            contentPadding = PaddingValues(start = 16.dp)
+
         ) {
             items(items.take(itemsRowSize)) { itemState ->
                 MyCollectionCard(
+                    modifier = Modifier.width(280.dp).padding(start = 16.dp),
                     state = itemState,
                     onClick = { onCollectionClick(itemState.id, itemState.title) },
                 )
@@ -58,10 +62,10 @@ fun MyCollectionsLayout(
 
         LazyRow(
             modifier = Modifier.fillMaxWidth(),
-            contentPadding = PaddingValues(start = 16.dp)
         ) {
             items(items.drop(itemsRowSize)) { itemState ->
                 MyCollectionCard(
+                    modifier = Modifier.width(280.dp).padding(start = 16.dp),
                     state = itemState,
                     onClick = { onCollectionClick(itemState.id, itemState.title) },
                 )

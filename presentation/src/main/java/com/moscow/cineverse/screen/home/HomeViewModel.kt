@@ -306,6 +306,7 @@ class HomeViewModel @Inject constructor(
     }
 
     override fun onCollectionsShowMoreClick() {
+        sendEvent(HomeEvent.SeeMoreCollections)
     }
 
     override fun onCollectionClick(collectionId: Int, collectionName: String) {

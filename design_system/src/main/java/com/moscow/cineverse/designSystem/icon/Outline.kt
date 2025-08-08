@@ -1,6 +1,7 @@
 package com.moscow.cineverse.designSystem.icon
 
 import com.moscow.cineverse.design_system.R
+import kotlin.Int
 
 data class Outline(
     val arrowLeft: Int,
@@ -28,7 +29,9 @@ data class Outline(
     val search: Int,
     val star: Int,
     val user: Int,
-)
+    val slash:Int,
+
+    )
 val outlineIcons = Outline(
     arrowLeft = R.drawable.outline_arrow_left,
     magicStick = R.drawable.outline_magic_stick,
@@ -54,5 +57,7 @@ val outlineIcons = Outline(
     rowVertical = R.drawable.outline_row_vertical,
     search = R.drawable.outline_search,
     star = R.drawable.outline_star,
-    user = R.drawable.outline_user
+    user = R.drawable.outline_user,
+    slash = R.drawable.slash
+
 )
