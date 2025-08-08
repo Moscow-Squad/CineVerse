@@ -89,8 +89,8 @@ class CollectionsBottomSheetViewModel @Inject constructor(
         sendEvent(CollectionsBottomSheetEffect.OnItemAddedSuccessfully)
     }
 
-    private fun onAddMediaItemToCollectionFailed(e: Throwable) {
-        sendEvent(CollectionsBottomSheetEffect.OnItemAddedFailed(message = e.message.toString()))
+    private fun onAddMediaItemToCollectionFailed(e: Int) {
+        sendEvent(CollectionsBottomSheetEffect.OnItemAddedFailed(message = e))
     }
 
     private fun isAddMediaItemToCollectionLoading(collectionId: Int, isLoading: Boolean) {
@@ -139,8 +139,8 @@ class CollectionsBottomSheetViewModel @Inject constructor(
         }
     }
 
-    private fun onLoadUserCollectionsFailed(throwable: Throwable) {
-        updateState { it.copy(errorMessage = "Error in loading collections: ${throwable.message}") }
+    private fun onLoadUserCollectionsFailed(msg: Int) {
+        updateState { it.copy(errorMessage = msg) }
     }
 
     private fun onLoading() {

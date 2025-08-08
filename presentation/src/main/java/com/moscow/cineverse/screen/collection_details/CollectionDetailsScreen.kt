@@ -20,6 +20,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.moscow.cineverse.component.ErrorContent
 import com.moscow.cineverse.component.NoInternetScreen
 import com.moscow.cineverse.component.SwipeToDelete
 import com.moscow.cineverse.designSystem.component.MovieAppBar
@@ -89,14 +90,10 @@ private fun CollectionDetailsScreenContent(
         }
     }
     else if(uiState.isError){
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(Theme.colors.background.screen),
-            contentAlignment = Alignment.Center
-        ) {
-            NoInternetScreen(onRetry = { mediaItems.retry() })
-        }
+        ErrorContent(
+            errorMessage = uiState.errorMsg,
+            onRetry = interactionListener::onRefresh,
+        )
     }else{
         if (mediaItems.loadState.refresh is LoadState.Loading) {
             Box(
@@ -195,14 +192,4 @@ private fun CollectionDetailsScreenContent(
             }
         }
     }
-}
-
-@Preview
-@Composable
-private fun CollectionDetailsScreenPreview() {
-    CollectionDetailsScreen(
-        navigateBack = {},
-        navigateToMovieDetails = {},
-        navigateToSeriesDetails = {}
-    )
 }

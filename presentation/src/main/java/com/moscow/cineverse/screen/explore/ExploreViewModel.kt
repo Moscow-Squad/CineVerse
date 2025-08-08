@@ -315,8 +315,8 @@ class ExploreViewModel @Inject constructor(
         updateState { it.copy(localSuggestions = suggestions, showHistory = true) }
     }
 
-    private fun onGetHistoryDataFailed(e: Throwable) {
-        updateState { it.copy(error = e.message) }
+    private fun onGetHistoryDataFailed(e: Int) {
+        updateState { it.copy(error = e) }
     }
 
     override fun onCancelButtonClicked() {
@@ -425,12 +425,12 @@ class ExploreViewModel @Inject constructor(
         )
     }
 
-    private fun onSearchQueryError(e: Throwable) {
+    private fun onSearchQueryError(e: Int) {
         updateState {
             it.copy(
                 shouldShowError = true,
                 isLoading = false,
-                error = e.message,
+                error = e,
                 isSearch = false
             )
         }
@@ -443,8 +443,8 @@ class ExploreViewModel @Inject constructor(
         )
     }
 
-    private fun onClearSearchHistoryError(e: Throwable) {
-        updateState { it.copy(showHistory = false, error = e.message) }
+    private fun onClearSearchHistoryError(e: Int) {
+        updateState { it.copy(showHistory = false, error = e) }
     }
 
     override fun getMoviesGenres() {
@@ -470,8 +470,8 @@ class ExploreViewModel @Inject constructor(
         updateState { it.copy(genres = it.moviesGenres) }
     }
 
-    private fun onMoviesGenresFailed(e: Throwable) {
-        updateState { it.copy(shouldShowError = true, isLoading = false, error = e.message) }
+    private fun onMoviesGenresFailed(e: Int) {
+        updateState { it.copy(shouldShowError = true, isLoading = false, error = e) }
     }
 
     override fun getSeriesGenres() {
@@ -500,8 +500,8 @@ class ExploreViewModel @Inject constructor(
         }
     }
 
-    private fun onSeriesGenresFailed(e: Throwable) {
-        updateState { it.copy(shouldShowError = true, isLoading = false, error = e.message) }
+    private fun onSeriesGenresFailed(e: Int) {
+        updateState { it.copy(shouldShowError = true, isLoading = false, error = e) }
     }
 
     override fun onMovieGenreSelected(genreId: Int) {

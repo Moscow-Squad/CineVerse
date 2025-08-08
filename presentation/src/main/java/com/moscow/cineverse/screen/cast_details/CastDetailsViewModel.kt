@@ -131,12 +131,12 @@ class CastDetailsViewModel @Inject constructor(
         )
     }
 
-    private fun onActorDetailsError(throwable: Throwable) {
+    private fun onActorDetailsError(msg: Int) {
         updateState { currentState ->
             currentState.copy(
                 isLoading = false,
                 shouldShowError = true,
-                errorMessage = (throwable as Exception).handleException(),
+                errorMessage = msg,
                 isContentEmpty = false
             )
         }

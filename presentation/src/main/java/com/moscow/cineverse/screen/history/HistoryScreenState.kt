@@ -8,7 +8,7 @@ data class HistoryScreenState(
     val seriesGenres: List<GenreUiState> = emptyList(),
     val isLoading: Boolean = false,
     val showTip: Boolean = true,
-    val errorMessage: String = "",
+    val errorMessage: Int? = null,
     val isError: Boolean = false,
     val isContentEmpty: Boolean = false,
     val shouldShowError: Boolean = false,

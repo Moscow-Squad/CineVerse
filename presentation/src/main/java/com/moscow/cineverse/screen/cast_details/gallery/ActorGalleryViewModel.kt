@@ -59,8 +59,8 @@ class ActorGalleryViewModel @Inject constructor(
         }
     }
 
-    private fun onGetActorPhotosFailed(throwable: Throwable) {
-        updateState { it.copy(error = throwable.message) }
+    private fun onGetActorPhotosFailed(msg: Int) {
+        updateState { it.copy(error = msg) }
     }
 
     private fun onLoading() {

@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.flowOf
 data class CollectionDetailsScreenState(
     val isLoading: Boolean = false,
     val isError: Boolean = false,
-    val errorMsg: String = "",
+    val errorMsg: Int = 0,
     val showTip: Boolean = true,
     val confirmClear: Boolean = false,
     val moviesGenres: List<GenreUiState> = emptyList(),

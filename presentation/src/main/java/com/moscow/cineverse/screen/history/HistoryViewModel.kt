@@ -58,7 +58,7 @@ class HistoryViewModel @Inject constructor(
                     it.copy(
                         isError = true,
                         isLoading = false,
-                        errorMessage = e.message.toString()
+                        errorMessage = e
                     )
                 }
             },
@@ -86,7 +86,7 @@ class HistoryViewModel @Inject constructor(
                 updateState {
                     it.copy(
                         isError = true,
-                        errorMessage = e.message.toString()
+                        errorMessage = e
                     )
                 }
             }
@@ -94,7 +94,7 @@ class HistoryViewModel @Inject constructor(
     }
 
     override fun onItemDeletedIconClicked(mediaId: Int) {
-        updateState { it.copy(isError = false, errorMessage = "") }
+        updateState { it.copy(isError = false, errorMessage = null) }
         launchAndForget(
             action = {
                 deleteRecentlyViewedItemByIdUseCase(id = mediaId)
@@ -103,7 +103,7 @@ class HistoryViewModel @Inject constructor(
                 updateState {
                     it.copy(
                         isError = true,
-                        errorMessage = e.message.toString()
+                        errorMessage = e
                     )
                 }
             }

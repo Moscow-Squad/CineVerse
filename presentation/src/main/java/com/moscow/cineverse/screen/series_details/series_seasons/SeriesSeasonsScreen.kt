@@ -17,6 +17,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.moscow.cineverse.component.ErrorContent
 import com.moscow.cineverse.designSystem.component.MovieAppBar
 import com.moscow.cineverse.designSystem.component.button.MovieButton
 import com.moscow.cineverse.designSystem.component.MovieCircularProgressBar
@@ -58,27 +59,11 @@ fun SeriesSeasonsScreenContent(
                 uiState.isLoading -> {
                     MovieCircularProgressBar(modifier = Modifier.align(Alignment.Center))
                 }
-                uiState.errorMessage != "" -> {
-                    Box(
-                        modifier = Modifier.fillMaxSize(),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Column(
-                            horizontalAlignment = Alignment.CenterHorizontally
-                        ) {
-                            MovieText(
-                                text = uiState.errorMessage,
-                                color = Theme.colors.shade.primary
-                            )
-                            Spacer(modifier = Modifier.height(16.dp))
-                            MovieButton(
-                                buttonText = stringResource(R.string.retry),
-                                textColor = Theme.colors.button.primary,
-                                textStyle = Theme.textStyle.title.small,
-                                onClick = {}
-                            )
-                        }
-                    }
+                uiState.shouldShowError -> {
+                    ErrorContent(
+                        errorMessage = uiState.errorMessage,
+                        onRetry = interactionListener::onRetry,
+                    )
                 }
                 else -> {
                     Column(modifier = Modifier.fillMaxSize()) {

@@ -20,7 +20,7 @@ data class MovieScreenState(
     val isReviewEmpty: Boolean = false,
     val shouldShowLoading: Boolean = false,
     val shouldShowError: Boolean = false,
-    val errorMessage: String = "",
+    val errorMessage: Int = 0,
     val recentlyViewedCollectionId:Int = 0,
 
     val showRatingBottomSheet: Boolean = false,

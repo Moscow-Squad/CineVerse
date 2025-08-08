@@ -7,7 +7,7 @@ import com.moscow.cineverse.screen.explore.ExploreScreenState
 
 data class HomeUiState(
     val isLoading: Boolean = false,
-    val error: String? = null,
+    val error: Int? = null,
     val userName: String? = null,
     val sliderItems: List<MediaItemUiState> = emptyList(),
     val recentlyReleasedMovies: List<MediaItemUiState> = emptyList(),

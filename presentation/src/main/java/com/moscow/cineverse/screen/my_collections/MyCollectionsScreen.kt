@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavBackStackEntry
+import com.moscow.cineverse.component.ErrorContent
 import com.moscow.cineverse.designSystem.component.MovieAppBar
 import com.moscow.cineverse.designSystem.component.MovieCircularProgressBar
 import com.moscow.cineverse.designSystem.component.MovieScaffold
@@ -130,6 +131,16 @@ fun MyCollectionsContent(
                         Theme.colors.brand.tertiary
                     )
                 )
+
+                state.errorMessage != null -> {
+                    ErrorContent(
+                        errorMessage = state.errorMessage,
+                        onRetry = interactionListener::onRetry,
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(Theme.colors.background.screen)
+                    )
+                }
 
                 state.collections.isEmpty() -> {
                     Column(

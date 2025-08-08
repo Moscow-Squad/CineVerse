@@ -7,6 +7,7 @@ import com.moscow.cineverse.common_ui_state.MediaItemUiState
 import com.moscow.cineverse.mapper.toMyCollectionUi
 import com.moscow.cineverse.mapper.toUi
 import com.moscow.cineverse.screen.explore.toUi
+import com.moscow.cinverse.presentation.R
 import com.moscow.domain.model.MediaType
 import com.moscow.domain.model.Movie
 import com.moscow.domain.model.Series
@@ -71,7 +72,7 @@ class HomeViewModel @Inject constructor(
             onError = { e ->
                 updateState {
                     it.copy(
-                        error = e.message,
+                        error = e,
                         isLoading = false,
                     )
                 }
@@ -121,7 +122,7 @@ class HomeViewModel @Inject constructor(
                 }
             },
             onError = { e ->
-                updateState { it.copy(isLoading = false, error = e.message) }
+                updateState { it.copy(isLoading = false, error = e) }
             }
         )
 
@@ -137,7 +138,7 @@ class HomeViewModel @Inject constructor(
         ) {
             wait++
             if (wait == 25) {
-                updateState { it.copy(isLoading = false, error = "error loading") }
+                updateState { it.copy(isLoading = false, error = R.string.too_much_time) }
                 return
             }
             delay(100)
@@ -151,7 +152,7 @@ class HomeViewModel @Inject constructor(
                 updateState { it.copy(collections = collections.map { collection -> collection.toMyCollectionUi() }) }
             },
             onError = { e ->
-                updateState { it.copy(isLoading = false, error = e.message) }
+                updateState { it.copy(isLoading = false, error = e) }
             },
         )
     }
@@ -178,8 +179,8 @@ class HomeViewModel @Inject constructor(
         getRecentlyViewedMovies()
     }
 
-    private fun onGetUserDetailsError(throwable: Throwable) {
-        updateState { it.copy(error = throwable.message) }
+    private fun onGetUserDetailsError(msg: Int) {
+        updateState { it.copy(error = msg) }
     }
 
     fun getRecentlyViewedMovies() {
@@ -210,8 +211,8 @@ class HomeViewModel @Inject constructor(
         updateState { it.copy(sliderItems = movies.map { it.toUi(uiState.value.movieGenre) } ) }
     }
 
-    private fun onFetchTrendingMoviesError(throwable: Throwable) {
-        updateState { it.copy(error = throwable.message) }
+    private fun onFetchTrendingMoviesError(msg: Int) {
+        updateState { it.copy(error = msg) }
     }
 
     private fun fetchRecentlyReleasedMovies() {
@@ -230,8 +231,8 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private fun onFetchRecentlyReleasedMoviesError(throwable: Throwable) {
-        updateState { it.copy(error = throwable.message) }
+    private fun onFetchRecentlyReleasedMoviesError(msg: Int) {
+        updateState { it.copy(error = msg) }
     }
 
     private fun fetchUpcomingMovies() {
@@ -250,8 +251,8 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private fun onFetchUpcomingMoviesError(throwable: Throwable) {
-        updateState { it.copy(error = throwable.message) }
+    private fun onFetchUpcomingMoviesError(msg: Int) {
+        updateState { it.copy(error = msg) }
     }
 
     private fun fetchTopRatedTVShows() {
@@ -266,8 +267,8 @@ class HomeViewModel @Inject constructor(
         updateState { it.copy(topRatedTvShows = tvShows.toUi()) }
     }
 
-    private fun onFetchTopRatedTVShowsError(throwable: Throwable) {
-        updateState { it.copy(error = throwable.message) }
+    private fun onFetchTopRatedTVShowsError(msg: Int) {
+        updateState { it.copy(error = msg) }
     }
 
     private fun fetchMatchesYourVibesMovies() {
@@ -288,8 +289,8 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private fun onFetchMatchesYourVibesMoviesError(throwable: Throwable) {
-        updateState { it.copy(error = throwable.message) }
+    private fun onFetchMatchesYourVibesMoviesError(msg: Int) {
+        updateState { it.copy(error = msg) }
     }
 
 

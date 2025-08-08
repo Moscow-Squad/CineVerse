@@ -8,7 +8,7 @@ data class ShowAllActorMoviesState(
     val actorId: Int = 0,
     val actorName: String = "",
     val isLoading: Boolean = false,
-    val error: String? = null,
+    val error: Int? = null,
     val viewMode: ViewMode = ViewMode.GRID,
     val movies: List<MediaItemUiState> = emptyList(),
     val moviesGenres: List<GenreUiState> = emptyList(),

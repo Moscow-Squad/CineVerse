@@ -38,43 +38,6 @@ fun LoadingContent(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun ErrorContent(
-    errorMessage: Int,
-    onRetry: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    Box(
-        modifier = modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        if (errorMessage == R.string.no_internet_connection){
-            NoInternetScreen(onRetry = onRetry)
-        }
-        else{
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
-            ) {
-                Text(
-                    text = stringResource(errorMessage),
-                    color = Theme.colors.shade.primary,
-                    style = Theme.textStyle.body.medium.regular,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.padding(16.dp)
-                )
-
-                Spacer(modifier = Modifier.height(16.dp))
-
-                CustomButton(
-                    text = stringResource(PresentationR.string.retry),
-                    onClick = onRetry
-                )
-            }
-        }
-    }
-}
-
-@Composable
 fun EmptyContent(modifier: Modifier = Modifier) {
     Box(
         modifier = modifier.fillMaxSize(),
@@ -83,28 +46,6 @@ fun EmptyContent(modifier: Modifier = Modifier) {
         Text(
             text = stringResource(PresentationR.string.no_content_available),
             color = Theme.colors.shade.primary,
-            style = Theme.textStyle.body.medium.regular
-        )
-    }
-}
-
-@Composable
-private fun CustomButton(
-    text: String,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    Box(
-        modifier = modifier
-            .clip(RoundedCornerShape(Theme.radius.large))
-            .background(Theme.colors.brand.primary)
-            .clickable { onClick() }
-            .padding(horizontal = 24.dp, vertical = 12.dp),
-        contentAlignment = Alignment.Center
-    ) {
-        Text(
-            text = text,
-            color = Color.White,
             style = Theme.textStyle.body.medium.regular
         )
     }

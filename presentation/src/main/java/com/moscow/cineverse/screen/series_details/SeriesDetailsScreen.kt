@@ -31,6 +31,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.rememberAsyncImagePainter
 import com.moscow.cineverse.MovieListSection
+import com.moscow.cineverse.component.ErrorContent
 import com.moscow.cineverse.component.MoviePosterCard
 import com.moscow.cineverse.component.NoInternetScreen
 import com.moscow.cineverse.component.SectionTitle
@@ -143,15 +144,14 @@ fun SeriesDetailsContent(
                 }
             }
 
-            uiState.errorMessage != "" -> {
-                Box(
+            uiState.errorMessage != null -> {
+                ErrorContent(
+                    errorMessage = uiState.errorMessage,
+                    onRetry = interactionListener::onRetry,
                     modifier = Modifier
                         .fillMaxSize()
-                        .background(Theme.colors.background.screen),
-                    contentAlignment = Alignment.Center
-                ) {
-                    NoInternetScreen(onRetry = interactionListener::onRetry)
-                }
+                        .background(Theme.colors.background.screen)
+                )
             }
 
             else -> {

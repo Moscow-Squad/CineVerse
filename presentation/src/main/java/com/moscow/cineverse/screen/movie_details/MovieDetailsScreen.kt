@@ -29,6 +29,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.moscow.cineverse.component.ErrorContent
 import com.moscow.cineverse.component.NoInternetScreen
 import com.moscow.cineverse.component.StorylineSection
 import com.moscow.cineverse.designSystem.component.MovieAppBar
@@ -97,16 +98,14 @@ private fun MovieDetailsContent(
             }
 
             uiState.shouldShowError -> {
-                Box(
+                ErrorContent(
+                    errorMessage = uiState.errorMessage,
+                    onRetry = interactionListener::onRetry,
                     modifier = Modifier
                         .fillMaxSize()
-                        .background(Theme.colors.background.screen),
-                    contentAlignment = Alignment.Center
-                ) {
-                    NoInternetScreen(onRetry = interactionListener::onRetry)
-                }
+                        .background(Theme.colors.background.screen)
+                )
             }
-
             else -> {
                 MovieDetailsMainContent(
                     uiState = uiState,

@@ -136,7 +136,7 @@ private fun CollectionsBottomSheetContent(
                 }
             }
 
-            uiState.errorMessage.isNotEmpty() -> {
+            uiState.errorMessage != null -> {
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()

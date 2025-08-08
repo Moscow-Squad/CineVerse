@@ -224,11 +224,3 @@ fun SignUpBottomSheet(interactionListener: LoginInteractionListener) {
         )
     }
 }
-
-@Preview()
-@Composable()
-fun LoginScreenPreview() {
-    CineVerseTheme {
-        LoginScreen(navigateToHome = {})
-    }
-}

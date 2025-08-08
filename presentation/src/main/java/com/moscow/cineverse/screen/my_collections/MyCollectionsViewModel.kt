@@ -37,6 +37,7 @@ class MyCollectionsViewModel @Inject constructor(
     }
 
     private fun loadUserCollections() {
+        updateState { it.copy(errorMessage = null) }
         launchWithResult(
             action = { getUserCollections(page = 1) },
             onSuccess = ::onLoadUserCollectionsSuccess,
@@ -60,6 +61,11 @@ class MyCollectionsViewModel @Inject constructor(
         }
     }
 
+    override fun onRetry() {
+        updateState { it.copy(errorMessage = null) }
+        loadUserCollections()
+    }
+
 
     private fun onLoadUserCollectionsSuccess(collections: List<Collection>) {
         updateState {
@@ -68,8 +74,8 @@ class MyCollectionsViewModel @Inject constructor(
         }
     }
 
-    private fun onLoadUserCollectionsFailed(throwable: Throwable) {
-        updateState { it.copy(errorMessage = throwable.message.toString()) }
+    private fun onLoadUserCollectionsFailed(msg: Int) {
+        updateState { it.copy(errorMessage = msg) }
     }
 
     private fun onLoading() {

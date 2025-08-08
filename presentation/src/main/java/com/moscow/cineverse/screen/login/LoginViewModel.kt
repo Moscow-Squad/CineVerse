@@ -92,7 +92,7 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    private fun onLoginFailed(error: Throwable) {
+    private fun onLoginFailed(error: Int) {
         updateState {
             it.copy(
                 isLoading = false,
@@ -123,7 +123,7 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    private fun onJoinAsGuestFailed(error: Throwable) {
+    private fun onJoinAsGuestFailed(error: Int) {
         updateState { it.copy(isJoinAsGuest = false) }
         sendEvent(LoginScreenEvents.ShowError(StringValue.StringResource(resId = R.string.oops_no_internet)))
     }

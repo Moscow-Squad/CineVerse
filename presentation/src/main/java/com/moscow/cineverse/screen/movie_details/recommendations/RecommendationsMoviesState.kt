@@ -8,7 +8,7 @@ data class RecommendationsMoviesState(
     val movieId: Int = 0,
     val movieTitle: String = "",
     val isLoading: Boolean = false,
-    val error: String? = null,
+    val error: Int? = null,
     val viewMode: ViewMode = ViewMode.GRID,
     val movies: List<MediaItemUiState> = emptyList(),
     val enableBlur: String = "high",

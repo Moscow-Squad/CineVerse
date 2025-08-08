@@ -40,34 +40,6 @@ fun LoadingContent(
 }
 
 @Composable
-fun ErrorContent(
-    error: String,
-    onRetry: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    Box(
-        modifier = modifier,
-        contentAlignment = Alignment.Center
-    ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            MovieText(
-                text = error,
-                color = Theme.colors.shade.primary
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-            MovieButton(
-                buttonText = stringResource(R.string.retry),
-                textColor = Theme.colors.button.primary,
-                textStyle = Theme.textStyle.title.small,
-                onClick = onRetry
-            )
-        }
-    }
-}
-
-@Composable
 fun SuccessContent(
     uiState: ShowAllActorMoviesState,
     interactionListener: ShowAllActorMoviesInteractionListener,
