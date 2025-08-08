@@ -9,11 +9,12 @@ import androidx.paging.cachedIn
 import androidx.paging.map
 import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.cineverse.common_ui_state.MediaItemUiState
-import com.moscow.cineverse.utlis.ViewMode
 import com.moscow.cineverse.navigation.routes.SeeMoreRoute
 import com.moscow.cineverse.paging.BasePagingSource
 import com.moscow.cineverse.screen.explore.toUi
+import com.moscow.cineverse.screen.home.HomeFeaturedCollections
 import com.moscow.cineverse.screen.home.HomeFeaturedItems
+import com.moscow.cineverse.utlis.ViewMode
 import com.moscow.domain.model.Movie
 import com.moscow.domain.model.Series
 import com.moscow.domain.model.UserType
@@ -33,7 +34,6 @@ import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import kotlin.collections.map
 
 @HiltViewModel
 class SeeMoreViewModel @Inject constructor(
@@ -53,7 +53,6 @@ class SeeMoreViewModel @Inject constructor(
     private val category = savedStateHandle.get<String>(SeeMoreRoute.CATEGORY) ?: ""
 
     init {
-        updateState { it.copy(title = category) }
         getMovieGenre()
         getSeriesGenre()
         loadContent()
@@ -74,46 +73,86 @@ class SeeMoreViewModel @Inject constructor(
 
         viewModelScope.launch {
             try {
-                val pagingFlow = when (category) {
-                    HomeFeaturedItems.RECENTLY_RELEASED.name -> {
-                        createPagingFlow(
-                            pageSize = pageSize,
-                            fetchData = { page -> getRecentlyReleasedMoviesUseCase(page = page, forceRefresh = true) },
-                        )
-                    }
-
-                    HomeFeaturedItems.UPCOMING_MOVIES.name -> {
-                        createPagingFlow(
-                            pageSize = pageSize,
-                            fetchData = { page -> getUpcomingMoviesUseCase(page = page, forceRefresh = true) },
-                        )
-                    }
-
-                    HomeFeaturedItems.MATCHES_YOUR_VIBE.name -> {
-                        createPagingFlow(
-                            pageSize = pageSize,
-                            fetchData = { page -> getMatchesYourVibesMoviesUseCase(28, page = page, forceRefresh = true) },
-
+                val pagingFlow = when {
+                    category.startsWith("FEATURED_COLLECTION_") -> {
+                        val genreId = category.removePrefix("FEATURED_COLLECTION_").toInt()
+                        updateState { state ->
+                            state.copy(
+                                title = HomeFeaturedCollections.entries.find { it.genreId == genreId }?.title ?: 0
                             )
+                        }
+                        createPagingFlow(
+                            pageSize = pageSize,
+                            fetchData = { page ->
+                                getMatchesYourVibesMoviesUseCase(genreId, page, forceRefresh = true)
+                            }
+                        )
                     }
 
-                    HomeFeaturedItems.TOP_RATED_TV_SHOWS.name -> {
+                    category == HomeFeaturedItems.RECENTLY_RELEASED.name -> {
+                        updateState { it.copy(title = HomeFeaturedItems.RECENTLY_RELEASED.titleResource) }
+                        createPagingFlow(
+                            pageSize = pageSize,
+                            fetchData = { page ->
+                                getRecentlyReleasedMoviesUseCase(
+                                    page = page,
+                                    forceRefresh = true
+                                )
+                            },
+                        )
+                    }
+
+                    category == HomeFeaturedItems.UPCOMING_MOVIES.name -> {
+                        updateState { it.copy(title = HomeFeaturedItems.UPCOMING_MOVIES.titleResource) }
+                        createPagingFlow(
+                            pageSize = pageSize,
+                            fetchData = { page ->
+                                getUpcomingMoviesUseCase(
+                                    page = page,
+                                    forceRefresh = true
+                                )
+                            },
+                        )
+                    }
+
+                    category == HomeFeaturedItems.MATCHES_YOUR_VIBE.name -> {
+                        updateState { it.copy(title = HomeFeaturedItems.MATCHES_YOUR_VIBE.titleResource) }
+                        createPagingFlow(
+                            pageSize = pageSize,
+                            fetchData = { page ->
+                                getMatchesYourVibesMoviesUseCase(
+                                    28,
+                                    page = page,
+                                    forceRefresh = true
+                                )
+                            },
+                        )
+                    }
+
+                    category == HomeFeaturedItems.TOP_RATED_TV_SHOWS.name -> {
+                        updateState { it.copy(title = HomeFeaturedItems.TOP_RATED_TV_SHOWS.titleResource) }
                         createPagingFlow(
                             pageSize = pageSize,
                             fetchData = { page -> getTopRatedTVShowsUseCase(page) },
-
-                            )
+                        )
                     }
 
-                    HomeFeaturedItems.YOU_RECENTLY_VIEWED.name -> {
+                    category == HomeFeaturedItems.YOU_RECENTLY_VIEWED.name -> {
+                        updateState { it.copy(title = HomeFeaturedItems.YOU_RECENTLY_VIEWED.titleResource) }
                         val user = getUserDetailsUseCase()
                         when (user) {
                             is UserType.AuthenticatedUser -> {
                                 createPagingFlow(
                                     pageSize = 20,
-                                    fetchData = { page -> getCollectionDetailsUseCase(user.recentlyCollectionId, page) }
+                                    fetchData = { page ->
+                                        getCollectionDetailsUseCase(
+                                            user.recentlyCollectionId,
+                                            page
+                                        )
+                                    }
                                 )
                             }
+
                             is UserType.GuestUser -> emptyFlow()
                         }
                     }

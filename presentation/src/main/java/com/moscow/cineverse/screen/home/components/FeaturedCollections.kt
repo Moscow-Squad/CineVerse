@@ -26,19 +26,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.moscow.cineverse.designSystem.theme.CineVerseTheme
 import com.moscow.cineverse.designSystem.theme.Theme
-import com.moscow.cineverse.designSystem.theme.ThemeState
 import com.moscow.cineverse.design_system.R
 import com.moscow.cineverse.screen.home.HomeFeaturedCollections
 
 @Composable
 fun FeaturedCollectionsSection(
     collections: List<HomeFeaturedCollections>,
-    onCollectionClick: () -> Unit,
+    onCollectionClick: (genreId: Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
 
@@ -62,7 +59,7 @@ fun FeaturedCollectionsSection(
 
 @Composable
 private fun FeaturedCollections(
-    onCollectionClick: () -> Unit,
+    onCollectionClick: (genreId: Int) -> Unit,
     collections: List<HomeFeaturedCollections>
 ) {
     FlowRow(
@@ -78,7 +75,7 @@ private fun FeaturedCollections(
                 modifier = Modifier.width(280.dp),
                 titleRes = item.title,
                 imageRes = item.image,
-                onClick = onCollectionClick
+                onClick = { onCollectionClick(item.genreId) }
             )
         }
     }

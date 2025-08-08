@@ -70,6 +70,10 @@ fun HomeScreen(
                     // Navigate to SeeMoreHomeScreen with the category
                 }
 
+                is HomeEvent.FeaturedCollectionClicked -> {
+                    navigateToSeeMoreHome("FEATURED_COLLECTION_${effect.genreId}")
+                }
+
                 is HomeEvent.SeriesClicked -> {
                     navigateToSeriesDetails(
                         effect.seriesId
@@ -191,7 +195,7 @@ fun HomeContent(
 
                 FeaturedCollectionsSection(
                     collections = HomeFeaturedCollections.entries.toList(),
-                    onCollectionClick = {},
+                    onCollectionClick = listener::onFeaturedCollectionClick,
                 )
 
                 FeaturedMovies(
@@ -214,12 +218,13 @@ fun HomeContent(
                     )
                 }
 
+                if(uiState.userName != null){
                 MyCollectionsLayout(
                     items = uiState.collections,
                     onCollectionClick = listener::onCollectionClick,
                     modifier = Modifier.padding(horizontal = 16.dp),
                     onShowMoreClick = listener::onCollectionsShowMoreClick,
-                )
+                )}
 
                 SuggestionWithHeader(
                     modifier = Modifier

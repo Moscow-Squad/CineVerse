@@ -8,6 +8,9 @@ sealed class HomeEvent {
         val collectionId: Int,
         val collectionName: String
     ): HomeEvent()
+
+    data class FeaturedCollectionClicked(val genreId: Int, val collectionName: Int): HomeEvent()
+
     data class PromotionClicked(val promotionId: Int): HomeEvent()
     object BrowseSuggestionClicked : HomeEvent()
     object WatchingSuggestionClicked : HomeEvent()

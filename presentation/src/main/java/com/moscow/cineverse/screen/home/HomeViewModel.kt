@@ -310,6 +310,14 @@ class HomeViewModel @Inject constructor(
     override fun onSeeMoreRecentlyViewedClicked() {
         sendEvent(HomeEvent.SeeMoreRecentlyViewed)
     }
+
+    override fun onFeaturedCollectionClick(genreId: Int) {
+        val collection = HomeFeaturedCollections.entries.find { it.genreId == genreId }
+        if (collection != null) {
+            sendEvent(HomeEvent.FeaturedCollectionClicked(collection.genreId,
+                collection.title))
+        }
+    }
 }
 
 

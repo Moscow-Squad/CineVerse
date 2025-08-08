@@ -1,6 +1,5 @@
 package com.moscow.cineverse.component
 
-import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
@@ -22,7 +21,6 @@ fun MoviePosterCard(
     getTitleOverride: ((MediaItemUiState) -> String)? = null,
     useFixedHeight: Boolean = false,
 ) {
-    Log.d("blur-", "${enableBlur}")
 
     MovieCard(
         modifier = modifier,

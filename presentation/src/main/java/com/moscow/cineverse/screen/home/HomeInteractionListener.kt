@@ -12,4 +12,5 @@ interface HomeInteractionListener {
     fun onBrowseSuggestionClick()
     fun onRefresh()
     fun onSeeMoreRecentlyViewedClicked()
+    fun onFeaturedCollectionClick(genreId: Int)
 }
