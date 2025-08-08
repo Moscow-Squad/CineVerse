@@ -26,10 +26,9 @@ import com.moscow.cineverse.component.NoInternetScreen
 import com.moscow.cineverse.designSystem.component.MovieAppBar
 import com.moscow.cineverse.designSystem.component.MovieCircularProgressBar
 import com.moscow.cineverse.designSystem.component.MovieScaffold
-import com.moscow.cineverse.utlis.ViewMode
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.screen.explore.component.ViewModeToggleButton
-import com.moscow.cineverse.screen.home.HomeFeaturedItems
+import com.moscow.cineverse.utlis.ViewMode
 
 @Composable
 fun <T : Any> SeeMoreContent(
@@ -47,12 +46,11 @@ fun <T : Any> SeeMoreContent(
         }
     }
 
-    val category = HomeFeaturedItems.valueOf(uiState.title)
 
     MovieScaffold(
         movieAppBar = {
             MovieAppBar(
-                title = stringResource(category.titleResource),
+                title = stringResource(uiState.title),
                 showDivider = true,
                 showBackButton = true,
                 backButtonClick = { interactionListener.onNavigateBack() }
@@ -67,10 +65,8 @@ fun <T : Any> SeeMoreContent(
         }
     ) {
         Column(
-            modifier = modifier
-                ,
+            modifier = modifier,
             verticalArrangement = Arrangement.Center,
-
         ) {
 
             when (contentList.loadState.refresh) {
@@ -108,7 +104,8 @@ fun <T : Any> SeeMoreContent(
                                         MoviePosterCard(
                                             movie = item,
                                             viewMode = uiState.viewMode,
-                                            onMovieClick = interactionListener::onMediaItemClicked
+                                            onMovieClick = interactionListener::onMediaItemClicked,
+                                            enableBlur = uiState.enableBlur,
                                         )
                                     }
                                 }

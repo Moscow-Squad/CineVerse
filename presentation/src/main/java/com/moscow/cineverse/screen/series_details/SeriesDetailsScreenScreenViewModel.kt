@@ -5,14 +5,19 @@ import androidx.lifecycle.viewModelScope
 import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.cineverse.mapper.toUi
 import com.moscow.cineverse.navigation.routes.SeriesDetailsRoute
+import com.moscow.cineverse.screen.explore.toUi
 import com.moscow.cineverse.utlis.ViewMode
 import com.moscow.domain.mapper.toSeries
 import com.moscow.domain.model.Series
+import com.moscow.domain.repository.PreferenceRepository
+import com.moscow.domain.repository.blur.BlurProvider
 import com.moscow.domain.usecase.recently_viewed.AddRecentlyViewedSeriesUseCase
 import com.moscow.domain.usecase.review.GetReviewsUseCase
+import com.moscow.domain.usecase.series.DeleteRatingSeriesUseCase
 import com.moscow.domain.usecase.series.GetSeriesCreditsDetailsUseCase
 import com.moscow.domain.usecase.series.GetSeriesDetailUseCase
 import com.moscow.domain.usecase.series.GetSeriesRecommendationsUseCase
+import com.moscow.domain.usecase.series.GetUserRatingForSeriesUseCase
 import com.moscow.domain.usecase.series.RateSeriesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
@@ -26,7 +31,11 @@ class SeriesDetailsScreenScreenViewModel @Inject constructor(
     private val rateSeriesUseCase: RateSeriesUseCase,
     private val getSeriesCreditsDetailsUseCase: GetSeriesCreditsDetailsUseCase,
     private val getSeriesRecommendationsUseCase: GetSeriesRecommendationsUseCase,
+    private val blurProvider: BlurProvider,
     private val addRecentlyViewedSeriesUseCase: AddRecentlyViewedSeriesUseCase,
+    private val deleteRatingSeriesUseCase: DeleteRatingSeriesUseCase,
+    private val getUserRatingForSeriesUseCase: GetUserRatingForSeriesUseCase,
+    private val preferences: PreferenceRepository,
     savedStateHandle: SavedStateHandle,
 ) : BaseViewModel<SeriesDetailsScreenState, SeriesDetailsScreenEffects>(SeriesDetailsScreenState()),
     SeriesDetailsScreenInteractionListener {
@@ -36,6 +45,7 @@ class SeriesDetailsScreenScreenViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             updateState { it.copy(isLoading = true) }
+            getUserRating(seriesId)
             loadSeriesDetails(seriesId)
             loadSeriesCredits(seriesId)
             getSeriesRecommendations(seriesId, page = 1)
@@ -43,6 +53,27 @@ class SeriesDetailsScreenScreenViewModel @Inject constructor(
             waitUntilAllDataIsReady()
             updateState { it.copy(isLoading = false) }
         }
+        observeBlur()
+    }
+
+    private fun observeBlur() {
+        viewModelScope.launch {
+            blurProvider.blurFlow.collect { enableBlur ->
+                updateState { it.copy(enableBlur = enableBlur) }
+            }
+        }
+    }
+
+    private fun getUserRating(seriesId: Int) {
+        launchWithResult(
+            action = { getUserRatingForSeriesUseCase.invoke(seriesId) },
+            onSuccess = { rate ->
+                updateState { it.copy(starsRating = rate) }
+            },
+            onError = {
+                updateState { it.copy(starsRating = 0) }
+            }
+        )
     }
 
     private suspend fun waitUntilAllDataIsReady() {
@@ -142,7 +173,33 @@ class SeriesDetailsScreenScreenViewModel @Inject constructor(
     }
 
     override fun showRatingBottomSheet() {
-        updateState { it.copy(showRatingBottomSheet = true) }
+        launchWithResult(
+            action = { preferences.isLoggedIn() },
+            onSuccess = { isLoggedIn ->
+                if (isLoggedIn) {
+                    updateState { it.copy(
+                        starsRating = uiState.value.starsRating,
+                        showRatingBottomSheet = true
+                    )
+                    }
+                } else {
+                    updateState { it.copy(showLoginBottomSheet = true) }
+                }
+            },
+            onError = {
+                updateState { it.copy(showLoginBottomSheet = true) }
+            }
+        )
+    }
+
+    override fun onDismissLoginBottomSheet() {
+        updateState { it.copy(showLoginBottomSheet = false) }
+    }
+
+    override fun navigateToLogin() {
+        updateState { it.copy(showLoginBottomSheet = false) }
+        updateState { it.copy(showRatingBottomSheet = false) }
+        sendEvent(SeriesDetailsScreenEffects.NavigateToLogin)
     }
 
     override fun onDismissOrCancelRatingBottomSheet() {
@@ -168,6 +225,13 @@ class SeriesDetailsScreenScreenViewModel @Inject constructor(
                     )
                 }
             },
+        )
+    }
+    override fun onDeleteRatingSeries(seriesId: Int) {
+        launchAndForget(
+            action = { deleteRatingSeriesUseCase(seriesId) },
+            onSuccess = { updateState { it.copy(starsRating = 0, showRatingBottomSheet = false) } },
+            onError = { }, // TODO: Show Toast
         )
     }
 

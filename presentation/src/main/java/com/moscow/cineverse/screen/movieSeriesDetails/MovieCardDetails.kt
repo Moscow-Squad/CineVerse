@@ -50,6 +50,7 @@ fun MovieCardDetails(
     releaseDate: String,
     posterUrl: String,
     type: String,
+    enableBlur: String,
     onSaveClick: () -> Unit = {},
     onPlayClick: () -> Unit = {},
     sharedTransitionScope: SharedTransitionScope,
@@ -87,6 +88,7 @@ fun MovieCardDetails(
                         .height(289.dp)
                         .width(216.dp)
                         .clip(RoundedCornerShape(Theme.radius.extraLarge)),
+                    isBlurEnabled = enableBlur,
                     placeholderContent = { RemoteImagePlaceholder() },
                     errorContent = { RemoteImagePlaceholder() },
                     onBlurContent = {
@@ -234,6 +236,7 @@ fun InfoTextWithIcon(icon: Int, text: String, tint: Color) {
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun MainMovieCard(
+    enableBlur: String,
     posterUrl: String,
     title: String,
     onSaveClick: () -> Unit = {},
@@ -245,7 +248,7 @@ fun MainMovieCard(
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
-                .padding(horizontal = 16.dp)
+                .padding(start = 16.dp, end = 16.dp, bottom = 16.dp)
                 .sharedBounds(
                     rememberSharedContentState(key = "Main Movie Card"),
                     animatedVisibilityScope = animatedVisibilityScope,
@@ -259,6 +262,7 @@ fun MainMovieCard(
                 modifier = Modifier
                     .size(40.dp)
                     .clip(RoundedCornerShape(Theme.radius.full)),
+                isBlurEnabled = enableBlur,
                 placeholderContent = {
                     RemoteImagePlaceholder(
                         modifier = Modifier.fillMaxSize()
@@ -272,6 +276,7 @@ fun MainMovieCard(
             ) {
                 OnBlurContent(
                     hintText = stringResource(R.string.unsuitable_image),
+                    isAddedText = false
                 )
             }
             Text(
@@ -302,7 +307,6 @@ fun MainMovieCard(
         }
     }
 }
-
 @Preview(showBackground = true)
 @Composable
 fun DetailCardPreview() {

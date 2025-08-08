@@ -71,6 +71,7 @@ private fun ShowAllActorMoviesContent(
                         uiState = uiState,
                         interactionListener = interactionListener,
                         title = uiState.actorName,
+                        enableBlur = uiState.enableBlur,
                         onNavigateBack = onNavigateBack
                     )
 

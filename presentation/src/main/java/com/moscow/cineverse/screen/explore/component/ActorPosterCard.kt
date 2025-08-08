@@ -4,9 +4,9 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -32,6 +32,7 @@ import com.moscow.cineverse.screen.explore.ExploreScreenState
 @Composable
 fun ActorPosterCard(
     actor: ExploreScreenState.ActorUiState,
+    enableBlur: String,
     modifier: Modifier = Modifier,
     titleTextAlign: TextAlign = TextAlign.Center,
     showTitle: Boolean = true,
@@ -42,7 +43,7 @@ fun ActorPosterCard(
     ) {
         Card(
             modifier = Modifier
-                .height(100.dp)
+                .aspectRatio(1f)
                 .fillMaxWidth()
                 .clip(RoundedCornerShape(Theme.radius.large)),
             shape = RoundedCornerShape(Theme.radius.large)
@@ -55,6 +56,7 @@ fun ActorPosterCard(
                     modifier = Modifier
                         .fillMaxSize()
                         .clip(RoundedCornerShape(Theme.radius.large)),
+                    isBlurEnabled = enableBlur,
                     placeholderContent = {
                         RemoteImagePlaceholder(
                             modifier = Modifier.fillMaxSize(),

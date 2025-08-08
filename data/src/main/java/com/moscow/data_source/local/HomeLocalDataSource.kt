@@ -10,4 +10,5 @@ interface HomeLocalDataSource {
     suspend fun getCategoryTimestamp(categoryType: String): HomeCategoryTimestampEntity?
     suspend fun clearHomeCategory(categoryType: String)
     suspend fun refreshHomeCategory(categoryType: String, homeItems: List<MediaItemEntity>)
+    suspend fun clearHomeCash()
 }

@@ -33,7 +33,10 @@ data class DueTone(
     val timeShort: Int,
     val trash: Int,
     val userSquare: Int,
-    val videoLibrary: Int
+    val videoLibrary: Int,
+    val showContent:Int,
+    val hideContent:Int,
+    val strictFilter:Int
 )
 val dueToneIcons = DueTone(
     add = R.drawable.due_tone_add,
@@ -66,5 +69,8 @@ val dueToneIcons = DueTone(
     timeShort = R.drawable.due_tone_time_short,
     trash = R.drawable.due_tone_trash,
     userSquare = R.drawable.due_tone_user_square,
-    videoLibrary = R.drawable.due_tone_video_library
+    videoLibrary = R.drawable.due_tone_video_library,
+    showContent = R.drawable.icon_eye,
+    hideContent = R.drawable.slash,
+    strictFilter = R.drawable.icon_eye_with_slash,
 )

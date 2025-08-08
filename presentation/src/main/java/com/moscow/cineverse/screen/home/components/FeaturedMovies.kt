@@ -11,9 +11,11 @@ import com.moscow.cineverse.screen.home.HomeFeaturedItems
 @Composable
 fun FeaturedMovies(
     displayMovies: List<MediaItemUiState>,
-    onShowMoreClick: (type: HomeFeaturedItems) -> Unit,
+    onShowMoreClick: ((type: HomeFeaturedItems) -> Unit)? = null,
     onMovieClick: (MediaItemUiState) -> Unit,
+    onSeaMoreRecentlyViewedClicked: () -> Unit = {},
     type: HomeFeaturedItems,
+    enableBlur: String,
     modifier: Modifier = Modifier
 ) {
     MovieListSection(
@@ -21,7 +23,10 @@ fun FeaturedMovies(
         movies = displayMovies,
         paddingHorizontal = 16,
         onClickShowMore = {
-            onShowMoreClick(type)
+            if (onShowMoreClick != null)
+                onShowMoreClick(type)
+            else
+                onSeaMoreRecentlyViewedClicked()
         },
         onClickPoster = { movie ->
             onMovieClick(movie)
@@ -30,7 +35,8 @@ fun FeaturedMovies(
             MoviePosterCard(
                 movie = movie,
                 onMovieClick = { movieId -> onMovieClick(movie) },
-                modifier = cardModifier
+                modifier = cardModifier,
+                enableBlur = enableBlur,
             )
         },
         modifier = modifier

@@ -102,11 +102,7 @@ fun RatingSection(
 
             IconButton(onClick = onClick) {
                 Icon(
-                    painter = if (LocalLayoutDirection.current == LayoutDirection.Rtl) {
-                        painterResource(R.drawable.outline_alt_arrow_left)
-                    } else {
-                        painterResource(R.drawable.outline_alt_arrow_right)
-                    },
+                    painter = painterResource(R.drawable.outline_alt_arrow_right),
                     contentDescription = "Arrow Icon",
                     tint = Theme.colors.shade.tertiary,
                 )

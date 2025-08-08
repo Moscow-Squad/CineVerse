@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -20,7 +21,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -33,11 +33,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.moscow.cineverse.designSystem.component.blur.OnBlurContent
-import com.moscow.cineverse.designSystem.theme.CineVerseTheme
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.design_system.R
 import com.moscow.cineverse.image_viewer.component.SafeImageViewer
@@ -54,6 +52,8 @@ fun <T : Any> MovieCard(
     titleTextAlign: TextAlign = TextAlign.Start,
     showTitle: Boolean = true,
     showBackdrop: Boolean = false,
+    enableBlur: String,
+    useFixedHeight: Boolean = false,
     getId: (T) -> Int,
     getTitle: (T) -> String,
     getPosterUrl: (T) -> String,
@@ -68,10 +68,12 @@ fun <T : Any> MovieCard(
             movieData = movieData,
             showRating = showRating,
             onMovieClick = onMovieClick,
+            enableBlur = enableBlur,
             modifier = modifier,
             titleTextAlign = titleTextAlign,
             showTitle = showTitle,
             showBackdrop = showBackdrop,
+            useFixedHeight = useFixedHeight,
             getId = getId,
             getTitle = getTitle,
             getPosterUrl = getPosterUrl,
@@ -82,6 +84,7 @@ fun <T : Any> MovieCard(
         ViewMode.LIST -> ListMovieCard(
             movieData = movieData,
             onMovieClick = onMovieClick,
+            enableBlur = enableBlur,
             modifier = modifier,
             getId = getId,
             getTitle = getTitle,
@@ -93,7 +96,6 @@ fun <T : Any> MovieCard(
         )
     }
 }
-
 @Composable
 private fun RemoteImagePlaceholder(
     modifier: Modifier = Modifier,
@@ -129,7 +131,9 @@ private fun <T> GridMovieCard(
     showRating: Boolean = true,
     showBackdrop: Boolean = false,
     onMovieClick: (Int) -> Unit,
+    enableBlur: String,
     titleTextAlign: TextAlign,
+    useFixedHeight: Boolean = false,
     getId: (T) -> Int,
     getTitle: (T) -> String,
     getPosterUrl: (T) -> String,
@@ -141,8 +145,14 @@ private fun <T> GridMovieCard(
     ) {
         Card(
             modifier = Modifier
-                .height(180.dp)
                 .fillMaxWidth()
+                .then(
+                    if (useFixedHeight) {
+                        Modifier.height(180.dp)
+                    } else {
+                        Modifier.aspectRatio(0.75f)
+                    }
+                )
                 .clip(RoundedCornerShape(Theme.radius.large)),
             shape = RoundedCornerShape(Theme.radius.large)
         ) {
@@ -155,7 +165,8 @@ private fun <T> GridMovieCard(
                     modifier = Modifier
                         .fillMaxSize()
                         .clip(RoundedCornerShape(Theme.radius.large))
-                        .clickable{ onMovieClick(getId(movieData)) },
+                        .clickable { onMovieClick(getId(movieData)) },
+                    isBlurEnabled = enableBlur,
                     placeholderContent = {
                         RemoteImagePlaceholder(
                             modifier = Modifier.fillMaxSize(),
@@ -220,7 +231,7 @@ private fun <T> GridMovieCard(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 8.dp)
-                    .clickable (
+                    .clickable(
                         indication = null,
                         interactionSource = remember { MutableInteractionSource() },
                         onClick = { onMovieClick(getId(movieData)) }
@@ -231,9 +242,10 @@ private fun <T> GridMovieCard(
 }
 
 @Composable
-private fun <T> ListMovieCard(
+fun <T> ListMovieCard(
     movieData: T,
     onMovieClick: (Int) -> Unit,
+    enableBlur: String,
     modifier: Modifier = Modifier,
     getId: (T) -> Int,
     getTitle: (T) -> String,
@@ -248,7 +260,7 @@ private fun <T> ListMovieCard(
             .fillMaxWidth()
             .height(95.dp)
             .clip(RoundedCornerShape(Theme.radius.large))
-           ,
+            .clickable { onMovieClick(getId(movieData)) },
         elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
         shape = RoundedCornerShape(Theme.radius.large),
         colors = CardDefaults.cardColors(containerColor = Theme.colors.background.card)
@@ -268,9 +280,8 @@ private fun <T> ListMovieCard(
                                 topEnd = Theme.radius.large,
                                 bottomStart = Theme.radius.large
                             )
-                        )
-                        .clickable { onMovieClick(getId(movieData)) }
-                        ,
+                        ),
+                    isBlurEnabled = enableBlur,
                     placeholderContent = {
                         RemoteImagePlaceholder(
                             modifier = Modifier
@@ -319,16 +330,6 @@ private fun <T> ListMovieCard(
     }
 }
 
-data class MockMovieData(
-    val id: Int,
-    val title: String,
-    val posterUrl: String,
-    val rating: Float,
-    val genres: List<String>,
-    val duration: String,
-    val releaseDate: String
-)
-
 @Composable
 fun DurationAndDateSection(
     modifier: Modifier = Modifier,
@@ -370,64 +371,6 @@ fun DurationAndDateSection(
                 style = Theme.textStyle.label.medium.medium,
                 color = Theme.colors.shade.secondary,
                 modifier = Modifier.padding(start = 4.dp)
-            )
-        }
-    }
-}
-
-@Preview(showBackground = true, name = "Grid View - Safe Image")
-@Composable
-fun GridMovieCardSafeImagePreview() {
-    MaterialTheme {
-        Column(modifier = Modifier.padding(16.dp)) {
-            MovieCard(
-                movieData = MockMovieData(
-                    id = 1,
-                    title = "The Dark Knight",
-                    posterUrl = "https://example.com/poster.jpg",
-                    rating = 9.0f,
-                    genres = listOf("Action", "Crime", "Drama"),
-                    duration = "2h 32m",
-                    releaseDate = "2008, Jul 18"
-                ),
-                viewMode = ViewMode.GRID,
-                onMovieClick = {},
-                getId = { it.id },
-                getTitle = { it.title },
-                getPosterUrl = { it.posterUrl },
-                getRating = { it.rating },
-                getGenres = { it.genres },
-                getDuration = { it.duration },
-                getReleaseDate = { it.releaseDate }
-            )
-        }
-    }
-}
-
-@Preview(showBackground = true, name = "List View - Safe Image")
-@Composable
-fun ListMovieCardSafeImagePreview() {
-    CineVerseTheme {
-        Column(modifier = Modifier.padding(16.dp)) {
-            MovieCard(
-                movieData = MockMovieData(
-                    id = 1,
-                    title = "Inception",
-                    posterUrl = "https://example.com/poster.jpg",
-                    rating = 8.8f,
-                    genres = listOf("Action", "Sci-Fi", "Thriller"),
-                    duration = "2h 28m",
-                    releaseDate = "2008, Jul 18"
-                ),
-                viewMode = ViewMode.LIST,
-                onMovieClick = {},
-                getId = { it.id },
-                getTitle = { it.title },
-                getPosterUrl = { it.posterUrl },
-                getRating = { it.rating },
-                getGenres = { it.genres },
-                getDuration = { it.duration },
-                getReleaseDate = { it.releaseDate }
             )
         }
     }

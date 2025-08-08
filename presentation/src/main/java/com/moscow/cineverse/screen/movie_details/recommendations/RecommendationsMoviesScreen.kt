@@ -28,8 +28,8 @@ import com.moscow.cineverse.designSystem.component.MovieAppBar
 import com.moscow.cineverse.designSystem.component.MovieCircularProgressBar
 import com.moscow.cineverse.designSystem.component.MovieScaffold
 import com.moscow.cineverse.utlis.ViewMode
-import com.moscow.cineverse.mapper.toMediaItemUi
 import com.moscow.cineverse.screen.explore.component.ViewModeToggleButton
+import com.moscow.cineverse.screen.explore.toUi
 import com.moscow.cinverse.presentation.R
 import com.moscow.domain.model.Movie
 
@@ -116,12 +116,13 @@ fun RecommendationMoviesContent(
                     ) {
                         items(recommendations.itemCount)
                         { index ->
-                            val recommendation = recommendations[index]?.toMediaItemUi()
+                            val recommendation = recommendations[index]?.toUi(uiState.moviesGenres)
                             if (recommendation != null) {
                                 MoviePosterCard(
                                     movie = recommendation,
                                     viewMode = uiState.viewMode,
-                                    onMovieClick = interactionListener::onMovieClick
+                                    onMovieClick = interactionListener::onMovieClick,
+                                    enableBlur = uiState.enableBlur,
                                 )
                             }
                         }

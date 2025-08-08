@@ -1,5 +1,6 @@
 package com.moscow.cineverse.screen.cast_details
 
+import android.util.Log
 import androidx.annotation.DrawableRes
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateDpAsState
@@ -150,6 +151,7 @@ fun ActorMoviesSection(
     interactionListener: CastDetailsInteractionListener,
     modifier: Modifier = Modifier
 ) {
+    Log.d("blur", "${uiState.enableBlur}")
     if (uiState.movies.isNotEmpty()) {
         MovieListSection(
             title = stringResource(
@@ -161,10 +163,12 @@ fun ActorMoviesSection(
             onClickShowMore = interactionListener::onShowMoreMovies,
             onClickPoster = interactionListener::onMovieClick,
             movieCardContent = { movie, cardModifier, onMovieClick ->
+                Log.d("blurcast", "${uiState.enableBlur}")
                 MoviePosterCard(
                     movie = movie.toMediaItemUi(),
                     viewMode = ViewMode.GRID,
                     showRating = true,
+                    enableBlur = uiState.enableBlur,
                     onMovieClick = { onMovieClick(movie) },
                     showTitle = true,
                     modifier = cardModifier
@@ -197,6 +201,7 @@ fun ActorGallerySection(
 
             GallerySection(
                 images = uiState.images.take(3),
+                enableBlur = uiState.enableBlur,
                 modifier = Modifier.padding(horizontal = 20.dp)
             )
         }
@@ -245,6 +250,7 @@ fun ActorMainDetailsSection(
             location = actor.placeOfBirth,
             scrollState = null,
             socialMediaLinks = uiState.socialMediaLinks,
+            enableBlur = uiState.enableBlur,
             onSocialMediaClick = interactionListener::onSocialMediaClick,
         )
     }
@@ -258,6 +264,7 @@ fun MainDetails(
     location: String,
     scrollState: ScrollState?,
     socialMediaLinks: SocialMediaLinks,
+    enableBlur: String,
     modifier: Modifier = Modifier,
     onSocialMediaClick: (platform: String, url: String) -> Unit = { _, _ -> },
 ) {
@@ -300,6 +307,7 @@ fun MainDetails(
                         .width(68.dp)
                         .size(imageSize)
                         .clip(if (isCollapsed) CircleShape else RoundedCornerShape(cornerSize)),
+                    isBlurEnabled = enableBlur,
                     placeholderContent = { RemoteImagePlaceholder() },
                     errorContent = { RemoteImagePlaceholder() },
                     onBlurContent = {

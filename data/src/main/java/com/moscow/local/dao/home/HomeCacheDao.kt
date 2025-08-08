@@ -25,6 +25,12 @@ interface HomeCacheDao {
     @Query("DELETE FROM home_item WHERE categoryType = :categoryType")
     suspend fun clearHomeCategory(categoryType: String)
 
+    @Query("DELETE FROM home_item")
+    suspend fun clearHomeItemCash()
+
+    @Query("DELETE FROM home_category_timestamp")
+    suspend fun clearHomeCategoryTimestampCash()
+
     @Transaction
     suspend fun refreshHomeCategory(categoryType: String, homeItems: List<MediaItemEntity>) {
         clearHomeCategory(categoryType)

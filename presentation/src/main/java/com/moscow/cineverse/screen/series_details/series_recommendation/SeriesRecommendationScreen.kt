@@ -27,8 +27,8 @@ import com.moscow.cineverse.component.NoInternetScreen
 import com.moscow.cineverse.designSystem.component.MovieAppBar
 import com.moscow.cineverse.designSystem.component.MovieCircularProgressBar
 import com.moscow.cineverse.designSystem.component.MovieScaffold
-import com.moscow.cineverse.mapper.toUi
 import com.moscow.cineverse.screen.explore.component.ViewModeToggleButton
+import com.moscow.cineverse.screen.explore.toUi
 import com.moscow.cineverse.utlis.ViewMode
 import com.moscow.cinverse.presentation.R
 import com.moscow.domain.model.Series
@@ -110,7 +110,7 @@ fun SeriesRecommendationScreenContent(
                         modifier = Modifier.fillMaxSize()
                     ) {
                         items(recommendations.itemCount) { index ->
-                            val recommendation = recommendations[index]?.toUi()
+                            val recommendation = recommendations[index]?.toUi(uiState.seriesGenre)
                             if (recommendation != null) {
                                 MoviePosterCard(
                                     movie = recommendation,
@@ -119,7 +119,8 @@ fun SeriesRecommendationScreenContent(
                                         interactionListener.onSeriesClicked(
                                             recommendation.id
                                         )
-                                    }
+                                    },
+                                    enableBlur = uiState.enableBlur,
                                 )
                             }
                         }

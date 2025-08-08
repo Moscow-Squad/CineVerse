@@ -1,0 +1,43 @@
+package com.moscow.cineverse.screen.profile
+
+object ProfileScreenEffectHandler {
+    fun handleEffect(
+        effects: ProfileScreenEffects,
+        navigateToLogin:()->Unit,
+        onLogoutFailed:()-> Unit,
+        navigateToMyRatings: () -> Unit,
+        navigateToMyCollections: () -> Unit,
+        navigateToMyHistory: () -> Unit,
+        goToWebView:(String) -> Unit
+
+    ){
+        when(effects){
+
+            ProfileScreenEffects.NavigateToHistory -> {
+                navigateToMyHistory()
+            }
+            ProfileScreenEffects.NavigateToMyCollections -> {
+                navigateToMyCollections()
+            }
+            ProfileScreenEffects.NavigateToMyRating -> {
+                navigateToMyRatings()
+            }
+
+            ProfileScreenEffects.OnLogoutSuccessfully -> {
+                navigateToLogin()
+            }
+
+            ProfileScreenEffects.OnLogoutFailed -> {
+                onLogoutFailed()
+            }
+
+            is ProfileScreenEffects.GoToWebView -> {
+                goToWebView(effects.url)
+            }
+
+            ProfileScreenEffects.OnLoginClick -> {
+                navigateToLogin()
+            }
+        }
+    }
+}

@@ -16,17 +16,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.moscow.cineverse.designSystem.component.blur.OnBlurContent
 import com.moscow.cineverse.designSystem.component.blur.RemoteImagePlaceholder
-import com.moscow.cineverse.designSystem.theme.CineVerseTheme
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.image_viewer.component.SafeImageViewer
 
 @Composable
 fun ActorGallery(
     images: List<String>,
+    enableBlur: String,
     modifier: Modifier = Modifier
 ) {
     val imageGroups = images.chunked(3)
@@ -40,6 +39,7 @@ fun ActorGallery(
             ActorGalleryItem(
                 images = group,
                 isFlipped = index % 2 == 0,
+                enableBlur = enableBlur,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(vertical = 6.dp)
@@ -52,6 +52,7 @@ fun ActorGallery(
 fun ActorGalleryItem(
     images: List<String>,
     isFlipped: Boolean,
+    enableBlur: String,
     modifier: Modifier = Modifier
 ) {
     val flipModifier = if (isFlipped) Modifier.graphicsLayer { scaleX = -1f } else Modifier
@@ -63,6 +64,7 @@ fun ActorGalleryItem(
         1 -> {
             CastGalleryItemImage(
                 imageUrl = images[0],
+                enableBlur = enableBlur,
                 modifier = containerModifier
                     .height(280.dp)
                     .clip(RoundedCornerShape(Theme.radius.large))
@@ -78,6 +80,7 @@ fun ActorGalleryItem(
                 images.forEach { image ->
                     CastGalleryItemImage(
                         imageUrl = image,
+                        enableBlur = enableBlur,
                         modifier = Modifier
                             .weight(1f)
                             .height(280.dp)
@@ -95,6 +98,7 @@ fun ActorGalleryItem(
             ) {
                 CastGalleryItemImage(
                     imageUrl = images[0],
+                    enableBlur = enableBlur,
                     modifier = Modifier
                         .weight(2f)
                         .height(280.dp)
@@ -110,6 +114,7 @@ fun ActorGalleryItem(
                     images.subList(1, 3).forEach { image ->
                         CastGalleryItemImage(
                             imageUrl = image,
+                            enableBlur = enableBlur,
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .height(134.dp)
@@ -125,11 +130,13 @@ fun ActorGalleryItem(
 @Composable
 fun CastGalleryItemImage(
     imageUrl: String,
+    enableBlur: String,
     modifier: Modifier = Modifier
 ) {
     SafeImageViewer(
         imageUrl = imageUrl,
         modifier = modifier,
+        isBlurEnabled = enableBlur,
         placeholderContent = {
             RemoteImagePlaceholder()
         },
@@ -142,23 +149,4 @@ fun CastGalleryItemImage(
             )
         }
     )
-}
-
-
-@Preview
-@Composable
-private fun GalleryCastImagesPreview() {
-    CineVerseTheme {
-        ActorGallery(
-            listOf(
-                "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Christian_Bale-7837.jpg/330px-Christian_Bale-7837.jpg",
-                "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Christian_Bale-7837.jpg/330px-Christian_Bale-7837.jpg",
-                "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Christian_Bale-7837.jpg/330px-Christian_Bale-7837.jpg",
-                "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Christian_Bale-7837.jpg/330px-Christian_Bale-7837.jpg",
-                "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Christian_Bale-7837.jpg/330px-Christian_Bale-7837.jpg",
-                "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Christian_Bale-7837.jpg/330px-Christian_Bale-7837.jpg",
-                "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Christian_Bale-7837.jpg/330px-Christian_Bale-7837.jpg"
-            )
-        )
-    }
 }

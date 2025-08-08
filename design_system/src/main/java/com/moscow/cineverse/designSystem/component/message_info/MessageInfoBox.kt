@@ -40,7 +40,9 @@ fun MessageInfoBox(
     secondButtonText: String = "",
     onClickSecondButton: () -> Unit = {},
     firstButtonLoading: Boolean = false,
-    secondButtonLoading: Boolean = false
+    secondButtonLoading: Boolean = false,
+    iconColor:Color = Theme.colors.brand.primary,
+    secondButtonBackground:Color = Theme.colors.button.primary,
 ) {
     Column(
         modifier = modifier,
@@ -60,7 +62,7 @@ fun MessageInfoBox(
                 modifier = Modifier.size(28.dp),
                 painter = icon,
                 contentDescription = stringResource(R.string.arrow_left),
-                colorFilter = ColorFilter.tint(Theme.colors.brand.primary)
+                colorFilter = ColorFilter.tint(iconColor)
             )
         }
 
@@ -99,7 +101,7 @@ fun MessageInfoBox(
                 textColor = Theme.colors.button.onPrimary,
                 textStyle = Theme.textStyle.body.medium.medium,
                 onClick = onClickSecondButton,
-                buttonColor = Theme.colors.button.primary,
+                buttonColor = secondButtonBackground,
                 modifier = Modifier
                     .weight(1f)
                     .padding(vertical = 14.5.dp),

@@ -36,7 +36,7 @@ fun SafeImageViewer(
     imageUrl: String,
     modifier: Modifier = Modifier,
     blurRadius: Int = 25,
-    isBlurEnabled: Boolean = true,
+    isBlurEnabled: String,
     placeholderContent: @Composable () -> Unit = {},
     errorContent: @Composable () -> Unit = {},
     onSuccess: (() -> Unit)? = null,
@@ -44,6 +44,15 @@ fun SafeImageViewer(
     onBlurContent: @Composable () -> Unit = {},
 ) {
     val context = LocalContext.current
+    val blur = when(isBlurEnabled){
+        "high", "medium" -> true
+        else -> false
+    }
+    val threshold = when(isBlurEnabled){
+        "high" -> 0.5f
+        "medium" -> 0.2f
+        else -> 0.2f
+    }
 
     val imageLoader = remember {
         ImageLoader.Builder(context)
@@ -61,8 +70,8 @@ fun SafeImageViewer(
             .build()
     }
 
-    val classifier = remember(isBlurEnabled) {
-        if (isBlurEnabled) HybridImageClassifier(context) else null
+    val classifier =  remember(blur) {
+        if (blur) HybridImageClassifier(context, threshold) else null
     }
 
     var bitmapToDisplay by remember { mutableStateOf<Bitmap?>(null) }
@@ -99,7 +108,8 @@ fun SafeImageViewer(
             }
 
             if (bitmap != null) {
-                val shouldBlur = if (isBlurEnabled && classifier != null) {
+                imageCache[imageUrl] = CachedImage(bitmap, false)
+                val shouldBlur = if (blur && classifier != null) {
                     withContext(Dispatchers.Default) {
                         classifier.classifyImage(bitmap)
                     }
@@ -115,14 +125,14 @@ fun SafeImageViewer(
                 requestState = RequestState.ERROR
                 onError?.invoke()
             }
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             requestState = RequestState.ERROR
             onError?.invoke()
         }
     }
 
     val showBlur = remember(requestState, isNsfw, isBlurEnabled) {
-        requestState == RequestState.SUCCESS && isNsfw && isBlurEnabled
+        requestState == RequestState.SUCCESS && isNsfw && blur
     }
 
     Box(modifier = modifier) {

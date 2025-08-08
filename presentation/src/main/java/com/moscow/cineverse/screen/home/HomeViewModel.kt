@@ -4,16 +4,18 @@ package com.moscow.cineverse.screen.home
 import androidx.lifecycle.viewModelScope
 import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.cineverse.common_ui_state.MediaItemUiState
-import com.moscow.cineverse.mapper.toGenreUi
 import com.moscow.cineverse.mapper.toMyCollectionUi
 import com.moscow.cineverse.mapper.toUi
-import com.moscow.domain.model.Genre
+import com.moscow.cineverse.screen.explore.toUi
 import com.moscow.domain.model.MediaType
 import com.moscow.domain.model.Movie
 import com.moscow.domain.model.Series
 import com.moscow.domain.model.UserType
+import com.moscow.domain.repository.blur.BlurProvider
+import com.moscow.domain.repository.language.LanguageProvider
 import com.moscow.domain.usecase.collection.GetUserCollectionsUseCase
 import com.moscow.domain.usecase.genre.GenreUseCase
+import com.moscow.domain.usecase.home.ClearHomeCash
 import com.moscow.domain.usecase.home.GetMatchesYourVibesMoviesUseCase
 import com.moscow.domain.usecase.home.GetRecentlyReleasedMoviesUseCase
 import com.moscow.domain.usecase.home.GetTopRatedTVShowsUseCase
@@ -24,8 +26,8 @@ import com.moscow.domain.usecase.recently_viewed.GetRecentlyViewedMediaUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.suspendCancellableCoroutine
 import javax.inject.Inject
 
 @HiltViewModel
@@ -34,16 +36,68 @@ class HomeViewModel @Inject constructor(
     private val getRecentlyReleasedMoviesUseCase: GetRecentlyReleasedMoviesUseCase,
     private val getTopRatedTVShowsUseCase: GetTopRatedTVShowsUseCase,
     private val getUpcomingMoviesUseCase: GetUpcomingMoviesUseCase,
-    private val genreUseCase: GenreUseCase,
     private val getTrendingMoviesUseCase: GetTrendingMoviesUseCase,
     private val getUserDetailsUseCase: GetUserDetailsUseCase,
+    private val blurProvider: BlurProvider,
     private val getUserCollectionsUseCase: GetUserCollectionsUseCase,
-    private val getRecentlyViewedMediaUseCase: GetRecentlyViewedMediaUseCase
+    private val getRecentlyViewedMediaUseCase: GetRecentlyViewedMediaUseCase,
+    private val genreUseCase: GenreUseCase,
+    private val clearHomeCash: ClearHomeCash,
+    private val languageProvider: LanguageProvider
 ) : BaseViewModel<HomeUiState, HomeEvent>(HomeUiState()), HomeInteractionListener {
 
     init {
         updateState { it.copy(isLoading = true) }
+
+        viewModelScope.launch {
+            val d = languageProvider.languageFlow.first()
+            updateState { it.copy(cashLanguage = d) }
+        }
+        observeLanguage()
+        getGenres()
         loadHomeData()
+        observeBlur()
+    }
+
+    private fun getGenres() {
+        launchWithResult(
+            action = { genreUseCase.getMoviesGenres() },
+            onSuccess = { genres ->
+                updateState {
+                    it.copy(movieGenre = genres.map { genre -> genre.toUi() })
+                }
+                loadHomeData()
+            },
+            onError = { e ->
+                updateState {
+                    it.copy(
+                        error = e.message,
+                        isLoading = false,
+                    )
+                }
+            },
+        )
+    }
+
+    private fun observeLanguage() {
+        viewModelScope.launch {
+
+            languageProvider.languageFlow.collect { currentLanguage ->
+                if (uiState.value.cashLanguage != currentLanguage) {
+                    updateState { it.copy(cashLanguage = currentLanguage) }
+                    clearHomeCash()
+                    loadHomeData()
+                }
+            }
+        }
+    }
+
+    private fun observeBlur() {
+        viewModelScope.launch {
+            blurProvider.blurFlow.collect { enableBlur ->
+                updateState { it.copy(enableBlur = enableBlur) }
+            }
+        }
     }
 
     private fun loadHomeData() {
@@ -51,7 +105,6 @@ class HomeViewModel @Inject constructor(
         launchAndForget(
             action = {
                 viewModelScope.launch {
-                    getGenres()
                     coroutineScope {
                         val jobs = listOf(
                             launch { getUserDetails() },
@@ -71,6 +124,7 @@ class HomeViewModel @Inject constructor(
                 updateState { it.copy(isLoading = false, error = e.message) }
             }
         )
+
     }
 
     private suspend fun waitUntilAllDataIsReady() {
@@ -142,42 +196,6 @@ class HomeViewModel @Inject constructor(
         )
     }
 
-    private suspend fun getGenres() {
-        return suspendCancellableCoroutine { continuation ->
-            launchWithResult(
-                action = { genreUseCase.getMoviesGenres() },
-                onSuccess = {
-                    onGetGenresSuccess(it)
-                    continuation.resume(
-                        value = Unit,
-                    ) { cause, value, context ->
-
-                    }
-                },
-                onError = {
-                    onGetGenresError(it)
-                    continuation.resume(
-                        value = Unit,
-                    ) { cause, value, context ->
-
-                    }
-                },
-            )
-        }
-    }
-
-    private fun onGetGenresSuccess(genres: List<Genre>) {
-        updateState {
-            it.copy(
-                genres = genres.map { genre -> genre.toGenreUi() }
-            )
-        }
-    }
-
-    private fun onGetGenresError(throwable: Throwable) {
-        updateState { it.copy(error = throwable.message) }
-    }
-
     private fun fetchTrendingMovies() {
         launchWithResult(
             action = {
@@ -189,7 +207,7 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun onFetchTrendingMoviesSuccess(movies: List<Movie>) {
-        updateState { it.copy(sliderItems = movies.toUi(uiState.value.genres)) }
+        updateState { it.copy(sliderItems = movies.map { it.toUi(uiState.value.movieGenre) } ) }
     }
 
     private fun onFetchTrendingMoviesError(throwable: Throwable) {
@@ -207,9 +225,8 @@ class HomeViewModel @Inject constructor(
     private fun onFetchRecentlyReleasedMoviesSuccess(movies: List<Movie>) {
         updateState {
             it.copy(
-                recentlyReleasedMovies = movies.toUi(uiState.value.genres),
-
-                )
+                recentlyReleasedMovies = movies.map { it.toUi(uiState.value.movieGenre) },
+            )
         }
     }
 
@@ -228,8 +245,7 @@ class HomeViewModel @Inject constructor(
     private fun onFetchUpcomingMoviesSuccess(movies: List<Movie>) {
         updateState {
             it.copy(
-                upcomingMovies = movies.toUi(uiState.value.genres),
-
+                upcomingMovies = movies.map{ it.toUi(uiState.value.movieGenre) },
                 )
         }
     }
@@ -266,7 +282,7 @@ class HomeViewModel @Inject constructor(
     private fun onFetchMatchesYourVibesMoviesSuccess(movies: List<Movie>) {
         updateState {
             it.copy(
-                matchesYourVibe = movies.toUi(uiState.value.genres),
+                matchesYourVibe = movies.map{ it.toUi(uiState.value.movieGenre) },
                 error = null
             )
         }
@@ -290,6 +306,7 @@ class HomeViewModel @Inject constructor(
     }
 
     override fun onCollectionsShowMoreClick() {
+        sendEvent(HomeEvent.SeeMoreCollections)
     }
 
     override fun onCollectionClick(collectionId: Int, collectionName: String) {
@@ -309,7 +326,19 @@ class HomeViewModel @Inject constructor(
     }
 
     override fun onRefresh() {
-        loadHomeData()
+        getGenres()
+    }
+
+    override fun onSeeMoreRecentlyViewedClicked() {
+        sendEvent(HomeEvent.SeeMoreRecentlyViewed)
+    }
+
+    override fun onFeaturedCollectionClick(genreId: Int) {
+        val collection = HomeFeaturedCollections.entries.find { it.genreId == genreId }
+        if (collection != null) {
+            sendEvent(HomeEvent.FeaturedCollectionClicked(collection.genreId,
+                collection.title))
+        }
     }
 }
 
@@ -349,6 +378,7 @@ fun List<Any>.toMediaItemUiState(
                 mediaType = MediaType.Tv,
                 backdropPath = item.backdropPath
             )
+
             else -> null
         }
     }

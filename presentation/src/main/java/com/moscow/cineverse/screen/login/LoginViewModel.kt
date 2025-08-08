@@ -72,7 +72,7 @@ class LoginViewModel @Inject constructor(
                     loginWithUsernameAndPasswordUseCase.invoke(
                         loginData = LoginData(
                             username = uiState.value.username,
-                            password = uiState.value.password
+                            password = uiState.value.password,
                         )
                     )
                 },

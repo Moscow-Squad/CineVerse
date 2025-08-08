@@ -14,5 +14,6 @@ data class CollectionDetailsScreenState(
     val confirmClear: Boolean = false,
     val moviesGenres: List<GenreUiState> = emptyList(),
     val seriesGenres: List<GenreUiState> = emptyList(),
-    val movies: Flow<PagingData<Movie>> = flowOf()
+    val movies: Flow<PagingData<Movie>> = flowOf(),
+    val enableBlur: String = "high"
 )

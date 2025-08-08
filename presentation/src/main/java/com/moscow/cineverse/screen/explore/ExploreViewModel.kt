@@ -13,6 +13,7 @@ import com.moscow.cineverse.screen.explore.ExploreScreenState.ActorUiState
 import com.moscow.cineverse.utlis.ViewMode
 import com.moscow.domain.model.Genre
 import com.moscow.domain.model.MediaType
+import com.moscow.domain.repository.blur.BlurProvider
 import com.moscow.domain.usecase.genre.GenreUseCase
 import com.moscow.domain.usecase.movie.GetMovieByGenreIdUseCase
 import com.moscow.domain.usecase.movie.GetPopularMoviesUseCase
@@ -49,6 +50,7 @@ class ExploreViewModel @Inject constructor(
     private val getSeriesByGenreIdUseCase: GetSeriesByGenreIdUseCase,
     private val cacheSearchQueryUseCase: CacheSearchQueryUseCase,
     private val clearSearchHistoryUseCase: ClearSearchHistoryUseCase,
+    private val blurProvider: BlurProvider
 ) : BaseViewModel<ExploreScreenState, ExploreScreenEffects>(ExploreScreenState()),
     ExploreInteractionListener {
 
@@ -71,6 +73,15 @@ class ExploreViewModel @Inject constructor(
         getMovies()
         getSeries()
         observeKeyword()
+        observeBlur()
+    }
+
+    private fun observeBlur() {
+        viewModelScope.launch {
+            blurProvider.blurFlow.collect { enableBlur ->
+                updateState { it.copy(enableBlur = enableBlur) }
+            }
+        }
     }
 
     override fun searchMovie() {
@@ -270,9 +281,7 @@ class ExploreViewModel @Inject constructor(
         launchWithResult(
             action = { suggestionUseCase.getSuggestions(keyword, page) },
             onSuccess = ::onSuccessLoadingSuggestions,
-            onError = { },
-            onStart = { },
-            onFinally = { }
+            onError = { updateState { it.copy(remoteSuggestions = listOf(uiState.value.searchKeyWord))} },
         )
     }
 
@@ -401,11 +410,11 @@ class ExploreViewModel @Inject constructor(
             action = {
                 uiState.value.localSuggestions.any { it.title == uiState.value.searchKeyWord }
                     .let { isQueryInHistory ->
-                        if (!isQueryInHistory)
-                            cacheSearchQueryUseCase.cacheSearchQuery(uiState.value.searchKeyWord)
                         searchMovie()
                         searchSeries()
                         searchActor()
+                        if (!isQueryInHistory)
+                            cacheSearchQueryUseCase.cacheSearchQuery(uiState.value.searchKeyWord)
                     }
             },
             onSuccess = {

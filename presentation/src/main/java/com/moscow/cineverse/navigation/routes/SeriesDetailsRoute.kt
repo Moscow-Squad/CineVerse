@@ -38,7 +38,7 @@ fun NavGraphBuilder.seriesDetailsRoute(navController: NavHostController) {
             navigateToSeriesDetails = { seriesId ->
                 navController.navigate(SeriesDetailsRoute(seriesId))
             },
-
-            )
+            navigateToLogin = { navController.navigate(LoginRoute) }
+        )
     }
 }

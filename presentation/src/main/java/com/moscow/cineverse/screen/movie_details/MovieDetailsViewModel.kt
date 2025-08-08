@@ -11,9 +11,13 @@ import com.moscow.domain.model.CreditsDetails
 import com.moscow.domain.model.Movie
 import com.moscow.domain.model.Review
 import com.moscow.domain.model.details.MovieDetail
+import com.moscow.domain.repository.PreferenceRepository
+import com.moscow.domain.repository.blur.BlurProvider
+import com.moscow.domain.usecase.movie.DeleteRatingMovieUseCase
 import com.moscow.domain.usecase.movie.GetMovieCreditsUseCase
 import com.moscow.domain.usecase.movie.GetMovieDetailsUseCase
 import com.moscow.domain.usecase.movie.GetMovieRecommendationsUseCase
+import com.moscow.domain.usecase.movie.GetUserRatingForMovieUseCase
 import com.moscow.domain.usecase.movie.RateMovieUseCase
 import com.moscow.domain.usecase.recently_viewed.AddRecentlyViewedMovieUseCase
 import com.moscow.domain.usecase.review.GetReviewsUseCase
@@ -29,7 +33,11 @@ class MovieDetailsViewModel @Inject constructor(
     private val getMovieCreditsUseCase: GetMovieCreditsUseCase,
     private val getMovieRecommendationsUseCase: GetMovieRecommendationsUseCase,
     private val rateMovieUseCase: RateMovieUseCase,
+    private val blurProvider: BlurProvider,
+    private val deleteRatingMovieUseCase: DeleteRatingMovieUseCase,
+    private val getUserRatingForMovieUseCase: GetUserRatingForMovieUseCase,
     private val addRecentlyViewedMovieUseCase: AddRecentlyViewedMovieUseCase,
+    private val preferences: PreferenceRepository,
     saveStateHandle: SavedStateHandle,
 ) : BaseViewModel<MovieScreenState, MovieDetailsScreenEffect>(MovieScreenState()),
     MovieDetailsInteractionListener {
@@ -40,6 +48,7 @@ class MovieDetailsViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             updateState { it.copy(isLoading = true) }
+            getUserRating(movieId)
             getMovieDetails(movieId)
             getReviews(movieId)
             getCredits(movieId)
@@ -47,6 +56,27 @@ class MovieDetailsViewModel @Inject constructor(
             waitUntilAllDataIsReady()
             updateState { it.copy(isLoading = false) }
         }
+        observeBlur()
+    }
+
+    private fun observeBlur() {
+        viewModelScope.launch {
+            blurProvider.blurFlow.collect { enableBlur ->
+                updateState { it.copy(enableBlur = enableBlur) }
+            }
+        }
+    }
+
+    private fun getUserRating(seriesId: Int) {
+        launchWithResult(
+            action = { getUserRatingForMovieUseCase.invoke(seriesId) },
+            onSuccess = { rate ->
+                updateState { it.copy(starsRating = rate) }
+            },
+            onError = {
+                updateState { it.copy(starsRating = 0) }
+            }
+        )
     }
 
     private suspend fun waitUntilAllDataIsReady() {
@@ -244,7 +274,32 @@ class MovieDetailsViewModel @Inject constructor(
     }
 
     override fun showRatingBottomSheet() {
-        updateState { it.copy(showRatingBottomSheet = true) }
+        launchWithResult(
+            action = { preferences.isLoggedIn() },
+            onSuccess = { isLoggedIn ->
+                if (isLoggedIn) {
+                    updateState { it.copy(
+                        starsRating = uiState.value.starsRating,
+                        showRatingBottomSheet = true
+                    )
+                    }
+                } else {
+                    updateState { it.copy(showLoginBottomSheet = true) }
+                }
+            },
+            onError = {
+                updateState { it.copy(showLoginBottomSheet = true) }
+            }
+        )
+    }
+
+    override fun onDismissLoginBottomSheet() {
+        updateState { it.copy(showLoginBottomSheet = false) }
+    }
+
+    override fun navigateToLogin() {
+        updateState { it.copy(showLoginBottomSheet = false) }
+        sendEvent(MovieDetailsScreenEffect.NavigateToLogin)
     }
 
     override fun onDismissOrCancelRatingBottomSheet() {
@@ -263,17 +318,34 @@ class MovieDetailsViewModel @Inject constructor(
                     )
                 }
             },
-            onStart = {
-                updateState { it.copy(isLoading = true) }
-            },
             onError = {
+                updateState { it.copy(showRatingBottomSheet = false) }
+                sendEvent(
+                    MovieDetailsScreenEffect.ShowError(message = "There is a problem receiving the request from the server. Please come back later.")
+                    // TODO : Handle Arabic Message
+                )
+            }
+        )
+    }
+
+    override fun onDeleteRatingMovie(movieId: Int) {
+        launchWithResult(
+            action = { deleteRatingMovieUseCase.invoke(movieId) },
+            onSuccess = {
                 updateState {
                     it.copy(
-                        starsRating = rating,
+                        starsRating = 0,
                         showRatingBottomSheet = false,
                         isLoading = false
                     )
                 }
+            },
+            onError = {
+                updateState { it.copy(showRatingBottomSheet = false) }
+                sendEvent(
+                    MovieDetailsScreenEffect.ShowError(message = "There is a problem receiving the request from the server. Please come back later.")
+                    // TODO : Handle Arabic Message
+                )
             }
         )
     }
