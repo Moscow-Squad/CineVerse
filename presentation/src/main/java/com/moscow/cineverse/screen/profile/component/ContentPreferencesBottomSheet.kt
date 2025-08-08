@@ -170,7 +170,7 @@ fun PreferenceOption(
         ) {
             Text(
                 text = name,
-                color = if (isSelected) Theme.colors.brand.primary else Color.Transparent,
+                color = if (isSelected) Theme.colors.brand.primary else Theme.colors.shade.primary,
                 style = Theme.textStyle.body.medium.medium
             )
             Spacer(modifier = Modifier.height(4.dp))

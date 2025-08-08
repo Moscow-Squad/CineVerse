@@ -1,7 +1,6 @@
 package com.moscow.cineverse.screen.profile
 
-import android.util.Log
-import androidx.compose.animation.AnimatedVisibility
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -197,12 +196,5 @@ fun ProfileContent(
             )
         }
     }
-    /*AnimatedVisibility(uiState.goToWebView) {
-        WebViewBrowser(
-            url = uiState.editProfileURL,
-            onExitWebView = {
-                listener.onExitWebView()
-            }
-        )
-    }*/
+
 }
