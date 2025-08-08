@@ -34,7 +34,7 @@ import com.moscow.cineverse.image_viewer.component.SafeImageViewer
 @Composable
 fun SeasonCard(
     modifier: Modifier = Modifier,
-    enableBlur: Boolean,
+    enableBlur: String,
     seasonNumber: String,
     episodeCount: Int,
     airDate: String,

@@ -13,7 +13,7 @@ data class MyRatingsUiState(
     val movieGenres: List<GenreUiState> = emptyList(),
     val seriesGenres: List<GenreUiState> = emptyList(),
     val isContentEmpty: Boolean = false,
-    val enableBlur: Boolean = true
+    val enableBlur: String = "high"
 )
 
 data class RatedMediaItem(

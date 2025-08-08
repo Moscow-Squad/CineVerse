@@ -104,22 +104,3 @@ fun ActorGalleryContent(
         }
     }
 }
-
-@CineVersePreviews
-@Composable
-fun ActorGalleryPreview(modifier: Modifier = Modifier) {
-    ActorGalleryContent(
-        uiState = ShowAllActorMoviesState(
-            isLoading = false,
-            error = null,
-            photos = emptyList()
-        ),
-        interactionListener = object : ActorGalleryInteractionListener {
-            override fun onRefresh() {}
-            override fun backButtonClick() {}
-        },
-        modifier = modifier,
-        title = "Actor Gallery",
-        onNavigateBack = {}
-    )
-}

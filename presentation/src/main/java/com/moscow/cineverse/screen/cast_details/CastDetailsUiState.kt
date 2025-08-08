@@ -14,7 +14,7 @@ data class CastDetailsUiState(
     val isContentEmpty: Boolean = false,
     val isLoadingMovies: Boolean = false,
     val isLoadingImages: Boolean = false,
-    val enableBlur: Boolean = true
+    val enableBlur: String = "high"
 ) {
     data class SocialMediaLinks(
         val youtube: String? = null,

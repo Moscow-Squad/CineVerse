@@ -25,7 +25,7 @@ import com.moscow.cineverse.image_viewer.component.SafeImageViewer
 @Composable
 fun ActorGallery(
     images: List<String>,
-    enableBlur: Boolean,
+    enableBlur: String,
     modifier: Modifier = Modifier
 ) {
     val imageGroups = images.chunked(3)
@@ -52,7 +52,7 @@ fun ActorGallery(
 fun ActorGalleryItem(
     images: List<String>,
     isFlipped: Boolean,
-    enableBlur: Boolean,
+    enableBlur: String,
     modifier: Modifier = Modifier
 ) {
     val flipModifier = if (isFlipped) Modifier.graphicsLayer { scaleX = -1f } else Modifier
@@ -130,7 +130,7 @@ fun ActorGalleryItem(
 @Composable
 fun CastGalleryItemImage(
     imageUrl: String,
-    enableBlur: Boolean,
+    enableBlur: String,
     modifier: Modifier = Modifier
 ) {
     SafeImageViewer(
