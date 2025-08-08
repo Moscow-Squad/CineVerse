@@ -70,7 +70,7 @@ fun SafeImageViewer(
             .build()
     }
 
-    val classifier =  remember(blur, threshold) {
+    val classifier =  remember(blur) {
         if (blur) HybridImageClassifier(context, threshold) else null
     }
 

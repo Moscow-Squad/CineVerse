@@ -6,6 +6,7 @@ import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.cineverse.common_ui_state.MediaItemUiState
 import com.moscow.cineverse.mapper.toMyCollectionUi
 import com.moscow.cineverse.mapper.toUi
+import com.moscow.cineverse.screen.explore.toUi
 import com.moscow.domain.model.MediaType
 import com.moscow.domain.model.Movie
 import com.moscow.domain.model.Series
@@ -13,6 +14,7 @@ import com.moscow.domain.model.UserType
 import com.moscow.domain.repository.blur.BlurProvider
 import com.moscow.domain.repository.language.LanguageProvider
 import com.moscow.domain.usecase.collection.GetUserCollectionsUseCase
+import com.moscow.domain.usecase.genre.GenreUseCase
 import com.moscow.domain.usecase.home.ClearHomeCash
 import com.moscow.domain.usecase.home.GetMatchesYourVibesMoviesUseCase
 import com.moscow.domain.usecase.home.GetRecentlyReleasedMoviesUseCase
@@ -39,6 +41,7 @@ class HomeViewModel @Inject constructor(
     private val blurProvider: BlurProvider,
     private val getUserCollectionsUseCase: GetUserCollectionsUseCase,
     private val getRecentlyViewedMediaUseCase: GetRecentlyViewedMediaUseCase,
+    private val genreUseCase: GenreUseCase,
     private val clearHomeCash: ClearHomeCash,
     private val languageProvider: LanguageProvider
 ) : BaseViewModel<HomeUiState, HomeEvent>(HomeUiState()), HomeInteractionListener {
@@ -50,17 +53,37 @@ class HomeViewModel @Inject constructor(
             val d = languageProvider.languageFlow.first()
             updateState { it.copy(cashLanguage = d) }
         }
-
         observeLanguage()
+        getGenres()
         loadHomeData()
         observeBlur()
     }
 
-    private fun observeLanguage(){
+    private fun getGenres() {
+        launchWithResult(
+            action = { genreUseCase.getMoviesGenres() },
+            onSuccess = { genres ->
+                updateState {
+                    it.copy(movieGenre = genres.map { genre -> genre.toUi() })
+                }
+                loadHomeData()
+            },
+            onError = { e ->
+                updateState {
+                    it.copy(
+                        error = e.message,
+                        isLoading = false,
+                    )
+                }
+            },
+        )
+    }
+
+    private fun observeLanguage() {
         viewModelScope.launch {
 
             languageProvider.languageFlow.collect { currentLanguage ->
-                if (uiState.value.cashLanguage != currentLanguage){
+                if (uiState.value.cashLanguage != currentLanguage) {
                     updateState { it.copy(cashLanguage = currentLanguage) }
                     clearHomeCash()
                     loadHomeData()
@@ -184,7 +207,7 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun onFetchTrendingMoviesSuccess(movies: List<Movie>) {
-        updateState { it.copy(sliderItems = movies.toUi()) }
+        updateState { it.copy(sliderItems = movies.map { it.toUi(uiState.value.movieGenre) } ) }
     }
 
     private fun onFetchTrendingMoviesError(throwable: Throwable) {
@@ -202,9 +225,8 @@ class HomeViewModel @Inject constructor(
     private fun onFetchRecentlyReleasedMoviesSuccess(movies: List<Movie>) {
         updateState {
             it.copy(
-                recentlyReleasedMovies = movies.toUi(),
-
-                )
+                recentlyReleasedMovies = movies.map { it.toUi(uiState.value.movieGenre) },
+            )
         }
     }
 
@@ -223,8 +245,7 @@ class HomeViewModel @Inject constructor(
     private fun onFetchUpcomingMoviesSuccess(movies: List<Movie>) {
         updateState {
             it.copy(
-                upcomingMovies = movies.toUi(),
-
+                upcomingMovies = movies.map{ it.toUi(uiState.value.movieGenre) },
                 )
         }
     }
@@ -261,7 +282,7 @@ class HomeViewModel @Inject constructor(
     private fun onFetchMatchesYourVibesMoviesSuccess(movies: List<Movie>) {
         updateState {
             it.copy(
-                matchesYourVibe = movies.toUi(),
+                matchesYourVibe = movies.map{ it.toUi(uiState.value.movieGenre) },
                 error = null
             )
         }
@@ -304,7 +325,7 @@ class HomeViewModel @Inject constructor(
     }
 
     override fun onRefresh() {
-        loadHomeData()
+        getGenres()
     }
 
     override fun onSeeMoreRecentlyViewedClicked() {
