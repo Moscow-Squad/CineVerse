@@ -12,6 +12,7 @@ import androidx.compose.animation.slideOutVertically
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -142,39 +143,43 @@ private fun MovieDetailsMainContent(
         modifier = modifier.background(Theme.colors.background.screen)
     ) {
         stickyHeader {
-            MovieAppBar(backButtonClick = onNavigateBack, showBackButton = true)
-        }
-        item {
-            SharedTransitionLayout {
-                AnimatedContent(
-                    targetState = isCollapsed,
-                    transitionSpec = {
-                        slideInVertically(
-                            initialOffsetY = { fullHeight -> fullHeight }
-                        ) + fadeIn() togetherWith
-                                slideOutVertically(
-                                    targetOffsetY = { fullHeight -> -fullHeight }
-                                ) + fadeOut()
-                    }
-                ) { target ->
-                    if (!target) {
-                        MovieHeaderSection(
-                            uiState = uiState,
-                            interactionListener = interactionListener,
-                            animatedVisibilityScope = this@AnimatedContent,
-                            sharedTransitionScope = this@SharedTransitionLayout
-                        )
-                    } else {
-                        MovieCollapsedHeaderSection(
-                            uiState = uiState,
-                            interactionListener = interactionListener,
-                            animatedVisibilityScope = this@AnimatedContent,
-                            sharedTransitionScope = this@SharedTransitionLayout,
-                        )
+            Column(
+                modifier = Modifier.background(Theme.colors.background.screen)
+            ) {
+                MovieAppBar(backButtonClick = onNavigateBack, showBackButton = true)
+
+                SharedTransitionLayout {
+                    AnimatedContent(
+                        targetState = isCollapsed,
+                        transitionSpec = {
+                            slideInVertically(
+                                initialOffsetY = { fullHeight -> -fullHeight }
+                            ) + fadeIn() togetherWith
+                                    slideOutVertically(
+                                        targetOffsetY = { fullHeight -> -fullHeight }
+                                    ) + fadeOut()
+                        }
+                    ) { target ->
+                        if (!target) {
+                            MovieHeaderSection(
+                                uiState = uiState,
+                                interactionListener = interactionListener,
+                                animatedVisibilityScope = this@AnimatedContent,
+                                sharedTransitionScope = this@SharedTransitionLayout
+                            )
+                        } else {
+                            MovieCollapsedHeaderSection(
+                                uiState = uiState,
+                                interactionListener = interactionListener,
+                                animatedVisibilityScope = this@AnimatedContent,
+                                sharedTransitionScope = this@SharedTransitionLayout,
+                            )
+                        }
                     }
                 }
             }
         }
+
         item {
             StorylineSection(description = uiState.movieDetailsUiState?.description)
         }
@@ -206,5 +211,4 @@ private fun MovieDetailsMainContent(
         uiState = uiState,
         interactionListener = interactionListener
     )
-
 }
