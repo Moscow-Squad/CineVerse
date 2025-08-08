@@ -51,7 +51,7 @@ suspend inline fun <T> handleApi(
         if (e.message?.contains("Unable to resolve host") == true)
             throw NoInternetException
         else
-        throw ServerNotFoundException
+            throw ServerNotFoundException
     } catch (e: Throwable) {
         throw UnknownException
     }
