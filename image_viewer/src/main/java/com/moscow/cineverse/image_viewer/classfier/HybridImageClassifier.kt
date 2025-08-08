@@ -67,8 +67,8 @@ internal class HybridImageClassifier(context: Context, nsfwThreshold: Float = 0.
         val porn = output[3]
         val sexy = output[4]
 
-        val sfwDrawing = drawings > hentai || hentai < nfsw
-        val sfwPhoto = (neutral > porn || porn < nfsw) && (neutral > sexy || sexy < nfsw)
+        val sfwDrawing = drawings > hentai || hentai < NSFW_THRESHOLD
+        val sfwPhoto = (neutral > porn || porn < NSFW_THRESHOLD) && (neutral > sexy || sexy < NSFW_THRESHOLD)
         return !(sfwPhoto && sfwDrawing)
     }
 
