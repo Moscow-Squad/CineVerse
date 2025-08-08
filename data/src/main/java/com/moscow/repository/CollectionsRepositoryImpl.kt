@@ -60,8 +60,6 @@ class CollectionsRepositoryImpl @Inject constructor(
         )
         if (response.success == false)
             throw AddMediaItemToCollectionException
-        if (!response.statusMessage.toString().contains("success"))
-            throw AddMediaItemToCollectionException
     }
 
     override suspend fun deleteMediaItemFromCollection(
@@ -75,8 +73,6 @@ class CollectionsRepositoryImpl @Inject constructor(
             sessionId = preferenceRepository.getSessionId()
         )
         if (response.success == false)
-            throw DeleteMediaItemFromCollectionException
-        if (!response.statusMessage.toString().contains("success"))
             throw DeleteMediaItemFromCollectionException
     }
 
@@ -99,8 +95,6 @@ class CollectionsRepositoryImpl @Inject constructor(
             confirm = confirm
         )
         if (response.success == false)
-            throw ClearCollectionException
-        if (!response.statusMessage.toString().contains("success"))
             throw ClearCollectionException
     }
 }
