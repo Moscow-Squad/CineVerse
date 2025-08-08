@@ -50,7 +50,7 @@ fun MovieCardDetails(
     releaseDate: String,
     posterUrl: String,
     type: String,
-    enableBlur: Boolean,
+    enableBlur: String,
     onSaveClick: () -> Unit = {},
     onPlayClick: () -> Unit = {},
     sharedTransitionScope: SharedTransitionScope,
@@ -236,7 +236,7 @@ fun InfoTextWithIcon(icon: Int, text: String, tint: Color) {
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun MainMovieCard(
-    enableBlur: Boolean,
+    enableBlur: String,
     posterUrl: String,
     title: String,
     onSaveClick: () -> Unit = {},

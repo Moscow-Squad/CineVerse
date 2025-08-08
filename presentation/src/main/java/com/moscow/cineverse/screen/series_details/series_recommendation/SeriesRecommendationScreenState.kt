@@ -7,6 +7,6 @@ data class SeriesRecommendationScreenState(
     val viewMode: ViewMode = ViewMode.GRID,
     val isLoading: Boolean = false,
     val error: String? = null,
-    val enableBlur: Boolean = true,
+    val enableBlur: String = "high",
     val seriesGenre: List<ExploreScreenState.GenreUiState> = listOf()
 )

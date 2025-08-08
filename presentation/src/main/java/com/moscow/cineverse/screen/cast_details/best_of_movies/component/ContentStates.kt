@@ -72,7 +72,7 @@ fun SuccessContent(
     uiState: ShowAllActorMoviesState,
     interactionListener: ShowAllActorMoviesInteractionListener,
     title: String,
-    enableBlur: Boolean,
+    enableBlur: String,
     onNavigateBack: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -96,7 +96,7 @@ fun SuccessContent(
 fun MoviesGrid(
     movies: List<com.moscow.cineverse.common_ui_state.MediaItemUiState>,
     viewMode: ViewMode,
-    enableBlur: Boolean,
+    enableBlur: String,
     onMovieClick: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {

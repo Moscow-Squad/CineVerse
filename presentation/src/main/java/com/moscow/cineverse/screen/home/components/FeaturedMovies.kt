@@ -15,7 +15,7 @@ fun FeaturedMovies(
     onMovieClick: (MediaItemUiState) -> Unit,
     onSeaMoreRecentlyViewedClicked: () -> Unit = {},
     type: HomeFeaturedItems,
-    enableBlur: Boolean,
+    enableBlur: String,
     modifier: Modifier = Modifier
 ) {
     MovieListSection(

@@ -210,7 +210,7 @@ fun HomeContent(
                         onSeaMoreRecentlyViewedClicked = listener::onSeeMoreRecentlyViewedClicked,
                         modifier = Modifier,
                         type = HomeFeaturedItems.YOU_RECENTLY_VIEWED,
-                        enableBlur = true
+                        enableBlur = uiState.enableBlur
                     )
                 }
 

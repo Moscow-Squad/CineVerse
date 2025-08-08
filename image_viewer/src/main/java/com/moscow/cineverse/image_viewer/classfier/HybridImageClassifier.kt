@@ -10,9 +10,10 @@ import java.nio.ByteOrder
 import java.nio.MappedByteBuffer
 import java.nio.channels.FileChannel
 
-internal class HybridImageClassifier(context: Context) {
+internal class HybridImageClassifier(context: Context, nsfwThreshold: Float = 0.2f) {
 
     private var interpreter: Interpreter? = null
+    private var nfsw : Float = nsfwThreshold
 
     init {
         interpreter = Interpreter(loadModelFile(context))
@@ -66,8 +67,8 @@ internal class HybridImageClassifier(context: Context) {
         val porn = output[3]
         val sexy = output[4]
 
-        val sfwDrawing = drawings > hentai || hentai < NSFW_THRESHOLD
-        val sfwPhoto = (neutral > porn || porn < NSFW_THRESHOLD) && (neutral > sexy || sexy < NSFW_THRESHOLD)
+        val sfwDrawing = drawings > hentai || hentai < nfsw
+        val sfwPhoto = (neutral > porn || porn < nfsw) && (neutral > sexy || sexy < nfsw)
         return !(sfwPhoto && sfwDrawing)
     }
 

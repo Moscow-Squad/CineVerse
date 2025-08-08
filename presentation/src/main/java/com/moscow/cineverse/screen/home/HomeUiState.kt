@@ -15,7 +15,7 @@ data class HomeUiState(
     val topRatedTvShows: List<MediaItemUiState> = emptyList(),
     val youRecentlyViewed: List<MediaItemUiState> = emptyList(),
     val collections: List<MyCollectionUiState> = emptyList(),
-    val enableBlur: Boolean = true,
+    val enableBlur: String = "high",
     val cashLanguage: String = "en",
 ){
     data class GenreUi(

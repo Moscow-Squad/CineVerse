@@ -11,6 +11,6 @@ data class RecommendationsMoviesState(
     val error: String? = null,
     val viewMode: ViewMode = ViewMode.GRID,
     val movies: List<MediaItemUiState> = emptyList(),
-    val enableBlur: Boolean = true,
+    val enableBlur: String = "high",
     val moviesGenres: List<GenreUiState> = listOf(),
 )
