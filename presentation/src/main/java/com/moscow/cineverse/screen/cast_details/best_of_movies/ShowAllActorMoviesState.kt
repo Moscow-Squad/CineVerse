@@ -12,5 +12,5 @@ data class ShowAllActorMoviesState(
     val viewMode: ViewMode = ViewMode.GRID,
     val movies: List<MediaItemUiState> = emptyList(),
     val moviesGenres: List<GenreUiState> = emptyList(),
-    val enableBlur: Boolean = true
+    val enableBlur: String = "high"
 )

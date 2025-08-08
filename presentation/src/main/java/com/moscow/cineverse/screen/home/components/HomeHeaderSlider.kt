@@ -50,7 +50,7 @@ import kotlin.math.absoluteValue
 fun HomeHeaderSlider(
     items: List<MediaItemUiState>,
     onSliderClick:(MediaItemUiState)->Unit,
-    enableBlur: Boolean,
+    enableBlur: String,
     modifier: Modifier = Modifier
 ) {
     if (items.isEmpty()) return

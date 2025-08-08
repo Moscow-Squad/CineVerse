@@ -118,7 +118,7 @@ private fun MyRatingsList(
     contentList: LazyPagingItems<RatedMediaItem>,
     onMediaItemClicked: (MediaItemUiState) -> Unit,
     modifier: Modifier = Modifier,
-    enableBlur: Boolean
+    enableBlur: String
 ) {
     LazyColumn(
         modifier = modifier,

@@ -15,7 +15,7 @@ fun MoviePosterCard(
     showRating: Boolean = true,
     showBackdrop: Boolean = false,
     onMovieClick: (Int) -> Unit = {},
-    enableBlur: Boolean,
+    enableBlur: String,
     titleTextAlign: TextAlign = TextAlign.Start,
     showTitle: Boolean = true,
     getTitleOverride: ((MediaItemUiState) -> String)? = null,

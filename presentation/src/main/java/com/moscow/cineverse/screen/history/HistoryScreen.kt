@@ -138,6 +138,6 @@ fun HistoryMediaItemCard(
         getGenres = { it.genres },
         getDuration = { it.duration },
         getReleaseDate = { it.releaseDate },
-        enableBlur = true
+        enableBlur = "high"
     )
 }

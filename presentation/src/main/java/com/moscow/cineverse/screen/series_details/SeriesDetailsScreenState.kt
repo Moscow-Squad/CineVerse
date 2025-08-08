@@ -24,7 +24,7 @@ data class SeriesDetailsScreenState(
     val showRatingBottomSheet: Boolean = false,
     val showLoginBottomSheet: Boolean = false,
     val starsRating: Int = 0,
-    val enableBlur: Boolean = true
+    val enableBlur: String = "high"
 )
 
 data class SeriesDetailsUiState(

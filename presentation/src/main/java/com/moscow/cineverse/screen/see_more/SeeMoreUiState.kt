@@ -9,7 +9,7 @@ data class SeeMoreUiState(
     val isContentEmpty: Boolean = false,
     val shouldShowError: Boolean = false,
     val viewMode: ViewMode = ViewMode.GRID,
-    val enableBlur: Boolean = true,
+    val enableBlur: String = "high",
     val moviesGenres: List<GenreUiState> = listOf(),
     val seriesGenres: List<GenreUiState> = listOf()
 )

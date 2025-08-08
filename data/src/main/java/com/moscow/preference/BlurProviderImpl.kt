@@ -4,6 +4,7 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.stringPreferencesKey
 import com.moscow.domain.repository.blur.BlurProvider
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -19,7 +20,7 @@ class BlurProviderImpl @Inject constructor(
 ) : BlurProvider {
 
     private val _blurState = MutableStateFlow(DEFAULT_BLUR_ENABLED)
-    override val blurFlow: StateFlow<Boolean> = _blurState
+    override val blurFlow: StateFlow<String> = _blurState
 
     init {
         CoroutineScope(Dispatchers.IO).launch {
@@ -30,7 +31,7 @@ class BlurProviderImpl @Inject constructor(
         }
     }
 
-    override suspend fun changeBlur(enabled: Boolean) {
+    override suspend fun changeBlur(enabled: String) {
         dataStore.edit { it[BLUR_ENABLED_KEY] = enabled }
     }
 
@@ -39,7 +40,7 @@ class BlurProviderImpl @Inject constructor(
     }
 
     companion object {
-        private val BLUR_ENABLED_KEY = booleanPreferencesKey("blur_enabled")
-        private const val DEFAULT_BLUR_ENABLED = true
+        private val BLUR_ENABLED_KEY = stringPreferencesKey("blur_threshold")
+        private const val DEFAULT_BLUR_ENABLED = "high"
     }
 }

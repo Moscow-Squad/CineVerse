@@ -12,13 +12,14 @@ import kotlinx.datetime.LocalDate
 
 const val YYYY_MMM_DD = "yyyy, MMM dd"
 
-fun Movie.toUi(genresList: List<GenreUiState>): MediaItemUiState =
+fun Movie.toUi(genresList: List<GenreUiState> = listOf()): MediaItemUiState =
     MediaItemUiState(
         id = id,
         title = name,
         posterPath = posterPath,
         rating = rating,
-        genres = genreIds.map { it -> genresList.first { genre -> genre.id == it }.name },
+        genres = if (genresList.isEmpty()) emptyList() else
+            genreIds.map { it -> genresList.first { genre -> genre.id == it }.name },
         releaseDate = releaseDate.formatWith(YYYY_MMM_DD) ?: "",
         duration = "",
         mediaType = MediaType.Movie,

@@ -31,8 +31,8 @@ import kotlinx.coroutines.delay
 fun ContentPreferencesBottomSheet(
     visible: Boolean,
     onDismiss: () -> Unit,
-    selectedPreference: Boolean,
-    onClickPreference: (Boolean) -> Unit
+    selectedPreference: String,
+    onClickPreference: (String) -> Unit
 ) {
     AnimatedVisibility(visible) {
         CineVerseBottomSheet(
@@ -53,10 +53,9 @@ fun ContentPreferencesBottomSheet(
 @Composable
 fun ContentPreferencesContent(
     modifier: Modifier = Modifier,
-    selectedPreference: Boolean,
-    onPreferenceChanged: (Boolean) -> Unit
+    selectedPreference: String,
+    onPreferenceChanged: (String) -> Unit
 ) {
-
     Column(
         modifier = modifier.padding(bottom = 16.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
@@ -66,31 +65,27 @@ fun ContentPreferencesContent(
             color = Theme.colors.shade.secondary,
             style = Theme.textStyle.body.small.regular
         )
-
         PreferenceOption(
-            name = stringResource(R.string.show_all_content),
-            description = stringResource(R.string.no_filtering_all_images_and_posters_will_be_displayed),
+            name = stringResource(R.string.hide_explicit_content),
+            description = stringResource(R.string.hides_revealing_or_inappropriate_posters_e_g_nudity_strong_sexual_content),
             imageRes = painterResource(com.moscow.cineverse.design_system.R.drawable.icon_eye_slash),
-            isSelected = selectedPreference == true,
-            onClick = { onPreferenceChanged(true) }
+            isSelected = selectedPreference == "high",
+            onClick = { onPreferenceChanged("high") }
         )
-
         PreferenceOption(
             name = stringResource(R.string.strict_filtering),
             description = stringResource(R.string.hides_all_content_that_includes_immodest_clothing_or_behavior),
             imageRes = painterResource(com.moscow.cineverse.design_system.R.drawable.icon_eye_slash),
-            isSelected = selectedPreference == false,
-            onClick = { onPreferenceChanged(false) }
+            isSelected = selectedPreference == "medium",
+            onClick = { onPreferenceChanged("medium") }
         )
-
-//        PreferenceOption(
-//            name = stringResource(R.string.hide_explicit_content),
-//            description = stringResource(R.string.hides_revealing_or_inappropriate_posters_e_g_nudity_strong_sexual_content),
-//            imageRes = painterResource(com.moscow.cineverse.design_system.R.drawable.icon_eye_slash),
-//            isSelected = false,
-//            onClick = { }
-//        )
-
+        PreferenceOption(
+            name = stringResource(R.string.show_all_content),
+            description = stringResource(R.string.no_filtering_all_images_and_posters_will_be_displayed),
+            imageRes = painterResource(com.moscow.cineverse.design_system.R.drawable.icon_eye_slash),
+            isSelected = selectedPreference == "low",
+            onClick = { onPreferenceChanged("low") }
+        )
     }
 }
 

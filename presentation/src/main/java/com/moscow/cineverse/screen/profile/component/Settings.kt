@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import com.moscow.cineverse.designSystem.component.switcher.CineVerseSwitch
 import com.moscow.cineverse.designSystem.component.wrapper.MovieText
 import com.moscow.cineverse.designSystem.theme.Theme
+import com.moscow.cineverse.designSystem.utils.noRibbleClick
 import com.moscow.cinverse.presentation.R
 
 @Composable
@@ -160,7 +161,7 @@ internal fun SettingItem(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .clickable { onClick() },
+            .noRibbleClick(onClick),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(8.dp)
 
