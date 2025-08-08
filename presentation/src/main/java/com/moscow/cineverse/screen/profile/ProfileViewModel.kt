@@ -1,13 +1,13 @@
 package com.moscow.cineverse.screen.profile
 
-import androidx.lifecycle.viewModelScope
 import android.util.Log
+import androidx.lifecycle.viewModelScope
 import com.moscow.cineverse.base.BaseViewModel
-import com.moscow.domain.repository.language.LanguageProvider
-import com.moscow.domain.repository.theme.ThemeProvider
 import com.moscow.domain.model.UserType
 import com.moscow.domain.model.profile.AccountDetails
 import com.moscow.domain.repository.blur.BlurProvider
+import com.moscow.domain.repository.language.LanguageProvider
+import com.moscow.domain.repository.theme.ThemeProvider
 import com.moscow.domain.usecase.local.GetUserDetailsUseCase
 import com.moscow.domain.usecase.local.RemoveUserDetailsUseCase
 import com.moscow.domain.usecase.profile.GetAccountDetailsUseCase
@@ -187,13 +187,7 @@ class ProfileViewModel @Inject constructor(
     override fun onClickEditProfile() {
         val username = uiState.value.username.orEmpty()
         sendEvent(ProfileScreenEffects.GoToWebView( EDIT_PROFILE_URL + username))
-       /* updateState {
-            it.copy(
-                showEditProfileBottomSheet = false,
-                editProfileURL = EDIT_PROFILE_URL + username,
-                goToWebView = true
-            )
-        }*/
+        onCancelEditProfileBottomSheet()
     }
 
     override fun onClickLogout() {
