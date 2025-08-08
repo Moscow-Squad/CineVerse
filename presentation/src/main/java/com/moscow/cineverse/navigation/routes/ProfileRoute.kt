@@ -16,16 +16,22 @@ fun NavGraphBuilder.profileRoute(navController: NavHostController) {
     composable<ProfileRoute>{
         ProfileScreen(
             navigateToWebSite = { url->
-              //  navController.navigate(WebViewBrowser(url) { })
+               navController.navigate(WebViewRoute(url))
             },
             navigateToLogin = {
                 navController.navigate(LoginRoute)
             },
             navigateToMyRatings = {
+                navController.navigate(MyRatingsRoute)
 
             },
-            navigateToMyCollections = {},
-            navigateToMyHistory = {}
+            navigateToMyCollections = {
+                navController.navigate(MyCollectionsRoute)
+            },
+            navigateToMyHistory = {
+                navController.navigate(HistoryRoute)
+
+            }
         )
     }
 }

@@ -44,6 +44,7 @@ fun HomeScreen(
     navigateToWatchingSuggestion: () -> Unit,
     navigateToHistoryScreen: () -> Unit,
     navigateToCollectionDetails: (collectionId: Int, collectionName: String) -> Unit,
+    navigateToMyCollections:()->Unit
 ) {
     val state by viewmodel.uiState.collectAsStateWithLifecycle()
     LaunchedEffect(Unit) {
@@ -86,7 +87,10 @@ fun HomeScreen(
                     navigateToWatchingSuggestion()
                 }
 
-                HomeEvent.SeeMoreRecentlyViewed -> navigateToHistoryScreen
+                HomeEvent.SeeMoreRecentlyViewed -> navigateToHistoryScreen()
+                HomeEvent.SeeMoreCollections -> {
+                    navigateToMyCollections()
+                }
             }
         }
     }
@@ -217,7 +221,6 @@ fun HomeContent(
                 MyCollectionsLayout(
                     items = uiState.collections,
                     onCollectionClick = listener::onCollectionClick,
-                    modifier = Modifier.padding(horizontal = 16.dp),
                     onShowMoreClick = listener::onCollectionsShowMoreClick,
                 )
 

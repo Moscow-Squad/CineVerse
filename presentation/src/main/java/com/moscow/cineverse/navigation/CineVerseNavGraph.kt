@@ -30,6 +30,7 @@ import com.moscow.cineverse.navigation.routes.seriesDetailsRoute
 import com.moscow.cineverse.navigation.routes.seriesRecommendationRoute
 import com.moscow.cineverse.navigation.routes.seriesSeasonsRoute
 import com.moscow.cineverse.navigation.routes.splashRoute
+import com.moscow.cineverse.navigation.routes.webViewRoute
 
 val LocalScaffoldPaddingValues =
     staticCompositionLocalOf<PaddingValues> { error("No ScaffoldPadding provided") }
@@ -76,6 +77,7 @@ fun CineVerseNavGraph(
             createCollectionDialogRoute(navController)
             historyRoute(navController)
             myRatingsRoute(navController)
+            webViewRoute(navController)
 
         }
     }

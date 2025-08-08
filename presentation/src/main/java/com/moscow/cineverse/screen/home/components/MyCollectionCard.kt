@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -30,13 +31,12 @@ fun MyCollectionCard(
 ) {
     Row(
         modifier = modifier
-            .fillMaxWidth()
+            .background(color = Theme.colors.background.card, shape = RoundedCornerShape(12.dp))
             .clip(RoundedCornerShape(Theme.radius.large))
-            .background(color = Theme.colors.background.card)
-            .padding(12.dp)
             .clickable {
                 onClick(state.id)
-            },
+            }
+            .padding(12.dp),
         horizontalArrangement = Arrangement.spacedBy(12.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {

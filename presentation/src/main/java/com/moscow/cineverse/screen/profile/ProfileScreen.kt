@@ -51,10 +51,11 @@ fun ProfileScreen(
                 effect,
                 navigateToLogin,
                 {},
-                { s, s1 -> },
-                {},
-                {},
-                {}
+                navigateToMyRatings,
+                navigateToMyCollections,
+                navigateToMyHistory,
+                navigateToWebSite
+
             )
         }
     }
@@ -73,27 +74,6 @@ fun ProfileContent(
     listener: ProfileInteractionListener,
     onThemeChange: (Boolean) -> Unit,
 ) {
-    Log.d("TAG", "ProfileContent: $uiState")/*
-        when {
-
-
-            uiState.isLoading -> {
-                MovieCircularProgressBar(modifier = modifier)
-            }
-
-
-            !uiState.errorMessage.isNullOrBlank() -> {
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(Theme.colors.background.screen),
-                    contentAlignment = Alignment.Center
-                ) {
-                    NoInternetScreen(onRetry = {})
-                }
-            }
-
-            else -> {*/
     LazyColumn(
         modifier = modifier
             .fillMaxSize()
@@ -130,11 +110,27 @@ fun ProfileContent(
                     .padding(top = 12.dp, bottom = 24.dp),
                 items = listOf(
                     ProfileChipItem(
-                        R.string.history, R.drawable.due_tone_history, {}),
+                        R.string.history, R.drawable.due_tone_history){
+                        if (uiState.isGuest)
+                            listener.onShowEditProfileBottomSheet()
+                        else
+                            listener.onClickHistory()
+                    },
                     ProfileChipItem(
-                        R.string.my_collections, R.drawable.due_tone_video_library, {}),
+                        R.string.my_collections, R.drawable.due_tone_video_library
+                    ) {
+                        if (uiState.isGuest)
+                            listener.onShowEditProfileBottomSheet()
+                        else
+                            listener.onClickMyCollections()
+                      },
                     ProfileChipItem(
-                        R.string.my_ratings, R.drawable.due_tone_star, {})
+                        R.string.my_ratings, R.drawable.due_tone_star){
+                        if (uiState.isGuest)
+                            listener.onShowEditProfileBottomSheet()
+                        else
+                            listener.onClickMyRatings()
+                    }
                 )
             )
         }
@@ -201,12 +197,12 @@ fun ProfileContent(
             )
         }
     }
-    AnimatedVisibility(uiState.goToWebView) {
+    /*AnimatedVisibility(uiState.goToWebView) {
         WebViewBrowser(
             url = uiState.editProfileURL,
             onExitWebView = {
                 listener.onExitWebView()
             }
         )
-    }
+    }*/
 }
