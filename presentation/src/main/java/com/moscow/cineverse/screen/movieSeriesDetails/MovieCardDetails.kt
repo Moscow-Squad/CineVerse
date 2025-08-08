@@ -248,7 +248,7 @@ fun MainMovieCard(
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
-                .padding(horizontal = 16.dp)
+                .padding(start = 16.dp, end = 16.dp, bottom = 16.dp)
                 .sharedBounds(
                     rememberSharedContentState(key = "Main Movie Card"),
                     animatedVisibilityScope = animatedVisibilityScope,
@@ -307,7 +307,6 @@ fun MainMovieCard(
         }
     }
 }
-
 @Preview(showBackground = true)
 @Composable
 fun DetailCardPreview() {
