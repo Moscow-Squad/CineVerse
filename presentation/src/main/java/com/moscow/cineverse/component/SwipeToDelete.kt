@@ -40,6 +40,8 @@ import com.moscow.cineverse.design_system.R
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
+import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.compose.ui.unit.LayoutDirection
 
 @Composable
 fun SwipeToDelete(
@@ -54,6 +56,8 @@ fun SwipeToDelete(
     val density = LocalDensity.current
     val coroutineScope = rememberCoroutineScope()
     val isDarkTheme = isSystemInDarkTheme()
+    val layoutDirection = LocalLayoutDirection.current
+    val isRtl = layoutDirection == LayoutDirection.Rtl
     val maxSwipeDistance = with(density) { swipeThreshold.toPx() }
     val offsetX = remember { Animatable(0f) }
     var showDeleteAnimation by remember { mutableStateOf(false) }
@@ -82,6 +86,7 @@ fun SwipeToDelete(
                 modifier = Modifier
                     .fillMaxSize()
             ) {
+                // Always use negative offsetX for revealing
                 val revealedWidth = (-offsetX.value).coerceAtLeast(0f)
 
                 if (revealedWidth > 0f) {
@@ -91,7 +96,7 @@ fun SwipeToDelete(
                         modifier = Modifier
                             .width(revealedWidthDp)
                             .height(96.dp)
-                            .align(Alignment.CenterEnd),
+                            .align(Alignment.CenterEnd), // Always align to end
                         contentAlignment = Alignment.Center
                     ) {
                         Box(
@@ -129,7 +134,6 @@ fun SwipeToDelete(
                 }
             }
 
-
             Box(
                 modifier = Modifier
                     .fillMaxSize()
@@ -138,7 +142,9 @@ fun SwipeToDelete(
                         detectHorizontalDragGestures(
                             onDragEnd = {
                                 coroutineScope.launch {
-                                    if (offsetX.value <= -maxSwipeDistance / 2) {
+                                    val threshold = -maxSwipeDistance / 2
+
+                                    if (offsetX.value <= threshold) {
                                         offsetX.animateTo(
                                             targetValue = -maxSwipeDistance,
                                             animationSpec = tween(animationDurationMs)
@@ -153,8 +159,12 @@ fun SwipeToDelete(
                             }
                         ) { _, dragAmount ->
                             coroutineScope.launch {
-                                val newOffset =
-                                    (offsetX.value + dragAmount).coerceIn(-maxSwipeDistance, 0f)
+                                // Invert drag amount in RTL mode
+                                val adjustedDragAmount = if (isRtl) -dragAmount else dragAmount
+
+                                val newOffset = (offsetX.value + adjustedDragAmount)
+                                    .coerceIn(-maxSwipeDistance, 0f)
+
                                 offsetX.snapTo(newOffset)
                             }
                         }
