@@ -126,6 +126,7 @@
     <string name="no_filtering_all_images_and_posters_will_be_displayed">دون تصفية. سيتم عرض جميع الصور والملصقات.</string>
     <string name="preferences">التفضيلات</string>
     <string name="tip_swipe_left_to_remove_movies_from_your_collection">نصيحة: اسحب إلى اليسار لمسح الفيلم من مجموعتك</string>
+
     <string name="no_history_yet">لا يوجد سجل بعد</string>
     <string name="history_empty_message">يبدو أن المكان هادئ هنا... ابدأ بالمشاهدة وسنتابع أجلك.</string>
     <string name="find_something_to_watch">ابحث عن شيء لمشاهدته</string>
@@ -146,5 +147,19 @@
     <string name="create">إنشاء</string>
     <string name="success">تم بنجاج</string>
     <string name="Home">الرئيسية</string>
-
+    <string name="bad_request">طلب سئ</string>
+    <string name="faild_to_add_item_please_try_again_later">فشل لاضافة العنصر حاول مرة اخرى.</string>
+    <string name="faild_to_clear_collection_please_try_again_later">فشل فمسح القائمة حاول مرة اخرى.</string>
+    <string name="faild_to_delete_item_from_collection_please_try_again_later">فشل فمسح العنصر من القائمة حاول مرة اخرى.</string>
+    <string name="forbidden_request">طلب غير مسموح</string>
+    <string name="no_internet_connection">لا يوجد اتصال عندك</string>
+    <string name="not_allowed_user">مستخدم غير مرغوب</string>
+    <string name="not_found">نعتذر. لا يوجد.</string>
+    <string name="server_error">مشكلة فالسيرفر</string>
+    <string name="server_not_found">سيرفر لا يوجد</string>
+    <string name="service_unavailable">نعتذر, خدمة غير متوفرة</string>
+    <string name="too_many_requests">يوجد طلبات كثيرة, حاول لاحقا.</string>
+    <string name="too_much_time">اخد وقت كثير</string>
+    <string name="unauthorized_request">نعتذر, طلب غير مسموح</string>
+    <string name="error_accured">يوجد مشكلة, حاول مرة اخرى.</string>
 </resources>

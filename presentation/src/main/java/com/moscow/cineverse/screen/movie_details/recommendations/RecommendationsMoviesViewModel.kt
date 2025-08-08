@@ -62,7 +62,7 @@ class RecommendationsMoviesViewModel @Inject constructor(
             onError = { e ->
                 updateState {
                     it.copy(
-                        error = e.message,
+                        error = e,
                         isLoading = false,
                     )
                 }

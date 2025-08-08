@@ -6,6 +6,7 @@ import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.cineverse.mapper.toMediaItemUi
 import com.moscow.cineverse.mapper.toUi
 import com.moscow.cineverse.navigation.routes.MovieDetailsRoute
+import com.moscow.cinverse.presentation.R
 import com.moscow.domain.mapper.toMovie
 import com.moscow.domain.model.CreditsDetails
 import com.moscow.domain.model.Movie
@@ -87,7 +88,7 @@ class MovieDetailsViewModel @Inject constructor(
                 updateState {
                     it.copy(
                         isLoading = false,
-                        errorMessage = "error loading",
+                        errorMessage = R.string.too_much_time,
                         shouldShowError = true
                     )
                 }
@@ -190,40 +191,40 @@ class MovieDetailsViewModel @Inject constructor(
         updateState { it.copy(isLoading = false) }
     }
 
-    private fun getMovieDetailsFailed(error: Throwable) {
+    private fun getMovieDetailsFailed(msg: Int) {
         updateState {
             it.copy(
-                errorMessage = error.message.toString(),
+                errorMessage = msg,
                 shouldShowError = true,
                 isLoading = false
             )
         }
     }
 
-    private fun getReviewFailed(error: Throwable) {
+    private fun getReviewFailed(msg: Int) {
         updateState {
             it.copy(
-                errorMessage = error.message.toString(),
+                errorMessage = msg,
                 shouldShowError = true,
                 isLoading = false
             )
         }
     }
 
-    private fun getCreditsFailed(error: Throwable) {
+    private fun getCreditsFailed(msg: Int) {
         updateState {
             it.copy(
-                errorMessage = error.message.toString(),
+                errorMessage = msg,
                 shouldShowError = true,
                 isLoading = false
             )
         }
     }
 
-    private fun getRecommendationsFailed(error: Throwable) {
+    private fun getRecommendationsFailed(msg: Int) {
         updateState {
             it.copy(
-                errorMessage = error.message.toString(),
+                errorMessage = msg,
                 shouldShowError = true,
                 isLoading = false
             )

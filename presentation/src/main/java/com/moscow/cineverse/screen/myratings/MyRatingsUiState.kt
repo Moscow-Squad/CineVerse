@@ -8,7 +8,7 @@ data class MyRatingsUiState(
     val selectedTab: ExploreTabsPages = ExploreTabsPages.MOVIES,
     val isLoading: Boolean = false,
     val shouldShowError: Boolean = false,
-    val errorMessage: String = "",
+    val errorMessage: Int = 0,
     val ratedMediaItems: List<RatedMediaItem> = emptyList(),
     val movieGenres: List<GenreUiState> = emptyList(),
     val seriesGenres: List<GenreUiState> = emptyList(),

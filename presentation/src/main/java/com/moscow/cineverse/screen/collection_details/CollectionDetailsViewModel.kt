@@ -65,12 +65,12 @@ class CollectionDetailsViewModel @Inject constructor(
                     )
                 }
             },
-            onError = { e ->
+            onError = { msg ->
                 updateState {
                     it.copy(
                         isError = true,
                         isLoading = false,
-                        errorMsg = e.message.toString()
+                        errorMsg = msg
                     )
                 }
             },
@@ -89,12 +89,12 @@ class CollectionDetailsViewModel @Inject constructor(
                     )
                 }
             },
-            onError = { e ->
+            onError = { msg ->
                 updateState {
                     it.copy(
                         isError = true,
                         isLoading = false,
-                        errorMsg = e.message.toString()
+                        errorMsg = msg
                     )
                 }
             },
@@ -117,11 +117,11 @@ class CollectionDetailsViewModel @Inject constructor(
             onSuccess = { res ->
                 updateState { it.copy(movies = res) }
             },
-            onError = { e ->
+            onError = { msg ->
                 updateState {
                     it.copy(
                         isError = true,
-                        errorMsg = e.message.toString()
+                        errorMsg = msg
                     )
                 }
             },
@@ -147,7 +147,7 @@ class CollectionDetailsViewModel @Inject constructor(
         mediaId: Int,
         mediaType: MediaType
     ) {
-        updateState { it.copy(isError = false, errorMsg = "") }
+        updateState { it.copy(isError = false, errorMsg = 0) }
         launchAndForget(
             action = {
                 deleteMediaFromCollectionUseCase(
@@ -155,11 +155,11 @@ class CollectionDetailsViewModel @Inject constructor(
                     mediaItemId = mediaId
                 )
             },
-            onError = { e ->
+            onError = { msg ->
                 updateState {
                     it.copy(
                         isError = true,
-                        errorMsg = e.message.toString()
+                        errorMsg = msg
                     )
                 }
             }
@@ -167,7 +167,7 @@ class CollectionDetailsViewModel @Inject constructor(
     }
 
     override fun clearCollection() {
-        updateState { it.copy(isLoading = true, isError = false, errorMsg = "") }
+        updateState { it.copy(isLoading = true, isError = false, errorMsg = 0) }
         launchAndForget(
             action = {
                 clearCollectionUseCase(
@@ -176,12 +176,12 @@ class CollectionDetailsViewModel @Inject constructor(
                 )
             },
             onSuccess = { updateState { it.copy(isLoading = false) } },
-            onError = { e ->
+            onError = { msg ->
                 updateState {
                     it.copy(
                         isLoading = false,
                         isError = true,
-                        errorMsg = e.message.toString()
+                        errorMsg = msg
                     )
                 }
             }
@@ -193,11 +193,11 @@ class CollectionDetailsViewModel @Inject constructor(
         launchAndForget(
             action = { closeCollectionDetailsTipUseCase() },
             onSuccess = { updateState { it.copy(showTip = false) } },
-            onError = { e ->
+            onError = { msg ->
                 updateState {
                     it.copy(
                         isError = true,
-                        errorMsg = e.message.toString()
+                        errorMsg = msg
                     )
                 }
             }
@@ -209,7 +209,7 @@ class CollectionDetailsViewModel @Inject constructor(
             it.copy(
                 isLoading = true,
                 isError = false,
-                errorMsg = "",
+                errorMsg = 0,
             )
         }
         getMoviesGenres()

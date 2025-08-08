@@ -2,7 +2,8 @@ package com.moscow.data.remote.data_source
 
 import com.google.common.truth.Truth.assertThat
 import com.moscow.data_source.remote.SearchRemoteDataSource
-import com.moscow.domain.exception.CineVerseException.IOException
+import com.moscow.domain.exception.CineVerseException
+import com.moscow.domain.exception.CineVerseException.BadRequestException
 import com.moscow.remote.data_source.SearchRemoteDataSourceImpl
 import com.moscow.remote.dto.MovieDto
 import com.moscow.remote.dto.actor.ActorDto
@@ -10,7 +11,6 @@ import com.moscow.remote.dto.series.SeriesDto
 import com.moscow.remote.dto.suggestion.SuggestionDto
 import com.moscow.remote.services.SearchService
 import com.moscow.utils.ApiResponse
-import com.moscow.utils.CineVerseExceptions
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
@@ -91,10 +91,10 @@ class SearchRemoteDataSourceImplTest {
 
         coEvery {
             searchService.searchMovie(query, page, includeAdult)
-        } throws IOException("Network error")
+        } throws BadRequestException
 
         // When & Then
-        assertThrows<CineVerseExceptions> {
+        assertThrows<CineVerseException> {
             searchRemoteDataSource.searchMovie(query, page, includeAdult)
         }
     }
@@ -161,10 +161,10 @@ class SearchRemoteDataSourceImplTest {
 
         coEvery {
             searchService.searchSeries(query, page, includeAdult)
-        } throws IOException("Network error")
+        } throws BadRequestException
 
         // When & Then
-        assertThrows<CineVerseExceptions> {
+        assertThrows<CineVerseException> {
             searchRemoteDataSource.searchSeries(query, page, includeAdult)
         }
     }
@@ -231,10 +231,10 @@ class SearchRemoteDataSourceImplTest {
 
         coEvery {
             searchService.searchActor(query, page, includeAdult)
-        } throws IOException("Network error")
+        } throws BadRequestException
 
         // When & Then
-        assertThrows<CineVerseExceptions> {
+        assertThrows<CineVerseException> {
             searchRemoteDataSource.searchActor(query, page, includeAdult)
         }
     }
@@ -301,12 +301,11 @@ class SearchRemoteDataSourceImplTest {
 
         coEvery {
             searchService.getSuggestions(query, page, includeAdult)
-        } throws IOException("Network error")
+        } throws BadRequestException
 
         // When & Then
-        assertThrows<CineVerseExceptions> {
+        assertThrows<CineVerseException> {
             searchRemoteDataSource.searchByKeyword(query, page, includeAdult)
         }
     }
-
 }

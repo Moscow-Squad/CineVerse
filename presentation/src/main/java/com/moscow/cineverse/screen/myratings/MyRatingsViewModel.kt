@@ -81,7 +81,7 @@ class MyRatingsViewModel @Inject constructor(
             it.copy(
                 isLoading = true,
                 shouldShowError = false,
-                errorMessage = "",
+                errorMessage = 0,
                 isContentEmpty = false
             )
         }
@@ -176,6 +176,8 @@ class MyRatingsViewModel @Inject constructor(
                 updateState {
                     it.copy(
                         isLoading = false,
+                        errorMessage = e,
+                        shouldShowError = true
                     )
                 }
             },
@@ -198,6 +200,8 @@ class MyRatingsViewModel @Inject constructor(
                 updateState {
                     it.copy(
                         isLoading = false,
+                        errorMessage = e,
+                        shouldShowError = true
                     )
                 }
             },

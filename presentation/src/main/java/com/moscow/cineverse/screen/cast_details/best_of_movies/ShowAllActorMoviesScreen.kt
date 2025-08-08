@@ -11,8 +11,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.moscow.cineverse.component.ErrorContent
 import com.moscow.cineverse.designSystem.component.MovieScaffold
-import com.moscow.cineverse.screen.cast_details.best_of_movies.component.ErrorContent
 import com.moscow.cineverse.screen.cast_details.best_of_movies.component.LoadingContent
 import com.moscow.cineverse.screen.cast_details.best_of_movies.component.SuccessContent
 import com.moscow.cineverse.screen.explore.component.ViewModeToggleButton
@@ -60,7 +60,7 @@ private fun ShowAllActorMoviesContent(
 
                 uiState.error != null -> {
                     ErrorContent(
-                        error = uiState.error,
+                        errorMessage = uiState.error,
                         onRetry = interactionListener::onRefresh,
                         modifier = Modifier.fillMaxSize()
                     )

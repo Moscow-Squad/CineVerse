@@ -19,7 +19,7 @@ data class SeriesDetailsScreenState(
     val crew: List<CrewUiState> = emptyList(),
     val recommendation: List<MediaItemUiState> = emptyList(),
     val shouldShowError: Boolean = false,
-    val errorMessage: String = "",
+    val errorMessage: Int = 0,
     val viewMode: ViewMode = ViewMode.GRID,
     val showRatingBottomSheet: Boolean = false,
     val showLoginBottomSheet: Boolean = false,

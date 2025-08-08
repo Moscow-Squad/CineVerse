@@ -37,9 +37,9 @@ class CreateCollectionDialogViewModel @Inject constructor(
         sendEvent(CreateCollectionDialogEvent.OnCollectionAddedSuccessfully)
     }
 
-    private fun onAddCollectionFailed(error: Throwable) {
+    private fun onAddCollectionFailed(error: Int) {
         updateState { it.copy(isLoading = false) }
-        sendEvent(CreateCollectionDialogEvent.OnAddCollectionFailed(error.message.toString()))
+        sendEvent(CreateCollectionDialogEvent.OnAddCollectionFailed(error))
     }
 
 

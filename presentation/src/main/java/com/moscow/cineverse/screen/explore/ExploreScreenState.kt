@@ -27,7 +27,7 @@ data class ExploreScreenState(
     val selectedTab: ExploreTabsPages = ExploreTabsPages.MOVIES,
     val viewMode: ViewMode = ViewMode.GRID,
     val isLoading: Boolean = false,
-    val error: String? = null,
+    val error: Int? = null,
     val isContentEmpty: Boolean = false,
     val shouldShowGenres: Boolean = true,
     val shouldShowLoading: Boolean = false,

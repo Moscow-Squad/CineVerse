@@ -1,6 +1,5 @@
 package com.moscow.cineverse.component
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,7 +12,7 @@ import com.moscow.cineverse.designSystem.theme.Theme
 @Composable
 fun ScreenStateHandler(
     isLoading: Boolean,
-    errorMessage: String?,
+    errorMessage: Int?,
     onRefresh: () -> Unit,
     modifier: Modifier = Modifier,
     content: @Composable () -> Unit,
@@ -34,15 +33,10 @@ fun ScreenStateHandler(
             }
 
             errorMessage != null -> {
-                Log.e("ScreenStateHandler", errorMessage)
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    NoInternetScreen(
-                        onRetry = {onRefresh()}
-                    )
-                }
+                ErrorContent(
+                    errorMessage = errorMessage,
+                    onRetry = onRefresh,
+                )
             }
 
             else -> {

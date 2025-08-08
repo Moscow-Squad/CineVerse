@@ -7,6 +7,7 @@ import com.moscow.cineverse.mapper.toUi
 import com.moscow.cineverse.navigation.routes.SeriesDetailsRoute
 import com.moscow.cineverse.screen.explore.toUi
 import com.moscow.cineverse.utlis.ViewMode
+import com.moscow.cinverse.presentation.R
 import com.moscow.domain.mapper.toSeries
 import com.moscow.domain.model.Series
 import com.moscow.domain.repository.PreferenceRepository
@@ -84,7 +85,7 @@ class SeriesDetailsScreenScreenViewModel @Inject constructor(
                 updateState {
                     it.copy(
                         isLoading = false,
-                        errorMessage = "error loading",
+                        errorMessage = R.string.too_much_time,
                         shouldShowError = true
                     )
                 }
@@ -95,7 +96,7 @@ class SeriesDetailsScreenScreenViewModel @Inject constructor(
     }
 
     private fun loadSeriesDetails(seriesId: Int) {
-        updateState { it.copy(isLoading = true, errorMessage = "") }
+        updateState { it.copy(isLoading = true, errorMessage = 0, shouldShowError = false) }
         launchWithResult(
             action = { getSeriesDetailUseCase(seriesId) },
             onSuccess = { detail ->
@@ -109,13 +110,13 @@ class SeriesDetailsScreenScreenViewModel @Inject constructor(
                 )
             },
             onError = { error ->
-                updateState { it.copy(errorMessage = error.message.toString(), isLoading = false) }
+                updateState { it.copy(errorMessage = error, isLoading = false, shouldShowError = true) }
             }
         )
     }
 
     private fun loadSeriesCredits(seriesId: Int) {
-        updateState { it.copy(isLoading = true, errorMessage = "") }
+        updateState { it.copy(isLoading = true, errorMessage = 0, shouldShowError = false) }
         launchWithResult(
             action = { getSeriesCreditsDetailsUseCase(seriesId) },
             onSuccess = { credits ->
@@ -138,20 +139,20 @@ class SeriesDetailsScreenScreenViewModel @Inject constructor(
                 }
             },
             onError = { error ->
-                updateState { it.copy(errorMessage = error.message.toString(), isLoading = false) }
+                updateState { it.copy(errorMessage = error, isLoading = false, shouldShowError = true) }
             }
         )
     }
 
     private fun loadReviews(seriesId: Int, page: Int) {
-        updateState { it.copy(isLoading = true, errorMessage = "") }
+        updateState { it.copy(isLoading = true, errorMessage = 0, shouldShowError = false) }
         launchWithResult(
             action = { getReviewsPageUseCase(seriesId, page, isMovie = false) },
             onSuccess = { reviews ->
                 updateState { it.copy(reviews = reviews.map { it.toUi() }) }
             },
             onError = { error ->
-                updateState { it.copy(errorMessage = error.message.toString(), isLoading = false) }
+                updateState { it.copy(errorMessage = error, isLoading = false, shouldShowError = true) }
             }
         )
     }
@@ -168,8 +169,8 @@ class SeriesDetailsScreenScreenViewModel @Inject constructor(
         updateState { it.copy(recommendation = recommendations.map { it.toUi() }) }
     }
 
-    private fun getRecommendationsFailed(error: Throwable) {
-        updateState { it.copy(errorMessage = error.message.toString(), shouldShowError = true) }
+    private fun getRecommendationsFailed(error: Int) {
+        updateState { it.copy(errorMessage = error, shouldShowError = true, isLoading = false) }
     }
 
     override fun showRatingBottomSheet() {
@@ -269,7 +270,7 @@ class SeriesDetailsScreenScreenViewModel @Inject constructor(
 
     override fun onRetry() {
         viewModelScope.launch {
-            updateState { it.copy(isLoading = true, errorMessage = "") }
+            updateState { it.copy(isLoading = true, errorMessage = 0, shouldShowError = false) }
             loadSeriesDetails(seriesId)
             loadSeriesCredits(seriesId)
             getSeriesRecommendations(seriesId, page = 1)

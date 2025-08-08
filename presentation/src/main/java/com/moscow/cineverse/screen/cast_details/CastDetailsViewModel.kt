@@ -3,6 +3,7 @@ package com.moscow.cineverse.screen.cast_details
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.moscow.cineverse.base.BaseViewModel
+import com.moscow.cineverse.base.handleException
 import com.moscow.cineverse.navigation.routes.CastDetailsRoute
 import com.moscow.cineverse.screen.cast_details.CastDetailsUiState.SocialMediaLinks
 import com.moscow.domain.model.ActorDetails
@@ -58,7 +59,7 @@ class CastDetailsViewModel @Inject constructor(
                 actorDetails = actorDetails,
                 isLoading = false,
                 shouldShowError = false,
-                errorMessage = "",
+                errorMessage = 0,
                 socialMediaLinks = SocialMediaLinks(
                     youtube = actorDetails.youtubeLink.takeIf { it.isNotEmpty() },
                     facebook = actorDetails.facebookLink.takeIf { it.isNotEmpty() },
@@ -99,40 +100,47 @@ class CastDetailsViewModel @Inject constructor(
     }
 
     private fun loadBestOfMovies() {
-        updateState { currentState ->
-            currentState.copy(isLoadingMovies = true)
-        }
 
-        viewModelScope.launch {
-            try {
-                val movies = getActorBestMoviesUseCase.invoke(actorId)
+        launchWithResult(
+            action = { getActorBestMoviesUseCase(actorId) },
+            onSuccess = { movies ->
                 updateState { currentState ->
                     currentState.copy(
                         movies = movies,
                         isLoadingMovies = false
                     )
                 }
-            } catch (_: Exception) {
+            },
+            onError = { e ->
                 updateState { currentState ->
                     currentState.copy(
+                        isLoading = false,
+                        shouldShowError = true,
+                        errorMessage = (e as Exception).handleException(),
                         movies = emptyList(),
                         isLoadingMovies = false
                     )
                 }
-            }
-        }
+                sendEvent(CastDetailsEffect.ShowError)
+            },
+            onStart = {
+                updateState { currentState ->
+                    currentState.copy(isLoadingMovies = true)
+                }
+            },
+        )
     }
 
-    private fun onActorDetailsError(throwable: Throwable) {
+    private fun onActorDetailsError(msg: Int) {
         updateState { currentState ->
             currentState.copy(
                 isLoading = false,
                 shouldShowError = true,
-                errorMessage = throwable.message ?: "Failed to load actor details",
+                errorMessage = msg,
                 isContentEmpty = false
             )
         }
-        sendEvent(CastDetailsEffect.ShowError(throwable.message ?: "Failed to load actor details"))
+        sendEvent(CastDetailsEffect.ShowError)
     }
 
     private fun onLoading() {
@@ -140,7 +148,7 @@ class CastDetailsViewModel @Inject constructor(
             currentState.copy(
                 isLoading = true,
                 shouldShowError = false,
-                errorMessage = ""
+                errorMessage = 0
             )
         }
     }
@@ -174,7 +182,7 @@ class CastDetailsViewModel @Inject constructor(
                 images = emptyList(),
                 socialMediaLinks = SocialMediaLinks(),
                 shouldShowError = false,
-                errorMessage = "",
+                errorMessage = 0,
                 isContentEmpty = false,
                 isLoadingMovies = false,
                 isLoadingImages = false

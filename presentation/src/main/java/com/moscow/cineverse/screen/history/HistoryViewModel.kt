@@ -2,8 +2,6 @@ package com.moscow.cineverse.screen.history
 
 import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.cineverse.common_ui_state.MediaItemUiState
-import com.moscow.cineverse.screen.collection_details.CollectionDetailsEffect
-import com.moscow.cineverse.screen.home.HomeEvent
 import com.moscow.cineverse.screen.home.toMediaItemUiState
 import com.moscow.domain.model.MediaType
 import com.moscow.domain.usecase.DeleteRecentlyViewedItemByIdUseCase
@@ -58,7 +56,7 @@ class HistoryViewModel @Inject constructor(
                     it.copy(
                         isError = true,
                         isLoading = false,
-                        errorMessage = e.message.toString()
+                        errorMessage = e
                     )
                 }
             },
@@ -86,7 +84,7 @@ class HistoryViewModel @Inject constructor(
                 updateState {
                     it.copy(
                         isError = true,
-                        errorMessage = e.message.toString()
+                        errorMessage = e
                     )
                 }
             }
@@ -94,7 +92,7 @@ class HistoryViewModel @Inject constructor(
     }
 
     override fun onItemDeletedIconClicked(mediaId: Int) {
-        updateState { it.copy(isError = false, errorMessage = "") }
+        updateState { it.copy(isError = false, errorMessage = null) }
         launchAndForget(
             action = {
                 deleteRecentlyViewedItemByIdUseCase(id = mediaId)
@@ -103,7 +101,7 @@ class HistoryViewModel @Inject constructor(
                 updateState {
                     it.copy(
                         isError = true,
-                        errorMessage = e.message.toString()
+                        errorMessage = e
                     )
                 }
             }

@@ -35,7 +35,7 @@ abstract class BaseViewModel<T, E>(
     protected fun <R> launchWithResult(
         action: suspend () -> R,
         onSuccess: (R) -> Unit,
-        onError: (Throwable) -> Unit,
+        onError: (Int) -> Unit,
         onStart: () -> Unit = {},
         onFinally: () -> Unit = {}
     ) {
@@ -43,7 +43,10 @@ abstract class BaseViewModel<T, E>(
             onStart()
             runCatching { action() }
                 .onSuccess(onSuccess)
-                .onFailure(onError)
+                .onFailure { e ->
+                    val msg = (e as Exception).handleException()
+                    onError(msg)
+                }
             onFinally()
         }
     }
@@ -51,17 +54,24 @@ abstract class BaseViewModel<T, E>(
     protected fun launchAndForget(
         action: suspend () -> Unit,
         onSuccess: () -> Unit = {},
-        onError: (Throwable) -> Unit,
+        onError: (Int) -> Unit,
+        onStart: () -> Unit = {},
+        onFinally: () -> Unit = {}
     ) = viewModelScope.launch(Dispatchers.IO) {
+        onStart()
         runCatching { action() }
             .onSuccess { onSuccess() }
-            .onFailure(onError)
+            .onFailure{ e ->
+                val msg = (e as Exception).handleException()
+                onError(msg)
+            }
+        onFinally()
     }
 
     protected fun <R> launchWithFlow(
         flowAction: suspend () -> Flow<R>,
         onSuccess: (R) -> Unit,
-        onError: (Throwable) -> Unit,
+        onError: (Int) -> Unit,
         onStart: () -> Unit = {},
         onFinally: () -> Unit = {}
     ) {
@@ -72,11 +82,10 @@ abstract class BaseViewModel<T, E>(
                     onSuccess(result)
                 }
             } catch (e: Exception) {
-                onError(e)
+                onError(e.handleException())
             } finally {
                 onFinally()
             }
-
         }
     }
 }

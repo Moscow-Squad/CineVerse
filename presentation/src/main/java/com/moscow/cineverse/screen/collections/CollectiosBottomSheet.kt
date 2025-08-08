@@ -77,15 +77,13 @@ private fun handleEvents(
         CollectionsBottomSheetEffect.OnCreateCollectionClicked -> onCreateCollectionClicked()
         CollectionsBottomSheetEffect.OnLoginClicked -> onLogIn()
         is CollectionsBottomSheetEffect.OnItemAddedSuccessfully -> {
-            Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "item added successfully", Toast.LENGTH_SHORT).show()
             navigateBack()
         }
-
         is CollectionsBottomSheetEffect.OnItemAddedFailed -> {
             Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
         }
     }
-
 }
 
 @Composable
@@ -138,7 +136,7 @@ private fun CollectionsBottomSheetContent(
                 }
             }
 
-            uiState.errorMessage.isNotEmpty() -> {
+            uiState.errorMessage != null -> {
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()

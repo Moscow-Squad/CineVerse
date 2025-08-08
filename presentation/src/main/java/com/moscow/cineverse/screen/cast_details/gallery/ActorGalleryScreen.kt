@@ -2,26 +2,20 @@ package com.moscow.cineverse.screen.cast_details.gallery
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.moscow.cineverse.designSystem.component.CineVersePreviews
+import com.moscow.cineverse.component.ErrorContent
 import com.moscow.cineverse.designSystem.component.MovieAppBar
 import com.moscow.cineverse.designSystem.component.MovieCircularProgressBar
 import com.moscow.cineverse.designSystem.component.MovieScaffold
-import com.moscow.cineverse.designSystem.component.button.MovieButton
-import com.moscow.cineverse.designSystem.component.wrapper.MovieText
 import com.moscow.cineverse.designSystem.theme.Theme
-import com.moscow.cinverse.presentation.R
 
 @Composable
 fun ActorGalleryScreen(
@@ -63,26 +57,11 @@ fun ActorGalleryContent(
                 }
 
                 uiState.error != null -> {
-                    Box(
-                        modifier = Modifier.fillMaxSize(),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Column(
-                            horizontalAlignment = Alignment.CenterHorizontally
-                        ) {
-                            MovieText(
-                                text = uiState.error,
-                                color = Theme.colors.shade.primary
-                            )
-                            Spacer(modifier = Modifier.height(16.dp))
-                            MovieButton(
-                                buttonText = stringResource(R.string.retry),
-                                textColor = Theme.colors.button.primary,
-                                textStyle = Theme.textStyle.title.small,
-                                onClick = interactionListener::onRefresh
-                            )
-                        }
-                    }
+                    ErrorContent(
+                        errorMessage = uiState.error,
+                        onRetry = interactionListener::onRefresh,
+                        modifier = Modifier.fillMaxSize()
+                    )
                 }
 
                 else -> {

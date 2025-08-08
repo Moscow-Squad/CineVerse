@@ -67,8 +67,8 @@ class ShowAllActorMoviesViewModel @Inject constructor(
         }
     }
 
-    private fun onGetMovieFailed(throwable: Throwable) {
-        updateState { it.copy(error = throwable.message) }
+    private fun onGetMovieFailed(msg: Int) {
+        updateState { it.copy(error = msg) }
     }
 
     private fun onLoading() {

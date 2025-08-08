@@ -4,7 +4,7 @@ data class ShowAllActorMoviesState(
     val actorId: Int = 0,
     val actorName: String = "",
     val isLoading: Boolean = false,
-    val error: String? = null,
+    val error: Int? = null,
     val photos : List<String> = emptyList(),
     val enableBlur: String = "high"
 )

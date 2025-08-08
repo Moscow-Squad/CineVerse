@@ -42,6 +42,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.moscow.cineverse.MovieListSection
+import com.moscow.cineverse.component.ErrorContent
 import com.moscow.cineverse.component.MoviePosterCard
 import com.moscow.cineverse.component.SectionTitle
 import com.moscow.cineverse.designSystem.component.MovieAppBar
@@ -57,7 +58,6 @@ import com.moscow.cineverse.mapper.toMediaItemUi
 import com.moscow.cineverse.screen.cast_details.CastDetailsUiState.SocialMediaLinks
 import com.moscow.cineverse.screen.cast_details.composable.CastDetailsEffectHandlerWithContext
 import com.moscow.cineverse.screen.cast_details.composable.EmptyContent
-import com.moscow.cineverse.screen.cast_details.composable.ErrorContent
 import com.moscow.cineverse.screen.cast_details.composable.LoadingContent
 import com.moscow.cineverse.screen.cast_details.gallery.GallerySection
 import com.moscow.cineverse.screen.movie_details.InfoSection
