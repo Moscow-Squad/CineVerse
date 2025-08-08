@@ -33,7 +33,6 @@ import coil3.compose.rememberAsyncImagePainter
 import com.moscow.cineverse.MovieListSection
 import com.moscow.cineverse.component.ErrorContent
 import com.moscow.cineverse.component.MoviePosterCard
-import com.moscow.cineverse.component.NoInternetScreen
 import com.moscow.cineverse.component.SectionTitle
 import com.moscow.cineverse.component.StorylineSection
 import com.moscow.cineverse.designSystem.component.MovieAppBar
@@ -144,7 +143,7 @@ fun SeriesDetailsContent(
                 }
             }
 
-            uiState.errorMessage != null -> {
+            uiState.shouldShowError -> {
                 ErrorContent(
                     errorMessage = uiState.errorMessage,
                     onRetry = interactionListener::onRetry,

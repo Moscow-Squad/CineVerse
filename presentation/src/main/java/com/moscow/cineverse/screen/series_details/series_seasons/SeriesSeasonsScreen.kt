@@ -3,9 +3,7 @@ package com.moscow.cineverse.screen.series_details.series_seasons
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -19,11 +17,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.moscow.cineverse.component.ErrorContent
 import com.moscow.cineverse.designSystem.component.MovieAppBar
-import com.moscow.cineverse.designSystem.component.button.MovieButton
 import com.moscow.cineverse.designSystem.component.MovieCircularProgressBar
 import com.moscow.cineverse.designSystem.component.MovieScaffold
-import com.moscow.cineverse.designSystem.component.wrapper.MovieText
-import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.screen.series_details.SeriesDetailsScreenInteractionListener
 import com.moscow.cineverse.screen.series_details.SeriesDetailsScreenScreenViewModel
 import com.moscow.cineverse.screen.series_details.SeriesDetailsScreenState

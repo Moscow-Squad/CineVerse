@@ -29,15 +29,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.moscow.cineverse.designSystem.component.text.AppTextField
-import com.moscow.cineverse.designSystem.component.message_info.MessageInfoBox
-import com.moscow.cineverse.designSystem.component.button.MovieButton
 import com.moscow.cineverse.designSystem.component.bottomsheet.CineVerseBottomSheet
-import com.moscow.cineverse.designSystem.theme.CineVerseTheme
+import com.moscow.cineverse.designSystem.component.button.MovieButton
+import com.moscow.cineverse.designSystem.component.message_info.MessageInfoBox
+import com.moscow.cineverse.designSystem.component.text.AppTextField
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.design_system.R
 
