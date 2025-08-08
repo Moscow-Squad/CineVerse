@@ -70,7 +70,7 @@ val dueToneIcons = DueTone(
     trash = R.drawable.due_tone_trash,
     userSquare = R.drawable.due_tone_user_square,
     videoLibrary = R.drawable.due_tone_video_library,
-    showContent = R.drawable.show_content,
-    hideContent = R.drawable.hide_content,
-    strictFilter = R.drawable.strict_filter,
+    showContent = R.drawable.icon_eye,
+    hideContent = R.drawable.slash,
+    strictFilter = R.drawable.icon_eye_with_slash,
 )

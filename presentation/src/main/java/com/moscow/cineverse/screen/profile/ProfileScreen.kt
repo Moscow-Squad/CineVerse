@@ -110,14 +110,25 @@ fun ProfileContent(
                 items = listOf(
                     ProfileChipItem(
                         R.string.history, R.drawable.due_tone_history){
-                        listener.onClickHistory()
+                        if (uiState.isGuest)
+                            listener.onShowEditProfileBottomSheet()
+                        else
+                            listener.onClickHistory()
                     },
                     ProfileChipItem(
                         R.string.my_collections, R.drawable.due_tone_video_library
-                    ) { listener.onClickMyCollections() },
+                    ) {
+                        if (uiState.isGuest)
+                            listener.onShowEditProfileBottomSheet()
+                        else
+                            listener.onClickMyCollections()
+                      },
                     ProfileChipItem(
                         R.string.my_ratings, R.drawable.due_tone_star){
-                        listener.onClickMyRatings()
+                        if (uiState.isGuest)
+                            listener.onShowEditProfileBottomSheet()
+                        else
+                            listener.onClickMyRatings()
                     }
                 )
             )
