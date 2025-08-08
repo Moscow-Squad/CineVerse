@@ -8,6 +8,8 @@ object ProfileScreenEffectHandler {
         navigateToMyRatings: () -> Unit,
         navigateToMyCollections: () -> Unit,
         navigateToMyHistory: () -> Unit,
+        goToWebView:(String) -> Unit
+
     ){
         when(effects){
 
@@ -30,7 +32,7 @@ object ProfileScreenEffectHandler {
             }
 
             is ProfileScreenEffects.GoToWebView -> {
-
+                goToWebView(effects.url)
             }
 
             ProfileScreenEffects.OnLoginClick -> {

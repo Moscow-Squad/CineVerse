@@ -16,7 +16,7 @@ fun NavGraphBuilder.profileRoute(navController: NavHostController) {
     composable<ProfileRoute>{
         ProfileScreen(
             navigateToWebSite = { url->
-              //  navController.navigate(WebViewBrowser(url) { })
+               navController.navigate(WebViewRoute(url))
             },
             navigateToLogin = {
                 navController.navigate(LoginRoute)

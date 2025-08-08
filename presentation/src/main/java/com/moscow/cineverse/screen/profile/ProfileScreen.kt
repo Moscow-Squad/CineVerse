@@ -53,7 +53,8 @@ fun ProfileScreen(
                 {},
                 navigateToMyRatings,
                 navigateToMyCollections,
-                navigateToMyHistory
+                navigateToMyHistory,
+                navigateToWebSite
 
             )
         }
@@ -196,12 +197,12 @@ fun ProfileContent(
             )
         }
     }
-    AnimatedVisibility(uiState.goToWebView) {
+    /*AnimatedVisibility(uiState.goToWebView) {
         WebViewBrowser(
             url = uiState.editProfileURL,
             onExitWebView = {
                 listener.onExitWebView()
             }
         )
-    }
+    }*/
 }

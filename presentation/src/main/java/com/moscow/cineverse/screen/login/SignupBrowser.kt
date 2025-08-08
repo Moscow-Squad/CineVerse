@@ -15,7 +15,7 @@ import com.moscow.cineverse.designSystem.component.MovieScaffold
 
 @Composable
 fun WebViewBrowser(
-    url: String,
+   url: String,
     onExitWebView: () -> Unit
 ) {
     val context = LocalContext.current

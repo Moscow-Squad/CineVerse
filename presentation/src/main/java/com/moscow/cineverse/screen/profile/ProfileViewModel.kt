@@ -186,13 +186,14 @@ class ProfileViewModel @Inject constructor(
 
     override fun onClickEditProfile() {
         val username = uiState.value.username.orEmpty()
-        updateState {
+        sendEvent(ProfileScreenEffects.GoToWebView( EDIT_PROFILE_URL + username))
+       /* updateState {
             it.copy(
                 showEditProfileBottomSheet = false,
                 editProfileURL = EDIT_PROFILE_URL + username,
                 goToWebView = true
             )
-        }
+        }*/
     }
 
     override fun onClickLogout() {
