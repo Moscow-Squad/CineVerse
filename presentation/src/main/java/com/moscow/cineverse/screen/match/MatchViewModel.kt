@@ -5,5 +5,8 @@ import com.moscow.cineverse.base.BaseViewModel
 
 class MatchViewModel : BaseViewModel<MatchUiState, MatchEvent>(MatchUiState()),
     MatchInteractionListener {
+    override fun onClickStartMatching() {
+        sendEvent(MatchEvent.OnClickStartMatching)
+    }
 
 }
