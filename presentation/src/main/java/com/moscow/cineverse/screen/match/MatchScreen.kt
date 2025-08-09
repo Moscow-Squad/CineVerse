@@ -20,13 +20,15 @@ fun MatchScreen(
 fun MatchContent(
     modifier: Modifier = Modifier,
 
-) {
+    ) {
 
-        Column(
-            modifier = modifier
-                .fillMaxSize()
-                .background(Theme.colors.background.screen)
-                .padding(LocalScaffoldPaddingValues.current)
-        ) {}
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .background(Theme.colors.background.screen)
+            .padding(LocalScaffoldPaddingValues.current)
+    ) {
+
+    }
 
 }
