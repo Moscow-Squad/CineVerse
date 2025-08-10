@@ -30,17 +30,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.moscow.cineverse.designSystem.component.blur.OnBlurContent
 import com.moscow.cineverse.designSystem.theme.Theme
-import com.moscow.cineverse.design_system.R
 import com.moscow.cineverse.image_viewer.component.SafeImageViewer
 import com.moscow.cineverse.screen.movie_details.InfoSection
 import com.moscow.cineverse.utlis.ViewMode
+import com.moscow.cinverse.presentation.R
 
 @Composable
 fun <T : Any> MovieCard(
@@ -96,6 +95,7 @@ fun <T : Any> MovieCard(
         )
     }
 }
+
 @Composable
 private fun RemoteImagePlaceholder(
     modifier: Modifier = Modifier,
@@ -182,9 +182,7 @@ private fun <T> GridMovieCard(
                         )
                     }
                 ) {
-                    OnBlurContent(
-                        hintText = stringResource(com.moscow.cinverse.presentation.R.string.sensitive_content),
-                    )
+                    OnBlurContent()
                 }
 
                 val rating = getRating(movieData)
@@ -301,10 +299,7 @@ fun <T> ListMovieCard(
                         )
                     }
                 ) {
-                    OnBlurContent(
-                        hintText = "",
-                        isAddedText = false
-                    )
+                    OnBlurContent(isAddedText = false)
                 }
 
                 Column(

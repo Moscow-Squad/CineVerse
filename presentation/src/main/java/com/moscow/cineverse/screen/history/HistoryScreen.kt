@@ -21,9 +21,9 @@ import com.moscow.cineverse.common_ui_state.MediaItemUiState
 import com.moscow.cineverse.component.HistoryTip
 import com.moscow.cineverse.component.NoHistoryScreen
 import com.moscow.cineverse.component.SwipeToDelete
-import com.moscow.cineverse.designSystem.component.MovieAppBar
-import com.moscow.cineverse.designSystem.component.MovieCircularProgressBar
-import com.moscow.cineverse.designSystem.component.MovieScaffold
+import com.moscow.cineverse.designSystem.component.app_bar.MovieAppBar
+import com.moscow.cineverse.designSystem.component.indicator.MovieCircularProgressBar
+import com.moscow.cineverse.designSystem.component.wrapper.MovieScaffold
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.screen.ListMovieCard
 import com.moscow.cinverse.presentation.R

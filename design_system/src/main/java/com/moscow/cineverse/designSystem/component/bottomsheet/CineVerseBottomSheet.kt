@@ -35,8 +35,8 @@ import com.moscow.cineverse.design_system.R
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
 fun CineVerseBottomSheet(
-    title: String = "",
     modifier: Modifier = Modifier,
+    title: String = "",
     expanded: Boolean = true,
     showCancelIcon: Boolean = true,
     containerColor: Color = Theme.colors.background.bottomSheet,
@@ -46,17 +46,18 @@ fun CineVerseBottomSheet(
     onAddNewCollectionClick: () -> Unit = {},
     content: @Composable ColumnScope.() -> Unit
 ) {
-    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = expanded)
 
+    val sheetState = rememberModalBottomSheetState(
+        skipPartiallyExpanded = expanded
+    )
 
     ModalBottomSheet(
         sheetState = sheetState,
         onDismissRequest = onDismissRequest,
         containerColor = containerColor,
-
-        shape = RoundedCornerShape(Theme.radius.extraLarge),
+        shape = RoundedCornerShape(size = Theme.radius.extraLarge),
         modifier = modifier
-            .padding(12.dp)
+            .padding(all = 12.dp)
             .navigationBarsPadding(),
         dragHandle = {
             Box(
@@ -86,6 +87,7 @@ fun CineVerseBottomSheet(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
+
                 if (title.isNotEmpty()) {
                     Text(
                         text = title,
@@ -93,7 +95,9 @@ fun CineVerseBottomSheet(
                         color = Theme.colors.shade.primary
                     )
                 }
+
                 when {
+
                     showCancelIcon -> {
                         Icon(
                             painter = painterResource(R.drawable.outline_x),
@@ -108,12 +112,15 @@ fun CineVerseBottomSheet(
 
                     title.isNotEmpty() -> {
                         MovieText(
-                            text = stringResource(R.string.new_collection),
+                            text = stringResource(id = R.string.new_collection),
                             style = Theme.textStyle.body.medium.medium,
                             color = Theme.colors.brand.primary,
-                            modifier = Modifier.clickable(onClick = onAddNewCollectionClick)
+                            modifier = Modifier.clickable(
+                                onClick = onAddNewCollectionClick
+                            )
                         )
                     }
+
                 }
             }
             content()

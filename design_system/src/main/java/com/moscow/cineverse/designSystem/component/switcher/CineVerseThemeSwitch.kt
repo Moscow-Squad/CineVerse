@@ -1,6 +1,5 @@
 package com.moscow.cineverse.designSystem.component.switcher
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.size
@@ -11,7 +10,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -22,9 +20,9 @@ import com.moscow.cineverse.designSystem.theme.Theme
 
 @Composable
 fun CineVerseSwitch(
-    modifier: Modifier = Modifier,
     isDarkTheme: Boolean,
-    onThemeChange: (Boolean) -> Unit
+    onThemeChange: (Boolean) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     var isChecked by rememberSaveable { mutableStateOf(isDarkTheme) }
 
@@ -33,8 +31,6 @@ fun CineVerseSwitch(
             isChecked = isDarkTheme
         }
     }
-
-    Log.d("theme", "$isChecked -- ")
 
     Switch(
         checked = isChecked,
@@ -46,8 +42,8 @@ fun CineVerseSwitch(
         thumbContent = {
             Box(
                 modifier = Modifier
-                    .size(18.dp)
-                    .clip(CircleShape)
+                    .size(size = 18.dp)
+                    .clip(shape = CircleShape)
                     .background(
                         color = when {
                             isChecked -> Color.White
@@ -67,6 +63,7 @@ fun CineVerseSwitch(
             } else {
                 Theme.colors.shade.tertiary
             },
+
             uncheckedTrackColor = Theme.colors.shade.quaternary,
             uncheckedBorderColor = Theme.colors.shade.secondary,
 

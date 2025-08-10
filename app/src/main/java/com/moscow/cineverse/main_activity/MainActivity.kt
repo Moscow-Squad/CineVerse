@@ -3,7 +3,6 @@ package com.moscow.cineverse.main_activity
 import android.content.Context
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.WindowInsets
 import android.view.WindowInsetsController
@@ -19,7 +18,6 @@ import androidx.compose.runtime.remember
 import androidx.core.view.WindowCompat
 import com.moscow.cineverse.CineVerseRoot
 import com.moscow.cineverse.designSystem.theme.CineVerseTheme
-import com.moscow.cineverse.designSystem.theme.ThemeState
 import com.moscow.cineverse.navigation.NavViewModel
 import com.moscow.domain.repository.theme.ThemeProvider
 import dagger.hilt.android.AndroidEntryPoint
@@ -70,9 +68,7 @@ class MainActivity : ComponentActivity() {
                 }
             }
 
-            Log.d("Languagemain ", state.language)
-
-            CineVerseTheme(state = ThemeState(isDark = state.isDarkTheme)) {
+            CineVerseTheme(isDark = state.isDarkTheme) {
                 CineVerseRoot(navViewModel)
             }
         }
@@ -83,7 +79,6 @@ fun getSavedLanguage(context: Context): String {
     val prefs = context.getSharedPreferences("settings", Context.MODE_PRIVATE)
     return prefs.getString("app_language", "en") ?: "en"
 }
-
 
 fun updateLocale(context: Context, language: String): Context {
     val locale = Locale(language)

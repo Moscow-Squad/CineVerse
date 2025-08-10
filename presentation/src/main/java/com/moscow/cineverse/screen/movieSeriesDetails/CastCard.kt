@@ -16,8 +16,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.moscow.cineverse.designSystem.component.blur.OnBlurContent
 import com.moscow.cineverse.designSystem.component.blur.RemoteImagePlaceholder
@@ -74,7 +72,6 @@ fun <T> CastCard(
                 errorContent = { RemoteImagePlaceholder() },
                 onBlurContent = {
                     OnBlurContent(
-                        hintText = stringResource(R.string.unsuitable_image),
                         isAddedText = false
                     )
                 }

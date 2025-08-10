@@ -61,7 +61,7 @@ fun NewCollection(
                 modifier = Modifier
                     .weight(1f)
                     .padding(vertical = 14.dp),
-                enable = collectionName.isNotBlank()
+                enableAction = collectionName.isNotBlank()
             )
         }
     }

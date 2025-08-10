@@ -1,7 +1,6 @@
 package com.moscow.cineverse.designSystem.component.text
 
 import androidx.compose.foundation.clickable
-
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -20,19 +19,18 @@ fun ExpandableText(
     text: String,
     modifier: Modifier = Modifier,
     maxLines: Int = 4,
-    readMoreText: String = stringResource(R.string.readmore),
+    readMoreText: String = stringResource(id = R.string.readmore),
     readMoreColor:Color = Theme.colors.brand.primary,
     textStyle: TextStyle = Theme.textStyle.body.medium.medium
-
-    ) {
-    val (isExpanded,onExpandedChange) = rememberSaveable { mutableStateOf(false) }
+) {
+    val (isExpanded, onExpandedChange) = rememberSaveable { mutableStateOf(false) }
 
     ReadMoreText(
         text = text,
         expanded = isExpanded,
         onExpandedChange = onExpandedChange,
         modifier = modifier
-            .clickable { onExpandedChange(!isExpanded)},
+            .clickable { onExpandedChange(!isExpanded) },
         readMoreText = readMoreText,
         readMoreColor = readMoreColor,
         style = textStyle,
@@ -40,7 +38,5 @@ fun ExpandableText(
         readMoreOverflow = ReadMoreTextOverflow.Ellipsis,
         toggleArea = ToggleArea.More,
         readMoreMaxLines = maxLines
-
-
     )
 }

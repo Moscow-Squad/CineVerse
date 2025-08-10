@@ -1,4 +1,4 @@
-package com.moscow.cineverse.designSystem.component
+package com.moscow.cineverse.designSystem.component.preview
 
 import android.content.res.Configuration
 import androidx.compose.ui.tooling.preview.Preview

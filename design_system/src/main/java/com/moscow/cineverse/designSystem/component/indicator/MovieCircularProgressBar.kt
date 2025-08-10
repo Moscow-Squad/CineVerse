@@ -1,4 +1,4 @@
-package com.moscow.cineverse.designSystem.component
+package com.moscow.cineverse.designSystem.component.indicator
 
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
@@ -33,17 +33,18 @@ fun MovieCircularProgressBar(
     strokeWidth: Dp = 6.dp,
     gradientColors: List<Color> = listOf(Theme.colors.brand.primary, Theme.colors.brand.tertiary),
 ) {
-    val rotation by rememberInfiniteTransition(label = "").animateFloat(
+    val rotation by rememberInfiniteTransition().animateFloat(
         initialValue = 0f,
         targetValue = -360f,
         animationSpec = infiniteRepeatable(
             tween(1000, easing = LinearEasing),
             repeatMode = RepeatMode.Restart
-        ),
-        label = ""
+        )
     )
 
-    Canvas(modifier = modifier.size(48.dp).rotate(rotation)) {
+    Canvas(
+        modifier = modifier.size(size = 48.dp).rotate(degrees = rotation)
+    ) {
         val center = center
         val radius = size.minDimension / 2
         val strokeWidthPx = strokeWidth.toPx()
@@ -74,6 +75,7 @@ fun MovieCircularProgressBar(
             radius = dotRadius,
             center =  Offset(dotX, dotY)
         )
+
     }
 }
 

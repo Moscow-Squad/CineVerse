@@ -2,14 +2,13 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.artifacts.VersionCatalogsExtension
 import org.gradle.api.tasks.testing.Test
-import org.gradle.kotlin.dsl.withType
 import org.gradle.kotlin.dsl.kotlin
+import org.gradle.kotlin.dsl.withType
 
 class AndroidLibraryConventionPlugin : Plugin<Project> {
     override fun apply(project: Project): Unit = with(project) {
 
-        val libs = project.rootProject.extensions
-            .getByType(VersionCatalogsExtension::class.java)
+        val libs = project.rootProject.extensions.getByType(VersionCatalogsExtension::class.java)
             .named("libs")
 
         pluginManager.apply {

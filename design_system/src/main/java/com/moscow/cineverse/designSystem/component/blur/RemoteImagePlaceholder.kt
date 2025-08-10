@@ -24,7 +24,7 @@ fun RemoteImagePlaceholder(
             painter = painterResource(id = R.drawable.due_tone_image),
             contentDescription = null,
             contentScale = ContentScale.None,
-            modifier = modifier.size(56.dp)
+            modifier = modifier.size(size = 56.dp)
         )
     }
 }

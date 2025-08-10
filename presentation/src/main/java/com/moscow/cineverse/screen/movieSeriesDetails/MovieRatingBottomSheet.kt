@@ -85,7 +85,7 @@ fun MovieRatingBottomSheet(
                             onRatingSubmit(selectedRating)
                         }
                     },
-                    enable = selectedRating > 0 && !isLoading,
+                    enableAction = selectedRating > 0 && !isLoading,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 16.dp)
@@ -104,7 +104,7 @@ fun MovieRatingBottomSheet(
                             selectedRating = 0
                             onRatingRemove()
                         },
-                        enable = !isLoading,
+                        enableAction = !isLoading,
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(horizontal = 16.dp)

@@ -1,6 +1,5 @@
 package com.moscow.cineverse.screen.cast_details
 
-import android.util.Log
 import androidx.annotation.DrawableRes
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateDpAsState
@@ -45,12 +44,11 @@ import com.moscow.cineverse.MovieListSection
 import com.moscow.cineverse.component.ErrorContent
 import com.moscow.cineverse.component.MoviePosterCard
 import com.moscow.cineverse.component.SectionTitle
-import com.moscow.cineverse.designSystem.component.MovieAppBar
-import com.moscow.cineverse.designSystem.component.MovieScaffold
+import com.moscow.cineverse.designSystem.component.app_bar.MovieAppBar
 import com.moscow.cineverse.designSystem.component.blur.OnBlurContent
 import com.moscow.cineverse.designSystem.component.blur.RemoteImagePlaceholder
+import com.moscow.cineverse.designSystem.component.wrapper.MovieScaffold
 import com.moscow.cineverse.designSystem.theme.Theme
-import com.moscow.cineverse.utlis.noRibbleClick
 import com.moscow.cineverse.image_viewer.component.SafeImageViewer
 import com.moscow.cineverse.mapper.toFormattedBirthDate
 import com.moscow.cineverse.mapper.toMediaItemUi
@@ -61,6 +59,7 @@ import com.moscow.cineverse.screen.cast_details.composable.LoadingContent
 import com.moscow.cineverse.screen.cast_details.gallery.GallerySection
 import com.moscow.cineverse.screen.movie_details.InfoSection
 import com.moscow.cineverse.utlis.ViewMode
+import com.moscow.cineverse.utlis.noRibbleClick
 import com.moscow.cinverse.presentation.R
 
 @Composable
@@ -78,8 +77,12 @@ fun CastDetailsScreen(
     LaunchedEffect(Unit) {
         viewModel.uiEffect.collect { effect ->
             CastDetailsEffectHandlerWithContext.handleEffectWithContext(
-                effect, context, navigateBack, navigateToMovieDetails,
-                navigateToCastBestOfMovie, navigateToCastGallery
+                effect,
+                context,
+                navigateBack,
+                navigateToMovieDetails,
+                navigateToCastBestOfMovie,
+                navigateToCastGallery
             )
         }
     }
@@ -95,9 +98,7 @@ fun CastDetailsScreen(
                 showDivider = true
             )
             CastDetailsContent(
-                modifier = Modifier.weight(1f),
-                uiState = uiState,
-                interactionListener = viewModel
+                modifier = Modifier.weight(1f), uiState = uiState, interactionListener = viewModel
             )
         }
     }
@@ -151,11 +152,10 @@ fun ActorMoviesSection(
     interactionListener: CastDetailsInteractionListener,
     modifier: Modifier = Modifier
 ) {
-    Log.d("blur", "${uiState.enableBlur}")
     if (uiState.movies.isNotEmpty()) {
         MovieListSection(
             title = stringResource(
-                com.moscow.cinverse.presentation.R.string.best_of,
+                R.string.best_of,
                 uiState.actorDetails?.name.orEmpty()
             ),
             movies = uiState.movies.take(10),
@@ -163,7 +163,6 @@ fun ActorMoviesSection(
             onClickShowMore = interactionListener::onShowMoreMovies,
             onClickPoster = interactionListener::onMovieClick,
             movieCardContent = { movie, cardModifier, onMovieClick ->
-                Log.d("blurcast", "${uiState.enableBlur}")
                 MoviePosterCard(
                     movie = movie.toMediaItemUi(),
                     viewMode = ViewMode.GRID,
@@ -190,7 +189,7 @@ fun ActorGallerySection(
             modifier = modifier
         ) {
             SectionTitle(
-                title = stringResource(com.moscow.cinverse.presentation.R.string.gallery),
+                title = stringResource(R.string.gallery),
                 onClick = {
                     interactionListener.onShowMoreGallery()
                 },
@@ -210,8 +209,7 @@ fun ActorGallerySection(
 
 @Composable
 fun ActorBiographySection(
-    uiState: CastDetailsUiState,
-    modifier: Modifier = Modifier
+    uiState: CastDetailsUiState, modifier: Modifier = Modifier
 ) {
     uiState.actorDetails?.let { actorDetails ->
         if (actorDetails.biography.isNotEmpty()) {
@@ -219,7 +217,7 @@ fun ActorBiographySection(
                 modifier = modifier
             ) {
                 InfoSection(
-                    title = stringResource(com.moscow.cinverse.presentation.R.string.biography),
+                    title = stringResource(R.string.biography),
                     description = actorDetails.biography,
                     showGenres = false,
                     maxDescriptionLines = Int.MAX_VALUE,
@@ -244,7 +242,7 @@ fun ActorMainDetailsSection(
             profileImage = actor.profileImg,
             name = actor.name,
             date = stringResource(
-                com.moscow.cinverse.presentation.R.string.born_on,
+                R.string.born_on,
                 actor.birthDate.toFormattedBirthDate()
             ),
             location = actor.placeOfBirth,
@@ -275,8 +273,7 @@ fun MainDetails(
     }
 
     val imageSize by animateDpAsState(
-        targetValue = if (isCollapsed) 48.dp else 80.dp,
-        animationSpec = tween(durationMillis = 300)
+        targetValue = if (isCollapsed) 48.dp else 80.dp, animationSpec = tween(durationMillis = 300)
     )
 
     val cornerSize by animateDpAsState(
@@ -311,12 +308,8 @@ fun MainDetails(
                     placeholderContent = { RemoteImagePlaceholder() },
                     errorContent = { RemoteImagePlaceholder() },
                     onBlurContent = {
-                        OnBlurContent(
-                            hintText = stringResource(R.string.unsuitable_image),
-                            isAddedText = false
-                        )
-                    }
-                )
+                        OnBlurContent(isAddedText = false)
+                    })
                 Column(modifier = Modifier.padding(start = 12.dp)) {
                     Text(
                         text = name,
@@ -353,7 +346,7 @@ fun MainDetails(
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
             ) {
                 SocialMediaPill(
-                    name = stringResource(com.moscow.cinverse.presentation.R.string.youtube),
+                    name = stringResource(R.string.youtube),
                     iconRes = R.drawable.colored_youtube,
                     url = socialMediaLinks.youtube,
                     onClick = { onSocialMediaClick("youtube", it) },
@@ -361,7 +354,7 @@ fun MainDetails(
                 )
 
                 SocialMediaPill(
-                    name = stringResource(com.moscow.cinverse.presentation.R.string.facebook),
+                    name = stringResource(R.string.facebook),
                     iconRes = R.drawable.colored_facebook,
                     url = socialMediaLinks.facebook,
                     onClick = { onSocialMediaClick("facebook", it) },
@@ -369,7 +362,7 @@ fun MainDetails(
                 )
 
                 SocialMediaPill(
-                    name = stringResource(com.moscow.cinverse.presentation.R.string.instagram),
+                    name = stringResource(R.string.instagram),
                     iconRes = R.drawable.colored_instagram,
                     url = socialMediaLinks.instagram,
                     onClick = { onSocialMediaClick("instagram", it) },
@@ -401,8 +394,7 @@ private fun SocialMediaPill(
             .background(backgroundColor)
             .noRibbleClick { url?.let { onClick(it) } }
             .padding(horizontal = 10.dp, vertical = 8.dp),
-        contentAlignment = Alignment.Center
-    ) {
+        contentAlignment = Alignment.Center) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(6.dp)
@@ -430,8 +422,7 @@ fun TextWithIcon(
     iconTint: Color,
     modifier: Modifier = Modifier,
 ) {
-    Row(modifier = modifier, verticalAlignment = Alignment.CenterVertically)
-    {
+    Row(modifier = modifier, verticalAlignment = Alignment.CenterVertically) {
         Icon(
             painter = painterResource(icon),
             contentDescription = null,

@@ -35,11 +35,11 @@ import com.moscow.cineverse.component.ErrorContent
 import com.moscow.cineverse.component.MoviePosterCard
 import com.moscow.cineverse.component.SectionTitle
 import com.moscow.cineverse.component.StorylineSection
-import com.moscow.cineverse.designSystem.component.MovieAppBar
-import com.moscow.cineverse.designSystem.component.MovieCircularProgressBar
-import com.moscow.cineverse.designSystem.component.MovieScaffold
+import com.moscow.cineverse.designSystem.component.app_bar.MovieAppBar
+import com.moscow.cineverse.designSystem.component.indicator.MovieCircularProgressBar
+import com.moscow.cineverse.designSystem.component.wrapper.MovieScaffold
 import com.moscow.cineverse.designSystem.component.bottomsheet.CineVerseBottomSheet
-import com.moscow.cineverse.designSystem.component.message_info.MessageInfoBox
+import com.moscow.cineverse.designSystem.component.card.MessageInfoCard
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.mapper.formatReviewDate
 import com.moscow.cineverse.mapper.toHourMinuteFormat
@@ -379,7 +379,7 @@ fun SeriesDetailsContent(
                         showCancelIcon = true,
                         onAddNewCollectionClick = {}
                     ) {
-                        MessageInfoBox(
+                        MessageInfoCard(
                             title = stringResource(R.string.you_re_almost_there),
                             description = stringResource(R.string.log_in_to_save_movies_create_collections_and_get_personalized_recommendations),
                             icon = painterResource(R.drawable.due_tone_video_library),
