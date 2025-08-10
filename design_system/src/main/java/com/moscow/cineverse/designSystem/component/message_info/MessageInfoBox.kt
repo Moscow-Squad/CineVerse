@@ -122,7 +122,7 @@ fun MessageInfoBoxExample() {
             secondButtonText = "Log In",
             onClickFirstButton = {},
             onClickSecondButton = {},
-            icon = painterResource(Theme.icons.dueTone.videoLibrary),
+            icon = painterResource(R.drawable.due_tone_info_circle),
             showButtonsGroup = true,
             modifier = Modifier
                 .padding(50.dp)

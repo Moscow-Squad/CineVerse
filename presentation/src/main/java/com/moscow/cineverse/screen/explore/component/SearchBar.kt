@@ -39,8 +39,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.moscow.cineverse.designSystem.theme.Theme
-import com.moscow.cineverse.designSystem.utils.noRibbleClick
-import com.moscow.cineverse.design_system.R
+import com.moscow.cineverse.utlis.noRibbleClick
+import com.moscow.cinverse.presentation.R
 import kotlinx.coroutines.delay
 
 @Composable
@@ -92,7 +92,7 @@ fun SearchBar(
             exit = slideOutHorizontally(targetOffsetX = { -it }) + fadeOut(animationSpec = tween(300))
         ) {
             Icon(
-                painter = painterResource(Theme.icons.outline.arrowLeft),
+                painter = painterResource(R.drawable.outline_arrow_left),
                 contentDescription = stringResource(R.string.search_icon),
                 tint = Theme.colors.shade.primary,
                 modifier = Modifier
@@ -137,7 +137,7 @@ fun SearchBar(
             maxLines = maxLines,
             leadingIcon = {
                 Icon(
-                    painter = painterResource(Theme.icons.outline.search),
+                    painter = painterResource(R.drawable.outline_search),
                     contentDescription = stringResource(R.string.search_icon),
                     tint = Theme.colors.shade.tertiary,
                     modifier = Modifier.size(20.dp)
@@ -146,7 +146,7 @@ fun SearchBar(
             trailingIcon = {
                 if (isFocused && value.isNotEmpty()) {
                     Icon(
-                        painter = painterResource(Theme.icons.outline.xClose),
+                        painter = painterResource(R.drawable.outline_x),
                         contentDescription = stringResource(R.string.search_icon),
                         tint = Theme.colors.shade.tertiary,
                         modifier = Modifier
@@ -190,7 +190,7 @@ private fun SearchBarPreview() {
         onValueChange = { search = it },
         trailingIcon = {
             Icon(
-                painter = painterResource(Theme.icons.outline.search),
+                painter = painterResource(R.drawable.outline_search),
                 contentDescription = stringResource(R.string.search_icon)
             )
         },

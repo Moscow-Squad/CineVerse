@@ -5,7 +5,6 @@ import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -18,7 +17,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -70,21 +68,21 @@ fun ContentPreferencesContent(
         PreferenceOption(
             name = stringResource(R.string.hide_explicit_content),
             description = stringResource(R.string.hides_revealing_or_inappropriate_posters_e_g_nudity_strong_sexual_content),
-            imageRes = painterResource(com.moscow.cineverse.design_system.R.drawable.icon_eye_with_slash),
+            imageRes = painterResource(R.drawable.icon_eye_with_slash),
             isSelected = selectedPreference == "high",
             onClick = { onPreferenceChanged("high") }
         )
         PreferenceOption(
             name = stringResource(R.string.strict_filtering),
             description = stringResource(R.string.hides_all_content_that_includes_immodest_clothing_or_behavior),
-            imageRes = painterResource(com.moscow.cineverse.design_system.R.drawable.slash),
+            imageRes = painterResource(R.drawable.slash),
             isSelected = selectedPreference == "medium",
             onClick = { onPreferenceChanged("medium") }
         )
         PreferenceOption(
             name = stringResource(R.string.show_all_content),
             description = stringResource(R.string.no_filtering_all_images_and_posters_will_be_displayed),
-            imageRes = painterResource(com.moscow.cineverse.design_system.R.drawable.icon_eye),
+            imageRes = painterResource(R.drawable.icon_eye),
             isSelected = selectedPreference == "low",
             onClick = { onPreferenceChanged("low") }
         )

@@ -70,15 +70,15 @@ private fun ProfileChipsPreview() {
             listOf(
                 ProfileChipItem(
                     R.string.history,
-                    com.moscow.cineverse.design_system.R.drawable.due_tone_history,
+                    R.drawable.due_tone_history,
                     {}),
                 ProfileChipItem(
                     R.string.my_collections,
-                    com.moscow.cineverse.design_system.R.drawable.due_tone_video_library,
+                    R.drawable.due_tone_video_library,
                     {}),
                 ProfileChipItem(
                     R.string.my_ratings,
-                    com.moscow.cineverse.design_system.R.drawable.due_tone_star,
+                    R.drawable.due_tone_star,
                     {}
                 )
             )

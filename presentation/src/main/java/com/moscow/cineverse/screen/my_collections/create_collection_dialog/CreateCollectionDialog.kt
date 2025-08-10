@@ -83,7 +83,7 @@ fun CreateCollectionDialogContent(
             AppTextField(
                 value = state.collectionName,
                 onValueChange = interactionListener::onCollectionNameChange,
-                leadingIcon = com.moscow.cineverse.design_system.R.drawable.outline_folder,
+                leadingIcon = R.drawable.outline_folder,
                 leadingIconTint = Theme.colors.shade.tertiary,
                 placeholder = stringResource(R.string.my_collection_name_hint),
                 modifier = Modifier.padding(top = 8.dp)

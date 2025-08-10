@@ -108,7 +108,7 @@ private fun CollectionsBottomSheetContent(
                 MessageInfoBox(
                     title = stringResource(R.string.you_re_almost_there),
                     description = stringResource(R.string.log_in_to_save_movies_create_collections_and_get_personalized_recommendations),
-                    icon = painterResource(Theme.icons.dueTone.videoLibrary),
+                    icon = painterResource(R.drawable.due_tone_video_library),
                     showButtonsGroup = true,
 
                     firstButtonText = stringResource(R.string.not_now),
@@ -163,7 +163,7 @@ private fun CollectionsBottomSheetContent(
                     MessageInfoBox(
                         title = stringResource(R.string.no_collections_yet),
                         description = stringResource(R.string.create_a_new_collection_to_start_saving_your_favorite_movies_and_series),
-                        icon = painterResource(Theme.icons.dueTone.videoLibrary),
+                        icon = painterResource(R.drawable.due_tone_video_library),
                         showButtonsGroup = false,
                         firstButtonText = "",
                         onClickFirstButton = {},

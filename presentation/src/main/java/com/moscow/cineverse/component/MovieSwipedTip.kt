@@ -48,7 +48,7 @@ fun MovieSwipedTip(
             verticalAlignment = Alignment.Top
         ) {
             Icon(
-                painter = painterResource(Theme.icons.dueTone.infoCircle),
+                painter = painterResource(R.drawable.due_tone_info_circle),
                 contentDescription = "Info",
                 tint = Theme.colors.brand.primary,
                 modifier = Modifier.size(24.dp)
@@ -66,7 +66,7 @@ fun MovieSwipedTip(
                 modifier = Modifier.size(19.5.dp)
             ) {
                 Icon(
-                    painter = painterResource(Theme.icons.outline.xClose),
+                    painter = painterResource(R.drawable.outline_x),
                     contentDescription = "Close tip",
                     tint = Theme.colors.shade.secondary,
                     modifier = Modifier.size(12.dp)

@@ -50,8 +50,7 @@ import com.moscow.cineverse.designSystem.component.MovieScaffold
 import com.moscow.cineverse.designSystem.component.blur.OnBlurContent
 import com.moscow.cineverse.designSystem.component.blur.RemoteImagePlaceholder
 import com.moscow.cineverse.designSystem.theme.Theme
-import com.moscow.cineverse.designSystem.utils.noRibbleClick
-import com.moscow.cineverse.design_system.R
+import com.moscow.cineverse.utlis.noRibbleClick
 import com.moscow.cineverse.image_viewer.component.SafeImageViewer
 import com.moscow.cineverse.mapper.toFormattedBirthDate
 import com.moscow.cineverse.mapper.toMediaItemUi
@@ -62,6 +61,7 @@ import com.moscow.cineverse.screen.cast_details.composable.LoadingContent
 import com.moscow.cineverse.screen.cast_details.gallery.GallerySection
 import com.moscow.cineverse.screen.movie_details.InfoSection
 import com.moscow.cineverse.utlis.ViewMode
+import com.moscow.cinverse.presentation.R
 
 @Composable
 fun CastDetailsScreen(

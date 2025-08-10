@@ -90,7 +90,7 @@ fun MyRatingsContent(
                             contentAlignment = Alignment.Center
                         ) {
                             EmptyState(
-                                icon = painterResource(Theme.icons.dueTone.star),
+                                icon = painterResource(R.drawable.due_tone_star),
                                 title = stringResource(R.string.no_ratings_yet),
                                 description = stringResource(R.string.rate_movies_and_series_you_ve_watched_to_track_what_you_love_and_what_you_don_t),
                                 buttonTitle = stringResource(R.string.start_rating),

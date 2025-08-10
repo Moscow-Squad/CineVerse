@@ -90,7 +90,7 @@ internal fun UserInfo(
         }
 
         Icon(
-            painter = painterResource(com.moscow.cineverse.design_system.R.drawable.outline_alt_arrow_right),
+            painter = painterResource(R.drawable.outline_alt_arrow_right),
             contentDescription = "right arrow",
             tint = Theme.colors.shade.tertiary,
             modifier = Modifier.size(20.dp)

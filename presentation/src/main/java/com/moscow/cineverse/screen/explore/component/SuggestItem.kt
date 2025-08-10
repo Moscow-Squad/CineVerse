@@ -19,8 +19,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.moscow.cineverse.design_system.R
 import com.moscow.cineverse.designSystem.theme.Theme
+import com.moscow.cinverse.presentation.R
 
 @Composable
 fun SuggestItem(
@@ -57,7 +57,7 @@ fun SuggestItem(
             )
             Icon(
                 modifier = Modifier.size(20.dp),
-                painter = painterResource(Theme.icons.outline.arrowLeftUp),
+                painter = painterResource(R.drawable.outline_arrow_left_up),
                 contentDescription = stringResource(R.string.arrow_left_up),
                 tint = Theme.colors.shade.tertiary
             )
@@ -75,6 +75,6 @@ fun SuggestItem(
 private fun SuggestItemPreview() {
     SuggestItem(
         "dddddddddddd",
-        Theme.icons.outline.search
+        R.drawable.outline_search
     )
 }

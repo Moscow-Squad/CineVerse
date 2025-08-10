@@ -135,7 +135,7 @@ fun ExploreMainContent(
         uiState.isContentEmpty -> {
             Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                 EmptyState(
-                    icon = painterResource(Theme.icons.dueTone.search),
+                    icon = painterResource(R.drawable.outline_search),
                     title = stringResource(R.string.nothing_found),
                     description = stringResource(R.string.we_searched_the_entire_universe_but_found_nothing_matching_your_query_try_something_else)
                 )

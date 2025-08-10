@@ -63,7 +63,7 @@ private fun SuggestItems(
         suggestItems.forEachIndexed { index, item ->
             val title = item.title
             val icon =
-                if (item.isHistory) Theme.icons.outline.history else Theme.icons.outline.search
+                if (item.isHistory) R.drawable.outline_history else R.drawable.outline_search
             SuggestItem(
                 title = title,
                 icon = icon,
