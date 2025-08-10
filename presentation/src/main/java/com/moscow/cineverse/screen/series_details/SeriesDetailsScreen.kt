@@ -316,7 +316,7 @@ fun SeriesDetailsContent(
                     }
                     item {
                         RatingSection(
-                            icon = Theme.icons.dueTone.star,
+                            icon = R.drawable.due_tone_star,
                             title = stringResource(R.string.give_it_stars),
                             caption = stringResource(R.string.let_the_world_know_how_you_felt),
                             onClick = interactionListener::showRatingBottomSheet,
@@ -382,7 +382,7 @@ fun SeriesDetailsContent(
                         MessageInfoBox(
                             title = stringResource(R.string.you_re_almost_there),
                             description = stringResource(R.string.log_in_to_save_movies_create_collections_and_get_personalized_recommendations),
-                            icon = painterResource(Theme.icons.dueTone.videoLibrary),
+                            icon = painterResource(R.drawable.due_tone_video_library),
                             showButtonsGroup = true,
                             firstButtonText = stringResource(R.string.not_now),
                             onClickFirstButton = { interactionListener.onDismissLoginBottomSheet() },

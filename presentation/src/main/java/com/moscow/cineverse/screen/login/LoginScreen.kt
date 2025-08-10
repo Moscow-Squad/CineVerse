@@ -37,7 +37,7 @@ import com.moscow.cineverse.designSystem.component.button.MovieButton
 import com.moscow.cineverse.designSystem.component.message_info.MessageInfoBox
 import com.moscow.cineverse.designSystem.component.text.AppTextField
 import com.moscow.cineverse.designSystem.theme.Theme
-import com.moscow.cineverse.design_system.R
+import com.moscow.cinverse.presentation.R
 
 @Composable
 fun LoginScreen(

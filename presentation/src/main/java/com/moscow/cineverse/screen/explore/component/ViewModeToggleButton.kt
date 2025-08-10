@@ -24,7 +24,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.moscow.cineverse.utlis.ViewMode
 import com.moscow.cineverse.designSystem.theme.Theme
-import com.moscow.cineverse.design_system.R
+import com.moscow.cinverse.presentation.R
+
 
 @Composable
 fun ViewModeToggleButton(

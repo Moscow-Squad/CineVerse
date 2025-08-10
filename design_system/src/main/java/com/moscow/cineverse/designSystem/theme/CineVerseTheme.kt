@@ -9,8 +9,6 @@ import com.moscow.cineverse.designSystem.color.CineVerseColor
 import com.moscow.cineverse.designSystem.color.LocalCineVerseColors
 import com.moscow.cineverse.designSystem.color.darkThemeColor
 import com.moscow.cineverse.designSystem.color.lightThemeColor
-import com.moscow.cineverse.designSystem.icon.CineVerseIcons
-import com.moscow.cineverse.designSystem.icon.LocalCineVerseIcons
 import com.moscow.cineverse.designSystem.radius.CineVerseRadius
 import com.moscow.cineverse.designSystem.radius.LocalCineVerseRadius
 import com.moscow.cineverse.designSystem.typography.CineVerseTextStyle
@@ -28,7 +26,6 @@ fun CineVerseTheme(
     }
     CompositionLocalProvider(
         LocalThemeState provides state,
-        LocalCineVerseIcons provides CineVerseIcons(),
         LocalCineVerseColors provides colorScheme,
         LocalCineVerseTextStyle provides DefaultTextStyle,
         LocalCineVerseRadius provides CineVerseRadius(),
@@ -43,10 +40,6 @@ object Theme {
         @ReadOnlyComposable
         get() = LocalThemeState.current
 
-    val icons: CineVerseIcons
-        @Composable
-        @ReadOnlyComposable
-        get() = LocalCineVerseIcons.current
 
     val colors: CineVerseColor
         @Composable

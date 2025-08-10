@@ -148,7 +148,7 @@ fun MyCollectionsContent(
                             .fillMaxWidth(.7f)
                     ) {
                         MovieIcon(
-                            painter = painterResource(com.moscow.cineverse.design_system.R.drawable.due_tone_video_library),
+                            painter = painterResource(R.drawable.due_tone_video_library),
                             tint = Theme.colors.brand.primary,
                             modifier = Modifier
                                 .clip(CircleShape)

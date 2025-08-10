@@ -27,7 +27,7 @@ fun LogoutBottomSheet(
             MessageInfoBox(
                 title = stringResource(R.string.are_you_sure_you_want_to_logout),
                 description = stringResource(R.string.you_can_always_sign_back_in_with_your_account),
-                icon = painterResource(Theme.icons.dueTone.logout),
+                icon = painterResource(R.drawable.due_tone_logout),
                 showButtonsGroup = true,
                 firstButtonText = stringResource(R.string.cancel),
                 onClickFirstButton = onDismiss,

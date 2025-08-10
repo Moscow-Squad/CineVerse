@@ -20,6 +20,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.moscow.cineverse.designSystem.theme.CineVerseTheme
 import com.moscow.cineverse.designSystem.theme.Theme
+import com.moscow.cineverse.design_system.R
 
 @Composable
 fun MovieExtendedFloatingButton(
@@ -61,7 +62,7 @@ fun MovieExtendedFloatingButtonPreview(){
     CineVerseTheme {
         MovieExtendedFloatingButton(
             onClick = {},
-            icon = painterResource(Theme.icons.outline.altArrowLeft),
+            icon = painterResource(R.drawable.outline_plus),
             buttonText = "Get Started",
             backgroundColor = Theme.colors.button.primary,
             contentPadding = PaddingValues(14.dp),

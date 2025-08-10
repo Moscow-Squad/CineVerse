@@ -6,9 +6,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -21,7 +19,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.moscow.cineverse.common_ui_state.MyCollectionUiState
 import com.moscow.cineverse.designSystem.theme.Theme
-import com.moscow.cineverse.design_system.R
+import com.moscow.cinverse.presentation.R
 
 @Composable
 fun MyCollectionCard(
@@ -55,9 +53,8 @@ fun MyCollectionCard(
                 color = Theme.colors.shade.primary
             )
             Text(
-                text = state.itemCount.toString() + " " + if (state.itemCount > 1) stringResource(
-                    R.string.movies
-                ) else stringResource(R.string.movie_list_type),
+                text = state.itemCount.toString() + " " + if (state.itemCount > 1)
+                    stringResource(R.string.movies) else stringResource(R.string.movie_list_type),
                 style = Theme.textStyle.body.small.medium,
                 color = Theme.colors.shade.secondary
             )

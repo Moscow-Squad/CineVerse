@@ -65,14 +65,14 @@ private fun LanguageBottomSheetContent(
         LanguageOption(
             modifier = Modifier.weight(1f),
             name = stringResource(R.string.english),
-            imageRes = com.moscow.cineverse.design_system.R.drawable.colored_uk_flag,
+            imageRes = R.drawable.colored_uk_flag,
             isSelected = selectedLanguage == "en",
             onClick = { onSelectLanguage("en") }
         )
         LanguageOption(
             modifier = Modifier.weight(1f),
             name = stringResource(R.string.arabic),
-            imageRes = com.moscow.cineverse.design_system.R.drawable.colored_iraq_flag,
+            imageRes = R.drawable.colored_iraq_flag,
             isSelected = selectedLanguage == "ar",
             onClick = { onSelectLanguage("ar") }
         )

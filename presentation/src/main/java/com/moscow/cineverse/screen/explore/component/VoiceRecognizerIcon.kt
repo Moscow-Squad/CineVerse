@@ -15,15 +15,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.moscow.cineverse.designSystem.theme.CineVerseTheme
 import com.moscow.cineverse.designSystem.theme.Theme
-import com.moscow.cineverse.design_system.R as DesignSystemR
-import com.moscow.cinverse.presentation.R as PresentationR
+import com.moscow.cinverse.presentation.R
 
 @Composable
 fun VoiceRecognitionIcon(
     onResult: (List<String>) -> Unit,
     onError: (() -> Unit),
     modifier: Modifier = Modifier,
-    @StringRes prompt: Int = PresentationR.string.speak_to_search,
+    @StringRes prompt: Int = R.string.speak_to_search,
     maxResults: Int = 5,
     enabled: Boolean = true
 ) {
@@ -57,8 +56,8 @@ fun VoiceRecognitionIcon(
         enabled = enabled
     ) {
         Icon(
-            painter = painterResource(DesignSystemR.drawable.outline_microphone),
-            contentDescription = stringResource(PresentationR.string.microphone),
+            painter = painterResource(R.drawable.outline_microphone),
+            contentDescription = stringResource(R.string.microphone),
             tint = Theme.colors.shade.primary
         )
     }
