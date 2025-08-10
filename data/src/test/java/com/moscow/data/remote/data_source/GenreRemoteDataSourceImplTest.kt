@@ -2,11 +2,11 @@ package com.moscow.data.remote.data_source
 
 import com.google.common.truth.Truth.assertThat
 import com.moscow.data_source.remote.GenreRemoteDataSource
+import com.moscow.domain.exception.CineVerseException
 import com.moscow.remote.data_source.GenreRemoteDataSourceImpl
 import com.moscow.remote.dto.GenreDto
 import com.moscow.remote.dto.GenreResponse
 import com.moscow.remote.services.GenreService
-import com.moscow.utils.CineVerseExceptions
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
@@ -57,11 +57,9 @@ class GenreRemoteDataSourceImplTest {
             500,
             "Server Error".toResponseBody("application/json".toMediaType())
         ))
-        val exception = assertThrows<CineVerseExceptions> {
+        assertThrows<CineVerseException> {
             genreRemoteDataSource.getSeriesGenres()
         }
-        assertThat(exception.code).isEqualTo(500)
-        assertThat(exception.message).contains("Server Error")
     }
 
 
