@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.moscow.domain.repository.language.LanguageProvider
 import com.moscow.domain.repository.theme.ThemeProvider
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -40,7 +41,7 @@ class MainActivityViewModel @Inject constructor(
     private fun observeTheme() {
         _state.update { it.copy(isLoading = true) }
 
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             themeProvider.themeFlow.collect { isDarkTheme ->
                 _state.update { it.copy(isDarkTheme = isDarkTheme) }
             }
