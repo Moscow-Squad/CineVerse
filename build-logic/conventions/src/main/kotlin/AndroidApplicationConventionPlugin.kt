@@ -6,7 +6,6 @@ import org.gradle.api.artifacts.VersionCatalogsExtension
 import org.gradle.api.plugins.ExtensionAware
 import org.gradle.kotlin.dsl.configure
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmOptions
-import kotlin.collections.addAll
 
 class AndroidApplicationConventionPlugin : Plugin<Project> {
     override fun apply(project: Project) = with(project) {
@@ -20,8 +19,7 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
             apply(libs.findPlugin("kotlin.compose").get().get().pluginId)
         }
 
-        val javaVersion =
-            JavaVersion.toVersion(libs.findVersion("javaVersion").get().toString())
+        val javaVersion = JavaVersion.toVersion(libs.findVersion("javaVersion").get().toString())
 
         extensions.configure<ApplicationExtension> {
             compileSdk = libs.findVersion("compileSdk").get().toString().toInt()
@@ -42,8 +40,7 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
                     abiFilters += listOf("arm64-v8a", "armeabi-v7a")
                 }
 
-                @Suppress("UnstableApiUsage")
-                androidResources {
+                @Suppress("UnstableApiUsage") androidResources {
                     localeFilters.addAll(listOf("en", "ar"))
                 }
             }
