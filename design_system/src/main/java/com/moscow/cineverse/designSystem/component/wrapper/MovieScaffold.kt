@@ -1,4 +1,4 @@
-package com.moscow.cineverse.designSystem.component
+package com.moscow.cineverse.designSystem.component.wrapper
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -12,9 +12,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.moscow.cineverse.designSystem.component.wrapper.MovieText
+import com.moscow.cineverse.designSystem.component.preview.CineVersePreviews
 import com.moscow.cineverse.designSystem.theme.CineVerseTheme
 import com.moscow.cineverse.designSystem.theme.Theme
 
@@ -26,15 +25,17 @@ fun MovieScaffold(
     content: @Composable () -> Unit = {}
 ) {
     Scaffold(
+        modifier = modifier.fillMaxSize(),
         topBar = {
-            Box(Modifier.statusBarsPadding()) {
+            Box(
+                modifier = Modifier.statusBarsPadding()
+            ) {
                 movieAppBar()
             }
         },
         floatingActionButton = {
             movieFloatingActionButton()
         },
-        modifier = modifier.fillMaxSize(),
         content = { paddingValues ->
             Box(
                 modifier = Modifier
@@ -49,7 +50,7 @@ fun MovieScaffold(
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
-@Preview(showBackground = true)
+@CineVersePreviews
 @Composable
 fun MovieScaffoldPreview() {
     CineVerseTheme {

@@ -9,7 +9,7 @@ import androidx.compose.ui.unit.dp
 import coil3.compose.rememberAsyncImagePainter
 import com.moscow.cineverse.component.SectionTitle
 import com.moscow.cineverse.designSystem.component.bottomsheet.CineVerseBottomSheet
-import com.moscow.cineverse.designSystem.component.message_info.MessageInfoBox
+import com.moscow.cineverse.designSystem.component.card.MessageInfoCard
 import com.moscow.cineverse.mapper.formatReviewDate
 import com.moscow.cineverse.screen.movieSeriesDetails.MovieRatingBottomSheet
 import com.moscow.cineverse.screen.movieSeriesDetails.MovieReviewCard
@@ -106,7 +106,7 @@ fun MovieRatingBottomSheetSection(
                 showCancelIcon = true,
                 onAddNewCollectionClick = {}
             ) {
-                MessageInfoBox(
+                MessageInfoCard(
                     title = stringResource(com.moscow.cinverse.presentation.R.string.you_re_almost_there),
                     description = stringResource(com.moscow.cinverse.presentation.R.string.log_in_to_save_movies_create_collections_and_get_personalized_recommendations),
                     icon = painterResource(R.drawable.due_tone_video_library),
