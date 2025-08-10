@@ -41,7 +41,7 @@ allprojects {
             }
             total {
                 verify {
-                    rule { bound { minValue = 0 } }
+                    rule { bound { minValue = 80 } }
                 }
             }
         }
