@@ -21,10 +21,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.moscow.cineverse.designSystem.component.MovieCircularProgressBar
+import com.moscow.cineverse.designSystem.component.indicator.MovieCircularProgressBar
 import com.moscow.cineverse.designSystem.component.bottomsheet.CineVerseBottomSheet
 import com.moscow.cineverse.designSystem.component.button.MovieButton
-import com.moscow.cineverse.designSystem.component.message_info.MessageInfoBox
+import com.moscow.cineverse.designSystem.component.card.MessageInfoCard
 import com.moscow.cineverse.designSystem.component.wrapper.MovieText
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.screen.movieSeriesDetails.CollectionItem
@@ -105,7 +105,7 @@ private fun CollectionsBottomSheetContent(
         when {
 
             uiState.isLoggedIn == false -> {
-                MessageInfoBox(
+                MessageInfoCard(
                     title = stringResource(R.string.you_re_almost_there),
                     description = stringResource(R.string.log_in_to_save_movies_create_collections_and_get_personalized_recommendations),
                     icon = painterResource(R.drawable.due_tone_video_library),
@@ -160,7 +160,7 @@ private fun CollectionsBottomSheetContent(
 
             else -> {
                 if (uiState.collections.isEmpty()) {
-                    MessageInfoBox(
+                    MessageInfoCard(
                         title = stringResource(R.string.no_collections_yet),
                         description = stringResource(R.string.create_a_new_collection_to_start_saving_your_favorite_movies_and_series),
                         icon = painterResource(R.drawable.due_tone_video_library),
