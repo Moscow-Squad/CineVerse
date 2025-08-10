@@ -12,12 +12,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.moscow.cineverse.designSystem.component.blur.OnBlurContent
 import com.moscow.cineverse.designSystem.component.blur.RemoteImagePlaceholder
 import com.moscow.cineverse.designSystem.theme.Theme
-import com.moscow.cineverse.design_system.R
 import com.moscow.cineverse.image_viewer.component.SafeImageViewer
 
 @Composable
@@ -80,9 +78,7 @@ fun GalleryImage(
         isBlurEnabled = enableBlur,
         placeholderContent = { RemoteImagePlaceholder() },
         onBlurContent = {
-            OnBlurContent(
-                hintText = stringResource(R.string.unsuitable_image),
-            )
+            OnBlurContent()
         }
     )
 }

@@ -1,4 +1,4 @@
-package com.moscow.cineverse.designSystem.component
+package com.moscow.cineverse.designSystem.component.app_bar
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.moscow.cineverse.designSystem.component.preview.CineVersePreviews
 import com.moscow.cineverse.designSystem.theme.CineVerseTheme
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.design_system.R
@@ -38,24 +39,27 @@ fun MovieAppBar(
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .background(Theme.colors.background.screen)
+            .background(
+                color = Theme.colors.background.screen
+            )
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(56.dp)
+                .height(height = 56.dp)
                 .padding(horizontal = 8.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            horizontalArrangement = Arrangement.spacedBy(space = 8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
+
             if (showBackButton) {
                 IconButton(
                     onClick = { backButtonClick() },
-                    modifier = Modifier.size(40.dp)
+                    modifier = Modifier.size(size = 40.dp)
                 ) {
                     Icon(
-                        painter = painterResource(R.drawable.outline_arrow_left),
-                        contentDescription = "Back",
+                        painter = painterResource(id = R.drawable.outline_arrow_left),
+                        contentDescription = null,
                         tint = Theme.colors.shade.primary
                     )
                 }
@@ -64,24 +68,25 @@ fun MovieAppBar(
             if (showLogo) {
                 Image(
                     painter = painterResource(R.drawable.colored_cineverse_logo),
-                    contentDescription = ""
+                    contentDescription = null
                 )
             }
+
             Column(
-                modifier = Modifier.weight(1f),
+                modifier = Modifier.weight(weight = 1f),
             ) {
-                if (caption != null) {
+                caption?.let {
                     Text(
-                        text = caption,
+                        text = it,
                         style = Theme.textStyle.body.medium.regular,
                         color = Theme.colors.shade.secondary,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
                     )
                 }
-                if (title != null) {
+                title?.let {
                     Text(
-                        text = title,
+                        text = it,
                         style = Theme.textStyle.title.small,
                         color = Theme.colors.shade.primary,
                         maxLines = 1,
@@ -89,19 +94,21 @@ fun MovieAppBar(
                     )
                 }
             }
+
             if (showAddButton) {
                 IconButton(
                     onClick = addButtonClick,
-                    modifier = Modifier.size(40.dp)
+                    modifier = Modifier.size(size = 40.dp)
                 ) {
                     Icon(
                         painter = painterResource(R.drawable.outline_add),
-                        contentDescription = "Search",
+                        contentDescription = null,
                         tint = Theme.colors.shade.primary
                     )
                 }
             }
         }
+
         if (showDivider) {
             HorizontalDivider(
                 thickness = 1.dp,
@@ -109,6 +116,7 @@ fun MovieAppBar(
                 modifier = Modifier
             )
         }
+
     }
 }
 

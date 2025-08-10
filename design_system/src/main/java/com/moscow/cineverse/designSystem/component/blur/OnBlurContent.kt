@@ -14,6 +14,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.design_system.R
@@ -21,26 +22,34 @@ import com.moscow.cineverse.design_system.R
 @Composable
 fun OnBlurContent(
     modifier: Modifier = Modifier,
-    hintText: String,
-    isAddedText: Boolean = true,
+    isAddedText: Boolean = true
 ) {
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(Color(0x52000000)),
+            .background(
+                color = Color(0x52000000)
+            ),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterVertically)
+        verticalArrangement = Arrangement.spacedBy(
+            space = 8.dp,
+            alignment = Alignment.CenterVertically
+        )
     ) {
         Image(
-            painter = painterResource(R.drawable.icon_eye_slash),
+            painter = painterResource(id = R.drawable.icon_eye_slash),
             contentDescription = null,
-            modifier = Modifier.size(24.dp),
+            modifier = Modifier.size(size = 24.dp),
             contentScale = ContentScale.Fit,
-            colorFilter = ColorFilter.tint(Color(0xFFE1E1E3)),
+            colorFilter = ColorFilter.tint(
+                color = Color(0xFFE1E1E3)
+            ),
         )
         if (isAddedText) Text(
-            text = hintText,
-            style = Theme.textStyle.body.small.medium.copy(color = Color(0xFFE1E1E3)),
+            text = stringResource(id = R.string.sensitive_content),
+            style = Theme.textStyle.body.small.medium.copy(
+                color = Color(0xFFE1E1E3)
+            ),
         )
     }
 }

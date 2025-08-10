@@ -8,8 +8,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.moscow.cineverse.designSystem.component.bottomsheet.CineVerseBottomSheet
-import com.moscow.cineverse.designSystem.component.message_info.MessageInfoBox
-import com.moscow.cineverse.designSystem.theme.Theme
+import com.moscow.cineverse.designSystem.component.card.MessageInfoCard
 import com.moscow.cinverse.presentation.R
 
 @Composable
@@ -26,7 +25,7 @@ fun EditProfileBottomSheet(
             onDismissRequest = onDismiss,
             showCancelIcon = true,
         ) {
-            MessageInfoBox(
+            MessageInfoCard(
                 title = if (isGuest) stringResource(R.string.you_re_almost_there) else stringResource(
                     R.string.edit_profile
                 ),

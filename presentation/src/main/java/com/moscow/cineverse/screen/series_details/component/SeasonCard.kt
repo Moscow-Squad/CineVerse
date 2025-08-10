@@ -79,10 +79,7 @@ fun SeasonCard(
                     RemoteImagePlaceholder(Modifier.fillMaxSize())
                 },
             ) {
-                OnBlurContent(
-                    hintText = stringResource(R.string.unsuitable_image),
-                    isAddedText = false
-                )
+                OnBlurContent(isAddedText = false)
             }
             Column(
                 modifier = Modifier.weight(1f),
