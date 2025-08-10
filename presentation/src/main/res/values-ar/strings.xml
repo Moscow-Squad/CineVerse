@@ -92,8 +92,7 @@
     <string name="facebook">فيسبوك</string>
     <string name="instagram">إنستغرام</string>
     <string name="born_on">وُلد في %1$s</string>
-    <string name="sensitive_content">محتوي حساس</string>
-    <string name="all">الكل</string>
+x    <string name="all">الكل</string>
     <string name="search">ابحث…</string>
     <string name="search_can_t_be_empty_1">لا تستطيع البحث بلا شئ !</string>
     <string name="my_ratings">تقييماتي</string>
