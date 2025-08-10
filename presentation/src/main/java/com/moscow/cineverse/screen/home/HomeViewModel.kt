@@ -48,7 +48,6 @@ class HomeViewModel @Inject constructor(
 ) : BaseViewModel<HomeUiState, HomeEvent>(HomeUiState()), HomeInteractionListener {
 
     init {
-        updateState { it.copy(isLoading = true) }
 
         viewModelScope.launch {
             val d = languageProvider.languageFlow.first()
@@ -56,11 +55,11 @@ class HomeViewModel @Inject constructor(
         }
         observeLanguage()
         getGenres()
-        loadHomeData()
         observeBlur()
     }
 
     private fun getGenres() {
+        updateState { it.copy(isLoading = true, error = null) }
         launchWithResult(
             action = { genreUseCase.getMoviesGenres() },
             onSuccess = { genres ->
