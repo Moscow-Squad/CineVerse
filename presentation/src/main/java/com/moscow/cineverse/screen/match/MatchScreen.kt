@@ -51,7 +51,12 @@ fun MatchContent(
         )
 
         MatchPages.QuestionsPage -> MatchQuestionsPageContent(
-            modifier = modifier
+            modifier = modifier,
+            onClickNextQuestion = listener::onClickNextQuestion,
+            onClickFinishMatching = listener::onClickFinishMatching,
+            questions = state.questions,
+            currentQuestionIndex = state.currentQuestionIndex,
+            onAnswerSelected = listener::onAnswerSelected,
         )
 
         MatchPages.ResultsPage -> MatchResultsPageContent(

@@ -6,6 +6,7 @@ data class MatchUiState(
     val isLoading: Boolean = false,
     val currentPage: MatchPages = MatchPages.StartPage,
     val questions: List<MatchQuestion> = getDefaultMatchQuestions(),
+    val currentQuestionIndex: Int = 0
 )
 
 data class MatchQuestion(

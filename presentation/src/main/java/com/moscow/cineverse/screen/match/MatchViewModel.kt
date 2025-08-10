@@ -13,4 +13,19 @@ class MatchViewModel : BaseViewModel<MatchUiState, MatchEvent>(MatchUiState()),
         updateState { it.copy(currentPage = MatchPages.ResultsPage) }
     }
 
+    override fun onClickNextQuestion() {
+        updateState { state ->
+            val nextIndex = state.currentQuestionIndex + 1
+            if (nextIndex < state.questions.size) {
+                state.copy(currentQuestionIndex = nextIndex)
+            } else {
+                state.copy(currentPage = MatchPages.ResultsPage)
+            }
+        }
+    }
+
+    override fun onAnswerSelected(questionIndex: Int, answer: String) {
+
+    }
+
 }
