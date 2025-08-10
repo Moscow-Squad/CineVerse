@@ -1,12 +1,16 @@
 package com.moscow.cineverse.screen.match
 
-import androidx.lifecycle.ViewModel
 import com.moscow.cineverse.base.BaseViewModel
 
 class MatchViewModel : BaseViewModel<MatchUiState, MatchEvent>(MatchUiState()),
     MatchInteractionListener {
+
     override fun onClickStartMatching() {
-        sendEvent(MatchEvent.OnClickStartMatching)
+        updateState { it.copy(currentPage = MatchPages.QuestionsPage) }
+    }
+
+    override fun onClickFinishMatching() {
+        updateState { it.copy(currentPage = MatchPages.ResultsPage) }
     }
 
 }

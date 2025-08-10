@@ -18,7 +18,15 @@ fun MatchScreen(
     val state by viewModel.uiState.collectAsStateWithLifecycle()
     LaunchedEffect(Unit) {
         viewModel.uiEffect.collect { effect ->
+            when (effect) {
+                is MatchEvent.OnClickStartMatching -> {
+                    viewModel.onClickStartMatching()
+                }
 
+                is MatchEvent.OnClickFinishMatching -> {
+                    viewModel.onClickFinishMatching()
+                }
+            }
         }
     }
 
@@ -36,14 +44,16 @@ fun MatchContent(
     modifier: Modifier = Modifier
 ) {
 
-    when(state.currentPage){
+    when (state.currentPage) {
         MatchPages.StartPage -> MatchStartPageContent(
             modifier = modifier,
             onClickStartMatching = listener::onClickStartMatching
         )
+
         MatchPages.QuestionsPage -> MatchQuestionsPageContent(
             modifier = modifier
         )
+
         MatchPages.ResultsPage -> MatchResultsPageContent(
             modifier = modifier
         )
