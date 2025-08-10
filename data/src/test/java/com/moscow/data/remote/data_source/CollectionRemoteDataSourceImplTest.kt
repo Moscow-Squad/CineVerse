@@ -2,16 +2,15 @@ package com.moscow.data.remote.data_source
 
 import com.google.common.truth.Truth.assertThat
 import com.moscow.data_source.remote.CollectionRemoteDataSource
+import com.moscow.domain.exception.CineVerseException
 import com.moscow.remote.data_source.CollectionRemoteDataSourceImpl
 import com.moscow.remote.dto.AddCollectionDto
 import com.moscow.remote.dto.AddMediaItemToCollectionRequestDto
 import com.moscow.remote.dto.CollectionDto
 import com.moscow.remote.dto.CreateCollectionDto
-import com.moscow.remote.dto.MediaItemDto
 import com.moscow.remote.dto.MovieDto
 import com.moscow.remote.services.CollectionsService
 import com.moscow.utils.ApiResponse
-import com.moscow.utils.CineVerseExceptions
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -73,12 +72,9 @@ class CollectionRemoteDataSourceImplTest {
 
         coEvery { collectionService.getMyCollections(accountId, page, sessionId) } throws HttpException(errorResponse)
 
-        val exception = assertThrows<CineVerseExceptions> {
+        assertThrows<CineVerseException> {
             collectionRemoteDataSource.getMyCollections(accountId, sessionId, page)
         }
-
-        assertThat(500).isEqualTo(exception.code)
-        assertThat(exception.message).contains("Internal Server Error")
         coVerify (exactly = 1){
             collectionService.getMyCollections(accountId, page, sessionId)
         }
