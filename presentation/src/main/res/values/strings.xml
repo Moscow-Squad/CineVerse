@@ -161,5 +161,27 @@
     <string name="too_much_time">took too much time</string>
     <string name="unauthorized_request">sorry, unauthorized request</string>
     <string name="error_accured">some error accured, try again later</string>
+    <string name="unsuitable_image">"Unsuitable Image "</string>
+    <string name="collection_item_icon">collection item</string>
+    <string name="alt_arrow_right_icon">alt_arrow_right</string>
+    <string name="search_icon">search icon</string>
+    <string name="suggest_item_icon">suggest item icon</string>
+    <string name="arrow_left_up">arrow left up</string>
+    <string name="grid_view_selected">grid view selected</string>
+    <string name="list_view_active">list view active</string>
+    <string name="movies">Movies</string>
+    <string name="movie_list_type">Movie</string>
+    <string name="rate_icon">Rate icon</string>
+    <string name="episodes_icon">Episodes icon</string>
+    <string name="air_date_icon">Air date icon</string>
+    <string name="episodes"> Episodes</string>
+    <string name="you_rated_it">You rated it</string>
+    <string name="tap_to_change_your_rating">Tap to change your rating</string>
+    <string name="star_icon">star icon</string>
+    <string name="change_rating">Change Rating</string>
+    <string name="add_rating">Add Rating</string>
+    <string name="rate_the_movie">Rate the Movie</string>
+    <string name="remove_rating">Remove Rating</string>
+    <string name="did_you_watch_it">Did You Watch it?</string>
 
 </resources>
