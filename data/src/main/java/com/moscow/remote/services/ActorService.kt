@@ -12,6 +12,7 @@ import retrofit2.http.*
 import retrofit2.Response
 
 interface ActorService {
+
     @GET("$ACTOR{actorId}")
     suspend fun getActorDetails(
         @Path("actorId") id: Int
