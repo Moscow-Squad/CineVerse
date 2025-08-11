@@ -1,6 +1,6 @@
 package com.moscow.remote.data_source
 
-import com.moscow.data_source.remote.LoginRemoteDataSource
+import com.moscow.data_source.remote.AuthenticationRemoteDataSource
 import com.moscow.remote.dto.profile.AccountDto
 import com.moscow.remote.dto.login.GuestSessionDto
 import com.moscow.remote.dto.login.LoginDto
@@ -11,9 +11,9 @@ import com.moscow.utils.handleApi
 import javax.inject.Inject
 
 
-class LoginRemoteDataSourceImpl @Inject constructor(
+class AuthenticationRemoteDataSourceImpl @Inject constructor(
     private val loginService: LoginService
-) : LoginRemoteDataSource {
+) : AuthenticationRemoteDataSource {
     override suspend fun createRequestToken(): RequestTokenDto = handleApi {
         loginService.createRequestToken()
     }
@@ -33,7 +33,5 @@ class LoginRemoteDataSourceImpl @Inject constructor(
         loginService.createGuestUserSession()
     }
 
-    override suspend fun getUserId(sessionId: String): AccountDto = handleApi {
-        loginService.getUserId(sessionId)
-    }
+
 }

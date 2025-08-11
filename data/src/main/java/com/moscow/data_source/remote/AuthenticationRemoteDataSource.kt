@@ -6,7 +6,7 @@ import com.moscow.remote.dto.login.LoginDto
 import com.moscow.remote.dto.login.RequestTokenDto
 import com.moscow.remote.dto.login.SessionDto
 
-interface LoginRemoteDataSource {
+interface AuthenticationRemoteDataSource {
 
     suspend fun createRequestToken(): RequestTokenDto
 
@@ -19,9 +19,5 @@ interface LoginRemoteDataSource {
     ): SessionDto
 
     suspend fun createGuestUserSession(): GuestSessionDto
-
-    suspend fun getUserId(
-        sessionId: String
-    ): AccountDto
-
+    
 }
