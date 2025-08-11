@@ -39,7 +39,7 @@ class GetReviewsUseCaseTest {
                 createdAt = "2025-07-25T12:00:00Z"
             )
         )
-        coEvery { movieRepository.getMovieReviews(id, page) } returns expectedReviews
+        coEvery { movieRepository.getReviewsMovie(id, page) } returns expectedReviews
 
         // When
         val result = useCase(id, page, isMovie = true)

@@ -11,7 +11,7 @@ class GetReviewsUseCase @Inject constructor(
 ) {
     suspend operator fun invoke(id: Int, page: Int, isMovie: Boolean): List<Review> =
         if (isMovie)
-            movieRepository.getMovieReviews(id, page)
+            movieRepository.getReviewsMovie(id, page)
         else
             seriesRepository.getSeriesReviews(id, page)
 }
