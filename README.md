@@ -13,6 +13,16 @@
 ## 🎬 Welcome to the Civerse Movies & Series ! 🍿✨
 Dive into a world of endless entertainment, where you can explore movies and TV shows from every category  action, drama, comedy, romance, sci-fi, and more! 🎭 From discovering your favorite actors 🎥 to exploring their full filmography 📚, we’ve got you covered. Build your own collections, follow categories you love ❤️, and enjoy a personalized cinematic journey like never before! 🌟
 
+**Key Features:**
+- 🔍 **Search** for any movie or series.
+- 👤 **Actor Details** — learn about your favorite stars.
+- ⭐ **Rate & Review** — give feedback on movies/series.
+- 🎯 **MCQ Game** — get personalized recommendations.
+- 📂 **Custom Collections** — create and manage your own watchlists.
+- 🚫 **Content Filter** — blur inappropriate visuals.
+- 🌓 **Dark & Light Theme** support.
+- 🌐 **Multi-language** — English & Arabic.
+
 ## 📱 App Screens:
 <table> 
 <tr> 
