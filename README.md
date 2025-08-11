@@ -161,7 +161,13 @@ CineVerse is built with a modern tools, libraries, robust, and scalable tech sta
 
 <br><br>
 --------------
-
+# 🔧 Used in App:
+* MVVM (Model View ViewModel) architectural pattern
+* Repository pattern
+* OkHttp
+* Retrofit class demonstration manually
+<br><br> 
+-------------
 # 🚀 How to Setup & Run the Project Locally
 
 Follow these steps to clone and run **CineVerse** on your local machine:
