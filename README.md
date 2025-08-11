@@ -105,6 +105,7 @@ Dive into a world of endless entertainment, where you can explore movies and TV 
 This diagram illustrates a modern, multi-module architecture based on Clean Architecture principles. The arrows indicate the direction of dependency; for example, an arrow from **`:presentation`** to **`:domain`** means the **`:presentation`** module depends on the **`:domain`** module.
 
 This setup ensures that core business logic is independent and that the UI and data layers can be modified or replaced without affecting the rest of the system.
+This separation of concerns makes the codebase modular, testable, and easy to maintain.
 
 Here's a breakdown of each module's role:
 
