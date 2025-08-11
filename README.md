@@ -175,7 +175,7 @@ Click File > Open.
 
 Select the cloned project folder.
 -----
-## 🔐 What to add (local secrets)
+###  3️⃣ 🔐 What to add (local secrets)
 
 > These files are required to run Cineverse locally. **Do not commit them.**
 
@@ -185,7 +185,7 @@ Select the cloned project folder.
 | `service-account-key.json` | `<project-root>/` | CI / admin SDK tasks (e.g., Firebase App Distribution) |
 | `keys.properties` | `<project-root>/` | API keys used by Gradle/BuildConfig |
 ----
-### 5️⃣ Sync & Run
+### 4️⃣ Sync & Run
 Sync Gradle.
 
 Run the app on your local device or emulator.
