@@ -12,7 +12,7 @@ fun MovieDetail.toMovie(): Movie {
         name = title,
         genreIds = emptyList(),
         rating = voteAverage.toFloat(),
-        releaseDate = releaseDate ?: kotlinx.datetime.LocalDate(1970, 1, 1),
+        releaseDate = releaseDate,
         adult = false,
         backdropPath = posterPath,
         originalLanguage = "en",
