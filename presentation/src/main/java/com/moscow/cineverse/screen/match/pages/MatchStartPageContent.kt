@@ -27,13 +27,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.moscow.cineverse.designSystem.component.MovieAppBar
+import com.moscow.cineverse.designSystem.component.app_bar.MovieAppBar
 import com.moscow.cineverse.designSystem.component.button.MovieButton
 import com.moscow.cineverse.designSystem.theme.CineVerseTheme
 import com.moscow.cineverse.designSystem.theme.Theme
-import com.moscow.cineverse.design_system.R as DesignSystemR
-import com.moscow.cinverse.presentation.R as PresentationR
 import com.moscow.cineverse.navigation.LocalScaffoldPaddingValues
+import com.moscow.cinverse.presentation.R as PresentationR
 
 
 @Composable
@@ -72,7 +71,7 @@ fun MatchStartPageContent(
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
-                    painter = painterResource(DesignSystemR.drawable.magic_stick_icon),
+                    painter = painterResource(PresentationR.drawable.magic_stick_icon),
                     modifier = Modifier.size(28.dp),
                     contentDescription = null,
                     tint = Color.Unspecified
