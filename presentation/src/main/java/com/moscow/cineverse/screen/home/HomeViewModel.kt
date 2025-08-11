@@ -17,11 +17,11 @@ import com.moscow.domain.repository.language.LanguageProvider
 import com.moscow.domain.usecase.collection.GetUserCollectionsUseCase
 import com.moscow.domain.usecase.genre.GenreUseCase
 import com.moscow.domain.usecase.home.ClearHomeCash
-import com.moscow.domain.usecase.home.GetMatchesYourVibesMoviesUseCase
-import com.moscow.domain.usecase.home.GetRecentlyReleasedMoviesUseCase
-import com.moscow.domain.usecase.home.GetTopRatedTVShowsUseCase
-import com.moscow.domain.usecase.home.GetTrendingMoviesUseCase
-import com.moscow.domain.usecase.home.GetUpcomingMoviesUseCase
+import com.moscow.domain.usecase.movie.GetMatchesYourVibesMoviesUseCase
+import com.moscow.domain.usecase.movie.GetRecentlyReleasedMoviesUseCase
+import com.moscow.domain.usecase.series.GetTopRatedTVShowsUseCase
+import com.moscow.domain.usecase.movie.GetTrendingMoviesUseCase
+import com.moscow.domain.usecase.movie.GetUpcomingMoviesUseCase
 import com.moscow.domain.usecase.local.GetUserDetailsUseCase
 import com.moscow.domain.usecase.recently_viewed.GetRecentlyViewedMediaUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel

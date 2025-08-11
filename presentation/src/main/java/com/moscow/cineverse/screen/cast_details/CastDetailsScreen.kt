@@ -119,7 +119,7 @@ private fun CastDetailsContent(
         )
 
         uiState.isContentEmpty -> EmptyContent(modifier)
-        uiState.actorDetails != null -> ActorDetailsContent(uiState, interactionListener, modifier)
+        uiState.actor != null -> ActorDetailsContent(uiState, interactionListener, modifier)
     }
 }
 
@@ -156,7 +156,7 @@ fun ActorMoviesSection(
         MovieListSection(
             title = stringResource(
                 R.string.best_of,
-                uiState.actorDetails?.name.orEmpty()
+                uiState.actor?.name.orEmpty()
             ),
             movies = uiState.movies.take(10),
             paddingHorizontal = 20,
@@ -211,7 +211,7 @@ fun ActorGallerySection(
 fun ActorBiographySection(
     uiState: CastDetailsUiState, modifier: Modifier = Modifier
 ) {
-    uiState.actorDetails?.let { actorDetails ->
+    uiState.actor?.let { actorDetails ->
         if (actorDetails.biography.isNotEmpty()) {
             Box(
                 modifier = modifier
@@ -236,7 +236,7 @@ fun ActorMainDetailsSection(
     interactionListener: CastDetailsInteractionListener,
     modifier: Modifier = Modifier
 ) {
-    uiState.actorDetails?.let { actor ->
+    uiState.actor?.let { actor ->
         MainDetails(
             modifier = modifier,
             profileImage = actor.profileImg,

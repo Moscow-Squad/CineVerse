@@ -1,11 +1,10 @@
 package com.moscow.di
 
-import com.moscow.data_source.remote.HomeRemoteDataSource
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import com.moscow.data_source.remote.ActorRemoteDataSource
 import com.moscow.data_source.remote.CollectionRemoteDataSource
 import com.moscow.data_source.remote.GenreRemoteDataSource
-import com.moscow.data_source.remote.LoginRemoteDataSource
+import com.moscow.data_source.remote.AuthenticationRemoteDataSource
 import com.moscow.data_source.remote.MovieRemoteDataSource
 import com.moscow.data_source.remote.SearchRemoteDataSource
 import com.moscow.data_source.remote.SeriesRemoteDataSource
@@ -14,7 +13,7 @@ import com.moscow.data_source.remote.ProfileRemoteDataSource
 import com.moscow.remote.data_source.ActorRemoteDataSourceImpl
 import com.moscow.remote.data_source.CollectionRemoteDataSourceImpl
 import com.moscow.remote.data_source.GenreRemoteDataSourceImpl
-import com.moscow.remote.data_source.LoginRemoteDataSourceImpl
+import com.moscow.remote.data_source.AuthenticationRemoteDataSourceImpl
 import com.moscow.remote.data_source.MovieRemoteDataSourceImpl
 import com.moscow.remote.data_source.ProfileRemoteDataSourceImpl
 import com.moscow.remote.data_source.SearchRemoteDataSourceImpl
@@ -29,8 +28,6 @@ import com.moscow.remote.services.ProfileService
 import com.moscow.remote.services.SearchService
 import com.moscow.remote.services.SeriesService
 import com.moscow.utils.BASE_URL
-import com.moscow.remote.data_source.HomeRemoteDataSourceImpl
-import com.remote.services.HomeService
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -77,11 +74,8 @@ abstract class RemoteDataSourceModule {
 
     @Binds
     @Singleton
-    abstract fun bindLoginRemoteDataSource(impl: LoginRemoteDataSourceImpl): LoginRemoteDataSource
+    abstract fun bindLoginRemoteDataSource(impl: AuthenticationRemoteDataSourceImpl): AuthenticationRemoteDataSource
 
-    @Binds
-    @Singleton
-    abstract fun bindHomeRemoteDataSource(impl: HomeRemoteDataSourceImpl): HomeRemoteDataSource
 
     @Binds
     @Singleton
@@ -175,11 +169,6 @@ abstract class RemoteDataSourceModule {
             return retrofit.create(LoginService::class.java)
         }
 
-        @Provides
-        @Singleton
-        fun provideHomeService(retrofit: Retrofit): HomeService {
-            return retrofit.create(HomeService::class.java)
-        }
         @Provides
         @Singleton
         fun provideProfileService(retrofit: Retrofit): ProfileService {

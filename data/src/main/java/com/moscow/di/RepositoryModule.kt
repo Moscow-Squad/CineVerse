@@ -3,16 +3,18 @@ package com.moscow.di
 import com.moscow.domain.repository.language.LanguageProvider
 import com.moscow.domain.repository.theme.ThemeProvider
 import com.moscow.domain.repository.ActorRepository
+import com.moscow.domain.repository.CategoryTipsRepository
 import com.moscow.domain.repository.CollectionsRepository
 import com.moscow.domain.repository.GenreRepository
-import com.moscow.domain.repository.HomeRepository
 import com.moscow.domain.repository.LoginRepository
 import com.moscow.domain.repository.MovieRepository
-import com.moscow.domain.repository.PreferenceRepository
+import com.moscow.domain.repository.OnboardingRepository
+import com.moscow.domain.repository.UserRepository
 import com.moscow.domain.repository.ProfileRepository
 import com.moscow.domain.repository.RecentlyViewedRepository
 import com.moscow.domain.repository.SearchRepository
 import com.moscow.domain.repository.SeriesRepository
+import com.moscow.domain.repository.SessionRepository
 import com.moscow.domain.repository.blur.BlurProvider
 import com.moscow.preference.BlurProviderImpl
 import com.moscow.preference.LanguageProviderImpl
@@ -20,14 +22,16 @@ import com.moscow.preference.ThemeProviderImpl
 import com.moscow.repository.ActorRepositoryImpl
 import com.moscow.repository.CollectionsRepositoryImpl
 import com.moscow.repository.GenreRepositoryImpl
-import com.moscow.repository.HomeRepositoryImpl
 import com.moscow.repository.MovieRepositoryImpl
 import com.moscow.repository.ProfileRepositoryImpl
 import com.moscow.repository.RecentlyViewedRepositoryImpl
 import com.moscow.repository.SearchRepositoryImpl
 import com.moscow.repository.SeriesRepositoryImpl
 import com.moscow.repository.login.LoginRepositoryImpl
-import com.moscow.repository.preference.PreferenceRepositoryImpl
+import com.moscow.repository.preference.CategoryTipsRepositoryImpl
+import com.moscow.repository.preference.OnboardingRepositoryImpl
+import com.moscow.repository.preference.SessionRepositoryImpl
+import com.moscow.repository.preference.UserRepositoryImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -68,7 +72,7 @@ abstract class RepositoryModule {
 
     @Binds
     @Singleton
-    abstract fun bindPreferenceRepository(impl: PreferenceRepositoryImpl): PreferenceRepository
+    abstract fun bindUserRepository(impl: UserRepositoryImpl): UserRepository
 
 
     @Binds
@@ -87,9 +91,21 @@ abstract class RepositoryModule {
     @Singleton
     abstract fun bindProfileRepository(impl: ProfileRepositoryImpl): ProfileRepository
 
+
     @Binds
     @Singleton
-    abstract fun bindHomeRepository(impl: HomeRepositoryImpl): HomeRepository
+    abstract fun bindCategoryTipsRepository(impl: CategoryTipsRepositoryImpl): CategoryTipsRepository
+
+
+    @Binds
+    @Singleton
+    abstract fun bindOnboardingRepository(impl: OnboardingRepositoryImpl): OnboardingRepository
+
+
+    @Binds
+    @Singleton
+    abstract fun bindSessionRepository(impl: SessionRepositoryImpl): SessionRepository
+
 
     @Binds
     @Singleton
