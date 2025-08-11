@@ -43,4 +43,5 @@ interface LoginService {
     suspend fun getUserId(
         @Query(SESSION_ID_WITH_EQUAL) sessionId: String
     ): Response<AccountDto>
+
 }
