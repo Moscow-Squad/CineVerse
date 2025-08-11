@@ -39,7 +39,6 @@ interface CollectionRemoteDataSource {
 
     suspend fun clearCollection(
         collectionId: Int,
-        sessionId: String,
-        confirm: Boolean = false,
+        sessionId: String
     ): ApiResponse<Unit>
 }

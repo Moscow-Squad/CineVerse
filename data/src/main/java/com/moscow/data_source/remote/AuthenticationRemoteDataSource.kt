@@ -1,6 +1,5 @@
 package com.moscow.data_source.remote
 
-import com.moscow.remote.dto.profile.AccountDto
 import com.moscow.remote.dto.login.GuestSessionDto
 import com.moscow.remote.dto.login.LoginDto
 import com.moscow.remote.dto.login.RequestTokenDto
@@ -11,7 +10,9 @@ interface AuthenticationRemoteDataSource {
     suspend fun createRequestToken(): RequestTokenDto
 
     suspend fun validateLoginWithRequestToken(
-        username: String, password: String, requestToken: String
+        username: String,
+        password: String,
+        requestToken: String
     ): LoginDto
 
     suspend fun createAuthenticatedUserSession(

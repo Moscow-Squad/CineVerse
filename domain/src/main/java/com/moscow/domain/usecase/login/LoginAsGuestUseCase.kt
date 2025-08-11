@@ -1,6 +1,6 @@
 package com.moscow.domain.usecase.login
 
-import com.moscow.domain.repository.LoginRepository
+import com.moscow.domain.repository.auth.LoginRepository
 import javax.inject.Inject
 
 class LoginAsGuestUseCase @Inject constructor(

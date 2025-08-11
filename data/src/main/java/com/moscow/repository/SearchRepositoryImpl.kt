@@ -2,6 +2,7 @@ package com.moscow.repository
 
 import com.moscow.data_source.local.SearchLocalDataSource
 import com.moscow.data_source.remote.SearchRemoteDataSource
+import com.moscow.domain.model.Actor
 import com.moscow.domain.model.Movie
 import com.moscow.domain.model.Series
 import com.moscow.domain.repository.SearchRepository

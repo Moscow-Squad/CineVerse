@@ -9,5 +9,8 @@ class RateMovieUseCase @Inject constructor(
     suspend operator fun invoke(
         rating: Float,
         movieId: Int
-    ) = movieRepository.addRatingMovie(id = movieId, rating = rating)
+    ) = movieRepository.addRatingMovie(
+        id = movieId,
+        rating = rating
+    )
 }

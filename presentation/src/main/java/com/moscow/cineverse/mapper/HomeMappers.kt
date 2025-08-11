@@ -9,7 +9,6 @@ import com.moscow.cineverse.screen.home.HomeUiState
 import com.moscow.domain.model.Collection
 import com.moscow.domain.model.MediaType
 import com.moscow.domain.model.Movie
-import com.moscow.domain.model.Series
 
 fun List<Movie>.toUi(
     genresList: List<HomeUiState.GenreUi> = listOf()

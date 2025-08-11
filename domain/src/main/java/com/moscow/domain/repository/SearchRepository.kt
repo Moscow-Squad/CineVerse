@@ -1,5 +1,6 @@
 package com.moscow.domain.repository
 
+import com.moscow.domain.model.Actor
 import com.moscow.domain.model.Movie
 import com.moscow.domain.model.Series
 import kotlinx.coroutines.flow.Flow

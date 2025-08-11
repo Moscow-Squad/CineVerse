@@ -36,7 +36,7 @@ class RecentlyViewedRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun deleteRecentlyViewedItemById(id: Int) {
-        recentlyViewedLocalDataSource.deleteRecentlyViewedItemById(id)
-    }
+    override suspend fun deleteRecentlyViewedItemById(
+        id: Int
+    ) = recentlyViewedLocalDataSource.deleteRecentlyViewedItemById(id = id)
 }

@@ -3,7 +3,6 @@ package com.moscow.mapper
 import com.moscow.domain.model.Actor
 import com.moscow.domain.model.actor.Gender
 import com.moscow.domain.model.Genre
-import com.moscow.domain.model.MediaItem
 import com.moscow.domain.model.MediaType
 import com.moscow.domain.model.Movie
 import com.moscow.domain.model.Series
@@ -47,7 +46,7 @@ fun MovieDto.toDomain() =
         originalLanguage = originalLanguage.orEmpty(),
         rating = voteAverage ?: 0f,
         id = id ?: 0,
-        name = title.orEmpty(),
+        title = title.orEmpty(),
         video = video == true,
         poster = posterPath.orEmpty(),
     )

@@ -4,7 +4,7 @@ import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.cineverse.common_ui_state.MediaItemUiState
 import com.moscow.cineverse.screen.home.toMediaItemUiState
 import com.moscow.domain.model.MediaType
-import com.moscow.domain.usecase.DeleteRecentlyViewedItemByIdUseCase
+import com.moscow.domain.usecase.recently_viewed.DeleteRecentlyViewedItemByIdUseCase
 import com.moscow.domain.usecase.collection.CloseCollectionDetailsTipUseCase
 import com.moscow.domain.usecase.collection.GetShowCollectionDetailsTipUseCase
 import com.moscow.domain.usecase.recently_viewed.GetRecentlyViewedMediaUseCase

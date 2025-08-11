@@ -11,16 +11,12 @@ data class Actor(
     val biography: String,
     val profileImg: String,
     val socialMediaLinks: SocialMediaLinks
-){
+) {
     data class SocialMediaLinks(
-        val youtube: String? = null,
-        val facebook: String? = null,
-        val instagram: String? = null
+        val youtube: String?,
+        val facebook: String?,
+        val instagram: String?
     )
 
-    enum class Gender(val value: Int){
-        FEMALE(1),
-        MALE(2)
-    }
-
+    enum class Gender { FEMALE, MALE }
 }

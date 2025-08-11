@@ -22,7 +22,7 @@ import com.moscow.remote.interceptors.CineVerseInterceptor
 import com.moscow.remote.services.ActorService
 import com.moscow.remote.services.CollectionsService
 import com.moscow.remote.services.GenreService
-import com.moscow.remote.services.LoginService
+import com.moscow.remote.services.AuthenticationService
 import com.moscow.remote.services.MovieService
 import com.moscow.remote.services.ProfileService
 import com.moscow.remote.services.SearchService
@@ -40,9 +40,6 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
-
-private const val TIMEOUT = 20L
-private val contentType = "application/json".toMediaType()
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -81,9 +78,11 @@ abstract class RemoteDataSourceModule {
     @Singleton
     abstract fun bindProfileRemoteDataSource(impl: ProfileRemoteDataSourceImpl): ProfileRemoteDataSource
 
-
-
     companion object {
+
+        private const val TIMEOUT = 20L
+        private val contentType = "application/json".toMediaType()
+
         @Provides
         @Singleton
         fun provideHttpLoggingInterceptor(): HttpLoggingInterceptor {
@@ -165,8 +164,8 @@ abstract class RemoteDataSourceModule {
 
         @Provides
         @Singleton
-        fun provideLoginService(retrofit: Retrofit): LoginService {
-            return retrofit.create(LoginService::class.java)
+        fun provideLoginService(retrofit: Retrofit): AuthenticationService {
+            return retrofit.create(AuthenticationService::class.java)
         }
 
         @Provides

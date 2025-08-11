@@ -73,13 +73,11 @@ class CollectionRemoteDataSourceImpl  @Inject constructor(
 
     override suspend fun clearCollection(
         collectionId: Int,
-        sessionId: String,
-        confirm: Boolean
+        sessionId: String
     ) = handleApi {
         collectionsService.clearCollection(
             collectionId,
-            sessionId,
-            confirm
+            sessionId
         )
     }
 }

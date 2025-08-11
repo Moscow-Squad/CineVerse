@@ -19,7 +19,7 @@ import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Query
 
-interface LoginService {
+interface AuthenticationService {
 
     @GET(NEW_TOKEN)
     suspend fun createRequestToken(): Response<RequestTokenDto>

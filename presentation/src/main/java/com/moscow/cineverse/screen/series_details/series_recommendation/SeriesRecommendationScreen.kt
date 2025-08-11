@@ -31,7 +31,6 @@ import com.moscow.cineverse.screen.explore.component.ViewModeToggleButton
 import com.moscow.cineverse.screen.explore.toUi
 import com.moscow.cineverse.utlis.ViewMode
 import com.moscow.cinverse.presentation.R
-import com.moscow.domain.model.Series
 
 @Composable
 fun SeriesRecommendationScreen(

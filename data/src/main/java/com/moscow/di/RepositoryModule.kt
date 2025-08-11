@@ -6,11 +6,11 @@ import com.moscow.domain.repository.ActorRepository
 import com.moscow.domain.repository.CategoryTipsRepository
 import com.moscow.domain.repository.CollectionsRepository
 import com.moscow.domain.repository.GenreRepository
-import com.moscow.domain.repository.LoginRepository
+import com.moscow.domain.repository.auth.LoginRepository
 import com.moscow.domain.repository.MovieRepository
 import com.moscow.domain.repository.OnboardingRepository
-import com.moscow.domain.repository.UserRepository
-import com.moscow.domain.repository.ProfileRepository
+import com.moscow.domain.repository.auth.UserRepository
+import com.moscow.domain.repository.auth.ProfileRepository
 import com.moscow.domain.repository.RecentlyViewedRepository
 import com.moscow.domain.repository.SearchRepository
 import com.moscow.domain.repository.SeriesRepository

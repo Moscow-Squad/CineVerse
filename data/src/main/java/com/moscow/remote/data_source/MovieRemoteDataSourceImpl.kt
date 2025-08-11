@@ -1,7 +1,7 @@
 package com.moscow.remote.data_source
 
 import com.moscow.data_source.remote.MovieRemoteDataSource
-import com.moscow.domain.repository.UserRepository
+import com.moscow.domain.repository.auth.UserRepository
 import com.moscow.remote.dto.CreditsDetailsDto
 import com.moscow.remote.dto.MovieDto
 import com.moscow.remote.dto.details.MediaTrailersDto

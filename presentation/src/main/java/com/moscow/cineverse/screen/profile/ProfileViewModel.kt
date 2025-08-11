@@ -8,8 +8,8 @@ import com.moscow.domain.model.UserInfo
 import com.moscow.domain.repository.blur.BlurProvider
 import com.moscow.domain.repository.language.LanguageProvider
 import com.moscow.domain.repository.theme.ThemeProvider
-import com.moscow.domain.usecase.local.GetUserDetailsUseCase
-import com.moscow.domain.usecase.local.RemoveUserDetailsUseCase
+import com.moscow.domain.usecase.preference.GetUserDetailsUseCase
+import com.moscow.domain.usecase.preference.RemoveUserDetailsUseCase
 import com.moscow.domain.usecase.profile.GetAccountDetailsUseCase
 import com.moscow.domain.usecase.profile.LogoutUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel

@@ -1,55 +1,32 @@
 package com.moscow.repository.login
 
-import com.moscow.data_source.remote.AuthenticationRemoteDataSource
-import com.moscow.domain.model.LoginData
-import com.moscow.domain.model.UserType
-import com.moscow.domain.repository.LoginRepository
-import com.moscow.domain.repository.UserRepository
-import com.moscow.utils.IMAGES_URL
+import com.moscow.domain.repository.auth.LoginRepository
+import com.moscow.domain.repository.auth.UserRepository
 import javax.inject.Inject
 
 class LoginRepositoryImpl @Inject constructor(
-    private val authenticationRemoteDataSource: AuthenticationRemoteDataSource,
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
+    private val sessionManager: SessionManager
 ) : LoginRepository {
 
-    override suspend fun loginWithUsernameAndPassword(loginData: LoginData): Boolean {
-        val requestToken = authenticationRemoteDataSource.createRequestToken()
-        val successLogin = authenticationRemoteDataSource.validateLoginWithRequestToken(
-            loginData.username, loginData.password, requestToken.requestToken ?: ""
-        )
-        if (!successLogin.success) {
-            return false
-        }
-        val sessionId =
-            authenticationRemoteDataSource.createAuthenticatedUserSession(requestToken.requestToken ?: "")
-        val userId = authenticationRemoteDataSource.getUserId(sessionId.sessionId ?: "")
+    override suspend fun loginWithUsernameAndPassword(
+        username: String,
+        password: String
+    ): Boolean {
+        val session = sessionManager.authenticateUser(
+            username = username,
+            password = password
+        ) ?: return false
 
-        userRepository.saveUser(
-            UserType.AuthenticatedUser(
-                id = userId.id.toString(),
-                username = loginData.username,
-                name = userId.name.orEmpty(),
-                sessionId = sessionId.sessionId ?: "",
-                image = userId.avatar?.tmdb?.avatarPath?.let { IMAGES_URL + it },
-                recentlyCollectionId = /*response.listId ?:*/ 0,
+        val user = sessionManager.fetchUser(session) ?: return false
 
-            )
-        )
+        userRepository.saveUser(user)
         return true
     }
 
     override suspend fun loginAsGuest(): Boolean {
-        val guestSessionInfo = authenticationRemoteDataSource.createGuestUserSession()
-        if (guestSessionInfo.guestSessionId?.isEmpty() == true) {
-            return false
-        }
-        userRepository.saveUser(
-            UserType.GuestUser(
-                sessionId = guestSessionInfo.guestSessionId ?: "",
-                expiredAt = guestSessionInfo.expiresAt ?: ""
-            )
-        )
+        val guestSession = sessionManager.createGuestSession() ?: return false
+        userRepository.saveUser(guestSession)
         return true
     }
 }

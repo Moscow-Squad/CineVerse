@@ -3,7 +3,7 @@ package com.moscow.domain.usecase.movie
 import com.moscow.domain.model.Movie
 import com.moscow.domain.model.UserType
 import com.moscow.domain.repository.MovieRepository
-import com.moscow.domain.repository.UserRepository
+import com.moscow.domain.repository.auth.UserRepository
 import javax.inject.Inject
 
 class GetRatedMoviesUseCase @Inject constructor(
@@ -27,7 +27,7 @@ class GetRatedMoviesUseCase @Inject constructor(
                     userid.substring(equalIndex + 1, commaIndex).toIntOrNull() ?: 0
                 }
             }
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             0
         }
 

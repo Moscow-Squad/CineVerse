@@ -2,7 +2,7 @@ package com.moscow.domain.usecase.series
 
 import com.moscow.domain.model.Series
 import com.moscow.domain.model.UserType
-import com.moscow.domain.repository.UserRepository
+import com.moscow.domain.repository.auth.UserRepository
 import com.moscow.domain.repository.SeriesRepository
 import jakarta.inject.Inject
 
@@ -11,7 +11,9 @@ class GetRatedSeriesUseCase @Inject constructor(
     private val userRepository: UserRepository
 ) {
 
-    suspend operator fun invoke(page: Int): List<RatedSeriesResult> {
+    suspend operator fun invoke(
+        page: Int
+    ): List<RatedSeriesResult> {
         val user = userRepository.getUser()
         val userid = if (user is UserType.AuthenticatedUser) user.id else "0"
 
@@ -28,7 +30,7 @@ class GetRatedSeriesUseCase @Inject constructor(
                     userid.substring(equalIndex + 1, commaIndex).toIntOrNull() ?: 0
                 }
             }
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             0
         }
 

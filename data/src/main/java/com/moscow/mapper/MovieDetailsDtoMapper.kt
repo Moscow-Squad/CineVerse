@@ -3,7 +3,6 @@ package com.moscow.mapper
 import com.moscow.domain.model.CreditsInfo
 import com.moscow.domain.model.CreditsInfo.CastInfo
 import com.moscow.domain.model.CreditsInfo.CrewInfo
-import com.moscow.domain.model.details.MovieDetail
 import com.moscow.remote.dto.CastDetailsDto
 import com.moscow.remote.dto.CreditsDetailsDto
 import com.moscow.remote.dto.CrewDetailsDto

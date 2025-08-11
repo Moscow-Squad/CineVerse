@@ -11,8 +11,7 @@ import com.moscow.domain.mapper.toMovie
 import com.moscow.domain.model.CreditsInfo
 import com.moscow.domain.model.Movie
 import com.moscow.domain.model.Review
-import com.moscow.domain.model.details.MovieDetail
-import com.moscow.domain.repository.UserRepository
+import com.moscow.domain.repository.auth.UserRepository
 import com.moscow.domain.repository.blur.BlurProvider
 import com.moscow.domain.usecase.movie.DeleteRatingMovieUseCase
 import com.moscow.domain.usecase.movie.GetMovieCreditsUseCase

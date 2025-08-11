@@ -1,7 +1,7 @@
 package com.moscow.remote.data_source
 
 import com.moscow.data_source.remote.SeriesRemoteDataSource
-import com.moscow.domain.repository.UserRepository
+import com.moscow.domain.repository.auth.UserRepository
 import com.moscow.remote.dto.details.MediaTrailersDto
 import com.moscow.remote.dto.details.SeriesCreditDto
 import com.moscow.remote.dto.rating.UserRatingResponse

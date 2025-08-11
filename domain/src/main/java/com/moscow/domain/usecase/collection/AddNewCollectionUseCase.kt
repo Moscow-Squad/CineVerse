@@ -9,8 +9,7 @@ class AddNewCollectionUseCase @Inject constructor(
     suspend operator fun invoke(
         collectionName: String,
         collectionDescription: String?
-    ) =
-        collectionsRepository.addNewCollection(
+    ) = collectionsRepository.addNewCollection(
             collectionName = collectionName,
             collectionDescription = collectionDescription
         )

@@ -7,6 +7,6 @@ import javax.inject.Inject
 class GetMovieCreditsUseCase @Inject constructor(
     private val detailsRepository: MovieRepository
 ) {
-    suspend operator fun invoke(id:Int): CreditsInfo =
-       detailsRepository.getCreditsMovie(id)
+    suspend operator fun invoke(id: Int): CreditsInfo =
+       detailsRepository.getCreditsMovie(id = id)
 }

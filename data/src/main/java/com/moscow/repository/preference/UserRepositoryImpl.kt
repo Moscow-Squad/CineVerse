@@ -7,7 +7,7 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.moscow.domain.model.UserType
-import com.moscow.domain.repository.UserRepository
+import com.moscow.domain.repository.auth.UserRepository
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
@@ -15,11 +15,11 @@ import javax.inject.Inject
 
 class UserRepositoryImpl @Inject constructor(
     private val dataStore: DataStore<Preferences>
-): UserRepository {
+) : UserRepository {
 
     override suspend fun saveUser(userType: UserType) {
-        dataStore.edit {preferences->
-            when(userType){
+        dataStore.edit { preferences ->
+            when (userType) {
                 is UserType.AuthenticatedUser -> {
                     preferences[USER_TYPE_KEY] = AUTHENTICATED_USER
                     preferences[USER_ID_KEY] = userType.id
@@ -32,6 +32,7 @@ class UserRepositoryImpl @Inject constructor(
                     preferences[SHOW_COLLECTION_DETAILS_TIP] = true
                     preferences.remove(EXPIRED_AT_KEY)
                 }
+
                 is UserType.GuestUser -> {
                     preferences[USER_TYPE_KEY] = GUEST_USER
                     preferences[SESSION_ID_KEY] = userType.sessionId
@@ -75,6 +76,7 @@ class UserRepositoryImpl @Inject constructor(
                             expiredAt = expiredAt
                         )
                     }
+
                     else -> throw IllegalStateException("Invalid user type")
                 }
             }
@@ -98,7 +100,7 @@ class UserRepositoryImpl @Inject constructor(
     }
 
     override suspend fun isLoggedIn(): Boolean {
-        return dataStore.data.map {it[Is_LOGGED_IN_KEY] }.first() == true
+        return dataStore.data.map { it[Is_LOGGED_IN_KEY] }.first() == true
     }
 
     companion object {
@@ -114,6 +116,5 @@ class UserRepositoryImpl @Inject constructor(
         private val EXPIRED_AT_KEY = stringPreferencesKey("expired_at")
         private val Is_LOGGED_IN_KEY = booleanPreferencesKey("is_logged_in")
         private val SHOW_COLLECTION_DETAILS_TIP = booleanPreferencesKey("is_tip_collection_details")
-        private val IS_ON_BOARDING_SEEN_KEY = booleanPreferencesKey("is_on_boarding_seen")
     }
 }

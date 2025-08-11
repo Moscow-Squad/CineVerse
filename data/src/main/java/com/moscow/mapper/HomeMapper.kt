@@ -12,7 +12,7 @@ fun Movie.toHomeItemEntity(categoryType: String): MediaItemEntity {
     return MediaItemEntity(
         itemId = this.id,
         categoryType = categoryType,
-        name = this.name,
+        name = this.title,
         posterPath = this.posterPath,
         backdropPath = this.backdropPath,
         itemType = ITEM_MOVIE,
@@ -26,12 +26,12 @@ fun Series.toHomeItemEntity(categoryType: String): MediaItemEntity {
     return MediaItemEntity(
         itemId = this.id,
         categoryType = categoryType,
-        name = this.name,
+        name = this.title,
         posterPath = this.posterPath,
         backdropPath = this.backdropPath,
         rating = this.rating,
         genreIds = this.genreIds,
-        releaseDate = this.firstAirDate,
+        releaseDate = this.releaseDate,
         itemType = ITEM_SERIES
     )
 }
@@ -39,7 +39,7 @@ fun Series.toHomeItemEntity(categoryType: String): MediaItemEntity {
 fun Movie.toHistoryItemEntity(): HistoryItemEntity {
     return HistoryItemEntity(
         id = this.id,
-        name = this.name,
+        name = this.title,
         posterPath = this.posterPath,
         itemType = ITEM_MOVIE,
         rating = this.rating,
@@ -50,35 +50,27 @@ fun Movie.toHistoryItemEntity(): HistoryItemEntity {
 fun Series.toHistoryItemEntity(): HistoryItemEntity {
     return HistoryItemEntity(
         id = this.id,
-        name = this.name,
+        name = this.title,
         posterPath = this.posterPath,
         rating = this.rating,
-        releaseDate = this.firstAirDate,
+        releaseDate = this.releaseDate,
         itemType = ITEM_SERIES
     )
 }
 
 fun MediaItemEntity.toMovie(
-    adult: Boolean = false,
-    originalLanguage: String = "",
-    originalTitle: String = "",
     overview: String = "",
-    video: Boolean = false
 ): Movie {
     return Movie(
         id = this.itemId,
-        name = this.name,
+        title = this.name,
         genreIds = this.genreIds,
         rating = this.rating,
         releaseDate = this.releaseDate,
-        adult = adult,
         backdropPath = this.backdropPath,
-        originalLanguage = originalLanguage,
-        originalTitle = originalTitle,
         overview = overview,
         posterPath = this.posterPath,
-        video = video,
-        poster = this.posterPath
+        duration = Movie.Duration(0, 0)
     )
 }
 

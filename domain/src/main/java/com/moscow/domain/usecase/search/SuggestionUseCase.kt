@@ -7,6 +7,8 @@ import javax.inject.Inject
 class SuggestionUseCase @Inject constructor(
     private val searchRepository: SearchRepository,
 ) {
-    suspend fun getSuggestions(keyWord: String, page: Int): List<String> =
-        searchRepository.getRemoteSuggestions(keyWord, page)
+    suspend fun invoke(
+        keyWord: String,
+        page: Int
+    ): List<String> = searchRepository.getRemoteSuggestions(keyWord, page)
 }

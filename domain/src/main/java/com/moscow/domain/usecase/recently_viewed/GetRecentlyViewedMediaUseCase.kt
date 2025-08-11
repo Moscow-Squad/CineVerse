@@ -6,7 +6,5 @@ import javax.inject.Inject
 class GetRecentlyViewedMediaUseCase @Inject constructor(
     private val repository: RecentlyViewedRepository
 ) {
-    suspend operator fun invoke(): List<Any> {
-        return repository.getRecentlyViewedMedia()
-    }
+    suspend operator fun invoke(): List<Any> = repository.getRecentlyViewedMedia()
 }

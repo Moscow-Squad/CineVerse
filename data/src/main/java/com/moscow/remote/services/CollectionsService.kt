@@ -54,7 +54,7 @@ interface CollectionsService {
     suspend fun clearCollection(
         @Path("collection_id") collectionId: Int,
         @Query(SESSION_ID) sessionId: String,
-        @Query(CONFIRM) confirm: Boolean = false,
+        @Query(CONFIRM) confirm: Boolean = true,
     ): Response<ApiResponse<Unit>>
 
     @POST("$LIST/{list_id}/$DELETE_ITEM")

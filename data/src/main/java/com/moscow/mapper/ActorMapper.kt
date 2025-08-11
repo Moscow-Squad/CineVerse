@@ -1,6 +1,5 @@
 package com.moscow.mapper
 
-import com.moscow.local.entity.ActorEntity
 import com.moscow.local.entity.Gender
 import kotlin.collections.map
 

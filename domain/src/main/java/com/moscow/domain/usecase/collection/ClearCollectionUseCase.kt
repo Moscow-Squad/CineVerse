@@ -7,10 +7,6 @@ class ClearCollectionUseCase @Inject constructor(
     private val collectionsRepository: CollectionsRepository
 ) {
     suspend operator fun invoke(
-        collectionId: Int,
-        confirm: Boolean = false
-    ) = collectionsRepository.clearCollection(
-            collectionId = collectionId,
-            confirm = confirm
-        )
+        collectionId: Int
+    ) = collectionsRepository.clearCollection(collectionId = collectionId)
 }

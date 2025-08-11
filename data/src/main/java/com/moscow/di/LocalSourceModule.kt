@@ -54,9 +54,7 @@ abstract class LocalSourceModule {
                 context,
                 CineVerseDataBase::class.java,
                 CINE_VERSE_DATABASE
-            )
-                .fallbackToDestructiveMigration(true)
-                .build()
+            ).fallbackToDestructiveMigration(true).build()
         }
 
         @Provides

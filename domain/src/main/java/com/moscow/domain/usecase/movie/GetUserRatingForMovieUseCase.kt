@@ -6,5 +6,7 @@ import javax.inject.Inject
 class GetUserRatingForMovieUseCase @Inject constructor(
     private val movieRepository: MovieRepository
 ) {
-    suspend operator fun invoke(movieId : Int) = movieRepository.getUserRatingMovie(movieId)
+    suspend operator fun invoke(
+        movieId : Int
+    ) = movieRepository.getUserRatingMovie(movieId = movieId)
 }

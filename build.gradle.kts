@@ -16,22 +16,26 @@ plugins {
 }
 
 val excludedPackages = listOf(
-    "*.R",
-    "*.R_*",
-    "**.di.**",
-    "*.BuildConfig*",
-    "*.Manifest*",
-    "*.ComposableSingletons*",
-    "*.MainActivity*",
-    "*.CineVerseApp*",
+    // Android auto-generated and framework classes
+    "*.R", "*.R_*", "*.BuildConfig*", "*.Manifest*",
+
+    // DI and singleton patterns
+    "**.di.**", "*.ComposableSingletons*",
+
+    // App entry points
+    "*.MainActivity*", "*.CineVerseApp*",
+
+    // Feature-specific exclusions
     "com.moscow.cineverse.image_viewer*",
     "com.moscow.cineverse.design_system*",
-    "entity.**",
-    "**.dao.**",
-    "**.dto.**",
-    "**.response.**",
-    "exceptions.**",
+
+    // Data layer exclusions
+    "entity.**", "**.dao.**", "**.dto.**", "**.response.**",
+
+    // Error handling
+    "exceptions.**"
 )
+
 allprojects {
     apply(plugin = "org.jetbrains.kotlinx.kover")
     kover {

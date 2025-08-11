@@ -9,11 +9,9 @@ import javax.inject.Inject
 class GenreRepositoryImpl @Inject constructor(
     private val genreRemoteDataSource: GenreRemoteDataSource,
 ): GenreRepository {
-    override suspend fun getSeriesGenres(): List<Genre> {
-        return genreRemoteDataSource.getSeriesGenres().genres.map { it.toDomain() }
-    }
+    override suspend fun getSeriesGenres(): List<Genre> =
+        genreRemoteDataSource.getSeriesGenres().genres.map { it.toDomain() }
 
-    override suspend fun getMoviesGenres(): List<Genre> {
-        return genreRemoteDataSource.getMoviesGenres().genres.map { it.toDomain() }
-    }
+    override suspend fun getMoviesGenres(): List<Genre> =
+        genreRemoteDataSource.getMoviesGenres().genres.map { it.toDomain() }
 }

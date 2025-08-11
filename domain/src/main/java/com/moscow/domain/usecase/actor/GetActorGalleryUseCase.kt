@@ -7,5 +7,5 @@ class GetActorGalleryUseCase @Inject constructor(
     private val actorRepository: ActorRepository
 ) {
     suspend operator fun invoke(actorId: Int): List<String> =
-        actorRepository.getActorGallery(actorId)
+        actorRepository.getActorGalleryUrl(actorId)
 }

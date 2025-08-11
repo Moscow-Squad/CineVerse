@@ -7,6 +7,13 @@ import javax.inject.Inject
 class GetMatchesYourVibesMoviesUseCase @Inject constructor(
     private val movieRepository: MovieRepository
 ) {
-    suspend operator fun invoke(genreId:Int, page:Int, forceRefresh: Boolean = false): List<Movie> =
-        movieRepository.getMatchYourVibeMovies(genreId, page, forceRefresh)
+    suspend operator fun invoke(
+        genreId:Int,
+        page:Int,
+        forceRefresh: Boolean = false
+    ): List<Movie> = movieRepository.getMatchYourVibeMovies(
+        genreId = genreId,
+        page = page,
+        forceRefresh = forceRefresh
+    )
 }

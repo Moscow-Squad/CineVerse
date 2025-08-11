@@ -2,7 +2,7 @@ package com.moscow.repository
 
 import com.moscow.data_source.remote.ProfileRemoteDataSource
 import com.moscow.domain.model.UserInfo
-import com.moscow.domain.repository.ProfileRepository
+import com.moscow.domain.repository.auth.ProfileRepository
 import com.moscow.mapper.toDomain
 import javax.inject.Inject
 

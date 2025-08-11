@@ -1,4 +1,4 @@
-package com.moscow.domain.repository
+package com.moscow.domain.repository.auth
 
 import com.moscow.domain.model.UserType
 

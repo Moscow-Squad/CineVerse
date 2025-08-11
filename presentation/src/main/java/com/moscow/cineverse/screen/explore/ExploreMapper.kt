@@ -6,7 +6,6 @@ import com.moscow.cineverse.common_ui_state.MediaItemUiState
 import com.moscow.domain.model.Genre
 import com.moscow.domain.model.MediaType
 import com.moscow.domain.model.Movie
-import com.moscow.domain.model.Series
 import kotlinx.datetime.LocalDate
 
 const val YYYY_MMM_DD = "yyyy, MMM dd"

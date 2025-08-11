@@ -6,10 +6,8 @@ import com.moscow.cineverse.common_ui_state.ReviewUiState
 import com.moscow.cineverse.common_ui_state.StarCastUiState
 import com.moscow.cineverse.design_system.R
 import com.moscow.cineverse.screen.movie_details.MovieScreenState
-import com.moscow.domain.model.CastDetails
-import com.moscow.domain.model.CrewDetails
+import com.moscow.domain.model.CreditsInfo
 import com.moscow.domain.model.Review
-import com.moscow.domain.model.details.MovieDetail
 import kotlinx.datetime.LocalDate
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -40,14 +38,14 @@ fun Review.toUi(): ReviewUiState =
 
         )
 
-fun CastDetails.toUi() = StarCastUiState(
+fun CreditsInfo.CastInfo.toUi() = StarCastUiState(
     id = id,
     originalName = originalName,
     characterName = characterName,
     profileImage = profileImg
 )
 
-fun CrewDetails.toUi() = CrewUiState(
+fun CreditsInfo.CrewInfo.toUi() = CrewUiState(
     id = id,
     name = name,
     job = job,

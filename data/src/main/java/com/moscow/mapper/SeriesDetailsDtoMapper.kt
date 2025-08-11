@@ -3,11 +3,8 @@ package com.moscow.mapper
 import com.moscow.domain.model.CastDetails
 import com.moscow.domain.model.CreditsInfo
 import com.moscow.domain.model.CrewDetails
-import com.moscow.domain.model.Series
 import com.moscow.domain.model.details.Creator
-import com.moscow.domain.model.details.ListOfSeries
 import com.moscow.domain.model.details.Season
-import com.moscow.domain.model.details.SeriesDetail
 import com.moscow.domain.model.details.SeriesItem
 import com.moscow.remote.dto.details.CreatedByDto
 import com.moscow.remote.dto.details.SeriesCastDto
@@ -21,8 +18,8 @@ import com.moscow.remote.dto.series.SeriesItemDto
 import com.moscow.utils.IMAGES_URL
 import kotlinx.datetime.LocalDate
 
-fun SeriesDetailDto.toDomain(trailer: String): SeriesDetail {
-    return SeriesDetail(
+fun SeriesDetailDto.toDomain(trailer: String): Series {
+    return Series(
         id = id,
         title = name,
         overview = overview,

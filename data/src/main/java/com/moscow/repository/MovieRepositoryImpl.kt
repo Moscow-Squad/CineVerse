@@ -5,7 +5,6 @@ import com.moscow.data_source.remote.MovieRemoteDataSource
 import com.moscow.domain.model.CreditsInfo
 import com.moscow.domain.model.Movie
 import com.moscow.domain.model.Review
-import com.moscow.domain.model.details.MovieDetail
 import com.moscow.domain.repository.MovieRepository
 import com.moscow.domain.usecase.movie.GetRatedMoviesUseCase.RatedMovieResult
 import com.moscow.mapper.toDomain
@@ -25,15 +24,16 @@ class MovieRepositoryImpl @Inject constructor(
             ?: emptyList()
     }
 
-    override suspend fun getDetailsMovie(id: Int): MovieDetail {
+    override suspend fun getDetailsMovie(id: Int): Movie {
         val trailer = movieRemoteDataSource
-            .getMovieTrailer(id)
+            .getMovieTrailer(id = id)
             .trailers
             .firstOrNull{ it.key != null}
             ?.key ?: ""
-        val res = movieRemoteDataSource.getMovieDetails(id)
-        res.genres?.forEach { detailLocalDataSource.insertFavouriteGenre(it.id) }
-        return res.toDomain(trailer)
+
+        val movieDetails = movieRemoteDataSource.getMovieDetails(id)
+        movieDetails.genres?.forEach { detailLocalDataSource.insertFavouriteGenre(it.id) }
+        return movieDetails.toDomain(trailer)
     }
 
     override suspend fun getCreditsMovie(id: Int): CreditsInfo {

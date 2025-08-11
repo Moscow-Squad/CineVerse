@@ -21,12 +21,17 @@ class ActorRepositoryImpl @Inject constructor(
         )
     }
 
-    override suspend fun getActorGallery(actorId: Int) =
+    override suspend fun getActorGalleryUrl(actorId: Int) =
         actorRemoteDataSource.getActorGallery(actorId).images.map { it.toDomain() }
 
     override suspend fun getBestOfMovies(actorId: Int): List<Movie> {
         val bestMovies = actorRemoteDataSource.getActorBestMovies(actorId)
-        return bestMovies.cast.mapNotNull { runCatching { it.toDomain() }.getOrNull() } + bestMovies.crew.mapNotNull { runCatching { it.toDomain() }.getOrNull() }
+        val bestMoviesActorAsCast = bestMovies.cast.mapNotNull {
+            runCatching { it.toDomain() }.getOrNull()
+        }
+        val bestMoviesActorAsCrew = bestMovies.crew.mapNotNull {
+            runCatching { it.toDomain() }.getOrNull()
+        }
+        return bestMoviesActorAsCast + bestMoviesActorAsCrew
     }
-
 }

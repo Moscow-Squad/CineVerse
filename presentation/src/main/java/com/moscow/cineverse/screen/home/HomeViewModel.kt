@@ -10,7 +10,6 @@ import com.moscow.cineverse.screen.explore.toUi
 import com.moscow.cinverse.presentation.R
 import com.moscow.domain.model.MediaType
 import com.moscow.domain.model.Movie
-import com.moscow.domain.model.Series
 import com.moscow.domain.model.UserType
 import com.moscow.domain.repository.blur.BlurProvider
 import com.moscow.domain.repository.language.LanguageProvider
@@ -22,7 +21,7 @@ import com.moscow.domain.usecase.movie.GetRecentlyReleasedMoviesUseCase
 import com.moscow.domain.usecase.series.GetTopRatedTVShowsUseCase
 import com.moscow.domain.usecase.movie.GetTrendingMoviesUseCase
 import com.moscow.domain.usecase.movie.GetUpcomingMoviesUseCase
-import com.moscow.domain.usecase.local.GetUserDetailsUseCase
+import com.moscow.domain.usecase.preference.GetUserDetailsUseCase
 import com.moscow.domain.usecase.recently_viewed.GetRecentlyViewedMediaUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.coroutineScope

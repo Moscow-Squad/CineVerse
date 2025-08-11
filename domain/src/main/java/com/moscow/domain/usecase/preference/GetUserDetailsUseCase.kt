@@ -1,6 +1,6 @@
-package com.moscow.domain.usecase.local
+package com.moscow.domain.usecase.preference
 
-import com.moscow.domain.repository.UserRepository
+import com.moscow.domain.repository.auth.UserRepository
 import javax.inject.Inject
 
 class GetUserDetailsUseCase @Inject constructor(

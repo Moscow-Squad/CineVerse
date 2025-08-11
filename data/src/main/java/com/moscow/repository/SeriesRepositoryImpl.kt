@@ -5,9 +5,6 @@ import com.moscow.data_source.remote.SeriesRemoteDataSource
 import com.moscow.domain.model.CreditsInfo
 import com.moscow.domain.model.Review
 import com.moscow.domain.model.Series
-import com.moscow.domain.model.details.ListOfSeries
-import com.moscow.domain.model.details.Season
-import com.moscow.domain.model.details.SeriesDetail
 import com.moscow.domain.repository.SeriesRepository
 import com.moscow.domain.usecase.series.GetRatedSeriesUseCase
 import com.moscow.mapper.toDomain
@@ -18,16 +15,17 @@ import javax.inject.Inject
 class SeriesRepositoryImpl @Inject constructor(
     private val seriesRemoteDataSource: SeriesRemoteDataSource,
     private val detailsLocalDataSource: DetailsLocalDataSource
-): SeriesRepository {
-    override suspend fun getPopularSeries(page: Int): List<Series> {
-        return seriesRemoteDataSource.getPopularSeries(page).results?.map { it.toDomain() } ?: emptyList()
-    }
+) : SeriesRepository {
+    override suspend fun getPopularSeries(page: Int): List<Series> =
+        seriesRemoteDataSource.getPopularSeries(page = page)
+            .results
+            ?.map { it.toDomain() } ?: emptyList()
 
-    override suspend fun getSeriesDetail(id: Int): SeriesDetail {
+    override suspend fun getSeriesDetail(id: Int): Series {
         val trailer = seriesRemoteDataSource
             .getSeriesTrailers(id)
             .trailers
-            .firstOrNull{ it.key != null}
+            .firstOrNull { it.key != null }
             ?.key ?: ""
         val res = seriesRemoteDataSource.getSeriesDetails(id)
         res.genres.forEach { detailsLocalDataSource.insertFavouriteGenre(it.id) }
@@ -51,70 +49,64 @@ class SeriesRepositoryImpl @Inject constructor(
     override suspend fun getRatedSeries(
         userId: Int,
         page: Int
-    ): List<GetRatedSeriesUseCase.RatedSeriesResult> {
-        val response = seriesRemoteDataSource.getRatedSeries(userId, page)
-        return response.results?.mapNotNull { it.toOutputResult() } ?: emptyList()
-    }
+    ): List<GetRatedSeriesUseCase.RatedSeriesResult> =
+        seriesRemoteDataSource.getRatedSeries(
+            userId = userId,
+            page = page
+        ).results?.mapNotNull { it.toOutputResult() } ?: emptyList()
 
-    override suspend fun getUserRatingForSeries(seriesId: Int): Int {
-        val response = seriesRemoteDataSource.getUserRatingForSeries(seriesId)
-        return response.userRating ?: 0
-    }
+    override suspend fun getUserRatingForSeries(seriesId: Int): Int =
+        seriesRemoteDataSource.getUserRatingForSeries(seriesId = seriesId)
+            .userRating ?: 0
 
-    override suspend fun getLatestSeasons(): List<Season> {
-        val response = seriesRemoteDataSource.getLatestSeasons()
-        return response.seasons.map { it.toDomain() }
-    }
+    override suspend fun getLatestSeasons(): List<Series.Season> =
+        seriesRemoteDataSource.getLatestSeasons()
+            .seasons
+            .map { it.toDomain() }
 
+    override suspend fun getListOfSeries(id: Int, page: Int): List<Series> =
+        seriesRemoteDataSource.getListOfSeries(
+            id = id,
+            page = page
+        ).toDomain()
 
-    override suspend fun getListOfSeries(id: Int, page: Int): List<ListOfSeries> {
-        val response = seriesRemoteDataSource.getListOfSeries(id, page)
-        return listOf(response.toDomain())
-    }
 
     override suspend fun getSeriesRecommendations(
         id: Int,
         page: Int
-    ): List<Series> {
-        val series = seriesRemoteDataSource.getSeriesRecommendations(id, page)
-        return series.results?.mapNotNull { runCatching { it.toDomain() }.getOrNull() } ?: emptyList()
-    }
+    ): List<Series> = seriesRemoteDataSource.getSeriesRecommendations(
+        id = id,
+        page = page
+    ).results?.mapNotNull { runCatching { it.toDomain() }
+        .getOrNull() } ?: emptyList()
 
-    override suspend fun getSeriesByGenreId(genreId: Int, page: Int): List<Series> {
-        return seriesRemoteDataSource.getSeriesByGenreId(
-            genreId,
-            page
+    override suspend fun getSeriesByGenreId(genreId: Int, page: Int): List<Series> =
+        seriesRemoteDataSource.getSeriesByGenreId(
+            genreId = genreId,
+            page = page
         ).results?.map { it.toDomain() } ?: emptyList()
-    }
 
-    override suspend fun getSeriesReviews(id: Int, page: Int): List<Review> {
-        val reviews = seriesRemoteDataSource.getSeriesReviews(id, page)
-        return reviews.results?.mapNotNull { runCatching { it.toDomain() }.getOrNull() }
+    override suspend fun getSeriesReviews(id: Int, page: Int): List<Review> =
+        seriesRemoteDataSource.getSeriesReviews(id, page).results?.mapNotNull { runCatching { it.toDomain() }.getOrNull() }
             ?: emptyList()
-    }
 
-    override suspend fun getSeriesCreditsDetails(id: Int): CreditsInfo {
-        val response = seriesRemoteDataSource.getSeriesCredits(id)
-        return response.toDomain()
-    }
+    override suspend fun getSeriesCreditsDetails(id: Int): CreditsInfo =
+        seriesRemoteDataSource.getSeriesCredits(seriesId = id).toDomain()
 
-
-    override suspend fun getTopRatedTVSeries(page: Int, forceRefresh: Boolean): List<Series> {
-        return getCachedOrFetchHomeItems(
+    override suspend fun getTopRatedTVSeries(
+        page: Int,
+        forceRefresh: Boolean
+    ): List<Series> = getCachedOrFetchHomeItems(
             categoryType = CATEGORY_TOP_RATED_TV,
             fetchFromRemote = {
-                seriesRemoteDataSource.getTopRatedTVSeries(page).results?.map { it.toDomain() } ?: emptyList()
+                seriesRemoteDataSource.getTopRatedTVSeries(page).results?.map { it.toDomain() }
+                    ?: emptyList()
             },
             mapFromEntity = { it.toSeries() },
             forceRefresh = forceRefresh
         )
+
+    private companion object {
+        const val CATEGORY_TOP_RATED_TV = "TOP_RATED_TV"
     }
-
-
-
-   private companion object{
-       const val CATEGORY_TOP_RATED_TV = "TOP_RATED_TV"
-   }
-
-
 }

@@ -1,4 +1,4 @@
-package com.moscow.domain.usecase
+package com.moscow.domain.usecase.recently_viewed
 
 import com.moscow.domain.repository.RecentlyViewedRepository
 import javax.inject.Inject
@@ -6,7 +6,8 @@ import javax.inject.Inject
 class DeleteRecentlyViewedItemByIdUseCase @Inject constructor(
     private val repository: RecentlyViewedRepository
 ) {
-    suspend operator fun invoke(id: Int) {
-        repository.deleteRecentlyViewedItemById(id)
-    }
+    suspend operator fun invoke(
+        id: Int
+    ) = repository.deleteRecentlyViewedItemById(id = id)
+
 }

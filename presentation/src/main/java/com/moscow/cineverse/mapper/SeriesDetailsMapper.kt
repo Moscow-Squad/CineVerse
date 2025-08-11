@@ -5,9 +5,8 @@ import com.moscow.cineverse.screen.series_details.SeasonUiState
 import com.moscow.cineverse.screen.series_details.SeriesDetailsUiState
 import com.moscow.domain.model.details.Creator
 import com.moscow.domain.model.details.Season
-import com.moscow.domain.model.details.SeriesDetail
 
-fun SeriesDetail.toUi() = SeriesDetailsUiState(
+fun Series.toUi() = SeriesDetailsUiState(
     id = id,
     title = title,
     overview = overview,

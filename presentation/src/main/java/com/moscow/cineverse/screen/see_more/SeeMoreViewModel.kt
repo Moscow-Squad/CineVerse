@@ -16,7 +16,6 @@ import com.moscow.cineverse.screen.home.HomeFeaturedCollections
 import com.moscow.cineverse.screen.home.HomeFeaturedItems
 import com.moscow.cineverse.utlis.ViewMode
 import com.moscow.domain.model.Movie
-import com.moscow.domain.model.Series
 import com.moscow.domain.model.UserType
 import com.moscow.domain.repository.blur.BlurProvider
 import com.moscow.domain.usecase.collection.GetCollectionDetailsUseCase
@@ -25,7 +24,7 @@ import com.moscow.domain.usecase.movie.GetMatchesYourVibesMoviesUseCase
 import com.moscow.domain.usecase.movie.GetRecentlyReleasedMoviesUseCase
 import com.moscow.domain.usecase.series.GetTopRatedTVShowsUseCase
 import com.moscow.domain.usecase.movie.GetUpcomingMoviesUseCase
-import com.moscow.domain.usecase.local.GetUserDetailsUseCase
+import com.moscow.domain.usecase.preference.GetUserDetailsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow

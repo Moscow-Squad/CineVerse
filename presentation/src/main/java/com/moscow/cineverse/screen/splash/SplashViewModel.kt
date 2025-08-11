@@ -2,7 +2,7 @@ package com.moscow.cineverse.screen.splash
 
 import androidx.lifecycle.viewModelScope
 import com.moscow.cineverse.base.BaseViewModel
-import com.moscow.domain.repository.UserRepository
+import com.moscow.domain.repository.auth.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock

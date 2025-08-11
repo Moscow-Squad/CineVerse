@@ -1,7 +1,6 @@
 package com.moscow.domain.usecase.login
 
-import com.moscow.domain.model.LoginData
-import com.moscow.domain.repository.LoginRepository
+import com.moscow.domain.repository.auth.LoginRepository
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
