@@ -158,6 +158,7 @@ CineVerse is built with a modern tools, libraries, robust, and scalable tech sta
 | **Firebase Suite** | Crashlytics, Performance Monitoring, Analytics |
 | **Testing** | JUnit5, Mockk, Truth|
 | **APIs** | The Movie Database (TMDb) API |
+
 <br><br>
 --------------
 # 🚀 How to Setup & Run the Project Locally
