@@ -1,6 +1,6 @@
 package com.moscow.domain.usecase.actor
 
-import com.moscow.domain.model.ActorDetails
+import com.moscow.domain.model.Actor
 import com.moscow.domain.repository.ActorRepository
 import io.mockk.coEvery
 import io.mockk.mockk
@@ -25,7 +25,7 @@ class GetActorDetailsUseCaseTest {
     fun `invoke should return actor details`() = runTest {
         // Given
         val actorId = 42
-        val expectedDetails = ActorDetails(
+        val expectedDetails = Actor(
             id = actorId,
             name = "John Doe",
             birthDate = LocalDate(1990, 5, 15),
