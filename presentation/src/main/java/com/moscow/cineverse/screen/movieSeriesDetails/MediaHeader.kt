@@ -1,8 +1,12 @@
 package com.moscow.cineverse.screen.movieSeriesDetails
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -23,6 +27,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
 import com.moscow.cineverse.designSystem.component.blur.OnBlurContent
 import com.moscow.cineverse.designSystem.component.blur.RemoteImagePlaceholder
@@ -58,6 +63,23 @@ fun MediaHeader(
         }
         val scrollValue = scrollState.firstVisibleItemScrollOffset.toFloat()
 
+        val configuration = LocalConfiguration.current
+        val screenWidth = configuration.screenWidthDp.dp
+
+        val imageStartPadding by remember {
+            derivedStateOf {
+                val scrollValue = scrollState.firstVisibleItemScrollOffset.toFloat()
+                val start = ( screenWidth - 216.dp - 16.dp) / 2
+                val end = 0.dp
+                val maxScroll = 250f
+                if (scrollValue >= maxScroll) {
+                    end
+                } else {
+                    start - (start - end) * (scrollValue / maxScroll)
+                }
+            }
+        }
+
         val imageHeight by remember {
             derivedStateOf {
                 val scrollValue = scrollState.firstVisibleItemScrollOffset.toFloat()
@@ -67,7 +89,6 @@ fun MediaHeader(
 
                 when {
                     scrollValue >= maxScroll -> end
-                    scrollValue <= 0f -> start
                     else -> {
                         val progress = scrollValue / maxScroll
                         start - (start - end) * progress
@@ -144,8 +165,41 @@ fun MediaHeader(
                 }
             }
         }
+        val contentPadding by remember {
+            derivedStateOf {
+                val scrollValue = scrollState.firstVisibleItemScrollOffset.toFloat()
+                val start = 16.dp
+                val end = 0.dp
+                val maxScroll = 250f
+                if (scrollValue >= maxScroll) {
+                    end
+                } else {
+                    start - (start - end) * (scrollValue / maxScroll)
+                }
+            }
+        }
+        val contentPaddingBottom by remember {
+            derivedStateOf {
+                val scrollValue = scrollState.firstVisibleItemScrollOffset.toFloat()
+                val start = 0.dp
+                val end = 12.dp
+                val maxScroll = 250f
+                if (scrollValue >= maxScroll) {
+                    end
+                } else {
+                    start - (start - end) * (scrollValue / maxScroll)
+                }
+            }
+        }
+        val detailsBackgroundColor by animateColorAsState(
+            targetValue = if (scrollValue <= 20f)
+                Theme.colors.background.card
+            else
+                Theme.colors.background.screen,
+        )
         Box(
             modifier = Modifier
+                .padding(start = imageStartPadding)
                 .height(imageHeight)
                 .width(imageWidth)
         ) {
@@ -168,10 +222,11 @@ fun MediaHeader(
                 .padding(top = detailsPaddingTop)
                 .fillMaxWidth()
                 .background(
-                    color = Theme.colors.background.card,
+                    color = detailsBackgroundColor,
                     RoundedCornerShape(Theme.radius.large)
                 )
-                .padding(16.dp),
+                .padding(contentPadding)
+                .padding(bottom = contentPaddingBottom),
         ) {
             Column(
                 verticalArrangement = Arrangement.spacedBy(4.dp),
@@ -179,8 +234,11 @@ fun MediaHeader(
             ) {
                 AnimatedVisibility(
                     visible = scrollValue <= 20f,
-                    enter = fadeIn(),
-                    exit = fadeOut(),
+                    enter = slideInVertically(animationSpec = tween(1000))
+                            + fadeIn(animationSpec = tween(1000)),
+
+                    exit = slideOutVertically(animationSpec = tween(1000))
+                            + fadeOut(animationSpec = tween(1000)),
                 ) {
                     Text(
                         text = type,
@@ -195,8 +253,11 @@ fun MediaHeader(
                 )
                 AnimatedVisibility(
                     visible = scrollValue <= 20f,
-                    enter = fadeIn(),
-                    exit = fadeOut(),
+                    enter = slideInVertically(animationSpec = tween(1000))
+                            + fadeIn(animationSpec = tween(1000)),
+
+                    exit = slideOutVertically(animationSpec = tween(1000))
+                            + fadeOut(animationSpec = tween(1000)),
                 ){
                     Column (
                         verticalArrangement = Arrangement.spacedBy(4.dp),
