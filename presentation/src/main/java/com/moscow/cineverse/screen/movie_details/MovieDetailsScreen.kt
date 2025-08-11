@@ -1,15 +1,8 @@
 package com.moscow.cineverse.screen.movie_details
 
 
-import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.ExperimentalSharedTransitionApi
-import androidx.compose.animation.SharedTransitionLayout
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutVertically
-import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -19,9 +12,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -38,9 +29,7 @@ import com.moscow.cineverse.mapper.toHourMinuteFormat
 import com.moscow.cineverse.screen.movieSeriesDetails.MediaHeader
 import com.moscow.cineverse.screen.movie_details.component.LoadingContent
 import com.moscow.cineverse.screen.movie_details.component.MovieCastSection
-import com.moscow.cineverse.screen.movie_details.component.MovieCollapsedHeaderSection
 import com.moscow.cineverse.screen.movie_details.component.MovieDetailsEffectHandler
-import com.moscow.cineverse.screen.movie_details.component.MovieHeaderSection
 import com.moscow.cineverse.screen.movie_details.component.MovieRatingBottomSheetSection
 import com.moscow.cineverse.screen.movie_details.component.MovieRatingSection
 import com.moscow.cineverse.screen.movie_details.component.MovieRecommendationsSection
