@@ -1,11 +1,11 @@
 package com.moscow.domain.usecase.collection
 
-import com.moscow.domain.repository.PreferenceRepository
+import com.moscow.domain.repository.UserRepository
 import javax.inject.Inject
 
 class GetCurrentUserUseCase @Inject constructor(
-    private val preferenceRepository: PreferenceRepository
+    private val userRepository: UserRepository
 ) {
-    suspend operator fun invoke() = preferenceRepository.isLoggedIn()
+    suspend operator fun invoke() = userRepository.isLoggedIn()
 
 }
