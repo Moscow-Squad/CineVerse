@@ -111,10 +111,8 @@ fun MyCollectionsContent(
             if (state.collections.isNotEmpty())
                 MovieFloatingButton(
                     buttonIcon = com.moscow.cineverse.design_system.R.drawable.outline_plus,
-                    contentPadding = PaddingValues(16.dp),
                     iconSize = 24.dp,
                     buttonSize = 56.dp,
-                    useWrapContentSize = true,
                     onClick = interactionListener::onCreateCollectionClick,
                     backgroundColor = Theme.colors.brand.primary,
                     iconColor = Theme.colors.button.onPrimary,
