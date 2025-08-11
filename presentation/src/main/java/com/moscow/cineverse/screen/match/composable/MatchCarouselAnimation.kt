@@ -15,17 +15,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.graphics.TransformOrigin
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.lerp
 import androidx.compose.ui.util.lerp
-import com.moscow.domain.model.Movie
+import com.moscow.cineverse.common_ui_state.MediaItemUiState
+import com.moscow.cineverse.component.MoviePosterCard
+import com.moscow.cineverse.utlis.ViewMode
 import kotlin.math.absoluteValue
 
 @Composable
 fun MatchCarouselAnimation(
-    movies: List<Movie>,
-    onMovieClick: (Movie) -> Unit = {},
+    movies: List<MediaItemUiState>,
+    onMovieClick: (MediaItemUiState) -> Unit = {},
 ) {
     val pagerState = rememberPagerState(
         initialPage = 0,
@@ -37,18 +40,17 @@ fun MatchCarouselAnimation(
         contentPadding = PaddingValues(horizontal = 60.dp),
         modifier = Modifier,
     ) { page ->
-//        MoviePosterCard(
-//            movie = movies[page],
-//            viewMode = ViewMode.GRID,
-//            onMovieClick = { onMovieClick(it) },
-//            showRating = false,
-//            showGenres = false,
-//            showTitle = false,
-//            titleTextAlign = TextAlign.Center,
-//            descriptionTextAlign = TextAlign.Center,
-//            modifier = Modifier
-//                .carouselLiftedCardTransition(page, pagerState)
-//        )
+        MoviePosterCard(
+            movie = movies[page],
+            viewMode = ViewMode.GRID,
+            onMovieClick = { onMovieClick(movies[page]) },
+            showRating = false,
+            showTitle = false,
+            titleTextAlign = TextAlign.Center,
+            enableBlur = "high",
+            modifier = Modifier
+                .carouselLiftedCardTransition(page, pagerState)
+        )
     }
 }
 
