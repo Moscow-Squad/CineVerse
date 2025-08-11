@@ -169,7 +169,6 @@ private fun GridMovieCard(
                     OnBlurContent()
                 }
 
-                // Rating badge
                 if (showRating && movie.rating >= 0) {
                     Surface(
                         modifier = Modifier
@@ -202,7 +201,6 @@ private fun GridMovieCard(
             }
         }
 
-        // Title
         if (showTitle) {
             val displayTitle = getTitleOverride?.invoke(movie) ?: movie.title
             if (displayTitle.isNotEmpty()) {
@@ -247,7 +245,6 @@ private fun ListMovieCard(
     ) {
         Box(modifier = Modifier.fillMaxSize()) {
             Row(modifier = Modifier.fillMaxSize()) {
-                // Poster image
                 SafeImageViewer(
                     imageUrl = movie.posterPath,
                     modifier = Modifier
@@ -283,7 +280,6 @@ private fun ListMovieCard(
                     OnBlurContent(isAddedText = false)
                 }
 
-                // Content column
                 Column(
                     modifier = Modifier
                         .weight(1f)
