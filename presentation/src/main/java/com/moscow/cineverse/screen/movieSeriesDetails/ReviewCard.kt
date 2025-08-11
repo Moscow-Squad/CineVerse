@@ -19,6 +19,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -102,7 +103,8 @@ private fun UserInfo(
                 painter = userImage ?: painterResource(R.drawable.due_tone_profile),
                 contentDescription = "Profile Image",
                 contentScale = ContentScale.Crop,
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier.fillMaxSize(),
+                colorFilter = ColorFilter.tint(color = Theme.colors.shade.secondary)
             )
         }
 
