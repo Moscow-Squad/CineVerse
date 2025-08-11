@@ -175,92 +175,15 @@ Click File > Open.
 
 Select the cloned project folder.
 -----
- ### 3️⃣ Add Required Files
- 
- 📄 service-account-key.json
-Place the `service-account-key.json` file in: `<project-root>/app/`
+## 🔐 What to add (local secrets)
 
-### ⬇️ Put the code of  `service-account-key.json`
-```bash
-{
-  "type": "service_account",
-  "project_id": "cineverse-c46f9",
-  "private_key_id": "c43ae0b7b519ca1188ffa97c0d8a6b70524d0fb7",
-  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC7dT1w2lVZLBUY\nkcYT8ohHiE/z9IRJ6+9QUKCdsYOZOibTO1ymNQmc4NGgW3TylpBXxujVHegwN0XR\nf2Cuj0aFGHxZ6/fcZ6PdyM/YvrweD7F5ZSEIZ8uMxK+d5SLXpCRoJZB/sB2BCRG1\nhUETQwIzQ1x6hbswUQHkeG11PepEqql6kwus4/aipFQfI9FUY9JIaysvpjCyE4Ep\nBNWn1+/vxpsTkXjQ5EwkzoNCmcbpiBcmw4H9FK5lBAEjihzKs/5I1dYiDIDA1Px0\nuXLrHO4BXMnY+0JVwpmvQVEmgk56ABCunLVaIcvkXRDwPjISgcJRNsDHZKcCFneK\nE8Aom+ArAgMBAAECggEACNi3aGgtXJ12IL2Jva7q8TFE0KxVQpB7Wpd2KlWnx7yU\n+3qoMdcml9GLowfd5Nrn1J9NpU0ZhDj/jFZOD5QxuEiXtGislFQMdC7XZuZYG1+9\n447luFn++FWJ53zaSuyd+TpDRPtgkRKGqZcweIJnjALITlHvARCO8yN0dZ1756Hv\nVLf+xFZsEnz0LCEkMcaj38GG43UYlnOTZHU3XLC+VWqFYWo36msxU0Dfs2LiiXIz\nymPDItntu/ss42VZqghdoQwgyOvjXZRNfn6aZqqaS1Ikbptfft5SLMk4OyTHEXKC\nZUWtls5EjxQr/ijxumY0UjMYiAhe38JiAJ+VhbTWfQKBgQD7FwCSjXLRt+1cM4AJ\naTyqLe2ejPc546ya9iQybI3xkZv3JxWNS+lRk+fG0Yor0oG46ZRR12O1303LLijY\n3maVLl0eiuIJq0qD+J6E2H31o3uJJONW1DvCy9+CIGH0uSRK6YrQtb6u3Ru9Cpjj\nezWQWAOCj9yg404+A88PCHxFDQKBgQC/H6+YpSwNBFgjy+mA2hMAyBXWfzsQ1YjO\nqT8KSlvNKRSSIhIcKgvfJTZWxq53Jz3/uDTsv2S+luFxPrXBu3307SHx0QXiP72e\nHxbJRaZMe7Jli0L3eWAECA8Mj/t/4Ps9KK4N0pJtxXW+etx72keRv6OdT7HxHO0T\n9ZNh2OVcFwKBgQDtRjhhRU+qhP/FsFkfC5arTsmMmbOKve6/ZTihednM3Qeg0Ata\nwdCTKYzOYfcLIFs7zWc+y6bLGGEgTteE0O3pra2Ljjy6XGcHPSs3aInnVX0JBZXb\n2KU8mIH3KvjGVSrJq9ZlEkpGXmW3B8ugtC7S34k5mQ8p7oNisSC7GQ6uBQKBgCNK\n8JwZdCb7NGN31iirHHM6f33ahMe5BshSzIdT79vUyC2sCPgWc5bDQmOH0NPD9Vjx\nZSSKu0nOhtboo5ugycOevnPvC00aRCOczhJgwDLDbM//hWA5k5dq/YxuUhztKLfE\neU+oIM4Qdou0GF7ukeTCJK559vv1QXo8EPkymjgFAoGALhiVqX0abW3YJF13UFbo\n7n/UHgA+dMnJVLW0xDg8t9BRxdth2pQExzBVhkeaQhcOjZCgVuIvY1RTdPV5Z5oX\n2h0uzowbAruawCYyzvEAnv0y3JMk46NZAfE0HnXGeMDS5VXvLMLr89lNhZEx8KZ1\nwL+sHncpE29+LbOfBJJ6Voc=\n-----END PRIVATE KEY-----\n",
-  "client_email": "firebase-app-distribution@cineverse-c46f9.iam.gserviceaccount.com",
-  "client_id": "114637347518423044995",
-  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
-  "token_uri": "https://oauth2.googleapis.com/token",
-  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
-  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-app-distribution%40cineverse-c46f9.iam.gserviceaccount.com",
-  "universe_domain": "googleapis.com"
-}
-```
----
+> These files are required to run Cineverse locally. **Do not commit them.**
 
- 📄  google-services.json
-Place the `google-services.json` file in: `<project-root>/app/`
-
-### ⬇️ Put the code of  ` google-services.json` 
-```bash
-{
-  "project_info": {
-    "project_number": "843710468188",
-    "project_id": "cineverse-c46f9",
-    "storage_bucket": "cineverse-c46f9.firebasestorage.app"
-  },
-  "client": [
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:843710468188:android:a2ba354ffc2edbc2111699",
-        "android_client_info": {
-          "package_name": "com.moscow.cineverse"
-        }
-      },
-      "oauth_client": [],
-      "api_key": [
-        {
-          "current_key": "AIzaSyC-p1gRlNztPNv6Yx8vHdQ80lcHY858rLY"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": []
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:843710468188:android:a2ba354ffc2edbc2111699",
-        "android_client_info": {
-          "package_name": "com.moscow.cineverse.debug"
-        }
-      },
-      "oauth_client": [],
-      "api_key": [
-        {
-          "current_key": "AIzaSyC-p1gRlNztPNv6Yx8vHdQ80lcHY858rLY"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": []
-        }
-      }
-    }
-  ],
-  "configuration_version": "1"
-}
-```
----
-
-📄 keys.properties
-Place the `keys.properties` file in:`<project-root>/`
-
-### ⬇️ Put the code of  ` google-services.json` 
-```bash
-BEARER_TOKEN = eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJiMzdkOWY1Njg2ODVlZmFkYWZhMmNlMGE4NzE1OTdmYiIsIm5iZiI6MTc1MTQ3ODAxMi40MTgsInN1YiI6IjY4NjU2ZWZjMzVmNTZjNzQ4NzZhYTM0ZCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.m1SEYwrplAih5yTaMhekrgBwD8ZkL9FCdFO9OmXHc_I
-```
+| File | Where to place it | Purpose |
+|------|-------------------|---------|
+| `google-services.json` | `<project-root>/app/` | Firebase/Google services config for the app module |
+| `service-account-key.json` | `<project-root>/` | CI / admin SDK tasks (e.g., Firebase App Distribution) |
+| `keys.properties` | `<project-root>/` | API keys used by Gradle/BuildConfig |
 ----
 ### 5️⃣ Sync & Run
 Sync Gradle.
