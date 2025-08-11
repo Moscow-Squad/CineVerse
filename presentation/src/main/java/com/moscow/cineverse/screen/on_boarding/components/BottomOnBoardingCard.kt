@@ -125,7 +125,6 @@ fun BottomOnBoardingCard(
                         modifier = Modifier.size(48.dp),
                         buttonIcon = R.drawable.outline_alt_arrow_left,
                         onClick = onClickPreviousButton,
-                        contentPadding = PaddingValues(14.dp),
                         backgroundColor = Theme.colors.button.secondary,
                         iconColor = Theme.colors.shade.primary
                     )
@@ -142,7 +141,6 @@ fun BottomOnBoardingCard(
                         MovieFloatingButton(
                             modifier = Modifier.size(48.dp),
                             buttonIcon = R.drawable.outline_alt_arrow_right,
-                            contentPadding = PaddingValues(14.dp),
                             onClick = onClickNextButton,
                             backgroundColor = Theme.colors.button.primary,
                             iconColor = Theme.colors.background.screen
