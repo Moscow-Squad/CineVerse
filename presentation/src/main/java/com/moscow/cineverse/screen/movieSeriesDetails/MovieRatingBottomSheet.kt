@@ -1,5 +1,6 @@
 package com.moscow.cineverse.screen.movieSeriesDetails
 
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.clickable
@@ -30,6 +31,7 @@ import com.moscow.cineverse.designSystem.component.button.MovieButton
 import com.moscow.cineverse.designSystem.component.bottomsheet.CineVerseBottomSheet
 import com.moscow.cineverse.designSystem.theme.CineVerseTheme
 import com.moscow.cineverse.designSystem.theme.Theme
+import com.moscow.cineverse.utlis.noRibbleClick
 import com.moscow.cinverse.presentation.R
 
 @Composable
@@ -98,7 +100,7 @@ fun MovieRatingBottomSheet(
                     MovieButton(
                         buttonText = stringResource(R.string.remove_rating),
                         textColor = Theme.colors.button.onTertiary,
-                        textStyle = Theme.textStyle.body.medium.medium,
+                        textStyle = Theme.textStyle.label.medium.medium,
                         buttonColor = Color.Transparent,
                         onClick = {
                             selectedRating = 0
@@ -137,10 +139,10 @@ private fun EmojiAndStarRating(
                 val rating = index + 1
                 val isSelected = selectedRating == rating
 
-                val animatedScale by animateFloatAsState(
-                    targetValue = if (isSelected) 1.5f else 1f,
+                val animatedSize by animateDpAsState(
+                    targetValue = if (isSelected) 24.dp else 16.dp,
                     animationSpec = tween(durationMillis = 300),
-                    label = "emoji_scale_animation"
+                    label = "emoji_size_animation"
                 )
 
                 val animatedAlpha by animateFloatAsState(
@@ -152,7 +154,7 @@ private fun EmojiAndStarRating(
                 Box(
                     modifier = Modifier
                         .size(24.dp)
-                        .clickable { onRatingChanged(rating) },
+                        .noRibbleClick{ onRatingChanged(rating) },
                     contentAlignment = Alignment.Center
                 ) {
                     Icon(
@@ -160,8 +162,7 @@ private fun EmojiAndStarRating(
                         contentDescription = "Rating emoji $rating",
                         tint = Color.Unspecified,
                         modifier = Modifier
-                            .size(if (isSelected) 24.dp else 16.dp)
-                            .scale(animatedScale)
+                            .size(animatedSize)
                             .alpha(animatedAlpha)
                     )
                 }
