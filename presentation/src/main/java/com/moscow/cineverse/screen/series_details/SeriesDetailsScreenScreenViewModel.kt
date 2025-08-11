@@ -10,7 +10,7 @@ import com.moscow.cineverse.utlis.ViewMode
 import com.moscow.cinverse.presentation.R
 import com.moscow.domain.mapper.toSeries
 import com.moscow.domain.model.Series
-import com.moscow.domain.repository.PreferenceRepository
+import com.moscow.domain.repository.UserRepository
 import com.moscow.domain.repository.blur.BlurProvider
 import com.moscow.domain.usecase.recently_viewed.AddRecentlyViewedSeriesUseCase
 import com.moscow.domain.usecase.review.GetReviewsUseCase
@@ -36,7 +36,7 @@ class SeriesDetailsScreenScreenViewModel @Inject constructor(
     private val addRecentlyViewedSeriesUseCase: AddRecentlyViewedSeriesUseCase,
     private val deleteRatingSeriesUseCase: DeleteRatingSeriesUseCase,
     private val getUserRatingForSeriesUseCase: GetUserRatingForSeriesUseCase,
-    private val preferences: PreferenceRepository,
+    private val preferences: UserRepository,
     savedStateHandle: SavedStateHandle,
 ) : BaseViewModel<SeriesDetailsScreenState, SeriesDetailsScreenEffects>(SeriesDetailsScreenState()),
     SeriesDetailsScreenInteractionListener {

@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.domain.model.UserType
-import com.moscow.domain.model.profile.AccountDetails
+import com.moscow.domain.model.UserInfo
 import com.moscow.domain.repository.blur.BlurProvider
 import com.moscow.domain.repository.language.LanguageProvider
 import com.moscow.domain.repository.theme.ThemeProvider
@@ -71,13 +71,13 @@ class ProfileViewModel @Inject constructor(
         )
     }
 
-    private fun onGetAccountDetailsSuccess(accountDetails: AccountDetails) {
+    private fun onGetAccountDetailsSuccess(userInfo: UserInfo) {
 
         updateState {
             it.copy(
-                name = accountDetails.name,
-                username = accountDetails.username,
-                image = accountDetails.image,
+                name = userInfo.name,
+                username = userInfo.username,
+                image = userInfo.image,
             )
 
         }

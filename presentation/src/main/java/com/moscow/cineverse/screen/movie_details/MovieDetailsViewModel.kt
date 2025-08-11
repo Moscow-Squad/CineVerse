@@ -8,11 +8,11 @@ import com.moscow.cineverse.mapper.toUi
 import com.moscow.cineverse.navigation.routes.MovieDetailsRoute
 import com.moscow.cinverse.presentation.R
 import com.moscow.domain.mapper.toMovie
-import com.moscow.domain.model.CreditsDetails
+import com.moscow.domain.model.CreditsInfo
 import com.moscow.domain.model.Movie
 import com.moscow.domain.model.Review
 import com.moscow.domain.model.details.MovieDetail
-import com.moscow.domain.repository.PreferenceRepository
+import com.moscow.domain.repository.UserRepository
 import com.moscow.domain.repository.blur.BlurProvider
 import com.moscow.domain.usecase.movie.DeleteRatingMovieUseCase
 import com.moscow.domain.usecase.movie.GetMovieCreditsUseCase
@@ -38,7 +38,7 @@ class MovieDetailsViewModel @Inject constructor(
     private val deleteRatingMovieUseCase: DeleteRatingMovieUseCase,
     private val getUserRatingForMovieUseCase: GetUserRatingForMovieUseCase,
     private val addRecentlyViewedMovieUseCase: AddRecentlyViewedMovieUseCase,
-    private val preferences: PreferenceRepository,
+    private val preferences: UserRepository,
     saveStateHandle: SavedStateHandle,
 ) : BaseViewModel<MovieScreenState, MovieDetailsScreenEffect>(MovieScreenState()),
     MovieDetailsInteractionListener {
@@ -149,12 +149,12 @@ class MovieDetailsViewModel @Inject constructor(
     }
 
 
-    private fun onGetCreditsSuccess(creditsDetails: CreditsDetails) {
-        val crew = creditsDetails.behindTheScene.map { it.toUi() }
+    private fun onGetCreditsSuccess(creditsInfo: CreditsInfo) {
+        val crew = creditsInfo.behindTheScene.map { it.toUi() }
         updateState { state ->
             state.copy(
                 isLoading = false,
-                starCast = creditsDetails.actors.map { it.toUi() },
+                starCast = creditsInfo.actors.map { it.toUi() },
                 characters = crew.filter { it.job == "Characters" }.map { it.name },
                 director = crew.filter { it.job in (listOf("Director", "Screenplay", "Story")) }
                     .map { it.name },

@@ -6,7 +6,7 @@ import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.cineverse.base.handleException
 import com.moscow.cineverse.navigation.routes.CastDetailsRoute
 import com.moscow.cineverse.screen.cast_details.CastDetailsUiState.SocialMediaLinks
-import com.moscow.domain.model.ActorDetails
+import com.moscow.domain.model.Actor
 import com.moscow.domain.model.Movie
 import com.moscow.domain.repository.blur.BlurProvider
 import com.moscow.domain.usecase.actor.GetActorBestMoviesUseCase
@@ -53,17 +53,17 @@ class CastDetailsViewModel @Inject constructor(
         )
     }
 
-    private fun onActorDetailsSuccess(actorDetails: ActorDetails) {
+    private fun onActorDetailsSuccess(actor: Actor) {
         updateState { currentState ->
             currentState.copy(
-                actorDetails = actorDetails,
+                actor = actor,
                 isLoading = false,
                 shouldShowError = false,
                 errorMessage = 0,
                 socialMediaLinks = SocialMediaLinks(
-                    youtube = actorDetails.youtubeLink.takeIf { it.isNotEmpty() },
-                    facebook = actorDetails.facebookLink.takeIf { it.isNotEmpty() },
-                    instagram = actorDetails.instagramLink.takeIf { it.isNotEmpty() }
+                    youtube = actor.youtubeLink.takeIf { it.isNotEmpty() },
+                    facebook = actor.facebookLink.takeIf { it.isNotEmpty() },
+                    instagram = actor.instagramLink.takeIf { it.isNotEmpty() }
                 ),
                 isContentEmpty = false
             )
@@ -177,7 +177,7 @@ class CastDetailsViewModel @Inject constructor(
     override fun onRefresh() {
         updateState { currentState ->
             currentState.copy(
-                actorDetails = null,
+                actor = null,
                 movies = emptyList(),
                 images = emptyList(),
                 socialMediaLinks = SocialMediaLinks(),
@@ -200,7 +200,7 @@ class CastDetailsViewModel @Inject constructor(
         sendEvent(
             CastDetailsEffect.NavigateToFullMovieList(
                 actorId,
-                uiState.value.actorDetails?.name ?: ""
+                uiState.value.actor?.name ?: ""
             )
         )
     }
@@ -209,7 +209,7 @@ class CastDetailsViewModel @Inject constructor(
         sendEvent(
             CastDetailsEffect.NavigateToFullGallery(
                 actorId,
-                uiState.value.actorDetails?.name ?: ""
+                uiState.value.actor?.name ?: ""
             )
         )
     }
