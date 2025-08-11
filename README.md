@@ -42,7 +42,7 @@ Dive into a world of endless entertainment, where you can explore movies and TV 
 <tr>
   <td><img width="200" src="https://github.com/user-attachments/assets/eb88c8f2-5aa7-4c97-b556-ed7608596327" /></td>
   <td><img width="200" src="https://github.com/user-attachments/assets/5120e256-e21f-4577-b719-2baf01e97d09" /></td>
-  <td><img width="200" src="https://github.com/user-attachments/assets/ae0f6282-4355-401e-a34f-79cd5c99db1d" /></td>
+  <td><img width="200" src="https://github.com/user-attachments/assets/12e5c542-f93f-494e-8050-8538463a00dd" /></td>
   <td><img width="200" src="https://github.com/user-attachments/assets/72fabe82-48f1-4451-97c9-74b1b62119d3" /></td>
 </tr>
 <tr>
@@ -79,10 +79,10 @@ Dive into a world of endless entertainment, where you can explore movies and TV 
 </tr>
 
 <tr>
-  <td><img width="200" src="https://github.com/user-attachments/assets/fbfbfecc-3952-4df6-a114-b2991d64fee9" /></td>
-  <td><img width="200" src="https://github.com/user-attachments/assets/4ead251f-fe9a-4351-be97-c2d3b1ccf1fe" /></td>
-  <td><img width="200" src="https://github.com/user-attachments/assets/6616eca8-a886-4b37-ab14-744939f528a8" /></td>
-  <td><img width="200" src="https://github.com/user-attachments/assets/afff28d1-724e-494d-8f76-595c6d21875b" /></td>
+  <td><img width="200" src="https://github.com/user-attachments/assets/44e7ecf1-ec54-462c-b7f7-095730f4cbdd" /></td>
+  <td><img width="200" src="https://github.com/user-attachments/assets/8934cdf5-892e-441e-b632-6937fb2cd7fd" /></td>
+  <td><img width="200" src="https://github.com/user-attachments/assets/ec83208c-6724-4db5-980d-980ba75eebb4" /></td>
+  <td><img width="200" src="https://github.com/user-attachments/assets/a567fffa-4086-428d-acbc-e4b11647634c" /></td>
 </tr>
 <tr>
   <td>Profile Screen</td>
