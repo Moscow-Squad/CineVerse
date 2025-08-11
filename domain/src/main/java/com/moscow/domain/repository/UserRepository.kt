@@ -2,7 +2,7 @@ package com.moscow.domain.repository
 
 import com.moscow.domain.model.UserType
 
-interface PreferenceRepository {
+interface UserRepository {
     suspend fun saveUser(userType: UserType)
     suspend fun getUser(): UserType
     suspend fun getSessionId(): String
@@ -10,8 +10,4 @@ interface PreferenceRepository {
     suspend fun clearUser()
     suspend fun isGuest(): Boolean
     suspend fun isLoggedIn(): Boolean
-    suspend fun showCategoryDetailsTip(): Boolean
-    suspend fun closeCategoryDetailsTip()
-    suspend fun isOnBoardingCompleted(): Boolean
-    suspend fun setOnBoardingCompleted()
 }

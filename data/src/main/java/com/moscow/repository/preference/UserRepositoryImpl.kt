@@ -7,15 +7,15 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.moscow.domain.model.UserType
-import com.moscow.domain.repository.PreferenceRepository
+import com.moscow.domain.repository.UserRepository
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
-class PreferenceRepositoryImpl @Inject constructor(
+class UserRepositoryImpl @Inject constructor(
     private val dataStore: DataStore<Preferences>
-): PreferenceRepository{
+): UserRepository {
 
     override suspend fun saveUser(userType: UserType) {
         dataStore.edit {preferences->
@@ -99,24 +99,6 @@ class PreferenceRepositoryImpl @Inject constructor(
 
     override suspend fun isLoggedIn(): Boolean {
         return dataStore.data.map {it[Is_LOGGED_IN_KEY] }.first() == true
-    }
-
-    override suspend fun showCategoryDetailsTip(): Boolean {
-        return dataStore.data.map {it[SHOW_COLLECTION_DETAILS_TIP] }.first() ?: true
-    }
-
-    override suspend fun closeCategoryDetailsTip() {
-        dataStore.edit { preferences ->
-            preferences[SHOW_COLLECTION_DETAILS_TIP] = false
-        }
-    }
-
-    override suspend fun isOnBoardingCompleted(): Boolean {
-        return dataStore.data.map {it[IS_ON_BOARDING_SEEN_KEY] }.first() == true
-    }
-
-    override suspend fun setOnBoardingCompleted() {
-        dataStore.edit { it[IS_ON_BOARDING_SEEN_KEY] = true }
     }
 
     companion object {
