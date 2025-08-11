@@ -20,14 +20,14 @@ import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.moscow.cineverse.component.ErrorContent
+import com.moscow.cineverse.component.MoviePosterCard
 import com.moscow.cineverse.component.NoInternetScreen
 import com.moscow.cineverse.component.SwipeToDelete
 import com.moscow.cineverse.designSystem.component.app_bar.MovieAppBar
+import com.moscow.cineverse.designSystem.component.card.InfoCard
 import com.moscow.cineverse.designSystem.component.indicator.MovieCircularProgressBar
 import com.moscow.cineverse.designSystem.component.wrapper.MovieScaffold
-import com.moscow.cineverse.designSystem.component.card.InfoCard
 import com.moscow.cineverse.designSystem.theme.Theme
-import com.moscow.cineverse.screen.MovieCard
 import com.moscow.cineverse.screen.explore.toUi
 import com.moscow.cineverse.utlis.ViewMode
 import com.moscow.cinverse.presentation.R
@@ -145,8 +145,8 @@ private fun CollectionDetailsScreenContent(
                                     )
                                 }
                             ) {
-                                MovieCard(
-                                    movieData = media,
+                                MoviePosterCard(
+                                    movie = media,
                                     viewMode = ViewMode.LIST,
                                     showRating = true,
                                     onMovieClick = {
@@ -157,15 +157,7 @@ private fun CollectionDetailsScreenContent(
                                     },
                                     showTitle = true,
                                     showBackdrop = true,
-                                    getId = { media.id },
-                                    getTitle = { media.title },
-                                    getPosterUrl = { media.posterPath },
-                                    getBackdropUrl = { media.backdropPath },
-                                    getRating = { media.rating },
-                                    getGenres = { media.genres },
-                                    getDuration = { media.duration },
-                                    getReleaseDate = { media.releaseDate },
-                                    enableBlur = uiState.enableBlur,
+                                    enableBlur = uiState.enableBlur
                                 )
                             }
                         }
@@ -173,7 +165,9 @@ private fun CollectionDetailsScreenContent(
                     if (mediaItems.loadState.append is LoadState.Loading) {
                         item{
                             Box(
-                                modifier = Modifier.fillMaxWidth().height(214.dp),
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(214.dp),
                                 contentAlignment = Alignment.Center
                             ) {
                                 MovieCircularProgressBar()
