@@ -1,7 +1,7 @@
 package com.moscow.repository
 
 import com.moscow.data_source.remote.ProfileRemoteDataSource
-import com.moscow.domain.model.profile.AccountDetails
+import com.moscow.domain.model.UserInfo
 import com.moscow.domain.repository.ProfileRepository
 import com.moscow.mapper.toDomain
 import javax.inject.Inject
@@ -12,7 +12,7 @@ class ProfileRepositoryImpl @Inject constructor(
     override suspend fun getUserInfo(
         accountId: String,
         sessionId: String
-    ): AccountDetails  =
+    ): UserInfo  =
        profileRemoteDataSource.getUserInfo(accountId,sessionId).toDomain()
 
 

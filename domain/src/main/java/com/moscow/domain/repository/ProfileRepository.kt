@@ -1,10 +1,8 @@
 package com.moscow.domain.repository
 
-import com.moscow.domain.model.profile.AccountDetails
+import com.moscow.domain.model.UserInfo
 
 interface ProfileRepository {
-
-    suspend fun getUserInfo(accountId:String, sessionId:String): AccountDetails
-
+    suspend fun getUserInfo(accountId:String, sessionId:String): UserInfo
     suspend fun logout(sessionId: String): Boolean
 }
