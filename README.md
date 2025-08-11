@@ -30,10 +30,10 @@ Dive into a world of endless entertainment, where you can explore movies and TV 
 </tr>
 
 <tr> 
-<th> <img width="200" alt="Image" src="https://github.com/user-attachments/assets/ce47c618-7177-4d1b-b83d-3ebcfd20ecc7" /></th>
-<th> <img width="200" alt="Image" src="https://github.com/user-attachments/assets/778adcae-d380-450a-9d77-ec2ab717046d" /> </th>
-<th> <img width="200" alt="Image" src="https://github.com/user-attachments/assets/f4a590e6-33ad-4750-b157-d33281d1fd28" /> </th> 
-<th> </th>  
+<th> <img width="200" alt="Image" src="https://github.com/user-attachments/assets/ce47c618-7177-4d1b-b83d-3ebcfd20ecc7" /> </th>
+<th> <img width="200" alt="Image" src="https://github.com/user-attachments/assets/5120e256-e21f-4577-b719-2baf01e97d09" /> </th>
+<th> <img width="200" alt="Image" src="https://github.com/user-attachments/assets/14f1eb8b-4260-4586-b847-735a1ce9901a" /> </th>  
+<th> <img width="200" alt="Image" src="https://github.com/user-attachments/assets/72fabe82-48f1-4451-97c9-74b1b62119d3" /> </th> 
 </tr>  
 
 <tr> 
