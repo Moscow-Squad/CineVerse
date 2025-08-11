@@ -122,7 +122,29 @@ Here's a breakdown of each module's role:
     * **Dependencies:** None.
 
 * **`:image_viewer`**
-    * **Role:** A specialized utility module responsible for loading images (using Coil) and handling content safety by classifying and blurring images using TensorFlow Lite.
+    * **Role:** A **_specialized utility module_** responsible for loading images (using Coil) and handling content safety by classifying and blurring images using TensorFlow Lite.
     * **Dependencies:** None.
  
+## 🛠️ Tech Stack & Third-Party Libraries
+CineVerse uses modern Android development tools and libraries:
+
+**Languages & Tools**
+- Kotlin
+- Android Studio
+- Gradle
+- Jetpack Components (ViewModel, LiveData, Navigation, etc.)
+
+- **UI:** Jetpack Compose, Material 3, Coil 3
+- **Architecture:** MVVM, Repository Pattern, Clean Architecture
+- **Core:** Kotlin, Coroutines & Flow, Jetpack Paging 3, WorkManager
+- **Dependency Injection:** Hilt
+- **Networking:** Retrofit, OkHttp, Kotlinx.Serialization
+- **Local Storage:** Room, DataStore
+- **Machine Learning:** TensorFlow Lite (for NSFW image classification)
+- **Analytics:** Firebase Crashlytics, Firebase Performance, Firebase Analytics
+- **Testing:** JUnit5, Mockk, Truth
+
+**APIs**
+- TMDB API — Movie & TV show data
+
 <br><br>
