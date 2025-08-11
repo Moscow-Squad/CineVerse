@@ -84,4 +84,45 @@ Dive into a world of endless entertainment, where you can explore movies and TV 
 <th> Content Preferences</th>
 </tr> 
 </table>
+
+### Modularization
+<p align="center">
+  <img width="100%" alt="Image" src="https://github.com/user-attachments/assets/da390766-6637-4d0b-9b02-d9791986356b" />
+</p>
+
+## 🏛️ Modularization Explained
+
+This diagram illustrates a modern, multi-module architecture based on Clean Architecture principles. The arrows indicate the direction of dependency; for example, an arrow from **`:presentation`** to **`:domain`** means the **`:presentation`** module depends on the **`:domain`** module.
+
+This setup ensures that core business logic is independent and that the UI and data layers can be modified or replaced without affecting the rest of the system.
+
+Here's a breakdown of each module's role:
+
+* **`:app`**
+    * **Description**: The main application module that assembles the final app.
+    * **Responsibilities**: It integrates all other modules (`:presentation`, `:data`, `:domain`, etc.), sets up the Firebase suite (Crashlytics, Analytics), and initializes the Hilt dependency graph for the application.
+
+* **`:presentation`**
+    * **Role:** The UI layer, containing Jetpack Compose screens, ViewModels, and navigation. It orchestrates user interactions and displays data.
+    * **Dependencies:**
+        * **`:domain`** (to access business logic/use cases).
+        * **`:design_system`** (to use shared UI components).
+        * **`:image_viewer`** (to display images with custom logic).
+
+* **`:data`**
+    * **Role:** Implements the repository interfaces defined in the domain layer. It handles all data operations, fetching from remote sources (Retrofit), local caches (Room) and **Jetpack DataStore** for storing user preferences. It is also responsible for securely loading API keys via `buildConfig`.
+    * **Dependencies:** **`:domain`** (to implement its interfaces).
+
+* **`:domain`**
+    * **Role:** The core of the application. It contains the essential business logic, use cases, and data models. It is pure Kotlin and has no knowledge of the Android framework.
+    * **Dependencies:** None. It is the most independent module in the project.
+
+* **`:design_system`**
+    * **Role:** A shared library of reusable UI components, Provides a consistent look and feel across the app by centralizing themes, colors, typography, and common Composables like buttons and text fields. It includes specialized components This ensures UI consistency across the app.
+    * **Dependencies:** None.
+
+* **`:image_viewer`**
+    * **Role:** A specialized utility module responsible for loading images (using Coil) and handling content safety by classifying and blurring images using TensorFlow Lite.
+    * **Dependencies:** None.
+ 
 <br><br>
