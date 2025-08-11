@@ -1,0 +1,258 @@
+package com.moscow.cineverse.screen.movieSeriesDetails
+
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.unit.dp
+import com.moscow.cineverse.designSystem.component.blur.OnBlurContent
+import com.moscow.cineverse.designSystem.component.blur.RemoteImagePlaceholder
+import com.moscow.cineverse.designSystem.component.button.MovieFloatingButton
+import com.moscow.cineverse.designSystem.theme.Theme
+import com.moscow.cineverse.image_viewer.component.SafeImageViewer
+import com.moscow.cinverse.presentation.R
+
+@Composable
+fun MediaHeader(
+    modifier: Modifier = Modifier,
+    scrollState: LazyListState,
+    title: String,
+    genres: String,
+    rating: String,
+    duration: String,
+    releaseDate: String,
+    posterUrl: String,
+    type: String,
+    enableBlur: String,
+    onSaveClick: () -> Unit = {},
+    onPlayClick: () -> Unit = {},
+){
+    Box(
+        modifier = Modifier
+            .padding(horizontal = 16.dp),
+    ) {
+        val formattedRating = try {
+            val ratingValue = rating.toDouble()
+            String.format("%.1f", ratingValue)
+        } catch (_: NumberFormatException) {
+            "0.0"
+        }
+        val scrollValue = scrollState.firstVisibleItemScrollOffset.toFloat()
+
+        val imageHeight by remember {
+            derivedStateOf {
+                val scrollValue = scrollState.firstVisibleItemScrollOffset.toFloat()
+                val start = 289.dp
+                val end = 40.dp
+                val maxScroll = 250f
+
+                when {
+                    scrollValue >= maxScroll -> end
+                    scrollValue <= 0f -> start
+                    else -> {
+                        val progress = scrollValue / maxScroll
+                        start - (start - end) * progress
+                    }
+                }
+            }
+        }
+        val imageWidth by remember {
+            derivedStateOf {
+                val scrollValue = scrollState.firstVisibleItemScrollOffset.toFloat()
+                val startHeight = 216.dp
+                val endHeight = 40.dp
+                val maxScroll = 250f
+                if (scrollValue >= maxScroll) {
+                    endHeight
+                } else {
+                    startHeight - (startHeight - endHeight) * (scrollValue / maxScroll)
+                }
+            }
+        }
+
+        val collectionEndPadding by remember {
+            derivedStateOf {
+                val scrollValue = scrollState.firstVisibleItemScrollOffset.toFloat()
+                val start = 0.dp
+                val end = 48.dp
+                val maxScroll = 250f
+                if (scrollValue >= maxScroll) {
+                    end
+                } else {
+                    start - (start - end) * (scrollValue / maxScroll)
+                }
+            }
+        }
+
+        val detailsPaddingStart by remember {
+            derivedStateOf {
+                val scrollValue = scrollState.firstVisibleItemScrollOffset.toFloat()
+                val start = 0.dp
+                val end = 52.dp
+                val maxScroll = 250f
+                if (scrollValue >= maxScroll) {
+                    end
+                } else {
+                    start - (start - end) * (scrollValue / maxScroll)
+                }
+            }
+        }
+
+        val detailsPaddingTop by remember {
+            derivedStateOf {
+                val scrollValue = scrollState.firstVisibleItemScrollOffset.toFloat()
+                val start = 305.dp
+                val end = 0.dp
+                val maxScroll = 250f
+                if (scrollValue >= maxScroll) {
+                    end
+                } else {
+                    start - (start - end) * (scrollValue / maxScroll)
+                }
+            }
+        }
+
+        val collectionTopPadding by remember {
+            derivedStateOf {
+                val scrollValue = scrollState.firstVisibleItemScrollOffset.toFloat()
+                val start = 68.5.dp
+                val end = 0.dp
+                val maxScroll = 250f
+                if (scrollValue >= maxScroll) {
+                    end
+                } else {
+                    start - (start - end) * (scrollValue / maxScroll)
+                }
+            }
+        }
+        Box(
+            modifier = Modifier
+                .height(imageHeight)
+                .width(imageWidth)
+        ) {
+            SafeImageViewer(
+                imageUrl = posterUrl,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .clip(RoundedCornerShape(Theme.radius.extraLarge)),
+                isBlurEnabled = enableBlur,
+                placeholderContent = { RemoteImagePlaceholder() },
+                errorContent = { RemoteImagePlaceholder() },
+                onBlurContent = {
+                    OnBlurContent()
+                }
+            )
+        }
+        Box(
+            modifier = modifier
+                .padding(start = detailsPaddingStart)
+                .padding(top = detailsPaddingTop)
+                .fillMaxWidth()
+                .background(
+                    color = Theme.colors.background.card,
+                    RoundedCornerShape(Theme.radius.large)
+                )
+                .padding(16.dp),
+        ) {
+            Column(
+                verticalArrangement = Arrangement.spacedBy(4.dp),
+                horizontalAlignment = Alignment.Start,
+            ) {
+                AnimatedVisibility(
+                    visible = scrollValue <= 20f,
+                    enter = fadeIn(),
+                    exit = fadeOut(),
+                ) {
+                    Text(
+                        text = type,
+                        style = Theme.textStyle.label.medium.medium,
+                        color = Theme.colors.brand.primary
+                    )
+                }
+                Text(
+                    text = title,
+                    style = Theme.textStyle.title.medium,
+                    color = Theme.colors.shade.primary
+                )
+                AnimatedVisibility(
+                    visible = scrollValue <= 20f,
+                    enter = fadeIn(),
+                    exit = fadeOut(),
+                ){
+                    Column (
+                        verticalArrangement = Arrangement.spacedBy(4.dp),
+                        horizontalAlignment = Alignment.Start,
+                    ) {
+                        Text(
+                            text = genres,
+                            style = Theme.textStyle.body.small.medium,
+                            color = Theme.colors.shade.secondary
+                        )
+                        Row(
+                            modifier = Modifier.padding(top = 8.dp),
+                            horizontalArrangement = Arrangement.spacedBy(12.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            if (formattedRating != "0.0")
+                                InfoTextWithIcon(
+                                    R.drawable.due_tone_star,
+                                    formattedRating,
+                                    Theme.colors.additional.primary.yellow
+                                )
+                            if (duration.isNotBlank() && duration != "N/A" && duration != "null") {
+                                InfoTextWithIcon(
+                                    R.drawable.due_tone_clock,
+                                    duration,
+                                    Theme.colors.shade.secondary
+                                )
+                            }
+
+                            if (releaseDate.isNotBlank())
+                                InfoTextWithIcon(
+                                    R.drawable.due_tone_calendar,
+                                    releaseDate,
+                                    Theme.colors.shade.secondary
+                                )
+                        }
+                    }
+                }
+            }
+            MovieFloatingButton(
+                modifier = Modifier.align(Alignment.TopEnd),
+                buttonIcon = R.drawable.due_tone_play,
+                onClick = { onPlayClick() },
+                backgroundColor = Theme.colors.button.primary,
+                iconColor = Theme.colors.brand.tertiary,
+            )
+            MovieFloatingButton(
+                modifier = Modifier
+                    .align(Alignment.TopEnd)
+                    .padding(top = collectionTopPadding)
+                    .padding(end = collectionEndPadding),
+                buttonIcon = R.drawable.due_tone_add,
+                onClick = { onSaveClick() },
+                backgroundColor = Theme.colors.button.secondary,
+                iconColor = Theme.colors.shade.primary,
+            )
+        }
+    }
+}
