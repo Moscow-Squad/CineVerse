@@ -1,4 +1,4 @@
-# About the app
+# 🎥 About the app
 --------------------------------------------
 
 <p align="center">
@@ -273,7 +273,7 @@ Sync Gradle.
 Run the app on your local device or emulator.
 
 -----------------------------------------------------------
-# App Architecture (Modules & Packages)
+# 🧩 App Architecture (Modules & Packages)
 
 ```mermaid
 %%{init: {
