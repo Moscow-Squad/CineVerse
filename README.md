@@ -1,6 +1,15 @@
 # About the app
 --------------------------------------------
 
+<p align="center">
+ <img 
+  src="https://github.com/user-attachments/assets/04d8c8da-e493-4988-9ca5-e7349e6651c6"
+  alt="CineVerse Banner"
+  width="100%"
+  height="1978"
+  />
+</p>
+
 ## 🎬 Welcome to the Civerse Movies & Series ! 🍿✨
 Dive into a world of endless entertainment, where you can explore movies and TV shows from every category  action, drama, comedy, romance, sci-fi, and more! 🎭 From discovering your favorite actors 🎥 to exploring their full filmography 📚, we’ve got you covered. Build your own collections, follow categories you love ❤️, and enjoy a personalized cinematic journey like never before! 🌟
 
