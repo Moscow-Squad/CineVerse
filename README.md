@@ -136,8 +136,9 @@ Here's a breakdown of each module's role:
     * **Role:** A **_specialized utility module_** responsible for loading images (using Coil) and handling content safety by classifying and blurring images using TensorFlow Lite.
     * **Dependencies:** None.
  
-## 🛠️ Tech Stack & Third-Party Libraries
-CineVerse uses modern Android development tools and libraries:
+## 🛠️ Tech Stack & Key Libraries
+
+CineVerse is built with a modern tools, libraries, robust, and scalable tech stack, leveraging the best of the Android ecosystem.
 
 **Languages & Tools**
 - Kotlin
@@ -145,17 +146,17 @@ CineVerse uses modern Android development tools and libraries:
 - Gradle
 - Jetpack Components (ViewModel, LiveData, Navigation, etc.)
 
-- **UI:** Jetpack Compose, Material 3, Coil 3
-- **Architecture:** MVVM, Repository Pattern, Clean Architecture
-- **Core:** Kotlin, Coroutines & Flow, Jetpack Paging 3, WorkManager
-- **Dependency Injection:** Hilt
-- **Networking:** Retrofit, OkHttp, Kotlinx.Serialization
-- **Local Storage:** Room, DataStore
-- **Machine Learning:** TensorFlow Lite (for NSFW image classification)
-- **Analytics:** Firebase Crashlytics, Firebase Performance, Firebase Analytics
-- **Testing:** JUnit5, Mockk, Truth
-
-**APIs**
-- TMDB API — Movie & TV show data
+| Category | Technologies & Libraries |
+| :--- | :--- |
+| **Core & Architecture** | Kotlin, Coroutines & Flow, Clean Architecture, MVVM, Repository Pattern |
+| **UI & Design** | Jetpack Compose, Material 3, Coil 3 (for image loading) |
+| **Jetpack Suite** | Paging 3, WorkManager, DataStore, Navigation Component |
+| **Dependency Injection**| Hilt |
+| **Networking** | Retrofit, OkHttp, Kotlinx.Serialization |
+| **Local Storage** | Room (for database caching)و DataStore (for key-value preferences) |
+| **Machine Learning** | TensorFlow Lite (for on-device content classification) |
+| **Firebase Suite** | Crashlytics, Performance Monitoring, Analytics |
+| **Testing** | JUnit5, Mockk, Truth|
+| **APIs** | The Movie Database (TMDb) API |
 
 <br><br>
