@@ -1,7 +1,6 @@
 package com.moscow.remote.dto
 
 import com.moscow.domain.model.Collection
-import com.moscow.domain.model.MediaType
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -21,5 +20,4 @@ fun CollectionDto.toDomain() = Collection(
     id = id ?: 0,
     name = name ?: "",
     itemCount = itemCount ?: 0,
-    listType = MediaType.toMediaType(listType.toString())
 )

@@ -10,7 +10,7 @@ import com.moscow.domain.model.Collection
 import com.moscow.domain.model.Movie
 import com.moscow.domain.model.UserType
 import com.moscow.domain.repository.CollectionsRepository
-import com.moscow.domain.repository.PreferenceRepository
+import com.moscow.domain.repository.UserRepository
 import com.moscow.mapper.toDomain
 import com.moscow.remote.dto.AddMediaItemToCollectionRequestDto
 import com.moscow.remote.dto.CreateCollectionDto
@@ -19,17 +19,17 @@ import javax.inject.Inject
 
 class CollectionsRepositoryImpl @Inject constructor(
     private val collectionRemoteDataSource: CollectionRemoteDataSource,
-    private val preferenceRepository: PreferenceRepository
+    private val userRepository: UserRepository
 ) : CollectionsRepository {
     override suspend fun getCollections(page: Int): List<Collection> {
-        val user = preferenceRepository.getUser()
+        val user = userRepository.getUser()
         val accountId = when (user) {
             is UserType.AuthenticatedUser -> user.id
             is UserType.GuestUser -> throw NotAllowedUserException
         }
         val response = collectionRemoteDataSource.getMyCollections(
             accountId = accountId,
-            sessionId = preferenceRepository.getSessionId(),
+            sessionId = userRepository.getSessionId(),
             page = page
         )
         return response.results?.map { it.toDomain() } ?: emptyList()
@@ -43,7 +43,7 @@ class CollectionsRepositoryImpl @Inject constructor(
             CreateCollectionDto(name = collectionName, description = collectionDescription)
         val response = collectionRemoteDataSource.addNewCollection(
             collection = collection,
-            sessionId = preferenceRepository.getSessionId()
+            sessionId = userRepository.getSessionId()
         )
         return response.listId ?: throw NullException
     }
@@ -56,7 +56,7 @@ class CollectionsRepositoryImpl @Inject constructor(
         val response = collectionRemoteDataSource.addMediaItemToCollection(
             item = item,
             collectionId = collectionId,
-            sessionId = preferenceRepository.getSessionId()
+            sessionId = userRepository.getSessionId()
         )
         if (response.success == false)
             throw AddMediaItemToCollectionException
@@ -70,7 +70,7 @@ class CollectionsRepositoryImpl @Inject constructor(
         val response = collectionRemoteDataSource.deleteMediaItemFromCollection(
             item = item,
             collectionId = collectionId,
-            sessionId = preferenceRepository.getSessionId()
+            sessionId = userRepository.getSessionId()
         )
         if (response.success == false)
             throw DeleteMediaItemFromCollectionException
@@ -79,7 +79,7 @@ class CollectionsRepositoryImpl @Inject constructor(
     override suspend fun getCollectionDetails(collectionId: Int, page: Int): List<Movie> {
         val response = collectionRemoteDataSource.getCollectionDetails(
             collectionId = collectionId,
-            sessionId = preferenceRepository.getSessionId(),
+            sessionId = userRepository.getSessionId(),
             page = page
         )
         return response.items?.map { it.toDomain() } ?: emptyList()
@@ -91,7 +91,7 @@ class CollectionsRepositoryImpl @Inject constructor(
     ){
         val response = collectionRemoteDataSource.clearCollection(
             collectionId = collectionId,
-            sessionId = preferenceRepository.getSessionId(),
+            sessionId = userRepository.getSessionId(),
             confirm = confirm
         )
         if (response.success == false)
