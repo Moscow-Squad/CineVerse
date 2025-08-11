@@ -72,9 +72,9 @@ Dive into a world of endless entertainment, where you can explore movies and TV 
 
   <tr>
 <th> <img width="200" alt="Image" src="https://github.com/user-attachments/assets/617f2967-9738-4baf-9244-8b71390fffdb" /></th>  
-<th> <img width="200" alt="Image" src="https://github.com/user-attachments/assets/329ee0e2-a718-4900-b78b-3bb6af1acdf2" /></th>  
-<th> <img width="200" alt="Image" src="https://github.com/user-attachments/assets/0c508147-bd7d-4956-a8ef-1059bc66eb56" /></th>  
-<th> <img width="200" alt="Image" src="https://github.com/user-attachments/assets/787d6a93-fadb-442d-b446-3e6cad56deee" /></th>  
+<th> <img width="200" alt="Image" src="https://github.com/user-attachments/assets/44882243-48f0-4433-b920-1a3401c60aca" /> </th>  
+<th> <img width="200" alt="Image" src="https://github.com/user-attachments/assets/5d1675c9-49db-483f-b2c5-d8ad37261066" /> </th>  
+<th> <img width="200" alt="Image" src="https://github.com/user-attachments/assets/3b787a2c-78b8-4802-936c-bf27f757ad6f" /> </th> 
 </tr> 
 
 <tr> 
