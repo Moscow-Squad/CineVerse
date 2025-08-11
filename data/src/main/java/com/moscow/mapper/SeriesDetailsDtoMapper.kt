@@ -1,7 +1,7 @@
 package com.moscow.mapper
 
 import com.moscow.domain.model.CastDetails
-import com.moscow.domain.model.CreditsDetails
+import com.moscow.domain.model.CreditsInfo
 import com.moscow.domain.model.CrewDetails
 import com.moscow.domain.model.Series
 import com.moscow.domain.model.details.Creator
@@ -19,10 +19,7 @@ import com.moscow.remote.dto.series.SeasonDto
 import com.moscow.remote.dto.series.SeriesDetailDto
 import com.moscow.remote.dto.series.SeriesItemDto
 import com.moscow.utils.IMAGES_URL
-import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDate
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toLocalDateTime
 
 fun SeriesDetailDto.toDomain(trailer: String): SeriesDetail {
     return SeriesDetail(
@@ -34,9 +31,7 @@ fun SeriesDetailDto.toDomain(trailer: String): SeriesDetail {
         genres = genres.map { it.toDomain() },
         rating = (voteAverage * 10).toInt() / 10.0,
         runtime = episodeRunTime.toSeriesEpisodeDuration(),
-        releaseDate = if (firstAirDate == null) Clock.System.now()
-            .toLocalDateTime(TimeZone.currentSystemDefault()).date
-        else LocalDate.parse(firstAirDate),
+        releaseDate = if (firstAirDate.isNullOrBlank()) null else LocalDate.parse(firstAirDate),
         type = type,
         creators = createdBy.map { it.toDomain() },
         numberOfSeasons = numberOfSeasons,
@@ -59,9 +54,7 @@ internal fun SeasonDto.toDomain(): Season {
     return Season(
         id = id,
         name = name ?: "",
-        airDate = if (airDate == null) Clock.System.now()
-            .toLocalDateTime(TimeZone.currentSystemDefault()).date
-        else LocalDate.parse(airDate),
+        airDate = if (airDate.isNullOrBlank()) null else LocalDate.parse(airDate),
         episodeCount = episodeCount ?: 0,
         posterPath = IMAGES_URL + posterPath.orEmpty(),
         overview = overview ?: "",
@@ -92,7 +85,7 @@ fun SeriesItemDto.toDomain(): SeriesItem {
     )
 }
 
-fun SeriesCreditDto.toDomain() = CreditsDetails(
+fun SeriesCreditDto.toDomain() = CreditsInfo(
     actors = cast.map { it.toDomain() },
     behindTheScene = crew.map { it.toDomain() }
 )
@@ -117,11 +110,7 @@ fun SeriesRecommendationDto.toDomain() = Series(
     rating = voteAverage?.toFloat() ?: 0f,
     adult = adult ?: false,
     backdropPath = IMAGES_URL + backdropPath.orEmpty(),
-    firstAirDate = if (firstAirDate != null) {
-        LocalDate.parse(firstAirDate)
-    } else {
-        Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
-    },
+    firstAirDate = if (firstAirDate.isNullOrBlank()) null else LocalDate.parse(firstAirDate),
     genreIds = genreIds,
     originCountry = originCountry,
     originalLanguage = originalLanguage ?: "",

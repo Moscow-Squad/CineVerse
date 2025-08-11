@@ -1,6 +1,5 @@
 package com.moscow.mapper
 
-import com.moscow.domain.model.Actor
 import com.moscow.local.entity.ActorEntity
 import com.moscow.local.entity.Gender
 import kotlin.collections.map
@@ -11,7 +10,7 @@ fun List<ActorEntity>.toDomain(): List<Actor> {
             id = actorEntity.id,
             name = actorEntity.name,
             profileImg = actorEntity.profileImg,
-            gender = if (actorEntity.gender == Gender.MALE) com.moscow.domain.model.Gender.MALE else com.moscow.domain.model.Gender.FEMALE
+            gender = if (actorEntity.gender == Gender.MALE) com.moscow.domain.model.actor.Gender.MALE else com.moscow.domain.model.actor.Gender.FEMALE
         )
     }
 }
@@ -23,7 +22,7 @@ fun List<Actor>.toEntity(searchTerm: String): List<ActorEntity> {
             name = actor.name,
             profileImg = actor.profileImg,
             searchTerm = searchTerm,
-            gender = if (actor.gender == com.moscow.domain.model.Gender.MALE) Gender.MALE else Gender.FEMALE
+            gender = if (actor.gender == com.moscow.domain.model.actor.Gender.MALE) Gender.MALE else Gender.FEMALE
         )
     }
 }

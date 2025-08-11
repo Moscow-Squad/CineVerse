@@ -1,8 +1,7 @@
 package com.moscow.mapper
 
 import com.moscow.domain.model.Actor
-import com.moscow.domain.model.ActorDetails
-import com.moscow.domain.model.Gender
+import com.moscow.domain.model.actor.Gender
 import com.moscow.domain.model.Genre
 import com.moscow.domain.model.MediaItem
 import com.moscow.domain.model.MediaType
@@ -17,14 +16,12 @@ import com.moscow.remote.dto.actor.ActorImagesDto
 import com.moscow.remote.dto.details.ActorDetailsDto
 import com.moscow.remote.dto.series.SeriesDto
 import com.moscow.utils.IMAGES_URL
-import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDate
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toLocalDateTime
+
 
 fun MediaItemDto.toDomain() =
     MediaItem(
-        id = id ?: 0,
+        id = id,
         overview = overview.orEmpty(),
         posterPath = posterPath.orEmpty(),
         mediaType = MediaType.toMediaType(mediaType.orEmpty()),
@@ -45,11 +42,7 @@ fun MovieDto.toDomain() =
         posterPath = IMAGES_URL + posterPath.orEmpty(),
         backdropPath = IMAGES_URL + backdropPath.orEmpty(),
         adult = adult == true,
-        releaseDate = if (releaseDate.isNullOrEmpty()) {
-            Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
-        } else {
-            LocalDate.parse(releaseDate)
-        },
+        releaseDate = if (!releaseDate.isNullOrBlank()) LocalDate.parse(releaseDate) else null,
         genreIds = genreIds ?: emptyList(),
         originalLanguage = originalLanguage.orEmpty(),
         rating = voteAverage ?: 0f,
@@ -65,11 +58,7 @@ fun SeriesDto.toDomain() =
         posterPath = IMAGES_URL + posterPath.orEmpty(),
         backdropPath = IMAGES_URL + backdropPath.orEmpty(),
         adult = adult == true,
-        firstAirDate = if (firstAirDate.isNullOrEmpty()) {
-            Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
-        } else {
-            LocalDate.parse(firstAirDate)
-        },
+        firstAirDate = if (!firstAirDate.isNullOrBlank()) LocalDate.parse(firstAirDate) else null,
         genreIds = genreIds ?: emptyList(),
         originalLanguage = originalLanguage.orEmpty(),
         id = id ?: 0,
@@ -94,20 +83,18 @@ fun GenreDto.toDomain() =
     )
 
 fun ActorDetailsDto.toDomain(youtubeLink: String, facebookLink: String, instagramLink: String) =
-    ActorDetails(
+    Actor(
         id = id ?: 0,
         name = name.orEmpty(),
-        birthDate = if (birthday.isNullOrEmpty()) {
-            Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
-        } else {
-            LocalDate.parse(birthday)
-        },
+        birthDate = if (!birthday.isNullOrEmpty()) LocalDate.parse(birthday) else null,
         placeOfBirth = placeOfBirth.orEmpty(),
-        youtubeLink = "https://www.youtube.com/@$youtubeLink",
-        facebookLink = "https://www.facebook.com/$facebookLink",
-        instagramLink = "https://www.instagram.com/$instagramLink",
         biography = biography.orEmpty(),
-        profileImg = IMAGES_URL + profilePath.orEmpty()
+        profileImg = IMAGES_URL + profilePath.orEmpty(),
+        socialMediaLinks = Actor.SocialMediaLinks(
+            youtube = "https://www.youtube.com/@$youtubeLink",
+            facebook = "https://www.facebook.com/$facebookLink",
+            instagram = "https://www.instagram.com/$instagramLink",
+        )
     )
 
 fun ActorImagesDto.ActorImageDetails.toDomain() =
@@ -119,11 +106,7 @@ fun ActorBestOfMoviesDto.ActorBestOfMoviesAsCrew.toDomain() =
         name = title.orEmpty(),
         genreIds = genreIds,
         rating = voteAverage?.toFloat() ?: 0f,
-        releaseDate = if (releaseDate.isEmpty()) {
-            Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
-        } else {
-            LocalDate.parse(releaseDate)
-        },
+        releaseDate = if (releaseDate.isNotBlank()) LocalDate.parse(releaseDate) else null,
         adult = adult == true,
         backdropPath = backdropPath.orEmpty(),
         originalLanguage = originalLanguage.orEmpty(),
@@ -140,11 +123,7 @@ fun ActorBestOfMoviesDto.ActorBestOfMoviesAsCast.toDomain() =
         name = title.orEmpty(),
         genreIds = genreIds,
         rating = voteAverage?.toFloat() ?: 0f,
-        releaseDate = if (releaseDate.isEmpty()) {
-            Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
-        } else {
-            LocalDate.parse(releaseDate)
-        },
+        releaseDate = if (releaseDate.isNotBlank()) LocalDate.parse(releaseDate) else null,
         adult = adult == true,
         backdropPath = backdropPath.orEmpty(),
         originalLanguage = originalLanguage.orEmpty(),

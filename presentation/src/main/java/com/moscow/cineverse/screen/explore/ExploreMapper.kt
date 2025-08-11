@@ -3,7 +3,6 @@ package com.moscow.cineverse.screen.explore
 import com.moscow.cineverse.screen.explore.ExploreScreenState.ActorUiState
 import com.moscow.cineverse.screen.explore.ExploreScreenState.GenreUiState
 import com.moscow.cineverse.common_ui_state.MediaItemUiState
-import com.moscow.domain.model.Actor
 import com.moscow.domain.model.Genre
 import com.moscow.domain.model.MediaType
 import com.moscow.domain.model.Movie
