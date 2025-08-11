@@ -284,6 +284,7 @@ fun MainMovieCard(
                 onClick = { onSaveClick() },
                 backgroundColor = Theme.colors.button.secondary,
                 iconColor = Theme.colors.shade.primary,
+                modifier = Modifier.padding(start = 8.dp)
             )
             MovieFloatingButton(
                 buttonIcon = R.drawable.due_tone_play,
