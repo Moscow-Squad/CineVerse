@@ -1,12 +1,12 @@
-package com.moscow.domain.usecase.home
+package com.moscow.domain.usecase.movie
 
-import com.moscow.domain.repository.HomeRepository
 import com.moscow.domain.model.Movie
+import com.moscow.domain.repository.MovieRepository
 import javax.inject.Inject
 
 class GetMatchesYourVibesMoviesUseCase @Inject constructor(
-    private val homeRepository: HomeRepository
+    private val movieRepository: MovieRepository
 ) {
     suspend operator fun invoke(genreId:Int, page:Int, forceRefresh: Boolean = false): List<Movie> =
-        homeRepository.getMatchYourVibeMovies(genreId, page, forceRefresh)
+        movieRepository.getMatchYourVibeMovies(genreId, page, forceRefresh)
 }

@@ -8,6 +8,6 @@ class GetMovieDetailsUseCase @Inject constructor(
     private val movieRepository: MovieRepository,
 ) {
     suspend operator fun invoke(id: Int): MovieDetail {
-        return movieRepository.getMoviesDetail(id)
+        return movieRepository.getDetailsMovie(id)
     }
 }
