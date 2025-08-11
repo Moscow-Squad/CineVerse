@@ -23,11 +23,9 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.moscow.cineverse.designSystem.component.button.MovieButton
 import com.moscow.cineverse.designSystem.component.bottomsheet.CineVerseBottomSheet
-import com.moscow.cineverse.designSystem.theme.CineVerseTheme
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.utlis.noRibbleClick
 import com.moscow.cinverse.presentation.R
@@ -86,10 +84,7 @@ fun MovieRatingBottomSheet(
                         }
                     },
                     enableAction = selectedRating > 0 && !isLoading,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp)
-
+                    modifier = Modifier.fillMaxWidth()
                 )
 
                 if (isEditMode) {
@@ -105,10 +100,7 @@ fun MovieRatingBottomSheet(
                             onRatingRemove()
                         },
                         enableAction = !isLoading,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 16.dp)
-
+                        modifier = Modifier.fillMaxWidth()
                     )
                 }
             }
@@ -164,7 +156,6 @@ private fun EmojiAndStarRating(
                             .alpha(animatedAlpha)
                     )
                 }
-
                 if (index < emojiDrawables.size - 1) {
                     Spacer(modifier = Modifier.size(12.dp))
                 }
@@ -175,38 +166,6 @@ private fun EmojiAndStarRating(
             onRatingChanged = { onRatingChanged(it.toInt()) },
             starSize = 24.dp,
             spacing = 12.dp
-        )
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun MovieRatingBottomSheetPreview() {
-    CineVerseTheme {
-        var showBottomSheet by remember { mutableStateOf(true) }
-        var isLoading by remember { mutableStateOf(false) }
-        var hasExistingRating by remember { mutableStateOf(false) }
-        var currentRating by remember { mutableStateOf(0) }
-
-        MovieRatingBottomSheet(
-            isVisible = showBottomSheet,
-            onDismiss = { showBottomSheet = false },
-            onRatingSubmit = { rating ->
-                isLoading = true
-                println("Rating submitted: $rating")
-                currentRating = rating
-                hasExistingRating = true
-                isLoading = false
-            },
-            onRatingRemove = {
-                println("Rating removed")
-                currentRating = 0
-                hasExistingRating = false
-                showBottomSheet = false
-            },
-            isLoading = isLoading,
-            initialRating = currentRating,
-            hasExistingRating = hasExistingRating
         )
     }
 }

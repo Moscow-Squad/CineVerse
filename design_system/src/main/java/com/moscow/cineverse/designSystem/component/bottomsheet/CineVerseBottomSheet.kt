@@ -95,9 +95,7 @@ fun CineVerseBottomSheet(
                         color = Theme.colors.shade.primary
                     )
                 }
-
                 when {
-
                     showCancelIcon -> {
                         Icon(
                             painter = painterResource(R.drawable.outline_x),
@@ -115,12 +113,9 @@ fun CineVerseBottomSheet(
                             text = stringResource(id = R.string.new_collection),
                             style = Theme.textStyle.body.medium.medium,
                             color = Theme.colors.brand.primary,
-                            modifier = Modifier.clickable(
-                                onClick = onAddNewCollectionClick
-                            )
+                            modifier = Modifier.clickable(onClick = onAddNewCollectionClick)
                         )
                     }
-
                 }
             }
             content()
