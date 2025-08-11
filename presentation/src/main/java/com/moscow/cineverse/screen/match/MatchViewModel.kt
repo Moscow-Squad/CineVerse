@@ -16,7 +16,7 @@ class MatchViewModel : BaseViewModel<MatchUiState, MatchEvent>(MatchUiState()),
     override fun onClickNextQuestion() {
         updateState { state ->
             val nextIndex = state.currentQuestionIndex + 1
-            if (nextIndex < state.questions.size) {
+            if (nextIndex < state.moodQuestions.size) {
                 state.copy(currentQuestionIndex = nextIndex)
             } else {
                 state.copy(currentPage = MatchPages.ResultsPage)
@@ -25,6 +25,10 @@ class MatchViewModel : BaseViewModel<MatchUiState, MatchEvent>(MatchUiState()),
     }
 
     override fun onAnswerSelected(questionIndex: Int, answer: String) {
+
+    }
+
+    override fun onNavigateBack() {
 
     }
 

@@ -5,4 +5,5 @@ interface MatchInteractionListener {
     fun onClickFinishMatching()
     fun onClickNextQuestion()
     fun onAnswerSelected(questionIndex: Int, answer: String)
+    fun onNavigateBack()
 }

@@ -54,9 +54,10 @@ fun MatchContent(
             modifier = modifier,
             onClickNextQuestion = listener::onClickNextQuestion,
             onClickFinishMatching = listener::onClickFinishMatching,
-            questions = state.questions,
+            state = state,
             currentQuestionIndex = state.currentQuestionIndex,
             onAnswerSelected = listener::onAnswerSelected,
+            onNavigateBack = listener::onNavigateBack
         )
 
         MatchPages.ResultsPage -> MatchResultsPageContent(

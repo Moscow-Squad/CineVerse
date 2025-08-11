@@ -1,19 +1,72 @@
 package com.moscow.cineverse.screen.match
 
+import androidx.annotation.DrawableRes
 import com.moscow.cinverse.presentation.R
 
 data class MatchUiState(
     val isLoading: Boolean = false,
     val currentPage: MatchPages = MatchPages.StartPage,
-    val questions: List<MatchQuestion> = getDefaultMatchQuestions(),
-    val currentQuestionIndex: Int = 0
-)
+    val moodQuestions: List<QuestionUiState> = getFakeQuestions(),
+    val genres: List<QuestionUiState> = getFakeGenres(),
+    val timeQuestions: List<QuestionUiState> = getFakeQuestions(),
+    val recentOrClassicQuestions: List<QuestionUiState> = getFakeQuestions(),
+    val currentQuestionIndex: Int = 1,
+    val matchProgress: Float = 0f,
+) {
+    val selectedMoodQuestions: List<QuestionUiState>
+        get() = moodQuestions.filter { it.isSelected }
+
+
+    val selectedGenres: List<QuestionUiState>
+        get() = genres.filter { it.isSelected }
+
+    val selectedTimeQuestion: QuestionUiState
+        get() = timeQuestions.first { it.isSelected }
+
+}
 
 data class MatchQuestion(
     val id: Int,
     val question: Int,
     val answers: List<Int>,
     val selectedAnswers: List<Int> = emptyList(),
+)
+
+private fun getFakeQuestions() = listOf(
+    QuestionUiState(
+        id = 1,
+        name = "What mood are you in?",
+        iconResource = R.drawable.cine_verse_logo_splash
+    ),
+    QuestionUiState(
+        id = 2,
+        name = "Pick a genre",
+        iconResource = com.moscow.cineverse.design_system.R.drawable.colored_cineverse_logo
+    ),
+    QuestionUiState(
+        id = 3,
+        name = "How much time do you have?",
+        iconResource = R.drawable.folder_icon
+    )
+)
+
+private fun getFakeGenres() = listOf(
+    QuestionUiState(id = 1, name = "Action"),
+    QuestionUiState(id = 2, name = "Comedy"),
+    QuestionUiState(id = 3, name = "Drama"),
+    QuestionUiState(id = 4, name = "Romance"),
+    QuestionUiState(id = 5, name = "Sci-Fi"),
+    QuestionUiState(id = 6, name = "Thriller"),
+    QuestionUiState(id = 7, name = "Animation"),
+    QuestionUiState(id = 8, name = "Mystery")
+)
+
+data class QuestionUiState(
+    val id: Int,
+    val name: String,
+    val description: String? = null,
+    val isSelected: Boolean = false,
+    @DrawableRes val iconResource: Int? = null,
 )
 
 fun getDefaultMatchQuestions(): List<MatchQuestion> {
