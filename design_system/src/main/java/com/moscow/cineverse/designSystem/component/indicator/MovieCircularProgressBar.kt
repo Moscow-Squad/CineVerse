@@ -43,7 +43,7 @@ fun MovieCircularProgressBar(
     )
 
     Canvas(
-        modifier = modifier.size(size = 48.dp).rotate(degrees = rotation)
+        modifier = modifier.size(size = 40.dp).rotate(degrees = rotation)
     ) {
         val center = center
         val radius = size.minDimension / 2
