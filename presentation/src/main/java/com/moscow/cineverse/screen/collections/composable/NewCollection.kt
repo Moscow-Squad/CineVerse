@@ -13,10 +13,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.moscow.cineverse.design_system.R
 import com.moscow.cineverse.designSystem.component.text.AppTextField
 import com.moscow.cineverse.designSystem.component.button.MovieButton
 import com.moscow.cineverse.designSystem.theme.Theme
+import com.moscow.cinverse.presentation.R
 
 @Composable
 fun NewCollection(
@@ -61,7 +61,7 @@ fun NewCollection(
                 modifier = Modifier
                     .weight(1f)
                     .padding(vertical = 14.dp),
-                enable = collectionName.isNotBlank()
+                enableAction = collectionName.isNotBlank()
             )
         }
     }

@@ -25,9 +25,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavBackStackEntry
 import com.moscow.cineverse.component.ErrorContent
-import com.moscow.cineverse.designSystem.component.MovieAppBar
-import com.moscow.cineverse.designSystem.component.MovieCircularProgressBar
-import com.moscow.cineverse.designSystem.component.MovieScaffold
+import com.moscow.cineverse.designSystem.component.app_bar.MovieAppBar
+import com.moscow.cineverse.designSystem.component.indicator.MovieCircularProgressBar
+import com.moscow.cineverse.designSystem.component.wrapper.MovieScaffold
 import com.moscow.cineverse.designSystem.component.button.MovieButton
 import com.moscow.cineverse.designSystem.component.button.MovieFloatingButton
 import com.moscow.cineverse.designSystem.component.wrapper.MovieIcon
@@ -148,7 +148,7 @@ fun MyCollectionsContent(
                             .fillMaxWidth(.7f)
                     ) {
                         MovieIcon(
-                            painter = painterResource(com.moscow.cineverse.design_system.R.drawable.due_tone_video_library),
+                            painter = painterResource(R.drawable.due_tone_video_library),
                             tint = Theme.colors.brand.primary,
                             modifier = Modifier
                                 .clip(CircleShape)

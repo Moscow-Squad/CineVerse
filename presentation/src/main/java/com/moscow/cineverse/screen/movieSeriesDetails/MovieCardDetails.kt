@@ -29,15 +29,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.moscow.cineverse.designSystem.component.blur.OnBlurContent
 import com.moscow.cineverse.designSystem.component.blur.RemoteImagePlaceholder
 import com.moscow.cineverse.designSystem.component.button.MovieFloatingButton
 import com.moscow.cineverse.designSystem.theme.Theme
-import com.moscow.cineverse.design_system.R
 import com.moscow.cineverse.image_viewer.component.SafeImageViewer
+import com.moscow.cinverse.presentation.R
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
@@ -92,9 +91,7 @@ fun MovieCardDetails(
                     placeholderContent = { RemoteImagePlaceholder() },
                     errorContent = { RemoteImagePlaceholder() },
                     onBlurContent = {
-                        OnBlurContent(
-                            hintText = stringResource(R.string.unsuitable_image),
-                        )
+                        OnBlurContent()
                     }
                 )
             }
@@ -128,7 +125,7 @@ fun DetailCard(
     val formattedRating = try {
         val ratingValue = rating.toDouble()
         String.format("%.1f", ratingValue)
-    } catch (e: NumberFormatException) {
+    } catch (_: NumberFormatException) {
         "0.0"
     }
 
@@ -170,12 +167,12 @@ fun DetailCard(
                 horizontalArrangement = Arrangement.spacedBy(12.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                if(formattedRating != "0.0")
+                if (formattedRating != "0.0")
                     InfoTextWithIcon(
-                    R.drawable.due_tone_star,
-                    formattedRating,
-                    Theme.colors.additional.primary.yellow
-                )
+                        R.drawable.due_tone_star,
+                        formattedRating,
+                        Theme.colors.additional.primary.yellow
+                    )
                 if (duration.isNotBlank() && duration != "N/A" && duration != "null") {
                     InfoTextWithIcon(
                         R.drawable.due_tone_clock,
@@ -184,12 +181,12 @@ fun DetailCard(
                     )
                 }
 
-                if(releaseDate.isNotBlank())
+                if (releaseDate.isNotBlank())
                     InfoTextWithIcon(
-                    R.drawable.due_tone_calendar,
-                    releaseDate,
-                    Theme.colors.shade.secondary
-                )
+                        R.drawable.due_tone_calendar,
+                        releaseDate,
+                        Theme.colors.shade.secondary
+                    )
             }
 
         }
@@ -198,16 +195,16 @@ fun DetailCard(
             verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {
             MovieFloatingButton(
-                R.drawable.due_tone_play,
-                { onPlayClick() },
-                Theme.colors.button.primary,
-                Theme.colors.brand.tertiary,
+                buttonIcon = R.drawable.due_tone_play,
+                onClick = { onPlayClick() },
+                backgroundColor = Theme.colors.button.primary,
+                iconColor = Theme.colors.brand.tertiary,
             )
             MovieFloatingButton(
-                R.drawable.due_tone_add,
-                { onSaveClick() },
-                Theme.colors.button.secondary,
-                Theme.colors.shade.primary,
+                buttonIcon = R.drawable.due_tone_add,
+                onClick = { onSaveClick() },
+                backgroundColor = Theme.colors.button.secondary,
+                iconColor = Theme.colors.shade.primary,
             )
         }
     }
@@ -222,7 +219,7 @@ fun InfoTextWithIcon(icon: Int, text: String, tint: Color) {
     ) {
         Icon(
             painter = painterResource(id = icon),
-            contentDescription = "Info Text With Icon",
+            contentDescription = null,
             tint = tint
         )
         Text(
@@ -274,10 +271,7 @@ fun MainMovieCard(
                     )
                 }
             ) {
-                OnBlurContent(
-                    hintText = stringResource(R.string.unsuitable_image),
-                    isAddedText = false
-                )
+                OnBlurContent(isAddedText = false)
             }
             Text(
                 text = title,
@@ -289,17 +283,17 @@ fun MainMovieCard(
             )
 
             MovieFloatingButton(
-                R.drawable.due_tone_add,
-                { onSaveClick() },
-                Theme.colors.button.secondary,
-                Theme.colors.shade.primary,
+                buttonIcon = R.drawable.due_tone_add,
+                onClick = { onSaveClick() },
+                backgroundColor = Theme.colors.button.secondary,
+                iconColor = Theme.colors.shade.primary,
                 modifier = Modifier.size(40.dp)
             )
             MovieFloatingButton(
-                R.drawable.due_tone_play,
-                { onPlayClick() },
-                Theme.colors.button.primary,
-                Theme.colors.brand.tertiary,
+                buttonIcon = R.drawable.due_tone_play,
+                onClick = { onPlayClick() },
+                backgroundColor = Theme.colors.button.primary,
+                iconColor = Theme.colors.brand.tertiary,
                 modifier = Modifier
                     .padding(start = 8.dp)
                     .size(40.dp)
@@ -307,6 +301,7 @@ fun MainMovieCard(
         }
     }
 }
+
 @Preview(showBackground = true)
 @Composable
 fun DetailCardPreview() {

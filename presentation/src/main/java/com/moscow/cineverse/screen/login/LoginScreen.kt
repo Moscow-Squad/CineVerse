@@ -34,10 +34,10 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.moscow.cineverse.designSystem.component.bottomsheet.CineVerseBottomSheet
 import com.moscow.cineverse.designSystem.component.button.MovieButton
-import com.moscow.cineverse.designSystem.component.message_info.MessageInfoBox
+import com.moscow.cineverse.designSystem.component.card.MessageInfoCard
 import com.moscow.cineverse.designSystem.component.text.AppTextField
 import com.moscow.cineverse.designSystem.theme.Theme
-import com.moscow.cineverse.design_system.R
+import com.moscow.cinverse.presentation.R
 
 @Composable
 fun LoginScreen(
@@ -162,7 +162,7 @@ private fun LoginScreenContent(
             onClick = interactionListener::onClickLogin,
             buttonColor = Theme.colors.button.primary,
             isLoading = state.isLoading,
-            enable = (state.username.isNotBlank() && state.password.length >= 4)
+            enableAction = (state.username.isNotBlank() && state.password.length >= 4)
                     && (state.usernameError == null && state.passwordError == null)
                     && state.loginError == null
         )
@@ -210,7 +210,7 @@ fun SignUpBottomSheet(interactionListener: LoginInteractionListener) {
         onDismissRequest = interactionListener::onDismissOrCancelSignUpBottomSheet,
         showCancelIcon = false,
     ) {
-        MessageInfoBox(
+        MessageInfoCard(
             title = stringResource(com.moscow.cinverse.presentation.R.string.join_cineverse),
             description = stringResource(com.moscow.cinverse.presentation.R.string.let_s_get_you_set_up_we_ll_take_you_to_the_website_to_create_your_account),
             icon = painterResource(R.drawable.due_tone_link_minimalistic),

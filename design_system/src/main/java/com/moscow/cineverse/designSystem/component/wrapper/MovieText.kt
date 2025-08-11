@@ -8,15 +8,15 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.moscow.cineverse.designSystem.component.preview.CineVersePreviews
 import com.moscow.cineverse.designSystem.theme.CineVerseTheme
 import com.moscow.cineverse.designSystem.theme.Theme
 
 @Composable
 fun MovieText(
+    text: String,
     modifier: Modifier = Modifier,
-    text: String = "Movie Title",
     color: Color = Theme.colors.shade.primary,
     textAlign: TextAlign? = null,
     maxLines: Int = Int.MAX_VALUE,
@@ -34,7 +34,7 @@ fun MovieText(
     )
 }
 
-@Preview(showBackground = true)
+@CineVersePreviews
 @Composable
 fun MovieTextPreview() {
     CineVerseTheme {

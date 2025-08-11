@@ -16,15 +16,12 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.moscow.cineverse.designSystem.component.blur.OnBlurContent
 import com.moscow.cineverse.designSystem.component.blur.RemoteImagePlaceholder
-import com.moscow.cineverse.designSystem.theme.CineVerseTheme
 import com.moscow.cineverse.designSystem.theme.Theme
-import com.moscow.cineverse.design_system.R
 import com.moscow.cineverse.image_viewer.component.SafeImageViewer
+import com.moscow.cinverse.presentation.R
 
 @Composable
 fun <T> CastCard(
@@ -75,7 +72,6 @@ fun <T> CastCard(
                 errorContent = { RemoteImagePlaceholder() },
                 onBlurContent = {
                     OnBlurContent(
-                        hintText = stringResource(R.string.unsuitable_image),
                         isAddedText = false
                     )
                 }

@@ -38,7 +38,7 @@ fun NoHistoryScreen (
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Icon(
-            painter = painterResource(Theme.icons.dueTone.history),
+            painter = painterResource(R.drawable.due_tone_history),
             contentDescription = "no history yet",
             tint = Theme.colors.brand.primary,
             modifier = Modifier

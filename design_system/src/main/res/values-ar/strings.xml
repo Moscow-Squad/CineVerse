@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="label">تسمية</string>
     <string name="movies">أفلام</string>
     <string name="series">مسلسلات</string>
     <string name="movie_list_type">فلم</string>
@@ -9,28 +8,15 @@
     <string name="collection_item_icon">أيقونة عنصر المجموعة</string>
     <string name="alt_arrow_right_icon">أيقونة السهم لليمين (بديلة)</string>
     <string name="arrow_left">سهم لليسار</string>
-    <string name="cast_image">صورة الممثل</string>
-    <string name="youtube_icon">أيقونة يوتيوب</string>
-    <string name="facebook_icon">أيقونة فيسبوك</string>
-    <string name="instagram_icon">أيقونة إنستغرام</string>
-    <string name="pulsescale">مقياس النبض</string>
-    <string name="scale">مقياس</string>
-    <string name="iconcolor">لون الأيقونة</string>
-    <string name="icon_cross_fade">تلاشي الأيقونة</string>
-    <string name="collection_image">صورة المجموعة</string>
     <string name="floating_button_icon">أيقونة الزر العائم</string>
     <string name="show_more">عرض المزيد</string>
     <string name="behind_the_scenes">كواليس التصوير</string>
-    <string name="season">"الموسم %d"</string>
-    <string name="season_poster">ملصق الموسم</string>
     <string name="rate_icon">أيقونة التقييم</string>
     <string name="episodes_icon">أيقونة الحلقات</string>
     <string name="air_date_icon">أيقونة تاريخ العرض</string>
     <string name="episodes">حلقات</string>
     <string name="star_cast">طاقم التمثيل</string>
     <string name="featured_collections">مجموعات مميزة</string>
-    <string name="you_collections_section">قسم مجموعاتك</string>
-    <string name="cast_member_image">صورة أحد الممثلين</string>
     <string name="star_icon">أيقونة النجمة</string>
     <string name="suggest_item_icon">أيقونة عنصر مقترح</string>
     <string name="arrow_left_up">سهم لليسار وللأعلى</string>
@@ -42,17 +28,15 @@
     <string name="add_rating">إضافة تقييم</string>
     <string name="rate_the_movie">قيّم الفيلم</string>
     <string name="remove_rating">إزالة التقييم</string>
-    <string name="reviewer_image">صورة المراجع</string>
     <string name="readmore">عرض المزيد</string>
     <string name="you_rated_it">قمت بتقييمه</string>
     <string name="tap_to_change_your_rating">اضغط لتعديل التقييم</string>
-    <string name="empty_state_icon">أيقونة الحالة الفارغة</string>
     <string name="unsuitable_image">صورة غير مناسبة</string>
     <string name="your_collections">مجموعاتك</string>
-    <string name="shows">عروض</string>
     <string name="did_you_watch_it">قمت برؤيته ؟</string>
     <string name="series_type">مسلسل</string>
     <string name="duration_hours_minutes">%1$d س %2$d د</string>
     <string name="duration_hours_only">%1$d س</string>
     <string name="duration_minutes_only">%1$d د</string>
+    <string name="sensitive_content">محتوي حساس</string>
 </resources>

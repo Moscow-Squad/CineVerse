@@ -123,7 +123,7 @@ fun BottomOnBoardingCard(
                 AnimatedVisibility(state.currentPage != 0) {
                     MovieFloatingButton(
                         modifier = Modifier.size(48.dp),
-                        buttonIcon = Theme.icons.outline.altArrowLeft,
+                        buttonIcon = R.drawable.outline_alt_arrow_left,
                         onClick = onClickPreviousButton,
                         contentPadding = PaddingValues(14.dp),
                         backgroundColor = Theme.colors.button.secondary,
@@ -141,7 +141,7 @@ fun BottomOnBoardingCard(
                     if (!isLastPage) {
                         MovieFloatingButton(
                             modifier = Modifier.size(48.dp),
-                            buttonIcon = Theme.icons.outline.altArrowRight,
+                            buttonIcon = R.drawable.outline_alt_arrow_right,
                             contentPadding = PaddingValues(14.dp),
                             onClick = onClickNextButton,
                             backgroundColor = Theme.colors.button.primary,
@@ -150,7 +150,7 @@ fun BottomOnBoardingCard(
                     } else {
                         MovieExtendedFloatingButton(
                             onClick = onClickGetStartedButton,
-                            icon = painterResource(Theme.icons.outline.altArrowRight),
+                            icon = painterResource(R.drawable.outline_alt_arrow_right,),
                             buttonText = stringResource(R.string.get_started),
                             backgroundColor = Theme.colors.button.primary,
                             contentPadding = PaddingValues(

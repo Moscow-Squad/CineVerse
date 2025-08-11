@@ -1,7 +1,6 @@
 package com.moscow.cineverse.designSystem.component.button
 
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
@@ -16,38 +15,41 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.moscow.cineverse.designSystem.component.preview.CineVersePreviews
 import com.moscow.cineverse.designSystem.theme.CineVerseTheme
 import com.moscow.cineverse.designSystem.theme.Theme
+import com.moscow.cineverse.design_system.R
 
 @Composable
 fun MovieExtendedFloatingButton(
     onClick: () -> Unit,
-    modifier: Modifier = Modifier,
     icon: Painter,
     iconColor: Color,
     buttonText: String,
     backgroundColor: Color,
-    contentPadding: PaddingValues
-){
+    contentPadding: PaddingValues,
+    modifier: Modifier = Modifier,
+) {
     Button(
         modifier = modifier.wrapContentHeight(),
         onClick = onClick,
-        shape = RoundedCornerShape(Theme.radius.large),
+        shape = RoundedCornerShape(size = Theme.radius.large),
         contentPadding = contentPadding,
         colors = buttonColors(
             containerColor = backgroundColor,
             contentColor = Color.Unspecified
         )
     ) {
-        Text(modifier = Modifier.padding(end = 8.dp),
+        Text(
+            modifier = Modifier.padding(end = 8.dp),
             textAlign = TextAlign.Center,
             text = buttonText,
             style = Theme.textStyle.body.medium.medium,
-            color = Theme.colors.button.onPrimary)
+            color = Theme.colors.button.onPrimary
+        )
         Icon(
-            modifier = Modifier.size(20.dp),
+            modifier = Modifier.size(size = 20.dp),
             painter = icon,
             tint = iconColor,
             contentDescription = buttonText
@@ -55,16 +57,16 @@ fun MovieExtendedFloatingButton(
     }
 }
 
-@Preview()
+@CineVersePreviews
 @Composable
-fun MovieExtendedFloatingButtonPreview(){
+fun MovieExtendedFloatingButtonPreview() {
     CineVerseTheme {
         MovieExtendedFloatingButton(
             onClick = {},
-            icon = painterResource(Theme.icons.outline.altArrowLeft),
+            icon = painterResource(R.drawable.outline_plus),
             buttonText = "Get Started",
             backgroundColor = Theme.colors.button.primary,
-            contentPadding = PaddingValues(14.dp),
+            contentPadding = PaddingValues(all = 14.dp),
             iconColor = Theme.colors.button.secondary
         )
     }

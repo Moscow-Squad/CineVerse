@@ -1,7 +1,5 @@
 package com.moscow.cineverse.designSystem.component.text
 
-import android.content.res.Configuration.UI_MODE_NIGHT_NO
-import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -31,41 +29,39 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextDecoration
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.moscow.cineverse.designSystem.component.preview.CineVersePreviews
 import com.moscow.cineverse.designSystem.theme.CineVerseTheme
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.design_system.R
 
 @Composable
 fun AppTextField(
-    modifier: Modifier = Modifier,
     value: String,
+    leadingIcon: Int,
+    modifier: Modifier = Modifier,
     onValueChange: (String) -> Unit,
     placeholder: String? = null,
     isError: Boolean = false,
     errorMessage: String? = null,
     isPassword: Boolean = false,
-    trailingIcon: @Composable (() -> Unit)? = null,
-    leadingIcon: Int,
+    label: String? = null,
     leadingIconTint: Color = LocalContentColor.current,
-    singleLine: Boolean = true,
     maxLines: Int = 1,
+    singleLine: Boolean = true,
     enabled: Boolean = true,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
-    label: String? = null,
+    trailingIcon: @Composable (() -> Unit)? = null,
     forgotPasswordClick: (() -> Unit)? = null
 ) {
     var passwordVisible by remember { mutableStateOf(false) }
 
     Column(
-        verticalArrangement = Arrangement.spacedBy(8.dp),
-        modifier = modifier
+        modifier = modifier, verticalArrangement = Arrangement.spacedBy(space = 8.dp)
     ) {
         Row(
-            horizontalArrangement = Arrangement.Start,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Start
         ) {
             if (label != null) {
                 Text(
@@ -81,7 +77,10 @@ fun AppTextField(
             onValueChange = onValueChange,
             modifier = Modifier
                 .fillMaxWidth()
-                .background(Theme.colors.background.card, RoundedCornerShape(Theme.radius.large)),
+                .background(
+                    color = Theme.colors.background.card,
+                    shape = RoundedCornerShape(Theme.radius.large)
+                ),
             textStyle = Theme.textStyle.body.medium.medium,
             placeholder = placeholder?.let {
                 {
@@ -98,30 +97,37 @@ fun AppTextField(
             enabled = enabled,
             leadingIcon = {
                 Icon(
-                    modifier = Modifier.size(20.dp),
-                    painter = painterResource(leadingIcon) ,
-                    contentDescription = "leading icon",
+                    modifier = Modifier.size(size = 20.dp),
+                    painter = painterResource(id = leadingIcon),
+                    contentDescription = null,
                     tint = leadingIconTint
                 )
             },
             trailingIcon = {
                 when {
                     isPassword -> {
-                        val image =
-                            if (passwordVisible) painterResource(R.drawable.outline_eye_opened) else painterResource(
-                                R.drawable.outline_eye_closed
+                        val image = if (passwordVisible) {
+                            painterResource(id = R.drawable.outline_eye_opened)
+                        } else {
+                            painterResource(id = R.drawable.outline_eye_closed)
+                        }
+                        IconButton(
+                            onClick = { passwordVisible = !passwordVisible }
+                        ) {
+                            Icon(
+                                painter = image,
+                                contentDescription = null,
+                                modifier = Modifier.size(size = 20.dp),
+                                tint = Theme.colors.shade.secondary
                             )
-                        IconButton(onClick = { passwordVisible = !passwordVisible }) {
-                            Icon(painter = image, contentDescription = "Toggle password visibility"
-                            , modifier = Modifier.size(20.dp), tint = Theme.colors.shade.secondary)
                         }
                     }
 
                     isError -> {
                         Icon(
-                            modifier = Modifier.size(20.dp),
-                            painter = painterResource(R.drawable.outline_danger_triangle),
-                            contentDescription = "Error",
+                            modifier = Modifier.size(size = 20.dp),
+                            painter = painterResource(id = R.drawable.outline_danger_triangle),
+                            contentDescription = null,
                             tint = Theme.colors.additional.primary.red
                         )
                     }
@@ -129,12 +135,14 @@ fun AppTextField(
                     trailingIcon != null -> trailingIcon()
                 }
             },
-            visualTransformation = if (isPassword && !passwordVisible)
+            visualTransformation = if (isPassword && !passwordVisible) {
                 PasswordVisualTransformation()
-            else VisualTransformation.None,
+            } else {
+                VisualTransformation.None
+            },
             keyboardOptions = keyboardOptions,
             keyboardActions = keyboardActions,
-            shape = RoundedCornerShape(Theme.radius.large),
+            shape = RoundedCornerShape(size = Theme.radius.large),
             colors = OutlinedTextFieldDefaults.colors(
                 focusedTextColor = Theme.colors.shade.primary,
                 unfocusedTextColor = Theme.colors.shade.primary,
@@ -159,17 +167,15 @@ fun AppTextField(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text(
-                    text = stringResource(R.string.forgot_password),
+                    text = stringResource(id = R.string.forgot_password),
                     textDecoration = TextDecoration.Underline,
                     style = Theme.textStyle.body.medium.regular,
                     color = Theme.colors.shade.secondary,
                     modifier = Modifier.clickable(
-                        interactionSource =  remember { MutableInteractionSource() },
+                        interactionSource = remember { MutableInteractionSource() },
                         indication = null
                     ) {
-                        if (forgotPasswordClick != null) {
-                            forgotPasswordClick()
-                        }
+                        forgotPasswordClick?.invoke()
                     }
                 )
             }
@@ -177,8 +183,7 @@ fun AppTextField(
     }
 }
 
-@Preview(showBackground = true, uiMode = UI_MODE_NIGHT_NO, name = "Light Mode")
-@Preview(showBackground = true, uiMode = UI_MODE_NIGHT_YES, name = "Dark Mode")
+@CineVersePreviews
 @Composable
 private fun PreviewBasicAppTextField() {
     CineVerseTheme {
@@ -189,43 +194,6 @@ private fun PreviewBasicAppTextField() {
             onValueChange = { text = it },
             placeholder = "Enter your name",
             leadingIcon = R.drawable.outline_user,
-            leadingIconTint = Theme.colors.shade.tertiary
-        )
-    }
-}
-
-@Preview(showBackground = true, uiMode = UI_MODE_NIGHT_NO)
-@Preview(showBackground = true, uiMode = UI_MODE_NIGHT_YES)
-@Composable
-private fun PreviewPasswordAppTextField() {
-    CineVerseTheme {
-        var password by remember { mutableStateOf("") }
-        AppTextField(
-            label = "label",
-            value = password,
-            onValueChange = { password = it },
-            placeholder = "Password",
-            isPassword = true,
-            leadingIcon = R.drawable.due_tone_profile,
-            leadingIconTint = Theme.colors.shade.tertiary
-        )
-    }
-}
-
-@Preview(showBackground = true, uiMode = UI_MODE_NIGHT_NO)
-@Preview(showBackground = true, uiMode = UI_MODE_NIGHT_YES)
-@Composable
-private fun PreviewErrorAppTextField() {
-    CineVerseTheme {
-        var email by remember { mutableStateOf("") }
-        AppTextField(
-            label = "label",
-            value = email,
-            onValueChange = { email = it },
-            placeholder = "Email",
-            isError = true,
-            errorMessage = "Error Message",
-            leadingIcon = R.drawable.due_tone_profile,
             leadingIconTint = Theme.colors.shade.tertiary
         )
     }

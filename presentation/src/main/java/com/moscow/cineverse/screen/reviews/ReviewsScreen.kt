@@ -11,11 +11,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import coil3.compose.rememberAsyncImagePainter
-import com.moscow.cineverse.designSystem.component.MovieAppBar
-import com.moscow.cineverse.designSystem.component.MovieScaffold
+import com.moscow.cineverse.designSystem.component.app_bar.MovieAppBar
+import com.moscow.cineverse.designSystem.component.wrapper.MovieScaffold
 import com.moscow.cineverse.screen.movieSeriesDetails.MovieReviewCard
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.mapper.formatReviewDate
@@ -86,7 +87,7 @@ fun ReviewsContent(
                 }
 
                 when (reviewsFlow.loadState.append) {
-                    is androidx.paging.LoadState.Loading -> {
+                    is LoadState.Loading -> {
                         item {
                             Text(
                                 "Loading more...",
@@ -95,7 +96,7 @@ fun ReviewsContent(
                         }
                     }
 
-                    is androidx.paging.LoadState.Error -> {
+                    is LoadState.Error -> {
                         item {
                             Text(
                                 "Error loading more data.",

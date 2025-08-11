@@ -11,8 +11,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.moscow.cineverse.component.MoviePosterCard
-import com.moscow.cineverse.designSystem.component.MovieAppBar
-import com.moscow.cineverse.designSystem.component.MovieCircularProgressBar
+import com.moscow.cineverse.designSystem.component.app_bar.MovieAppBar
+import com.moscow.cineverse.designSystem.component.indicator.MovieCircularProgressBar
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.screen.cast_details.best_of_movies.ShowAllActorMoviesInteractionListener
 import com.moscow.cineverse.screen.cast_details.best_of_movies.ShowAllActorMoviesState

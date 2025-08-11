@@ -15,7 +15,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.moscow.cineverse.designSystem.component.blur.OnBlurContent
 import com.moscow.cineverse.designSystem.component.blur.RemoteImagePlaceholder
@@ -144,9 +143,7 @@ fun CastGalleryItemImage(
             RemoteImagePlaceholder()
         },
         onBlurContent = {
-            OnBlurContent(
-                hintText = stringResource(com.moscow.cinverse.presentation.R.string.sensitive_content),
-            )
+            OnBlurContent()
         }
     )
 }

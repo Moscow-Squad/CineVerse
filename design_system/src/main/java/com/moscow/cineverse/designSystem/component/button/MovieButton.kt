@@ -22,10 +22,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.moscow.cineverse.designSystem.component.MovieCircularProgressBar
+import com.moscow.cineverse.designSystem.component.indicator.MovieCircularProgressBar
+import com.moscow.cineverse.designSystem.component.preview.CineVersePreviews
 import com.moscow.cineverse.designSystem.theme.CineVerseTheme
 import com.moscow.cineverse.designSystem.theme.Theme
 
@@ -35,41 +35,52 @@ fun MovieButton(
     textColor: Color,
     textStyle: TextStyle,
     onClick: () -> Unit,
-    textPadding: PaddingValues = PaddingValues(),
     modifier: Modifier = Modifier,
+    textPadding: PaddingValues = PaddingValues(),
     buttonColor: Color = Color.Transparent,
     cornerRadius: Dp = Theme.radius.large,
-    enable: Boolean = true,
+    enableAction: Boolean = true,
     isLoading: Boolean = false
 ) {
-    val color by animateColorAsState(if (!enable) Theme.colors.button.onDisabled else textColor)
+    val textColorAction by animateColorAsState(if (!enableAction) Theme.colors.button.onDisabled else textColor)
+
     val backgroundColor by animateColorAsState(
-        if (buttonColor != Color.Transparent)
-            if (enable) buttonColor else Theme.colors.button.disabled
-        else
+        if (buttonColor != Color.Transparent) {
+            if (enableAction) buttonColor else Theme.colors.button.disabled
+        } else {
             buttonColor
+        }
     )
 
     Row(
         modifier = modifier
-            .height(48.dp)
-            .clip(RoundedCornerShape(cornerRadius))
-            .background(backgroundColor, RoundedCornerShape(cornerRadius))
-            .clickable(enabled = enable, onClick = onClick),
+            .height(
+                height = 48.dp
+            )
+            .clip(
+                shape = RoundedCornerShape(cornerRadius)
+            )
+            .background(
+                color = backgroundColor,
+                shape = RoundedCornerShape(cornerRadius)
+            )
+            .clickable(
+                enabled = enableAction,
+                onClick = onClick
+            ),
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
-    )
-    {
+    ) {
 
         AnimatedContent(isLoading) { state ->
-            if(!state){
+            if (!state) {
                 Text(
                     modifier = Modifier.padding(textPadding),
                     text = buttonText,
-                    color = color,
+                    color = textColorAction,
                     style = textStyle
                 )
-            }else{
+            } else {
                 MovieCircularProgressBar(
                     modifier = Modifier.size(24.dp),
                     strokeWidth = 3.dp,
@@ -83,26 +94,32 @@ fun MovieButton(
     }
 }
 
-@Preview
+@CineVersePreviews
 @Composable
 private fun PreviewButton() {
+
     var isLoading by remember { mutableStateOf(true) }
     var isEnabled by remember { mutableStateOf(true) }
+
     CineVerseTheme {
+
         MovieButton(
             buttonColor = Theme.colors.button.primary,
             buttonText = "Login",
             textColor = Theme.colors.button.onPrimary,
             textStyle = Theme.textStyle.title.small,
             isLoading = isLoading,
-            enable = isEnabled,
+            enableAction = isEnabled,
             onClick = {
                 isEnabled = !isEnabled
 
             },
-            //  buttonColor = Theme.colors.button.primary,
             modifier = Modifier
-                .padding(horizontal = 24.dp, vertical = 16.dp)
+                .padding(
+                    horizontal = 24.dp,
+                    vertical = 16.dp
+                )
         )
+
     }
 }

@@ -27,12 +27,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
-import androidx.paging.compose.itemKey
 import com.moscow.cineverse.common_ui_state.MediaItemUiState
 import com.moscow.cineverse.component.EmptyState
 import com.moscow.cineverse.component.MoviePosterCard
 import com.moscow.cineverse.component.NoInternetScreen
-import com.moscow.cineverse.designSystem.component.MovieCircularProgressBar
+import com.moscow.cineverse.designSystem.component.indicator.MovieCircularProgressBar
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.screen.explore.ExploreInteractionListener
 import com.moscow.cineverse.screen.explore.ExploreScreenState
@@ -135,7 +134,7 @@ fun ExploreMainContent(
         uiState.isContentEmpty -> {
             Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                 EmptyState(
-                    icon = painterResource(Theme.icons.dueTone.search),
+                    icon = painterResource(R.drawable.outline_search),
                     title = stringResource(R.string.nothing_found),
                     description = stringResource(R.string.we_searched_the_entire_universe_but_found_nothing_matching_your_query_try_something_else)
                 )

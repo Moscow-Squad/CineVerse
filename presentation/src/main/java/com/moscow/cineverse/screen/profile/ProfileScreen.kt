@@ -17,10 +17,9 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.rememberAsyncImagePainter
-import com.moscow.cineverse.designSystem.component.MovieAppBar
+import com.moscow.cineverse.designSystem.component.app_bar.MovieAppBar
 import com.moscow.cineverse.designSystem.component.wrapper.MovieText
 import com.moscow.cineverse.designSystem.theme.Theme
-import com.moscow.cineverse.screen.login.WebViewBrowser
 import com.moscow.cineverse.screen.profile.component.ContentPreferencesBottomSheet
 import com.moscow.cineverse.screen.profile.component.EditProfileBottomSheet
 import com.moscow.cineverse.screen.profile.component.LanguageBottomSheet

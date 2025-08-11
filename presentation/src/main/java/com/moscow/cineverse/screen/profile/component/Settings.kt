@@ -1,7 +1,6 @@
 package com.moscow.cineverse.screen.profile.component
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -23,7 +22,7 @@ import androidx.compose.ui.unit.dp
 import com.moscow.cineverse.designSystem.component.switcher.CineVerseSwitch
 import com.moscow.cineverse.designSystem.component.wrapper.MovieText
 import com.moscow.cineverse.designSystem.theme.Theme
-import com.moscow.cineverse.designSystem.utils.noRibbleClick
+import com.moscow.cineverse.utlis.noRibbleClick
 import com.moscow.cinverse.presentation.R
 
 @Composable
@@ -51,7 +50,7 @@ internal fun Settings(
             onClick = {},
             prefixIcon = {
                 Icon(
-                    painter = painterResource(com.moscow.cineverse.design_system.R.drawable.due_tone_moon),
+                    painter = painterResource(R.drawable.due_tone_moon),
                     tint = Theme.colors.brand.primary,
                     contentDescription = "dark mode icon"
                 )
@@ -81,14 +80,14 @@ internal fun Settings(
             },
             prefixIcon = {
                 Icon(
-                    painter = painterResource(com.moscow.cineverse.design_system.R.drawable.due_tone_language),
+                    painter = painterResource(R.drawable.due_tone_language),
                     tint = Theme.colors.brand.primary,
                     contentDescription = "language icon"
                 )
             },
             suffixIcon = {
                 Icon(
-                    painter = painterResource(com.moscow.cineverse.design_system.R.drawable.outline_alt_arrow_right),
+                    painter = painterResource(R.drawable.outline_alt_arrow_right),
                     tint = Theme.colors.shade.tertiary,
                     contentDescription = "language arrow icon"
                 )
@@ -108,14 +107,14 @@ internal fun Settings(
             },
             prefixIcon = {
                 Icon(
-                    painter = painterResource(com.moscow.cineverse.design_system.R.drawable.due_tone_color_switch),
+                    painter = painterResource(R.drawable.due_tone_color_switch),
                     tint = Theme.colors.brand.primary,
                     contentDescription = "preference icon"
                 )
             },
             suffixIcon = {
                 Icon(
-                    painter = painterResource(com.moscow.cineverse.design_system.R.drawable.outline_alt_arrow_right),
+                    painter = painterResource(R.drawable.outline_alt_arrow_right),
                     tint = Theme.colors.shade.tertiary,
                     contentDescription = "preference arrow icon"
                 )
@@ -132,14 +131,14 @@ internal fun Settings(
             onClick = { onLogoutClick() },
             prefixIcon = {
                 Icon(
-                    painter = painterResource(com.moscow.cineverse.design_system.R.drawable.due_tone_logout),
+                    painter = painterResource(R.drawable.due_tone_logout),
                     tint = Theme.colors.additional.primary.red,
                     contentDescription = "logout icon"
                 )
             },
             suffixIcon = {
                 Icon(
-                    painter = painterResource(com.moscow.cineverse.design_system.R.drawable.outline_alt_arrow_right),
+                    painter = painterResource(R.drawable.outline_alt_arrow_right),
                     tint = Theme.colors.additional.primary.red,
                     contentDescription = "logout arrow icon"
                 )

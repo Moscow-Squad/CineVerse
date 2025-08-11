@@ -45,7 +45,7 @@ fun NoInternetScreen(
                 .background(shape = CircleShape, color = Theme.colors.additional.secondary.red)
         ) {
             Icon(
-                painter = painterResource(Theme.icons.dueTone.station),
+                painter = painterResource(R.drawable.due_tone_station),
                 contentDescription = "no internet connection",
                 tint = Theme.colors.additional.primary.red,
                 modifier = Modifier

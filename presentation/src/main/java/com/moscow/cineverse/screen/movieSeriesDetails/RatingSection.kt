@@ -17,15 +17,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.moscow.cineverse.designSystem.theme.CineVerseTheme
 import com.moscow.cineverse.designSystem.theme.Theme
-import com.moscow.cineverse.design_system.R
+import com.moscow.cinverse.presentation.R
 
 @Composable
 fun RatingSection(

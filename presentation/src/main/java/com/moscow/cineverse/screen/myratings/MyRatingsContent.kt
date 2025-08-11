@@ -24,9 +24,9 @@ import com.moscow.cineverse.common_ui_state.MediaItemUiState
 import com.moscow.cineverse.component.EmptyState
 import com.moscow.cineverse.component.MoviePosterCard
 import com.moscow.cineverse.component.NoInternetScreen
-import com.moscow.cineverse.designSystem.component.MovieAppBar
-import com.moscow.cineverse.designSystem.component.MovieCircularProgressBar
-import com.moscow.cineverse.designSystem.component.MovieScaffold
+import com.moscow.cineverse.designSystem.component.app_bar.MovieAppBar
+import com.moscow.cineverse.designSystem.component.indicator.MovieCircularProgressBar
+import com.moscow.cineverse.designSystem.component.wrapper.MovieScaffold
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.screen.explore.component.ExploreTabsSection
 import com.moscow.cineverse.screen.movieSeriesDetails.MovieRatingBar
@@ -90,7 +90,7 @@ fun MyRatingsContent(
                             contentAlignment = Alignment.Center
                         ) {
                             EmptyState(
-                                icon = painterResource(Theme.icons.dueTone.star),
+                                icon = painterResource(R.drawable.due_tone_star),
                                 title = stringResource(R.string.no_ratings_yet),
                                 description = stringResource(R.string.rate_movies_and_series_you_ve_watched_to_track_what_you_love_and_what_you_don_t),
                                 buttonTitle = stringResource(R.string.start_rating),

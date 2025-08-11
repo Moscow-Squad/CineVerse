@@ -18,9 +18,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.moscow.cineverse.designSystem.theme.Theme
-import com.moscow.cineverse.design_system.R
-import com.moscow.cineverse.designSystem.component.MovieCircularProgressBar
+import com.moscow.cineverse.designSystem.component.indicator.MovieCircularProgressBar
 import com.moscow.cineverse.designSystem.theme.CineVerseTheme
+import com.moscow.cinverse.presentation.R
 
 @Composable
 fun CollectionItem(

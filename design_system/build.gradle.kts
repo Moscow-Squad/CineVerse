@@ -7,15 +7,9 @@ android {
 }
 
 dependencies {
-
-    implementation(projects.imageViewer)
-
-    implementation(libs.coil3.compose)
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.ui.tooling.preview)
+
     implementation(libs.material3)
     implementation(libs.readmore.material3)
-
-    implementation(libs.accompanist.webview)
-    testImplementation(kotlin("test"))
 }
