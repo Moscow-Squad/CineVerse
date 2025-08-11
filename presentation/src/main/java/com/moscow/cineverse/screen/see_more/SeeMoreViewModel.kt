@@ -133,7 +133,7 @@ class SeeMoreViewModel @Inject constructor(
                         updateState { it.copy(title = HomeFeaturedItems.TOP_RATED_TV_SHOWS.titleResource) }
                         createPagingFlow(
                             pageSize = pageSize,
-                            fetchData = { page -> getTopRatedTVShowsUseCase(page) },
+                            fetchData = { page -> getTopRatedTVShowsUseCase(page, forceRefresh = true) },
                         )
                     }
 
