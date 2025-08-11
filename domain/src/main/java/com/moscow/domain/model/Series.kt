@@ -8,7 +8,7 @@ data class Series(
     val rating: Float,
     val adult: Boolean,
     val backdropPath: String,
-    val firstAirDate: LocalDate,
+    val firstAirDate: LocalDate?,
     val genreIds: List<Int>,
     val originCountry: List<String>,
     val originalLanguage: String,

@@ -1,9 +1,8 @@
 package com.moscow.repository
 
-import android.util.Log
 import com.moscow.data_source.local.DetailsLocalDataSource
 import com.moscow.data_source.remote.SeriesRemoteDataSource
-import com.moscow.domain.model.CreditsDetails
+import com.moscow.domain.model.CreditsInfo
 import com.moscow.domain.model.Review
 import com.moscow.domain.model.Series
 import com.moscow.domain.model.details.ListOfSeries
@@ -94,8 +93,28 @@ class SeriesRepositoryImpl @Inject constructor(
             ?: emptyList()
     }
 
-    override suspend fun getSeriesCreditsDetails(id: Int): CreditsDetails {
+    override suspend fun getSeriesCreditsDetails(id: Int): CreditsInfo {
         val response = seriesRemoteDataSource.getSeriesCredits(id)
         return response.toDomain()
     }
+
+
+    override suspend fun getTopRatedTVSeries(page: Int, forceRefresh: Boolean): List<Series> {
+        return getCachedOrFetchHomeItems(
+            categoryType = CATEGORY_TOP_RATED_TV,
+            fetchFromRemote = {
+                seriesRemoteDataSource.getTopRatedTVSeries(page).results?.map { it.toDomain() } ?: emptyList()
+            },
+            mapFromEntity = { it.toSeries() },
+            forceRefresh = forceRefresh
+        )
+    }
+
+
+
+   private companion object{
+       const val CATEGORY_TOP_RATED_TV = "TOP_RATED_TV"
+   }
+
+
 }

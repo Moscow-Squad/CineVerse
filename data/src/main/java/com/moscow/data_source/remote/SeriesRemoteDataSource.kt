@@ -23,6 +23,7 @@ interface SeriesRemoteDataSource {
     suspend fun getLatestSeasons(): SeriesDetailDto
     suspend fun getSeriesRecommendations(id: Int, page: Int): ApiResponse<SeriesDto>
     suspend fun getSeriesByGenreId(genreId: Int, page: Int): ApiResponse<SeriesDto>
+    suspend fun getTopRatedTVSeries(page: Int): ApiResponse<SeriesDto>
     suspend fun getSeriesCredits(seriesId: Int): SeriesCreditDto
     suspend fun getSeriesTrailers(seriesId: Int): MediaTrailersDto
 }

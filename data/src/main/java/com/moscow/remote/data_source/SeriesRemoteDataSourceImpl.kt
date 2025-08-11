@@ -1,7 +1,7 @@
 package com.moscow.remote.data_source
 
 import com.moscow.data_source.remote.SeriesRemoteDataSource
-import com.moscow.domain.repository.PreferenceRepository
+import com.moscow.domain.repository.UserRepository
 import com.moscow.remote.dto.details.MediaTrailersDto
 import com.moscow.remote.dto.details.SeriesCreditDto
 import com.moscow.remote.dto.rating.UserRatingResponse
@@ -18,7 +18,7 @@ import javax.inject.Inject
 
 class SeriesRemoteDataSourceImpl @Inject constructor(
     private val seriesService: SeriesService,
-    private val preferenceRepository: PreferenceRepository
+    private val userRepository: UserRepository
 ) : SeriesRemoteDataSource {
 
     override suspend fun getPopularSeries(page: Int): ApiResponse<SeriesDto> =
@@ -32,7 +32,7 @@ class SeriesRemoteDataSourceImpl @Inject constructor(
         }
 
     override suspend fun rateSeries(rating: RatingRequestDto, id: Int) {
-        val sessionId = preferenceRepository.getSessionId()
+        val sessionId = userRepository.getSessionId()
         handleApi {
             seriesService.rateSeries(
                 id,
@@ -43,7 +43,7 @@ class SeriesRemoteDataSourceImpl @Inject constructor(
     }
 
     override suspend fun deleteRatingSeries(seriesId: Int){
-        val sessionId = preferenceRepository.getSessionId()
+        val sessionId = userRepository.getSessionId()
         handleApi {
             seriesService.deleteRatingSeries(
                 seriesId,
@@ -56,7 +56,7 @@ class SeriesRemoteDataSourceImpl @Inject constructor(
         userId: Int,
         page: Int
     ): ApiResponse<RatedSeriesDto> {
-        val sessionId = preferenceRepository.getSessionId()
+        val sessionId = userRepository.getSessionId()
         return handleApi {
             seriesService.getRatedSeries(
                 userId,
@@ -67,7 +67,7 @@ class SeriesRemoteDataSourceImpl @Inject constructor(
     }
 
     override suspend fun getUserRatingForSeries(seriesId: Int): UserRatingResponse {
-        val sessionId = preferenceRepository.getSessionId()
+        val sessionId = userRepository.getSessionId()
         return handleApi {
             seriesService.getUserRatingForSeries(
                 seriesId,
@@ -115,5 +115,12 @@ class SeriesRemoteDataSourceImpl @Inject constructor(
     override suspend fun getSeriesTrailers(seriesId: Int): MediaTrailersDto =
         handleApi {
             seriesService.getSeriesTrailers(seriesId)
+        }
+
+
+    override suspend fun getTopRatedTVSeries(page: Int): ApiResponse<SeriesDto> =
+        handleApi {
+            seriesService.getTopRatedTVSeries(page)
+
         }
 }

@@ -26,6 +26,7 @@ import com.moscow.utils.SERIES
 import com.moscow.utils.SERIES_CREDITS
 import com.moscow.utils.SESSION_ID
 import com.moscow.utils.SORTED_BY
+import com.moscow.utils.TOP_RATED
 import com.moscow.utils.TRAILERS
 import com.moscow.utils.WITH_GENRES
 import retrofit2.Response
@@ -113,4 +114,11 @@ interface SeriesService {
     suspend fun getSeriesTrailers(
         @Path("series_id") seriesId: Int
     ): Response<MediaTrailersDto>
+
+    @GET("$SERIES$TOP_RATED")
+    suspend fun getTopRatedTVSeries(
+        @Query(PAGE) page: Int
+    ): Response<ApiResponse<SeriesDto>>
+
+
 }

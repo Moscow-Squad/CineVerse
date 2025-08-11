@@ -24,6 +24,6 @@ data class SeriesEntity(
     val genresId: List<Int>,
     val description: String,
     val rating: Float,
-    val releaseDate: LocalDate,
+    val releaseDate: LocalDate?,
     val poster: String,
 )
