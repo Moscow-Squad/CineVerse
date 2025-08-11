@@ -17,8 +17,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.moscow.cineverse.design_system.R
 import com.moscow.cineverse.designSystem.theme.Theme
+import com.moscow.cineverse.design_system.R
 
 @Composable
 fun InfoSection(
@@ -27,7 +27,7 @@ fun InfoSection(
     genres: List<String> = emptyList(),
     description: String? = null,
     rating: Float? = null,
-    paddingBetween: Dp = 2.dp,
+    paddingTop: Dp = 2.dp,
     showGenres: Boolean = true,
     showTitle: Boolean = true,
     showRating: Boolean = true,
@@ -65,7 +65,7 @@ fun InfoSection(
                         tint = Theme.colors.additional.primary.yellow,
                         modifier = Modifier
                             .size(22.dp)
-                            .padding(start = 2.dp)
+                            .padding(start = 4.dp)
                     )
                 }
             }
@@ -77,7 +77,7 @@ fun InfoSection(
                 style = Theme.textStyle.body.small.regular,
                 color = Theme.colors.shade.secondary,
                 modifier = Modifier
-                    .padding(top = paddingBetween)
+                    .padding(top = paddingTop)
                     .fillMaxWidth(),
                 maxLines = maxDescriptionLines,
                 overflow = TextOverflow.Ellipsis,
@@ -93,7 +93,7 @@ fun InfoSection(
                     Arrangement.spacedBy(4.dp)
                 },
                 modifier = Modifier
-                    .padding(top = paddingBetween)
+                    .padding(top = paddingTop)
                     .fillMaxWidth()
             ) {
                 var genresText = genres.joinToString(", ")

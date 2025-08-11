@@ -221,7 +221,7 @@ fun ActorBiographySection(
                     description = actorDetails.biography,
                     showGenres = false,
                     maxDescriptionLines = Int.MAX_VALUE,
-                    paddingBetween = 8.dp,
+                    paddingTop = 8.dp,
                     modifier = Modifier.padding(16.dp),
                     showRating = false
                 )
