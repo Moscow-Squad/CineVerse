@@ -23,78 +23,74 @@ Dive into a world of endless entertainment, where you can explore movies and TV 
 - 🌓 **Dark & Light Theme** support.
 - 🌐 **Multi-language** — English & Arabic.
 
-# 📱 App Screens:
-<table> 
-<tr> 
-<th> <img width="200" alt="Image" src="https://github.com/user-attachments/assets/0011bf39-dd4e-48cb-a6d1-3bf56f2eb878" /> </th>
-<th> <img width="200" alt="Image" src="https://github.com/user-attachments/assets/c470e2db-a772-4d16-9322-7af898d89175" /> </th> 
-<th> <img width="200" alt="Image" src="https://github.com/user-attachments/assets/55b61e1d-9afe-4bf5-a714-80bdb3ae59fc" /> </th>
-<th> <img width="200" alt="Image" src="https://github.com/user-attachments/assets/1217889f-8636-40e7-bbe5-1d24516ec1e6" /> </th>
-</tr>
- 
-<tr> 
-<th>Splash Screen</th> 
-<th>Onboarding 1</th> 
-<th>Onboarding 2</th> 
-<th>Onboarding 3</th> 
-</tr>
+## App Screens:
 
-<tr> 
-<th> <img width="200" alt="Image" src="https://github.com/user-attachments/assets/ce47c618-7177-4d1b-b83d-3ebcfd20ecc7" /> </th>
-<th> <img width="200" alt="Image" src="https://github.com/user-attachments/assets/5120e256-e21f-4577-b719-2baf01e97d09" /> </th>
-<th> <img width="200" alt="Image" src="https://github.com/user-attachments/assets/14f1eb8b-4260-4586-b847-735a1ce9901a" /> </th>  
-<th> <img width="200" alt="Image" src="https://github.com/user-attachments/assets/72fabe82-48f1-4451-97c9-74b1b62119d3" /> </th> 
-</tr>  
-
-<tr> 
-<th>Login Screen</th> 
-<th>Home Screen</th> 
-<th>Home Screen</th> 
-<th>Home Screen</th>  
-</tr>
- 
+<table>
 <tr>
-<th> <img width="200" alt="Image" src="https://github.com/user-attachments/assets/6168fde1-0b4a-4d16-b1a7-8f43144f0f96" /></th>  
-<th> <img width="200" alt="Image" src="https://github.com/user-attachments/assets/2291f3b5-0858-41c6-a3ec-fa53856b50f3" /> </th>  
-<th> <img width="200" alt="Image" src="https://github.com/user-attachments/assets/b6ca4176-8000-48a6-a735-f5c1738d65cd" /> </th>  
-<th> <img width="200" alt="Image" src="https://github.com/user-attachments/assets/48cca65a-886a-4239-bef0-22c86552ed2e" /> </th>  
-</tr> 
-
-<tr> 
-<th>Explore Screen</th> 
-<th>Search Explore Screen</th> 
-<th>List Explore Screen</th>
-<th>History Explore </th>
+  <td><img width="200" src="https://github.com/user-attachments/assets/284788ed-1095-4d7b-8150-b01954bfd385" /></td>
+  <td><img width="200" alt="Image" src="https://github.com/user-attachments/assets/c6eceaf2-8706-4abd-b612-dc306fde83e0" /></td>
+  <td><img width="200" src="https://github.com/user-attachments/assets/6cbe3c47-c802-4c11-844e-457b959ca3a5" /></td>
+  <td><img width="200" src="https://github.com/user-attachments/assets/b1abea25-3e38-4d32-b058-62166c7e1a3e" /></td>
+</tr>
+<tr>
+  <td>Splash Screen</td>
+  <td>Onboarding 1</td>
+  <td>Onboarding 2</td>
+  <td>Onboarding 3</td>
+</tr>
 
 <tr>
-<th> <img width="200" alt="Image" src="https://github.com/user-attachments/assets/b853dde0-d05e-4b3b-8a20-7cc688391491" /> </th>  
-<th> <img width="200"  alt="Image" src="https://github.com/user-attachments/assets/af8c7eea-2150-40ba-a6e7-6519e039a97f" /> </th>  
-<th> <img width="200"  alt="Image" src="https://github.com/user-attachments/assets/b6adc0d8-c39a-4d5e-afb6-112ec1197ac2" /> </th>  
-<th> <img width="200"  alt="Image" src="https://github.com/user-attachments/assets/33c4e240-7fcf-44d8-aa61-2c7aa7132c1c" /> </th>  
-</tr> 
+  <td><img width="200" src="https://github.com/user-attachments/assets/eb88c8f2-5aa7-4c97-b556-ed7608596327" /></td>
+  <td><img width="200" src="https://github.com/user-attachments/assets/5120e256-e21f-4577-b719-2baf01e97d09" /></td>
+  <td><img width="200" src="https://github.com/user-attachments/assets/ae0f6282-4355-401e-a34f-79cd5c99db1d" /></td>
+  <td><img width="200" src="https://github.com/user-attachments/assets/72fabe82-48f1-4451-97c9-74b1b62119d3" /></td>
+</tr>
+<tr>
+  <td>Login Screen</td>
+  <td>Home Screen</td>
+  <td>Home Screen</td>
+  <td>Home Screen</td>
+</tr>
 
-<tr> 
-<th>Movie/ Series Deatils </th> 
-<th>Cast Deatils</th> 
-<th>Rate Movie/Series</th>
-<th>Top Review</th>
+<tr>
+  <td><img width="200" src="https://github.com/user-attachments/assets/5d0e6ec0-872a-4a25-9c6f-1933ea8a5682" /></td>
+  <td><img width="200" src="https://github.com/user-attachments/assets/65ae0c2c-5a03-4487-a310-4ad1cd5b0d8b" /></td>
+  <td><img width="200" src="https://github.com/user-attachments/assets/0ec88b52-0aea-43a3-b858-ace5e263303e" /></td>
+  <td><img width="200" src="https://github.com/user-attachments/assets/fd193fe0-29c4-4c29-925b-1693f9db1112" /></td>
+</tr>
+<tr>
+  <td>Explore Screen</td>
+  <td>Search Explore Screen</td>
+  <td>List Explore Screen</td>
+  <td>History Explore</td>
+</tr>
 
+<tr>
+  <td><img width="200" src="https://github.com/user-attachments/assets/b853dde0-d05e-4b3b-8a20-7cc688391491" /></td>
+  <td><img width="200" src="https://github.com/user-attachments/assets/4625c3b3-4459-4b7d-9cdc-c13d384323f5" /></td>
+  <td><img width="200" src="https://github.com/user-attachments/assets/b6adc0d8-c39a-4d5e-afb6-112ec1197ac2" /></td>
+  <td><img width="200" src="https://github.com/user-attachments/assets/aaa8db6b-6723-4839-942d-c76e8b1e5df0" /></td>
+</tr>
+<tr>
+  <td>Movie/ Series Details</td>
+  <td>Cast Details</td>
+  <td>Rate Movie/Series</td>
+  <td>Top Review</td>
+</tr>
 
-  <tr>
-<th> <img width="200" alt="Image" src="https://github.com/user-attachments/assets/617f2967-9738-4baf-9244-8b71390fffdb" /></th>  
-<th> <img width="200" alt="Image" src="https://github.com/user-attachments/assets/44882243-48f0-4433-b920-1a3401c60aca" /> </th>  
-<th> <img width="200" alt="Image" src="https://github.com/user-attachments/assets/5d1675c9-49db-483f-b2c5-d8ad37261066" /> </th>  
-<th> <img width="200" alt="Image" src="https://github.com/user-attachments/assets/3b787a2c-78b8-4802-936c-bf27f757ad6f" /> </th> 
-</tr> 
-
-<tr> 
-<th>Profile Screen</th> 
-<th>Edit profile</th> 
-<th>Change language</th>
-<th> Content Preferences</th>
-</tr> 
+<tr>
+  <td><img width="200" src="https://github.com/user-attachments/assets/fbfbfecc-3952-4df6-a114-b2991d64fee9" /></td>
+  <td><img width="200" src="https://github.com/user-attachments/assets/4ead251f-fe9a-4351-be97-c2d3b1ccf1fe" /></td>
+  <td><img width="200" src="https://github.com/user-attachments/assets/6616eca8-a886-4b37-ab14-744939f528a8" /></td>
+  <td><img width="200" src="https://github.com/user-attachments/assets/afff28d1-724e-494d-8f76-595c6d21875b" /></td>
+</tr>
+<tr>
+  <td>Profile Screen</td>
+  <td>Edit profile</td>
+  <td>Change language</td>
+  <td>Content Preferences</td>
+</tr>
 </table>
-
 # Modularization
 <p align="center">
   <img width="100%" alt="Image" src="https://github.com/user-attachments/assets/da390766-6637-4d0b-9b02-d9791986356b" />
