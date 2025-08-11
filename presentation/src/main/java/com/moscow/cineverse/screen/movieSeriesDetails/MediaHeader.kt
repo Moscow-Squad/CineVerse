@@ -21,8 +21,10 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -61,138 +63,99 @@ fun MediaHeader(
         } catch (_: NumberFormatException) {
             "0.0"
         }
-        val scrollValue = scrollState.firstVisibleItemScrollOffset.toFloat()
+
+        val maxAchievedScroll = remember { mutableStateOf(0f) }
+
+        val clampedScrollValue by remember(scrollState) {
+            derivedStateOf {
+                val currentScroll = scrollState.firstVisibleItemScrollOffset.toFloat()
+                maxAchievedScroll.value = maxOf(maxAchievedScroll.value, currentScroll)
+                maxAchievedScroll.value.coerceIn(0f, 250f)
+            }
+        }
 
         val configuration = LocalConfiguration.current
         val screenWidth = configuration.screenWidthDp.dp
 
         val imageStartPadding by remember {
             derivedStateOf {
-                val scrollValue = scrollState.firstVisibleItemScrollOffset.toFloat()
                 val start = ( screenWidth - 216.dp - 16.dp) / 2
                 val end = 0.dp
                 val maxScroll = 250f
-                if (scrollValue >= maxScroll) {
-                    end
-                } else {
-                    start - (start - end) * (scrollValue / maxScroll)
-                }
+                start - (start - end) * (clampedScrollValue / maxScroll)
             }
         }
 
         val imageHeight by remember {
             derivedStateOf {
-                val scrollValue = scrollState.firstVisibleItemScrollOffset.toFloat()
                 val start = 289.dp
                 val end = 40.dp
                 val maxScroll = 250f
-
-                when {
-                    scrollValue >= maxScroll -> end
-                    else -> {
-                        val progress = scrollValue / maxScroll
-                        start - (start - end) * progress
-                    }
-                }
+                start - (start - end) * (clampedScrollValue / maxScroll)
             }
         }
         val imageWidth by remember {
             derivedStateOf {
-                val scrollValue = scrollState.firstVisibleItemScrollOffset.toFloat()
-                val startHeight = 216.dp
-                val endHeight = 40.dp
+                val start = 216.dp
+                val end = 40.dp
                 val maxScroll = 250f
-                if (scrollValue >= maxScroll) {
-                    endHeight
-                } else {
-                    startHeight - (startHeight - endHeight) * (scrollValue / maxScroll)
-                }
+                start - (start - end) * (clampedScrollValue / maxScroll)
             }
         }
 
         val collectionEndPadding by remember {
             derivedStateOf {
-                val scrollValue = scrollState.firstVisibleItemScrollOffset.toFloat()
                 val start = 0.dp
                 val end = 48.dp
                 val maxScroll = 250f
-                if (scrollValue >= maxScroll) {
-                    end
-                } else {
-                    start - (start - end) * (scrollValue / maxScroll)
-                }
+                start - (start - end) * (clampedScrollValue / maxScroll)
             }
         }
 
         val detailsPaddingStart by remember {
             derivedStateOf {
-                val scrollValue = scrollState.firstVisibleItemScrollOffset.toFloat()
                 val start = 0.dp
                 val end = 52.dp
                 val maxScroll = 250f
-                if (scrollValue >= maxScroll) {
-                    end
-                } else {
-                    start - (start - end) * (scrollValue / maxScroll)
-                }
+                start - (start - end) * (clampedScrollValue / maxScroll)
             }
         }
 
         val detailsPaddingTop by remember {
             derivedStateOf {
-                val scrollValue = scrollState.firstVisibleItemScrollOffset.toFloat()
                 val start = 305.dp
                 val end = 0.dp
                 val maxScroll = 250f
-                if (scrollValue >= maxScroll) {
-                    end
-                } else {
-                    start - (start - end) * (scrollValue / maxScroll)
-                }
+                start - (start - end) * (clampedScrollValue / maxScroll)
             }
         }
 
         val collectionTopPadding by remember {
             derivedStateOf {
-                val scrollValue = scrollState.firstVisibleItemScrollOffset.toFloat()
                 val start = 68.5.dp
                 val end = 0.dp
                 val maxScroll = 250f
-                if (scrollValue >= maxScroll) {
-                    end
-                } else {
-                    start - (start - end) * (scrollValue / maxScroll)
-                }
+                start - (start - end) * (clampedScrollValue / maxScroll)
             }
         }
         val contentPadding by remember {
             derivedStateOf {
-                val scrollValue = scrollState.firstVisibleItemScrollOffset.toFloat()
                 val start = 16.dp
                 val end = 0.dp
                 val maxScroll = 250f
-                if (scrollValue >= maxScroll) {
-                    end
-                } else {
-                    start - (start - end) * (scrollValue / maxScroll)
-                }
+                start - (start - end) * (clampedScrollValue / maxScroll)
             }
         }
         val contentPaddingBottom by remember {
             derivedStateOf {
-                val scrollValue = scrollState.firstVisibleItemScrollOffset.toFloat()
                 val start = 0.dp
                 val end = 12.dp
                 val maxScroll = 250f
-                if (scrollValue >= maxScroll) {
-                    end
-                } else {
-                    start - (start - end) * (scrollValue / maxScroll)
-                }
+                start - (start - end) * (clampedScrollValue / maxScroll)
             }
         }
         val detailsBackgroundColor by animateColorAsState(
-            targetValue = if (scrollValue <= 20f)
+            targetValue = if (clampedScrollValue <= 20f)
                 Theme.colors.background.card
             else
                 Theme.colors.background.screen,
@@ -233,7 +196,7 @@ fun MediaHeader(
                 horizontalAlignment = Alignment.Start,
             ) {
                 AnimatedVisibility(
-                    visible = scrollValue <= 20f,
+                    visible = clampedScrollValue <= 20f,
                     enter = slideInVertically(animationSpec = tween(1000))
                             + fadeIn(animationSpec = tween(1000)),
 
@@ -252,7 +215,7 @@ fun MediaHeader(
                     color = Theme.colors.shade.primary
                 )
                 AnimatedVisibility(
-                    visible = scrollValue <= 20f,
+                    visible = clampedScrollValue <= 20f,
                     enter = slideInVertically(animationSpec = tween(1000))
                             + fadeIn(animationSpec = tween(1000)),
 
