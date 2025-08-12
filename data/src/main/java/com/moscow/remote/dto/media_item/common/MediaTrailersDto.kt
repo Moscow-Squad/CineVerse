@@ -1,4 +1,4 @@
-package com.moscow.remote.dto.details
+package com.moscow.remote.dto.media_item.common
 
 
 import kotlinx.serialization.SerialName

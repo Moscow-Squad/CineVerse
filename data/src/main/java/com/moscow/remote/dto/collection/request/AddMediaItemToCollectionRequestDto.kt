@@ -1,4 +1,4 @@
-package com.moscow.remote.dto
+package com.moscow.remote.dto.collection.request
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
