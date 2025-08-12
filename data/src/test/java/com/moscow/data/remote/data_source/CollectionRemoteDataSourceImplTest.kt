@@ -8,7 +8,7 @@ import com.moscow.remote.dto.AddCollectionDto
 import com.moscow.remote.dto.AddMediaItemToCollectionRequestDto
 import com.moscow.remote.dto.CollectionDto
 import com.moscow.remote.dto.CreateCollectionDto
-import com.moscow.remote.dto.MovieDto
+import com.moscow.remote.dto.movie.MovieDto
 import com.moscow.remote.services.CollectionsService
 import com.moscow.utils.ApiResponse
 import io.mockk.coEvery
