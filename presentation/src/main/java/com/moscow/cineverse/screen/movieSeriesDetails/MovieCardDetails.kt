@@ -29,7 +29,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.moscow.cineverse.designSystem.component.blur.OnBlurContent
 import com.moscow.cineverse.designSystem.component.blur.RemoteImagePlaceholder
@@ -154,13 +153,11 @@ fun DetailCard(
                 style = Theme.textStyle.title.medium,
                 color = Theme.colors.shade.primary
             )
-
             Text(
                 text = genres,
                 style = Theme.textStyle.body.small.medium,
                 color = Theme.colors.shade.secondary
             )
-
 
             Row(
                 modifier = Modifier.padding(top = 8.dp),
@@ -188,7 +185,6 @@ fun DetailCard(
                         Theme.colors.shade.secondary
                     )
             }
-
         }
 
         Column(
@@ -218,6 +214,7 @@ fun InfoTextWithIcon(icon: Int, text: String, tint: Color) {
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Icon(
+            modifier = Modifier.size(16.dp),
             painter = painterResource(id = icon),
             contentDescription = null,
             tint = tint
@@ -287,30 +284,15 @@ fun MainMovieCard(
                 onClick = { onSaveClick() },
                 backgroundColor = Theme.colors.button.secondary,
                 iconColor = Theme.colors.shade.primary,
-                modifier = Modifier.size(40.dp)
+                modifier = Modifier.padding(start = 8.dp)
             )
             MovieFloatingButton(
                 buttonIcon = R.drawable.due_tone_play,
                 onClick = { onPlayClick() },
                 backgroundColor = Theme.colors.button.primary,
                 iconColor = Theme.colors.brand.tertiary,
-                modifier = Modifier
-                    .padding(start = 8.dp)
-                    .size(40.dp)
+                modifier = Modifier.padding(start = 8.dp)
             )
         }
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DetailCardPreview() {
-    DetailCard(
-        title = "Supernatural",
-        genres = "Drama, Mystery, Sci-Fi & Fantasy",
-        rating = "8.531",
-        duration = "2h 32m",
-        releaseDate = "2008, Jul 18",
-        type = "SERIES",
-    )
 }
