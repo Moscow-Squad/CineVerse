@@ -1,6 +1,7 @@
 package com.moscow.cineverse.screen.profile
 
 
+import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -11,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -72,6 +74,8 @@ fun ProfileContent(
     listener: ProfileInteractionListener,
     onThemeChange: (Boolean) -> Unit,
 ) {
+    val context: Context = LocalContext.current
+
     LazyColumn(
         modifier = modifier
             .fillMaxSize()
@@ -108,7 +112,8 @@ fun ProfileContent(
                     .padding(top = 12.dp, bottom = 24.dp),
                 items = listOf(
                     ProfileChipItem(
-                        R.string.history, R.drawable.due_tone_history){
+                        R.string.history, R.drawable.due_tone_history
+                    ) {
                         if (uiState.isGuest)
                             listener.onShowEditProfileBottomSheet()
                         else
@@ -121,9 +126,10 @@ fun ProfileContent(
                             listener.onShowEditProfileBottomSheet()
                         else
                             listener.onClickMyCollections()
-                      },
+                    },
                     ProfileChipItem(
-                        R.string.my_ratings, R.drawable.due_tone_star){
+                        R.string.my_ratings, R.drawable.due_tone_star
+                    ) {
                         if (uiState.isGuest)
                             listener.onShowEditProfileBottomSheet()
                         else
@@ -172,9 +178,12 @@ fun ProfileContent(
         item {
             LanguageBottomSheet(
                 visible = uiState.showLanguageBottomSheet,
-                selectedLanguage = uiState.appLanguage,
+                selectedLanguage = uiState.currentLanguage,
                 onDismiss = { listener.onCancelLanguageBottomSheet() },
-                onSelectedLanguage = { listener.onSelectedLanguage(it) })
+                switchLanguage = { language ->
+                    listener.onSelectedLanguage(language)
+                }
+            )
         }
 
         item {

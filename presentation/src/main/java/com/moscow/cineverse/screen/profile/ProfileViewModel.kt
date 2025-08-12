@@ -29,10 +29,14 @@ class ProfileViewModel @Inject constructor(
     ProfileInteractionListener {
 
     init {
+        getCurrentLanguage()
         observeTheme()
-        observeLanguage()
         observeBlur()
         getUserDetails()
+    }
+
+    private fun getCurrentLanguage() {
+        updateState { it.copy(currentLanguage = languageProvider.getCurrentLanguage()) }
     }
 
     private fun observeTheme() {
@@ -52,20 +56,12 @@ class ProfileViewModel @Inject constructor(
         }
     }
 
-    private fun observeLanguage() {
-        viewModelScope.launch {
-            languageProvider.languageFlow.collect { language ->
-                updateState { it.copy(appLanguage = language) }
-            }
-        }
-    }
-
     private fun getAccountDetails() {
         launchWithResult(
-            action = { getAccountDetailsUseCase( uiState.value.accountId,uiState.value.sessionId) },
+            action = { getAccountDetailsUseCase(uiState.value.accountId, uiState.value.sessionId) },
             onStart = ::onLoading,
             onSuccess = ::onGetAccountDetailsSuccess,
-            onError = {e->
+            onError = { e ->
 
             }
         )
@@ -186,7 +182,7 @@ class ProfileViewModel @Inject constructor(
 
     override fun onClickEditProfile() {
         val username = uiState.value.username.orEmpty()
-        sendEvent(ProfileScreenEffects.GoToWebView( EDIT_PROFILE_URL + username))
+        sendEvent(ProfileScreenEffects.GoToWebView(EDIT_PROFILE_URL + username))
         onCancelEditProfileBottomSheet()
     }
 
@@ -209,8 +205,8 @@ class ProfileViewModel @Inject constructor(
     }
 
     override fun onSelectedLanguage(language: String) {
+        updateState { it.copy(currentLanguage = language) }
         updateAppLanguage(language)
-        onCancelLanguageBottomSheet()
     }
 
     override fun onCancelLanguageBottomSheet() {

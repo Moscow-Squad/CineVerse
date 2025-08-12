@@ -2,8 +2,6 @@ package com.moscow.remote.interceptors
 
 import com.moscow.data.BuildConfig
 import com.moscow.domain.repository.language.LanguageProvider
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
 import okhttp3.Response
 
@@ -14,9 +12,7 @@ class CineVerseInterceptor(
         val originalRequest = chain.request()
         val originalUrl = originalRequest.url
 
-        val language = runBlocking {
-            languageProvider.languageFlow.first()
-        }
+        val language = languageProvider.getCurrentLanguage()
 
         val newUrl = originalUrl.newBuilder()
             .addQueryParameter("language", language)

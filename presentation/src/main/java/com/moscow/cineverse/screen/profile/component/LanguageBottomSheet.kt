@@ -20,12 +20,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.moscow.cineverse.designSystem.component.bottomsheet.CineVerseBottomSheet
 import com.moscow.cineverse.designSystem.theme.Theme
+import com.moscow.cineverse.language.AppLanguage
 import com.moscow.cinverse.presentation.R
 
 @Composable
@@ -33,7 +35,7 @@ fun LanguageBottomSheet(
     visible: Boolean,
     selectedLanguage: String,
     onDismiss: () -> Unit,
-    onSelectedLanguage: (String) -> Unit
+    switchLanguage: (String) -> Unit
 ) {
     AnimatedVisibility(visible) {
         CineVerseBottomSheet(
@@ -43,10 +45,9 @@ fun LanguageBottomSheet(
             showCancelIcon = true,
         ) {
             LanguageBottomSheetContent(
-                selectedLanguage
-            ) { newLanguage ->
-                onSelectedLanguage(newLanguage)
-            }
+                selectedLanguage = selectedLanguage,
+                switchLanguage = switchLanguage
+            )
         }
     }
 }
@@ -54,7 +55,7 @@ fun LanguageBottomSheet(
 @Composable
 private fun LanguageBottomSheetContent(
     selectedLanguage: String,
-    onSelectLanguage: (String) -> Unit,
+    switchLanguage: (String) -> Unit,
 ){
     Row(
         modifier = Modifier
@@ -66,15 +67,15 @@ private fun LanguageBottomSheetContent(
             modifier = Modifier.weight(1f),
             name = stringResource(R.string.english),
             imageRes = R.drawable.colored_uk_flag,
-            isSelected = selectedLanguage == "en",
-            onClick = { onSelectLanguage("en") }
+            isSelected = selectedLanguage == AppLanguage.English.code,
+            onClick = { switchLanguage(AppLanguage.English.code) }
         )
         LanguageOption(
             modifier = Modifier.weight(1f),
             name = stringResource(R.string.arabic),
             imageRes = R.drawable.colored_iraq_flag,
-            isSelected = selectedLanguage == "ar",
-            onClick = { onSelectLanguage("ar") }
+            isSelected = selectedLanguage == AppLanguage.Arabic.code,
+            onClick = { switchLanguage(AppLanguage.Arabic.code) }
         )
     }
 }
@@ -99,10 +100,8 @@ fun LanguageOption(
 
     Column(
         modifier = modifier
-            .background(
-                color = backgroundColor,
-                shape = RoundedCornerShape(Theme.radius.large)
-            )
+            .clip(RoundedCornerShape(Theme.radius.large))
+            .background(color = backgroundColor)
             .border(
                 width = 1.dp,
                 color = borderColor,

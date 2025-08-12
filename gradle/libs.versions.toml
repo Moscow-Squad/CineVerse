@@ -1,6 +1,7 @@
 [versions]
 accompanistWebview = "0.36.0"
 
+appcompat = "1.7.1"
 daggerAndroid = "2.57"
 daggerAndroidProcessor = "2.57"
 hiltWork = "1.2.0"
@@ -67,6 +68,7 @@ coreSplashscreen = "1.0.1"
 serializationKotlin = "2.0.0"
 
 [libraries]
+androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
 androidx-hilt-compiler = { module = "androidx.hilt:hilt-compiler", version.ref = "hiltWork" }
 androidx-hilt-work = { module = "androidx.hilt:hilt-work", version.ref = "hiltWork" }
 dagger-android-processor = { module = "com.google.dagger:dagger-android-processor", version.ref = "daggerAndroidProcessor" }
