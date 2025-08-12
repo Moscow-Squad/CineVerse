@@ -1,5 +1,6 @@
 package com.moscow.cineverse.screen.movieSeriesDetails
 
+import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
@@ -21,6 +22,7 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -62,14 +64,54 @@ fun MediaHeader(
         } catch (_: NumberFormatException) {
             "0.0"
         }
+        val lastScrollOffset = remember { mutableStateOf(0f) }
+
+        val isCollapsed = remember { mutableStateOf(false) }
+
+        val currentScroll = scrollState.firstVisibleItemScrollOffset.toFloat()
+        val isScrollingDown = currentScroll > lastScrollOffset.value
+
+        LaunchedEffect(currentScroll) {
+            if (isScrollingDown && !isCollapsed.value && currentScroll > 20f) {
+                isCollapsed.value = true // Collapse once
+            } else if (!isScrollingDown && currentScroll == 0f) {
+                isCollapsed.value = false // Expand only when at top
+            }
+            lastScrollOffset.value = currentScroll
+        }
+
+        val scrollProgress = remember { mutableStateOf(0f) }
+        val maxScroll = 250f
+
+
 
         val maxAchievedScroll = remember { mutableStateOf(0f) }
 
         val clampedScrollValue by remember(scrollState) {
             derivedStateOf {
-                val currentScroll = scrollState.firstVisibleItemScrollOffset.toFloat()
-                maxAchievedScroll.value = maxOf(maxAchievedScroll.value, currentScroll)
+                val current = scrollState.firstVisibleItemScrollOffset.toFloat()
+                val isScrollingDown = current > lastScrollOffset.value && current <= 250f
+Log.d("dddddd", current.toString())
+                if (isScrollingDown) {
+                    // Scrolling down — allow animation
+                    maxAchievedScroll.value = current
+                } else if (current == 0f) {
+                    // Only reset when we're at the very top
+                    maxAchievedScroll.value = 0f
+                }
+
+                lastScrollOffset.value = current
                 maxAchievedScroll.value.coerceIn(0f, 250f)
+            }
+        }
+
+        LaunchedEffect(scrollState) {
+            if (!isCollapsed.value) {
+                // Update progress until collapsed
+                scrollProgress.value = (clampedScrollValue / maxScroll).coerceIn(0f, 1f)
+            } else if (currentScroll == 0f) {
+                // Reset when fully expanded
+                scrollProgress.value = 0f
             }
         }
 
@@ -195,7 +237,7 @@ fun MediaHeader(
                 horizontalAlignment = Alignment.Start,
             ) {
                 AnimatedVisibility(
-                    visible = clampedScrollValue <= 20f,
+                    visible = !isCollapsed.value,
                     enter = slideInVertically(animationSpec = tween(1000))
                             + fadeIn(animationSpec = tween(1000)),
 
@@ -214,7 +256,7 @@ fun MediaHeader(
                     color = Theme.colors.shade.primary
                 )
                 AnimatedVisibility(
-                    visible = clampedScrollValue <= 20f,
+                    visible = !isCollapsed.value,
                     enter = slideInVertically(animationSpec = tween(1000))
                             + fadeIn(animationSpec = tween(1000)),
 
