@@ -99,15 +99,20 @@ fun CineVerseBottomSheet(
                 when {
 
                     showCancelIcon -> {
-                        Icon(
-                            painter = painterResource(R.drawable.outline_x),
-                            contentDescription = null,
-                            tint = Theme.colors.shade.secondary,
+                        Box(
                             modifier = Modifier
-                                .size(20.dp)
+                                .size(40.dp)
                                 .clip(CircleShape)
                                 .clickable { onClose() }
-                        )
+                        , contentAlignment = Alignment.Center) {
+                            Icon(
+                                painter = painterResource(R.drawable.outline_x),
+                                contentDescription = null,
+                                tint = Theme.colors.shade.secondary,
+                                modifier = Modifier
+                                    .size(20.dp)
+                            )
+                        }
                     }
 
                     title.isNotEmpty() -> {
