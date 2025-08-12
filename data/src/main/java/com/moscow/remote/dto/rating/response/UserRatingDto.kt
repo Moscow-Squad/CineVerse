@@ -1,4 +1,4 @@
-package com.moscow.remote.dto.rating
+package com.moscow.remote.dto.rating.response
 
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerialName
@@ -62,9 +62,11 @@ object UserRatingSerializer : KSerializer<Int?> {
         if (value == null) {
             output.encodeJsonElement(JsonPrimitive(false))
         } else {
-            output.encodeJsonElement(buildJsonObject {
+            output.encodeJsonElement(
+                buildJsonObject {
                 put("value", value)
-            })
+                }
+            )
         }
     }
 }

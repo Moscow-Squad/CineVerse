@@ -9,9 +9,9 @@ fun ReviewDto.toDomain(): Review {
     return Review(
         id = this.id ?: "",
         author = this.author ?: "",
-        username = this.authorDetails?.username ?: "",
-        avatarPath = if(this.authorDetails?.avatarPath.isNullOrEmpty()) "" else IMAGES_URL + this.authorDetails.avatarPath ,
-        rating = this.authorDetails?.rating ?: 0.0,
+        username = this.authorDetailsDto?.username ?: "",
+        avatarPath = if(this.authorDetailsDto?.avatarPath.isNullOrEmpty()) "" else IMAGES_URL + this.authorDetailsDto.avatarPath ,
+        rating = this.authorDetailsDto?.rating ?: 0.0,
         content = this.content ?: "",
         createdAt = if (!createdAt.isNullOrBlank()) LocalDate.parse(createdAt) else null,
     )

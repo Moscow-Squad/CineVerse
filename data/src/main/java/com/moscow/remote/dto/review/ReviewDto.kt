@@ -8,7 +8,7 @@ data class ReviewDto(
     @SerialName("author")
     val author: String?,
     @SerialName("author_details")
-    val authorDetails: AuthorDetails?,
+    val authorDetailsDto: AuthorDetailsDto?,
     @SerialName("content")
     val content: String?,
     @SerialName("created_at")
@@ -19,4 +19,16 @@ data class ReviewDto(
     val updatedAt: String?,
     @SerialName("url")
     val url: String?
+)
+
+@Serializable
+data class AuthorDetailsDto(
+    @SerialName("avatar_path")
+    val avatarPath: String?,
+    @SerialName("name")
+    val name: String?,
+    @SerialName("rating")
+    val rating: Double?,
+    @SerialName("username")
+    val username: String?
 )
