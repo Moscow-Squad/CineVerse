@@ -26,8 +26,8 @@ fun MovieRatingSection(
 ) {
     RatingSection(
         icon = R.drawable.due_tone_star,
-        title = stringResource(com.moscow.cinverse.presentation.R.string.give_it_stars),
-        caption = stringResource(com.moscow.cinverse.presentation.R.string.let_the_world_know_how_you_felt),
+        title = stringResource(R.string.give_it_stars),
+        caption = stringResource(R.string.let_the_world_know_how_you_felt),
         onClick = { interactionListener.showRatingBottomSheet() },
         ratingStars = uiState.starsRating,
         modifier = Modifier.padding(horizontal = 16.dp, vertical = 24.dp)
@@ -42,7 +42,7 @@ fun MovieReviewsSection(
 ) {
     if (!uiState.reviewsFlow.isNullOrEmpty()) {
         SectionTitle(
-            title = stringResource(com.moscow.cinverse.presentation.R.string.top_reviews),
+            title = stringResource(R.string.top_reviews),
             onClick = {
                 uiState.movieDetailsUiState?.let { movieDetails ->
                     interactionListener.onShowMoreReviews(movieDetails.id)
@@ -100,20 +100,20 @@ fun MovieRatingBottomSheetSection(
 
         if (uiState.showLoginBottomSheet) {
             CineVerseBottomSheet(
-                title = stringResource(com.moscow.cinverse.presentation.R.string.you_re_almost_there),
+                title = "",
                 onClose = { interactionListener.onDismissLoginBottomSheet() },
                 onDismissRequest = { interactionListener.onDismissLoginBottomSheet() },
-                showCancelIcon = true,
+                showCancelIcon = false,
                 onAddNewCollectionClick = {}
             ) {
                 MessageInfoCard(
-                    title = stringResource(com.moscow.cinverse.presentation.R.string.you_re_almost_there),
-                    description = stringResource(com.moscow.cinverse.presentation.R.string.log_in_to_save_movies_create_collections_and_get_personalized_recommendations),
-                    icon = painterResource(R.drawable.due_tone_video_library),
+                    title = stringResource(R.string.you_re_almost_there),
+                    description = stringResource(R.string.log_in_to_save_movies_create_collections_and_get_personalized_recommendations),
+                    icon = painterResource(R.drawable.due_tone_login),
                     showButtonsGroup = true,
-                    firstButtonText = stringResource(com.moscow.cinverse.presentation.R.string.not_now),
+                    firstButtonText = stringResource(R.string.not_now),
                     onClickFirstButton = { interactionListener.onDismissLoginBottomSheet() },
-                    secondButtonText = stringResource(com.moscow.cinverse.presentation.R.string.log_in),
+                    secondButtonText = stringResource(R.string.log_in),
                     onClickSecondButton = { interactionListener.navigateToLogin() },
                 )
             }

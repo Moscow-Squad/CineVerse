@@ -74,6 +74,7 @@ fun CineVerseBottomSheet(
             shouldDismissOnBackPress = true
         )
     ) {
+        val bottomPadding = if (title.isNotEmpty()) Modifier.padding(bottom = 20.dp) else Modifier
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -83,7 +84,7 @@ fun CineVerseBottomSheet(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(bottom = 20.dp),
+                    .then( bottomPadding),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
