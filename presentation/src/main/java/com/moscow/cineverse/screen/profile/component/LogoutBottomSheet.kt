@@ -36,6 +36,7 @@ fun LogoutBottomSheet(
                 modifier = Modifier.padding(bottom = 16.dp),
                 iconColor = Theme.colors.additional.primary.red,
                 secondButtonBackground = Theme.colors.additional.primary.red,
+                iconCircleBackgroundColor = Theme.colors.additional.secondary.red
             )
         }
     }
