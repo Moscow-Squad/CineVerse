@@ -23,7 +23,7 @@ Dive into a world of endless entertainment, where you can explore movies and TV 
 - 🌓 **Dark & Light Theme** support.
 - 🌐 **Multi-language** — English & Arabic.
 
-## App Screens:
+## ⚫️ App Screens In Dark mode:
 
 <table>
 <tr>
@@ -66,6 +66,34 @@ Dive into a world of endless entertainment, where you can explore movies and TV 
 </tr>
 
 <tr>
+  <td><img width="200" alt="image" src="https://github.com/user-attachments/assets/e1358925-2d6a-4fad-b1bd-58e8d96d686a" /></td>
+  <td><img width="200" alt="image" src="https://github.com/user-attachments/assets/6942d5b5-2bd5-4d44-9600-fe313b244bc4"></td>
+  <td><img width="200" alt="image" src="https://github.com/user-attachments/assets/11628802-4882-4df2-9e81-fd9954a1c1bb" /></td>
+  <td><img width="200" alt="image" src="https://github.com/user-attachments/assets/fd62d266-b4ae-4c61-99e5-a1196f7285c8" /></td>
+
+</tr>
+<tr>
+  <td>Main Match Screen</td>
+  <td>1st Q selected</td>
+  <td>2nd Q</td>
+  <td>3rd selected </td>
+</tr>
+
+<tr>
+  <td><img width="200" alt="image" src="https://github.com/user-attachments/assets/7928c3be-eacf-4643-b7f6-f653291b910b" /></td>
+  <td><img width="200" alt="image" src="https://github.com/user-attachments/assets/b204397e-4682-449a-acfe-c4561d653030" /></td>
+  <td><img width="200" alt="image" src="https://github.com/user-attachments/assets/db94c278-7573-4e51-9b32-c8510f30a47a" /></td>
+  <td><img width="200" alt="image" src="https://github.com/user-attachments/assets/3b748bf6-c0e7-4f99-af01-856418a4385d" /></td>
+</tr>
+
+<tr>
+  <td>4th Q</td>
+  <td>Start matching</td>
+  <td>Match Result</td>
+  <td>Movie details</td>
+</tr>
+
+<tr>
   <td><img width="200" src="https://github.com/user-attachments/assets/b853dde0-d05e-4b3b-8a20-7cc688391491" /></td>
   <td><img width="200" src="https://github.com/user-attachments/assets/4625c3b3-4459-4b7d-9cdc-c13d384323f5" /></td>
   <td><img width="200" src="https://github.com/user-attachments/assets/b6adc0d8-c39a-4d5e-afb6-112ec1197ac2" /></td>
@@ -91,6 +119,107 @@ Dive into a world of endless entertainment, where you can explore movies and TV 
   <td>Content Preferences</td>
 </tr>
 </table>
+
+
+---
+## ⚪️ App Screens In Light mode:
+
+<table>
+<tr>
+  <td><img width="200" alt="image" src="https://github.com/user-attachments/assets/e4fb7349-9aa2-4217-b898-ce0b5a10a718" /></td>
+  <td><img width="200" alt="image" src="https://github.com/user-attachments/assets/1ca24e1b-18f1-435c-ad9d-c7016dc47012" /></td>
+  <td><img width="200" alt="image" src="https://github.com/user-attachments/assets/086db656-9ef5-4852-bdc8-3c0e20cd1448" /></td>
+  <td><img width="200" alt="image" src="https://github.com/user-attachments/assets/32912514-bee0-4705-859c-6412dceb85d7" /></td>
+</tr>
+<tr>
+  <td>Splash Screen</td>
+  <td>Onboarding 1</td>
+  <td>Onboarding 2</td>
+  <td>Onboarding 3</td>
+</tr>
+
+<tr>
+  <td><img width="200" alt="image" src="https://github.com/user-attachments/assets/8ada5d9e-d8a2-4152-a27a-aa9dd480a1a4" /></td>
+  <td><img width="200" alt="homescreen1light" src="https://github.com/user-attachments/assets/ffabf58e-eece-47c1-80d7-c776a72c9829" /></td>
+  <td><img width="200" alt="homescreen2light" src="https://github.com/user-attachments/assets/e9bbf80e-e0bb-4a8d-96d2-9f4918cda177" /></td>
+  <td><img width="200" alt="homescreen3light" src="https://github.com/user-attachments/assets/c29ff509-11ec-4073-ad01-5b96d707b592" /></td>
+
+<tr>
+  <td>Login Screen</td>
+  <td>Home Screen</td>
+  <td>Home Screen</td>
+  <td>Home Screen</td>
+</tr>
+
+<tr>
+  <td><img width="200" alt="image" src="https://github.com/user-attachments/assets/489cb657-3470-474b-951a-4a1925ee0c12" /></td>
+  <td><img width="200" alt="image" src="https://github.com/user-attachments/assets/bde99fc1-721a-4494-ada1-26349a2c9fd6" /></td>
+  <td><img width="200" alt="image" src="https://github.com/user-attachments/assets/cf43402c-66e6-4dcc-9bca-f888f89e62b3" /></td>
+  <td><img width="200"  alt="image" src="https://github.com/user-attachments/assets/b342b6f5-e4a8-45de-bf2a-e7e3bdb2ebfe" /></td>
+</tr>
+<tr>
+  <td>Explore Screen</td>
+  <td>Search Explore Screen</td>
+  <td>List Explore Screen</td>
+  <td>History Explore</td>
+</tr>
+
+<tr>
+  <td><img width="200" alt="image" src="https://github.com/user-attachments/assets/0bb57fdd-e6ec-42ba-b029-ddb14ab59ce6" /></td>
+  <td><img width="200" alt="image" src="https://github.com/user-attachments/assets/4dfaa248-369d-41f8-a4ad-bd8cac9a00cf" /></td>
+  <td><img width="200" alt="image" src="https://github.com/user-attachments/assets/1c442292-ef79-4687-9390-1906ca4bd79a" /></td>
+  <td><img width="200" alt="image" src="https://github.com/user-attachments/assets/e0e54261-4e14-441b-bd6a-5c1746e2117d" /></td>
+
+</tr>
+<tr>
+  <td>Main Match Screen</td>
+  <td>1st Q selected</td>
+  <td>2nd Q</td>
+  <td>3rd selected </td>
+</tr>
+
+<tr>
+  <td><img width="200" alt="image" src="https://github.com/user-attachments/assets/bad89a07-f74c-4b64-b3a6-1e59490a0d5e" /></td>
+  <td><img width="200"  alt="image" src="https://github.com/user-attachments/assets/8c31298d-d01b-4f15-b69e-e77903f1c142" /></td>
+  <td><img width="200" alt="image" src="https://github.com/user-attachments/assets/a7a6e6ba-e153-4382-a2bd-c28cdc16e58d" /></td>
+  <td><img width="200" alt="image" src="https://github.com/user-attachments/assets/c875070e-1709-4145-a99d-4250a494174b" /></td>
+</tr>
+
+<tr>
+  <td>4th Q</td>
+  <td>Start matching</td>
+  <td>Match Result</td>
+  <td>Movie details</td>
+</tr>
+
+<tr>
+  <td><img width="200" alt="image" src="https://github.com/user-attachments/assets/8ff06c9a-bc63-4ddf-ae50-e19696052500" /></td>
+  <td><img width="200" alt="image" src="https://github.com/user-attachments/assets/c6f44fd6-71e3-4f9c-b0b3-4a9fa78ee5d1" /></td>
+  <td><img width="200" alt="image" src="https://github.com/user-attachments/assets/c90371f5-c01a-4f39-b653-3ebf1f79bcab" /></td>
+  <td><img width="200" alt="image" src="https://github.com/user-attachments/assets/279fe1d7-4a26-4671-b30f-d3c5354ec9e7" /></td>
+</tr>
+<tr>
+  <td>Add to collection</td>
+  <td>Movie Details</td>
+  <td>Cast Deatils</td>
+  <td>Seasons</td>
+</tr>
+
+<tr>
+  <td><img width="200" alt="profilescreenlight" src="https://github.com/user-attachments/assets/a8d3a537-90c3-4d61-ba17-6f77ca35b93f" /></td>
+  <td><img width="200" alt="profilescreenlight" src="https://github.com/user-attachments/assets/289e62e8-cb77-47c3-9b89-ac10a2159973" /></td>
+  <td><img width="200" alt="changelanlight" src="https://github.com/user-attachments/assets/54f784e0-b560-4c82-8013-0d06277c5e72" /></td>
+  <td><img width="200" alt="contentprefrenceslight" src="https://github.com/user-attachments/assets/967738c6-9216-46cf-a76c-bb4a27ae2923" /></td>
+</tr>
+<tr>
+  <td>Profile Screen</td>
+  <td>Edit profile</td>
+  <td>Change language</td>
+  <td>Content Preferences</td>
+</tr>
+</table>
+
+
 # Modularization
 <p align="center">
   <img width="100%" alt="Image" src="https://github.com/user-attachments/assets/da390766-6637-4d0b-9b02-d9791986356b" />
