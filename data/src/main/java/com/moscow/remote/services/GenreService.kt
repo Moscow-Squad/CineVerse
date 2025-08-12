@@ -1,6 +1,6 @@
 package com.moscow.remote.services
 
-import com.moscow.remote.dto.GenreResponse
+import com.moscow.remote.dto.genre.GenreResponse
 import com.moscow.utils.GENRE_MOVIE_LIST
 import com.moscow.utils.GENRE_SERIES_LIST
 import retrofit2.Response
