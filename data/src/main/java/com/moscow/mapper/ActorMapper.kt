@@ -6,7 +6,7 @@ import com.moscow.domain.model.Movie
 import com.moscow.remote.dto.actor.ActorBestOfMoviesDto
 import com.moscow.remote.dto.actor.ActorDto
 import com.moscow.remote.dto.actor.ActorImagesDto
-import com.moscow.remote.dto.details.ActorDetailsDto
+import com.moscow.remote.dto.actor.ActorDetailsDto
 import com.moscow.utils.IMAGES_URL
 import kotlinx.datetime.LocalDate
 
