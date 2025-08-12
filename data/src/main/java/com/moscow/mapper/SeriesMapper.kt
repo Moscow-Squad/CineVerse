@@ -1,10 +1,22 @@
 package com.moscow.mapper
 
+import com.moscow.domain.model.CreditsInfo
+import com.moscow.domain.model.CreditsInfo.CastInfo
+import com.moscow.domain.model.CreditsInfo.CrewInfo
 import com.moscow.domain.model.Genre
 import com.moscow.domain.model.Series
+import com.moscow.domain.model.Series.Creator
+import com.moscow.domain.model.Series.Season
 import com.moscow.local.entity.HistoryItemEntity
 import com.moscow.local.entity.MediaItemEntity
 import com.moscow.remote.dto.GenreDto
+import com.moscow.remote.dto.details.CreatedByDto
+import com.moscow.remote.dto.details.SeriesCastDto
+import com.moscow.remote.dto.details.SeriesCreditDto
+import com.moscow.remote.dto.details.SeriesCrewDto
+import com.moscow.remote.dto.details.SeriesRecommendationDto
+import com.moscow.remote.dto.series.SeasonDto
+import com.moscow.remote.dto.series.SeriesDetailDto
 import com.moscow.remote.dto.series.SeriesDto
 import com.moscow.utils.IMAGES_URL
 import kotlinx.datetime.LocalDate
@@ -26,7 +38,6 @@ fun Series.toHomeItemEntity(categoryType: String): MediaItemEntity {
 }
 
 
-
 fun Series.toHistoryItemEntity(): HistoryItemEntity {
     return HistoryItemEntity(
         id = this.id,
@@ -35,6 +46,30 @@ fun Series.toHistoryItemEntity(): HistoryItemEntity {
         rating = rating,
         releaseDate = releaseDate,
         itemType = ITEM_SERIES
+    )
+}
+
+
+fun MediaItemEntity.toSeries(
+    overview: String = ""
+): Series {
+    return Series(
+        id = this.id,
+        title = this.name,
+        overview = overview,
+        posterPath = this.posterPath,
+        trailerPath = "",
+        backdropPath = this.posterPath,
+        genres = emptyList(),
+        genreIds = emptyList(),
+        rating = this.rating,
+        voteCount = 0,
+        releaseDate = this.releaseDate,
+        type = "",
+        creators = emptyList(),
+        numberOfSeasons = 0,
+        numberOfEpisodes = 0,
+        seasons = emptyList()
     )
 }
 
@@ -83,9 +118,88 @@ fun SeriesDto.toDomain() =
     )
 
 
-
 fun GenreDto.toDomain() =
     Genre(
         id = id,
         name = name
     )
+
+fun SeriesDetailDto.toDomain(trailer: String): Series {
+    return Series(
+        id = id,
+        title = name,
+        overview = overview,
+        posterPath = IMAGES_URL + posterPath.orEmpty(),
+        trailerPath = "https://youtu.be/$trailer",
+        genres = genres.map { it.toDomain() },
+        rating = voteAverage.toFloat(),
+        releaseDate = if (firstAirDate.isNullOrBlank()) null else LocalDate.parse(firstAirDate),
+        type = type,
+        creators = createdBy.map { it.toDomain() },
+        numberOfSeasons = numberOfSeasons,
+        numberOfEpisodes = numberOfEpisodes,
+        seasons = seasons.map { it.toDomain() },
+        backdropPath = IMAGES_URL + backdropPath,
+        voteCount = voteCount,
+        genreIds = emptyList(),
+    )
+}
+
+private fun CreatedByDto.toDomain(): Creator {
+    return Creator(
+        id = id,
+        name = name ?: "",
+        profilePath = profilePath ?: ""
+    )
+}
+
+internal fun SeasonDto.toDomain(): Season {
+    return Season(
+        id = id,
+        name = name ?: "",
+        airDate = if (airDate.isNullOrBlank()) null else LocalDate.parse(airDate),
+        episodeCount = episodeCount ?: 0,
+        posterPath = IMAGES_URL + posterPath.orEmpty(),
+        overview = overview ?: "",
+        rate = voteAverage?.toFloat() ?: 0f
+    )
+}
+
+
+fun SeriesCreditDto.toDomain() = CreditsInfo(
+    cast = cast.map { it.toDomain() },
+    crew = crew.map { it.toDomain() }
+)
+
+fun SeriesCastDto.toDomain() = CastInfo(
+    id = id,
+    originalName = originalName ?: "",
+    characterName = roles.firstOrNull()?.character ?: "",
+    profileImg = IMAGES_URL + profilePath
+)
+
+fun SeriesCrewDto.toDomain() = CrewInfo(
+    id = id,
+    name = originalName ?: "",
+    job = jobs.firstOrNull()?.job ?: "",
+
+    )
+
+fun SeriesRecommendationDto.toDomain() = Series(
+    id = id,
+    title = name ?: "",
+    overview = overview ?: "",
+    posterPath = IMAGES_URL + posterPath.orEmpty(),
+    trailerPath = "",
+    backdropPath = IMAGES_URL + backdropPath.orEmpty(),
+    genres = emptyList(),
+    genreIds = genreIds,
+    rating = voteAverage?.toFloat() ?: 0f,
+    voteCount = 0,
+    releaseDate = if (firstAirDate.isNullOrBlank()) null else LocalDate.parse(firstAirDate),
+    creators = emptyList(),
+    numberOfSeasons = 0,
+    numberOfEpisodes = 0,
+    seasons = emptyList(),
+    type = ""
+)

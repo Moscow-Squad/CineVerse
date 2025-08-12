@@ -9,10 +9,13 @@ import com.moscow.domain.repository.SeriesRepository
 import com.moscow.domain.usecase.series.GetRatedSeriesUseCase
 import com.moscow.mapper.toDomain
 import com.moscow.mapper.toOutputResult
+import com.moscow.mapper.toSeries
 import com.moscow.remote.dto.review.RatingRequestDto
+import com.moscow.utils.HomeCacheHelper
 import javax.inject.Inject
 
 class SeriesRepositoryImpl @Inject constructor(
+    private val homeCacheHelper: HomeCacheHelper,
     private val seriesRemoteDataSource: SeriesRemoteDataSource,
     private val detailsLocalDataSource: DetailsLocalDataSource
 ) : SeriesRepository {
@@ -27,9 +30,9 @@ class SeriesRepositoryImpl @Inject constructor(
             .trailers
             .firstOrNull { it.key != null }
             ?.key ?: ""
-        val res = seriesRemoteDataSource.getSeriesDetails(id)
-        res.genres.forEach { detailsLocalDataSource.insertFavouriteGenre(it.id) }
-        return res.toDomain(trailer)
+        val seriesDetails = seriesRemoteDataSource.getSeriesDetails(id)
+        seriesDetails.genres.forEach { detailsLocalDataSource.insertFavouriteGenre(it.id) }
+        return seriesDetails.toDomain(trailer)
     }
 
     override suspend fun rateSeries(
@@ -68,7 +71,7 @@ class SeriesRepositoryImpl @Inject constructor(
         seriesRemoteDataSource.getListOfSeries(
             id = id,
             page = page
-        ).toDomain()
+        ).results.map { it.toDomain()}
 
 
     override suspend fun getSeriesRecommendations(
@@ -96,7 +99,7 @@ class SeriesRepositoryImpl @Inject constructor(
     override suspend fun getTopRatedTVSeries(
         page: Int,
         forceRefresh: Boolean
-    ): List<Series> = getCachedOrFetchHomeItems(
+    ): List<Series> = homeCacheHelper.getCachedOrFetchHomeItems(
             categoryType = CATEGORY_TOP_RATED_TV,
             fetchFromRemote = {
                 seriesRemoteDataSource.getTopRatedTVSeries(page).results?.map { it.toDomain() }
