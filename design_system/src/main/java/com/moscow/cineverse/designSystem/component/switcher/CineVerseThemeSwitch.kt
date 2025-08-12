@@ -48,7 +48,7 @@ fun CineVerseSwitch(
                         color = when {
                             isChecked -> Color.White
                             isDarkTheme -> Theme.colors.shade.secondary
-                            else -> Theme.colors.shade.tertiary
+                            else -> Theme.colors.shade.secondary
                         }
                     )
             )
@@ -58,13 +58,8 @@ fun CineVerseSwitch(
             checkedTrackColor = Theme.colors.brand.primary,
             checkedBorderColor = Theme.colors.brand.primary,
 
-            uncheckedThumbColor = if (isDarkTheme) {
-                Theme.colors.shade.secondary
-            } else {
-                Theme.colors.shade.tertiary
-            },
-
-            uncheckedTrackColor = Theme.colors.shade.quaternary,
+            uncheckedThumbColor = Theme.colors.shade.secondary,
+            uncheckedTrackColor = Color.White,
             uncheckedBorderColor = Theme.colors.shade.secondary,
 
             disabledCheckedThumbColor = Theme.colors.shade.tertiary,

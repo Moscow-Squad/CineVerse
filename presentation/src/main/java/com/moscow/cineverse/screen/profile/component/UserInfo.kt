@@ -57,16 +57,24 @@ internal fun UserInfo(
             modifier = modifier
                 .size(56.dp)
                 .clip(CircleShape)
-                .background(Theme.colors.background.card),
+                .background(Theme.colors.shade.quinary),
             contentAlignment = Alignment.Center
         ) {
-            Image(
-                painter = userImage
-                    ?: painterResource(com.moscow.cineverse.design_system.R.drawable.due_tone_profile),
-                contentDescription = "Profile Image",
-                contentScale = ContentScale.Crop,
-                modifier = Modifier.fillMaxSize()
-            )
+            if (userImage != null) {
+                Image(
+                    painter = userImage,
+                    contentDescription = "Profile Image",
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier.fillMaxSize()
+                )
+            } else {
+                Image(
+                    painter = painterResource(R.drawable.profile),
+                    contentDescription = "Default Profile Icon",
+                    contentScale = ContentScale.Fit,
+                    modifier = Modifier.size(24.dp)
+                )
+            }
         }
 
         Column(
@@ -82,10 +90,10 @@ internal fun UserInfo(
             )
 
             MovieText(
-                text = if(!isGuest) username else stringResource(R.string.to_personalize_your_experience),
+                text = if (!isGuest) "@$username" else stringResource(R.string.to_personalize_your_experience),
                 style = Theme.textStyle.body.small.medium,
                 color = Theme.colors.shade.secondary,
-                maxLines = 1,
+                maxLines = 2,
             )
         }
 

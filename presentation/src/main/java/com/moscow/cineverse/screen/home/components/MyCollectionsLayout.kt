@@ -53,7 +53,7 @@ fun MyCollectionsLayout(
         ) {
             items(items.take(itemsRowSize)) { itemState ->
                 MyCollectionCard(
-                    modifier = Modifier.width(280.dp).padding(start = 16.dp),
+                    modifier = Modifier.width(280.dp).padding(horizontal = 16.dp),
                     state = itemState,
                     onClick = { onCollectionClick(itemState.id, itemState.title) },
                 )
@@ -65,7 +65,7 @@ fun MyCollectionsLayout(
         ) {
             items(items.drop(itemsRowSize)) { itemState ->
                 MyCollectionCard(
-                    modifier = Modifier.width(280.dp).padding(start = 16.dp),
+                    modifier = Modifier.width(280.dp).padding(horizontal = 16.dp),
                     state = itemState,
                     onClick = { onCollectionClick(itemState.id, itemState.title) },
                 )
