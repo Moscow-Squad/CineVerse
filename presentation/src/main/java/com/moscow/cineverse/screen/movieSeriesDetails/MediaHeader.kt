@@ -87,6 +87,13 @@ fun MediaHeader(
                 start - (start - end) * (clampedScrollValue / maxScroll)
             }
         }
+        val imageRadius by remember {
+            derivedStateOf {
+                val start = 16.dp
+                val end = 100.dp
+                start - (start - end) * (clampedScrollValue / maxScroll)
+            }
+        }
 
         val imageHeight by remember {
             derivedStateOf {
@@ -180,7 +187,7 @@ fun MediaHeader(
                     imageUrl = posterUrl,
                     modifier = Modifier
                         .fillMaxSize()
-                        .clip(RoundedCornerShape(Theme.radius.extraLarge)),
+                        .clip(RoundedCornerShape(imageRadius)),
                     isBlurEnabled = enableBlur,
                     placeholderContent = { RemoteImagePlaceholder() },
                     errorContent = { RemoteImagePlaceholder() },
