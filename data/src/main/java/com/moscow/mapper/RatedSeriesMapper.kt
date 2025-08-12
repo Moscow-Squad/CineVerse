@@ -2,7 +2,7 @@ package com.moscow.mapper
 
 import com.moscow.domain.model.Series
 import com.moscow.domain.usecase.series.GetRatedSeriesUseCase.RatedSeriesResult
-import com.moscow.remote.dto.rating.series.RatedSeriesDto
+import com.moscow.remote.dto.rating.response.RatedSeriesDto
 import com.moscow.utils.IMAGES_URL
 import kotlinx.datetime.toLocalDate
 

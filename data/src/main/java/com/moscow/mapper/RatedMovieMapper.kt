@@ -2,7 +2,7 @@ package com.moscow.mapper
 
 import com.moscow.domain.model.Movie
 import com.moscow.domain.usecase.movie.GetRatedMoviesUseCase.RatedMovieResult
-import com.moscow.remote.dto.rating.movie.RatedMovieDto
+import com.moscow.remote.dto.rating.response.RatedMovieDto
 import com.moscow.utils.IMAGES_URL
 import kotlinx.datetime.toLocalDate
 

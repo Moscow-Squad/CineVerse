@@ -1,4 +1,4 @@
-package com.moscow.remote.dto.review
+package com.moscow.remote.dto.rating.request
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
