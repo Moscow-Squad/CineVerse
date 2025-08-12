@@ -1,4 +1,4 @@
-package com.moscow.remote.dto.profile
+package com.moscow.remote.dto.profile.response
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

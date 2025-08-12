@@ -1,7 +1,7 @@
 package com.moscow.mapper
 
 import com.moscow.domain.model.UserInfo
-import com.moscow.remote.dto.profile.AccountDto
+import com.moscow.remote.dto.profile.response.AccountDto
 import com.moscow.utils.IMAGES_URL
 
 
