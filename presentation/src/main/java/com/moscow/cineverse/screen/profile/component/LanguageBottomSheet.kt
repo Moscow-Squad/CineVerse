@@ -59,13 +59,13 @@ private fun LanguageBottomSheetContent(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(top = 20.dp, bottom = 16.dp),
+            .padding(bottom = 16.dp),
         horizontalArrangement = Arrangement.spacedBy(12.dp, Alignment.CenterHorizontally)
     ) {
         LanguageOption(
             modifier = Modifier.weight(1f),
             name = stringResource(R.string.english),
-            imageRes = R.drawable.colored_uk_flag,
+            imageRes = R.drawable.uk_flag,
             isSelected = selectedLanguage == "en",
             onClick = { onSelectLanguage("en") }
         )

@@ -19,6 +19,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -109,12 +110,23 @@ private fun UserInfo(
                 .clip(CircleShape),
             contentAlignment = Alignment.Center
         ) {
-            Image(
-                painter = userImage ?: painterResource(R.drawable.due_tone_profile),
-                contentDescription = "Profile Image",
-                contentScale = ContentScale.Crop,
-                modifier = Modifier.size(24.dp)
-            )
+            if (userImage != null) {
+                Image(
+                    painter = userImage,
+                    contentDescription = "Profile Image",
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier.fillMaxSize(),
+                    colorFilter = ColorFilter.tint(color = Theme.colors.shade.secondary)
+                )
+            } else {
+                Image(
+                    painter = painterResource(com.moscow.cinverse.presentation.R.drawable.profile),
+                    contentDescription = "Default Profile Icon",
+                    contentScale = ContentScale.Fit,
+                    modifier = Modifier.size(24.dp),
+                    colorFilter = ColorFilter.tint(color = Theme.colors.shade.secondary)
+                )
+            }
         }
 
         Column {
@@ -128,7 +140,7 @@ private fun UserInfo(
             )
 
             Text(
-                text = userEmail,
+                text = "@$userEmail",
                 style = Theme.textStyle.body.small.regular,
                 color = Theme.colors.shade.secondary,
                 maxLines = 1,
@@ -147,11 +159,11 @@ private fun PreviewMovieReviewCard() {
     CineVerseTheme {
         MovieReviewCard(
             "Shrouk Mohamed",
-            "@ShroukMohamed16",
+            "ShroukMohamed16",
             "Lorem Ipsum is simply dummy text of the printing and typesetting industry.Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
             3,
             "Aug 15, 2025",
-            null
+            painterResource(R.drawable.outline_user)
         )
     }
 }
