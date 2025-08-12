@@ -14,10 +14,11 @@ data class Series(
     val rating: Float,
     val voteCount: Int,
     val releaseDate: LocalDate?,
+    val type:String,
     val creators: List<Creator>,
     val numberOfSeasons: Int,
     val numberOfEpisodes: Int,
-    val seasons: List<Season>
+    val seasons: List<Season>,
 ) {
     data class Creator(
         val id: Int,
@@ -28,7 +29,7 @@ data class Series(
     data class Season(
         val id: Int,
         val name: String,
-        val airDate: LocalDate,
+        val airDate: LocalDate?,
         val episodeCount: Int,
         val posterPath: String,
         val overview: String,

@@ -56,7 +56,7 @@ data class MovieDetailDto(
     @SerialName("video")
     val video: Boolean?,
     @SerialName("vote_average")
-    val voteAverage: Double?,
+    val voteAverage: Float?,
     @SerialName("vote_count")
     val voteCount: Int?,
 )

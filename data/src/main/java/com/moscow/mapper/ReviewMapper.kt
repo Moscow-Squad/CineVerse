@@ -3,6 +3,7 @@ package com.moscow.mapper
 import com.moscow.domain.model.Review
 import com.moscow.remote.dto.review.ReviewDto
 import com.moscow.utils.IMAGES_URL
+import kotlinx.datetime.LocalDate
 
 fun ReviewDto.toDomain(): Review {
     return Review(
@@ -12,6 +13,6 @@ fun ReviewDto.toDomain(): Review {
         avatarPath = if(this.authorDetails?.avatarPath.isNullOrEmpty()) "" else IMAGES_URL + this.authorDetails.avatarPath ,
         rating = this.authorDetails?.rating ?: 0.0,
         content = this.content ?: "",
-        createdAt = createdAt?:""
+        createdAt = if (!createdAt.isNullOrBlank()) LocalDate.parse(createdAt) else null,
     )
 }
