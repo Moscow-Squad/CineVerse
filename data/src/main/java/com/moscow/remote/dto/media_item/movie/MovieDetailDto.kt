@@ -1,10 +1,9 @@
-package com.moscow.remote.dto.movie
+package com.moscow.remote.dto.media_item.movie
 
-import com.moscow.remote.dto.BelongsToCollection
-import com.moscow.remote.dto.GenreDto
-import com.moscow.remote.dto.details.ProductionCompanyDto
-import com.moscow.remote.dto.details.ProductionCountryDto
-import com.moscow.remote.dto.details.SpokenLanguageDto
+import com.moscow.remote.dto.genre.GenreDto
+import com.moscow.remote.dto.media_item.common.ProductionCompanyDto
+import com.moscow.remote.dto.media_item.common.ProductionCountryDto
+import com.moscow.remote.dto.media_item.common.SpokenLanguageDto
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -62,4 +61,16 @@ data class MovieDetailDto(
     val voteAverage: Float?,
     @SerialName("vote_count")
     val voteCount: Int?,
+)
+
+@Serializable
+data class BelongsToCollection(
+    @SerialName("id")
+    val id: Int?,
+    @SerialName("name")
+    val name: String?,
+    @SerialName("poster_path")
+    val posterPath: String?,
+    @SerialName("backdrop_path")
+    val backdropPath: String?,
 )

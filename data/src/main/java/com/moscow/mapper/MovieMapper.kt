@@ -6,11 +6,11 @@ import com.moscow.domain.model.CreditsInfo.CrewInfo
 import com.moscow.domain.model.Movie
 import com.moscow.local.entity.HistoryItemEntity
 import com.moscow.local.entity.MediaItemEntity
-import com.moscow.remote.dto.details.CastDetailsDto
-import com.moscow.remote.dto.details.CreditsDetailsDto
-import com.moscow.remote.dto.details.CrewDetailsDto
-import com.moscow.remote.dto.movie.MovieDto
-import com.moscow.remote.dto.movie.MovieDetailDto
+import com.moscow.remote.dto.media_item.common.CastDetailsDto
+import com.moscow.remote.dto.media_item.common.CreditsDetailsDto
+import com.moscow.remote.dto.media_item.common.CrewDetailsDto
+import com.moscow.remote.dto.media_item.movie.MovieDto
+import com.moscow.remote.dto.media_item.movie.MovieDetailDto
 import com.moscow.utils.IMAGES_URL
 import kotlinx.datetime.LocalDate
 

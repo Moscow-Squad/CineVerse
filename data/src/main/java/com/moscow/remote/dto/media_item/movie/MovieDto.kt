@@ -1,4 +1,4 @@
-package com.moscow.remote.dto.movie
+package com.moscow.remote.dto.media_item.movie
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
