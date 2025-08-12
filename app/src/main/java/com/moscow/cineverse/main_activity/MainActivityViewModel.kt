@@ -16,6 +16,7 @@ import javax.inject.Inject
 class MainActivityViewModel @Inject constructor(
     private val themeProvider: ThemeProvider,
     private val languageProvider: LanguageProvider
+
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(MainActivityUiState())
@@ -26,25 +27,18 @@ class MainActivityViewModel @Inject constructor(
         observeLanguage()
     }
 
-    private fun observeLanguage() {
-        _state.update { it.copy(isLoading = true) }
-
-        viewModelScope.launch {
-            languageProvider.languageFlow.collect { lang ->
-                _state.update {
-                    it.copy(language = lang, isLoading = false)
-                }
-            }
-        }
-    }
 
     private fun observeTheme() {
         _state.update { it.copy(isLoading = true) }
-
         viewModelScope.launch(Dispatchers.IO) {
             themeProvider.themeFlow.collect { isDarkTheme ->
                 _state.update { it.copy(isDarkTheme = isDarkTheme) }
             }
         }
     }
+
+    private fun observeLanguage() {
+        _state.update { it.copy(language = languageProvider.getCurrentLanguage()) }
+    }
+
 }

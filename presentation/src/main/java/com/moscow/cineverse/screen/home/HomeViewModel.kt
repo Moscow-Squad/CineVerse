@@ -26,7 +26,6 @@ import com.moscow.domain.usecase.recently_viewed.GetRecentlyViewedMediaUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -48,11 +47,11 @@ class HomeViewModel @Inject constructor(
 
     init {
 
-        viewModelScope.launch {
-            val d = languageProvider.languageFlow.first()
-            updateState { it.copy(cashLanguage = d) }
-        }
-        observeLanguage()
+//        viewModelScope.launch {
+//            val d = languageProvider.languageFlow.first()
+//            updateState { it.copy(cashLanguage = d) }
+//        }
+//        observeLanguage()
         getGenres()
         observeBlur()
     }
@@ -78,18 +77,18 @@ class HomeViewModel @Inject constructor(
         )
     }
 
-    private fun observeLanguage() {
-        viewModelScope.launch {
-
-            languageProvider.languageFlow.collect { currentLanguage ->
-                if (uiState.value.cashLanguage != currentLanguage) {
-                    updateState { it.copy(cashLanguage = currentLanguage) }
-                    clearHomeCash()
-                    loadHomeData()
-                }
-            }
-        }
-    }
+//    private fun observeLanguage() {
+//        viewModelScope.launch {
+//
+//            languageProvider.languageFlow.collect { currentLanguage ->
+//                if (uiState.value.cashLanguage != currentLanguage) {
+//                    updateState { it.copy(cashLanguage = currentLanguage) }
+//                    clearHomeCash()
+//                    loadHomeData()
+//                }
+//            }
+//        }
+//    }
 
     private fun observeBlur() {
         viewModelScope.launch {

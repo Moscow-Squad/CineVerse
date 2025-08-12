@@ -36,4 +36,5 @@ dependencies {
     implementation(libs.androidx.paging.compose)
     //navigation
     implementation(libs.androidx.navigation.compose)
+
 }

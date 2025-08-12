@@ -37,8 +37,8 @@ android {
 //                ?: error("KEY_PASSWORD not found in keys.properties")
 //        }
 //    }
-        buildTypes {
-            release {
+    buildTypes {
+        release {
 //                signingConfig = signingConfigs.getByName("release")
 //                isDebuggable = false
 //                isMinifyEnabled = true
@@ -49,14 +49,15 @@ android {
 //                )
 //                manifestPlaceholders["crashlytics_enabled"] = "true"
 //                manifestPlaceholders["analytics_enabled"] = "true"
-            }
-            debug {
-                isDebuggable = true
-                isMinifyEnabled = false
-                manifestPlaceholders["crashlytics_debug"] = "true"
-                manifestPlaceholders["analytics_debug"] = "true"
-            }
         }
+        debug {
+            isDebuggable = true
+            isMinifyEnabled = false
+            manifestPlaceholders["crashlytics_debug"] = "true"
+            manifestPlaceholders["analytics_debug"] = "true"
+        }
+    }
+
 }
 
 firebaseAppDistribution {
@@ -82,9 +83,9 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
-    implementation("androidx.appcompat:appcompat:1.7.0")
+    implementation(libs.androidx.appcompat)
 
-        // Compose
+    // Compose
     implementation(platform(libs.androidx.compose.bom))
     // Firebase
     implementation(libs.firebase.crashlytics)

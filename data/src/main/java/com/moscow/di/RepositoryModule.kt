@@ -1,7 +1,5 @@
 package com.moscow.di
 
-import com.moscow.domain.repository.language.LanguageProvider
-import com.moscow.domain.repository.theme.ThemeProvider
 import com.moscow.domain.repository.ActorRepository
 import com.moscow.domain.repository.CategoryTipsRepository
 import com.moscow.domain.repository.CollectionsRepository
@@ -16,8 +14,8 @@ import com.moscow.domain.repository.SearchRepository
 import com.moscow.domain.repository.SeriesRepository
 import com.moscow.domain.repository.SessionRepository
 import com.moscow.domain.repository.blur.BlurProvider
+import com.moscow.domain.repository.theme.ThemeProvider
 import com.moscow.preference.BlurProviderImpl
-import com.moscow.preference.LanguageProviderImpl
 import com.moscow.preference.ThemeProviderImpl
 import com.moscow.repository.ActorRepositoryImpl
 import com.moscow.repository.CollectionsRepositoryImpl
@@ -74,10 +72,6 @@ abstract class RepositoryModule {
     @Singleton
     abstract fun bindUserRepository(impl: UserRepositoryImpl): UserRepository
 
-
-    @Binds
-    @Singleton
-    abstract fun bindLanguageProvider(impl: LanguageProviderImpl): LanguageProvider
 
     @Binds
     @Singleton
