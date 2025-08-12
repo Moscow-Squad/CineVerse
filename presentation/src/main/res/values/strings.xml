@@ -16,7 +16,7 @@
     <string name="star_cast">Star Cast</string>
     <string name="you_might_also_like">You Might Also Like</string>
     <string name="because_you_watched">Because You Watched</string>
-    <string name="add_to_collection">Add To Collection</string>
+    <string name="add_to_collection">Add to Collection</string>
     <string name="no_collections_yet">No Collections Yet</string>
     <string name="create_a_new_collection_to_start_saving_your_favorite_movies_and_series">Create a new collection to start saving your favorite movies and series.</string>
     <string name="create_collection">Create Collection</string>
@@ -102,7 +102,7 @@
     <string name="start_rating">Start Rating</string>
     <string name="my_profile">My Profile</string>
     <string name="settings">Settings</string>
-    <string name="login_or_sign_up">Login or Sign up</string>
+    <string name="login_or_sign_up">Login or Sign Up</string>
     <string name="to_personalize_your_experience">to personalize your experience!</string>
     <string name="dark_mode">Dark Mode</string>
     <string name="logout">Logout</string>
@@ -123,10 +123,10 @@
     <string name="hides_revealing_or_inappropriate_posters_e_g_nudity_strong_sexual_content">Hides revealing or inappropriate posters (e.g. nudity, strong sexual content).</string>
     <string name="hides_all_content_that_includes_immodest_clothing_or_behavior">Hides all content that includes immodest clothing or behavior</string>
     <string name="no_filtering_all_images_and_posters_will_be_displayed">No filtering. All images and posters will be displayed.</string>
-    <string name="preferences">Preferences</string>
+    <string name="preferences">Content Preferences</string>
     <string name="tip_swipe_left_to_remove_movies_from_your_collection">Tip: Swipe left to remove movies from your collection.</string>
     <string name="no_history_yet">No History Yet</string>
-    <string name="history_empty_message">It’s quiet in here... Start watching and we’ll keep track for you.</string>
+    <string name="history_empty_message">It’s quiet in here… Start watching and we’ll keep track for you.</string>
     <string name="find_something_to_watch">Find Something to Watch</string>
     <string name="history_tip_message">Tip: Swipe left to remove movies from your history.</string>
     <string name="movie_swiped_tip_message">Tip: Swipe left to remove movies from your collection.</string>

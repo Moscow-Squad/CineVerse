@@ -15,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -52,15 +53,18 @@ internal fun Settings(
                 Icon(
                     painter = painterResource(R.drawable.due_tone_moon),
                     tint = Theme.colors.brand.primary,
-                    contentDescription = "dark mode icon"
+                    contentDescription = "dark mode icon",
+                    modifier = Modifier.size(20.dp)
                 )
             },
             suffixIcon = {
                 CineVerseSwitch(
-                    modifier = Modifier.size(
-                        width = 40.dp,
-                        height = 20.dp
-                    ),
+                    modifier = Modifier
+                        .size(
+                            width = 40.dp,
+                            height = 20.dp
+                        )
+                        .scale(0.8f),
                     isDarkTheme = isDarkTheme,
                     onThemeChange = onThemeChange
                 )
@@ -82,14 +86,16 @@ internal fun Settings(
                 Icon(
                     painter = painterResource(R.drawable.due_tone_language),
                     tint = Theme.colors.brand.primary,
-                    contentDescription = "language icon"
+                    contentDescription = "language icon",
+                    modifier = Modifier.size(20.dp)
                 )
             },
             suffixIcon = {
                 Icon(
                     painter = painterResource(R.drawable.outline_alt_arrow_right),
                     tint = Theme.colors.shade.tertiary,
-                    contentDescription = "language arrow icon"
+                    contentDescription = "language arrow icon",
+                    modifier = Modifier.size(20.dp)
                 )
             })
 
@@ -109,14 +115,16 @@ internal fun Settings(
                 Icon(
                     painter = painterResource(R.drawable.due_tone_color_switch),
                     tint = Theme.colors.brand.primary,
-                    contentDescription = "preference icon"
+                    contentDescription = "preference icon",
+                    modifier = Modifier.size(20.dp)
                 )
             },
             suffixIcon = {
                 Icon(
                     painter = painterResource(R.drawable.outline_alt_arrow_right),
                     tint = Theme.colors.shade.tertiary,
-                    contentDescription = "preference arrow icon"
+                    contentDescription = "preference arrow icon",
+                    modifier = Modifier.size(20.dp)
                 )
             })
         if (!isGuest) Spacer(
@@ -133,14 +141,16 @@ internal fun Settings(
                 Icon(
                     painter = painterResource(R.drawable.due_tone_logout),
                     tint = Theme.colors.additional.primary.red,
-                    contentDescription = "logout icon"
+                    contentDescription = "logout icon",
+                    modifier = Modifier.size(20.dp)
                 )
             },
             suffixIcon = {
                 Icon(
                     painter = painterResource(R.drawable.outline_alt_arrow_right),
                     tint = Theme.colors.additional.primary.red,
-                    contentDescription = "logout arrow icon"
+                    contentDescription = "logout arrow icon",
+                    modifier = Modifier.size(20.dp)
                 )
             })
     }

@@ -76,7 +76,7 @@ fun CreateCollectionDialogContent(
         onClose = interactionListener::onCancelClick,
         onDismissRequest = interactionListener::onCancelClick,
     ) {
-        Column(modifier = Modifier.padding(top = 16.dp)) {
+        Column {
             MovieText(
                 text = stringResource(R.string.collection_name)
             )
