@@ -12,9 +12,9 @@ import com.moscow.domain.model.UserType
 import com.moscow.domain.repository.CollectionsRepository
 import com.moscow.domain.repository.auth.UserRepository
 import com.moscow.mapper.toDomain
-import com.moscow.remote.dto.AddMediaItemToCollectionRequestDto
-import com.moscow.remote.dto.CreateCollectionDto
-import com.moscow.remote.dto.toDomain
+import com.moscow.remote.dto.collection.request.AddMediaItemToCollectionRequestDto
+import com.moscow.remote.dto.collection.request.CreateCollectionRequestDto
+import com.moscow.remote.dto.collection.response.toDomain
 import javax.inject.Inject
 
 class CollectionsRepositoryImpl @Inject constructor(
@@ -40,7 +40,7 @@ class CollectionsRepositoryImpl @Inject constructor(
         collectionDescription: String?
     ): Int {
         val collection =
-            CreateCollectionDto(name = collectionName, description = collectionDescription)
+            CreateCollectionRequestDto(name = collectionName, description = collectionDescription)
         val response = collectionRemoteDataSource.addNewCollection(
             collection = collection,
             sessionId = userRepository.getSessionId()

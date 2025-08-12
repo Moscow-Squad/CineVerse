@@ -1,4 +1,4 @@
-package com.moscow.remote.dto
+package com.moscow.remote.dto.collection.response
 
 import com.moscow.domain.model.Collection
 import kotlinx.serialization.SerialName

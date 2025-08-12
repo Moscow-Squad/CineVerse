@@ -1,10 +1,10 @@
 package com.moscow.remote.data_source
 
 import com.moscow.data_source.remote.CollectionRemoteDataSource
-import com.moscow.remote.dto.AddMediaItemToCollectionRequestDto
-import com.moscow.remote.dto.CollectionDto
-import com.moscow.remote.dto.CreateCollectionDto
-import com.moscow.remote.dto.movie.MovieDto
+import com.moscow.remote.dto.collection.request.AddMediaItemToCollectionRequestDto
+import com.moscow.remote.dto.collection.response.CollectionDto
+import com.moscow.remote.dto.collection.request.CreateCollectionRequestDto
+import com.moscow.remote.dto.media_item.movie.MovieDto
 import com.moscow.remote.services.CollectionsService
 import com.moscow.utils.ApiResponse
 import com.moscow.utils.handleApi
@@ -26,7 +26,7 @@ class CollectionRemoteDataSourceImpl  @Inject constructor(
     }
 
     override suspend fun addNewCollection(
-        collection: CreateCollectionDto,
+        collection: CreateCollectionRequestDto,
         sessionId: String
     ) = handleApi {
         collectionsService.addNewCollection(

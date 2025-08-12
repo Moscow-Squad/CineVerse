@@ -4,11 +4,11 @@ import com.google.common.truth.Truth.assertThat
 import com.moscow.data_source.remote.CollectionRemoteDataSource
 import com.moscow.domain.exception.CineVerseException
 import com.moscow.remote.data_source.CollectionRemoteDataSourceImpl
-import com.moscow.remote.dto.AddCollectionDto
-import com.moscow.remote.dto.AddMediaItemToCollectionRequestDto
-import com.moscow.remote.dto.CollectionDto
-import com.moscow.remote.dto.CreateCollectionDto
-import com.moscow.remote.dto.movie.MovieDto
+import com.moscow.remote.dto.collection.response.AddCollectionDto
+import com.moscow.remote.dto.collection.request.AddMediaItemToCollectionRequestDto
+import com.moscow.remote.dto.collection.response.CollectionDto
+import com.moscow.remote.dto.collection.request.CreateCollectionRequestDto
+import com.moscow.remote.dto.media_item.movie.MovieDto
 import com.moscow.remote.services.CollectionsService
 import com.moscow.utils.ApiResponse
 import io.mockk.coEvery
@@ -83,7 +83,7 @@ class CollectionRemoteDataSourceImplTest {
     @Test
     fun `given sessionId and new collection when addNewCollection returns success then add new collection`() = runTest {
         val sessionId = "abc"
-        val dto = CreateCollectionDto(name = "New Collection", description = null)
+        val dto = CreateCollectionRequestDto(name = "New Collection", description = null)
         val response = AddCollectionDto(122,201,"",true)
 
         coEvery { collectionService.addNewCollection(dto, sessionId) } returns Response.success(response)

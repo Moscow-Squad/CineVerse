@@ -1,10 +1,10 @@
 package com.moscow.remote.services
 
-import com.moscow.remote.dto.AddCollectionDto
-import com.moscow.remote.dto.AddMediaItemToCollectionRequestDto
-import com.moscow.remote.dto.CollectionDto
-import com.moscow.remote.dto.CreateCollectionDto
-import com.moscow.remote.dto.movie.MovieDto
+import com.moscow.remote.dto.collection.response.AddCollectionDto
+import com.moscow.remote.dto.collection.request.AddMediaItemToCollectionRequestDto
+import com.moscow.remote.dto.collection.response.CollectionDto
+import com.moscow.remote.dto.collection.request.CreateCollectionRequestDto
+import com.moscow.remote.dto.media_item.movie.MovieDto
 import com.moscow.utils.ACCOUNT
 import com.moscow.utils.ADD_ITEM
 import com.moscow.utils.ApiResponse
@@ -32,7 +32,7 @@ interface CollectionsService {
 
     @POST(LIST)
     suspend fun addNewCollection(
-        @Body collection: CreateCollectionDto,
+        @Body collection: CreateCollectionRequestDto,
         @Query(SESSION_ID) sessionId: String
     ): Response<AddCollectionDto>
 
