@@ -83,23 +83,20 @@ fun MediaHeader(
         val scrollProgress = remember { mutableStateOf(0f) }
         val maxScroll = 250f
 
+        val absoluteScroll = remember(scrollState) {
+            derivedStateOf {
+                scrollState.firstVisibleItemIndex * 1000 + // assume ~1000px per item max
+                        scrollState.firstVisibleItemScrollOffset
+            }
+        }
 
 
         val maxAchievedScroll = remember { mutableStateOf(0f) }
 
         val clampedScrollValue by remember(scrollState) {
             derivedStateOf {
-                val current = scrollState.firstVisibleItemScrollOffset.toFloat()
-                val isScrollingDown = current > lastScrollOffset.value && current <= 250f
-Log.d("dddddd", current.toString())
-                if (isScrollingDown) {
-                    // Scrolling down — allow animation
-                    maxAchievedScroll.value = current
-                } else if (current == 0f) {
-                    // Only reset when we're at the very top
-                    maxAchievedScroll.value = 0f
-                }
-
+                val current = absoluteScroll.value.toFloat()
+                maxAchievedScroll.value = current
                 lastScrollOffset.value = current
                 maxAchievedScroll.value.coerceIn(0f, 250f)
             }
@@ -237,7 +234,7 @@ Log.d("dddddd", current.toString())
                 horizontalAlignment = Alignment.Start,
             ) {
                 AnimatedVisibility(
-                    visible = !isCollapsed.value,
+                    visible = clampedScrollValue <= 20f,
                     enter = slideInVertically(animationSpec = tween(1000))
                             + fadeIn(animationSpec = tween(1000)),
 
@@ -256,7 +253,7 @@ Log.d("dddddd", current.toString())
                     color = Theme.colors.shade.primary
                 )
                 AnimatedVisibility(
-                    visible = !isCollapsed.value,
+                    visible = clampedScrollValue <= 20f,
                     enter = slideInVertically(animationSpec = tween(1000))
                             + fadeIn(animationSpec = tween(1000)),
 
