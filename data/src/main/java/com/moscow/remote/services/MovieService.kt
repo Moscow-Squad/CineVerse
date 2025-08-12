@@ -12,6 +12,7 @@ import com.moscow.utils.ACCOUNT
 import com.moscow.utils.ACCOUNT_STATES
 import com.moscow.utils.ApiResponse
 import com.moscow.utils.CREDITS
+import com.moscow.utils.DAY
 import com.moscow.utils.DESCENDING
 import com.moscow.utils.DISCOVER_MOVIE_LIST
 import com.moscow.utils.MOVIE
@@ -106,7 +107,7 @@ interface MovieService {
 
     @GET("$TRENDING$MOVIE{time_window}")
     suspend fun getTrendingMovies(
-        @Path("time_window") time: String,
+        @Path("time_window") time: String = DAY,
         @Query(PAGE) page: Int = 1
     ): Response<ApiResponse<MovieDto>>
 

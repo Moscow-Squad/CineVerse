@@ -11,10 +11,11 @@ import com.moscow.mapper.toDomain
 import com.moscow.mapper.toMovie
 import com.moscow.mapper.toOutputResult
 import com.moscow.remote.dto.review.RatingRequestDto
-import com.moscow.repository.HomeRepositoryImpl.Companion.CATEGORY_MATCHES_VIBE
+import com.moscow.utils.HomeCacheHelper
 import javax.inject.Inject
 
 class MovieRepositoryImpl @Inject constructor(
+    private val homeCacheHelper: HomeCacheHelper,
     private val movieRemoteDataSource: MovieRemoteDataSource,
     private val detailLocalDataSource: DetailsLocalDataSource
 ) : MovieRepository {
@@ -89,11 +90,11 @@ class MovieRepositoryImpl @Inject constructor(
             ?: emptyList()
     }
 
-    override suspend fun getTrendingMovies( forceRefresh: Boolean): List<Movie> {
-        return getCachedOrFetchHomeItems(
+    override suspend fun getTrendingMovies(forceRefresh: Boolean): List<Movie> {
+        return homeCacheHelper.getCachedOrFetchHomeItems(
             categoryType = CATEGORY_TRENDING,
             fetchFromRemote = {
-                movieRemoteDataSource.getTrendingMovies(time).results?.map { it.toDomain() } ?: emptyList()
+                movieRemoteDataSource.getTrendingMovies().results?.map { it.toDomain() } ?: emptyList()
             },
             mapFromEntity = { it.toMovie() },
             forceRefresh = forceRefresh
@@ -101,7 +102,7 @@ class MovieRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getRecentlyReleasedMovies(page: Int, forceRefresh: Boolean): List<Movie> {
-        return getCachedOrFetchHomeItems(
+        return homeCacheHelper.getCachedOrFetchHomeItems(
             categoryType = CATEGORY_RECENTLY_RELEASED,
             fetchFromRemote = {
                 movieRemoteDataSource.getRecentlyReleasedMovies(page).results?.map { it.toDomain() } ?: emptyList()
@@ -112,7 +113,7 @@ class MovieRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getUpComingMovies(page: Int, forceRefresh: Boolean): List<Movie> {
-        return getCachedOrFetchHomeItems(
+        return homeCacheHelper.getCachedOrFetchHomeItems(
             categoryType = CATEGORY_UPCOMING,
             fetchFromRemote = {
                 movieRemoteDataSource.getUpComingMovies(page).results?.map { it.toDomain() } ?: emptyList()
@@ -123,7 +124,7 @@ class MovieRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getMatchYourVibeMovies(genreId: Int, page: Int, forceRefresh: Boolean): List<Movie> {
-        return getCachedOrFetchHomeItems(
+        return homeCacheHelper.getCachedOrFetchHomeItems(
             categoryType = CATEGORY_MATCHES_VIBE,
             fetchFromRemote = {
                 movieRemoteDataSource.getMatchYourVibeMovies(genreId, page).results?.map { it.toDomain() } ?: emptyList()
@@ -138,5 +139,6 @@ class MovieRepositoryImpl @Inject constructor(
         const val CATEGORY_TRENDING = "TRENDING"
         const val CATEGORY_RECENTLY_RELEASED = "RECENTLY_RELEASED"
         const val CATEGORY_UPCOMING = "UPCOMING"
+        const val CATEGORY_MATCHES_VIBE = "MATCHES_VIBE"
     }
 }

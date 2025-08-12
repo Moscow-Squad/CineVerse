@@ -104,8 +104,8 @@ class MovieRemoteDataSourceImpl @Inject constructor(
             movieService.getMovieTrailers(id)
         }
 
-    override suspend fun getTrendingMovies(time: String?): ApiResponse<MovieDto> = handleApi {
-        movieService.getTrendingMovies(time ?: DAY)
+    override suspend fun getTrendingMovies(): ApiResponse<MovieDto> = handleApi {
+        movieService.getTrendingMovies()
     }
 
     override suspend fun getUpComingMovies(page: Int): ApiResponse<MovieDto> = handleApi {
