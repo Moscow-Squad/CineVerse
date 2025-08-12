@@ -1,27 +1,19 @@
-package com.moscow.repository
+package com.moscow.utils
 
 import com.moscow.data_source.local.HomeLocalDataSource
 import com.moscow.domain.model.Movie
 import com.moscow.domain.model.Series
 import com.moscow.local.entity.MediaItemEntity
 import com.moscow.mapper.toHomeItemEntity
-import javax.inject.Inject
 
-class HomeRepositoryImpl @Inject constructor(
+class HomeCacheHelper(
     private val homeLocalDataSource: HomeLocalDataSource
-) : HomeRepository {
-
+) {
     companion object {
         const val CACHE_DURATION_MS = 24 * 60 * 60 * 1000
-        const val CATEGORY_MATCHES_VIBE = "MATCHES_VIBE"
     }
 
-
-    override suspend fun clearHomeCash() {
-        homeLocalDataSource.clearHomeCash()
-    }
-
-    private suspend inline fun <reified T> getCachedOrFetchHomeItems(
+    internal suspend inline fun <reified T> getCachedOrFetchHomeItems(
         categoryType: String,
         crossinline mapFromEntity: (MediaItemEntity) -> T,
         fetchFromRemote: suspend () -> List<T>,
