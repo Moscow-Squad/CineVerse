@@ -129,7 +129,11 @@ class LoginViewModel @Inject constructor(
     }
 
     override fun onClickCreateNewAccount() {
-        updateState { it.copy(showSignUpBottomSheet = true) }
+        updateState { it.copy(
+            showSignUpBottomSheet = true,
+            urlWebView = SIGN_UP_URL
+        )
+        }
     }
 
     override fun onDismissOrCancelSignUpBottomSheet() {
@@ -140,7 +144,7 @@ class LoginViewModel @Inject constructor(
         updateState {
             it.copy(
                 showSignUpBottomSheet = false,
-                urlWebView = SIGN_UP_URL,
+                urlWebView = uiState.value.urlWebView,
                 showWebView = true
             )
         }
@@ -150,7 +154,7 @@ class LoginViewModel @Inject constructor(
         updateState {
             it.copy(
                 urlWebView = FORGET_PASSWORD_URL,
-                showWebView = true
+                showSignUpBottomSheet = true
             )
         }
     }
