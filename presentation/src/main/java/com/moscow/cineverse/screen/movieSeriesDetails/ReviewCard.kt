@@ -20,7 +20,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -66,7 +65,8 @@ fun MovieReviewCard(
 
         Row(Modifier.fillMaxWidth()) {
 
-            MovieRatingBar(rating, {})
+            if (rating != 0)
+                MovieRatingBar(rating, {})
 
             Spacer(Modifier.weight(1f))
 
@@ -96,9 +96,18 @@ private fun UserInfo(
         Box(
             modifier = modifier
                 .size(40.dp)
-                .clip(CircleShape)
                 .background(Theme.colors.background.card)
-                .border(1.dp, Theme.colors.stroke.primary, CircleShape),
+                .then(
+                    if (userImage == null)
+                        Modifier
+                            .border(
+                                width = 1.dp,
+                                color = Theme.colors.stroke.primary,
+                                shape = CircleShape
+                            )
+                    else Modifier
+                )
+                .clip(CircleShape),
             contentAlignment = Alignment.Center
         ) {
             if (userImage != null) {
@@ -107,7 +116,6 @@ private fun UserInfo(
                     contentDescription = "Profile Image",
                     contentScale = ContentScale.Crop,
                     modifier = Modifier.fillMaxSize(),
-                    colorFilter = ColorFilter.tint(color = Theme.colors.shade.secondary)
                 )
             } else {
                 Image(
@@ -115,7 +123,6 @@ private fun UserInfo(
                     contentDescription = "Default Profile Icon",
                     contentScale = ContentScale.Fit,
                     modifier = Modifier.size(24.dp),
-                    colorFilter = ColorFilter.tint(color = Theme.colors.shade.secondary)
                 )
             }
         }
