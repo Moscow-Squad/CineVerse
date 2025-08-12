@@ -2,17 +2,16 @@ package com.moscow.remote.data_source
 
 import com.moscow.data_source.remote.MovieRemoteDataSource
 import com.moscow.domain.repository.auth.UserRepository
-import com.moscow.remote.dto.CreditsDetailsDto
-import com.moscow.remote.dto.MovieDto
+import com.moscow.remote.dto.details.CreditsDetailsDto
+import com.moscow.remote.dto.movie.MovieDto
 import com.moscow.remote.dto.details.MediaTrailersDto
-import com.moscow.remote.dto.details.MovieDetailDto
+import com.moscow.remote.dto.movie.MovieDetailDto
 import com.moscow.remote.dto.rating.UserRatingResponse
 import com.moscow.remote.dto.rating.movie.RatedMovieDto
 import com.moscow.remote.dto.review.RatingRequestDto
 import com.moscow.remote.dto.review.ReviewDto
 import com.moscow.remote.services.MovieService
 import com.moscow.utils.ApiResponse
-import com.moscow.utils.DAY
 import com.moscow.utils.handleApi
 import javax.inject.Inject
 

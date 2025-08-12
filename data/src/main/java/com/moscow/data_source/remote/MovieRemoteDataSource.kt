@@ -1,9 +1,9 @@
 package com.moscow.data_source.remote
 
-import com.moscow.remote.dto.CreditsDetailsDto
-import com.moscow.remote.dto.MovieDto
+import com.moscow.remote.dto.details.CreditsDetailsDto
+import com.moscow.remote.dto.movie.MovieDto
 import com.moscow.remote.dto.details.MediaTrailersDto
-import com.moscow.remote.dto.details.MovieDetailDto
+import com.moscow.remote.dto.movie.MovieDetailDto
 import com.moscow.remote.dto.rating.UserRatingResponse
 import com.moscow.remote.dto.rating.movie.RatedMovieDto
 import com.moscow.remote.dto.review.RatingRequestDto
