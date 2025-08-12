@@ -30,6 +30,7 @@ class PreferenceRepositoryImpl @Inject constructor(
                     preferences[RECENTLY_VIEWED_COLLECTION_ID] = userType.recentlyCollectionId
                     preferences[Is_LOGGED_IN_KEY] = true
                     preferences[SHOW_COLLECTION_DETAILS_TIP] = true
+                    preferences[SHOW_HISTORY_TIP] = true
                     preferences.remove(EXPIRED_AT_KEY)
                 }
                 is UserType.GuestUser -> {
@@ -38,6 +39,7 @@ class PreferenceRepositoryImpl @Inject constructor(
                     preferences[EXPIRED_AT_KEY] = userType.expiredAt.toString()
                     preferences[Is_LOGGED_IN_KEY] = false
                     preferences[SHOW_COLLECTION_DETAILS_TIP] = true
+                    preferences[SHOW_HISTORY_TIP] = true
                     preferences.remove(USER_ID_KEY)
                     preferences.remove(USERNAME_KEY)
                 }
@@ -119,6 +121,16 @@ class PreferenceRepositoryImpl @Inject constructor(
         dataStore.edit { it[IS_ON_BOARDING_SEEN_KEY] = true }
     }
 
+    override suspend fun showHistoryTip(): Boolean {
+        return dataStore.data.map {it[SHOW_HISTORY_TIP] }.first() ?: true
+    }
+
+    override suspend fun closeHistoryTip() {
+        dataStore.edit { preferences ->
+            preferences[SHOW_HISTORY_TIP] = false
+        }
+    }
+
     companion object {
         private const val AUTHENTICATED_USER = "authenticated"
         private const val GUEST_USER = "guest"
@@ -132,6 +144,7 @@ class PreferenceRepositoryImpl @Inject constructor(
         private val EXPIRED_AT_KEY = stringPreferencesKey("expired_at")
         private val Is_LOGGED_IN_KEY = booleanPreferencesKey("is_logged_in")
         private val SHOW_COLLECTION_DETAILS_TIP = booleanPreferencesKey("is_tip_collection_details")
+        private val SHOW_HISTORY_TIP = booleanPreferencesKey("is_tip_history")
         private val IS_ON_BOARDING_SEEN_KEY = booleanPreferencesKey("is_on_boarding_seen")
     }
 }
