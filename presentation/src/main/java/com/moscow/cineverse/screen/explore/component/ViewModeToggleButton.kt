@@ -48,12 +48,12 @@ fun ViewModeToggleButton(
         modifier = modifier
             .width(80.dp)
             .height(40.dp)
-            .clip(RoundedCornerShape(Theme.radius.large))
+            .clip(RoundedCornerShape(Theme.radius.small))
             .background(Theme.colors.background.card)
             .border(
                 width = 1.dp,
                 color = Theme.colors.stroke.primary,
-                shape = RoundedCornerShape(Theme.radius.large)
+                shape = RoundedCornerShape(Theme.radius.small)
             )
     ) {
         Box(
@@ -61,7 +61,7 @@ fun ViewModeToggleButton(
                 .offset(x = indicatorOffsetX)
                 .width(40.dp)
                 .height(38.dp)
-                .clip(RoundedCornerShape(Theme.radius.large))
+                .clip(RoundedCornerShape(Theme.radius.small))
                 .background(Theme.colors.brand.tertiary)
         )
         Row(
