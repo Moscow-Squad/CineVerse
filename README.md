@@ -27,7 +27,7 @@ Dive into a world of endless entertainment, where you can explore movies and TV 
 
 <table>
 <tr>
-  <td><img width="200" src="https://github.com/user-attachments/assets/284788ed-1095-4d7b-8150-b01954bfd385" /></td>
+  <td> <img width="200" alt="splash" src="https://github.com/user-attachments/assets/abfb7391-be82-487e-801c-8085d865b263" /></td>
   <td><img width="200" alt="Image" src="https://github.com/user-attachments/assets/c6eceaf2-8706-4abd-b612-dc306fde83e0" /></td>
   <td><img width="200" src="https://github.com/user-attachments/assets/6cbe3c47-c802-4c11-844e-457b959ca3a5" /></td>
   <td><img width="200" src="https://github.com/user-attachments/assets/b1abea25-3e38-4d32-b058-62166c7e1a3e" /></td>
