@@ -1,29 +1,34 @@
 package com.moscow.cineverse.designSystem.component.text
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicText
+import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.LocalContentColor
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.OutlinedTextFieldDefaults
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -46,7 +51,7 @@ fun AppTextField(
     errorMessage: String? = null,
     isPassword: Boolean = false,
     label: String? = null,
-    leadingIconTint: Color = LocalContentColor.current,
+    leadingIconTint: Color = Color.Unspecified,
     maxLines: Int = 1,
     singleLine: Boolean = true,
     enabled: Boolean = true,
@@ -56,118 +61,140 @@ fun AppTextField(
     forgotPasswordClick: (() -> Unit)? = null
 ) {
     var passwordVisible by remember { mutableStateOf(false) }
+    var isFocused by remember { mutableStateOf(false) }
+
+    val shape = RoundedCornerShape(Theme.radius.large)
+    val borderColor = when {
+        isError -> Theme.colors.additional.primary.red
+        isFocused -> Theme.colors.brand.primary
+        else -> Theme.colors.stroke.primary
+    }
+
+    val shadeSecondaryColor = Theme.colors.shade.secondary
+    val additionalPrimaryRedColor = Theme.colors.additional.primary.red
 
     Column(
-        modifier = modifier, verticalArrangement = Arrangement.spacedBy(space = 8.dp)
+        modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(space = 8.dp)
     ) {
-        Row(
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            if (label != null) {
-                Text(
-                    text = label,
-                    style = Theme.textStyle.body.medium.regular,
-                    color = Theme.colors.shade.secondary,
-                    modifier = Modifier
-                )
-            }
+        if (label != null) {
+            BasicText(
+                text = label,
+                style = Theme.textStyle.body.medium.regular,
+                color = { shadeSecondaryColor }
+            )
         }
-        OutlinedTextField(
-            value = value,
-            onValueChange = onValueChange,
+
+        Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(
-                    color = Theme.colors.background.card,
-                    shape = RoundedCornerShape(Theme.radius.large)
-                ),
-            textStyle = Theme.textStyle.body.medium.medium,
-            placeholder = placeholder?.let {
-                {
-                    Text(
-                        text = it,
-                        style = Theme.textStyle.body.medium.regular,
-                        color = Theme.colors.shade.tertiary
-                    )
-                }
-            },
-            singleLine = singleLine,
-            maxLines = maxLines,
-            isError = isError,
-            enabled = enabled,
-            leadingIcon = {
-                Icon(
-                    painter = painterResource(id = leadingIcon),
-                    contentDescription = null,
-                    tint = leadingIconTint
-                )
-            },
-            trailingIcon = {
-                when {
-                    isPassword -> {
-                        val image = if (passwordVisible) {
-                            painterResource(id = R.drawable.outline_eye_opened)
-                        } else {
-                            painterResource(id = R.drawable.outline_eye_closed)
-                        }
-                        IconButton(
-                            onClick = { passwordVisible = !passwordVisible }
-                        ) {
-                            Icon(
-                                painter = image,
-                                contentDescription = null,
-                                tint = Theme.colors.shade.secondary
-                            )
-                        }
-                    }
-
-                    isError -> {
-                        Icon(
-                            painter = painterResource(id = R.drawable.outline_danger_triangle),
+                .clip(shape)
+                .background(Theme.colors.background.card, shape)
+                .border(width = 1.dp, color = borderColor, shape = shape)
+                .padding(horizontal = 16.dp, vertical = 12.dp)
+        ) {
+            BasicTextField(
+                value = value,
+                onValueChange = onValueChange,
+                singleLine = singleLine,
+                maxLines = maxLines,
+                enabled = enabled,
+                keyboardOptions = keyboardOptions,
+                keyboardActions = keyboardActions,
+                visualTransformation = if (isPassword && !passwordVisible) {
+                    PasswordVisualTransformation()
+                } else {
+                    VisualTransformation.None
+                },
+                textStyle = Theme.textStyle.body.medium.medium.copy(color = Theme.colors.shade.primary),
+                cursorBrush = SolidColor(Theme.colors.brand.primary),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .onFocusChanged { isFocused = it.isFocused },
+                decorationBox = { innerTextField ->
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Image(
+                            painter = painterResource(id = leadingIcon),
                             contentDescription = null,
-                            tint = Theme.colors.additional.primary.red
+                            colorFilter = androidx.compose.ui.graphics.ColorFilter.tint(
+                                leadingIconTint
+                            )
                         )
-                    }
 
-                    trailingIcon != null -> trailingIcon()
+                        Spacer(modifier = Modifier.width(8.dp))
+
+                        Box(modifier = Modifier.weight(1f)) {
+                            if (value.isEmpty() && !placeholder.isNullOrEmpty()) {
+                                BasicText(
+                                    text = placeholder,
+                                    style = Theme.textStyle.body.medium.regular.copy(
+                                        color = Theme.colors.shade.tertiary
+                                    )
+                                )
+                            }
+                            innerTextField()
+                        }
+
+                        when {
+                            isPassword -> {
+                                val image = if (passwordVisible) {
+                                    painterResource(id = R.drawable.outline_eye_opened)
+                                } else {
+                                    painterResource(id = R.drawable.outline_eye_closed)
+                                }
+                                Image(
+                                    painter = image,
+                                    contentDescription = null,
+                                    modifier = Modifier
+                                        .clickable(
+                                            interactionSource = remember { MutableInteractionSource() },
+                                            indication = null
+                                        ) { passwordVisible = !passwordVisible },
+                                    colorFilter = androidx.compose.ui.graphics.ColorFilter.tint(
+                                        Theme.colors.shade.secondary
+                                    )
+                                )
+                            }
+
+                            isError -> {
+                                Image(
+                                    painter = painterResource(id = R.drawable.outline_danger_triangle),
+                                    contentDescription = null,
+                                    colorFilter = androidx.compose.ui.graphics.ColorFilter.tint(
+                                        Theme.colors.additional.primary.red
+                                    )
+                                )
+                            }
+
+                            trailingIcon != null -> trailingIcon()
+                        }
+                    }
                 }
-            },
-            visualTransformation = if (isPassword && !passwordVisible) {
-                PasswordVisualTransformation()
-            } else {
-                VisualTransformation.None
-            },
-            keyboardOptions = keyboardOptions,
-            keyboardActions = keyboardActions,
-            shape = RoundedCornerShape(size = Theme.radius.large),
-            colors = OutlinedTextFieldDefaults.colors(
-                focusedTextColor = Theme.colors.shade.primary,
-                unfocusedTextColor = Theme.colors.shade.primary,
-                focusedBorderColor = Theme.colors.brand.primary,
-                unfocusedBorderColor = Theme.colors.stroke.primary,
-                errorBorderColor = Theme.colors.additional.primary.red,
-                errorTextColor = Theme.colors.shade.primary,
-                cursorColor = Theme.colors.brand.primary,
-                errorCursorColor = Color.Transparent,
-            )
-        )
-        if (isError && !errorMessage.isNullOrEmpty()) {
-            Text(
-                text = errorMessage,
-                color = Theme.colors.additional.primary.red,
-                style = Theme.textStyle.body.small.regular,
             )
         }
+
+        if (isError && !errorMessage.isNullOrEmpty()) {
+            BasicText(
+                text = errorMessage,
+                style = Theme.textStyle.body.small.regular,
+                color = { additionalPrimaryRedColor }
+            )
+        }
+
         if (isPassword) {
             Row(
                 horizontalArrangement = Arrangement.End,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text(
+                BasicText(
                     text = stringResource(id = R.string.forgot_password),
-                    textDecoration = TextDecoration.Underline,
-                    style = Theme.textStyle.body.medium.regular,
-                    color = Theme.colors.shade.secondary,
+                    style = Theme.textStyle.body.medium.regular.copy(
+                        textDecoration = TextDecoration.Underline
+                    ),
+                    color = { shadeSecondaryColor },
                     modifier = Modifier.clickable(
                         interactionSource = remember { MutableInteractionSource() },
                         indication = null
