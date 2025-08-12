@@ -1,6 +1,5 @@
 package com.moscow.cineverse.screen.movieSeriesDetails
 
-import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
@@ -20,9 +19,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -55,8 +54,7 @@ fun MediaHeader(
     onPlayClick: () -> Unit = {},
 ){
     Box(
-        modifier = Modifier
-            .padding(horizontal = 16.dp),
+        modifier = Modifier,
     ) {
         val formattedRating = try {
             val ratingValue = rating.toDouble()
@@ -64,62 +62,28 @@ fun MediaHeader(
         } catch (_: NumberFormatException) {
             "0.0"
         }
-        val lastScrollOffset = remember { mutableStateOf(0f) }
 
-        val isCollapsed = remember { mutableStateOf(false) }
-
-        val currentScroll = scrollState.firstVisibleItemScrollOffset.toFloat()
-        val isScrollingDown = currentScroll > lastScrollOffset.value
-
-        LaunchedEffect(currentScroll) {
-            if (isScrollingDown && !isCollapsed.value && currentScroll > 20f) {
-                isCollapsed.value = true // Collapse once
-            } else if (!isScrollingDown && currentScroll == 0f) {
-                isCollapsed.value = false // Expand only when at top
-            }
-            lastScrollOffset.value = currentScroll
-        }
-
-        val scrollProgress = remember { mutableStateOf(0f) }
-        val maxScroll = 250f
+        val maxScroll = 400f
+        val maxAchievedScroll = remember { mutableStateOf(0f) }
+        val screenWidth = LocalConfiguration.current.screenWidthDp.dp
 
         val absoluteScroll = remember(scrollState) {
             derivedStateOf {
-                scrollState.firstVisibleItemIndex * 1000 + // assume ~1000px per item max
+                scrollState.firstVisibleItemIndex * 1000 +
                         scrollState.firstVisibleItemScrollOffset
             }
         }
-
-
-        val maxAchievedScroll = remember { mutableStateOf(0f) }
-
         val clampedScrollValue by remember(scrollState) {
             derivedStateOf {
                 val current = absoluteScroll.value.toFloat()
                 maxAchievedScroll.value = current
-                lastScrollOffset.value = current
-                maxAchievedScroll.value.coerceIn(0f, 250f)
+                maxAchievedScroll.value.coerceIn(0f, maxScroll)
             }
         }
-
-        LaunchedEffect(scrollState) {
-            if (!isCollapsed.value) {
-                // Update progress until collapsed
-                scrollProgress.value = (clampedScrollValue / maxScroll).coerceIn(0f, 1f)
-            } else if (currentScroll == 0f) {
-                // Reset when fully expanded
-                scrollProgress.value = 0f
-            }
-        }
-
-        val configuration = LocalConfiguration.current
-        val screenWidth = configuration.screenWidthDp.dp
-
         val imageStartPadding by remember {
             derivedStateOf {
                 val start = ( screenWidth - 216.dp - 16.dp) / 2
                 val end = 0.dp
-                val maxScroll = 250f
                 start - (start - end) * (clampedScrollValue / maxScroll)
             }
         }
@@ -128,7 +92,6 @@ fun MediaHeader(
             derivedStateOf {
                 val start = 289.dp
                 val end = 40.dp
-                val maxScroll = 250f
                 start - (start - end) * (clampedScrollValue / maxScroll)
             }
         }
@@ -136,7 +99,6 @@ fun MediaHeader(
             derivedStateOf {
                 val start = 216.dp
                 val end = 40.dp
-                val maxScroll = 250f
                 start - (start - end) * (clampedScrollValue / maxScroll)
             }
         }
@@ -145,7 +107,6 @@ fun MediaHeader(
             derivedStateOf {
                 val start = 0.dp
                 val end = 48.dp
-                val maxScroll = 250f
                 start - (start - end) * (clampedScrollValue / maxScroll)
             }
         }
@@ -154,7 +115,6 @@ fun MediaHeader(
             derivedStateOf {
                 val start = 0.dp
                 val end = 52.dp
-                val maxScroll = 250f
                 start - (start - end) * (clampedScrollValue / maxScroll)
             }
         }
@@ -163,16 +123,14 @@ fun MediaHeader(
             derivedStateOf {
                 val start = 305.dp
                 val end = 0.dp
-                val maxScroll = 250f
                 start - (start - end) * (clampedScrollValue / maxScroll)
             }
         }
 
         val collectionTopPadding by remember {
             derivedStateOf {
-                val start = 68.5.dp
+                val start = 52.5.dp
                 val end = 0.dp
-                val maxScroll = 250f
                 start - (start - end) * (clampedScrollValue / maxScroll)
             }
         }
@@ -180,7 +138,6 @@ fun MediaHeader(
             derivedStateOf {
                 val start = 16.dp
                 val end = 0.dp
-                val maxScroll = 250f
                 start - (start - end) * (clampedScrollValue / maxScroll)
             }
         }
@@ -188,7 +145,20 @@ fun MediaHeader(
             derivedStateOf {
                 val start = 0.dp
                 val end = 12.dp
-                val maxScroll = 250f
+                start - (start - end) * (clampedScrollValue / maxScroll)
+            }
+        }
+        val textPaddingEnd by remember {
+            derivedStateOf {
+                val start = 64.dp
+                val end = 100.dp
+                start - (start - end) * (clampedScrollValue / maxScroll)
+            }
+        }
+        val textPaddingTop by remember {
+            derivedStateOf {
+                val start = 0.dp
+                val end = 9.dp
                 start - (start - end) * (clampedScrollValue / maxScroll)
             }
         }
@@ -198,122 +168,142 @@ fun MediaHeader(
             else
                 Theme.colors.background.screen,
         )
-        Box(
-            modifier = Modifier
-                .padding(start = imageStartPadding)
-                .height(imageHeight)
-                .width(imageWidth)
-        ) {
-            SafeImageViewer(
-                imageUrl = posterUrl,
+        Box(modifier = Modifier.padding(horizontal = 16.dp))
+        {
+            Box(
                 modifier = Modifier
-                    .fillMaxSize()
-                    .clip(RoundedCornerShape(Theme.radius.extraLarge)),
-                isBlurEnabled = enableBlur,
-                placeholderContent = { RemoteImagePlaceholder() },
-                errorContent = { RemoteImagePlaceholder() },
-                onBlurContent = {
-                    OnBlurContent()
-                }
-            )
-        }
-        Box(
-            modifier = modifier
-                .padding(start = detailsPaddingStart)
-                .padding(top = detailsPaddingTop)
-                .fillMaxWidth()
-                .background(
-                    color = detailsBackgroundColor,
-                    RoundedCornerShape(Theme.radius.large)
-                )
-                .padding(contentPadding)
-                .padding(bottom = contentPaddingBottom),
-        ) {
-            Column(
-                verticalArrangement = Arrangement.spacedBy(4.dp),
-                horizontalAlignment = Alignment.Start,
+                    .padding(start = imageStartPadding)
+                    .height(imageHeight)
+                    .width(imageWidth)
             ) {
-                AnimatedVisibility(
-                    visible = clampedScrollValue <= 20f,
-                    enter = slideInVertically(animationSpec = tween(1000))
-                            + fadeIn(animationSpec = tween(1000)),
-
-                    exit = slideOutVertically(animationSpec = tween(1000))
-                            + fadeOut(animationSpec = tween(1000)),
-                ) {
-                    Text(
-                        text = type,
-                        style = Theme.textStyle.label.medium.medium,
-                        color = Theme.colors.brand.primary
-                    )
-                }
-                Text(
-                    text = title,
-                    style = Theme.textStyle.title.medium,
-                    color = Theme.colors.shade.primary
+                SafeImageViewer(
+                    imageUrl = posterUrl,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .clip(RoundedCornerShape(Theme.radius.extraLarge)),
+                    isBlurEnabled = enableBlur,
+                    placeholderContent = { RemoteImagePlaceholder() },
+                    errorContent = { RemoteImagePlaceholder() },
+                    onBlurContent = {
+                        OnBlurContent()
+                    }
                 )
-                AnimatedVisibility(
-                    visible = clampedScrollValue <= 20f,
-                    enter = slideInVertically(animationSpec = tween(1000))
-                            + fadeIn(animationSpec = tween(1000)),
+            }
+            Box(
+                modifier = modifier
+                    .padding(start = detailsPaddingStart)
+                    .padding(top = detailsPaddingTop)
+                    .fillMaxWidth()
+                    .background(
+                        color = detailsBackgroundColor,
+                        RoundedCornerShape(Theme.radius.large)
+                    )
+                    .padding(contentPadding)
+                    .padding(bottom = contentPaddingBottom),
+            ) {
+                Column(
+                    modifier = Modifier.padding(end = textPaddingEnd),
+                    verticalArrangement = Arrangement.spacedBy(4.dp),
+                ) {
+                    AnimatedVisibility(
+                        visible = clampedScrollValue <= 20f,
+                        enter = slideInVertically(animationSpec = tween(1000))
+                                + fadeIn(animationSpec = tween(1000)),
 
-                    exit = slideOutVertically(animationSpec = tween(1000))
-                            + fadeOut(animationSpec = tween(1000)),
-                ){
-                    Column (
-                        verticalArrangement = Arrangement.spacedBy(4.dp),
-                        horizontalAlignment = Alignment.Start,
+                        exit = slideOutVertically(animationSpec = tween(1000))
+                                + fadeOut(animationSpec = tween(1000)),
                     ) {
                         Text(
-                            text = genres,
-                            style = Theme.textStyle.body.small.medium,
-                            color = Theme.colors.shade.secondary
+                            text = type,
+                            style = Theme.textStyle.label.medium.medium,
+                            color = Theme.colors.brand.primary
                         )
-                        Row(
-                            modifier = Modifier.padding(top = 8.dp),
-                            horizontalArrangement = Arrangement.spacedBy(12.dp),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            if (formattedRating != "0.0")
-                                InfoTextWithIcon(
-                                    R.drawable.due_tone_star,
-                                    formattedRating,
-                                    Theme.colors.additional.primary.yellow
-                                )
-                            if (duration.isNotBlank() && duration != "N/A" && duration != "null") {
-                                InfoTextWithIcon(
-                                    R.drawable.due_tone_clock,
-                                    duration,
-                                    Theme.colors.shade.secondary
-                                )
-                            }
+                    }
+                    Text(
+                        modifier = Modifier
+                            .padding(top = textPaddingTop),
+                        text = title,
+                        style = Theme.textStyle.title.medium,
+                        color = Theme.colors.shade.primary
+                    )
+                    AnimatedVisibility(
+                        visible = clampedScrollValue <= 20f,
+                        enter = slideInVertically(animationSpec = tween(1000))
+                                + fadeIn(animationSpec = tween(1000)),
 
-                            if (releaseDate.isNotBlank())
-                                InfoTextWithIcon(
-                                    R.drawable.due_tone_calendar,
-                                    releaseDate,
-                                    Theme.colors.shade.secondary
-                                )
+                        exit = slideOutVertically(animationSpec = tween(1000))
+                                + fadeOut(animationSpec = tween(1000)),
+                    ){
+                        Column (
+                            verticalArrangement = Arrangement.spacedBy(4.dp),
+                            horizontalAlignment = Alignment.Start,
+                        ) {
+                            Text(
+                                text = genres,
+                                style = Theme.textStyle.body.small.medium,
+                                color = Theme.colors.shade.secondary
+                            )
+                            Row(
+                                modifier = Modifier.padding(top = 8.dp),
+                                horizontalArrangement = Arrangement.spacedBy(12.dp),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                if (formattedRating != "0.0")
+                                    InfoTextWithIcon(
+                                        R.drawable.due_tone_star,
+                                        formattedRating,
+                                        Theme.colors.additional.primary.yellow
+                                    )
+                                if (duration.isNotBlank() && duration != "N/A" && duration != "null") {
+                                    InfoTextWithIcon(
+                                        R.drawable.due_tone_clock,
+                                        duration,
+                                        Theme.colors.shade.secondary
+                                    )
+                                }
+
+                                if (releaseDate.isNotBlank())
+                                    InfoTextWithIcon(
+                                        R.drawable.due_tone_calendar,
+                                        releaseDate,
+                                        Theme.colors.shade.secondary
+                                    )
+                            }
                         }
                     }
                 }
+                MovieFloatingButton(
+                    modifier = Modifier.align(Alignment.TopEnd),
+                    buttonIcon = R.drawable.due_tone_play,
+                    onClick = { onPlayClick() },
+                    backgroundColor = Theme.colors.button.primary,
+                    iconColor = Theme.colors.brand.tertiary,
+                )
+                MovieFloatingButton(
+                    modifier = Modifier
+                        .align(Alignment.TopEnd)
+                        .padding(top = collectionTopPadding)
+                        .padding(end = collectionEndPadding),
+                    buttonIcon = R.drawable.due_tone_add,
+                    onClick = { onSaveClick() },
+                    backgroundColor = Theme.colors.button.secondary,
+                    iconColor = Theme.colors.shade.primary,
+                )
             }
-            MovieFloatingButton(
-                modifier = Modifier.align(Alignment.TopEnd),
-                buttonIcon = R.drawable.due_tone_play,
-                onClick = { onPlayClick() },
-                backgroundColor = Theme.colors.button.primary,
-                iconColor = Theme.colors.brand.tertiary,
-            )
-            MovieFloatingButton(
-                modifier = Modifier
-                    .align(Alignment.TopEnd)
-                    .padding(top = collectionTopPadding)
-                    .padding(end = collectionEndPadding),
-                buttonIcon = R.drawable.due_tone_add,
-                onClick = { onSaveClick() },
-                backgroundColor = Theme.colors.button.secondary,
-                iconColor = Theme.colors.shade.primary,
+        }
+        AnimatedVisibility(
+            modifier = Modifier.align(Alignment.BottomCenter),
+            visible = clampedScrollValue > 20f,
+            enter = slideInVertically(animationSpec = tween(1000))
+                    + fadeIn(animationSpec = tween(1000)),
+
+            exit = slideOutVertically(animationSpec = tween(1000))
+                    + fadeOut(animationSpec = tween(1000)),
+        ){
+            HorizontalDivider(
+                modifier = Modifier.fillMaxWidth().align(Alignment.BottomCenter),
+                thickness = 1.dp,
+                color = Theme.colors.brand.tertiary
             )
         }
     }
