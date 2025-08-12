@@ -61,7 +61,7 @@ fun AppTextField(
         modifier = modifier, verticalArrangement = Arrangement.spacedBy(space = 8.dp)
     ) {
         Row(
-            modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Start
+            modifier = Modifier.fillMaxWidth()
         ) {
             if (label != null) {
                 Text(
@@ -97,7 +97,6 @@ fun AppTextField(
             enabled = enabled,
             leadingIcon = {
                 Icon(
-                    modifier = Modifier.size(size = 20.dp),
                     painter = painterResource(id = leadingIcon),
                     contentDescription = null,
                     tint = leadingIconTint
@@ -117,7 +116,6 @@ fun AppTextField(
                             Icon(
                                 painter = image,
                                 contentDescription = null,
-                                modifier = Modifier.size(size = 20.dp),
                                 tint = Theme.colors.shade.secondary
                             )
                         }
@@ -125,7 +123,6 @@ fun AppTextField(
 
                     isError -> {
                         Icon(
-                            modifier = Modifier.size(size = 20.dp),
                             painter = painterResource(id = R.drawable.outline_danger_triangle),
                             contentDescription = null,
                             tint = Theme.colors.additional.primary.red
