@@ -2,14 +2,13 @@ package com.moscow.remote.data_source
 
 import com.moscow.data_source.remote.SeriesRemoteDataSource
 import com.moscow.domain.repository.auth.UserRepository
-import com.moscow.remote.dto.details.MediaTrailersDto
-import com.moscow.remote.dto.details.SeriesCreditDto
-import com.moscow.remote.dto.rating.UserRatingResponse
-import com.moscow.remote.dto.rating.series.RatedSeriesDto
-import com.moscow.remote.dto.review.RatingRequestDto
+import com.moscow.remote.dto.media_item.common.MediaTrailersDto
+import com.moscow.remote.dto.rating.response.UserRatingResponse
+import com.moscow.remote.dto.rating.response.RatedSeriesDto
+import com.moscow.remote.dto.rating.request.RatingRequestDto
 import com.moscow.remote.dto.review.ReviewDto
-import com.moscow.remote.dto.series.SeriesDetailDto
-import com.moscow.remote.dto.series.SeriesDto
+import com.moscow.remote.dto.media_item.series.SeriesDetailDto
+import com.moscow.remote.dto.media_item.series.SeriesDto
 import com.moscow.remote.services.SeriesService
 import com.moscow.utils.ApiResponse
 import com.moscow.utils.handleApi

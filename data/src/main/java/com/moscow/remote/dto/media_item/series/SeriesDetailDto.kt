@@ -1,9 +1,9 @@
-package com.moscow.remote.dto.series
+package com.moscow.remote.dto.media_item.series
 
-import com.moscow.remote.dto.GenreDto
-import com.moscow.remote.dto.details.ProductionCompanyDto
-import com.moscow.remote.dto.details.ProductionCountryDto
-import com.moscow.remote.dto.details.SpokenLanguageDto
+import com.moscow.remote.dto.genre.GenreDto
+import com.moscow.remote.dto.media_item.common.ProductionCompanyDto
+import com.moscow.remote.dto.media_item.common.ProductionCountryDto
+import com.moscow.remote.dto.media_item.common.SpokenLanguageDto
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 

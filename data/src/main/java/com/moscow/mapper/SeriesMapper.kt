@@ -9,15 +9,15 @@ import com.moscow.domain.model.Series.Creator
 import com.moscow.domain.model.Series.Season
 import com.moscow.local.entity.HistoryItemEntity
 import com.moscow.local.entity.MediaItemEntity
-import com.moscow.remote.dto.GenreDto
-import com.moscow.remote.dto.details.CreatedByDto
-import com.moscow.remote.dto.details.SeriesCastDto
-import com.moscow.remote.dto.details.SeriesCreditDto
-import com.moscow.remote.dto.details.SeriesCrewDto
-import com.moscow.remote.dto.details.SeriesRecommendationDto
-import com.moscow.remote.dto.series.SeasonDto
-import com.moscow.remote.dto.series.SeriesDetailDto
-import com.moscow.remote.dto.series.SeriesDto
+import com.moscow.remote.dto.genre.GenreDto
+import com.moscow.remote.dto.media_item.CreatedByDto
+import com.moscow.remote.dto.media_item.SeriesCastDto
+import com.moscow.remote.dto.media_item.SeriesCreditDto
+import com.moscow.remote.dto.media_item.SeriesCrewDto
+import com.moscow.remote.dto.media_item.common.SeriesRecommendationDto
+import com.moscow.remote.dto.media_item.series.SeasonDto
+import com.moscow.remote.dto.media_item.series.SeriesDetailDto
+import com.moscow.remote.dto.media_item.series.SeriesDto
 import com.moscow.utils.IMAGES_URL
 import kotlinx.datetime.LocalDate
 

@@ -10,7 +10,7 @@ import com.moscow.domain.usecase.series.GetRatedSeriesUseCase
 import com.moscow.mapper.toDomain
 import com.moscow.mapper.toOutputResult
 import com.moscow.mapper.toSeries
-import com.moscow.remote.dto.review.RatingRequestDto
+import com.moscow.remote.dto.rating.request.RatingRequestDto
 import com.moscow.utils.HomeCacheHelper
 import javax.inject.Inject
 
