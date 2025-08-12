@@ -2,6 +2,7 @@ package com.moscow.cineverse.screen.profile.component
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
@@ -38,6 +39,7 @@ internal fun ProfileChips(
     ) {
         LazyRow(
             horizontalArrangement = Arrangement.spacedBy(8.dp),
+            contentPadding = PaddingValues(horizontal = 16.dp)
         ) {
             items(items) { item ->
                 PillLabel(
@@ -59,7 +61,7 @@ internal fun ProfileChips(
 
 }
 
-@Preview
+@Preview(device = "id:Nexus One")
 @Composable
 private fun ProfileChipsPreview() {
 
