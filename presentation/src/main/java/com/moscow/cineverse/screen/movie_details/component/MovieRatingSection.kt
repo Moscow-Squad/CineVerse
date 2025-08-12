@@ -115,7 +115,6 @@ fun MovieRatingBottomSheetSection(
                     onClickFirstButton = { interactionListener.onDismissLoginBottomSheet() },
                     secondButtonText = stringResource(com.moscow.cinverse.presentation.R.string.log_in),
                     onClickSecondButton = { interactionListener.navigateToLogin() },
-                    modifier = Modifier.padding(bottom = 16.dp),
                 )
             }
         }

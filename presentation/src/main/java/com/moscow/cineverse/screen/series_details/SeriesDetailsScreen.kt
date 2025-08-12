@@ -388,7 +388,6 @@ fun SeriesDetailsContent(
                             onClickFirstButton = { interactionListener.onDismissLoginBottomSheet() },
                             secondButtonText = stringResource(R.string.log_in),
                             onClickSecondButton = { interactionListener.navigateToLogin() },
-                            modifier = Modifier.padding(bottom = 16.dp),
                         )
                     }
                 }

@@ -115,7 +115,6 @@ private fun CollectionsBottomSheetContent(
                     onClickFirstButton = onNotNow,
                     secondButtonText = stringResource(R.string.log_in),
                     onClickSecondButton = { interactionListener.navigateToLogin() },
-                    modifier = Modifier.padding(bottom = 16.dp),
                 )
             }
 
@@ -169,7 +168,6 @@ private fun CollectionsBottomSheetContent(
                         onClickFirstButton = {},
                         secondButtonText = stringResource(R.string.create_collection),
                         onClickSecondButton = { interactionListener.onCreateCollectionClicked() },
-                        modifier = Modifier.padding(bottom = 16.dp),
                         firstButtonLoading = uiState.isLoading
                     )
                 } else {

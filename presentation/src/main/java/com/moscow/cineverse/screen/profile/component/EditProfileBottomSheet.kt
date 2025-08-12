@@ -44,7 +44,6 @@ fun EditProfileBottomSheet(
                     R.string.go_to_website
                 ),
                 onClickSecondButton = if (isGuest) onLoginClick else onEditProfile,
-                modifier = Modifier.padding(bottom = 16.dp),
             )
         }
     }
