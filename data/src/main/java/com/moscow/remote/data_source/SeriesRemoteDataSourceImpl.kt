@@ -8,7 +8,6 @@ import com.moscow.remote.dto.rating.UserRatingResponse
 import com.moscow.remote.dto.rating.series.RatedSeriesDto
 import com.moscow.remote.dto.review.RatingRequestDto
 import com.moscow.remote.dto.review.ReviewDto
-import com.moscow.remote.dto.series.ListOfSeriesDto
 import com.moscow.remote.dto.series.SeriesDetailDto
 import com.moscow.remote.dto.series.SeriesDto
 import com.moscow.remote.services.SeriesService
@@ -81,7 +80,7 @@ class SeriesRemoteDataSourceImpl @Inject constructor(
             seriesService.getLatestSeasons()
         }
 
-    override suspend fun getListOfSeries(id: Int, page: Int): ListOfSeriesDto =
+    override suspend fun getListOfSeries(id: Int, page: Int): ApiResponse<SeriesDto> =
         handleApi {
             seriesService.getListOfSeries(
                 id,

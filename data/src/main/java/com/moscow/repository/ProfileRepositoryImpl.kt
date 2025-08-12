@@ -8,12 +8,12 @@ import javax.inject.Inject
 
 class ProfileRepositoryImpl @Inject constructor(
     private val profileRemoteDataSource: ProfileRemoteDataSource
-) : ProfileRepository{
+) : ProfileRepository {
     override suspend fun getUserInfo(
         accountId: String,
         sessionId: String
-    ): UserInfo  =
-       profileRemoteDataSource.getUserInfo(accountId,sessionId).toDomain()
+    ): UserInfo =
+        profileRemoteDataSource.getUserInfo(accountId, sessionId).toDomain()
 
 
     override suspend fun logout(sessionId: String): Boolean =

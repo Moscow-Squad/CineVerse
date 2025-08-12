@@ -71,7 +71,7 @@ class SeriesRepositoryImpl @Inject constructor(
         seriesRemoteDataSource.getListOfSeries(
             id = id,
             page = page
-        ).results.map { it.toDomain()}
+        ).results?.map { it.toDomain() } ?: emptyList()
 
 
     override suspend fun getSeriesRecommendations(
@@ -80,8 +80,10 @@ class SeriesRepositoryImpl @Inject constructor(
     ): List<Series> = seriesRemoteDataSource.getSeriesRecommendations(
         id = id,
         page = page
-    ).results?.mapNotNull { runCatching { it.toDomain() }
-        .getOrNull() } ?: emptyList()
+    ).results?.mapNotNull {
+        runCatching { it.toDomain() }
+            .getOrNull()
+    } ?: emptyList()
 
     override suspend fun getSeriesByGenreId(genreId: Int, page: Int): List<Series> =
         seriesRemoteDataSource.getSeriesByGenreId(
@@ -90,7 +92,10 @@ class SeriesRepositoryImpl @Inject constructor(
         ).results?.map { it.toDomain() } ?: emptyList()
 
     override suspend fun getSeriesReviews(id: Int, page: Int): List<Review> =
-        seriesRemoteDataSource.getSeriesReviews(id, page).results?.mapNotNull { runCatching { it.toDomain() }.getOrNull() }
+        seriesRemoteDataSource.getSeriesReviews(
+            id,
+            page
+        ).results?.mapNotNull { runCatching { it.toDomain() }.getOrNull() }
             ?: emptyList()
 
     override suspend fun getSeriesCreditsDetails(id: Int): CreditsInfo =
@@ -100,14 +105,14 @@ class SeriesRepositoryImpl @Inject constructor(
         page: Int,
         forceRefresh: Boolean
     ): List<Series> = homeCacheHelper.getCachedOrFetchHomeItems(
-            categoryType = CATEGORY_TOP_RATED_TV,
-            fetchFromRemote = {
-                seriesRemoteDataSource.getTopRatedTVSeries(page).results?.map { it.toDomain() }
-                    ?: emptyList()
-            },
-            mapFromEntity = { it.toSeries() },
-            forceRefresh = forceRefresh
-        )
+        categoryType = CATEGORY_TOP_RATED_TV,
+        fetchFromRemote = {
+            seriesRemoteDataSource.getTopRatedTVSeries(page).results?.map { it.toDomain() }
+                ?: emptyList()
+        },
+        mapFromEntity = { it.toSeries() },
+        forceRefresh = forceRefresh
+    )
 
     private companion object {
         const val CATEGORY_TOP_RATED_TV = "TOP_RATED_TV"

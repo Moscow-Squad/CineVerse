@@ -33,7 +33,7 @@ class SearchRepositoryImpl @Inject constructor(
             keyWord,
             page,
             false
-        ).results?.map{ it.toModel() } ?: emptyList()
+        ).results?.map { it.toModel() } ?: emptyList()
     }
 
     override suspend fun searchMovie(

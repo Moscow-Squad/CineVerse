@@ -8,7 +8,7 @@ import javax.inject.Inject
 
 class GenreRepositoryImpl @Inject constructor(
     private val genreRemoteDataSource: GenreRemoteDataSource,
-): GenreRepository {
+) : GenreRepository {
     override suspend fun getSeriesGenres(): List<Genre> =
         genreRemoteDataSource.getSeriesGenres().genres.map { it.toDomain() }
 
