@@ -95,10 +95,10 @@ private fun CollectionsBottomSheetContent(
     interactionListener: CollectionsBottomSheetInteractionListener
 ) {
     CineVerseBottomSheet(
-        title = stringResource(R.string.add_to_collection),
+        title = if (uiState.isLoggedIn == true) stringResource(R.string.add_to_collection) else "",
         onClose = onCloseBottomSheet,
         onDismissRequest = onDismissBottomSheet,
-        showCancelIcon = uiState.collections.isEmpty(),
+        showCancelIcon = uiState.collections.isEmpty() && uiState.isLoggedIn == true,
         onAddNewCollectionClick = { interactionListener.onAddNewCollectionClick() }
     ) {
         Log.d("TAG", "isLogged: ${uiState.isLoggedIn} ")
@@ -108,14 +108,13 @@ private fun CollectionsBottomSheetContent(
                 MessageInfoCard(
                     title = stringResource(R.string.you_re_almost_there),
                     description = stringResource(R.string.log_in_to_save_movies_create_collections_and_get_personalized_recommendations),
-                    icon = painterResource(R.drawable.due_tone_video_library),
+                    icon = painterResource(R.drawable.due_tone_login),
                     showButtonsGroup = true,
 
                     firstButtonText = stringResource(R.string.not_now),
                     onClickFirstButton = onNotNow,
                     secondButtonText = stringResource(R.string.log_in),
                     onClickSecondButton = { interactionListener.navigateToLogin() },
-                    modifier = Modifier.padding(bottom = 16.dp),
                 )
             }
 
@@ -169,7 +168,6 @@ private fun CollectionsBottomSheetContent(
                         onClickFirstButton = {},
                         secondButtonText = stringResource(R.string.create_collection),
                         onClickSecondButton = { interactionListener.onCreateCollectionClicked() },
-                        modifier = Modifier.padding(bottom = 16.dp),
                         firstButtonLoading = uiState.isLoading
                     )
                 } else {

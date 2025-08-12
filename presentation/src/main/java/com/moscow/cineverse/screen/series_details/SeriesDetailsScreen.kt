@@ -36,10 +36,10 @@ import com.moscow.cineverse.component.MoviePosterCard
 import com.moscow.cineverse.component.SectionTitle
 import com.moscow.cineverse.component.StorylineSection
 import com.moscow.cineverse.designSystem.component.app_bar.MovieAppBar
-import com.moscow.cineverse.designSystem.component.indicator.MovieCircularProgressBar
-import com.moscow.cineverse.designSystem.component.wrapper.MovieScaffold
 import com.moscow.cineverse.designSystem.component.bottomsheet.CineVerseBottomSheet
 import com.moscow.cineverse.designSystem.component.card.MessageInfoCard
+import com.moscow.cineverse.designSystem.component.indicator.MovieCircularProgressBar
+import com.moscow.cineverse.designSystem.component.wrapper.MovieScaffold
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.mapper.formatReviewDate
 import com.moscow.cineverse.mapper.toHourMinuteFormat
@@ -339,7 +339,7 @@ fun SeriesDetailsContent(
                         items(uiState.reviews.take(3)) { review ->
                             MovieReviewCard(
                                 name = review.username,
-                                username = "@${review.username}",
+                                username = review.username,
                                 reviewText = review.reviewContent,
                                 rating = review.rate.toInt(),
                                 date = formatReviewDate(review.date),
@@ -388,7 +388,6 @@ fun SeriesDetailsContent(
                             onClickFirstButton = { interactionListener.onDismissLoginBottomSheet() },
                             secondButtonText = stringResource(R.string.log_in),
                             onClickSecondButton = { interactionListener.navigateToLogin() },
-                            modifier = Modifier.padding(bottom = 16.dp),
                         )
                     }
                 }
