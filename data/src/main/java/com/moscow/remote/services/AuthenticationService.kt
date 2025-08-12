@@ -1,8 +1,8 @@
 package com.moscow.remote.services
 
-import com.moscow.remote.dto.profile.AccountDto
+import com.moscow.remote.dto.profile.response.AccountDto
 import com.moscow.remote.dto.login.GuestSessionDto
-import com.moscow.remote.dto.login.LoginDto
+import com.moscow.remote.dto.login.LoginResponseDto
 import com.moscow.remote.dto.login.RequestTokenDto
 import com.moscow.remote.dto.login.SessionDto
 import com.moscow.utils.ACCOUNT
@@ -29,7 +29,7 @@ interface AuthenticationService {
         @Query(USERNAME) username: String,
         @Query(PASSWORD) password: String,
         @Query(REQUEST_TOKEN) requestToken: String
-    ): Response<LoginDto>
+    ): Response<LoginResponseDto>
 
     @POST(NEW_SESSION)
     suspend fun createAuthenticatedUserSession(
