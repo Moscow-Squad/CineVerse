@@ -1,9 +1,6 @@
 package com.moscow.remote.dto.series
 
 import com.moscow.remote.dto.GenreDto
-import com.moscow.remote.dto.details.CreatedByDto
-import com.moscow.remote.dto.details.LastEpisodeToAirDto
-import com.moscow.remote.dto.details.NetworkDto
 import com.moscow.remote.dto.details.ProductionCompanyDto
 import com.moscow.remote.dto.details.ProductionCountryDto
 import com.moscow.remote.dto.details.SpokenLanguageDto
@@ -77,3 +74,46 @@ data class SeriesDetailDto(
     @SerialName("vote_count")
     val voteCount: Int
 )
+
+@Serializable
+data class CreatedByDto(
+    @SerialName("id")
+    val id: Int,
+    @SerialName("credit_id")
+    val creditId: String,
+    @SerialName("name")
+    val name: String?,
+    @SerialName("original_name")
+    val originalName: String?,
+    @SerialName("gender")
+    val gender: Int?,
+    @SerialName("profile_path")
+    val profilePath: String?,
+)
+
+@Serializable
+data class NetworkDto(
+    @SerialName("id") val id: Int,
+    @SerialName("logo_path") val logoPath: String? = null,
+    @SerialName("name") val name: String,
+    @SerialName("origin_country") val originCountry: String,
+)
+
+@Serializable
+data class LastEpisodeToAirDto(
+    @SerialName("id") val id: Int,
+    @SerialName("name") val name: String?,
+    @SerialName("overview") val overview: String?,
+    @SerialName("vote_average") val voteAverage: Double?,
+    @SerialName("vote_count") val voteCount: Int?,
+    @SerialName("air_date") val airDate: String?,
+    @SerialName("episode_number") val episodeNumber: Int?,
+    @SerialName("episode_type") val episodeType: String?,
+    @SerialName("production_code") val productionCode: String?,
+    @SerialName("runtime") val runtime: Int?,
+    @SerialName("season_number") val seasonNumber: Int?,
+    @SerialName("show_id") val showId: Int?,
+    @SerialName("still_path") val stillPath: String? = null,
+)
+
+

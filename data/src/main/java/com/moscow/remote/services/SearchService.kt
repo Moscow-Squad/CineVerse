@@ -1,6 +1,6 @@
 package com.moscow.remote.services
 
-import com.moscow.remote.dto.MovieDto
+import com.moscow.remote.dto.movie.MovieDto
 import com.moscow.remote.dto.actor.ActorDto
 import com.moscow.remote.dto.series.SeriesDto
 import com.moscow.remote.dto.suggestion.SuggestionDto
