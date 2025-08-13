@@ -1,9 +1,7 @@
 package com.moscow.cineverse.screen.history
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -94,11 +92,9 @@ fun HistoryContent(
 
                 else -> {
                     LazyColumn(
-                        verticalArrangement = Arrangement.spacedBy(16.dp),
                         modifier = modifier
                             .fillMaxSize()
                             .background(Theme.colors.background.screen),
-                        contentPadding = PaddingValues(16.dp)
                     ) {
                         if (state.showTip && state.youRecentlyViewed.isNotEmpty()) {
                             item {
@@ -109,7 +105,6 @@ fun HistoryContent(
                                 )
                             }
                         }
-
                         items(
                             items = state.youRecentlyViewed,
                             key = { it.id }

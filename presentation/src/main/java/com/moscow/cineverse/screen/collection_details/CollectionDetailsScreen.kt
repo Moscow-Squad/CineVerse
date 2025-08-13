@@ -31,10 +31,8 @@ import com.moscow.cineverse.designSystem.component.card.InfoCard
 import com.moscow.cineverse.designSystem.component.indicator.MovieCircularProgressBar
 import com.moscow.cineverse.designSystem.component.wrapper.MovieScaffold
 import com.moscow.cineverse.designSystem.theme.Theme
-import com.moscow.cineverse.screen.explore.toUi
 import com.moscow.cineverse.utlis.ViewMode
 import com.moscow.cinverse.presentation.R
-import com.moscow.domain.model.Movie
 
 @Composable
 fun CollectionDetailsScreen(
@@ -176,7 +174,7 @@ private fun CollectionDetailsScreenContent(
                                 )
                             }
                         }
-                        if (mediaItems.loadState.append is LoadState.Loading) {
+                        if (mediaItems.loadState.append is LoadState.Loading && mediaItems.itemCount > 20) {
                             item {
                                 Box(
                                     modifier = Modifier
