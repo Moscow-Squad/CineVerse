@@ -158,7 +158,7 @@ private fun MyRatingsList(
                 }
             }
         }
-        if (contentList.loadState.append is LoadState.Loading) {
+        if (contentList.loadState.append is LoadState.Loading && contentList.itemCount >= 20) {
             item {
                 Box(
                     modifier = Modifier.height(214.dp),
