@@ -1,14 +1,14 @@
 package com.moscow.cineverse.screen.movie_details
 
 import com.moscow.cineverse.common_ui_state.ReviewUiState
-import com.moscow.cineverse.common_ui_state.StarCastUiState
+import com.moscow.cineverse.common_ui_state.CastUiState
 import kotlinx.datetime.LocalDate
 
 
 data class MovieScreenState(
     val movieDetailsUiState: MovieDetailsUiState? = null,
     val reviewsFlow: List<ReviewUiState>? = null,
-    val starCast:List<StarCastUiState>? = null,
+    val starCast:List<CastUiState>? = null,
     val characters: List<String> = emptyList(),
     val director:List<String> = emptyList(),
     val produce: List<String> = emptyList(),
@@ -20,7 +20,6 @@ data class MovieScreenState(
     val shouldShowError: Boolean = false,
     val errorMessage: Int = 0,
     val recentlyViewedCollectionId:Int = 0,
-
     val showRatingBottomSheet: Boolean = false,
     val showLoginBottomSheet: Boolean = false,
     val starsRating: Int = 0,
@@ -28,10 +27,10 @@ data class MovieScreenState(
 
     ) {
     data class MovieDetailsUiState(
-        val id: Int ,
-        val title: String ,
-        val trailerPath: String,
-        val posterPath: String,
+        val id: Int,
+        val title: String,
+        val trailerUrl: String,
+        val posterUrl: String,
         val rating: Double,
         val genres: List<String>,
         val releaseDate: LocalDate?,

@@ -29,9 +29,9 @@ fun RatedMovieDto.toOutputResult(): RatedMovieResult? {
             genreIds = genreIds,
             voteAverage = voteAverage,
             releaseDate = releaseDate,
-            backdropPath = backdropPath,
+            backdropUrl = backdropPath,
             overview = overview,
-            posterPath = posterPath,
+            posterUrl = posterPath,
             genres = emptyList(),
             duration = Movie.Duration(0, 0),
             trailerUrl = ""

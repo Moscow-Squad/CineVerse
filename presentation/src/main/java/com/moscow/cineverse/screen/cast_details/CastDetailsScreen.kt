@@ -51,7 +51,7 @@ import com.moscow.cineverse.designSystem.component.wrapper.MovieScaffold
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.image_viewer.component.SafeImageViewer
 import com.moscow.cineverse.mapper.toFormattedBirthDate
-import com.moscow.cineverse.mapper.toMediaItemUi
+import com.moscow.cineverse.mapper.toMovieItemUi
 import com.moscow.cineverse.screen.cast_details.CastDetailsUiState.SocialMediaLinks
 import com.moscow.cineverse.screen.cast_details.composable.CastDetailsEffectHandlerWithContext
 import com.moscow.cineverse.screen.cast_details.composable.EmptyContent
@@ -164,7 +164,7 @@ fun ActorMoviesSection(
             onClickPoster = interactionListener::onMovieClick,
             movieCardContent = { movie, cardModifier, onMovieClick ->
                 MoviePosterCard(
-                    movie = movie.toMediaItemUi(),
+                    movie = movie.toMovieItemUi(),
                     viewMode = ViewMode.GRID,
                     showRating = true,
                     enableBlur = uiState.enableBlur,

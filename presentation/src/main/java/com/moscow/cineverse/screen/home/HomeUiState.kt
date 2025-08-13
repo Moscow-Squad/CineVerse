@@ -1,6 +1,6 @@
 package com.moscow.cineverse.screen.home
 
-import com.moscow.cineverse.common_ui_state.MyCollectionUiState
+import com.moscow.cineverse.common_ui_state.MediaItemUiState
 import com.moscow.cineverse.screen.explore.ExploreScreenState
 
 
