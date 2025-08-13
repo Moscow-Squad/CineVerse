@@ -23,7 +23,8 @@ fun NavGraphBuilder.collectionDetailsRoute(navController: NavHostController) {
             },
             navigateToSeriesDetails = { seriesId ->
                 navController.navigate(SeriesDetailsRoute(seriesId))
-            }
+            },
+            { navController.navigate(ExploreRoute) }
         )
     }
 }

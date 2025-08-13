@@ -9,4 +9,5 @@ interface CollectionDetailsInteractionListener {
     fun clearCollection()
     fun onTipCancelIconClicked()
     fun onRefresh()
+    fun onStartCollectingClick()
 }

@@ -10,6 +10,7 @@ import com.moscow.cineverse.common_ui_state.MediaItemUiState
 import com.moscow.cineverse.navigation.routes.CollectionDetailsRoute
 import com.moscow.cineverse.paging.BasePagingSource
 import com.moscow.cineverse.screen.explore.toUi
+import com.moscow.cineverse.screen.my_collections.MyCollectionsEvent
 import com.moscow.domain.model.MediaType
 import com.moscow.domain.repository.blur.BlurProvider
 import com.moscow.domain.usecase.collection.ClearCollectionUseCase
@@ -227,5 +228,9 @@ class CollectionDetailsViewModel @Inject constructor(
         getMoviesGenres()
         getShowTip()
         observeBlur()
+    }
+
+    override fun onStartCollectingClick() {
+        sendEvent(CollectionDetailsEffect.OnStartCollecting)
     }
 }

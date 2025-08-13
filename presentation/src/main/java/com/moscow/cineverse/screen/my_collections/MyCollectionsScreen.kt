@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavBackStackEntry
+import com.moscow.cineverse.component.EmptyCollection
 import com.moscow.cineverse.component.ErrorContent
 import com.moscow.cineverse.designSystem.component.app_bar.MovieAppBar
 import com.moscow.cineverse.designSystem.component.indicator.MovieCircularProgressBar
@@ -140,49 +141,7 @@ fun MyCollectionsContent(
                 }
 
                 state.collections.isEmpty() -> {
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        modifier = Modifier
-                            .fillMaxWidth(.7f)
-                    ) {
-                        MovieIcon(
-                            painter = painterResource(R.drawable.due_tone_video_library),
-                            tint = Theme.colors.brand.primary,
-                            modifier = Modifier
-                                .clip(CircleShape)
-                                .background(
-                                    color = Theme.colors.button.disabled,
-                                    shape = CircleShape
-                                )
-                                .padding(18.dp)
-                        )
-                        MovieText(
-                            text = stringResource(R.string.no_collections_yet),
-                            color = Theme.colors.shade.primary,
-                            style = Theme.textStyle.title.small,
-                            modifier = Modifier.padding(top = 16.dp)
-                        )
-                        MovieText(
-                            text = stringResource(R.string.no_collections_yet_description),
-                            color = Theme.colors.shade.primary,
-                            style = Theme.textStyle.body.small.medium,
-                            textAlign = TextAlign.Center,
-                            modifier = Modifier.padding(top = 8.dp)
-                        )
-
-                        MovieButton(
-                            modifier = Modifier
-                                .padding(top = 24.dp)
-                                .fillMaxWidth(),
-                            cornerRadius = Theme.radius.medium,
-                            buttonColor = Theme.colors.button.primary,
-                            onClick = interactionListener::onStartCollectingClick,
-                            buttonText = stringResource(R.string.start_collecting),
-                            textColor = Theme.colors.button.onPrimary,
-                            textStyle = Theme.textStyle.body.small.medium,
-                        )
-
-                    }
+                    EmptyCollection(onStartCollectingClick = interactionListener::onStartCollectingClick)
                 }
 
                 else -> LazyColumn(

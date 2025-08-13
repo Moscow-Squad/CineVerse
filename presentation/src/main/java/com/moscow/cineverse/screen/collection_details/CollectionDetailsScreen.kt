@@ -21,9 +21,9 @@ import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemKey
 import com.moscow.cineverse.common_ui_state.MediaItemUiState
+import com.moscow.cineverse.component.EmptyCollection
 import com.moscow.cineverse.component.ErrorContent
 import com.moscow.cineverse.component.MoviePosterCard
-import com.moscow.cineverse.component.NoHistoryScreen
 import com.moscow.cineverse.component.NoInternetScreen
 import com.moscow.cineverse.component.SwipeToDelete
 import com.moscow.cineverse.designSystem.component.app_bar.MovieAppBar
@@ -39,6 +39,7 @@ fun CollectionDetailsScreen(
     navigateBack: () -> Unit,
     navigateToMovieDetails: (Int) -> Unit,
     navigateToSeriesDetails: (Int) -> Unit,
+    navigateToExplore: () -> Unit,
     viewModel: CollectionDetailsViewModel = hiltViewModel()
 ) {
 
@@ -59,6 +60,7 @@ fun CollectionDetailsScreen(
                 is CollectionDetailsEffect.NavigateToSeriesDetails -> {
                     navigateToSeriesDetails(event.seriesId)
                 }
+                is CollectionDetailsEffect.OnStartCollecting -> navigateToExplore()
             }
         }
     }
@@ -123,7 +125,7 @@ private fun CollectionDetailsScreenContent(
             ) {
                 if (mediaItems.itemCount == 0) {
                     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                        NoHistoryScreen(onContinue = {})
+                        EmptyCollection(onStartCollectingClick = interactionListener::onStartCollectingClick)
                     }
                 } else {
                     LazyColumn(
