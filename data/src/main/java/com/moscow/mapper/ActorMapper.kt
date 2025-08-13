@@ -26,7 +26,12 @@ fun ActorDto.toDomain() =
         biography = ""
     )
 
-fun ActorDetailsDto.toDomain(youtubeLink: String, facebookLink: String, instagramLink: String) =
+fun ActorDetailsDto.toDomain(
+    youtubeLink: String,
+    facebookLink: String,
+    instagramLink: String,
+    twitterLink: String,
+    tiktokLink: String) =
     Actor(
         id = id ?: 0,
         name = name.orEmpty(),
