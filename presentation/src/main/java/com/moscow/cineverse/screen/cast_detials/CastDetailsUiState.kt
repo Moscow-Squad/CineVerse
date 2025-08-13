@@ -1,4 +1,4 @@
-package com.moscow.cineverse.screen.cast_details
+package com.moscow.cineverse.screen.cast_detials
 
 import com.moscow.domain.model.Actor
 import com.moscow.domain.model.Movie
@@ -17,10 +17,10 @@ data class CastDetailsUiState(
     val enableBlur: String = "high"
 ) {
     data class SocialMediaLinks(
-        val youtube: String = "",
-        val facebook: String = "",
-        val instagram: String = "",
-        val twitter: String = "",
-        val tiktok: String = ""
+        val youtube: String? = null,
+        val facebook: String? = null,
+        val instagram: String? = null,
+        val twitter: String? = null,
+        val tiktok: String? = null
     )
 }

@@ -15,7 +15,9 @@ data class Actor(
     data class SocialMediaLinks(
         val youtube: String?,
         val facebook: String?,
-        val instagram: String?
+        val instagram: String?,
+        val tiktok:String?,
+        val twitter: String?
     )
 
     enum class Gender { FEMALE, MALE }
