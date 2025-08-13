@@ -15,11 +15,11 @@ import javax.inject.Inject
 
 class PreferenceRepositoryImpl @Inject constructor(
     private val dataStore: DataStore<Preferences>
-): PreferenceRepository{
+) : PreferenceRepository {
 
     override suspend fun saveUser(userType: UserType) {
-        dataStore.edit {preferences->
-            when(userType){
+        dataStore.edit { preferences ->
+            when (userType) {
                 is UserType.AuthenticatedUser -> {
                     preferences[USER_TYPE_KEY] = AUTHENTICATED_USER
                     preferences[USER_ID_KEY] = userType.id
@@ -34,6 +34,7 @@ class PreferenceRepositoryImpl @Inject constructor(
                     preferences[SHOW_RATING_TIP] = true
                     preferences.remove(EXPIRED_AT_KEY)
                 }
+
                 is UserType.GuestUser -> {
                     preferences[USER_TYPE_KEY] = GUEST_USER
                     preferences[SESSION_ID_KEY] = userType.sessionId
@@ -71,7 +72,7 @@ class PreferenceRepositoryImpl @Inject constructor(
                         )
                     }
 
-                    GUEST_USER -> {
+                    else -> {
                         val sessionId = preferences[SESSION_ID_KEY] ?: ""
                         val expiredAt = preferences[EXPIRED_AT_KEY] ?: ""
                         UserType.GuestUser(
@@ -79,11 +80,11 @@ class PreferenceRepositoryImpl @Inject constructor(
                             expiredAt = expiredAt
                         )
                     }
-                    else -> throw IllegalStateException("Invalid user type")
                 }
             }
             .first()
     }
+
 
     override suspend fun getSessionId(): String {
         return dataStore.data.map { it[SESSION_ID_KEY] }.firstOrNull() ?: ""
@@ -94,7 +95,14 @@ class PreferenceRepositoryImpl @Inject constructor(
     }
 
     override suspend fun clearUser() {
-        dataStore.edit { it.clear() }
+        dataStore.edit { prefs ->
+            prefs[USER_TYPE_KEY] = GUEST_USER
+            prefs.remove(USER_ID_KEY)
+            prefs.remove(SESSION_ID_KEY)
+            prefs.remove(EXPIRED_AT_KEY)
+            prefs[Is_LOGGED_IN_KEY] = false
+            prefs[IS_ON_BOARDING_SEEN_KEY] = true
+        }
     }
 
     override suspend fun isGuest(): Boolean {
@@ -102,11 +110,11 @@ class PreferenceRepositoryImpl @Inject constructor(
     }
 
     override suspend fun isLoggedIn(): Boolean {
-        return dataStore.data.map {it[Is_LOGGED_IN_KEY] }.first() == true
+        return dataStore.data.map { it[Is_LOGGED_IN_KEY] }.first() == true
     }
 
     override suspend fun showCategoryDetailsTip(): Boolean {
-        return dataStore.data.map {it[SHOW_COLLECTION_DETAILS_TIP] }.first() ?: true
+        return dataStore.data.map { it[SHOW_COLLECTION_DETAILS_TIP] }.first() ?: true
     }
 
     override suspend fun closeCategoryDetailsTip() {
@@ -116,7 +124,7 @@ class PreferenceRepositoryImpl @Inject constructor(
     }
 
     override suspend fun isOnBoardingCompleted(): Boolean {
-        return dataStore.data.map {it[IS_ON_BOARDING_SEEN_KEY] }.first() == true
+        return dataStore.data.map { it[IS_ON_BOARDING_SEEN_KEY] }.first() == true
     }
 
     override suspend fun setOnBoardingCompleted() {
@@ -124,7 +132,7 @@ class PreferenceRepositoryImpl @Inject constructor(
     }
 
     override suspend fun showHistoryTip(): Boolean {
-        return dataStore.data.map {it[SHOW_HISTORY_TIP] }.first() ?: true
+        return dataStore.data.map { it[SHOW_HISTORY_TIP] }.first() ?: true
     }
 
     override suspend fun closeHistoryTip() {
@@ -134,7 +142,7 @@ class PreferenceRepositoryImpl @Inject constructor(
     }
 
     override suspend fun showRatingTip(): Boolean {
-        return dataStore.data.map {it[SHOW_RATING_TIP] }.first() ?: true
+        return dataStore.data.map { it[SHOW_RATING_TIP] }.first() ?: true
     }
 
     override suspend fun closeRatingTip() {
