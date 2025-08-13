@@ -69,10 +69,9 @@ class LoginViewModel @Inject constructor(
             launchWithResult(
                 action = {
                     loginWithUsernameAndPasswordUseCase.invoke(
-                        loginData = LoginData(
+
                             username = uiState.value.username,
                             password = uiState.value.password,
-                        )
                     )
                 },
                 onSuccess = ::onLoginSuccess,
