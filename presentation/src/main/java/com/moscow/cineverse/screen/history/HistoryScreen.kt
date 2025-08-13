@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.moscow.cineverse.common_ui_state.MediaItemUiState
+import com.moscow.cineverse.component.ErrorContent
 import com.moscow.cineverse.component.MoviePosterCard
 import com.moscow.cineverse.component.NoHistoryScreen
 import com.moscow.cineverse.component.SwipeToDelete
@@ -79,7 +80,12 @@ fun HistoryContent(
                         )
                     }
                 }
-
+                state.errorMessage != null -> {
+                    ErrorContent(
+                        onRetry = interactionListener::onRetry,
+                        errorMessage = state.errorMessage
+                    )
+                }
                 state.isContentEmpty -> {
                     Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                         NoHistoryScreen(onContinue = interactionListener::onFindToSomethingToWatchButton )

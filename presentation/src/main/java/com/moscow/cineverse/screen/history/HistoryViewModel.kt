@@ -36,7 +36,24 @@ class HistoryViewModel @Inject constructor(
                     )
                 }
             },
-            onError = {}
+            onStart = {
+                updateState {
+                    it.copy(
+                        isError = false,
+                        errorMessage = null,
+                        isLoading = true
+                    )
+                }
+            },
+            onError = { e ->
+                updateState {
+                    it.copy(
+                        isError = true,
+                        errorMessage = e,
+                        isLoading = false
+                    )
+                }
+            }
         )
     }
 
@@ -60,7 +77,15 @@ class HistoryViewModel @Inject constructor(
                     )
                 }
             },
-            onStart = { updateState { it.copy(isLoading = true) } }
+            onStart = {
+                updateState {
+                    it.copy(
+                        isError = false,
+                        errorMessage = null,
+                        isLoading = true
+                    )
+                }
+            }
         )
     }
 
@@ -76,7 +101,6 @@ class HistoryViewModel @Inject constructor(
     }
 
     override fun onTipCancelIconClicked() {
-        updateState { it.copy(isLoading = false) }
         launchAndForget(
             action = { closeHistoryTipUseCase() },
             onSuccess = { updateState { it.copy(showTip = false) } },
@@ -110,5 +134,11 @@ class HistoryViewModel @Inject constructor(
 
     override fun onFindToSomethingToWatchButton() {
         sendEvent(HistoryEffect.WatchSomethingButtonClicked)
+    }
+
+    override fun onRetry() {
+        updateState { it.copy(isError = false, errorMessage = null) }
+        getShowTip()
+        getRecentlyViewedMovies()
     }
 }
