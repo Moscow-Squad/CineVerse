@@ -9,4 +9,5 @@ interface MyRatingsInteractionListener {
     fun onNavigateBack()
     fun onRefresh()
     fun onEmptyStateButtonClicked()
+    fun onTipCancelIconClicked()
 }

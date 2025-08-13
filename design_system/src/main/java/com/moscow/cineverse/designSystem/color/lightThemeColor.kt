@@ -33,7 +33,7 @@ val lightThemeColor = CineVerseColor(
         onTertiary = Color(0xFF536DFE)
     ),
     stroke = Stroke(
-        primary = Color(0xFFF1F3FF),
+        primary = Color(0xFFECECEC),
         glow = Brush.linearGradient(
             colors = listOf(
                 Color(0xFF8C9EFF).copy(alpha = 0.24f),

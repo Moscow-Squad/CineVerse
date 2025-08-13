@@ -154,8 +154,8 @@ class HomeViewModel @Inject constructor(
     }
 
     fun getRecentlyViewedMovies() {
-        launchWithResult(
-            action = { getRecentlyViewedMediaUseCase() },
+        launchWithFlow(
+            flowAction = { getRecentlyViewedMediaUseCase() },
             onSuccess = { result ->
                 updateState {
                     it.copy(
