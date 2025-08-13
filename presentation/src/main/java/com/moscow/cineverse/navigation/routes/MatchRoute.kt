@@ -11,10 +11,16 @@ import kotlinx.serialization.Serializable
 object MatchRoute : AppDestination
 
 fun NavGraphBuilder.matchRoute(navController: NavHostController) {
-    composable<MatchRoute>{
+    composable<MatchRoute> {
         MatchScreen(
             navigateToMovieDetails = { movieId -> navController.navigate(MovieDetailsRoute(movieId)) },
-            navigateToSeriesDetails = { seriesId -> navController.navigate(SeriesDetailsRoute(seriesId)) },
+            navigateToCollectionsBottomSheet = { id ->
+                navController.navigate(
+                    CollectionsBottomSheetRoute(
+                        id
+                    )
+                )
+            }
         )
     }
 }

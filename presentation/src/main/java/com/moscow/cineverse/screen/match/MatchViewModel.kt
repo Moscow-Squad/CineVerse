@@ -1,9 +1,11 @@
 package com.moscow.cineverse.screen.match
 
 import com.moscow.cineverse.base.BaseViewModel
-import com.moscow.domain.model.MediaType
+import javax.inject.Inject
 
-class MatchViewModel : BaseViewModel<MatchUiState, MatchEvent>(MatchUiState()),
+class MatchViewModel @Inject constructor(
+
+) : BaseViewModel<MatchUiState, MatchEvent>(MatchUiState()),
     MatchInteractionListener {
 
     override fun onClickStartMatching() {
@@ -33,8 +35,16 @@ class MatchViewModel : BaseViewModel<MatchUiState, MatchEvent>(MatchUiState()),
 
     }
 
-    override fun onMediaItemClick(id: Int, type: MediaType) {
-        sendEvent(MatchEvent.OnMediaItemClick(id = id, type = type))
+    override fun onMovieClick(id: Int) {
+        sendEvent(MatchEvent.OnMovieClick(id = id))
+    }
+
+    override fun onSaveClick(id: Int) {
+        sendEvent(MatchEvent.AddToCollection(id = id))
+    }
+
+    override fun onPlayClick(url: String) {
+        sendEvent(MatchEvent.OpenTrailer(url = url))
     }
 
 }

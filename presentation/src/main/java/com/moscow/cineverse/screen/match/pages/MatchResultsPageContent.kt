@@ -7,19 +7,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import com.moscow.cineverse.common_ui_state.MediaItemUiState
 import com.moscow.cineverse.designSystem.component.app_bar.MovieAppBar
 import com.moscow.cineverse.designSystem.component.wrapper.MovieScaffold
 import com.moscow.cineverse.screen.match.composable.MatchCarouselAnimation
+import com.moscow.cineverse.screen.movie_details.MovieScreenState
 import com.moscow.cinverse.presentation.R
-import com.moscow.domain.model.MediaType
 
 @Composable
 fun MatchResultsPageContent(
-    movies: List<MediaItemUiState>,
-    onMovieClick: (Int, MediaType) -> Unit,
+    movies: List<MovieScreenState.MovieDetailsUiState>,
+    onMovieClick: (Int) -> Unit,
     modifier: Modifier = Modifier,
     onNavigateBack: () -> Unit,
+    onSaveClick: (Int) -> Unit,
+    onPlayClick: (String) -> Unit
 ) {
     MovieScaffold(
         modifier = modifier,
@@ -39,7 +40,9 @@ fun MatchResultsPageContent(
         ) {
             MatchCarouselAnimation(
                 movies = movies,
-                onMovieClick = onMovieClick
+                onMovieClick = onMovieClick,
+                onSaveClick = onSaveClick,
+                onPlayClick = onPlayClick,
             )
         }
     }

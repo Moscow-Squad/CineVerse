@@ -1,20 +1,20 @@
 package com.moscow.cineverse.screen.match
 
 import androidx.annotation.DrawableRes
-import com.moscow.cineverse.common_ui_state.MediaItemUiState
+import com.moscow.cineverse.screen.movie_details.MovieScreenState
 import com.moscow.cinverse.presentation.R
-import com.moscow.domain.model.MediaType
+import kotlinx.datetime.LocalDate
 
 data class MatchUiState(
     val isLoading: Boolean = false,
-    val currentPage: MatchPages = MatchPages.StartPage,
+    val currentPage: MatchPages = MatchPages.ResultsPage,
     val moodQuestions: List<QuestionUiState> = getFakeQuestions(),
     val genres: List<QuestionUiState> = getFakeGenres(),
     val timeQuestions: List<QuestionUiState> = getFakeQuestions(),
     val recentOrClassicQuestions: List<QuestionUiState> = getFakeQuestions(),
     val currentQuestionIndex: Int = 1,
     val matchProgress: Float = 0f,
-    val matchResults: List<MediaItemUiState> = getFakeMatchResults()
+    val matchResults: List<MovieScreenState.MovieDetailsUiState> = getFakeMatchResults()
 ) {
     val selectedMoodQuestions: List<QuestionUiState>
         get() = moodQuestions.filter { it.isSelected }
@@ -120,81 +120,81 @@ fun getDefaultMatchQuestions(): List<MatchQuestion> {
 }
 
 private fun getFakeMatchResults() = listOf(
-    MediaItemUiState(
+    MovieScreenState.MovieDetailsUiState(
         id = 1311031,
         title = "Demon Slayer: Kimetsu no Yaiba — Infinity Castle",
+        trailerPath = "Demon Slayer: Kimetsu no Yaiba Infinity Castle | Official ...Demon Slayer: Kimetsu no Yaiba Infinity Castle | Official ...Demon Slayer: Kimetsu no Yaiba Infinity Castle | Official ...Demon Slayer: Kimetsu no Yaiba Infinity Castle | Official ...Demon Slayer: Kimetsu no Yaiba Infinity Castle | Official ...https://www.youtube.com/watch?v=wyiZWYMilgk",
         posterPath = "https://image.tmdb.org/t/p/w500//aFRDH3P7TX61FVGpaLhKr6QiOC1.jpg",
-        rating = 7.2f,
+        rating = 7.2,
         genres = listOf("Animation", "Action", "Fantasy", "Thriller"),
-        releaseDate = "2025, Jul 18",
-        duration = "",
-        mediaType = MediaType.Movie,
-        backdropPath = "https://image.tmdb.org/t/p/w500//1RgPyOhN4DRs225BGTlHJqCudII.jpg"
+        releaseDate = LocalDate(2025, 7, 18),
+        duration = 120,
+        description = "The Hashira and Tanjiro prepare to face Muzan Kibutsuji in the Infinity Castle."
     ),
-    MediaItemUiState(
+    MovieScreenState.MovieDetailsUiState(
         id = 980477,
         title = "Ne Zha 2",
+        trailerPath = "https://www.youtube.com/watch?v=wyiZWYMilgk",
         posterPath = "https://image.tmdb.org/t/p/w500//293Mo4GWf7Tl0TfAr5NFghqeMy7.jpg",
-        rating = 8.038f,
+        rating = 8.038,
         genres = listOf("Animation", "Fantasy", "Adventure", "Action"),
-        releaseDate = "2025, Jan 29",
-        duration = "",
-        mediaType = MediaType.Movie,
-        backdropPath = "https://image.tmdb.org/t/p/w500//c9xmB53umjnrCMS4pZz11clF3yJ.jpg"
+        releaseDate = LocalDate(2025, 1, 29),
+        duration = 115,
+        description = "The continuing adventures of the mythological hero Ne Zha."
     ),
-    MediaItemUiState(
+    MovieScreenState.MovieDetailsUiState(
         id = 1078605,
         title = "Weapons",
+        trailerPath = "YouTube · CrunchyrollYouTube · CrunchyrollYouTube · CrunchyrollYouTube · CrunchyrollYouTube · Crunchyrollhttps://www.youtube.com/watch?v=wyiZWYMilgk",
         posterPath = "https://image.tmdb.org/t/p/w500//yrNqjlabBhEpB5tFCysWtnMx5C5.jpg",
-        rating = 7.8f,
+        rating = 7.8,
         genres = listOf("Horror", "Mystery"),
-        releaseDate = "2025, Aug 06",
-        duration = "",
-        mediaType = MediaType.Movie,
-        backdropPath = "https://image.tmdb.org/t/p/w500//kyqM6padQzZ1eYxv84i9smNvZAG.jpg"
+        releaseDate = LocalDate(2025, 8, 6),
+        duration = 135,
+        description = "A suspenseful horror mystery that will keep you on the edge of your seat."
     ),
-    MediaItemUiState(
+    MovieScreenState.MovieDetailsUiState(
         id = 1011477,
         title = "Karate Kid: Legends",
+        trailerPath = "أكثر من ١٧٫٧ مليون مشاهدة · قبل سنة واحدةأكثر من ١٧٫٧ مليون مشاهدة · قبل سنة واحدةأكثر من ١٧٫٧ مليون مشاهدة · قبل سنة واحدةأكثر من ١٧٫٧ مليون مشاهدة · قبل سنة واحدةأكثر من ١٧٫٧ مليون مشاهدة · قبل سنة واحدةhttps://www.youtube.com/watch?v=wyiZWYMilgk",
         posterPath = "https://image.tmdb.org/t/p/w500//AEgggzRr1vZCLY86MAp93li43z.jpg",
-        rating = 7.162f,
+        rating = 7.162,
         genres = listOf("Action", "Adventure", "Drama"),
-        releaseDate = "2025, May 08",
-        duration = "",
-        mediaType = MediaType.Movie,
-        backdropPath = "https://image.tmdb.org/t/p/w500//7Q2CmqIVJuDAESPPp76rWIiA0AD.jpg"
+        releaseDate = LocalDate(2025, 5, 8),
+        duration = 130,
+        description = "A new chapter in the legendary Karate Kid saga."
     ),
-    MediaItemUiState(
+    MovieScreenState.MovieDetailsUiState(
         id = 541671,
         title = "Ballerina",
+        trailerPath = "https://www.youtube.com/watch?v=wyiZWYMilgk",
         posterPath = "https://image.tmdb.org/t/p/w500//2VUmvqsHb6cEtdfscEA6fqqVzLg.jpg",
-        rating = 7.436f,
+        rating = 7.436,
         genres = listOf("Action", "Thriller", "Crime"),
-        releaseDate = "2025, Jun 04",
-        duration = "",
-        mediaType = MediaType.Movie,
-        backdropPath = "https://image.tmdb.org/t/p/w500//oPgXVSdGR9dGwbmvIToOCMmsdc2.jpg"
+        releaseDate = LocalDate(2025, 6, 4),
+        duration = 110,
+        description = "A former ballerina turned assassin seeks revenge in the John Wick universe."
     ),
-    MediaItemUiState(
+    MovieScreenState.MovieDetailsUiState(
         id = 803796,
         title = "KPop Demon Hunters",
+        trailerPath = "https://www.youtube.com/watch?v=wyiZWYMilgk",
         posterPath = "https://image.tmdb.org/t/p/w500//22AouvwlhlXbe3nrFcjzL24bvWH.jpg",
-        rating = 8.4f,
+        rating = 8.4,
         genres = listOf("Animation", "Fantasy", "Comedy", "Music", "Family"),
-        releaseDate = "2025, Jun 20",
-        duration = "",
-        mediaType = MediaType.Movie,
-        backdropPath = "https://image.tmdb.org/t/p/w500//l3ycQYwWmbz7p8otwbomFDXIEhn.jpg"
+        releaseDate = LocalDate(2025, 6, 20),
+        duration = 105,
+        description = "A K-pop group discovers they must balance their music careers with hunting demons."
     ),
-    MediaItemUiState(
+    MovieScreenState.MovieDetailsUiState(
         id = 1124619,
         title = "Bride Hard",
+        trailerPath = "https://www.youtube.com/watch?v=wyiZWYMilgk",
         posterPath = "https://image.tmdb.org/t/p/w500//3mExdWLSxAiUCb4NMcYmxSkO7n4.jpg",
-        rating = 5.746f,
+        rating = 5.746,
         genres = listOf("Action", "Comedy"),
-        releaseDate = "2025, Jun 19",
-        duration = "",
-        mediaType = MediaType.Movie,
-        backdropPath = "https://image.tmdb.org/t/p/w500//2DcD4Hh80SW7YVpwckkiEFRZX06.jpg"
+        releaseDate = LocalDate(2025, 6, 19),
+        duration = 100,
+        description = "A bride's wedding day turns into an action-packed adventure."
     )
 )

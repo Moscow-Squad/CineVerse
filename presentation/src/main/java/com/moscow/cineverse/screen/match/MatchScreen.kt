@@ -1,24 +1,27 @@
 package com.moscow.cineverse.screen.match
 
+import android.content.Intent
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.core.net.toUri
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.moscow.cineverse.screen.match.pages.MatchQuestionsPageContent
 import com.moscow.cineverse.screen.match.pages.MatchResultsPageContent
 import com.moscow.cineverse.screen.match.pages.MatchStartPageContent
-import com.moscow.domain.model.MediaType
 
 @Composable
 fun MatchScreen(
     modifier: Modifier = Modifier,
     viewModel: MatchViewModel = hiltViewModel(),
     navigateToMovieDetails: (id: Int) -> Unit,
-    navigateToSeriesDetails: (id: Int) -> Unit,
+    navigateToCollectionsBottomSheet: (movieId: Int) -> Unit
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
+    val context = LocalContext.current
     LaunchedEffect(Unit) {
         viewModel.uiEffect.collect { effect ->
             when (effect) {
@@ -30,13 +33,17 @@ fun MatchScreen(
                     viewModel.onClickFinishMatching()
                 }
 
-                is MatchEvent.OnMediaItemClick -> {
-                    when (effect.type) {
-                        MediaType.Movie -> navigateToMovieDetails(effect.id)
-                        MediaType.Tv -> navigateToSeriesDetails(effect.id)
-                        MediaType.Person -> {}
-                        MediaType.Unknown -> {}
-                    }
+                is MatchEvent.OnMovieClick -> {
+                    navigateToMovieDetails(effect.id)
+                }
+
+                is MatchEvent.OpenTrailer -> {
+                    val intent = Intent(Intent.ACTION_VIEW, effect.url.toUri())
+                    context.startActivity(intent)
+                }
+
+                is MatchEvent.AddToCollection -> {
+                    navigateToCollectionsBottomSheet(effect.id)
                 }
             }
         }
@@ -75,8 +82,10 @@ fun MatchContent(
         MatchPages.ResultsPage -> MatchResultsPageContent(
             modifier = modifier,
             movies = state.matchResults,
-            onMovieClick = listener::onMediaItemClick,
+            onMovieClick = listener::onMovieClick,
             onNavigateBack = listener::onNavigateBack,
+            onSaveClick = listener::onSaveClick,
+            onPlayClick = listener::onPlayClick
         )
     }
 

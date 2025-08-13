@@ -1,9 +1,9 @@
 package com.moscow.cineverse.screen.match
 
-import com.moscow.domain.model.MediaType
-
 sealed class MatchEvent {
     data object OnClickStartMatching : MatchEvent()
     data object OnClickFinishMatching : MatchEvent()
-    data class OnMediaItemClick(val id: Int, val type: MediaType): MatchEvent()
+    data class OnMovieClick(val id: Int): MatchEvent()
+    data class OpenTrailer(val url: String) : MatchEvent()
+    data class AddToCollection(val id: Int): MatchEvent()
 }
