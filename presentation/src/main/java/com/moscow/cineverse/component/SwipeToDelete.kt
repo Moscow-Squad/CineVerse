@@ -1,11 +1,8 @@
 package com.moscow.cineverse.component
 
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectHorizontalDragGestures
@@ -20,37 +17,31 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.design_system.R
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
-import androidx.compose.ui.platform.LocalLayoutDirection
-import androidx.compose.ui.unit.LayoutDirection
 
 @Composable
 fun SwipeToDelete(
     onDelete: () -> Unit,
     modifier: Modifier = Modifier,
-    isVisible: Boolean = true,
     swipeThreshold: Dp = 80.dp,
     animationDurationMs: Int = 200,
-    deleteDelayMs: Long = 300,
     content: @Composable () -> Unit
 ) {
     val density = LocalDensity.current
@@ -60,25 +51,7 @@ fun SwipeToDelete(
     val isRtl = layoutDirection == LayoutDirection.Rtl
     val maxSwipeDistance = with(density) { swipeThreshold.toPx() }
     val offsetX = remember { Animatable(0f) }
-    var showDeleteAnimation by remember { mutableStateOf(false) }
-//
-//    val handleDelete = {
-//        coroutineScope.launch {
-//            delay(deleteDelayMs)
-//            onDelete()
-//            showDeleteAnimation = true
-//        }
-//    }
-//
-//    AnimatedVisibility(
-//        visible = isVisible && !showDeleteAnimation,
-//        exit = shrinkVertically(
-//            animationSpec = tween(300),
-//            shrinkTowards = Alignment.CenterVertically
-//        ) + fadeOut(tween(200))
-//    ) {
-//
-//    }
+
     Box(
         modifier = modifier
             .fillMaxWidth()

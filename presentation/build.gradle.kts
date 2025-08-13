@@ -24,7 +24,6 @@ dependencies {
     implementation(libs.material3)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
-    implementation(libs.androidx.compose.foundation)
 
     /** DaggerHilt */
     implementation(libs.hilt.android)
