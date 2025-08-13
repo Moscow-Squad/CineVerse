@@ -181,4 +181,5 @@
     <string name="rate_the_movie">قيّم الفيلم</string>
     <string name="remove_rating">إزالة التقييم</string>
     <string name="did_you_watch_it">هل شاهدته؟</string>
+    <string name="content_preferences">تفضيلات المحتوى</string>
 </resources>
