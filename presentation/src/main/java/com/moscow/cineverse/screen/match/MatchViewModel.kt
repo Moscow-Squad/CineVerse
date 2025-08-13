@@ -32,7 +32,15 @@ class MatchViewModel @Inject constructor(
     }
 
     override fun onNavigateBack() {
-
+        when (uiState.value.currentPage) {
+            MatchPages.QuestionsPage -> updateState {
+                it.copy(currentPage = MatchPages.StartPage)
+            }
+            MatchPages.ResultsPage -> updateState {
+                it.copy(currentPage = MatchPages.QuestionsPage)
+            }
+            else -> {} // No action needed for StartPage
+        }
     }
 
     override fun onMovieClick(id: Int) {

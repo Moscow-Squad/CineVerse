@@ -18,10 +18,17 @@ fun MatchScreen(
     modifier: Modifier = Modifier,
     viewModel: MatchViewModel = hiltViewModel(),
     navigateToMovieDetails: (id: Int) -> Unit,
-    navigateToCollectionsBottomSheet: (movieId: Int) -> Unit
+    navigateToCollectionsBottomSheet: (movieId: Int) -> Unit,
+    onBottomNavVisibilityChange: (Boolean) -> Unit = {}
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
     val context = LocalContext.current
+
+    LaunchedEffect(state.currentPage) {
+        val showBottomNav = state.currentPage == MatchPages.StartPage
+        onBottomNavVisibilityChange(showBottomNav)
+    }
+
     LaunchedEffect(Unit) {
         viewModel.uiEffect.collect { effect ->
             when (effect) {
