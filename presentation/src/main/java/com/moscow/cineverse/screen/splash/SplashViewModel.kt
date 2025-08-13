@@ -2,6 +2,7 @@ package com.moscow.cineverse.screen.splash
 
 import androidx.lifecycle.viewModelScope
 import com.moscow.cineverse.base.BaseViewModel
+import com.moscow.domain.repository.OnboardingRepository
 import com.moscow.domain.repository.auth.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -11,6 +12,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SplashViewModel @Inject constructor(
+    val onboardingRepository: OnboardingRepository,
     val userRepository: UserRepository
 ) : BaseViewModel<Unit, SplashEvent>(Unit){
 
@@ -18,7 +20,7 @@ class SplashViewModel @Inject constructor(
 
          viewModelScope.launch {
 
-             if (!userRepository.isOnBoardingCompleted()){
+             if (!onboardingRepository.isOnBoardingCompleted()){
                 sendEvent(SplashEvent.NavigateToOnboarding)
             }else if (userRepository.isGuest()){
 
