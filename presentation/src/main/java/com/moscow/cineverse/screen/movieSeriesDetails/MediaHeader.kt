@@ -54,6 +54,7 @@ fun MediaHeader(
     enableBlur: String,
     onSaveClick: () -> Unit = {},
     onPlayClick: () -> Unit = {},
+    isSaveEnabled: Boolean = true
 ) {
     Box(
         modifier = Modifier,
@@ -284,6 +285,7 @@ fun MediaHeader(
                     onClick = { onSaveClick() },
                     backgroundColor = Theme.colors.button.secondary,
                     iconColor = Theme.colors.shade.primary,
+                    enabled = isSaveEnabled
                 )
             }
             Box(
