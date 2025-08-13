@@ -6,6 +6,7 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
 import com.moscow.cineverse.base.BaseViewModel
+import com.moscow.cineverse.common_ui_state.MediaItemUiState
 import com.moscow.cineverse.navigation.routes.CollectionDetailsRoute
 import com.moscow.cineverse.paging.BasePagingSource
 import com.moscow.cineverse.screen.explore.toUi
@@ -39,10 +40,11 @@ class CollectionDetailsViewModel @Inject constructor(
     val collectionId = savedStateHandle.get<Int>(CollectionDetailsRoute.COLLECTION_ID) ?: 0
     val collectionName = savedStateHandle.get<String>(CollectionDetailsRoute.COLLECTION_NAME) ?: ""
 
+    private var currentPagingSource: BasePagingSource<MediaItemUiState>?  = null
+
     init {
         getMoviesGenres()
         getShowTip()
-        getMovies()
         observeBlur()
     }
 
@@ -64,6 +66,7 @@ class CollectionDetailsViewModel @Inject constructor(
                         isLoading = false
                     )
                 }
+                getMovies()
             },
             onError = { msg ->
                 updateState {
@@ -108,9 +111,15 @@ class CollectionDetailsViewModel @Inject constructor(
                 return@launchWithResult Pager(
                     config = PagingConfig(pageSize = 20),
                     pagingSourceFactory = {
-                        BasePagingSource { page ->
-                            getCollectionMediaItemsUseCase(collectionId, page)
+                        currentPagingSource = BasePagingSource { page ->
+                            getCollectionMediaItemsUseCase(
+                                collectionId = collectionId,
+                                page = page
+                            ).map {
+                                it.toUi(uiState.value.moviesGenres)
+                            }
                         }
+                        currentPagingSource!!
                     }
                 ).flow.cachedIn(viewModelScope)
             },
@@ -154,6 +163,9 @@ class CollectionDetailsViewModel @Inject constructor(
                     collectionId = collectionId,
                     mediaItemId = mediaId
                 )
+            },
+            onSuccess = {
+                currentPagingSource?.invalidate()
             },
             onError = { msg ->
                 updateState {
@@ -213,5 +225,7 @@ class CollectionDetailsViewModel @Inject constructor(
             )
         }
         getMoviesGenres()
+        getShowTip()
+        observeBlur()
     }
 }
