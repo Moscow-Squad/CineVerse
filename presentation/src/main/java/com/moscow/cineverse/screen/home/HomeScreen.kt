@@ -44,7 +44,7 @@ fun HomeScreen(
     navigateToWatchingSuggestion: () -> Unit,
     navigateToHistoryScreen: () -> Unit,
     navigateToCollectionDetails: (collectionId: Int, collectionName: String) -> Unit,
-    navigateToMyCollections:()->Unit
+    navigateToMyCollections: () -> Unit
 ) {
     val state by viewmodel.uiState.collectAsStateWithLifecycle()
     LaunchedEffect(Unit) {
@@ -56,6 +56,7 @@ fun HomeScreen(
                         effect.collectionName
                     )
                 }
+
                 is HomeEvent.MovieClicked -> {
                     navigateToMovieDetails(
                         effect.movieId
@@ -222,12 +223,13 @@ fun HomeContent(
                     )
                 }
 
-                if(uiState.userName != null){
-                MyCollectionsLayout(
-                    items = uiState.collections,
-                    onCollectionClick = listener::onCollectionClick,
-                    onShowMoreClick = listener::onCollectionsShowMoreClick,
-                )}
+                if (uiState.userName != null) {
+                    MyCollectionsLayout(
+                        items = uiState.collections,
+                        onCollectionClick = listener::onCollectionClick,
+                        onShowMoreClick = listener::onCollectionsShowMoreClick,
+                    )
+                }
 
                 SuggestionWithHeader(
                     modifier = Modifier
