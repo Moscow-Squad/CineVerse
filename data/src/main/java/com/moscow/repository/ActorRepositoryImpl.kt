@@ -21,7 +21,7 @@ class ActorRepositoryImpl @Inject constructor(
         )
     }
 
-    override suspend fun getActorGalleryUrl(actorId: Int) =
+    override suspend fun getActorGalleryUrl(actorId: Int): List<String> =
         actorRemoteDataSource.getActorGallery(actorId).images.map { it.toDomain() }
 
     override suspend fun getBestOfMovies(actorId: Int): List<Movie> {

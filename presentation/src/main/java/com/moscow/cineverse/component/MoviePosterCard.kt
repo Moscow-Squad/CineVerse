@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -294,7 +293,6 @@ private fun ListMovieCard(
                     )
 
                     DurationAndDateSection(
-                        duration = movie.duration,
                         releaseDate = movie.releaseDate
                     )
                 }
@@ -306,32 +304,12 @@ private fun ListMovieCard(
 @Composable
 private fun DurationAndDateSection(
     modifier: Modifier = Modifier,
-    duration: String,
     releaseDate: String
 ) {
     Row(
         modifier = modifier.padding(top = 8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        if (duration.isNotEmpty()) {
-            Icon(
-                painter = painterResource(R.drawable.due_tone_clock),
-                contentDescription = "Duration",
-                tint = Theme.colors.shade.secondary,
-                modifier = Modifier.size(16.dp)
-            )
-            Text(
-                text = duration,
-                style = Theme.textStyle.label.medium.medium,
-                color = Theme.colors.shade.secondary,
-                modifier = Modifier.padding(start = 4.dp)
-            )
-        }
-
-        if (duration.isNotEmpty() && releaseDate.isNotEmpty()) {
-            Spacer(modifier = Modifier.width(8.dp))
-        }
-
         if (releaseDate.isNotEmpty()) {
             Icon(
                 painter = painterResource(R.drawable.due_tone_calendar),

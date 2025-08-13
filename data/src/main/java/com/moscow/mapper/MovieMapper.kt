@@ -16,7 +16,6 @@ import kotlinx.datetime.LocalDate
 
 const val ITEM_MOVIE = "movie"
 
-
 fun MovieDto.toDomain() =
     Movie(
         overview = overview.orEmpty(),

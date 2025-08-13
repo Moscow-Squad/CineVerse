@@ -4,7 +4,6 @@ import com.moscow.domain.model.UserInfo
 import com.moscow.remote.dto.profile.response.AccountDto
 import com.moscow.utils.IMAGES_URL
 
-
 fun AccountDto.toDomain(): UserInfo =
     UserInfo(
         name = name.orEmpty(),
