@@ -2,6 +2,7 @@ package com.moscow.remote.data_source
 
 import com.moscow.data_source.remote.SeriesRemoteDataSource
 import com.moscow.domain.repository.auth.UserRepository
+import com.moscow.remote.dto.media_item.common.CreditsDetailsDto
 import com.moscow.remote.dto.media_item.common.MediaTrailersDto
 import com.moscow.remote.dto.rating.response.UserRatingResponse
 import com.moscow.remote.dto.rating.response.RatedSeriesDto
@@ -105,7 +106,7 @@ class SeriesRemoteDataSourceImpl @Inject constructor(
             seriesService.getSeriesByGenreId(genreId, page)
         }
 
-    override suspend fun getSeriesCredits(seriesId: Int): SeriesCreditDto =
+    override suspend fun getSeriesCredits(seriesId: Int) =
         handleApi {
             seriesService.getSeriesCredits(seriesId)
         }

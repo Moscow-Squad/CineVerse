@@ -56,6 +56,7 @@ fun ActorBestOfMoviesDto.ActorBestOfMoviesAsCrew.toDomain() =
         overview = overview.orEmpty(),
         posterUrl = IMAGES_URL + posterPath.orEmpty(),
         trailerUrl = "",
+        duration = Movie.Duration(0, 0),
         genres = emptyList(),
     )
 
@@ -70,5 +71,6 @@ fun ActorBestOfMoviesDto.ActorBestOfMoviesAsCast.toDomain() =
         overview = overview.orEmpty(),
         posterUrl = IMAGES_URL + posterPath.orEmpty(),
         trailerUrl = "",
+        duration = Movie.Duration(0, 0),
         genres = emptyList(),
     )

@@ -12,5 +12,11 @@ data class Movie(
     val releaseDate: LocalDate?,
     val genreIds: List<Int>,
     val genres: List<String>,
+    val duration: Duration,
     val rating: Float
-)
+){
+    data class Duration(
+        val hours: Int,
+        val minutes: Int
+    )
+}

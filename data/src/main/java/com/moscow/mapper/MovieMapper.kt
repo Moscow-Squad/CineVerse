@@ -27,7 +27,7 @@ fun MovieDto.toDomain() =
         title = title.orEmpty(),
         genres = emptyList(),
         duration = Movie.Duration(0, 0),
-        voteAverage = voteAverage ?: 0.0f,
+        rating = voteAverage ?: 0.0f,
         trailerUrl = "",
     )
 
@@ -39,7 +39,7 @@ fun Movie.toHomeItemEntity(categoryType: String): MediaItemEntity {
         posterPath = this.posterUrl,
         backdropPath = this.backdropUrl,
         itemType = ITEM_MOVIE,
-        rating = this.voteAverage,
+        rating = this.rating,
         genreIds = this.genreIds,
         releaseDate = this.releaseDate
     )
@@ -52,7 +52,7 @@ fun Movie.toHistoryItemEntity(): HistoryItemEntity {
         name = this.title,
         posterPath = this.posterUrl,
         itemType = ITEM_MOVIE,
-        rating = this.voteAverage,
+        rating = this.rating,
         releaseDate = this.releaseDate
     )
 }
@@ -64,7 +64,7 @@ fun MediaItemEntity.toMovie(
         id = this.itemId,
         title = this.name,
         genreIds = this.genreIds,
-        voteAverage = this.rating,
+        rating = this.rating,
         releaseDate = this.releaseDate,
         backdropUrl = this.backdropPath,
         overview = overview,
@@ -82,7 +82,7 @@ fun HistoryItemEntity.toMovie(
     return Movie(
         id = this.id,
         title = this.name,
-        voteAverage = this.rating,
+        rating = this.rating,
         releaseDate = this.releaseDate,
         overview = overview,
         posterUrl = this.posterPath,
@@ -102,7 +102,7 @@ fun MovieDetailDto.toDomain(trailer: String): Movie {
         trailerUrl = "https://youtu.be/$trailer",
         posterUrl = IMAGES_URL + posterPath,
         releaseDate = if (!releaseDate.isNullOrBlank()) LocalDate.parse(releaseDate) else null,
-        voteAverage = voteAverage ?: 0.0f,
+        rating = voteAverage ?: 0.0f,
         genres = genres?.map { it.name } ?: emptyList(),
         genreIds = emptyList(),
         duration = Movie.Duration(

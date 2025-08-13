@@ -27,7 +27,7 @@ fun RatedMovieDto.toOutputResult(): RatedMovieResult? {
             id = id,
             title = title,
             genreIds = genreIds,
-            voteAverage = voteAverage,
+            rating = voteAverage,
             releaseDate = releaseDate,
             backdropUrl = backdropPath,
             overview = overview,
