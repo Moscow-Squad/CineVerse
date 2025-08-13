@@ -15,6 +15,7 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.design_system.R
@@ -50,6 +51,7 @@ fun OnBlurContent(
             style = Theme.textStyle.body.small.medium.copy(
                 color = Color(0xFFE1E1E3)
             ),
+            textAlign = TextAlign.Center
         )
     }
 }

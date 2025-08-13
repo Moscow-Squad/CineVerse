@@ -65,7 +65,8 @@ fun MovieReviewCard(
 
         Row(Modifier.fillMaxWidth()) {
 
-            MovieRatingBar(rating, {})
+            if (rating != 0)
+                MovieRatingBar(rating, {})
 
             Spacer(Modifier.weight(1f))
 
@@ -95,9 +96,18 @@ private fun UserInfo(
         Box(
             modifier = modifier
                 .size(40.dp)
-                .clip(CircleShape)
                 .background(Theme.colors.background.card)
-                .border(1.dp, Theme.colors.stroke.primary, CircleShape),
+                .then(
+                    if (userImage == null)
+                        Modifier
+                            .border(
+                                width = 1.dp,
+                                color = Theme.colors.stroke.primary,
+                                shape = CircleShape
+                            )
+                    else Modifier
+                )
+                .clip(CircleShape),
             contentAlignment = Alignment.Center
         ) {
             if (userImage != null) {
@@ -105,14 +115,14 @@ private fun UserInfo(
                     painter = userImage,
                     contentDescription = "Profile Image",
                     contentScale = ContentScale.Crop,
-                    modifier = Modifier.fillMaxSize()
+                    modifier = Modifier.fillMaxSize(),
                 )
             } else {
                 Image(
                     painter = painterResource(com.moscow.cinverse.presentation.R.drawable.profile),
                     contentDescription = "Default Profile Icon",
                     contentScale = ContentScale.Fit,
-                    modifier = Modifier.size(24.dp)
+                    modifier = Modifier.size(24.dp),
                 )
             }
         }
