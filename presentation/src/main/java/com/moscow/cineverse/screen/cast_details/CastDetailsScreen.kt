@@ -7,9 +7,11 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -19,10 +21,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -130,18 +131,27 @@ private fun ActorDetailsContent(
     modifier: Modifier = Modifier
 ) {
 
-    LazyColumn(modifier = modifier.fillMaxSize()) {
+    LazyColumn(
+        modifier = modifier.fillMaxSize(),
+        contentPadding = PaddingValues(vertical = 16.dp)
+    ) {
         item {
-            ActorMainDetailsSection(uiState, interactionListener, Modifier.fillMaxWidth())
+            ActorMainDetailsSection(
+                uiState,
+                interactionListener,
+                Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 24.dp)
+            )
         }
         item {
-            ActorMoviesSection(uiState, interactionListener, Modifier.padding(top = 4.dp))
+            ActorMoviesSection(uiState, interactionListener, modifier = Modifier.padding(bottom = 24.dp))
         }
         item {
-            ActorGallerySection(uiState, interactionListener, Modifier.padding(vertical = 16.dp))
+            ActorGallerySection(uiState, interactionListener, Modifier.padding(bottom = 24.dp))
         }
         item {
-            ActorBiographySection(uiState, Modifier.padding(vertical = 8.dp))
+            ActorBiographySection(uiState)
         }
     }
 }
@@ -159,7 +169,6 @@ fun ActorMoviesSection(
                 uiState.actorDetails?.name.orEmpty()
             ),
             movies = uiState.movies.take(10),
-            paddingHorizontal = 20,
             onClickShowMore = interactionListener::onShowMoreMovies,
             onClickPoster = interactionListener::onMovieClick,
             movieCardContent = { movie, cardModifier, onMovieClick ->
@@ -193,7 +202,7 @@ fun ActorGallerySection(
                 onClick = {
                     interactionListener.onShowMoreGallery()
                 },
-                modifier = Modifier.padding(horizontal = 20.dp)
+                modifier = Modifier.padding(horizontal = 16.dp)
             )
 
             Spacer(modifier = Modifier.height(12.dp))
@@ -201,7 +210,7 @@ fun ActorGallerySection(
             GallerySection(
                 images = uiState.images.take(3),
                 enableBlur = uiState.enableBlur,
-                modifier = Modifier.padding(horizontal = 20.dp)
+                modifier = Modifier.padding(horizontal = 16.dp)
             )
         }
     }
@@ -222,7 +231,7 @@ fun ActorBiographySection(
                     showGenres = false,
                     maxDescriptionLines = Int.MAX_VALUE,
                     paddingTop = 8.dp,
-                    modifier = Modifier.padding(16.dp),
+                    modifier = Modifier.padding(horizontal = 16.dp),
                     showRating = false
                 )
             }
@@ -281,94 +290,125 @@ fun MainDetails(
         animationSpec = tween(durationMillis = 300)
     )
 
-    Card(
-        shape = RoundedCornerShape(Theme.radius.extraLarge),
-        colors = CardDefaults.cardColors(containerColor = Theme.colors.background.card),
+    Column(
         modifier = modifier
-            .padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 24.dp)
+            .padding(horizontal = 16.dp)
+            .clip(RoundedCornerShape(Theme.radius.extraLarge))
             .fillMaxWidth()
+            .background(Theme.colors.background.card),
     ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = 16.dp, bottom = 16.dp, top = 16.dp, end = 2.dp)
+        Row(
+            modifier = Modifier.padding(
+                start = 16.dp,
+                end = 16.dp,
+                top = 16.dp,
+                bottom = 12.dp
+            ),
+            verticalAlignment = Alignment.CenterVertically,
         ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
+            SafeImageViewer(
+                imageUrl = profileImage,
+                modifier = Modifier
+                    .width(68.dp)
+                    .size(imageSize)
+                    .clip(
+                        if (isCollapsed) CircleShape else RoundedCornerShape(
+                            topStart = Theme.radius.extraLarge,
+                            topEnd = Theme.radius.small,
+                            bottomStart = Theme.radius.small,
+                            bottomEnd = Theme.radius.extraLarge
+                        )
+                    ),
+                isBlurEnabled = enableBlur,
+                placeholderContent = { RemoteImagePlaceholder() },
+                errorContent = { RemoteImagePlaceholder() },
+                onBlurContent = {
+                    OnBlurContent(isAddedText = false)
+                }
+            )
+            Column(
+                modifier = Modifier.padding(start = 12.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
+                Text(
+                    text = name,
+                    color = Theme.colors.shade.primary,
+                    style = Theme.textStyle.title.medium,
+                )
 
-                SafeImageViewer(
-                    imageUrl = profileImage,
-                    modifier = Modifier
-                        .width(68.dp)
-                        .size(imageSize)
-                        .clip(if (isCollapsed) CircleShape else RoundedCornerShape(cornerSize)),
-                    isBlurEnabled = enableBlur,
-                    placeholderContent = { RemoteImagePlaceholder() },
-                    errorContent = { RemoteImagePlaceholder() },
-                    onBlurContent = {
-                        OnBlurContent(isAddedText = false)
-                    })
-                Column(modifier = Modifier.padding(start = 12.dp)) {
-                    Text(
-                        text = name,
-                        color = Theme.colors.shade.primary,
-                        style = Theme.textStyle.title.medium,
-                        modifier = Modifier.padding(bottom = 8.dp)
-                    )
-
-                    AnimatedVisibility(visible = !isCollapsed) {
-                        Column {
-                            TextWithIcon(
-                                icon = R.drawable.outline_cake,
-                                text = date,
-                                textColour = Theme.colors.shade.secondary,
-                                iconTint = Theme.colors.shade.secondary,
-                                modifier = Modifier.padding(bottom = 8.dp)
-                            )
-                            if (location.isNotBlank()) TextWithIcon(
-                                icon = R.drawable.outline_location,
-                                text = location,
-                                iconTint = Theme.colors.shade.secondary,
-                                textColour = Theme.colors.shade.secondary,
-                            )
-                        }
+                AnimatedVisibility(visible = !isCollapsed) {
+                    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                        TextWithIcon(
+                            icon = R.drawable.outline_cake,
+                            text = date,
+                            textColour = Theme.colors.shade.secondary,
+                            iconTint = Theme.colors.shade.secondary,
+                        )
+                        if (location.isNotBlank()) TextWithIcon(
+                            icon = R.drawable.outline_location,
+                            text = location,
+                            iconTint = Theme.colors.shade.secondary,
+                            textColour = Theme.colors.shade.secondary,
+                        )
                     }
                 }
             }
+        }
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 16.dp)
+                .horizontalScroll(rememberScrollState()),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            Spacer(modifier.width(8.dp))
 
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 12.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-            ) {
+            if(socialMediaLinks.youtube.isNotEmpty()){
                 SocialMediaPill(
                     name = stringResource(R.string.youtube),
                     iconRes = R.drawable.colored_youtube,
                     url = socialMediaLinks.youtube,
                     onClick = { onSocialMediaClick("youtube", it) },
-                    modifier = Modifier.weight(1f)
                 )
+            }
 
+            if(socialMediaLinks.facebook.isNotEmpty()){
                 SocialMediaPill(
                     name = stringResource(R.string.facebook),
                     iconRes = R.drawable.colored_facebook,
                     url = socialMediaLinks.facebook,
                     onClick = { onSocialMediaClick("facebook", it) },
-                    modifier = Modifier.weight(1f)
                 )
+            }
 
+            if(socialMediaLinks.instagram.isNotEmpty()){
                 SocialMediaPill(
                     name = stringResource(R.string.instagram),
                     iconRes = R.drawable.colored_instagram,
                     url = socialMediaLinks.instagram,
                     onClick = { onSocialMediaClick("instagram", it) },
-                    modifier = Modifier.weight(1f)
                 )
             }
+
+            if(socialMediaLinks.twitter.isNotEmpty()){
+                SocialMediaPill(
+                    name = stringResource(R.string.twitter),
+                    iconRes = R.drawable.colored_x,
+                    url = socialMediaLinks.twitter,
+                    onClick = { onSocialMediaClick("twitter", it) },
+                )
+            }
+
+            if(socialMediaLinks.tiktok.isNotEmpty()){
+                SocialMediaPill(
+                    name = stringResource(R.string.tik_tok),
+                    iconRes = R.drawable.colored_tiktok,
+                    url = socialMediaLinks.tiktok,
+                    onClick = { onSocialMediaClick("tiktok", it) },
+                )
+            }
+            Spacer(modifier.width(8.dp))
         }
     }
 }
@@ -385,32 +425,31 @@ private fun SocialMediaPill(
         "youtube" -> Theme.colors.shade.quinary to Theme.colors.shade.primary
         "facebook" -> Theme.colors.shade.quinary to Theme.colors.shade.primary
         "instagram" -> Theme.colors.shade.quinary to Theme.colors.shade.primary
+        "twitter" -> Theme.colors.shade.quinary to Theme.colors.shade.primary
+        "tiktok" -> Theme.colors.shade.quinary to Theme.colors.shade.primary
         else -> Theme.colors.shade.quinary to Theme.colors.shade.primary
     }
 
-    Box(
-        modifier = modifier
+    Row(
+        modifier = Modifier
             .clip(RoundedCornerShape(Theme.radius.full))
             .background(backgroundColor)
             .noRibbleClick { url?.let { onClick(it) } }
             .padding(horizontal = 10.dp, vertical = 8.dp),
-        contentAlignment = Alignment.Center) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(6.dp)
-        ) {
-            Image(
-                painter = painterResource(id = iconRes),
-                modifier = Modifier.size(16.dp),
-                contentDescription = "$name icon"
-            )
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(6.dp)
+    ) {
+        Image(
+            painter = painterResource(id = iconRes),
+            modifier = Modifier.size(16.dp),
+            contentDescription = "$name icon"
+        )
 
-            Text(
-                text = name,
-                color = textColor,
-                style = Theme.textStyle.label.medium.medium,
-            )
-        }
+        Text(
+            text = name,
+            color = textColor,
+            style = Theme.textStyle.label.medium.medium,
+        )
     }
 }
 
