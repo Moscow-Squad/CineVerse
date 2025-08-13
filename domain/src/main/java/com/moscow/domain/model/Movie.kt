@@ -10,7 +10,7 @@ data class Movie(
     val backdropPath: String,
     val posterPath: String,
     val releaseDate: LocalDate?,
-    val voteAverage: Float,
+    val rating: Float,
     val genreIds: List<Int>,
     val genres: List<String>,
     val duration: Duration

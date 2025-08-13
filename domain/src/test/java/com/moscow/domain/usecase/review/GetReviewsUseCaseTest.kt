@@ -8,6 +8,7 @@ import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import java.time.LocalDate
 import kotlin.test.assertEquals
 
 class GetReviewsUseCaseTest {
@@ -36,7 +37,7 @@ class GetReviewsUseCaseTest {
                 avatarPath = "https://avatar.com/ahmed.jpg",
                 rating = 4.5,
                 content = "Absolutely loved it!",
-                createdAt = "2025-07-25T12:00:00Z"
+                createdAt = null
             )
         )
         coEvery { movieRepository.getReviewsMovie(id, page) } returns expectedReviews
@@ -61,7 +62,7 @@ class GetReviewsUseCaseTest {
                 avatarPath = "https://avatar.com/ahmed.jpg",
                 rating = 4.5,
                 content = "Absolutely loved it!",
-                createdAt = "2025-07-25T12:00:00Z"
+                createdAt = null
             )
         )
         coEvery { seriesRepository.getSeriesReviews(id, page) } returns expectedReviews
