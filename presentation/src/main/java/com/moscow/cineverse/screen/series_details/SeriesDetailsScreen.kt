@@ -30,7 +30,7 @@ import androidx.core.net.toUri
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.rememberAsyncImagePainter
-import com.moscow.cineverse.MovieListSection
+import com.moscow.cineverse.component.MovieListSection
 import com.moscow.cineverse.component.ErrorContent
 import com.moscow.cineverse.component.MoviePosterCard
 import com.moscow.cineverse.component.SectionTitle

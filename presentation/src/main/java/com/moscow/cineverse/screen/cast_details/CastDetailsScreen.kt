@@ -40,7 +40,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.moscow.cineverse.MovieListSection
+import com.moscow.cineverse.component.MovieListSection
 import com.moscow.cineverse.component.ErrorContent
 import com.moscow.cineverse.component.MoviePosterCard
 import com.moscow.cineverse.component.SectionTitle
@@ -243,7 +243,7 @@ fun ActorMainDetailsSection(
             name = actor.name,
             date = stringResource(
                 R.string.born_on,
-                actor.birthDate.toFormattedBirthDate()
+                actor.birthDate?.toFormattedBirthDate() ?: ""
             ),
             location = actor.placeOfBirth,
             scrollState = null,

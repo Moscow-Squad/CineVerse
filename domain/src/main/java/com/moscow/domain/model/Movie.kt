@@ -10,10 +10,10 @@ data class Movie(
     val backdropPath: String,
     val posterPath: String,
     val releaseDate: LocalDate?,
-    val voteAverage: Float,
     val genreIds: List<Int>,
     val genres: List<String>,
-    val duration: Duration
+    val duration: Duration,
+    val rating: Float
 ) {
     data class Duration (
         val hours: Int,
