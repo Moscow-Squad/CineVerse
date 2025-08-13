@@ -93,7 +93,13 @@ fun GenreDto.toDomain() =
         name = name
     )
 
-fun ActorDetailsDto.toDomain(youtubeLink: String, facebookLink: String, instagramLink: String) =
+fun ActorDetailsDto.toDomain(
+    youtubeLink: String,
+    facebookLink: String,
+    instagramLink: String,
+    twitterLink: String,
+    tiktokLink: String
+) =
     ActorDetails(
         id = id ?: 0,
         name = name.orEmpty(),
@@ -106,6 +112,8 @@ fun ActorDetailsDto.toDomain(youtubeLink: String, facebookLink: String, instagra
         youtubeLink = "https://www.youtube.com/@$youtubeLink",
         facebookLink = "https://www.facebook.com/$facebookLink",
         instagramLink = "https://www.instagram.com/$instagramLink",
+        twitterLink = "https://www.twitter.com/$twitterLink",
+        tiktokLink = "https://www.tiktok.com/@$tiktokLink",
         biography = biography.orEmpty(),
         profileImg = IMAGES_URL + profilePath.orEmpty()
     )

@@ -10,6 +10,8 @@ data class ActorDetails(
     val youtubeLink: String,
     val facebookLink: String,
     val instagramLink: String,
+    val twitterLink: String,
+    val tiktokLink: String,
     val biography: String,
     val profileImg: String
 )

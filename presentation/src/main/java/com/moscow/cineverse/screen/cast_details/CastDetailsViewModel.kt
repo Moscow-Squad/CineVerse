@@ -63,7 +63,9 @@ class CastDetailsViewModel @Inject constructor(
                 socialMediaLinks = SocialMediaLinks(
                     youtube = actorDetails.youtubeLink.takeIf { it.isNotEmpty() },
                     facebook = actorDetails.facebookLink.takeIf { it.isNotEmpty() },
-                    instagram = actorDetails.instagramLink.takeIf { it.isNotEmpty() }
+                    instagram = actorDetails.instagramLink.takeIf { it.isNotEmpty() },
+                    twitter = actorDetails.twitterLink.takeIf { it.isNotEmpty() },
+                    tiktok = actorDetails.tiktokLink.takeIf { it.isNotEmpty() }
                 ),
                 isContentEmpty = false
             )
@@ -169,6 +171,8 @@ class CastDetailsViewModel @Inject constructor(
             "youtube" -> socialMediaLinks.youtube ?: url
             "facebook" -> socialMediaLinks.facebook ?: url
             "instagram" -> socialMediaLinks.instagram ?: url
+            "twitter" -> socialMediaLinks.twitter ?: url
+            "tiktok" -> socialMediaLinks.tiktok ?: url
             else -> url
         }
         sendEvent(CastDetailsEffect.OpenSocialMedia(platform, targetUrl))

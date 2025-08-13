@@ -17,7 +17,9 @@ class ActorRepositoryImpl @Inject constructor(
         return actorRemoteDataSource.getActorDetails(actorId).toDomain(
             youtubeLink = socialMedia.youtubeId ?: "",
             facebookLink = socialMedia.facebookId ?: "",
-            instagramLink = socialMedia.instagramId ?: ""
+            instagramLink = socialMedia.instagramId ?: "",
+            twitterLink = socialMedia.twitterId ?: "",
+            tiktokLink = socialMedia.tiktokId ?: ""
         )
     }
 
