@@ -46,7 +46,6 @@ fun <T : Any> SeeMoreContent(
         }
     }
 
-
     MovieScaffold(
         movieAppBar = {
             MovieAppBar(
@@ -140,7 +139,6 @@ fun <T : Any> SeeMoreContent(
                                     NoInternetScreen(onRetry = contentList::retry)
                                 }
                             }
-
                         }
                     }
                 }
@@ -148,4 +146,3 @@ fun <T : Any> SeeMoreContent(
         }
     }
 }
-

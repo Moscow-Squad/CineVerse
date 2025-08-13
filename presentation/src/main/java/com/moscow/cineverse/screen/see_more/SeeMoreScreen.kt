@@ -20,24 +20,18 @@ fun SeeMoreHomeScreen(
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
     val gridState = rememberLazyGridState()
-    val pagingItems = viewModel.pagingDataFlow.collectAsStateWithLifecycle().value.collectAsLazyPagingItems()
+    val pagingItems =
+        viewModel.pagingDataFlow.collectAsStateWithLifecycle().value.collectAsLazyPagingItems()
 
-    LaunchedEffect(Unit) {
+    LaunchedEffect(viewModel) {
         viewModel.uiEffect.collect { effect ->
-            when (effect) {
-                is SeeMoreEvent.MovieClicked -> {
-                    navigateToMovieDetails(effect.movieId)
-                }
-                is SeeMoreEvent.SeriesClicked -> {
-                    navigateToSeriesDetails(effect.seriesId)
-                }
-                is SeeMoreEvent.ActorClicked -> {
-                    navigateToCastDetails(effect.actorId)
-                }
-                is SeeMoreEvent.NavigateBack -> {
-                    navigateBack()
-                }
-            }
+            SeeMoreEffectHandler.handleEffect(
+                effect,
+                navigateToMovieDetails,
+                navigateToSeriesDetails,
+                navigateToCastDetails,
+                navigateBack
+            )
         }
     }
 

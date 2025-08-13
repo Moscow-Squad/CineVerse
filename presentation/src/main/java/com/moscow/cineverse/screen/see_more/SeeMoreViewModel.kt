@@ -78,7 +78,8 @@ class SeeMoreViewModel @Inject constructor(
                         val genreId = category.removePrefix("FEATURED_COLLECTION_").toInt()
                         updateState { state ->
                             state.copy(
-                                title = HomeFeaturedCollections.entries.find { it.genreId == genreId }?.title ?: 0
+                                title = HomeFeaturedCollections.entries.find { it.genreId == genreId }?.title
+                                    ?: 0
                             )
                         }
                         createPagingFlow(
@@ -133,7 +134,12 @@ class SeeMoreViewModel @Inject constructor(
                         updateState { it.copy(title = HomeFeaturedItems.TOP_RATED_TV_SHOWS.titleResource) }
                         createPagingFlow(
                             pageSize = pageSize,
-                            fetchData = { page -> getTopRatedTVShowsUseCase(page, forceRefresh = true) },
+                            fetchData = { page ->
+                                getTopRatedTVShowsUseCase(
+                                    page,
+                                    forceRefresh = true
+                                )
+                            },
                         )
                     }
 
