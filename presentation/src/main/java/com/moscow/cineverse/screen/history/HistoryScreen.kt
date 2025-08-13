@@ -99,7 +99,9 @@ fun HistoryContent(
                         if (state.showTip && state.youRecentlyViewed.isNotEmpty()) {
                             item {
                                 InfoCard(
-                                    modifier = Modifier.padding(bottom = 24.dp),
+                                    modifier = Modifier
+                                        .padding(horizontal = 16.dp)
+                                        .padding(bottom = 24.dp),
                                     text = stringResource(R.string.tip_swipe_left_to_remove_movies_from_your_history),
                                     onDismiss = interactionListener::onTipCancelIconClicked
                                 )
@@ -112,6 +114,7 @@ fun HistoryContent(
                             SwipeToDelete(
                                 modifier = Modifier
                                     .animateItem()
+                                    .padding(horizontal = 16.dp)
                                     .padding(bottom = 16.dp),
                                 onDelete = { interactionListener.onItemDeletedIconClicked(item.id) }
                             ) {
