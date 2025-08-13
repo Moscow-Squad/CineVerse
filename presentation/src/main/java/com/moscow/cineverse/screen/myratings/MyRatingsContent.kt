@@ -52,7 +52,7 @@ fun MyRatingsContent(
         movieAppBar = {
             MovieAppBar(
                 title = stringResource(R.string.my_ratings),
-                showDivider = true,
+                showDivider = false,
                 showBackButton = true,
                 backButtonClick = { interactionListener.onNavigateBack() }
             )
@@ -60,63 +60,62 @@ fun MyRatingsContent(
         modifier = modifier.background(Theme.colors.background.screen)
     ) {
         Column(modifier = Modifier.fillMaxSize()) {
-            if (uiState.showTip){
-                InfoCard(
-                    modifier = Modifier.padding(bottom = 24.dp),
-                    text = stringResource(R.string.tap_a_movie_to_see_details_or_update_your_rating),
-                    onDismiss = interactionListener::onTipCancelIconClicked
-                )
-            }
-            ExploreTabsSection(
-                selectedTab = uiState.selectedTab,
-                onTabSelected = interactionListener::onTabSelected,
-                showAllTabs = false
-            )
-
-            Box(modifier = Modifier.fillMaxSize()) {
-                when {
-                    contentList.loadState.refresh is LoadState.Loading -> {
-                        Box(
-                            modifier = Modifier.fillMaxSize(),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            MovieCircularProgressBar()
-                        }
+            when {
+                contentList.loadState.refresh is LoadState.Loading -> {
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        MovieCircularProgressBar()
                     }
+                }
 
-                    contentList.loadState.refresh is LoadState.Error -> {
-                        Box(
-                            modifier = Modifier.fillMaxSize(),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            NoInternetScreen(onRetry = interactionListener::onRefresh)
-                        }
+                contentList.loadState.refresh is LoadState.Error -> {
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        NoInternetScreen(onRetry = interactionListener::onRefresh)
                     }
+                }
 
-                    uiState.isContentEmpty -> {
-                        Box(
-                            modifier = Modifier.fillMaxSize(),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            EmptyState(
-                                icon = painterResource(R.drawable.due_tone_star),
-                                title = stringResource(R.string.no_ratings_yet),
-                                description = stringResource(R.string.rate_movies_and_series_you_ve_watched_to_track_what_you_love_and_what_you_don_t),
-                                buttonTitle = stringResource(R.string.start_rating),
-                                showButton = true,
-                                onButtonClick = interactionListener::onEmptyStateButtonClicked
-                            )
-                        }
-                    }
-
-                    else -> {
-                        MyRatingsList(
-                            contentList = contentList,
-                            onMediaItemClicked = interactionListener::onMediaItemClicked,
-                            modifier = Modifier.fillMaxSize(),
-                            enableBlur = uiState.enableBlur
+                uiState.isContentEmpty -> {
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        EmptyState(
+                            icon = painterResource(R.drawable.due_tone_star),
+                            title = stringResource(R.string.no_ratings_yet),
+                            description = stringResource(R.string.rate_movies_and_series_you_ve_watched_to_track_what_you_love_and_what_you_don_t),
+                            buttonTitle = stringResource(R.string.start_rating),
+                            showButton = true,
+                            onButtonClick = interactionListener::onEmptyStateButtonClicked
                         )
                     }
+                }
+
+                else -> {
+                    if (uiState.showTip) {
+                        InfoCard(
+                            modifier = Modifier
+                                .padding(bottom = 8.dp)
+                                .padding(horizontal = 16.dp),
+                            text = stringResource(R.string.tap_a_movie_to_see_details_or_update_your_rating),
+                            onDismiss = interactionListener::onTipCancelIconClicked
+                        )
+                    }
+                    ExploreTabsSection(
+                        selectedTab = uiState.selectedTab,
+                        onTabSelected = interactionListener::onTabSelected,
+                        showAllTabs = false
+                    )
+                    MyRatingsList(
+                        contentList = contentList,
+                        onMediaItemClicked = interactionListener::onMediaItemClicked,
+                        modifier = Modifier.fillMaxSize(),
+                        enableBlur = uiState.enableBlur
+                    )
                 }
             }
         }
