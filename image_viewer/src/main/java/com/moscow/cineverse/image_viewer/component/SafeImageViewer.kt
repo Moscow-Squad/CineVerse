@@ -152,7 +152,7 @@ fun SafeImageViewer(
                         modifier = Modifier
                             .fillMaxSize()
                             .then(cloudyModifier),
-                        contentScale = ContentScale.Fit,
+                        contentScale = ContentScale.Crop,
                     )
                 }
             }
