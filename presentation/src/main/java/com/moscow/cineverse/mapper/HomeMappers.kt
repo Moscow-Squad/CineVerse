@@ -1,14 +1,13 @@
 package com.moscow.cineverse.mapper
 
-
 import com.moscow.cineverse.common_ui_state.CollectionUiState
 import com.moscow.cineverse.common_ui_state.MediaItemUiState
 import com.moscow.cineverse.screen.explore.YYYY_MMM_DD
 import com.moscow.cineverse.screen.explore.formatWith
 import com.moscow.cineverse.screen.home.HomeUiState
 import com.moscow.domain.model.Collection
-import com.moscow.domain.model.MediaType
 import com.moscow.domain.model.Movie
+import com.moscow.domain.model.Series
 
 fun List<Movie>.toUi(
     genresList: List<HomeUiState.GenreUi> = listOf()
@@ -16,32 +15,28 @@ fun List<Movie>.toUi(
     return this.map { movie ->
         MediaItemUiState(
             id = movie.id,
-            title = movie.name,
-            posterPath = movie.posterPath,
-            backdropPath = movie.backdropPath,
+            title = movie.title,
+            posterPath = movie.posterUrl,
+            backdropPath = movie.backdropUrl,
             rating = movie.rating,
             genres = if (genresList.isEmpty()) listOf() else
                 movie.genreIds.map { genresList.first { genre -> genre.id == it }.name },
-            releaseDate = movie.releaseDate.formatWith(YYYY_MMM_DD) ?: "",
-            duration = "",
-            mediaType = MediaType.Movie
+            releaseDate = movie.releaseDate?.formatWith(YYYY_MMM_DD) ?: "",
         )
     }
 }
+
 fun List<Series>.toUi(
 ): List<MediaItemUiState> {
     return this.map { series ->
         MediaItemUiState(
             id = series.id,
-            title = series.name,
+            title = series.title,
             posterPath = series.posterPath,
             rating = series.rating,
             genres = emptyList(),
-            releaseDate = series.firstAirDate.toString(),
-            duration = "",
+            releaseDate = series.releaseDate.toString(),
             backdropPath = series.backdropPath,
-            mediaType = MediaType.Tv
-
         )
     }
 }

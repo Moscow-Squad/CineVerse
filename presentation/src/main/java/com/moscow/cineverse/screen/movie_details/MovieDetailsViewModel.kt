@@ -4,8 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.cineverse.base.handleException
-import com.moscow.cineverse.mapper.toMediaItemUi
-import com.moscow.cineverse.mapper.toUi
+import com.moscow.cineverse.mapper.toMovieItemUi
 import com.moscow.cineverse.navigation.routes.MovieDetailsRoute
 import com.moscow.domain.model.CreditsInfo
 import com.moscow.domain.model.Movie
@@ -199,7 +198,7 @@ class MovieDetailsViewModel @Inject constructor(
     private fun onGetRecommendationsSuccess(recommendations: List<Movie>) {
         updateState { state ->
             state.copy(
-                recommendations = recommendations.take(6).map { it.toMediaItemUi() }
+                recommendations = recommendations.take(6).map { it.toMovieItemUi() }
             )
         }
     }
@@ -231,7 +230,7 @@ class MovieDetailsViewModel @Inject constructor(
 
     override fun onPlayButtonClicked() {
         uiState.value.movieDetailsUiState?.let {
-            sendEvent(MovieDetailsScreenEffect.OpenTrailer(it.trailerPath))
+            sendEvent(MovieDetailsScreenEffect.OpenTrailer(it.trailerUrl))
         }
     }
 

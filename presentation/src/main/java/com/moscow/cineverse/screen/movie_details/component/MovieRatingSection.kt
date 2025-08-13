@@ -57,7 +57,7 @@ fun MovieReviewsSection(
 
         repeat(uiState.reviewsFlow.size) { index ->
             val review = uiState.reviewsFlow[index]
-            val userImage = review.userImage
+            val userImage = review.userImageUrl
 
             MovieReviewCard(
                 review.name,

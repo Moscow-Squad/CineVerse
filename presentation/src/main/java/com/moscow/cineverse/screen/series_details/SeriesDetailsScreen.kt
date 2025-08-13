@@ -315,8 +315,8 @@ fun SeriesDetailsContent(
                                 reviewText = review.reviewContent,
                                 rating = review.rate.toInt(),
                                 date = formatReviewDate(review.date),
-                                avatar = if (review.userImage.isEmpty()) null else rememberAsyncImagePainter(
-                                    model = review.userImage
+                                avatar = if (review.userImageUrl.isEmpty()) null else rememberAsyncImagePainter(
+                                    model = review.userImageUrl
                                 ),
                                 modifier = Modifier.padding(
                                     start = 16.dp,

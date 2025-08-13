@@ -7,16 +7,10 @@ data class Movie(
     val title: String,
     val overview: String,
     val trailerUrl: String,
-    val backdropPath: String,
-    val posterPath: String,
+    val backdropUrl: String,
+    val posterUrl: String,
     val releaseDate: LocalDate?,
     val genreIds: List<Int>,
     val genres: List<String>,
-    val duration: Duration,
     val rating: Float
-) {
-    data class Duration (
-        val hours: Int,
-        val minutes: Int
-    )
-}
+)

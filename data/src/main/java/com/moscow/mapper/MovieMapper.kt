@@ -20,8 +20,8 @@ const val ITEM_MOVIE = "movie"
 fun MovieDto.toDomain() =
     Movie(
         overview = overview.orEmpty(),
-        posterPath = IMAGES_URL + posterPath.orEmpty(),
-        backdropPath = IMAGES_URL + backdropPath.orEmpty(),
+        posterUrl = IMAGES_URL + posterPath.orEmpty(),
+        backdropUrl = IMAGES_URL + backdropPath.orEmpty(),
         releaseDate = if (!releaseDate.isNullOrBlank()) LocalDate.parse(releaseDate) else null,
         genreIds = genreIds ?: emptyList(),
         id = id ?: 0,
@@ -37,8 +37,8 @@ fun Movie.toHomeItemEntity(categoryType: String): MediaItemEntity {
         itemId = this.id,
         categoryType = categoryType,
         name = this.title,
-        posterPath = this.posterPath,
-        backdropPath = this.backdropPath,
+        posterPath = this.posterUrl,
+        backdropPath = this.backdropUrl,
         itemType = ITEM_MOVIE,
         rating = this.voteAverage,
         genreIds = this.genreIds,
@@ -51,7 +51,7 @@ fun Movie.toHistoryItemEntity(): HistoryItemEntity {
     return HistoryItemEntity(
         id = this.id,
         name = this.title,
-        posterPath = this.posterPath,
+        posterPath = this.posterUrl,
         itemType = ITEM_MOVIE,
         rating = this.voteAverage,
         releaseDate = this.releaseDate
@@ -67,9 +67,9 @@ fun MediaItemEntity.toMovie(
         genreIds = this.genreIds,
         voteAverage = this.rating,
         releaseDate = this.releaseDate,
-        backdropPath = this.backdropPath,
+        backdropUrl = this.backdropPath,
         overview = overview,
-        posterPath = this.posterPath,
+        posterUrl = this.posterPath,
         duration = Movie.Duration(0, 0),
         trailerUrl = "",
         genres = emptyList()
@@ -86,8 +86,8 @@ fun HistoryItemEntity.toMovie(
         voteAverage = this.rating,
         releaseDate = this.releaseDate,
         overview = overview,
-        posterPath = this.posterPath,
-        backdropPath = this.posterPath,
+        posterUrl = this.posterPath,
+        backdropUrl = this.posterPath,
         genreIds = emptyList(),
         duration = Movie.Duration(0, 0),
         trailerUrl = "",
@@ -101,7 +101,7 @@ fun MovieDetailDto.toDomain(trailer: String): Movie {
         title = title ?: "",
         overview = overview ?: "",
         trailerUrl = "https://youtu.be/$trailer",
-        posterPath = IMAGES_URL + posterPath,
+        posterUrl = IMAGES_URL + posterPath,
         releaseDate = if (!releaseDate.isNullOrBlank()) LocalDate.parse(releaseDate) else null,
         voteAverage = voteAverage ?: 0.0f,
         genres = genres?.map { it.name } ?: emptyList(),
@@ -110,7 +110,7 @@ fun MovieDetailDto.toDomain(trailer: String): Movie {
             hours = runtime?.div(60) ?: 0,
             minutes = runtime?.rem(60) ?: 0
         ),
-        backdropPath = IMAGES_URL + backdropPath.orEmpty()
+        backdropUrl = IMAGES_URL + backdropPath.orEmpty()
     )
 }
 

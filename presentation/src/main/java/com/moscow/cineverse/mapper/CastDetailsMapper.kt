@@ -1,7 +1,6 @@
 package com.moscow.cineverse.mapper
 
 import com.moscow.cineverse.common_ui_state.MediaItemUiState
-import com.moscow.domain.model.MediaType
 import com.moscow.domain.model.Movie
 import kotlinx.datetime.LocalDate
 
@@ -23,21 +22,19 @@ fun LocalDate.toFormattedBirthDate(): String {
             else -> "Unknown"
         }
         "$monthName ${this.dayOfMonth}, ${this.year}"
-    } catch (e: Exception) {
+    } catch (_: Exception) {
         "$this"
     }
 }
 
-fun Movie.toMediaItemUi(): MediaItemUiState {
+fun Movie.toMovieItemUi(): MediaItemUiState {
     return MediaItemUiState(
         id = this.id,
-        title = this.name,
-        posterPath = this.posterPath,
+        title = this.title,
+        posterPath = this.posterUrl,
         rating = this.rating,
         genres = emptyList(),
         releaseDate = this.releaseDate.toString(),
-        duration = "",
-        mediaType = MediaType.Movie,
-        backdropPath = this.backdropPath
+        backdropPath = this.backdropUrl
     )
 }

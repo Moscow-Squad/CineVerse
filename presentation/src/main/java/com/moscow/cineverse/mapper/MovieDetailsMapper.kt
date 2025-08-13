@@ -1,44 +1,44 @@
 package com.moscow.cineverse.mapper
 
+import android.R.attr.duration
 import android.content.Context
 import com.moscow.cineverse.common_ui_state.CrewUiState
 import com.moscow.cineverse.common_ui_state.ReviewUiState
-import com.moscow.cineverse.common_ui_state.StarCastUiState
+import com.moscow.cineverse.common_ui_state.CastUiState
 import com.moscow.cineverse.design_system.R
 import com.moscow.cineverse.screen.movie_details.MovieScreenState
 import com.moscow.domain.model.CreditsInfo
+import com.moscow.domain.model.Movie
 import com.moscow.domain.model.Review
 import kotlinx.datetime.LocalDate
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-fun MovieDetail.toUi(): MovieScreenState.MovieDetailsUiState =
+fun Movie.toUi(): MovieScreenState.MovieDetailsUiState =
     MovieScreenState.MovieDetailsUiState(
         id = id,
         title = title,
-        posterPath = posterPath,
-        trailerPath = trailerPath,
-        rating = (voteAverage * 10).toInt() / 10.0,
+        posterUrl = posterUrl,
+        trailerUrl = trailerUrl,
+        rating = (rating * 10).toInt() / 10.0,
         genres = genres,
         releaseDate = releaseDate,
         description = overview,
         duration = duration
     )
 
-
 fun Review.toUi(): ReviewUiState =
     ReviewUiState(
         id = id,
         username = username,
         name = author,
-        userImage = avatarPath,
-        rate = rating.toInt(),
+        userImageUrl = avatarPath,
+        rate = rating,
         reviewContent = content,
-        date = createdAt,
-
+        date = createdAt
         )
 
-fun CreditsInfo.CastInfo.toUi() = StarCastUiState(
+fun CreditsInfo.CastInfo.toUi() = CastUiState(
     id = id,
     originalName = originalName,
     characterName = characterName,
@@ -99,7 +99,7 @@ fun LocalDate.toFormattedReleasedDate(): String {
             monthName,
             this.dayOfMonth
         )
-    } catch (e: Exception) {
+    } catch (_: Exception) {
         "$this"
     }
 }
@@ -110,7 +110,7 @@ fun formatReviewDate(dateString: String): String {
         val outputFormat = SimpleDateFormat("MMM dd, yyyy", Locale.getDefault())
         val date = inputFormat.parse(dateString)
         date?.let { outputFormat.format(it) } ?: dateString
-    } catch (e: Exception) {
+    } catch (_: Exception) {
         dateString
     }
 }

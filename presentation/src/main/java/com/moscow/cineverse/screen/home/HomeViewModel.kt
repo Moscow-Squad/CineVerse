@@ -5,8 +5,6 @@ import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.cineverse.base.handleException
 import com.moscow.cineverse.common_ui_state.MediaItemUiState
 import com.moscow.cineverse.mapper.toMyCollectionUi
-import com.moscow.cineverse.mapper.toUi
-import com.moscow.cineverse.screen.explore.toUi
 import com.moscow.domain.model.Movie
 import com.moscow.domain.model.UserType
 import com.moscow.domain.repository.blur.BlurProvider
@@ -23,7 +21,6 @@ import com.moscow.domain.usecase.recently_viewed.GetRecentlyViewedMediaUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
