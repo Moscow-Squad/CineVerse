@@ -1,7 +1,6 @@
 package com.moscow.cineverse
 
 import android.annotation.SuppressLint
-import android.util.Log
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.material3.Scaffold
@@ -44,13 +43,13 @@ fun CineVerseRoot(
                     navController.navigateToNewGraph(targetGraph)
                 })
 
-        }) { paddingValues ->
+        }
+    ) { paddingValues ->
         CineVerseNavGraph(
             modifier = Modifier,
             navController = navController,
             navViewModel = navViewModel,
             scaffoldPaddingValues = paddingValues
         )
-
     }
 }
