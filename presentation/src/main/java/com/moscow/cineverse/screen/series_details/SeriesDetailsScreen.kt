@@ -167,7 +167,8 @@ fun SeriesDetailsContent(
                                     duration = it.duration.toHourMinuteFormat(LocalContext.current),
                                     releaseDate = it.releaseDate,
                                     type = stringResource(com.moscow.cineverse.design_system.R.string.series_type),
-                                    onSaveClick = {},
+                                    onSaveClick = interactionListener::addToCollection,
+                                    isSaveEnabled = false,
                                     onPlayClick = interactionListener::onPlayButtonClicked,
                                 )
                             }

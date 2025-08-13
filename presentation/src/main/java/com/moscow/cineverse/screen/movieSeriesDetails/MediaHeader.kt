@@ -52,6 +52,7 @@ fun MediaHeader(
     enableBlur: String,
     onSaveClick: () -> Unit = {},
     onPlayClick: () -> Unit = {},
+    isSaveEnabled: Boolean = true
 ){
     Box(
         modifier = Modifier,
@@ -295,6 +296,7 @@ fun MediaHeader(
                     onClick = { onSaveClick() },
                     backgroundColor = Theme.colors.button.secondary,
                     iconColor = Theme.colors.shade.primary,
+                    enabled = isSaveEnabled
                 )
             }
         }
@@ -308,7 +310,9 @@ fun MediaHeader(
                     + fadeOut(animationSpec = tween(1000)),
         ){
             HorizontalDivider(
-                modifier = Modifier.fillMaxWidth().align(Alignment.BottomCenter),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .align(Alignment.BottomCenter),
                 thickness = 1.dp,
                 color = Theme.colors.brand.tertiary
             )
