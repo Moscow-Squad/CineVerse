@@ -4,9 +4,11 @@ import com.moscow.domain.repository.ActorRepository
 import com.moscow.domain.repository.CategoryTipsRepository
 import com.moscow.domain.repository.CollectionsRepository
 import com.moscow.domain.repository.GenreRepository
+import com.moscow.domain.repository.HistoryTipsRepository
 import com.moscow.domain.repository.auth.LoginRepository
 import com.moscow.domain.repository.MovieRepository
 import com.moscow.domain.repository.OnboardingRepository
+import com.moscow.domain.repository.RatingTipsRepository
 import com.moscow.domain.repository.auth.UserRepository
 import com.moscow.domain.repository.auth.ProfileRepository
 import com.moscow.domain.repository.RecentlyViewedRepository
@@ -27,7 +29,9 @@ import com.moscow.repository.SearchRepositoryImpl
 import com.moscow.repository.SeriesRepositoryImpl
 import com.moscow.repository.login.LoginRepositoryImpl
 import com.moscow.repository.preference.CategoryTipsRepositoryImpl
+import com.moscow.repository.preference.HistoryTipsRepositoryImpl
 import com.moscow.repository.preference.OnboardingRepositoryImpl
+import com.moscow.repository.preference.RatingTipsRepositoryImpl
 import com.moscow.repository.preference.SessionRepositoryImpl
 import com.moscow.repository.preference.UserRepositoryImpl
 import dagger.Binds
@@ -89,6 +93,14 @@ abstract class RepositoryModule {
     @Binds
     @Singleton
     abstract fun bindCategoryTipsRepository(impl: CategoryTipsRepositoryImpl): CategoryTipsRepository
+
+ @Binds
+    @Singleton
+    abstract fun bindRatingTipsRepository(impl: RatingTipsRepositoryImpl): RatingTipsRepository
+
+ @Binds
+    @Singleton
+    abstract fun bindHistoryTipsRepository(impl: HistoryTipsRepositoryImpl): HistoryTipsRepository
 
 
     @Binds
