@@ -26,8 +26,8 @@ class HistoryViewModel @Inject constructor(
     }
 
     private fun getRecentlyViewedMovies() {
-        launchWithResult(
-            action = { getRecentlyViewedMediaUseCase() },
+        launchWithFlow(
+            flowAction = { getRecentlyViewedMediaUseCase() },
             onSuccess = { result ->
                 updateState {
                     it.copy(
