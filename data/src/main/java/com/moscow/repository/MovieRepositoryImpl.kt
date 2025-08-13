@@ -6,7 +6,7 @@ import com.moscow.domain.model.CreditsInfo
 import com.moscow.domain.model.Movie
 import com.moscow.domain.model.Review
 import com.moscow.domain.repository.MovieRepository
-import com.moscow.domain.usecase.movie.GetRatedMoviesUseCase.RatedMovieResult
+import com.moscow.domain.usecase.rating.GetRatedMoviesUseCase.RatedMovieResult
 import com.moscow.mapper.toDomain
 import com.moscow.mapper.toMovie
 import com.moscow.mapper.toOutputResult

@@ -6,4 +6,5 @@ interface HistoryInteractionListener {
     fun onTipCancelIconClicked()
     fun onItemDeletedIconClicked(mediaId: Int)
     fun onFindToSomethingToWatchButton()
+    fun onRetry()
 }

@@ -153,6 +153,17 @@ class HomeViewModel @Inject constructor(
 //            },
 //            onError = {}
 //        )
+        launchWithFlow(
+            flowAction = { getRecentlyViewedMediaUseCase() },
+            onSuccess = { result ->
+                updateState {
+                    it.copy(
+                        youRecentlyViewed = result.toMediaItemUiState()
+                    )
+                }
+            },
+            onError = {}
+        )
     }
 
     private suspend fun fetchTrendingMovies() {

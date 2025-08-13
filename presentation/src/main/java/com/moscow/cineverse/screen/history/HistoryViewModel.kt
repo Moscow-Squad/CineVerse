@@ -6,15 +6,18 @@ import com.moscow.domain.model.MediaType
 import com.moscow.domain.usecase.recently_viewed.DeleteRecentlyViewedItemByIdUseCase
 import com.moscow.domain.usecase.collection.CloseCollectionDetailsTipUseCase
 import com.moscow.domain.usecase.collection.GetShowCollectionDetailsTipUseCase
+import com.moscow.domain.usecase.DeleteRecentlyViewedItemByIdUseCase
+import com.moscow.domain.usecase.recently_viewed.CloseHistoryTipUseCase
 import com.moscow.domain.usecase.recently_viewed.GetRecentlyViewedMediaUseCase
+import com.moscow.domain.usecase.recently_viewed.GetShowHistoryTipUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
 class HistoryViewModel @Inject constructor(
     private val getRecentlyViewedMediaUseCase: GetRecentlyViewedMediaUseCase,
-    private val closeCollectionDetailsTipUseCase: CloseCollectionDetailsTipUseCase,
-    private val getShowCollectionDetailsTipUseCase: GetShowCollectionDetailsTipUseCase,
+    private val closeHistoryTipUseCase: CloseHistoryTipUseCase,
+    private val getShowHistoryTipUseCase: GetShowHistoryTipUseCase,
     private val deleteRecentlyViewedItemByIdUseCase: DeleteRecentlyViewedItemByIdUseCase
 ) : BaseViewModel<HistoryScreenState, HistoryEffect>(HistoryScreenState()),
     HistoryInteractionListener {
@@ -25,8 +28,8 @@ class HistoryViewModel @Inject constructor(
     }
 
     private fun getRecentlyViewedMovies() {
-        launchWithResult(
-            action = { getRecentlyViewedMediaUseCase() },
+        launchWithFlow(
+            flowAction = { getRecentlyViewedMediaUseCase() },
             onSuccess = { result ->
                 updateState {
                     it.copy(
@@ -35,13 +38,30 @@ class HistoryViewModel @Inject constructor(
                     )
                 }
             },
-            onError = {}
+            onStart = {
+                updateState {
+                    it.copy(
+                        isError = false,
+                        errorMessage = null,
+                        isLoading = true
+                    )
+                }
+            },
+            onError = { e ->
+                updateState {
+                    it.copy(
+                        isError = true,
+                        errorMessage = e,
+                        isLoading = false
+                    )
+                }
+            }
         )
     }
 
     private fun getShowTip() {
         launchWithResult(
-            action = getShowCollectionDetailsTipUseCase::invoke,
+            action = getShowHistoryTipUseCase::invoke,
             onSuccess = { res ->
                 updateState {
                     it.copy(
@@ -59,7 +79,15 @@ class HistoryViewModel @Inject constructor(
                     )
                 }
             },
-            onStart = { updateState { it.copy(isLoading = true) } }
+            onStart = {
+                updateState {
+                    it.copy(
+                        isError = false,
+                        errorMessage = null,
+                        isLoading = true
+                    )
+                }
+            }
         )
     }
 
@@ -75,9 +103,8 @@ class HistoryViewModel @Inject constructor(
     }
 
     override fun onTipCancelIconClicked() {
-        updateState { it.copy(isLoading = false) }
         launchAndForget(
-            action = { closeCollectionDetailsTipUseCase() },
+            action = { closeHistoryTipUseCase() },
             onSuccess = { updateState { it.copy(showTip = false) } },
             onError = { e ->
                 updateState {
@@ -109,5 +136,11 @@ class HistoryViewModel @Inject constructor(
 
     override fun onFindToSomethingToWatchButton() {
         sendEvent(HistoryEffect.WatchSomethingButtonClicked)
+    }
+
+    override fun onRetry() {
+        updateState { it.copy(isError = false, errorMessage = null) }
+        getShowTip()
+        getRecentlyViewedMovies()
     }
 }
