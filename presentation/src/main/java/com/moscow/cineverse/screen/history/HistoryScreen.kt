@@ -18,11 +18,11 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.moscow.cineverse.common_ui_state.MediaItemUiState
-import com.moscow.cineverse.component.HistoryTip
 import com.moscow.cineverse.component.MoviePosterCard
 import com.moscow.cineverse.component.NoHistoryScreen
 import com.moscow.cineverse.component.SwipeToDelete
 import com.moscow.cineverse.designSystem.component.app_bar.MovieAppBar
+import com.moscow.cineverse.designSystem.component.card.InfoCard
 import com.moscow.cineverse.designSystem.component.indicator.MovieCircularProgressBar
 import com.moscow.cineverse.designSystem.component.wrapper.MovieScaffold
 import com.moscow.cineverse.designSystem.theme.Theme
@@ -96,8 +96,9 @@ fun HistoryContent(
                     ) {
                         if (state.showTip && state.youRecentlyViewed.isNotEmpty()) {
                             item {
-                                HistoryTip(
+                                InfoCard(
                                     modifier = Modifier.padding(bottom = 24.dp),
+                                    text = stringResource(R.string.tip_swipe_left_to_remove_movies_from_your_history),
                                     onDismiss = interactionListener::onTipCancelIconClicked
                                 )
                             }

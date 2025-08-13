@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Text
@@ -25,6 +26,7 @@ import com.moscow.cineverse.component.EmptyState
 import com.moscow.cineverse.component.MoviePosterCard
 import com.moscow.cineverse.component.NoInternetScreen
 import com.moscow.cineverse.designSystem.component.app_bar.MovieAppBar
+import com.moscow.cineverse.designSystem.component.card.InfoCard
 import com.moscow.cineverse.designSystem.component.indicator.MovieCircularProgressBar
 import com.moscow.cineverse.designSystem.component.wrapper.MovieScaffold
 import com.moscow.cineverse.designSystem.theme.Theme
@@ -58,6 +60,13 @@ fun MyRatingsContent(
         modifier = modifier.background(Theme.colors.background.screen)
     ) {
         Column(modifier = Modifier.fillMaxSize()) {
+            if (uiState.showTip){
+                InfoCard(
+                    modifier = Modifier.padding(bottom = 24.dp),
+                    text = stringResource(R.string.tap_a_movie_to_see_details_or_update_your_rating),
+                    onDismiss = interactionListener::onTipCancelIconClicked
+                )
+            }
             ExploreTabsSection(
                 selectedTab = uiState.selectedTab,
                 onTabSelected = interactionListener::onTabSelected,

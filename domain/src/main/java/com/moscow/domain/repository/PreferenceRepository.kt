@@ -16,4 +16,6 @@ interface PreferenceRepository {
     suspend fun setOnBoardingCompleted()
     suspend fun showHistoryTip(): Boolean
     suspend fun closeHistoryTip()
+    suspend fun showRatingTip(): Boolean
+    suspend fun closeRatingTip()
 }
