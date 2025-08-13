@@ -123,7 +123,7 @@
     <string name="hides_all_content_that_includes_immodest_clothing_or_behavior">إخفاء جميع المحتويات التي تحتوي على ملابس غير محتشمة أو سلوك غير لائق</string>
     <string name="no_filtering_all_images_and_posters_will_be_displayed">بدون تصفية. سيتم عرض جميع الصور والملصقات</string>
     <string name="preferences">التفضيلات</string>
-    <string name="tip_swipe_left_to_remove_movies_from_your_collection">معلومة: اسحب إلى اليسار لإزالة الفيلم من مجموعتك</string>
+    <string name="tip_swipe_left_to_remove_movies_from_your_collection">.معلومة: اسحب إلى اليسار لإزالة الفيلم من مجموعتك</string>
     <string name="no_history_yet">لا يوجد سجل بعد</string>
     <string name="history_empty_message">يبدو أن المكان فارغ... ابدأ بالمشاهدة وسنحتفظ بسجلك</string>
     <string name="find_something_to_watch">ابحث عن شيء لمشاهدته</string>
@@ -182,4 +182,6 @@
     <string name="remove_rating">إزالة التقييم</string>
     <string name="did_you_watch_it">هل شاهدته؟</string>
     <string name="content_preferences">تفضيلات المحتوى</string>
+    <string name="tip_swipe_left_to_remove_movies_from_your_history">معلومة: اسحب إلى اليسار لمسح الفيلم من سجل.</string>
+    <string name="tap_a_movie_to_see_details_or_update_your_rating">اضغط على فيلم لرؤية التفاصيل أو تحديث تقييمك.</string>
 </resources>

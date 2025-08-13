@@ -15,12 +15,12 @@ import com.moscow.domain.repository.PreferenceRepository
 import com.moscow.domain.repository.blur.BlurProvider
 import com.moscow.domain.usecase.recently_viewed.AddRecentlyViewedSeriesUseCase
 import com.moscow.domain.usecase.review.GetReviewsUseCase
-import com.moscow.domain.usecase.series.DeleteRatingSeriesUseCase
+import com.moscow.domain.usecase.rating.DeleteRatingSeriesUseCase
 import com.moscow.domain.usecase.series.GetSeriesCreditsDetailsUseCase
 import com.moscow.domain.usecase.series.GetSeriesDetailUseCase
 import com.moscow.domain.usecase.series.GetSeriesRecommendationsUseCase
-import com.moscow.domain.usecase.series.GetUserRatingForSeriesUseCase
-import com.moscow.domain.usecase.series.RateSeriesUseCase
+import com.moscow.domain.usecase.rating.GetUserRatingForSeriesUseCase
+import com.moscow.domain.usecase.rating.RateSeriesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll

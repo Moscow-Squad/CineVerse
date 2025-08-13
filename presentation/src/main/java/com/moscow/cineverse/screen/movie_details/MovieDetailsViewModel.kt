@@ -14,12 +14,12 @@ import com.moscow.domain.model.Review
 import com.moscow.domain.model.details.MovieDetail
 import com.moscow.domain.repository.PreferenceRepository
 import com.moscow.domain.repository.blur.BlurProvider
-import com.moscow.domain.usecase.movie.DeleteRatingMovieUseCase
+import com.moscow.domain.usecase.rating.DeleteRatingMovieUseCase
 import com.moscow.domain.usecase.movie.GetMovieCreditsUseCase
 import com.moscow.domain.usecase.movie.GetMovieDetailsUseCase
 import com.moscow.domain.usecase.movie.GetMovieRecommendationsUseCase
-import com.moscow.domain.usecase.movie.GetUserRatingForMovieUseCase
-import com.moscow.domain.usecase.movie.RateMovieUseCase
+import com.moscow.domain.usecase.rating.GetUserRatingForMovieUseCase
+import com.moscow.domain.usecase.rating.RateMovieUseCase
 import com.moscow.domain.usecase.recently_viewed.AddRecentlyViewedMovieUseCase
 import com.moscow.domain.usecase.review.GetReviewsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
