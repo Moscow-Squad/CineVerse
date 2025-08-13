@@ -20,7 +20,6 @@ import com.moscow.cineverse.navigation.navigateToNewGraph
 import com.moscow.cineverse.navigation.rememberIsInGraph
 import com.moscow.cineverse.navigation.rememberNavGraphIndex
 
-// In CineVerseRoot.kt
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun CineVerseRoot(

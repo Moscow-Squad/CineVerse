@@ -7,7 +7,7 @@ import kotlinx.datetime.LocalDate
 
 data class MatchUiState(
     val isLoading: Boolean = false,
-    val currentPage: MatchPages = MatchPages.ResultsPage,
+    val currentPage: MatchPages = MatchPages.StartPage,
     val moodQuestions: List<QuestionUiState> = getFakeQuestions(),
     val genres: List<QuestionUiState> = getFakeGenres(),
     val timeQuestions: List<QuestionUiState> = getFakeQuestions(),
