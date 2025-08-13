@@ -29,7 +29,7 @@ fun <T> MovieListSection(
     ) {
         SectionTitle(
             title = title,
-            modifier = modifier
+            modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = paddingHorizontal.dp),
             onClick = onClickShowMore

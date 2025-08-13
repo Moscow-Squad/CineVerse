@@ -91,6 +91,8 @@
     <string name="youtube">يوتيوب</string>
     <string name="facebook">فيسبوك</string>
     <string name="instagram">إنستغرام</string>
+    <string name="twitter">تويتر</string>
+    <string name="tik_tok">تيك توك</string>
     <string name="born_on">وُلد في %1$s</string>
     <string name="all">الكل</string>
     <string name="search">ابحث…</string>
