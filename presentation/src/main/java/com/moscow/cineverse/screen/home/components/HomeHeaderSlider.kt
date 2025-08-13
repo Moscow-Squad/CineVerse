@@ -215,4 +215,4 @@ fun Modifier.doubleShadowDrop(
     alpha: Float = 0.6f
 ) = this
     .dropShadow(shape, Color.Black.copy(alpha), blur = blur, offsetY = -offset)
-    .dropShadow(shape, Color.White.copy(alpha), blur = blur, offsetY = offset)
+    .dropShadow(shape, Color.Black.copy(alpha), blur = blur, offsetY = offset)

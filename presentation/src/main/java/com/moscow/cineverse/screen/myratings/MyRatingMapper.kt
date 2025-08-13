@@ -2,8 +2,8 @@ package com.moscow.cineverse.screen.myratings
 
 import com.moscow.cineverse.screen.explore.ExploreScreenState.GenreUiState
 import com.moscow.cineverse.screen.explore.toUi
-import com.moscow.domain.usecase.movie.GetRatedMoviesUseCase.RatedMovieResult
-import com.moscow.domain.usecase.series.GetRatedSeriesUseCase.RatedSeriesResult
+import com.moscow.domain.usecase.rating.GetRatedMoviesUseCase.RatedMovieResult
+import com.moscow.domain.usecase.rating.GetRatedSeriesUseCase.RatedSeriesResult
 
 fun RatedSeriesResult.toUi(genres : List<GenreUiState>): RatedMediaItem {
     return RatedMediaItem(

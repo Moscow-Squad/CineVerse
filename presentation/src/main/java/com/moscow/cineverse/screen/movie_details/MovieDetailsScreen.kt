@@ -1,15 +1,8 @@
 package com.moscow.cineverse.screen.movie_details
 
 
-import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.ExperimentalSharedTransitionApi
-import androidx.compose.animation.SharedTransitionLayout
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutVertically
-import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -19,11 +12,10 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -32,16 +24,18 @@ import com.moscow.cineverse.component.StorylineSection
 import com.moscow.cineverse.designSystem.component.app_bar.MovieAppBar
 import com.moscow.cineverse.designSystem.component.wrapper.MovieScaffold
 import com.moscow.cineverse.designSystem.theme.Theme
+import com.moscow.cineverse.mapper.toFormattedReleasedDate
+import com.moscow.cineverse.mapper.toHourMinuteFormat
+import com.moscow.cineverse.screen.movieSeriesDetails.MediaHeader
 import com.moscow.cineverse.screen.movie_details.component.LoadingContent
 import com.moscow.cineverse.screen.movie_details.component.MovieCastSection
-import com.moscow.cineverse.screen.movie_details.component.MovieCollapsedHeaderSection
 import com.moscow.cineverse.screen.movie_details.component.MovieDetailsEffectHandler
-import com.moscow.cineverse.screen.movie_details.component.MovieHeaderSection
 import com.moscow.cineverse.screen.movie_details.component.MovieRatingBottomSheetSection
 import com.moscow.cineverse.screen.movie_details.component.MovieRatingSection
 import com.moscow.cineverse.screen.movie_details.component.MovieRecommendationsSection
 import com.moscow.cineverse.screen.movie_details.component.MovieReviewsSection
 import com.moscow.cineverse.screen.movie_details.component.MovieStaffInfoSection
+import com.moscow.cinverse.presentation.R
 
 @Composable
 fun MovieDetailsScreen(
@@ -124,11 +118,6 @@ private fun MovieDetailsMainContent(
     modifier: Modifier = Modifier
 ) {
     val scrollState = rememberLazyListState()
-    val isCollapsed by remember {
-        derivedStateOf {
-            scrollState.firstVisibleItemScrollOffset > 10
-        }
-    }
 
     LaunchedEffect(key1 = Unit) {
         scrollState.animateScrollToItem(0)
@@ -143,35 +132,22 @@ private fun MovieDetailsMainContent(
                 modifier = Modifier.background(Theme.colors.background.screen)
             ) {
                 MovieAppBar(backButtonClick = onNavigateBack, showBackButton = true)
-
-                SharedTransitionLayout {
-                    AnimatedContent(
-                        targetState = isCollapsed,
-                        transitionSpec = {
-                            slideInVertically(
-                                initialOffsetY = { fullHeight -> -fullHeight }
-                            ) + fadeIn() togetherWith
-                                    slideOutVertically(
-                                        targetOffsetY = { fullHeight -> -fullHeight }
-                                    ) + fadeOut()
-                        }
-                    ) { target ->
-                        if (!target) {
-                            MovieHeaderSection(
-                                uiState = uiState,
-                                interactionListener = interactionListener,
-                                animatedVisibilityScope = this@AnimatedContent,
-                                sharedTransitionScope = this@SharedTransitionLayout
-                            )
-                        } else {
-                            MovieCollapsedHeaderSection(
-                                uiState = uiState,
-                                interactionListener = interactionListener,
-                                animatedVisibilityScope = this@AnimatedContent,
-                                sharedTransitionScope = this@SharedTransitionLayout,
-                            )
-                        }
-                    }
+                uiState.movieDetailsUiState?.let {
+                    MediaHeader(
+                        scrollState = scrollState,
+                        enableBlur = uiState.enableBlur,
+                        posterUrl = it.posterPath,
+                        title = it.title,
+                        genres = it.genres.joinToString(", "),
+                        rating = it.rating.toString(),
+                        duration = it.duration.toHourMinuteFormat(LocalContext.current),
+                        releaseDate = it.releaseDate?.toFormattedReleasedDate()?:"",
+                        type = stringResource(R.string.movie),
+                        onSaveClick = {
+                            interactionListener.onAddToCollection(it.id)
+                        },
+                        onPlayClick = interactionListener::onPlayButtonClicked,
+                    )
                 }
             }
         }

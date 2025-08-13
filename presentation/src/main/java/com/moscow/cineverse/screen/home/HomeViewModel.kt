@@ -1,13 +1,12 @@
 package com.moscow.cineverse.screen.home
 
-
 import androidx.lifecycle.viewModelScope
 import com.moscow.cineverse.base.BaseViewModel
+import com.moscow.cineverse.base.handleException
 import com.moscow.cineverse.common_ui_state.MediaItemUiState
 import com.moscow.cineverse.mapper.toMyCollectionUi
 import com.moscow.cineverse.mapper.toUi
 import com.moscow.cineverse.screen.explore.toUi
-import com.moscow.cinverse.presentation.R
 import com.moscow.domain.model.MediaType
 import com.moscow.domain.model.Movie
 import com.moscow.domain.model.Series
@@ -25,8 +24,8 @@ import com.moscow.domain.usecase.home.GetUpcomingMoviesUseCase
 import com.moscow.domain.usecase.local.GetUserDetailsUseCase
 import com.moscow.domain.usecase.recently_viewed.GetRecentlyViewedMediaUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -39,19 +38,18 @@ class HomeViewModel @Inject constructor(
     private val getUpcomingMoviesUseCase: GetUpcomingMoviesUseCase,
     private val getTrendingMoviesUseCase: GetTrendingMoviesUseCase,
     private val getUserDetailsUseCase: GetUserDetailsUseCase,
-    private val blurProvider: BlurProvider,
     private val getUserCollectionsUseCase: GetUserCollectionsUseCase,
     private val getRecentlyViewedMediaUseCase: GetRecentlyViewedMediaUseCase,
     private val genreUseCase: GenreUseCase,
     private val clearHomeCash: ClearHomeCash,
+    private val blurProvider: BlurProvider,
     private val languageProvider: LanguageProvider
 ) : BaseViewModel<HomeUiState, HomeEvent>(HomeUiState()), HomeInteractionListener {
 
     init {
-
         viewModelScope.launch {
-            val d = languageProvider.languageFlow.first()
-            updateState { it.copy(cashLanguage = d) }
+            val lang = languageProvider.languageFlow.first()
+            updateState { it.copy(cashLanguage = lang) }
         }
         observeLanguage()
         getGenres()
@@ -81,7 +79,6 @@ class HomeViewModel @Inject constructor(
 
     private fun observeLanguage() {
         viewModelScope.launch {
-
             languageProvider.languageFlow.collect { currentLanguage ->
                 if (uiState.value.cashLanguage != currentLanguage) {
                     updateState { it.copy(cashLanguage = currentLanguage) }
@@ -102,45 +99,26 @@ class HomeViewModel @Inject constructor(
 
     private fun loadHomeData() {
         updateState { it.copy(isLoading = true, error = null) }
-        launchAndForget(
-            action = {
-                viewModelScope.launch {
-                    coroutineScope {
-                        val jobs = listOf(
-                            launch { getUserDetails() },
-                            launch { fetchTrendingMovies() },
-                            launch { fetchRecentlyReleasedMovies() },
-                            launch { fetchUpcomingMovies() },
-                            launch { fetchTopRatedTVShows() },
-                            launch { fetchMatchesYourVibesMovies() },
-                        )
-                        jobs.forEach { it.join() }
-                    }
-                    waitUntilAllDataIsReady()
-                    updateState { it.copy(isLoading = false) }
+        viewModelScope.launch {
+            try {
+                val jobs = listOf(
+                    async { getUserDetails() },
+                    async { fetchTrendingMovies() },
+                    async { fetchRecentlyReleasedMovies() },
+                    async { fetchUpcomingMovies() },
+                    async { fetchTopRatedTVShows() },
+                    async { fetchMatchesYourVibesMovies() }
+                )
+                jobs.awaitAll()
+                updateState { it.copy(isLoading = false) }
+            } catch (e: Exception) {
+                updateState {
+                    it.copy(
+                        isLoading = false,
+                        error = e.handleException()
+                    )
                 }
-            },
-            onError = { e ->
-                updateState { it.copy(isLoading = false, error = e) }
             }
-        )
-
-    }
-
-    private suspend fun waitUntilAllDataIsReady() {
-        var wait = 0
-        while (uiState.value.sliderItems.isEmpty()
-            || uiState.value.recentlyReleasedMovies.isEmpty()
-            || uiState.value.upcomingMovies.isEmpty()
-            || uiState.value.topRatedTvShows.isEmpty()
-            || uiState.value.matchesYourVibe.isEmpty()
-        ) {
-            wait++
-            if (wait == 25) {
-                updateState { it.copy(isLoading = false, error = R.string.too_much_time) }
-                return
-            }
-            delay(100)
         }
     }
 
@@ -156,18 +134,15 @@ class HomeViewModel @Inject constructor(
         )
     }
 
-    private fun getUserDetails() {
-        launchWithResult(
-            action = getUserDetailsUseCase::invoke,
-            onSuccess = ::onGetUserDetailsSuccess,
-            onError = ::onGetUserDetailsError
-        )
+    private suspend fun getUserDetails() {
+        val res = getUserDetailsUseCase()
+        onGetUserDetailsSuccess(res)
     }
 
     private fun onGetUserDetailsSuccess(user: UserType) {
         when (user) {
             is UserType.AuthenticatedUser -> {
-                updateState { it.copy(userName = user.username) }
+                updateState { it.copy(userName = if (user.name.isNotEmpty()) user.name else user.username) }
                 getUserCollection()
             }
 
@@ -178,13 +153,9 @@ class HomeViewModel @Inject constructor(
         getRecentlyViewedMovies()
     }
 
-    private fun onGetUserDetailsError(msg: Int) {
-        updateState { it.copy(error = msg) }
-    }
-
     fun getRecentlyViewedMovies() {
-        launchWithResult(
-            action = { getRecentlyViewedMediaUseCase() },
+        launchWithFlow(
+            flowAction = { getRecentlyViewedMediaUseCase() },
             onSuccess = { result ->
                 updateState {
                     it.copy(
@@ -196,30 +167,22 @@ class HomeViewModel @Inject constructor(
         )
     }
 
-    private fun fetchTrendingMovies() {
-        launchWithResult(
-            action = {
-                getTrendingMoviesUseCase()
-            },
-            onSuccess = ::onFetchTrendingMoviesSuccess,
-            onError = ::onFetchTrendingMoviesError,
-        )
+    private suspend fun fetchTrendingMovies() {
+        val res = getTrendingMoviesUseCase()
+        onFetchTrendingMoviesSuccess(res)
     }
 
     private fun onFetchTrendingMoviesSuccess(movies: List<Movie>) {
-        updateState { it.copy(sliderItems = movies.map { it.toUi(uiState.value.movieGenre) } ) }
+        updateState {
+            it.copy(
+                sliderItems = movies.map { it.toUi(uiState.value.movieGenre) },
+            )
+        }
     }
 
-    private fun onFetchTrendingMoviesError(msg: Int) {
-        updateState { it.copy(error = msg) }
-    }
-
-    private fun fetchRecentlyReleasedMovies() {
-        launchWithResult(
-            action = { getRecentlyReleasedMoviesUseCase(page = 1) },
-            onSuccess = ::onFetchRecentlyReleasedMoviesSuccess,
-            onError = ::onFetchRecentlyReleasedMoviesError,
-        )
+    private suspend fun fetchRecentlyReleasedMovies() {
+        val res = getRecentlyReleasedMoviesUseCase(page = 1)
+        onFetchRecentlyReleasedMoviesSuccess(res)
     }
 
     private fun onFetchRecentlyReleasedMoviesSuccess(movies: List<Movie>) {
@@ -230,68 +193,45 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private fun onFetchRecentlyReleasedMoviesError(msg: Int) {
-        updateState { it.copy(error = msg) }
-    }
-
-    private fun fetchUpcomingMovies() {
-        launchWithResult(
-            action = { getUpcomingMoviesUseCase(page = 1) },
-            onSuccess = ::onFetchUpcomingMoviesSuccess,
-            onError = ::onFetchUpcomingMoviesError,
-        )
+    private suspend fun fetchUpcomingMovies() {
+        val res = getUpcomingMoviesUseCase(page = 1)
+        onFetchUpcomingMoviesSuccess(res)
     }
 
     private fun onFetchUpcomingMoviesSuccess(movies: List<Movie>) {
         updateState {
             it.copy(
-                upcomingMovies = movies.map{ it.toUi(uiState.value.movieGenre) },
-                )
+                upcomingMovies = movies.map { it.toUi(uiState.value.movieGenre) },
+            )
         }
     }
 
-    private fun onFetchUpcomingMoviesError(msg: Int) {
-        updateState { it.copy(error = msg) }
-    }
-
-    private fun fetchTopRatedTVShows() {
-        launchWithResult(
-            action = { getTopRatedTVShowsUseCase(page = 1) },
-            onSuccess = ::onFetchTopRatedTVShowsSuccess,
-            onError = ::onFetchTopRatedTVShowsError,
-        )
+    private suspend fun fetchTopRatedTVShows() {
+        val res = getTopRatedTVShowsUseCase(page = 1)
+        onFetchTopRatedTVShowsSuccess(res)
     }
 
     private fun onFetchTopRatedTVShowsSuccess(tvShows: List<Series>) {
-        updateState { it.copy(topRatedTvShows = tvShows.toUi()) }
+        updateState {
+            it.copy(
+                topRatedTvShows = tvShows.toUi(),
+            )
+        }
     }
 
-    private fun onFetchTopRatedTVShowsError(msg: Int) {
-        updateState { it.copy(error = msg) }
-    }
-
-    private fun fetchMatchesYourVibesMovies() {
-
-        launchWithResult(
-            action = { getMatchesYourVibesMoviesUseCase(genreId = 28, page = 1) },
-            onSuccess = ::onFetchMatchesYourVibesMoviesSuccess,
-            onError = ::onFetchMatchesYourVibesMoviesError,
-        )
+    private suspend fun fetchMatchesYourVibesMovies() {
+        val res = getMatchesYourVibesMoviesUseCase(genreId = 28, page = 1)
+        onFetchMatchesYourVibesMoviesSuccess(res)
     }
 
     private fun onFetchMatchesYourVibesMoviesSuccess(movies: List<Movie>) {
         updateState {
             it.copy(
-                matchesYourVibe = movies.map{ it.toUi(uiState.value.movieGenre) },
-                error = null
+                matchesYourVibe = movies.map { it.toUi(uiState.value.movieGenre) },
+                error = null,
             )
         }
     }
-
-    private fun onFetchMatchesYourVibesMoviesError(msg: Int) {
-        updateState { it.copy(error = msg) }
-    }
-
 
     override fun onMediaItemClicked(mediaItemUiState: MediaItemUiState) {
         if (mediaItemUiState.mediaType == MediaType.Movie)
@@ -299,7 +239,6 @@ class HomeViewModel @Inject constructor(
         else
             sendEvent(HomeEvent.SeriesClicked(mediaItemUiState.id))
     }
-
 
     override fun onSeeAllClick(type: HomeFeaturedItems) {
         sendEvent(HomeEvent.SeeAllClicked(type))
@@ -336,12 +275,15 @@ class HomeViewModel @Inject constructor(
     override fun onFeaturedCollectionClick(genreId: Int) {
         val collection = HomeFeaturedCollections.entries.find { it.genreId == genreId }
         if (collection != null) {
-            sendEvent(HomeEvent.FeaturedCollectionClicked(collection.genreId,
-                collection.title))
+            sendEvent(
+                HomeEvent.FeaturedCollectionClicked(
+                    collection.genreId,
+                    collection.title
+                )
+            )
         }
     }
 }
-
 
 fun Movie.toMediaItemUiState(
     genreMap: Map<Int, String> = emptyMap(),

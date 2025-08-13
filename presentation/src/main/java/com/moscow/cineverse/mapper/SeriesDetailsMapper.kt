@@ -30,7 +30,7 @@ fun Season.toUi() = SeasonUiState(
     episodeCount = episodeCount,
     posterPath = posterPath,
     overview = overview,
-    rate = rate.toString()
+    rate = rate
 )
 
 fun Creator.toUi() = CrewUiState(

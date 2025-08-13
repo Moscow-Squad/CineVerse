@@ -1,4 +1,4 @@
-package com.moscow.cineverse
+package com.moscow.cineverse.component
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -11,7 +11,6 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.moscow.cineverse.component.SectionTitle
 
 @Composable
 fun <T> MovieListSection(
@@ -29,7 +28,7 @@ fun <T> MovieListSection(
     ) {
         SectionTitle(
             title = title,
-            modifier = modifier
+            modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = paddingHorizontal.dp),
             onClick = onClickShowMore

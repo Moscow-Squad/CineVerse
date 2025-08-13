@@ -1,4 +1,4 @@
-package com.moscow.domain.usecase.series
+package com.moscow.domain.usecase.rating
 
 import com.moscow.domain.model.Series
 import com.moscow.domain.model.UserType

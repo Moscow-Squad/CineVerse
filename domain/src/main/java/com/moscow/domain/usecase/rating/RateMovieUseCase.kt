@@ -1,4 +1,4 @@
-package com.moscow.domain.usecase.movie
+package com.moscow.domain.usecase.rating
 
 import com.moscow.domain.repository.MovieRepository
 import javax.inject.Inject

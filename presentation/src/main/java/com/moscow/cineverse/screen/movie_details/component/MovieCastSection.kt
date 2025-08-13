@@ -9,7 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.moscow.cineverse.component.MoviePosterCard
-import com.moscow.cineverse.MovieListSection
+import com.moscow.cineverse.component.MovieListSection
 import com.moscow.cineverse.utlis.ViewMode
 import com.moscow.cineverse.screen.movieSeriesDetails.CastCard
 import com.moscow.cineverse.screen.movieSeriesDetails.StaffInfoSection
@@ -31,7 +31,7 @@ fun MovieCastSection(
             modifier = modifier
                 .background(Theme.colors.background.screen)
                 .padding(top = 24.dp, start = 16.dp, end = 16.dp),
-            cast = uiState.starCast?.take(6) ?: emptyList(),
+            cast = uiState.starCast?.take(10) ?: emptyList(),
             castContent = { actor ->
                 CastCard(
                     enableBlur = uiState.enableBlur,

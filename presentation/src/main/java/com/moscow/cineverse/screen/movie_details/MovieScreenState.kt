@@ -16,7 +16,6 @@ data class MovieScreenState(
     val writer: List<String> = emptyList(),
     val recommendations:List<MediaItemUiState> = emptyList(),
     val isLoading: Boolean = false,
-    val error: String? = null,
     val isReviewEmpty: Boolean = false,
     val shouldShowLoading: Boolean = false,
     val shouldShowError: Boolean = false,

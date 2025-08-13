@@ -3,10 +3,10 @@ package com.moscow.cineverse.screen.movie_details
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.moscow.cineverse.base.BaseViewModel
+import com.moscow.cineverse.base.handleException
 import com.moscow.cineverse.mapper.toMediaItemUi
 import com.moscow.cineverse.mapper.toUi
 import com.moscow.cineverse.navigation.routes.MovieDetailsRoute
-import com.moscow.cinverse.presentation.R
 import com.moscow.domain.mapper.toMovie
 import com.moscow.domain.model.CreditsDetails
 import com.moscow.domain.model.Movie
@@ -14,16 +14,17 @@ import com.moscow.domain.model.Review
 import com.moscow.domain.model.details.MovieDetail
 import com.moscow.domain.repository.PreferenceRepository
 import com.moscow.domain.repository.blur.BlurProvider
-import com.moscow.domain.usecase.movie.DeleteRatingMovieUseCase
+import com.moscow.domain.usecase.rating.DeleteRatingMovieUseCase
 import com.moscow.domain.usecase.movie.GetMovieCreditsUseCase
 import com.moscow.domain.usecase.movie.GetMovieDetailsUseCase
 import com.moscow.domain.usecase.movie.GetMovieRecommendationsUseCase
-import com.moscow.domain.usecase.movie.GetUserRatingForMovieUseCase
-import com.moscow.domain.usecase.movie.RateMovieUseCase
+import com.moscow.domain.usecase.rating.GetUserRatingForMovieUseCase
+import com.moscow.domain.usecase.rating.RateMovieUseCase
 import com.moscow.domain.usecase.recently_viewed.AddRecentlyViewedMovieUseCase
 import com.moscow.domain.usecase.review.GetReviewsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -45,19 +46,40 @@ class MovieDetailsViewModel @Inject constructor(
 
     private val movieId = saveStateHandle.get<Int>(MovieDetailsRoute.MOVIE_ID) ?: 0
 
-
     init {
-        viewModelScope.launch {
-            updateState { it.copy(isLoading = true) }
-            getUserRating(movieId)
-            getMovieDetails(movieId)
-            getReviews(movieId)
-            getCredits(movieId)
-            getRecommendations(movieId)
-            waitUntilAllDataIsReady()
-            updateState { it.copy(isLoading = false) }
-        }
+        getScreenData()
         observeBlur()
+    }
+
+    private fun getScreenData() {
+        updateState {
+            it.copy(
+                isLoading = true,
+                errorMessage = 0,
+                shouldShowError = false
+            )
+        }
+        viewModelScope.launch {
+            try {
+                val jobs = listOf(
+                    async { getUserRating(movieId) },
+                    async { getMovieDetails(movieId) },
+                    async { getReviews(movieId) },
+                    async { getCredits(movieId) },
+                    async { getRecommendations(movieId) },
+                )
+                jobs.awaitAll()
+                updateState { it.copy(isLoading = false) }
+            } catch (e: Exception) {
+                updateState {
+                    it.copy(
+                        errorMessage = e.handleException(),
+                        shouldShowError = true,
+                        isLoading = false
+                    )
+                }
+            }
+        }
     }
 
     private fun observeBlur() {
@@ -68,49 +90,38 @@ class MovieDetailsViewModel @Inject constructor(
         }
     }
 
-    private fun getUserRating(seriesId: Int) {
-        launchWithResult(
-            action = { getUserRatingForMovieUseCase.invoke(seriesId) },
-            onSuccess = { rate ->
-                updateState { it.copy(starsRating = rate) }
-            },
-            onError = {
-                updateState { it.copy(starsRating = 0) }
+    private suspend fun getUserRating(seriesId: Int) {
+        try {
+            val res = getUserRatingForMovieUseCase.invoke(seriesId)
+            updateState { it.copy(starsRating = res) }
+        } catch (e: Exception) {
+            updateState {
+                it.copy(
+                    errorMessage = e.handleException(),
+                    shouldShowError = true,
+                    isLoading = false
+                )
             }
-        )
-    }
-
-    private suspend fun waitUntilAllDataIsReady() {
-        var wait = 0
-        while (uiState.value.movieDetailsUiState == null) {
-            wait++
-            if (wait == 25) {
-                updateState {
-                    it.copy(
-                        isLoading = false,
-                        errorMessage = R.string.too_much_time,
-                        shouldShowError = true
-                    )
-                }
-                return
-            }
-            delay(100)
         }
     }
 
-    fun getMovieDetails(movieID: Int) {
-        updateState { it.copy(isLoading = true) }
-        launchWithResult(
-            action = { getMovieDetailsUseCase.invoke(movieID) },
-            onSuccess = ::onGetMovieDetailsSuccess,
-            onStart = ::onLoading,
-            onError = ::getMovieDetailsFailed,
-            onFinally = ::onFinally
-        )
+    private suspend fun getMovieDetails(movieID: Int) {
+        try {
+            val res = getMovieDetailsUseCase.invoke(movieID)
+            onGetMovieDetailsSuccess(res)
+        } catch (e: Exception) {
+            updateState {
+                it.copy(
+                    errorMessage = e.handleException(),
+                    shouldShowError = true,
+                    isLoading = false
+                )
+            }
+        }
     }
 
     private fun onGetMovieDetailsSuccess(movieDetails: MovieDetail) {
-        updateState { it.copy(isLoading = false, movieDetailsUiState = movieDetails.toUi()) }
+        updateState { it.copy(movieDetailsUiState = movieDetails.toUi()) }
         launchWithResult(
             action = { addRecentlyViewedMovieUseCase(movieDetails.toMovie()) },
             onError = {},
@@ -118,34 +129,42 @@ class MovieDetailsViewModel @Inject constructor(
         )
     }
 
-    fun getReviews(movieID: Int) {
-        updateState { it.copy(isLoading = true) }
-        launchWithResult(
-            action = { getReviewsUseCase(movieID, 1, true) },
-            onSuccess = ::onGetReviewSuccess,
-            onStart = ::onLoading,
-            onError = ::getReviewFailed,
-            onFinally = ::onFinally
-
-        )
+    private suspend fun getReviews(movieID: Int) {
+        try {
+            val res = getReviewsUseCase(movieID, 1, true)
+            onGetReviewSuccess(res)
+        } catch (e: Exception) {
+            updateState {
+                it.copy(
+                    errorMessage = e.handleException(),
+                    shouldShowError = true,
+                    isLoading = false
+                )
+            }
+        }
     }
 
     private fun onGetReviewSuccess(reviews: List<Review>) {
         updateState { state ->
             state.copy(
-                isLoading = false,
-                reviewsFlow = reviews.take(3).map { it.toUi() })
+                reviewsFlow = reviews.take(3).map { it.toUi() }
+            )
         }
-
     }
 
-    fun getCredits(movieID: Int) {
-        updateState { it.copy(isLoading = true) }
-        launchWithResult(
-            action = { getMovieCreditsUseCase(movieID) },
-            onSuccess = ::onGetCreditsSuccess,
-            onError = ::getCreditsFailed,
-        )
+    private suspend fun getCredits(movieID: Int) {
+        try {
+            val res = getMovieCreditsUseCase(movieID)
+            onGetCreditsSuccess(res)
+        } catch (e: Exception) {
+            updateState {
+                it.copy(
+                    errorMessage = e.handleException(),
+                    shouldShowError = true,
+                    isLoading = false
+                )
+            }
+        }
     }
 
 
@@ -153,7 +172,6 @@ class MovieDetailsViewModel @Inject constructor(
         val crew = creditsDetails.behindTheScene.map { it.toUi() }
         updateState { state ->
             state.copy(
-                isLoading = false,
                 starCast = creditsDetails.actors.map { it.toUi() },
                 characters = crew.filter { it.job == "Characters" }.map { it.name },
                 director = crew.filter { it.job in (listOf("Director", "Screenplay", "Story")) }
@@ -164,69 +182,25 @@ class MovieDetailsViewModel @Inject constructor(
         }
     }
 
-    fun getRecommendations(movieID: Int) {
-        updateState { it.copy(isLoading = true) }
-        launchWithResult(
-            action = { getMovieRecommendationsUseCase(movieID, 1) },
-            onSuccess = ::onGetRecommendationsSuccess,
-            onError = ::getRecommendationsFailed,
-        )
+    private suspend fun getRecommendations(movieID: Int) {
+        try {
+            val res = getMovieRecommendationsUseCase(movieID, 1)
+            onGetRecommendationsSuccess(res)
+        } catch (e: Exception) {
+            updateState {
+                it.copy(
+                    errorMessage = e.handleException(),
+                    shouldShowError = true,
+                    isLoading = false
+                )
+            }
+        }
     }
 
     private fun onGetRecommendationsSuccess(recommendations: List<Movie>) {
         updateState { state ->
             state.copy(
-                isLoading = false,
                 recommendations = recommendations.take(6).map { it.toMediaItemUi() }
-            )
-        }
-    }
-
-
-    private fun onLoading() {
-        updateState { it.copy(isLoading = true) }
-    }
-
-    private fun onFinally() {
-        updateState { it.copy(isLoading = false) }
-    }
-
-    private fun getMovieDetailsFailed(msg: Int) {
-        updateState {
-            it.copy(
-                errorMessage = msg,
-                shouldShowError = true,
-                isLoading = false
-            )
-        }
-    }
-
-    private fun getReviewFailed(msg: Int) {
-        updateState {
-            it.copy(
-                errorMessage = msg,
-                shouldShowError = true,
-                isLoading = false
-            )
-        }
-    }
-
-    private fun getCreditsFailed(msg: Int) {
-        updateState {
-            it.copy(
-                errorMessage = msg,
-                shouldShowError = true,
-                isLoading = false
-            )
-        }
-    }
-
-    private fun getRecommendationsFailed(msg: Int) {
-        updateState {
-            it.copy(
-                errorMessage = msg,
-                shouldShowError = true,
-                isLoading = false
             )
         }
     }
@@ -263,15 +237,7 @@ class MovieDetailsViewModel @Inject constructor(
     }
 
     override fun onRetry() {
-        viewModelScope.launch {
-            updateState { it.copy(isLoading = true) }
-            getMovieDetails(movieId)
-            getReviews(movieId)
-            getCredits(movieId)
-            getRecommendations(movieId)
-            waitUntilAllDataIsReady()
-            updateState { it.copy(isLoading = false) }
-        }
+        getScreenData()
     }
 
     override fun showRatingBottomSheet() {
@@ -279,10 +245,11 @@ class MovieDetailsViewModel @Inject constructor(
             action = { preferences.isLoggedIn() },
             onSuccess = { isLoggedIn ->
                 if (isLoggedIn) {
-                    updateState { it.copy(
-                        starsRating = uiState.value.starsRating,
-                        showRatingBottomSheet = true
-                    )
+                    updateState {
+                        it.copy(
+                            starsRating = uiState.value.starsRating,
+                            showRatingBottomSheet = true
+                        )
                     }
                 } else {
                     updateState { it.copy(showLoginBottomSheet = true) }

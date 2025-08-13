@@ -1,4 +1,4 @@
-package com.moscow.domain.usecase.movie
+package com.moscow.domain.usecase.rating
 
 import com.moscow.domain.model.Movie
 import com.moscow.domain.model.UserType
