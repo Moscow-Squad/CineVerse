@@ -1,6 +1,5 @@
 package com.moscow.cineverse.screen.movie_details
 
-import com.moscow.cineverse.common_ui_state.MediaItemUiState
 import com.moscow.cineverse.common_ui_state.ReviewUiState
 import com.moscow.cineverse.common_ui_state.StarCastUiState
 import kotlinx.datetime.LocalDate

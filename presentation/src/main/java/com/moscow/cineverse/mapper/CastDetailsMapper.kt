@@ -1,6 +1,5 @@
 package com.moscow.cineverse.mapper
 
-import com.moscow.cineverse.common_ui_state.MediaItemUiState
 import com.moscow.domain.model.MediaType
 import com.moscow.domain.model.Movie
 import kotlinx.datetime.LocalDate

@@ -17,7 +17,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.moscow.cineverse.common_ui_state.MediaItemUiState
 import com.moscow.cineverse.component.HistoryTip
 import com.moscow.cineverse.component.MoviePosterCard
 import com.moscow.cineverse.component.NoHistoryScreen

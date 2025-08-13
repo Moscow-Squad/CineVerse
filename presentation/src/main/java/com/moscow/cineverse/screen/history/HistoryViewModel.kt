@@ -1,7 +1,6 @@
 package com.moscow.cineverse.screen.history
 
 import com.moscow.cineverse.base.BaseViewModel
-import com.moscow.cineverse.common_ui_state.MediaItemUiState
 import com.moscow.cineverse.screen.home.toMediaItemUiState
 import com.moscow.domain.model.MediaType
 import com.moscow.domain.usecase.recently_viewed.DeleteRecentlyViewedItemByIdUseCase
