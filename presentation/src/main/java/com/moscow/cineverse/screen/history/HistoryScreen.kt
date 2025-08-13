@@ -110,9 +110,14 @@ fun HistoryContent(
                             }
                         }
 
-                        items(state.youRecentlyViewed) { item ->
+                        items(
+                            items = state.youRecentlyViewed,
+                            key = { it.id }
+                        ) { item ->
                             SwipeToDelete(
-                                modifier = Modifier.padding(bottom = 16.dp),
+                                modifier = Modifier
+                                    .animateItem()
+                                    .padding(bottom = 16.dp),
                                 onDelete = { interactionListener.onItemDeletedIconClicked(item.id) }
                             ) {
                                 HistoryMediaItemCard(
