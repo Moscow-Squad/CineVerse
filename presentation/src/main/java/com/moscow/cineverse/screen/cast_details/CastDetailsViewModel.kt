@@ -61,11 +61,11 @@ class CastDetailsViewModel @Inject constructor(
                 shouldShowError = false,
                 errorMessage = 0,
                 socialMediaLinks = SocialMediaLinks(
-                    youtube = actorDetails.youtubeLink.takeIf { it.isNotEmpty() },
-                    facebook = actorDetails.facebookLink.takeIf { it.isNotEmpty() },
-                    instagram = actorDetails.instagramLink.takeIf { it.isNotEmpty() },
-                    twitter = actorDetails.twitterLink.takeIf { it.isNotEmpty() },
-                    tiktok = actorDetails.tiktokLink.takeIf { it.isNotEmpty() }
+                    youtube = actorDetails.youtubeLink,
+                    facebook = actorDetails.facebookLink,
+                    instagram = actorDetails.instagramLink,
+                    twitter = actorDetails.twitterLink,
+                    tiktok = actorDetails.tiktokLink
                 ),
                 isContentEmpty = false
             )
@@ -168,11 +168,11 @@ class CastDetailsViewModel @Inject constructor(
     override fun onSocialMediaClick(platform: String, url: String) {
         val socialMediaLinks = uiState.value.socialMediaLinks
         val targetUrl = when (platform.lowercase()) {
-            "youtube" -> socialMediaLinks.youtube ?: url
-            "facebook" -> socialMediaLinks.facebook ?: url
-            "instagram" -> socialMediaLinks.instagram ?: url
-            "twitter" -> socialMediaLinks.twitter ?: url
-            "tiktok" -> socialMediaLinks.tiktok ?: url
+            "youtube" -> socialMediaLinks.youtube
+            "facebook" -> socialMediaLinks.facebook
+            "instagram" -> socialMediaLinks.instagram
+            "twitter" -> socialMediaLinks.twitter
+            "tiktok" -> socialMediaLinks.tiktok
             else -> url
         }
         sendEvent(CastDetailsEffect.OpenSocialMedia(platform, targetUrl))

@@ -362,42 +362,53 @@ fun MainDetails(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            Spacer(modifier.width(12.dp))
-            SocialMediaPill(
-                name = stringResource(R.string.youtube),
-                iconRes = R.drawable.colored_youtube,
-                url = socialMediaLinks.youtube,
-                onClick = { onSocialMediaClick("youtube", it) },
-            )
+            Spacer(modifier.width(8.dp))
 
-            SocialMediaPill(
-                name = stringResource(R.string.facebook),
-                iconRes = R.drawable.colored_facebook,
-                url = socialMediaLinks.facebook,
-                onClick = { onSocialMediaClick("facebook", it) },
-            )
+            if(socialMediaLinks.youtube.isNotEmpty()){
+                SocialMediaPill(
+                    name = stringResource(R.string.youtube),
+                    iconRes = R.drawable.colored_youtube,
+                    url = socialMediaLinks.youtube,
+                    onClick = { onSocialMediaClick("youtube", it) },
+                )
+            }
 
-            SocialMediaPill(
-                name = stringResource(R.string.instagram),
-                iconRes = R.drawable.colored_instagram,
-                url = socialMediaLinks.instagram,
-                onClick = { onSocialMediaClick("instagram", it) },
-            )
+            if(socialMediaLinks.facebook.isNotEmpty()){
+                SocialMediaPill(
+                    name = stringResource(R.string.facebook),
+                    iconRes = R.drawable.colored_facebook,
+                    url = socialMediaLinks.facebook,
+                    onClick = { onSocialMediaClick("facebook", it) },
+                )
+            }
 
-            SocialMediaPill(
-                name = stringResource(R.string.twitter),
-                iconRes = R.drawable.colored_x,
-                url = socialMediaLinks.twitter,
-                onClick = { onSocialMediaClick("twitter", it) },
-            )
+            if(socialMediaLinks.instagram.isNotEmpty()){
+                SocialMediaPill(
+                    name = stringResource(R.string.instagram),
+                    iconRes = R.drawable.colored_instagram,
+                    url = socialMediaLinks.instagram,
+                    onClick = { onSocialMediaClick("instagram", it) },
+                )
+            }
 
-            SocialMediaPill(
-                name = stringResource(R.string.tik_tok),
-                iconRes = R.drawable.colored_tiktok,
-                url = socialMediaLinks.tiktok,
-                onClick = { onSocialMediaClick("tiktok", it) },
-            )
-            Spacer(modifier.width(12.dp))
+            if(socialMediaLinks.twitter.isNotEmpty()){
+                SocialMediaPill(
+                    name = stringResource(R.string.twitter),
+                    iconRes = R.drawable.colored_x,
+                    url = socialMediaLinks.twitter,
+                    onClick = { onSocialMediaClick("twitter", it) },
+                )
+            }
+
+            if(socialMediaLinks.tiktok.isNotEmpty()){
+                SocialMediaPill(
+                    name = stringResource(R.string.tik_tok),
+                    iconRes = R.drawable.colored_tiktok,
+                    url = socialMediaLinks.tiktok,
+                    onClick = { onSocialMediaClick("tiktok", it) },
+                )
+            }
+            Spacer(modifier.width(8.dp))
         }
     }
 }
