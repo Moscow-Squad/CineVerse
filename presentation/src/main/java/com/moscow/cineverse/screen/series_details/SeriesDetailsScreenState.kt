@@ -50,5 +50,5 @@ data class SeasonUiState(
     val episodeCount: Int = 0,
     val posterPath: String = "",
     val overview: String = "",
-    val rate: String,
+    val rate: Float,
 )
