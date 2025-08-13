@@ -7,6 +7,7 @@ import android.view.View
 import android.view.WindowInsets
 import android.view.WindowInsetsController
 import androidx.activity.ComponentActivity
+import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
@@ -15,9 +16,11 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.graphics.toArgb
 import androidx.core.view.WindowCompat
 import com.moscow.cineverse.CineVerseRoot
 import com.moscow.cineverse.designSystem.theme.CineVerseTheme
+import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.navigation.NavViewModel
 import com.moscow.domain.repository.theme.ThemeProvider
 import dagger.hilt.android.AndroidEntryPoint
@@ -42,7 +45,6 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
 
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
@@ -61,14 +63,28 @@ class MainActivity : ComponentActivity() {
 
             val previousLanguage = remember { mutableStateOf(state.language) }
 
-            LaunchedEffect(state.language) {
-                if (previousLanguage.value != state.language) {
-                    previousLanguage.value = state.language
-                    recreate()
-                }
-            }
-
             CineVerseTheme(isDark = state.isDarkTheme) {
+                val surfaceColor = Theme.colors.background.screen
+                LaunchedEffect(state.language) {
+                    if (previousLanguage.value != state.language) {
+                        previousLanguage.value = state.language
+                        recreate()
+                    }
+                }
+                LaunchedEffect(state.isDarkTheme) {
+                    enableEdgeToEdge(
+                        statusBarStyle = if (!state.isDarkTheme) {
+                            SystemBarStyle.light(
+                                scrim = surfaceColor.toArgb(),
+                                darkScrim = surfaceColor.toArgb()
+                            )
+                        } else {
+                            SystemBarStyle.dark(
+                                scrim = surfaceColor.toArgb()
+                            )
+                        }
+                    )
+                }
                 CineVerseRoot(navViewModel)
             }
         }
