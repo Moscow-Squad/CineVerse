@@ -9,6 +9,8 @@ import com.moscow.mapper.ITEM_SERIES
 import com.moscow.mapper.toHistoryItemEntity
 import com.moscow.mapper.toMovie
 import com.moscow.mapper.toSeries
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class RecentlyViewedRepositoryImpl @Inject constructor(
@@ -25,13 +27,15 @@ class RecentlyViewedRepositoryImpl @Inject constructor(
         recentlyViewedLocalDataSource.insertRecentlyViewedItem(entity)
     }
 
-    override suspend fun getRecentlyViewedMedia(): List<Any> {
+    override fun getRecentlyViewedMedia(): Flow<List<Any>> {
         val entities = recentlyViewedLocalDataSource.getRecentlyViewedItems()
-        return entities.map { entity ->
-            when (entity.itemType) {
-                ITEM_MOVIE -> entity.toMovie()
-                ITEM_SERIES -> entity.toSeries()
-                else -> throw IllegalArgumentException("Unknown media type: ${entity.itemType}")
+        return entities.map {
+            it.map{entity ->
+                when (entity.itemType) {
+                    ITEM_MOVIE -> entity.toMovie()
+                    ITEM_SERIES -> entity.toSeries()
+                    else -> throw IllegalArgumentException("Unknown media type: ${entity.itemType}")
+                }
             }
         }
     }

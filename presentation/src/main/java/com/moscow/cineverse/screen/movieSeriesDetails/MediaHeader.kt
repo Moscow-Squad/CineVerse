@@ -2,6 +2,7 @@ package com.moscow.cineverse.screen.movieSeriesDetails
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.animateIntAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -31,6 +32,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.moscow.cineverse.designSystem.component.blur.OnBlurContent
 import com.moscow.cineverse.designSystem.component.blur.RemoteImagePlaceholder
 import com.moscow.cineverse.designSystem.component.button.MovieFloatingButton
@@ -53,7 +55,7 @@ fun MediaHeader(
     onSaveClick: () -> Unit = {},
     onPlayClick: () -> Unit = {},
     isSaveEnabled: Boolean = true
-){
+) {
     Box(
         modifier = Modifier,
     ) {
@@ -83,7 +85,7 @@ fun MediaHeader(
         }
         val imageStartPadding by remember {
             derivedStateOf {
-                val start = ( screenWidth - 216.dp - 16.dp) / 2
+                val start = (screenWidth - 216.dp - 16.dp) / 2
                 val end = 0.dp
                 start - (start - end) * (clampedScrollValue / maxScroll)
             }
@@ -176,27 +178,14 @@ fun MediaHeader(
             else
                 Theme.colors.background.screen,
         )
+        val textFontSize by animateIntAsState(
+            targetValue = if (clampedScrollValue <= 20f)
+                18
+            else
+                16
+        )
         Box(modifier = Modifier.padding(horizontal = 16.dp))
         {
-            Box(
-                modifier = Modifier
-                    .padding(start = imageStartPadding)
-                    .height(imageHeight)
-                    .width(imageWidth)
-            ) {
-                SafeImageViewer(
-                    imageUrl = posterUrl,
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .clip(RoundedCornerShape(imageRadius)),
-                    isBlurEnabled = enableBlur,
-                    placeholderContent = { RemoteImagePlaceholder() },
-                    errorContent = { RemoteImagePlaceholder() },
-                    onBlurContent = {
-                        OnBlurContent()
-                    }
-                )
-            }
             Box(
                 modifier = modifier
                     .padding(start = detailsPaddingStart)
@@ -231,7 +220,7 @@ fun MediaHeader(
                         modifier = Modifier
                             .padding(top = textPaddingTop),
                         text = title,
-                        style = Theme.textStyle.title.medium,
+                        style = Theme.textStyle.title.medium.copy(fontSize = textFontSize.sp),
                         color = Theme.colors.shade.primary
                     )
                     AnimatedVisibility(
@@ -241,8 +230,8 @@ fun MediaHeader(
 
                         exit = slideOutVertically(animationSpec = tween(1000))
                                 + fadeOut(animationSpec = tween(1000)),
-                    ){
-                        Column (
+                    ) {
+                        Column(
                             verticalArrangement = Arrangement.spacedBy(4.dp),
                             horizontalAlignment = Alignment.Start,
                         ) {
@@ -299,6 +288,25 @@ fun MediaHeader(
                     enabled = isSaveEnabled
                 )
             }
+            Box(
+                modifier = Modifier
+                    .padding(start = imageStartPadding)
+                    .height(imageHeight)
+                    .width(imageWidth)
+            ) {
+                SafeImageViewer(
+                    imageUrl = posterUrl,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .clip(RoundedCornerShape(imageRadius)),
+                    isBlurEnabled = enableBlur,
+                    placeholderContent = { RemoteImagePlaceholder() },
+                    errorContent = { RemoteImagePlaceholder() },
+                    onBlurContent = {
+                        OnBlurContent()
+                    }
+                )
+            }
         }
         AnimatedVisibility(
             modifier = Modifier.align(Alignment.BottomCenter),
@@ -308,12 +316,12 @@ fun MediaHeader(
 
             exit = slideOutVertically(animationSpec = tween(1000))
                     + fadeOut(animationSpec = tween(1000)),
-        ){
+        ) {
             HorizontalDivider(
                 modifier = Modifier
                     .fillMaxWidth()
                     .align(Alignment.BottomCenter),
-                thickness = 1.dp,
+                thickness = 2.dp,
                 color = Theme.colors.brand.tertiary
             )
         }

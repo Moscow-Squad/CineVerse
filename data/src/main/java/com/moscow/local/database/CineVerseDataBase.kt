@@ -30,8 +30,8 @@ import com.moscow.local.entity.SeriesEntity
         HomeCategoryTimestampEntity::class,
         HistoryItemEntity::class
     ],
-    version = 6,
-    exportSchema = false
+    version = 7,
+    exportSchema = true
 )
 @TypeConverters(Converters::class)
 abstract class CineVerseDataBase : RoomDatabase() {
