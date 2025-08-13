@@ -12,6 +12,9 @@ object MatchRoute : AppDestination
 
 fun NavGraphBuilder.matchRoute(navController: NavHostController) {
     composable<MatchRoute>{
-        MatchScreen()
+        MatchScreen(
+            navigateToMovieDetails = { movieId -> navController.navigate(MovieDetailsRoute(movieId)) },
+            navigateToSeriesDetails = { seriesId -> navController.navigate(SeriesDetailsRoute(seriesId)) },
+        )
     }
 }

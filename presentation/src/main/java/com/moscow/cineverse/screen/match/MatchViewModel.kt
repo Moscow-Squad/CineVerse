@@ -1,6 +1,7 @@
 package com.moscow.cineverse.screen.match
 
 import com.moscow.cineverse.base.BaseViewModel
+import com.moscow.domain.model.MediaType
 
 class MatchViewModel : BaseViewModel<MatchUiState, MatchEvent>(MatchUiState()),
     MatchInteractionListener {
@@ -30,6 +31,10 @@ class MatchViewModel : BaseViewModel<MatchUiState, MatchEvent>(MatchUiState()),
 
     override fun onNavigateBack() {
 
+    }
+
+    override fun onMediaItemClick(id: Int, type: MediaType) {
+        sendEvent(MatchEvent.OnMediaItemClick(id = id, type = type))
     }
 
 }

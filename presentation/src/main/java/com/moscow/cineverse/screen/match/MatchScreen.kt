@@ -9,11 +9,14 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.moscow.cineverse.screen.match.pages.MatchQuestionsPageContent
 import com.moscow.cineverse.screen.match.pages.MatchResultsPageContent
 import com.moscow.cineverse.screen.match.pages.MatchStartPageContent
+import com.moscow.domain.model.MediaType
 
 @Composable
 fun MatchScreen(
     modifier: Modifier = Modifier,
     viewModel: MatchViewModel = hiltViewModel(),
+    navigateToMovieDetails: (id: Int) -> Unit,
+    navigateToSeriesDetails: (id: Int) -> Unit,
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
     LaunchedEffect(Unit) {
@@ -25,6 +28,15 @@ fun MatchScreen(
 
                 is MatchEvent.OnClickFinishMatching -> {
                     viewModel.onClickFinishMatching()
+                }
+
+                is MatchEvent.OnMediaItemClick -> {
+                    when (effect.type) {
+                        MediaType.Movie -> navigateToMovieDetails(effect.id)
+                        MediaType.Tv -> navigateToSeriesDetails(effect.id)
+                        MediaType.Person -> {}
+                        MediaType.Unknown -> {}
+                    }
                 }
             }
         }
@@ -61,7 +73,10 @@ fun MatchContent(
         )
 
         MatchPages.ResultsPage -> MatchResultsPageContent(
-            modifier = modifier
+            modifier = modifier,
+            movies = state.matchResults,
+            onMovieClick = listener::onMediaItemClick,
+            onNavigateBack = listener::onNavigateBack,
         )
     }
 
