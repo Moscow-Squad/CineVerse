@@ -42,6 +42,7 @@ fun MessageInfoCard(
     onClickSecondButton: () -> Unit = {},
     firstButtonLoading: Boolean = false,
     secondButtonLoading: Boolean = false,
+    iconCircleBackgroundColor: Color = Theme.colors.brand.tertiary,
 ) {
     Column(
         modifier = modifier,
@@ -52,7 +53,7 @@ fun MessageInfoCard(
             modifier = Modifier
                 .size(size = 64.dp)
                 .background(
-                    color = Theme.colors.brand.tertiary, shape = CircleShape
+                    color = iconCircleBackgroundColor, shape = CircleShape
                 ), contentAlignment = Alignment.Center
         ) {
             Image(

@@ -20,7 +20,7 @@ val excludedPackages = listOf(
     "*.R", "*.R_*", "*.BuildConfig*", "*.Manifest*",
 
     // DI and singleton patterns
-    "**.di.**", "*.ComposableSingletons*",
+    "**.di.**", "*.ComposableSingletons*", "*.model.*",
 
     // App entry points
     "*.MainActivity*", "*.CineVerseApp*",
@@ -31,6 +31,12 @@ val excludedPackages = listOf(
 
     // Data layer exclusions
     "entity.**", "**.dao.**", "**.dto.**", "**.response.**",
+
+    "dagger.hilt.**",
+    "hilt_aggregated_deps.**",
+    "**_Factory",
+    "**_HiltModules*",
+    "Hilt_*",
 
     // Error handling
     "exceptions.**"

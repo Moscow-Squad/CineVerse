@@ -1,9 +1,7 @@
 package com.moscow.cineverse.screen.history
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -18,11 +16,13 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.moscow.cineverse.common_ui_state.MediaItemUiState
+import com.moscow.cineverse.component.ErrorContent
 import com.moscow.cineverse.component.HistoryTip
 import com.moscow.cineverse.component.MoviePosterCard
 import com.moscow.cineverse.component.NoHistoryScreen
 import com.moscow.cineverse.component.SwipeToDelete
 import com.moscow.cineverse.designSystem.component.app_bar.MovieAppBar
+import com.moscow.cineverse.designSystem.component.card.InfoCard
 import com.moscow.cineverse.designSystem.component.indicator.MovieCircularProgressBar
 import com.moscow.cineverse.designSystem.component.wrapper.MovieScaffold
 import com.moscow.cineverse.designSystem.theme.Theme
@@ -79,7 +79,12 @@ fun HistoryContent(
                         )
                     }
                 }
-
+                state.errorMessage != null -> {
+                    ErrorContent(
+                        onRetry = interactionListener::onRetry,
+                        errorMessage = state.errorMessage
+                    )
+                }
                 state.isContentEmpty -> {
                     Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                         NoHistoryScreen(onContinue = interactionListener::onFindToSomethingToWatchButton )
@@ -88,24 +93,30 @@ fun HistoryContent(
 
                 else -> {
                     LazyColumn(
-                        verticalArrangement = Arrangement.spacedBy(16.dp),
                         modifier = modifier
                             .fillMaxSize()
                             .background(Theme.colors.background.screen),
-                        contentPadding = PaddingValues(16.dp)
                     ) {
                         if (state.showTip && state.youRecentlyViewed.isNotEmpty()) {
                             item {
-                                HistoryTip(
-                                    modifier = Modifier.padding(bottom = 24.dp),
+                                InfoCard(
+                                    modifier = Modifier
+                                        .padding(horizontal = 16.dp)
+                                        .padding(bottom = 24.dp),
+                                    text = stringResource(R.string.tip_swipe_left_to_remove_movies_from_your_history),
                                     onDismiss = interactionListener::onTipCancelIconClicked
                                 )
                             }
                         }
-
-                        items(state.youRecentlyViewed) { item ->
+                        items(
+                            items = state.youRecentlyViewed,
+                            key = { it.id }
+                        ) { item ->
                             SwipeToDelete(
-                                modifier = Modifier.padding(bottom = 16.dp),
+                                modifier = Modifier
+                                    .animateItem()
+                                    .padding(horizontal = 16.dp)
+                                    .padding(bottom = 16.dp),
                                 onDelete = { interactionListener.onItemDeletedIconClicked(item.id) }
                             ) {
                                 HistoryMediaItemCard(

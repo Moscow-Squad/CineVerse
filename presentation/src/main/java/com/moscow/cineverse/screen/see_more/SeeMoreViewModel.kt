@@ -8,7 +8,6 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import androidx.paging.map
 import com.moscow.cineverse.base.BaseViewModel
-import com.moscow.cineverse.common_ui_state.MediaItemUiState
 import com.moscow.cineverse.navigation.routes.SeeMoreRoute
 import com.moscow.cineverse.paging.BasePagingSource
 import com.moscow.cineverse.screen.explore.toUi
@@ -132,7 +131,7 @@ class SeeMoreViewModel @Inject constructor(
                         updateState { it.copy(title = HomeFeaturedItems.TOP_RATED_TV_SHOWS.titleResource) }
                         createPagingFlow(
                             pageSize = pageSize,
-                            fetchData = { page -> getTopRatedTVShowsUseCase(page) },
+                            fetchData = { page -> getTopRatedTVShowsUseCase(page, forceRefresh = true) },
                         )
                     }
 

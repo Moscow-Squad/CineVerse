@@ -22,7 +22,7 @@ import com.moscow.cinverse.presentation.R
 
 @Composable
 fun MovieRatingBar(
-    rating: Int,
+    rating: Float,
     onRatingChanged: (Float) -> Unit,
     modifier: Modifier = Modifier,
     starSize: Dp = 16.dp,
@@ -60,6 +60,6 @@ fun MovieRatingBar(
 @Composable
 private fun PreviewRatingBar() {
     CineVerseTheme {
-        MovieRatingBar(3, {})
+        MovieRatingBar(3.0f, {})
     }
 }

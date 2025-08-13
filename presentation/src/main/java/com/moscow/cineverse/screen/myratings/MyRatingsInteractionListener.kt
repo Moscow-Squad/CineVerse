@@ -1,6 +1,5 @@
 package com.moscow.cineverse.screen.myratings
 
-import com.moscow.cineverse.common_ui_state.MediaItemUiState
 import com.moscow.cineverse.screen.explore.ExploreTabsPages
 
 interface MyRatingsInteractionListener {
@@ -9,4 +8,5 @@ interface MyRatingsInteractionListener {
     fun onNavigateBack()
     fun onRefresh()
     fun onEmptyStateButtonClicked()
+    fun onTipCancelIconClicked()
 }

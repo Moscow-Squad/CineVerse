@@ -1,7 +1,6 @@
 package com.moscow.cineverse.screen.my_collections
 
 import com.moscow.cineverse.base.BaseViewModel
-import com.moscow.cineverse.common_ui_state.MyCollectionUiState
 import com.moscow.cineverse.mapper.toMyCollectionUi
 import com.moscow.domain.model.Collection
 import com.moscow.domain.usecase.collection.GetUserCollectionsUseCase

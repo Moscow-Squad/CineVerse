@@ -1,21 +1,20 @@
 package com.moscow.cineverse.screen.series_details
 
 import com.moscow.cineverse.common_ui_state.CrewUiState
-import com.moscow.cineverse.common_ui_state.MediaItemUiState
 import com.moscow.cineverse.common_ui_state.ReviewUiState
-import com.moscow.cineverse.common_ui_state.StarCastUiState
+import com.moscow.cineverse.common_ui_state.CastUiState
 import com.moscow.cineverse.utlis.ViewMode
 
 data class SeriesDetailsScreenState(
     val isLoading: Boolean = false,
     val seriesDetail: SeriesDetailsUiState = SeriesDetailsUiState(),
     val reviews: List<ReviewUiState> = emptyList(),
-    val starCast: List<StarCastUiState>? = null,
+    val starCast: List<CastUiState>? = null,
     val characters: List<String> = emptyList(),
     val director: List<String> = emptyList(),
     val produce: List<String> = emptyList(),
     val writer: List<String> = emptyList(),
-    val cast: List<StarCastUiState> = emptyList(),
+    val cast: List<CastUiState> = emptyList(),
     val crew: List<CrewUiState> = emptyList(),
     val recommendation: List<MediaItemUiState> = emptyList(),
     val shouldShowError: Boolean = false,
@@ -50,5 +49,5 @@ data class SeasonUiState(
     val episodeCount: Int = 0,
     val posterPath: String = "",
     val overview: String = "",
-    val rate: String,
+    val rate: Float,
 )

@@ -1,7 +1,7 @@
 package com.moscow.mapper
 
 import com.moscow.domain.model.Movie
-import com.moscow.domain.usecase.movie.GetRatedMoviesUseCase.RatedMovieResult
+import com.moscow.domain.usecase.rating.GetRatedMoviesUseCase.RatedMovieResult
 import com.moscow.remote.dto.rating.response.RatedMovieDto
 import com.moscow.utils.IMAGES_URL
 import kotlinx.datetime.toLocalDate
@@ -27,11 +27,11 @@ fun RatedMovieDto.toOutputResult(): RatedMovieResult? {
             id = id,
             title = title,
             genreIds = genreIds,
-            voteAverage = voteAverage,
+            rating = voteAverage,
             releaseDate = releaseDate,
-            backdropPath = backdropPath,
+            backdropUrl = backdropPath,
             overview = overview,
-            posterPath = posterPath,
+            posterUrl = posterPath,
             genres = emptyList(),
             duration = Movie.Duration(0, 0),
             trailerUrl = ""

@@ -1,6 +1,5 @@
 package com.moscow.cineverse.screen.myratings
 
-import com.moscow.cineverse.common_ui_state.MediaItemUiState
 import com.moscow.cineverse.screen.explore.ExploreScreenState.GenreUiState
 import com.moscow.cineverse.screen.explore.ExploreTabsPages
 
@@ -13,7 +12,8 @@ data class MyRatingsUiState(
     val movieGenres: List<GenreUiState> = emptyList(),
     val seriesGenres: List<GenreUiState> = emptyList(),
     val isContentEmpty: Boolean = false,
-    val enableBlur: String = "high"
+    val enableBlur: String = "high",
+    val showTip: Boolean = true,
 )
 
 data class RatedMediaItem(

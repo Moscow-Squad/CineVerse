@@ -35,7 +35,7 @@ private val imageCache = mutableMapOf<String, CachedImage>()
 fun SafeImageViewer(
     imageUrl: String,
     modifier: Modifier = Modifier,
-    blurRadius: Int = 25,
+    blurRadius: Int = 300,
     isBlurEnabled: String,
     placeholderContent: @Composable () -> Unit = {},
     errorContent: @Composable () -> Unit = {},
@@ -152,7 +152,7 @@ fun SafeImageViewer(
                         modifier = Modifier
                             .fillMaxSize()
                             .then(cloudyModifier),
-                        contentScale = ContentScale.FillBounds,
+                        contentScale = ContentScale.Crop,
                     )
                 }
             }

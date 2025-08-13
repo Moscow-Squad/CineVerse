@@ -17,11 +17,13 @@ class ActorRepositoryImpl @Inject constructor(
         return actorRemoteDataSource.getActorDetails(actorId).toDomain(
             youtubeLink = socialMedia.youtubeId ?: "",
             facebookLink = socialMedia.facebookId ?: "",
-            instagramLink = socialMedia.instagramId ?: ""
+            instagramLink = socialMedia.instagramId ?: "",
+            twitterLink = socialMedia.twitterId ?: "",
+            tiktokLink = socialMedia.tiktokId ?: ""
         )
     }
 
-    override suspend fun getActorGalleryUrl(actorId: Int) =
+    override suspend fun getActorGalleryUrl(actorId: Int): List<String> =
         actorRemoteDataSource.getActorGallery(actorId).images.map { it.toDomain() }
 
     override suspend fun getBestOfMovies(actorId: Int): List<Movie> {

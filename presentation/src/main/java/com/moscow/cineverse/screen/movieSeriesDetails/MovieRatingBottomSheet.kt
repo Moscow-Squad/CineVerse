@@ -1,8 +1,8 @@
 package com.moscow.cineverse.screen.movieSeriesDetails
 
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -20,16 +20,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.moscow.cineverse.designSystem.component.button.MovieButton
 import com.moscow.cineverse.designSystem.component.bottomsheet.CineVerseBottomSheet
-import com.moscow.cineverse.designSystem.theme.CineVerseTheme
 import com.moscow.cineverse.designSystem.theme.Theme
+import com.moscow.cineverse.utlis.noRibbleClick
 import com.moscow.cinverse.presentation.R
 
 @Composable
@@ -86,10 +84,7 @@ fun MovieRatingBottomSheet(
                         }
                     },
                     enableAction = selectedRating > 0 && !isLoading,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp)
-
+                    modifier = Modifier.fillMaxWidth()
                 )
 
                 if (isEditMode) {
@@ -98,17 +93,14 @@ fun MovieRatingBottomSheet(
                     MovieButton(
                         buttonText = stringResource(R.string.remove_rating),
                         textColor = Theme.colors.button.onTertiary,
-                        textStyle = Theme.textStyle.body.medium.medium,
+                        textStyle = Theme.textStyle.label.medium.medium,
                         buttonColor = Color.Transparent,
                         onClick = {
                             selectedRating = 0
                             onRatingRemove()
                         },
                         enableAction = !isLoading,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 16.dp)
-
+                        modifier = Modifier.fillMaxWidth()
                     )
                 }
             }
@@ -137,10 +129,10 @@ private fun EmojiAndStarRating(
                 val rating = index + 1
                 val isSelected = selectedRating == rating
 
-                val animatedScale by animateFloatAsState(
-                    targetValue = if (isSelected) 1.5f else 1f,
+                val animatedSize by animateDpAsState(
+                    targetValue = if (isSelected) 24.dp else 16.dp,
                     animationSpec = tween(durationMillis = 300),
-                    label = "emoji_scale_animation"
+                    label = "emoji_size_animation"
                 )
 
                 val animatedAlpha by animateFloatAsState(
@@ -152,7 +144,7 @@ private fun EmojiAndStarRating(
                 Box(
                     modifier = Modifier
                         .size(24.dp)
-                        .clickable { onRatingChanged(rating) },
+                        .noRibbleClick{ onRatingChanged(rating) },
                     contentAlignment = Alignment.Center
                 ) {
                     Icon(
@@ -160,12 +152,10 @@ private fun EmojiAndStarRating(
                         contentDescription = "Rating emoji $rating",
                         tint = Color.Unspecified,
                         modifier = Modifier
-                            .size(if (isSelected) 24.dp else 16.dp)
-                            .scale(animatedScale)
+                            .size(animatedSize)
                             .alpha(animatedAlpha)
                     )
                 }
-
                 if (index < emojiDrawables.size - 1) {
                     Spacer(modifier = Modifier.size(12.dp))
                 }
@@ -176,38 +166,6 @@ private fun EmojiAndStarRating(
             onRatingChanged = { onRatingChanged(it.toInt()) },
             starSize = 24.dp,
             spacing = 12.dp
-        )
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun MovieRatingBottomSheetPreview() {
-    CineVerseTheme {
-        var showBottomSheet by remember { mutableStateOf(true) }
-        var isLoading by remember { mutableStateOf(false) }
-        var hasExistingRating by remember { mutableStateOf(false) }
-        var currentRating by remember { mutableStateOf(0) }
-
-        MovieRatingBottomSheet(
-            isVisible = showBottomSheet,
-            onDismiss = { showBottomSheet = false },
-            onRatingSubmit = { rating ->
-                isLoading = true
-                println("Rating submitted: $rating")
-                currentRating = rating
-                hasExistingRating = true
-                isLoading = false
-            },
-            onRatingRemove = {
-                println("Rating removed")
-                currentRating = 0
-                hasExistingRating = false
-                showBottomSheet = false
-            },
-            isLoading = isLoading,
-            initialRating = currentRating,
-            hasExistingRating = hasExistingRating
         )
     }
 }

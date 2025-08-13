@@ -1,6 +1,6 @@
 package com.moscow.remote.services
 
-import com.moscow.domain.model.CreditsInfo
+import com.moscow.remote.dto.media_item.common.CreditsDetailsDto
 import com.moscow.remote.dto.rating.request.RatingRequestDto
 import com.moscow.remote.dto.review.ReviewDto
 import com.moscow.remote.dto.media_item.series.SeriesDetailDto
@@ -105,7 +105,7 @@ interface SeriesService {
     @GET("$SERIES{series_id}$SERIES_CREDITS")
     suspend fun getSeriesCredits(
         @Path("series_id") seriesId: Int
-    ): Response<CreditsInfo>
+    ): Response<CreditsDetailsDto>
 
     @GET("$SERIES{series_id}$TRAILERS")
     suspend fun getSeriesTrailers(

@@ -74,6 +74,7 @@ fun CineVerseBottomSheet(
             shouldDismissOnBackPress = true
         )
     ) {
+        val bottomPadding = if (title.isNotEmpty()) Modifier.padding(bottom = 20.dp) else Modifier
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -83,7 +84,7 @@ fun CineVerseBottomSheet(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(bottom = 20.dp),
+                    .then( bottomPadding),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
@@ -95,19 +96,22 @@ fun CineVerseBottomSheet(
                         color = Theme.colors.shade.primary
                     )
                 }
-
                 when {
-
                     showCancelIcon -> {
-                        Icon(
-                            painter = painterResource(R.drawable.outline_x),
-                            contentDescription = null,
-                            tint = Theme.colors.shade.secondary,
+                        Box(
                             modifier = Modifier
-                                .size(20.dp)
+                                .size(40.dp)
                                 .clip(CircleShape)
                                 .clickable { onClose() }
-                        )
+                        , contentAlignment = Alignment.Center) {
+                            Icon(
+                                painter = painterResource(R.drawable.outline_x),
+                                contentDescription = null,
+                                tint = Theme.colors.shade.secondary,
+                                modifier = Modifier
+                                    .size(20.dp)
+                            )
+                        }
                     }
 
                     title.isNotEmpty() -> {
@@ -115,12 +119,9 @@ fun CineVerseBottomSheet(
                             text = stringResource(id = R.string.new_collection),
                             style = Theme.textStyle.body.medium.medium,
                             color = Theme.colors.brand.primary,
-                            modifier = Modifier.clickable(
-                                onClick = onAddNewCollectionClick
-                            )
+                            modifier = Modifier.clickable(onClick = onAddNewCollectionClick)
                         )
                     }
-
                 }
             }
             content()

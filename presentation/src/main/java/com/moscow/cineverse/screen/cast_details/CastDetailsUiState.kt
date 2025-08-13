@@ -17,8 +17,10 @@ data class CastDetailsUiState(
     val enableBlur: String = "high"
 ) {
     data class SocialMediaLinks(
-        val youtube: String? = null,
-        val facebook: String? = null,
-        val instagram: String? = null
+        val youtube: String = "",
+        val facebook: String = "",
+        val instagram: String = "",
+        val twitter: String = "",
+        val tiktok: String = ""
     )
 }

@@ -3,7 +3,7 @@ package com.moscow.domain.repository
 import com.moscow.domain.model.CreditsInfo
 import com.moscow.domain.model.Movie
 import com.moscow.domain.model.Review
-import com.moscow.domain.usecase.movie.GetRatedMoviesUseCase
+import com.moscow.domain.usecase.rating.GetRatedMoviesUseCase
 
 interface MovieRepository {
     suspend fun getPopularMovies(page: Int): List<Movie>

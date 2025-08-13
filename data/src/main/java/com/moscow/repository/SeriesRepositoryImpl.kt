@@ -6,7 +6,7 @@ import com.moscow.domain.model.CreditsInfo
 import com.moscow.domain.model.Review
 import com.moscow.domain.model.Series
 import com.moscow.domain.repository.SeriesRepository
-import com.moscow.domain.usecase.series.GetRatedSeriesUseCase
+import com.moscow.domain.usecase.rating.GetRatedSeriesUseCase
 import com.moscow.mapper.toDomain
 import com.moscow.mapper.toOutputResult
 import com.moscow.mapper.toSeries

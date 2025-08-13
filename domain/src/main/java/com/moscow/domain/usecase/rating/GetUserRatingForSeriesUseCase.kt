@@ -1,4 +1,4 @@
-package com.moscow.domain.usecase.series
+package com.moscow.domain.usecase.rating
 
 import com.moscow.domain.repository.SeriesRepository
 import javax.inject.Inject

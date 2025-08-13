@@ -6,15 +6,16 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.moscow.cineverse.base.BaseViewModel
-import com.moscow.cineverse.common_ui_state.MediaItemUiState
 import com.moscow.cineverse.paging.BasePagingSource
 import com.moscow.cineverse.screen.explore.ExploreTabsPages
 import com.moscow.cineverse.screen.explore.toUi
 import com.moscow.domain.model.MediaType
 import com.moscow.domain.repository.blur.BlurProvider
 import com.moscow.domain.usecase.genre.GenreUseCase
-import com.moscow.domain.usecase.movie.GetRatedMoviesUseCase
-import com.moscow.domain.usecase.series.GetRatedSeriesUseCase
+import com.moscow.domain.usecase.rating.CloseRatingTipUseCase
+import com.moscow.domain.usecase.rating.GetRatedMoviesUseCase
+import com.moscow.domain.usecase.rating.GetRatedSeriesUseCase
+import com.moscow.domain.usecase.rating.GetShowRatingTipUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
@@ -25,6 +26,8 @@ class MyRatingsViewModel @Inject constructor(
     private val ratedMoviesUseCase: GetRatedMoviesUseCase,
     private val ratedSeriesUseCase: GetRatedSeriesUseCase,
     private val genreUseCase: GenreUseCase,
+    private val getShowRatingTipUseCase: GetShowRatingTipUseCase,
+    private val closeRatingTipUseCase: CloseRatingTipUseCase,
     private val blurProvider: BlurProvider
 ) : BaseViewModel<MyRatingsUiState, MyRatingsEffect>(MyRatingsUiState()),
     MyRatingsInteractionListener {
@@ -45,6 +48,7 @@ class MyRatingsViewModel @Inject constructor(
         getRatedSeries()
         getMoviesGenres()
         getSeriesGenres()
+        getShowTip()
         observeBlur()
     }
 
@@ -54,6 +58,30 @@ class MyRatingsViewModel @Inject constructor(
                 updateState { it.copy(enableBlur = enableBlur) }
             }
         }
+    }
+
+    private fun getShowTip() {
+        launchWithResult(
+            action = getShowRatingTipUseCase::invoke,
+            onSuccess = { res ->
+                updateState {
+                    it.copy(
+                        showTip = res,
+                        isLoading = false
+                    )
+                }
+            },
+            onError = { msg ->
+                updateState {
+                    it.copy(
+                        shouldShowError = true,
+                        isLoading = false,
+                        errorMessage = msg
+                    )
+                }
+            },
+            onStart = { updateState { it.copy(isLoading = true) } }
+        )
     }
 
     override fun onTabSelected(tab: ExploreTabsPages) {
@@ -91,6 +119,22 @@ class MyRatingsViewModel @Inject constructor(
 
     override fun onEmptyStateButtonClicked() {
         sendEvent(MyRatingsEffect.NavigateToExplore)
+    }
+
+    override fun onTipCancelIconClicked() {
+        updateState { it.copy(isLoading = false) }
+        launchAndForget(
+            action = { closeRatingTipUseCase() },
+            onSuccess = { updateState { it.copy(showTip = false) } },
+            onError = { msg ->
+                updateState {
+                    it.copy(
+                        shouldShowError = true,
+                        errorMessage = msg
+                    )
+                }
+            }
+        )
     }
 
     fun refreshDataIfNeeded() {

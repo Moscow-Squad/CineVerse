@@ -1,6 +1,5 @@
 package com.moscow.cineverse.screen.profile
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.domain.model.UserType
@@ -51,7 +50,6 @@ class ProfileViewModel @Inject constructor(
         viewModelScope.launch {
             blurProvider.blurFlow.collect { enableBlur ->
                 updateState { it.copy(selectedPreference = enableBlur) }
-                Log.d("blurview", "$enableBlur")
             }
         }
     }
@@ -81,8 +79,6 @@ class ProfileViewModel @Inject constructor(
     }
 
     private fun logout() {
-        Log.d("ProfileViewModel", "Session ID: ${uiState.value.sessionId}")
-
         launchWithResult(
             action = { logoutUseCase(sessionId = uiState.value.sessionId) },
             onSuccess = ::onGetLogoutSuccess,

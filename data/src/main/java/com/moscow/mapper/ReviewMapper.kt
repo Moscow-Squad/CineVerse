@@ -11,7 +11,7 @@ fun ReviewDto.toDomain(): Review {
         author = this.author ?: "",
         username = this.authorDetailsDto?.username ?: "",
         avatarPath = if(this.authorDetailsDto?.avatarPath.isNullOrEmpty()) "" else IMAGES_URL + this.authorDetailsDto.avatarPath ,
-        rating = this.authorDetailsDto?.rating ?: 0.0,
+        rating = this.authorDetailsDto?.rating?.toFloat()?:0.0f,
         content = this.content ?: "",
         createdAt = if (!createdAt.isNullOrBlank()) LocalDate.parse(createdAt) else null,
     )

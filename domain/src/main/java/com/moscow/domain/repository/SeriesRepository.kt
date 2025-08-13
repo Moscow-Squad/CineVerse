@@ -4,7 +4,7 @@ import com.moscow.domain.model.CreditsInfo
 import com.moscow.domain.model.Review
 import com.moscow.domain.model.Series
 import com.moscow.domain.model.Series.Season
-import com.moscow.domain.usecase.series.GetRatedSeriesUseCase.RatedSeriesResult
+import com.moscow.domain.usecase.rating.GetRatedSeriesUseCase.RatedSeriesResult
 
 interface SeriesRepository {
     suspend fun getPopularSeries(page: Int): List<Series>

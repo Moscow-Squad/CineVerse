@@ -1,21 +1,20 @@
 package com.moscow.cineverse.screen.home.components
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.moscow.cineverse.common_ui_state.MyCollectionUiState
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.design_system.R
 
@@ -27,10 +26,13 @@ fun MyCollectionsLayout(
     modifier: Modifier = Modifier
 ) {
     val itemsRowSize = (items.size + 1) / 2
-    Column(modifier = modifier.fillMaxWidth()
-        , verticalArrangement = Arrangement.spacedBy(12.dp)) {
+    Column(
+        modifier = modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(12.dp)
+    ) {
         Row(
-            modifier = Modifier.padding(horizontal = 16.dp).fillMaxWidth(),
+            modifier = Modifier
+                .padding(horizontal = 16.dp)
+                .fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text(
@@ -47,31 +49,23 @@ fun MyCollectionsLayout(
             )
         }
 
-        LazyRow(
-            modifier = Modifier.fillMaxWidth(),
-
+        FlowRow(
+            modifier = Modifier
+                .horizontalScroll(rememberScrollState())
+                .padding(horizontal = 16.dp),
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp),
+            maxItemsInEachRow = itemsRowSize
         ) {
-            items(items.take(itemsRowSize)) { itemState ->
+            items.forEach { itemState ->
                 MyCollectionCard(
-                    modifier = Modifier.width(280.dp).padding(start = 16.dp),
+                    modifier = Modifier
+                        .width(280.dp),
                     state = itemState,
                     onClick = { onCollectionClick(itemState.id, itemState.title) },
                 )
             }
         }
-
-        LazyRow(
-            modifier = Modifier.fillMaxWidth(),
-        ) {
-            items(items.drop(itemsRowSize)) { itemState ->
-                MyCollectionCard(
-                    modifier = Modifier.width(280.dp).padding(start = 16.dp),
-                    state = itemState,
-                    onClick = { onCollectionClick(itemState.id, itemState.title) },
-                )
-            }
-        }
-
 
     }
 

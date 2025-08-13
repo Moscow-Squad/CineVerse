@@ -3,9 +3,8 @@ package com.moscow.cineverse.screen.home.components
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import com.moscow.cineverse.common_ui_state.MediaItemUiState
 import com.moscow.cineverse.component.MoviePosterCard
-import com.moscow.cineverse.MovieListSection
+import com.moscow.cineverse.component.MovieListSection
 import com.moscow.cineverse.screen.home.HomeFeaturedItems
 
 @Composable

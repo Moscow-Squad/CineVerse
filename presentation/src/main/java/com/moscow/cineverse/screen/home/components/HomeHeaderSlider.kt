@@ -40,7 +40,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.lerp
 import androidx.compose.ui.util.lerp
 import androidx.compose.ui.zIndex
-import com.moscow.cineverse.common_ui_state.MediaItemUiState
 import com.moscow.cineverse.component.MoviePosterCard
 import com.moscow.cineverse.designSystem.theme.Theme
 import kotlinx.coroutines.delay
@@ -215,4 +214,4 @@ fun Modifier.doubleShadowDrop(
     alpha: Float = 0.6f
 ) = this
     .dropShadow(shape, Color.Black.copy(alpha), blur = blur, offsetY = -offset)
-    .dropShadow(shape, Color.White.copy(alpha), blur = blur, offsetY = offset)
+    .dropShadow(shape, Color.Black.copy(alpha), blur = blur, offsetY = offset)
