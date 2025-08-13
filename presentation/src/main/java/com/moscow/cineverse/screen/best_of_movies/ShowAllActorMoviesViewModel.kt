@@ -1,4 +1,4 @@
-package com.moscow.cineverse.screen.cast_details.best_of_movies
+package com.moscow.cineverse.screen.best_of_movies
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope

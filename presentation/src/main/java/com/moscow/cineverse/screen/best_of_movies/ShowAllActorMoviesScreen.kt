@@ -1,4 +1,4 @@
-package com.moscow.cineverse.screen.cast_details.best_of_movies
+package com.moscow.cineverse.screen.best_of_movies
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,8 +13,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.moscow.cineverse.component.ErrorContent
 import com.moscow.cineverse.designSystem.component.wrapper.MovieScaffold
-import com.moscow.cineverse.screen.cast_details.best_of_movies.component.LoadingContent
-import com.moscow.cineverse.screen.cast_details.best_of_movies.component.SuccessContent
+import com.moscow.cineverse.screen.best_of_movies.component.LoadingContent
+import com.moscow.cineverse.screen.best_of_movies.component.SuccessContent
 import com.moscow.cineverse.screen.explore.component.ViewModeToggleButton
 
 @Composable

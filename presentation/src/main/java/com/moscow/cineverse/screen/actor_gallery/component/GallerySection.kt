@@ -1,4 +1,4 @@
-package com.moscow.cineverse.screen.cast_details.gallery
+package com.moscow.cineverse.screen.actor_gallery.component
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
