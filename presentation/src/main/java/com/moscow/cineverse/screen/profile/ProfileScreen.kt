@@ -3,7 +3,6 @@ package com.moscow.cineverse.screen.profile
 
 import android.content.Context
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -79,15 +78,13 @@ fun ProfileContent(
     LazyColumn(
         modifier = modifier
             .fillMaxSize()
-            .background(Theme.colors.background.screen),
-        contentPadding = PaddingValues(16.dp)
-
+            .background(Theme.colors.background.screen)
     ) {
 
         item {
             MovieAppBar(
                 showBackButton = false,
-                modifier = Modifier.padding(vertical = 17.dp),
+                modifier = Modifier.padding(vertical = 17.dp, horizontal = 16.dp),
                 title = stringResource(R.string.my_profile)
             )
         }
@@ -100,7 +97,8 @@ fun ProfileContent(
                     model = uiState.image
                 ),
                 isGuest = uiState.isGuest,
-                onClick = { listener.onShowEditProfileBottomSheet() }
+                onClick = { listener.onShowEditProfileBottomSheet() },
+                modifier = Modifier.padding(horizontal = 16.dp)
 
             )
         }
@@ -143,11 +141,17 @@ fun ProfileContent(
             MovieText(
                 text = stringResource(R.string.settings),
                 color = Theme.colors.shade.primary,
-                style = Theme.textStyle.title.medium
+                style = Theme.textStyle.title.medium,
+                modifier = Modifier.padding(horizontal = 16.dp)
 
             )
             Settings(
-                modifier = Modifier.padding(top = 12.dp, bottom = 24.dp),
+                modifier = Modifier.padding(
+                    top = 12.dp,
+                    bottom = 24.dp,
+                    start = 16.dp,
+                    end = 16.dp
+                ),
                 isGuest = uiState.isGuest,
                 isDarkTheme = uiState.isDarkTheme,
                 onThemeChange = onThemeChange,

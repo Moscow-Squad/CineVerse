@@ -60,7 +60,7 @@ private fun LanguageBottomSheetContent(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(top = 20.dp, bottom = 16.dp),
+            .padding(bottom = 16.dp),
         horizontalArrangement = Arrangement.spacedBy(12.dp, Alignment.CenterHorizontally)
     ) {
         LanguageOption(

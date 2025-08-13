@@ -1,10 +1,7 @@
 package com.moscow.cineverse.screen.series_details
 
-import android.content.Context
 import android.content.Intent
-import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.ExperimentalSharedTransitionApi
-import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -17,9 +14,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -36,16 +31,15 @@ import com.moscow.cineverse.component.MoviePosterCard
 import com.moscow.cineverse.component.SectionTitle
 import com.moscow.cineverse.component.StorylineSection
 import com.moscow.cineverse.designSystem.component.app_bar.MovieAppBar
-import com.moscow.cineverse.designSystem.component.indicator.MovieCircularProgressBar
-import com.moscow.cineverse.designSystem.component.wrapper.MovieScaffold
 import com.moscow.cineverse.designSystem.component.bottomsheet.CineVerseBottomSheet
 import com.moscow.cineverse.designSystem.component.card.MessageInfoCard
+import com.moscow.cineverse.designSystem.component.indicator.MovieCircularProgressBar
+import com.moscow.cineverse.designSystem.component.wrapper.MovieScaffold
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.mapper.formatReviewDate
 import com.moscow.cineverse.mapper.toHourMinuteFormat
 import com.moscow.cineverse.screen.movieSeriesDetails.CastCard
-import com.moscow.cineverse.screen.movieSeriesDetails.MainMovieCard
-import com.moscow.cineverse.screen.movieSeriesDetails.MovieCardDetails
+import com.moscow.cineverse.screen.movieSeriesDetails.MediaHeader
 import com.moscow.cineverse.screen.movieSeriesDetails.MovieRatingBottomSheet
 import com.moscow.cineverse.screen.movieSeriesDetails.MovieReviewCard
 import com.moscow.cineverse.screen.movieSeriesDetails.RatingSection
@@ -111,7 +105,6 @@ fun SeriesDetailsScreen(
         uiState = uiState,
         interactionListener = viewModel,
         onNavigateBack = navigateBack,
-        context = context
     )
 }
 
@@ -121,14 +114,11 @@ fun SeriesDetailsContent(
     uiState: SeriesDetailsScreenState,
     interactionListener: SeriesDetailsScreenInteractionListener,
     onNavigateBack: () -> Unit,
-    context: Context
 ) {
     val detail = uiState.seriesDetail
     val scrollState = rememberLazyListState()
-    val isCollapsed by remember {
-        derivedStateOf {
-            scrollState.firstVisibleItemScrollOffset > 10 || scrollState.firstVisibleItemIndex > 0
-        }
+    LaunchedEffect(key1 = Unit) {
+        scrollState.animateScrollToItem(0)
     }
     MovieScaffold {
         when {
@@ -166,39 +156,21 @@ fun SeriesDetailsContent(
                             modifier = Modifier.background(Theme.colors.background.screen)
                         ) {
                             MovieAppBar(backButtonClick = onNavigateBack, showBackButton = true)
-
-                            SharedTransitionLayout {
-                                AnimatedContent(
-                                    targetState = isCollapsed,
-                                    label = "basic_transition"
-                                ) { target ->
-                                    if (!target) {
-                                        MovieCardDetails(
-                                            enableBlur = uiState.enableBlur,
-                                            posterUrl = detail.posterPath,
-                                            title = detail.title,
-                                            genres = detail.genre,
-                                            rating = detail.rating,
-                                            duration = detail.duration.toHourMinuteFormat(context),
-                                            releaseDate = detail.releaseDate,
-                                            type = stringResource(com.moscow.cineverse.design_system.R.string.series_type),
-                                            animatedVisibilityScope = this@AnimatedContent,
-                                            sharedTransitionScope = this@SharedTransitionLayout,
-                                            onSaveClick = {  },
-                                            onPlayClick = interactionListener::onPlayButtonClicked
-                                        )
-                                    } else {
-                                        MainMovieCard(
-                                            enableBlur = uiState.enableBlur,
-                                            posterUrl = detail.posterPath,
-                                            title = detail.title,
-                                            animatedVisibilityScope = this@AnimatedContent,
-                                            sharedTransitionScope = this@SharedTransitionLayout,
-                                            onSaveClick = {  },
-                                            onPlayClick = interactionListener::onPlayButtonClicked
-                                        )
-                                    }
-                                }
+                            uiState.seriesDetail.let {
+                                MediaHeader(
+                                    scrollState = scrollState,
+                                    enableBlur = uiState.enableBlur,
+                                    posterUrl = it.posterPath,
+                                    title = it.title,
+                                    genres = it.genre,
+                                    rating = it.rating,
+                                    duration = it.duration.toHourMinuteFormat(LocalContext.current),
+                                    releaseDate = it.releaseDate,
+                                    type = stringResource(com.moscow.cineverse.design_system.R.string.series_type),
+                                    onSaveClick = interactionListener::addToCollection,
+                                    isSaveEnabled = false,
+                                    onPlayClick = interactionListener::onPlayButtonClicked,
+                                )
                             }
                         }
                     }
@@ -339,7 +311,7 @@ fun SeriesDetailsContent(
                         items(uiState.reviews.take(3)) { review ->
                             MovieReviewCard(
                                 name = review.username,
-                                username = "@${review.username}",
+                                username = review.username,
                                 reviewText = review.reviewContent,
                                 rating = review.rate.toInt(),
                                 date = formatReviewDate(review.date),
@@ -388,7 +360,6 @@ fun SeriesDetailsContent(
                             onClickFirstButton = { interactionListener.onDismissLoginBottomSheet() },
                             secondButtonText = stringResource(R.string.log_in),
                             onClickSecondButton = { interactionListener.navigateToLogin() },
-                            modifier = Modifier.padding(bottom = 16.dp),
                         )
                     }
                 }

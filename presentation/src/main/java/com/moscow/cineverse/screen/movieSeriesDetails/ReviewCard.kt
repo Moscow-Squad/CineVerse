@@ -3,6 +3,7 @@ package com.moscow.cineverse.screen.movieSeriesDetails
 import android.content.res.Configuration
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -64,7 +65,8 @@ fun MovieReviewCard(
 
         Row(Modifier.fillMaxWidth()) {
 
-            MovieRatingBar(rating, {})
+            if (rating != 0)
+                MovieRatingBar(rating, {})
 
             Spacer(Modifier.weight(1f))
 
@@ -94,16 +96,35 @@ private fun UserInfo(
         Box(
             modifier = modifier
                 .size(40.dp)
-                .clip(CircleShape)
-                .background(Theme.colors.background.card),
+                .background(Theme.colors.background.card)
+                .then(
+                    if (userImage == null)
+                        Modifier
+                            .border(
+                                width = 1.dp,
+                                color = Theme.colors.stroke.primary,
+                                shape = CircleShape
+                            )
+                    else Modifier
+                )
+                .clip(CircleShape),
             contentAlignment = Alignment.Center
         ) {
-            Image(
-                painter = userImage ?: painterResource(R.drawable.due_tone_profile),
-                contentDescription = "Profile Image",
-                contentScale = ContentScale.Crop,
-                modifier = Modifier.fillMaxSize()
-            )
+            if (userImage != null) {
+                Image(
+                    painter = userImage,
+                    contentDescription = "Profile Image",
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier.fillMaxSize(),
+                )
+            } else {
+                Image(
+                    painter = painterResource(com.moscow.cinverse.presentation.R.drawable.profile),
+                    contentDescription = "Default Profile Icon",
+                    contentScale = ContentScale.Fit,
+                    modifier = Modifier.size(24.dp),
+                )
+            }
         }
 
         Column {
@@ -117,7 +138,7 @@ private fun UserInfo(
             )
 
             Text(
-                text = userEmail,
+                text = "@$userEmail",
                 style = Theme.textStyle.body.small.regular,
                 color = Theme.colors.shade.secondary,
                 maxLines = 1,
@@ -136,7 +157,7 @@ private fun PreviewMovieReviewCard() {
     CineVerseTheme {
         MovieReviewCard(
             "Shrouk Mohamed",
-            "@ShroukMohamed16",
+            "ShroukMohamed16",
             "Lorem Ipsum is simply dummy text of the printing and typesetting industry.Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
             3,
             "Aug 15, 2025",
