@@ -45,9 +45,9 @@ fun ExploreScreen(
     val contentList = viewModel.contentList.collectAsLazyPagingItems()
 
     LaunchedEffect(Unit) {
-        viewModel.uiEffect.collect { event ->
-            handleEffects(
-                event,
+        viewModel.uiEffect.collect { effect ->
+            ExploreScreenEffectHandler.handleEffect (
+                effect,
                 navigateToCastDetails = navigateToCastDetails,
                 navigateToMovieDetails = navigateToMovieDetails,
                 navigateToSeriesDetails = navigateToSeriesDetails
