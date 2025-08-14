@@ -20,6 +20,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -99,10 +100,8 @@ fun LanguageOption(
 
     Column(
         modifier = modifier
-            .background(
-                color = backgroundColor,
-                shape = RoundedCornerShape(Theme.radius.large)
-            )
+            .clip(shape = RoundedCornerShape(Theme.radius.large))
+            .background(color = backgroundColor)
             .border(
                 width = 1.dp,
                 color = borderColor,

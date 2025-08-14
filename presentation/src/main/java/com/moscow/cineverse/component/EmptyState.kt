@@ -55,7 +55,7 @@ fun EmptyState(
             Icon(
                 painter = icon,
                 contentDescription = "",
-                tint = Color.Unspecified,
+                tint = Theme.colors.brand.primary,
                 modifier = Modifier.size(30.dp)
             )
         }

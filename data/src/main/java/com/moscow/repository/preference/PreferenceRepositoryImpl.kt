@@ -72,7 +72,7 @@ class PreferenceRepositoryImpl @Inject constructor(
                         )
                     }
 
-                    else -> {
+                    GUEST_USER -> {
                         val sessionId = preferences[SESSION_ID_KEY] ?: ""
                         val expiredAt = preferences[EXPIRED_AT_KEY] ?: ""
                         UserType.GuestUser(
@@ -80,6 +80,7 @@ class PreferenceRepositoryImpl @Inject constructor(
                             expiredAt = expiredAt
                         )
                     }
+                    else -> throw IllegalStateException("Invalid user type")
                 }
             }
             .first()
@@ -96,11 +97,8 @@ class PreferenceRepositoryImpl @Inject constructor(
 
     override suspend fun clearUser() {
         dataStore.edit { prefs ->
+            prefs.clear()
             prefs[USER_TYPE_KEY] = GUEST_USER
-            prefs.remove(USER_ID_KEY)
-            prefs.remove(SESSION_ID_KEY)
-            prefs.remove(EXPIRED_AT_KEY)
-            prefs[Is_LOGGED_IN_KEY] = false
             prefs[IS_ON_BOARDING_SEEN_KEY] = true
         }
     }
