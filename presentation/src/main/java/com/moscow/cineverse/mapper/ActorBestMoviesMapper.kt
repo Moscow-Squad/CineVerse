@@ -18,6 +18,7 @@ fun List<Movie>.toUi(
             rating = movie.rating,
             genres = movie.genreIds.map { genresList.first { genre -> genre.id == it }.name },
             releaseDate = movie.releaseDate?.formatWith(YYYY_MMM_DD) ?: "",
+            mediaType = MediaItemUiState.MediaType.MOVIE,
             backdropPath = movie.backdropUrl
         )
     }
