@@ -1,5 +1,6 @@
 package com.moscow.cineverse.screen.movie_details.recommendations
 
+import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -27,9 +28,9 @@ import com.moscow.cineverse.component.NoInternetScreen
 import com.moscow.cineverse.designSystem.component.app_bar.MovieAppBar
 import com.moscow.cineverse.designSystem.component.indicator.MovieCircularProgressBar
 import com.moscow.cineverse.designSystem.component.wrapper.MovieScaffold
-import com.moscow.cineverse.utlis.ViewMode
 import com.moscow.cineverse.screen.explore.component.ViewModeToggleButton
 import com.moscow.cineverse.screen.explore.toUi
+import com.moscow.cineverse.utlis.ViewMode
 import com.moscow.cinverse.presentation.R
 import com.moscow.domain.model.Movie
 
@@ -69,6 +70,7 @@ fun RecommendationMoviesScreen(
 }
 
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun RecommendationMoviesContent(
     uiState: RecommendationsMoviesState,

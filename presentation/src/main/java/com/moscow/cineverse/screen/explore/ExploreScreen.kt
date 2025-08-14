@@ -1,5 +1,12 @@
 package com.moscow.cineverse.screen.explore
 
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionLayout
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -89,6 +96,7 @@ private fun handleEffects(
     }
 }
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 private fun ExploreScreenContent(
     uiState: ExploreScreenState,
@@ -129,74 +137,89 @@ private fun ExploreScreenContent(
             .fillMaxSize(),
         color = Theme.colors.background.screen
     ) {
-        Box(modifier = Modifier.fillMaxSize()) {
-            Column(modifier = Modifier.fillMaxSize()) {
-                ExploreSearchBarSection(
-                    uiState,
-                    interactionListener,
-                    isVisible = searchBarVisible
-                )
-                ExploreTabsSection(
-                    selectedTab = uiState.selectedTab,
-                    onTabSelected = interactionListener::onTabSelected,
-                    showAllTabs = uiState.isSearch
-                )
+        // Wrap the entire content in SharedTransitionLayout
+        SharedTransitionLayout {
+            Box(modifier = Modifier.fillMaxSize()) {
+                Column(modifier = Modifier.fillMaxSize()) {
+                    ExploreSearchBarSection(
+                        uiState,
+                        interactionListener,
+                        isVisible = searchBarVisible
+                    )
+                    ExploreTabsSection(
+                        selectedTab = uiState.selectedTab,
+                        onTabSelected = interactionListener::onTabSelected,
+                        showAllTabs = uiState.isSearch
+                    )
 
-                Box(modifier = Modifier.fillMaxSize()) {
-                    when (contentList.loadState.refresh) {
-                        is LoadState.Loading -> {
-                            Box(
-                                modifier = Modifier.fillMaxSize(),
-                                contentAlignment = Alignment.Center
-                            ) {
-                                MovieCircularProgressBar()
-                            }
-                        }
-
-                        is LoadState.Error -> {
-                            Box(
-                                modifier = Modifier.fillMaxSize(),
-                                contentAlignment = Alignment.Center
-                            ) {
-                                NoInternetScreen(onRetry = interactionListener::onRefresh)
-                            }
-                        }
-
-                        else -> {
-                            ExploreMainContent(
-                                uiState = uiState,
-                                gridState = gridState,
-                                contentList = contentList,
-                                interactionListener = interactionListener,
-                                onGenresVisibilityChange = { shouldShow ->
-                                    genresVisible = shouldShow
-                                    searchBarVisible =
-                                        if(uiState.searchKeyWord.isNotEmpty()) true else shouldShow
+                    Box(modifier = Modifier.fillMaxSize()) {
+                        when (contentList.loadState.refresh) {
+                            is LoadState.Loading -> {
+                                Box(
+                                    modifier = Modifier.fillMaxSize(),
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    MovieCircularProgressBar()
                                 }
+                            }
+
+                            is LoadState.Error -> {
+                                Box(
+                                    modifier = Modifier.fillMaxSize(),
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    NoInternetScreen(onRetry = interactionListener::onRefresh)
+                                }
+                            }
+
+                            else -> {
+                                // Use AnimatedContent to handle view mode transitions
+                                AnimatedContent(
+                                    targetState = uiState.viewMode,
+                                    transitionSpec = {
+                                        fadeIn(tween(300)) togetherWith fadeOut(tween(300))
+                                    },
+                                    label = "view_mode_transition"
+                                ) { currentViewMode ->
+                                    ExploreMainContent(
+                                        uiState = uiState.copy(viewMode = currentViewMode),
+                                        gridState = gridState,
+                                        contentList = contentList,
+                                        interactionListener = interactionListener,
+                                        onGenresVisibilityChange = { shouldShow ->
+                                            genresVisible = shouldShow
+                                            searchBarVisible =
+                                                if (uiState.searchKeyWord.isNotEmpty()) true else shouldShow
+                                        },
+                                        // Pass the shared transition scopes
+                                        sharedTransitionScope = this@SharedTransitionLayout,
+                                        animatedVisibilityScope = this@AnimatedContent
+                                    )
+                                }
+                            }
+                        }
+                        if (uiState.genres.isNotEmpty()) {
+                            GenresRow(
+                                uiState = uiState,
+                                genresState = genresState,
+                                interactionListener = interactionListener,
+                                isVisible = genresVisible,
+                                modifier = Modifier.align(Alignment.TopCenter)
                             )
                         }
                     }
-                    if (uiState.genres.isNotEmpty()) {
-                        GenresRow(
-                            uiState = uiState,
-                            genresState = genresState,
-                            interactionListener = interactionListener,
-                            isVisible = genresVisible,
-                            modifier = Modifier.align(Alignment.TopCenter)
-                        )
-                    }
                 }
-            }
-            SearchSuggestionsSection(uiState, interactionListener)
+                SearchSuggestionsSection(uiState, interactionListener)
 
-            if (uiState.selectedTab != ExploreTabsPages.ACTORS && uiState.shouldShowError == false) {
-                ViewModeToggleButton(
-                    selectedMode = uiState.viewMode,
-                    onModeSelected = interactionListener::onViewModeChanged,
-                    modifier = Modifier
-                        .align(Alignment.BottomEnd)
-                        .padding(end = 16.dp, bottom = 96.dp)
-                )
+                if (uiState.selectedTab != ExploreTabsPages.ACTORS) {
+                    ViewModeToggleButton(
+                        selectedMode = uiState.viewMode,
+                        onModeSelected = interactionListener::onViewModeChanged,
+                        modifier = Modifier
+                            .align(Alignment.BottomEnd)
+                            .padding(end = 16.dp, bottom = 96.dp)
+                    )
+                }
             }
         }
     }

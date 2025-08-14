@@ -2,6 +2,7 @@ package com.moscow.cineverse.screen.cast_details
 
 import androidx.annotation.DrawableRes
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
@@ -41,8 +42,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.moscow.cineverse.component.MovieListSection
 import com.moscow.cineverse.component.ErrorContent
+import com.moscow.cineverse.component.MovieListSection
 import com.moscow.cineverse.component.MoviePosterCard
 import com.moscow.cineverse.component.SectionTitle
 import com.moscow.cineverse.designSystem.component.app_bar.MovieAppBar
@@ -156,6 +157,7 @@ private fun ActorDetailsContent(
     }
 }
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun ActorMoviesSection(
     uiState: CastDetailsUiState,

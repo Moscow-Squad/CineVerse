@@ -1,5 +1,6 @@
 package com.moscow.cineverse.screen.series_details.series_recommendation
 
+import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -64,6 +65,7 @@ fun SeriesRecommendationScreen(
     )
 }
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun SeriesRecommendationScreenContent(
     title: String,

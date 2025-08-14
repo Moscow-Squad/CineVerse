@@ -1,5 +1,8 @@
 package com.moscow.cineverse.screen.explore.component
 
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -38,6 +41,7 @@ import com.moscow.cineverse.utlis.ViewMode
 import com.moscow.cinverse.presentation.R
 import kotlinx.coroutines.flow.distinctUntilChanged
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun ExploreMainContent(
     uiState: ExploreScreenState,
@@ -46,6 +50,9 @@ fun ExploreMainContent(
     interactionListener: ExploreInteractionListener,
     modifier: Modifier = Modifier,
     onGenresVisibilityChange: (Boolean) -> Unit = {},
+    // Add shared transition scope parameters
+    sharedTransitionScope: SharedTransitionScope? = null,
+    animatedVisibilityScope: AnimatedVisibilityScope? = null,
 ) {
     var lastScrollOffset by remember { mutableFloatStateOf(0f) }
     var isScrollingDown by remember { mutableStateOf(false) }
@@ -154,7 +161,10 @@ fun ExploreMainContent(
                                     movie = item,
                                     viewMode = uiState.viewMode,
                                     enableBlur = uiState.enableBlur,
-                                    onMovieClick = { interactionListener.onMediaItemClicked(item) }
+                                    onMovieClick = { interactionListener.onMediaItemClicked(item) },
+                                    // Pass the shared transition scopes
+                                    sharedTransitionScope = sharedTransitionScope,
+                                    animatedVisibilityScope = animatedVisibilityScope
                                 )
                             }
 

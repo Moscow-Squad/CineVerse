@@ -1,5 +1,6 @@
 package com.moscow.cineverse.screen.see_more
 
+import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -30,6 +31,7 @@ import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.screen.explore.component.ViewModeToggleButton
 import com.moscow.cineverse.utlis.ViewMode
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun <T : Any> SeeMoreContent(
     uiState: SeeMoreUiState,
