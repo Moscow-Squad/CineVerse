@@ -1,4 +1,4 @@
-package com.moscow.cineverse.screen.cast_details.gallery
+package com.moscow.cineverse.screen.actor_gallery
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
@@ -15,7 +15,7 @@ class ActorGalleryViewModel @Inject constructor(
     private val getActorGalleryUseCase: GetActorGalleryUseCase,
     private val blurProvider: BlurProvider,
     savedStateHandle: SavedStateHandle
-) : BaseViewModel<ShowAllActorMoviesState, ActorGalleryEffect>(ShowAllActorMoviesState()),
+) : BaseViewModel<ActorGalleryState, ActorGalleryEffect>(ActorGalleryState()),
     ActorGalleryInteractionListener {
     private val castID = savedStateHandle.get<Int>(CastGalleryRoute.CAST_ID) ?: 0
     private val castName = savedStateHandle.get<String>(CastGalleryRoute.CAST_NAME) ?: ""
@@ -34,7 +34,7 @@ class ActorGalleryViewModel @Inject constructor(
         }
     }
 
-    fun getActor(actorId: Int, actorName: String){
+    fun getActor(actorId: Int, actorName: String) {
         updateState { it.copy(actorId = actorId, actorName = actorName) }
     }
 
@@ -76,6 +76,6 @@ class ActorGalleryViewModel @Inject constructor(
     }
 
     override fun backButtonClick() {
-        //todo enhance when make navigation
+        sendEvent(ActorGalleryEffect.NavigateBack)
     }
 }
