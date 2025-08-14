@@ -17,8 +17,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.moscow.cineverse.common_ui_state.MediaItemUiState
 import com.moscow.cineverse.component.ErrorContent
-import com.moscow.cineverse.component.HistoryTip
-import com.moscow.cineverse.component.MoviePosterCard
+import com.moscow.cineverse.component.MediaPosterCard
 import com.moscow.cineverse.component.NoHistoryScreen
 import com.moscow.cineverse.component.SwipeToDelete
 import com.moscow.cineverse.designSystem.component.app_bar.MovieAppBar
@@ -139,10 +138,10 @@ fun HistoryMediaItemCard(
     onMediaItemClick: (Int) -> Unit = {},
     getTitleOverride: ((MediaItemUiState) -> String)? = null,
 ) {
-    MoviePosterCard(
+    MediaPosterCard(
         modifier = modifier,
-        movie = movie,
-        onMovieClick = onMediaItemClick,
+        mediaItem = movie,
+        onMediaItemClick = onMediaItemClick,
         getTitleOverride = getTitleOverride,
         viewMode = ViewMode.LIST,
         enableBlur = "high"

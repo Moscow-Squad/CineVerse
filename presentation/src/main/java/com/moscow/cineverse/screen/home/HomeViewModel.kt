@@ -3,7 +3,6 @@ package com.moscow.cineverse.screen.home
 import androidx.lifecycle.viewModelScope
 import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.cineverse.base.handleException
-import com.moscow.cineverse.mapper.toMyCollectionUi
 import com.moscow.domain.model.Movie
 import com.moscow.domain.model.UserType
 import com.moscow.domain.repository.blur.BlurProvider
@@ -12,11 +11,11 @@ import com.moscow.domain.usecase.collection.GetUserCollectionsUseCase
 import com.moscow.domain.usecase.genre.GenreUseCase
 import com.moscow.domain.usecase.movie.GetMatchesYourVibesMoviesUseCase
 import com.moscow.domain.usecase.movie.GetRecentlyReleasedMoviesUseCase
-import com.moscow.domain.usecase.series.GetTopRatedTVShowsUseCase
 import com.moscow.domain.usecase.movie.GetTrendingMoviesUseCase
 import com.moscow.domain.usecase.movie.GetUpcomingMoviesUseCase
 import com.moscow.domain.usecase.preference.GetUserDetailsUseCase
 import com.moscow.domain.usecase.recently_viewed.GetRecentlyViewedMediaUseCase
+import com.moscow.domain.usecase.series.GetTopRatedTVShowsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll

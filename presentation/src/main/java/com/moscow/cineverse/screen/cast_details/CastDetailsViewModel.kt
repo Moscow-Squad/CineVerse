@@ -4,10 +4,10 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.cineverse.base.handleException
+import com.moscow.cineverse.common_ui_state.MediaItemUiState
 import com.moscow.cineverse.navigation.routes.CastDetailsRoute
 import com.moscow.cineverse.screen.cast_details.CastDetailsUiState.SocialMediaLinks
 import com.moscow.domain.model.Actor
-import com.moscow.domain.model.Movie
 import com.moscow.domain.repository.blur.BlurProvider
 import com.moscow.domain.usecase.actor.GetActorBestMoviesUseCase
 import com.moscow.domain.usecase.actor.GetActorDetailsUseCase
@@ -54,22 +54,22 @@ class CastDetailsViewModel @Inject constructor(
     }
 
     private fun onActorDetailsSuccess(actor: Actor) {
-        updateState { currentState ->
-            currentState.copy(
-                actor = actor,
-                isLoading = false,
-                shouldShowError = false,
-                errorMessage = 0,
-                socialMediaLinks = SocialMediaLinks(
-                    youtube = actor.youtubeLink.takeIf { it.isNotEmpty() },
-                    facebook = actor.facebookLink.takeIf { it.isNotEmpty() },
-                    instagram = actor.instagramLink.takeIf { it.isNotEmpty() },
-                    twitter = actorDetails.twitterLink,
-                    tiktok = actorDetails.tiktokLink
-                ),
-                isContentEmpty = false
-            )
-        }
+//        updateState { currentState ->
+//            currentState.copy(
+//                actor = actor,
+//                isLoading = false,
+//                shouldShowError = false,
+//                errorMessage = 0,
+//                socialMediaLinks = SocialMediaLinks(
+//                    youtube = actor.youtubeLink.takeIf { it.isNotEmpty() },
+//                    facebook = actor.facebookLink.takeIf { it.isNotEmpty() },
+//                    instagram = actor.instagramLink.takeIf { it.isNotEmpty() },
+//                    twitter = actorDetails.twitterLink,
+//                    tiktok = actorDetails.tiktokLink
+//                ),
+//                isContentEmpty = false
+//            )
+//        }
 
         loadGalleryImages()
         loadBestOfMovies()
@@ -102,16 +102,15 @@ class CastDetailsViewModel @Inject constructor(
     }
 
     private fun loadBestOfMovies() {
-
         launchWithResult(
             action = { getActorBestMoviesUseCase(actorId) },
             onSuccess = { movies ->
-                updateState { currentState ->
-                    currentState.copy(
-                        movies = movies,
-                        isLoadingMovies = false
-                    )
-                }
+//                updateState { currentState ->
+//                    currentState.copy(
+//                        movies = movies.,
+//                        isLoadingMovies = false
+//                    )
+//                }
             },
             onError = { e ->
                 updateState { currentState ->
@@ -196,7 +195,7 @@ class CastDetailsViewModel @Inject constructor(
     }
 
 
-    override fun onMovieClick(movie: Movie) {
+    override fun onMovieClick(movie: MediaItemUiState) {
         sendEvent(CastDetailsEffect.NavigateToMovie(movie.id))
     }
 

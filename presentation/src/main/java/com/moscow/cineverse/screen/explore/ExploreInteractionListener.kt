@@ -1,5 +1,6 @@
 package com.moscow.cineverse.screen.explore
 
+import com.moscow.cineverse.common_ui_state.MediaItemUiState
 import com.moscow.cineverse.utlis.ViewMode
 
 interface ExploreInteractionListener {

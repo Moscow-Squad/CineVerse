@@ -41,24 +41,23 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.moscow.cineverse.component.MovieListSection
 import com.moscow.cineverse.component.ErrorContent
-import com.moscow.cineverse.component.MoviePosterCard
+import com.moscow.cineverse.component.MediaPosterCard
+import com.moscow.cineverse.component.MovieListSection
 import com.moscow.cineverse.component.SectionTitle
 import com.moscow.cineverse.designSystem.component.app_bar.MovieAppBar
 import com.moscow.cineverse.designSystem.component.blur.OnBlurContent
 import com.moscow.cineverse.designSystem.component.blur.RemoteImagePlaceholder
 import com.moscow.cineverse.designSystem.component.wrapper.MovieScaffold
 import com.moscow.cineverse.designSystem.theme.Theme
+import com.moscow.cineverse.details.common.InfoSection
 import com.moscow.cineverse.image_viewer.component.SafeImageViewer
-import com.moscow.cineverse.mapper.toFormattedBirthDate
-import com.moscow.cineverse.mapper.toMovieItemUi
+import com.moscow.cineverse.mapper.formatDate
 import com.moscow.cineverse.screen.cast_details.CastDetailsUiState.SocialMediaLinks
 import com.moscow.cineverse.screen.cast_details.composable.CastDetailsEffectHandlerWithContext
 import com.moscow.cineverse.screen.cast_details.composable.EmptyContent
 import com.moscow.cineverse.screen.cast_details.composable.LoadingContent
 import com.moscow.cineverse.screen.cast_details.gallery.GallerySection
-import com.moscow.cineverse.screen.movie_details.InfoSection
 import com.moscow.cineverse.utlis.ViewMode
 import com.moscow.cineverse.utlis.noRibbleClick
 import com.moscow.cinverse.presentation.R
@@ -168,16 +167,16 @@ fun ActorMoviesSection(
                 R.string.best_of,
                 uiState.actor?.name.orEmpty()
             ),
-            movies = uiState.movies.take(10),
+            mediaItems = uiState.movies.take(10),
             onClickShowMore = interactionListener::onShowMoreMovies,
             onClickPoster = interactionListener::onMovieClick,
             movieCardContent = { movie, cardModifier, onMovieClick ->
-                MoviePosterCard(
-                    movie = movie.toMovieItemUi(),
+                MediaPosterCard(
+                    mediaItem = movie,
                     viewMode = ViewMode.GRID,
                     showRating = true,
                     enableBlur = uiState.enableBlur,
-                    onMovieClick = { onMovieClick(movie) },
+                    onMediaItemClick = { onMovieClick(movie) },
                     showTitle = true,
                     modifier = cardModifier
                 )
@@ -252,7 +251,7 @@ fun ActorMainDetailsSection(
             name = actor.name,
             date = stringResource(
                 R.string.born_on,
-                actor.birthDate?.toFormattedBirthDate() ?: ""
+                actor.birthDate?.formatDate() ?: ""
             ),
             location = actor.placeOfBirth,
             scrollState = null,

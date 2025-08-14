@@ -1,12 +1,12 @@
 package com.moscow.cineverse.screen.cast_details
 
+import com.moscow.cineverse.common_ui_state.MediaItemUiState
 import com.moscow.domain.model.Actor
-import com.moscow.domain.model.Movie
 
 data class CastDetailsUiState(
     val isLoading: Boolean = false,
     val actor: Actor? = null,
-    val movies: List<Movie> = emptyList(),
+    val movies: List<MediaItemUiState> = emptyList(),
     val images: List<String> = emptyList(),
     val socialMediaLinks: SocialMediaLinks = SocialMediaLinks(),
     val shouldShowError: Boolean = false,

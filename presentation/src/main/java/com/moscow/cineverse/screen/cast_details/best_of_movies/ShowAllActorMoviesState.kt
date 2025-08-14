@@ -1,5 +1,6 @@
 package com.moscow.cineverse.screen.cast_details.best_of_movies
 
+import com.moscow.cineverse.common_ui_state.MediaItemUiState
 import com.moscow.cineverse.screen.explore.ExploreScreenState.GenreUiState
 import com.moscow.cineverse.utlis.ViewMode
 

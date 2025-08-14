@@ -3,7 +3,7 @@ package com.moscow.cineverse.screen.home.components
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import com.moscow.cineverse.component.MoviePosterCard
+import com.moscow.cineverse.component.MediaPosterCard
 import com.moscow.cineverse.component.MovieListSection
 import com.moscow.cineverse.screen.home.HomeFeaturedItems
 
@@ -19,7 +19,7 @@ fun FeaturedMovies(
 ) {
     MovieListSection(
         title = stringResource(type.titleResource),
-        movies = displayMovies,
+        mediaItems = displayMovies,
         paddingHorizontal = 16,
         onClickShowMore = {
             if (onShowMoreClick != null)
@@ -31,9 +31,9 @@ fun FeaturedMovies(
             onMovieClick(movie)
         },
         movieCardContent = { movie, cardModifier, onMovieClick ->
-            MoviePosterCard(
-                movie = movie,
-                onMovieClick = { movieId -> onMovieClick(movie) },
+            MediaPosterCard(
+                mediaItem = movie,
+                onMediaItemClick = { movieId -> onMovieClick(movie) },
                 modifier = cardModifier,
                 enableBlur = enableBlur,
             )

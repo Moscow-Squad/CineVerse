@@ -3,7 +3,7 @@ package com.moscow.cineverse.navigation.routes
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
-import com.moscow.cineverse.screen.series_details.SeriesDetailsScreen
+import com.moscow.cineverse.details.series_details.SeriesDetailsScreen
 import kotlinx.serialization.Serializable
 
 @Serializable
