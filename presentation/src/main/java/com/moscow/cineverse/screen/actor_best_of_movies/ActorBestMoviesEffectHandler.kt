@@ -1,6 +1,5 @@
 package com.moscow.cineverse.screen.actor_best_of_movies
 
-import com.moscow.cineverse.screen.actor_gallery.ActorGalleryEffect
 
 object ActorBestMoviesEffectHandler {
     fun handleEffect(

@@ -3,7 +3,6 @@ package com.moscow.cineverse.screen.cast_detials.components
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import com.moscow.cineverse.component.MovieListSection
 import com.moscow.cineverse.component.MoviePosterCard
 import com.moscow.cineverse.mapper.toMovieItemUi
