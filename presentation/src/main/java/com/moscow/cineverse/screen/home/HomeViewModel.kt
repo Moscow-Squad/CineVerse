@@ -6,8 +6,8 @@ import com.moscow.cineverse.base.handleException
 import com.moscow.cineverse.mapper.toMyCollectionUi
 import com.moscow.domain.model.Movie
 import com.moscow.domain.model.UserType
-import com.moscow.domain.repository.blur.BlurProvider
-import com.moscow.domain.repository.language.LanguageProvider
+import com.moscow.domain.service.blur.BlurProvider
+import com.moscow.domain.service.language.LanguageProvider
 import com.moscow.domain.usecase.collection.GetUserCollectionsUseCase
 import com.moscow.domain.usecase.genre.GenreUseCase
 import com.moscow.domain.usecase.movie.GetMatchesYourVibesMoviesUseCase

@@ -9,7 +9,7 @@ import com.moscow.cineverse.navigation.routes.CastBestOfMovieRoute
 import com.moscow.cineverse.navigation.routes.SeriesDetailsRoute
 import com.moscow.cineverse.screen.explore.toUi
 import com.moscow.domain.model.Movie
-import com.moscow.domain.repository.blur.BlurProvider
+import com.moscow.domain.service.blur.BlurProvider
 import com.moscow.domain.usecase.actor.GetActorBestMoviesUseCase
 import com.moscow.domain.usecase.genre.GenreUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel

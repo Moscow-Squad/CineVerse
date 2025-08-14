@@ -4,9 +4,9 @@ import androidx.lifecycle.viewModelScope
 import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.domain.model.UserType
 import com.moscow.domain.model.UserInfo
-import com.moscow.domain.repository.blur.BlurProvider
-import com.moscow.domain.repository.language.LanguageProvider
-import com.moscow.domain.repository.theme.ThemeProvider
+import com.moscow.domain.service.blur.BlurProvider
+import com.moscow.domain.service.language.LanguageProvider
+import com.moscow.domain.service.theme.ThemeProvider
 import com.moscow.domain.usecase.preference.GetUserDetailsUseCase
 import com.moscow.domain.usecase.preference.RemoveUserDetailsUseCase
 import com.moscow.domain.usecase.profile.GetAccountDetailsUseCase

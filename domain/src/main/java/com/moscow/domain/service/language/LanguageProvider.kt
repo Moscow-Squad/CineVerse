@@ -1,4 +1,4 @@
-package com.moscow.domain.repository.language
+package com.moscow.domain.service.language
 
 interface LanguageProvider {
     suspend fun setLanguage(language: String)

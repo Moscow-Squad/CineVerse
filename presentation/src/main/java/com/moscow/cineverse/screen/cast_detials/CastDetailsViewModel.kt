@@ -8,7 +8,7 @@ import com.moscow.cineverse.screen.cast_detials.CastDetailsUiState.SocialMediaLi
 import com.moscow.cinverse.presentation.R
 import com.moscow.domain.model.Actor
 import com.moscow.domain.model.Movie
-import com.moscow.domain.repository.blur.BlurProvider
+import com.moscow.domain.service.blur.BlurProvider
 import com.moscow.domain.usecase.actor.GetActorBestMoviesUseCase
 import com.moscow.domain.usecase.actor.GetActorDetailsUseCase
 import com.moscow.domain.usecase.actor.GetActorGalleryUseCase
