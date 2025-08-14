@@ -6,7 +6,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import com.moscow.cineverse.navigation.AppDestination
 import com.moscow.cineverse.screen.login.WebViewBrowser
-import com.moscow.cineverse.screen.movie_details.MovieDetailsScreen
 import kotlinx.serialization.Serializable
 
 @Serializable

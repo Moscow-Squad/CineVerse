@@ -22,15 +22,15 @@ import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import com.moscow.cineverse.component.EmptyState
-import com.moscow.cineverse.component.MoviePosterCard
+import com.moscow.cineverse.component.MediaPosterCard
 import com.moscow.cineverse.component.NoInternetScreen
 import com.moscow.cineverse.designSystem.component.app_bar.MovieAppBar
 import com.moscow.cineverse.designSystem.component.card.InfoCard
 import com.moscow.cineverse.designSystem.component.indicator.MovieCircularProgressBar
 import com.moscow.cineverse.designSystem.component.wrapper.MovieScaffold
 import com.moscow.cineverse.designSystem.theme.Theme
+import com.moscow.cineverse.details.common.MovieRatingBar
 import com.moscow.cineverse.screen.explore.component.ExploreTabsSection
-import com.moscow.cineverse.screen.movieSeriesDetails.MovieRatingBar
 import com.moscow.cineverse.utlis.ViewMode
 import com.moscow.cinverse.presentation.R
 
@@ -148,9 +148,9 @@ private fun MyRatingsList(
                         )
                     }
 
-                    MoviePosterCard(
-                        movie = mediaItem.mediaItem,
-                        onMovieClick = { onMediaItemClicked(mediaItem.mediaItem) },
+                    MediaPosterCard(
+                        mediaItem = mediaItem.mediaItem,
+                        onMediaItemClick = { onMediaItemClicked(mediaItem.mediaItem) },
                         viewMode = ViewMode.LIST,
                         enableBlur = enableBlur
                     )

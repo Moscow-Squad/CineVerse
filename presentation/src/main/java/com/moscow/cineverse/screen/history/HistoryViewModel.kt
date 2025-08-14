@@ -1,13 +1,10 @@
 package com.moscow.cineverse.screen.history
 
 import com.moscow.cineverse.base.BaseViewModel
-import com.moscow.cineverse.screen.home.toMediaItemUiState
-import com.moscow.domain.model.MediaType
-import com.moscow.domain.usecase.recently_viewed.DeleteRecentlyViewedItemByIdUseCase
-import com.moscow.domain.usecase.collection.CloseCollectionDetailsTipUseCase
-import com.moscow.domain.usecase.collection.GetShowCollectionDetailsTipUseCase
-import com.moscow.domain.usecase.DeleteRecentlyViewedItemByIdUseCase
+import com.moscow.cineverse.common_ui_state.MediaItemUiState
+import com.moscow.cineverse.common_ui_state.MediaItemUiState.MediaType
 import com.moscow.domain.usecase.recently_viewed.CloseHistoryTipUseCase
+import com.moscow.domain.usecase.recently_viewed.DeleteRecentlyViewedItemByIdUseCase
 import com.moscow.domain.usecase.recently_viewed.GetRecentlyViewedMediaUseCase
 import com.moscow.domain.usecase.recently_viewed.GetShowHistoryTipUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -31,12 +28,12 @@ class HistoryViewModel @Inject constructor(
         launchWithFlow(
             flowAction = { getRecentlyViewedMediaUseCase() },
             onSuccess = { result ->
-                updateState {
-                    it.copy(
-                        youRecentlyViewed = result.toMediaItemUiState(),
-                        isContentEmpty = result.isEmpty()
-                    )
-                }
+//                updateState {
+//                    it.copy(
+//                        youRecentlyViewed = result,
+//                        isContentEmpty = result.isEmpty()
+//                    )
+//                }
             },
             onStart = {
                 updateState {

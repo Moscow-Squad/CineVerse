@@ -2,6 +2,7 @@ package com.moscow.cineverse.screen.home
 
 import com.moscow.cineverse.common_ui_state.MediaItemUiState
 import com.moscow.cineverse.screen.explore.ExploreScreenState
+import com.moscow.cineverse.screen.my_collections.MyCollectionsUiState
 
 
 data class HomeUiState(
@@ -15,7 +16,7 @@ data class HomeUiState(
     val topRatedTvShows: List<MediaItemUiState> = emptyList(),
     val youRecentlyViewed: List<MediaItemUiState> = emptyList(),
     val movieGenre: List<ExploreScreenState.GenreUiState> = emptyList(),
-    val collections: List<MyCollectionUiState> = emptyList(),
+    val collections: List<MyCollectionsUiState> = emptyList(),
     val enableBlur: String = "high",
     val cashLanguage: String = "en",
 ){
