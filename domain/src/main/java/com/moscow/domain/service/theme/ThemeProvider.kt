@@ -1,4 +1,4 @@
-package com.moscow.domain.repository.theme
+package com.moscow.domain.service.theme
 
 import kotlinx.coroutines.flow.Flow
 

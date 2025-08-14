@@ -1,4 +1,4 @@
-package com.moscow.domain.repository.blur
+package com.moscow.domain.service.blur
 
 import kotlinx.coroutines.flow.Flow
 

@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.app.LocaleManagerCompat
 import androidx.core.os.LocaleListCompat
-import com.moscow.domain.repository.language.LanguageProvider
+import com.moscow.domain.service.language.LanguageProvider
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 

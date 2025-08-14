@@ -8,7 +8,7 @@ import com.moscow.data_source.remote.AuthenticationRemoteDataSource
 import com.moscow.data_source.remote.MovieRemoteDataSource
 import com.moscow.data_source.remote.SearchRemoteDataSource
 import com.moscow.data_source.remote.SeriesRemoteDataSource
-import com.moscow.domain.repository.language.LanguageProvider
+import com.moscow.domain.service.language.LanguageProvider
 import com.moscow.data_source.remote.ProfileRemoteDataSource
 import com.moscow.remote.data_source.ActorRemoteDataSourceImpl
 import com.moscow.remote.data_source.CollectionRemoteDataSourceImpl
