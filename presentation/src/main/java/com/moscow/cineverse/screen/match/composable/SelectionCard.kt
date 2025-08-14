@@ -7,13 +7,11 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -29,6 +27,8 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.moscow.cineverse.designSystem.component.wrapper.MovieIcon
+import com.moscow.cineverse.designSystem.component.wrapper.MovieText
 import com.moscow.cineverse.designSystem.theme.CineVerseTheme
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.screen.match.QuestionUiState
@@ -39,6 +39,7 @@ fun SelectionCard(
     onClick: () -> Unit,
     questionUiState: QuestionUiState,
     modifier: Modifier = Modifier,
+    itemsPaddingValues: PaddingValues = PaddingValues(12.dp),
     cardBackgroundColor: Color = Theme.colors.background.card,
     cardSelectionBackgroundColor: Color = Theme.colors.brand.tertiary,
     borderSelectionColor: Color = Theme.colors.brand.secondary,
@@ -59,7 +60,6 @@ fun SelectionCard(
     )
     Row(
         modifier = modifier
-            .fillMaxWidth()
             .clip(RoundedCornerShape(Theme.radius.large))
             .background(backgroundColor)
             .border(
@@ -67,7 +67,7 @@ fun SelectionCard(
                 color = borderColor,
                 shape = RoundedCornerShape(Theme.radius.large)
             )
-            .padding(12.dp)
+            .padding(itemsPaddingValues)
             .clickable { onClick() },
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(8.dp)
@@ -83,18 +83,18 @@ fun SelectionCard(
                     ),
                 contentAlignment = Alignment.Center
             ) {
-                Icon(
+                MovieIcon(
                     painter = painterResource(questionUiState.iconResource),
                     contentDescription = null,
                     tint = Theme.colors.brand.primary,
-                    modifier = Modifier.size(16.dp)
+                    modifier = Modifier.size(16.dp),
                 )
             }
         }
 
 
 
-        Text(
+        MovieText(
             text = buildAnnotatedString {
                 withStyle(style = SpanStyle(color = textColor)) {
                     append(questionUiState.name)
@@ -104,7 +104,7 @@ fun SelectionCard(
                         append(" (${questionUiState.description})")
                     }
                 }
-            },
+            }.toString(),
             style = Theme.textStyle.body.medium.medium,
         )
     }

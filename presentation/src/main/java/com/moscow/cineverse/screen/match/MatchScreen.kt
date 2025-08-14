@@ -1,6 +1,7 @@
 package com.moscow.cineverse.screen.match
 
 import android.content.Intent
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -9,6 +10,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.core.net.toUri
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.screen.match.pages.MatchQuestionsPageContent
 import com.moscow.cineverse.screen.match.pages.MatchResultsPageContent
 import com.moscow.cineverse.screen.match.pages.MatchStartPageContent
@@ -67,8 +69,14 @@ fun MatchScreen(
 fun MatchContent(
     state: MatchUiState,
     listener: MatchInteractionListener,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
+    val nextButtonBackground by animateColorAsState(
+        if (state.isNextButtonActivated) Theme.colors.button.primary else Theme.colors.button.disabled
+    )
+    val nextButtonTextColor by animateColorAsState(
+        if (state.isNextButtonActivated) Theme.colors.button.onPrimary else Theme.colors.button.onDisabled
+    )
 
     when (state.currentPage) {
         MatchPages.StartPage -> MatchStartPageContent(
@@ -79,11 +87,11 @@ fun MatchContent(
         MatchPages.QuestionsPage -> MatchQuestionsPageContent(
             modifier = modifier,
             onClickNextQuestion = listener::onClickNextQuestion,
-            onClickFinishMatching = listener::onClickFinishMatching,
             state = state,
-            currentQuestionIndex = state.currentQuestionIndex,
             onAnswerSelected = listener::onAnswerSelected,
-            onNavigateBack = listener::onNavigateBack
+            onNavigateBack = listener::onNavigateBack,
+            nextButtonColor = nextButtonBackground,
+            nextButtonTextColor = nextButtonTextColor
         )
 
         MatchPages.ResultsPage -> MatchResultsPageContent(

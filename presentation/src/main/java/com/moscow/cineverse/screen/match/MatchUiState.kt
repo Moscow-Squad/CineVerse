@@ -4,27 +4,39 @@ import androidx.annotation.DrawableRes
 import com.moscow.cineverse.screen.movie_details.MovieScreenState
 import com.moscow.cinverse.presentation.R
 import kotlinx.datetime.LocalDate
+import kotlin.collections.filter
 
 data class MatchUiState(
     val isLoading: Boolean = false,
     val currentPage: MatchPages = MatchPages.StartPage,
-    val moodQuestions: List<QuestionUiState> = getFakeQuestions(),
-    val genres: List<QuestionUiState> = getFakeGenres(),
-    val timeQuestions: List<QuestionUiState> = getFakeQuestions(),
-    val recentOrClassicQuestions: List<QuestionUiState> = getFakeQuestions(),
-    val currentQuestionIndex: Int = 1,
-    val matchProgress: Float = 0f,
-    val matchResults: List<MovieScreenState.MovieDetailsUiState> = getFakeMatchResults()
+    val moodQuestions: List<QuestionUiState> = getFakeMoods(),
+    val genreQuestions: List<QuestionUiState> = getFakeGenres(),
+    val timeQuestions: List<QuestionUiState> = getFakeTimeQuestions(),
+    val movieTypeQuestions: List<QuestionUiState> = getFakeMovieTypes(),
+    val currentQuestionType: QuestionType = QuestionType.MOOD,
+    val matchResults: List<MovieScreenState.MovieDetailsUiState> = getFakeMatchResults(),
+    val isLoadingRecommendations: Boolean = false,
 ) {
+    val matchProgress: Float =
+        currentQuestionType.ordinal.plus(1).toFloat() / QuestionType.entries.size
+    val isNextButtonActivated: Boolean = when (currentQuestionType) {
+        QuestionType.MOOD -> moodQuestions.any { it.isSelected }
+        QuestionType.GENRE -> genreQuestions.any { it.isSelected }
+        QuestionType.TIME -> timeQuestions.any { it.isSelected }
+        QuestionType.TYPE -> movieTypeQuestions.any { it.isSelected }
+    }
     val selectedMoodQuestions: List<QuestionUiState>
         get() = moodQuestions.filter { it.isSelected }
 
 
     val selectedGenres: List<QuestionUiState>
-        get() = genres.filter { it.isSelected }
+        get() = genreQuestions.filter { it.isSelected }
 
-    val selectedTimeQuestion: QuestionUiState
-        get() = timeQuestions.first { it.isSelected }
+    val selectedTimeQuestion: List<QuestionUiState>
+        get() = timeQuestions.filter { it.isSelected }
+
+    val selectedMovieTypeQuestion: List<QuestionUiState>
+        get() = movieTypeQuestions.filter { it.isSelected }
 
 }
 
@@ -35,21 +47,65 @@ data class MatchQuestion(
     val selectedAnswers: List<Int> = emptyList(),
 )
 
-private fun getFakeQuestions() = listOf(
+private fun getFakeMoods() = listOf(
     QuestionUiState(
         id = 1,
-        name = "What mood are you in?",
+        name = "Chill",
+        iconResource = R.drawable.headphone_icon
+    ),
+    QuestionUiState(
+        id = 2,
+        name = "Excited",
+        iconResource = R.drawable.flame_icon
+    ),
+    QuestionUiState(
+        id = 3,
+        name = "Emotional",
+        iconResource = R.drawable.heart_icon
+    ),
+    QuestionUiState(
+        id = 4,
+        name = "Curious",
+        iconResource = R.drawable.due_tone_search
+    )
+)
+
+private fun getFakeMovieTypes() = listOf(
+    QuestionUiState(
+        id = 1,
+        name = "Recent",
         iconResource = R.drawable.cine_verse_logo_splash
     ),
     QuestionUiState(
         id = 2,
-        name = "Pick a genre",
+        name = "Classic",
         iconResource = com.moscow.cineverse.design_system.R.drawable.colored_cineverse_logo
     ),
     QuestionUiState(
         id = 3,
-        name = "How much time do you have?",
+        name = "Both",
         iconResource = R.drawable.folder_icon
+    )
+)
+
+private fun getFakeTimeQuestions() = listOf(
+    QuestionUiState(
+        id = 1,
+        name = "Short",
+        description = "under 90 min",
+        iconResource = R.drawable.time_short_icon
+    ),
+    QuestionUiState(
+        id = 2,
+        name = "Medium",
+        description = "between 90 & 120 min",
+        iconResource = R.drawable.time_medium_icon
+    ),
+    QuestionUiState(
+        id = 3,
+        name = "Long",
+        description = "more than 120 min",
+        iconResource = R.drawable.time_long_icon
     )
 )
 
