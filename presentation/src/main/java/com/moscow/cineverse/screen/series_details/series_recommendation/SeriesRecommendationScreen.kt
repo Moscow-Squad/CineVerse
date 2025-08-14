@@ -41,10 +41,8 @@ import com.moscow.cineverse.designSystem.component.app_bar.MovieAppBar
 import com.moscow.cineverse.designSystem.component.indicator.MovieCircularProgressBar
 import com.moscow.cineverse.designSystem.component.wrapper.MovieScaffold
 import com.moscow.cineverse.screen.explore.component.ViewModeToggleButton
-import com.moscow.cineverse.screen.explore.toUi
 import com.moscow.cineverse.utlis.ViewMode
 import com.moscow.cinverse.presentation.R
-import com.moscow.domain.model.Series
 
 @Composable
 fun SeriesRecommendationScreen(
@@ -116,29 +114,30 @@ fun SeriesRecommendationScreenContent(
             } else {
                 Box(modifier = Modifier.fillMaxSize()) {
                     SharedTransitionLayout{
-                        LazyVerticalGrid(
-                            columns = if (uiState.viewMode == ViewMode.GRID)
-                                GridCells.Fixed(2)
-                            else
-                                GridCells.Fixed(1),
-                            contentPadding = PaddingValues(
-                                vertical = 16.dp,
-                                horizontal = 16.dp
-                            ),
-                            verticalArrangement = Arrangement.spacedBy(16.dp),
-                            horizontalArrangement = Arrangement.spacedBy(12.dp),
-                            modifier = Modifier.fillMaxSize()
-                        ) {
-                            items(recommendations.itemCount) { index ->
-                                val recommendation = recommendations[index]
-                                if (recommendation != null) {
-                                    AnimatedContent(
-                                        targetState = uiState.viewMode,
-                                        transitionSpec = {
-                                            fadeIn(tween(300)) togetherWith fadeOut(tween(300))
-                                        },
-                                        label = "view_mode_transition"
-                                    ){
+                        AnimatedContent(
+                            targetState = uiState.viewMode,
+                            transitionSpec = {
+                                fadeIn(tween(300)) togetherWith fadeOut(tween(300))
+                            },
+                            label = "view_mode_transition"
+                        ){
+                            LazyVerticalGrid(
+                                state = gridState,
+                                columns = if (uiState.viewMode == ViewMode.GRID)
+                                    GridCells.Fixed(2)
+                                else
+                                    GridCells.Fixed(1),
+                                contentPadding = PaddingValues(
+                                    vertical = 16.dp,
+                                    horizontal = 16.dp
+                                ),
+                                verticalArrangement = Arrangement.spacedBy(16.dp),
+                                horizontalArrangement = Arrangement.spacedBy(12.dp),
+                                modifier = Modifier.fillMaxSize()
+                            ) {
+                                items(recommendations.itemCount) { index ->
+                                    val recommendation = recommendations[index]
+                                    if (recommendation != null) {
                                         MoviePosterCard(
                                             movie = recommendation,
                                             viewMode = uiState.viewMode,
@@ -153,22 +152,22 @@ fun SeriesRecommendationScreenContent(
                                         )
                                     }
                                 }
-                            }
-                            if (recommendations.loadState.append is LoadState.Loading) {
-                                item(span = { GridItemSpan(maxLineSpan) }) {
-                                    Box(
-                                        modifier = Modifier.height(214.dp),
-                                        contentAlignment = Alignment.Center
-                                    ) {
-                                        MovieCircularProgressBar()
+                                if (recommendations.loadState.append is LoadState.Loading) {
+                                    item(span = { GridItemSpan(maxLineSpan) }) {
+                                        Box(
+                                            modifier = Modifier.height(214.dp),
+                                            contentAlignment = Alignment.Center
+                                        ) {
+                                            MovieCircularProgressBar()
+                                        }
                                     }
                                 }
-                            }
-                            if (recommendations.loadState.append is LoadState.Error) {
-                                item(span = { GridItemSpan(maxLineSpan) }) {
-                                    NoInternetScreen(
-                                        onRetry = { recommendations.retry() }
-                                    )
+                                if (recommendations.loadState.append is LoadState.Error) {
+                                    item(span = { GridItemSpan(maxLineSpan) }) {
+                                        NoInternetScreen(
+                                            onRetry = { recommendations.retry() }
+                                        )
+                                    }
                                 }
                             }
                         }
