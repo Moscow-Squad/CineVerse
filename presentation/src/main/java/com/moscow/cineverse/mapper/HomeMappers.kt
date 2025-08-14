@@ -47,3 +47,4 @@ fun Collection.toUi() = CollectionUiState(
     numberOfItems = itemCount,
     isLoading = false
 )
+

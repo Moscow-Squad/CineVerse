@@ -40,8 +40,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.lerp
 import androidx.compose.ui.util.lerp
 import androidx.compose.ui.zIndex
+import com.moscow.cineverse.common_ui_state.MediaItemUiState
 import com.moscow.cineverse.component.MoviePosterCard
 import com.moscow.cineverse.designSystem.theme.Theme
+import com.moscow.cineverse.utlis.doubleShadowDrop
 import kotlinx.coroutines.delay
 import kotlin.math.absoluteValue
 
@@ -180,38 +182,3 @@ fun HomeHeaderSlider(
         )
     }
 }
-
-private fun Modifier.dropShadow(
-    shape: Shape,
-    color: Color = Color.Black,
-    blur: Dp = 80.dp,
-    offsetY: Dp = 4.dp,
-    offsetX: Dp = 0.dp,
-    spread: Dp = 0.dp,
-) = this.drawBehind {
-    val shadowSize = Size(size.width + spread.toPx(), size.height + spread.toPx())
-    val shadowOutline = shape.createOutline(shadowSize, layoutDirection, this)
-    val paint = Paint()
-    paint.color = color
-    if (blur.toPx() > 0) {
-        paint.asFrameworkPaint().apply {
-            maskFilter = BlurMaskFilter(blur.toPx(), BlurMaskFilter.Blur.NORMAL)
-        }
-    }
-
-    drawIntoCanvas { canvas ->
-        canvas.save()
-        canvas.translate(offsetX.toPx(), offsetY.toPx())
-        canvas.drawOutline(shadowOutline, paint)
-        canvas.restore()
-    }
-}
-
-fun Modifier.doubleShadowDrop(
-    shape: Shape,
-    offset: Dp = 6.dp,
-    blur: Dp = 80.dp,
-    alpha: Float = 0.6f
-) = this
-    .dropShadow(shape, Color.Black.copy(alpha), blur = blur, offsetY = -offset)
-    .dropShadow(shape, Color.Black.copy(alpha), blur = blur, offsetY = offset)
