@@ -168,7 +168,6 @@ private fun GridMovieCard(
                         Modifier.aspectRatio(0.75f)
                     }
                 )
-                .clip(RoundedCornerShape(Theme.radius.large))
                 .then(
                     if (sharedTransitionScope != null && animatedVisibilityScope != null) {
                         with(sharedTransitionScope) {
@@ -181,7 +180,8 @@ private fun GridMovieCard(
                             )
                         }
                     } else Modifier
-                ),
+                )
+                .clip(RoundedCornerShape(Theme.radius.large)),
             shape = RoundedCornerShape(Theme.radius.large),
             elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
             colors = CardDefaults.cardColors(containerColor = Theme.colors.background.card)
@@ -377,13 +377,6 @@ private fun ListMovieCard(
                     modifier = Modifier
                         .width(64.dp)
                         .fillMaxHeight()
-                        .clip(
-                            RoundedCornerShape(
-                                topStart = Theme.radius.large,
-                                topEnd = Theme.radius.large,
-                                bottomStart = Theme.radius.large
-                            )
-                        )
                         .then(
                             if (sharedTransitionScope != null && animatedVisibilityScope != null) {
                                 with(sharedTransitionScope) {
@@ -396,6 +389,12 @@ private fun ListMovieCard(
                                     )
                                 }
                             } else Modifier
+                        ).clip(
+                            RoundedCornerShape(
+                                topStart = Theme.radius.large,
+                                topEnd = Theme.radius.large,
+                                bottomStart = Theme.radius.large
+                            )
                         ),
                     isBlurEnabled = enableBlur,
                     placeholderContent = {
