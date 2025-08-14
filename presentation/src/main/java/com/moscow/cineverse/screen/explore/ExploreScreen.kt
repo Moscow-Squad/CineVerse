@@ -63,32 +63,6 @@ fun ExploreScreen(
     )
 }
 
-private fun handleEffects(
-    event: ExploreScreenEffects,
-    navigateToCastDetails: (Int) -> Unit,
-    navigateToMovieDetails: (Int) -> Unit,
-    navigateToSeriesDetails: (Int) -> Unit,
-) {
-    when (event) {
-        is ExploreScreenEffects.ActorClicked -> {
-            navigateToCastDetails(event.actorId)
-        }
-
-        is ExploreScreenEffects.GenreSelected -> {}
-        ExploreScreenEffects.LoadData -> {}
-        is ExploreScreenEffects.MovieClicked -> {
-            navigateToMovieDetails(event.movieId)
-        }
-
-        ExploreScreenEffects.RefreshRequested -> {}
-        is ExploreScreenEffects.TabSelected -> {}
-        is ExploreScreenEffects.ViewModeChanged -> {}
-        is ExploreScreenEffects.SeriesClicked -> {
-            navigateToSeriesDetails(event.seriesId)
-        }
-    }
-}
-
 @Composable
 private fun ExploreScreenContent(
     uiState: ExploreScreenState,
