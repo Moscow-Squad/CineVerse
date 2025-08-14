@@ -22,10 +22,9 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.moscow.cineverse.utlis.ViewMode
 import com.moscow.cineverse.designSystem.theme.Theme
+import com.moscow.cineverse.utlis.ViewMode
 import com.moscow.cinverse.presentation.R
-
 
 @Composable
 fun ViewModeToggleButton(
@@ -58,11 +57,20 @@ fun ViewModeToggleButton(
     ) {
         Box(
             modifier = Modifier
-                .offset(x = indicatorOffsetX)
-                .width(40.dp)
+                .offset(x = indicatorOffsetX + 1.dp, y = 1.dp)
+                .width(38.dp)
                 .height(38.dp)
-                .clip(RoundedCornerShape(Theme.radius.small))
-                .background(Theme.colors.brand.tertiary)
+ 
+                .background(
+                    color = Theme.colors.brand.tertiary,
+                    shape = RoundedCornerShape(Theme.radius.large)
+                )
+                .border(
+                    width = 1.dp,
+                    color = Theme.colors.brand.secondary,
+                    shape = RoundedCornerShape(Theme.radius.large)
+                )
+
         )
         Row(
             modifier = Modifier.fillMaxSize(),
