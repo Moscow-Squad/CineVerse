@@ -7,15 +7,12 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.togetherWith
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -32,7 +29,7 @@ import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.moscow.cineverse.component.NoInternetScreen
 import com.moscow.cineverse.designSystem.component.indicator.MovieCircularProgressBar
-import com.moscow.cineverse.designSystem.theme.Theme
+import com.moscow.cineverse.designSystem.component.wrapper.MovieScaffold
 import com.moscow.cineverse.screen.explore.component.ExploreMainContent
 import com.moscow.cineverse.screen.explore.component.ExploreSearchBarSection
 import com.moscow.cineverse.screen.explore.component.ExploreTabsSection
@@ -129,51 +126,47 @@ private fun ExploreScreenContent(
             searchBarVisible = true
         }
     }
-
-    Surface(
-        modifier = modifier
-            .background(Theme.colors.background.screen)
-            .systemBarsPadding()
-            .fillMaxSize(),
-        color = Theme.colors.background.screen
-    ) {
-        // Wrap the entire content in SharedTransitionLayout
-        SharedTransitionLayout {
-            Box(modifier = Modifier.fillMaxSize()) {
-                Column(modifier = Modifier.fillMaxSize()) {
-                    ExploreSearchBarSection(
-                        uiState,
-                        interactionListener,
-                        isVisible = searchBarVisible
-                    )
-                    ExploreTabsSection(
-                        selectedTab = uiState.selectedTab,
-                        onTabSelected = interactionListener::onTabSelected,
-                        showAllTabs = uiState.isSearch
-                    )
-
-                    Box(modifier = Modifier.fillMaxSize()) {
-                        when (contentList.loadState.refresh) {
-                            is LoadState.Loading -> {
-                                Box(
-                                    modifier = Modifier.fillMaxSize(),
-                                    contentAlignment = Alignment.Center
-                                ) {
-                                    MovieCircularProgressBar()
-                                }
+    MovieScaffold(
+        movieAppBar = {
+            Column {
+                ExploreSearchBarSection(
+                    uiState,
+                    interactionListener,
+                    isVisible = searchBarVisible
+                )
+                ExploreTabsSection(
+                    selectedTab = uiState.selectedTab,
+                    onTabSelected = interactionListener::onTabSelected,
+                    showAllTabs = uiState.isSearch
+                )
+            }
+        }
+    )
+    {
+        Box(modifier = Modifier.fillMaxSize()) {
+            Column(modifier = Modifier.fillMaxSize()) {
+                Box(modifier = Modifier.weight(1f)) {
+                    when (contentList.loadState.refresh) {
+                        is LoadState.Loading -> {
+                            Box(
+                                modifier = Modifier.fillMaxSize(),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                MovieCircularProgressBar()
                             }
+                        }
 
-                            is LoadState.Error -> {
-                                Box(
-                                    modifier = Modifier.fillMaxSize(),
-                                    contentAlignment = Alignment.Center
-                                ) {
-                                    NoInternetScreen(onRetry = interactionListener::onRefresh)
-                                }
+                        is LoadState.Error -> {
+                            Box(
+                                modifier = Modifier.fillMaxSize(),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                NoInternetScreen(onRetry = interactionListener::onRefresh)
                             }
+                        }
 
-                            else -> {
-                                // Use AnimatedContent to handle view mode transitions
+                        else -> {
+                            SharedTransitionLayout {
                                 AnimatedContent(
                                     targetState = uiState.viewMode,
                                     transitionSpec = {
@@ -198,28 +191,28 @@ private fun ExploreScreenContent(
                                 }
                             }
                         }
-                        if (uiState.genres.isNotEmpty()) {
-                            GenresRow(
-                                uiState = uiState,
-                                genresState = genresState,
-                                interactionListener = interactionListener,
-                                isVisible = genresVisible,
-                                modifier = Modifier.align(Alignment.TopCenter)
-                            )
-                        }
+                    }
+                    if (uiState.genres.isNotEmpty()) {
+                        GenresRow(
+                            uiState = uiState,
+                            genresState = genresState,
+                            interactionListener = interactionListener,
+                            isVisible = genresVisible,
+                            modifier = Modifier.align(Alignment.TopCenter)
+                        )
                     }
                 }
-                SearchSuggestionsSection(uiState, interactionListener)
+            }
+            SearchSuggestionsSection(uiState, interactionListener)
 
-                if (uiState.selectedTab != ExploreTabsPages.ACTORS) {
-                    ViewModeToggleButton(
-                        selectedMode = uiState.viewMode,
-                        onModeSelected = interactionListener::onViewModeChanged,
-                        modifier = Modifier
-                            .align(Alignment.BottomEnd)
-                            .padding(end = 16.dp, bottom = 96.dp)
-                    )
-                }
+            if (uiState.selectedTab != ExploreTabsPages.ACTORS) {
+                ViewModeToggleButton(
+                    selectedMode = uiState.viewMode,
+                    onModeSelected = interactionListener::onViewModeChanged,
+                    modifier = Modifier
+                        .align(Alignment.BottomEnd)
+                        .padding(end = 16.dp, bottom = 96.dp)
+                )
             }
         }
     }
