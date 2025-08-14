@@ -1,7 +1,5 @@
 package com.moscow.cineverse.screen.explore.component
 
-import androidx.compose.animation.core.animateDpAsState
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -87,24 +85,17 @@ fun ExploreMainContent(
         }
     }
 
-    val genresHeight = if (uiState.shouldShowGenres) 56.dp else 0.dp
-    val paddingTop by animateDpAsState(
-        targetValue = if (uiState.shouldShowGenres) genresHeight + 8.dp else 16.dp,
-        animationSpec = tween(300),
-        label = "paddingTop"
-    )
-
-    val contentPadding = remember(uiState.selectedTab, paddingTop) {
+    val contentPadding = remember(uiState.selectedTab) {
         when (uiState.selectedTab) {
             ExploreTabsPages.ACTORS -> PaddingValues(
-                top = paddingTop,
+                top = 64.dp, // Fixed top padding
                 start = 20.dp,
                 end = 20.dp,
                 bottom = 100.dp
             )
 
             ExploreTabsPages.MOVIES, ExploreTabsPages.SERIES -> PaddingValues(
-                top = paddingTop,
+                top = 64.dp, // Fixed top padding
                 start = 16.dp,
                 end = 16.dp,
                 bottom = 100.dp
