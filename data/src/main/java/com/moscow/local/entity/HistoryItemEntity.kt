@@ -12,6 +12,6 @@ data class HistoryItemEntity(
     val posterPath: String,
     val itemType: String,
     val rating: Float,
-    val releaseDate: LocalDate,
+    val releaseDate: LocalDate?,
     val cacheTimestamp: Long = System.currentTimeMillis()
 )

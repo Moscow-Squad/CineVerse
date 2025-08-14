@@ -7,7 +7,7 @@ import javax.inject.Inject
 class AddRecentlyViewedSeriesUseCase @Inject constructor(
     private val repository: RecentlyViewedRepository
 ) {
-    suspend operator fun invoke(series: Series) {
-        repository.addRecentlyViewedSeries(series)
-    }
+    suspend operator fun invoke(
+        series: Series
+    ) = repository.addRecentlyViewedSeries(series = series)
 }

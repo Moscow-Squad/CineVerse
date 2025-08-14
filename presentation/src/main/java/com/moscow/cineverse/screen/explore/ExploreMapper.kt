@@ -2,12 +2,9 @@ package com.moscow.cineverse.screen.explore
 
 import com.moscow.cineverse.screen.explore.ExploreScreenState.ActorUiState
 import com.moscow.cineverse.screen.explore.ExploreScreenState.GenreUiState
-import com.moscow.cineverse.common_ui_state.MediaItemUiState
-import com.moscow.domain.model.Actor
 import com.moscow.domain.model.Genre
 import com.moscow.domain.model.MediaType
 import com.moscow.domain.model.Movie
-import com.moscow.domain.model.Series
 import kotlinx.datetime.LocalDate
 
 const val YYYY_MMM_DD = "yyyy, MMM dd"
@@ -16,14 +13,14 @@ fun Movie.toUi(genresList: List<GenreUiState> = listOf()): MediaItemUiState =
     MediaItemUiState(
         id = id,
         title = name,
-        posterPath = posterPath,
+        posterPath = posterUrl,
         rating = rating,
         genres = if (genresList.isEmpty()) emptyList() else
             genreIds.map { it -> genresList.first { genre -> genre.id == it }.name },
         releaseDate = releaseDate.formatWith(YYYY_MMM_DD) ?: "",
         duration = "",
         mediaType = MediaType.Movie,
-        backdropPath = this.backdropPath
+        backdropPath = this.backdropUrl
     )
 
 fun Series.toUi(genresList: List<GenreUiState> = listOf()): MediaItemUiState =

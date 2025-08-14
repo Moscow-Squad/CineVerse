@@ -9,7 +9,7 @@ class DeleteMediaItemFromCollectionUseCase @Inject constructor(
     suspend operator fun invoke(
         mediaItemId: Int,
         collectionId: Int
-    ) = collectionsRepository.deleteMediaItemFromCollection(
+    ) = collectionsRepository.deleteMovieFromCollection(
         mediaItemId = mediaItemId,
         collectionId = collectionId
     )

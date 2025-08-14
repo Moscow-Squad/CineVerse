@@ -1,16 +1,15 @@
 package com.moscow.remote.data_source
 
 import com.moscow.data_source.remote.SeriesRemoteDataSource
-import com.moscow.domain.repository.PreferenceRepository
-import com.moscow.remote.dto.details.MediaTrailersDto
-import com.moscow.remote.dto.details.SeriesCreditDto
-import com.moscow.remote.dto.rating.UserRatingResponse
-import com.moscow.remote.dto.rating.series.RatedSeriesDto
-import com.moscow.remote.dto.review.RatingRequestDto
+import com.moscow.domain.repository.auth.UserRepository
+import com.moscow.remote.dto.media_item.common.CreditsDetailsDto
+import com.moscow.remote.dto.media_item.common.MediaTrailersDto
+import com.moscow.remote.dto.rating.response.UserRatingResponse
+import com.moscow.remote.dto.rating.response.RatedSeriesDto
+import com.moscow.remote.dto.rating.request.RatingRequestDto
 import com.moscow.remote.dto.review.ReviewDto
-import com.moscow.remote.dto.series.ListOfSeriesDto
-import com.moscow.remote.dto.series.SeriesDetailDto
-import com.moscow.remote.dto.series.SeriesDto
+import com.moscow.remote.dto.media_item.series.SeriesDetailDto
+import com.moscow.remote.dto.media_item.series.SeriesDto
 import com.moscow.remote.services.SeriesService
 import com.moscow.utils.ApiResponse
 import com.moscow.utils.handleApi
@@ -18,7 +17,7 @@ import javax.inject.Inject
 
 class SeriesRemoteDataSourceImpl @Inject constructor(
     private val seriesService: SeriesService,
-    private val preferenceRepository: PreferenceRepository
+    private val userRepository: UserRepository
 ) : SeriesRemoteDataSource {
 
     override suspend fun getPopularSeries(page: Int): ApiResponse<SeriesDto> =
@@ -32,7 +31,7 @@ class SeriesRemoteDataSourceImpl @Inject constructor(
         }
 
     override suspend fun rateSeries(rating: RatingRequestDto, id: Int) {
-        val sessionId = preferenceRepository.getSessionId()
+        val sessionId = userRepository.getSessionId()
         handleApi {
             seriesService.rateSeries(
                 id,
@@ -43,7 +42,7 @@ class SeriesRemoteDataSourceImpl @Inject constructor(
     }
 
     override suspend fun deleteRatingSeries(seriesId: Int){
-        val sessionId = preferenceRepository.getSessionId()
+        val sessionId = userRepository.getSessionId()
         handleApi {
             seriesService.deleteRatingSeries(
                 seriesId,
@@ -56,7 +55,7 @@ class SeriesRemoteDataSourceImpl @Inject constructor(
         userId: Int,
         page: Int
     ): ApiResponse<RatedSeriesDto> {
-        val sessionId = preferenceRepository.getSessionId()
+        val sessionId = userRepository.getSessionId()
         return handleApi {
             seriesService.getRatedSeries(
                 userId,
@@ -67,7 +66,7 @@ class SeriesRemoteDataSourceImpl @Inject constructor(
     }
 
     override suspend fun getUserRatingForSeries(seriesId: Int): UserRatingResponse {
-        val sessionId = preferenceRepository.getSessionId()
+        val sessionId = userRepository.getSessionId()
         return handleApi {
             seriesService.getUserRatingForSeries(
                 seriesId,
@@ -81,7 +80,7 @@ class SeriesRemoteDataSourceImpl @Inject constructor(
             seriesService.getLatestSeasons()
         }
 
-    override suspend fun getListOfSeries(id: Int, page: Int): ListOfSeriesDto =
+    override suspend fun getListOfSeries(id: Int, page: Int): ApiResponse<SeriesDto> =
         handleApi {
             seriesService.getListOfSeries(
                 id,
@@ -107,7 +106,7 @@ class SeriesRemoteDataSourceImpl @Inject constructor(
             seriesService.getSeriesByGenreId(genreId, page)
         }
 
-    override suspend fun getSeriesCredits(seriesId: Int): SeriesCreditDto =
+    override suspend fun getSeriesCredits(seriesId: Int) =
         handleApi {
             seriesService.getSeriesCredits(seriesId)
         }
@@ -115,5 +114,12 @@ class SeriesRemoteDataSourceImpl @Inject constructor(
     override suspend fun getSeriesTrailers(seriesId: Int): MediaTrailersDto =
         handleApi {
             seriesService.getSeriesTrailers(seriesId)
+        }
+
+
+    override suspend fun getTopRatedTVSeries(page: Int): ApiResponse<SeriesDto> =
+        handleApi {
+            seriesService.getTopRatedTVSeries(page)
+
         }
 }

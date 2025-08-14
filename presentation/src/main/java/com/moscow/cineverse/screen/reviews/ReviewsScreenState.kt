@@ -7,18 +7,18 @@ data class ReviewsScreenState(
     val isReviewEmpty: Boolean = false,
     val shouldShowLoading: Boolean = false,
     val shouldShowError: Boolean = false,
-    val errorMessage: String = ""
-    )
+    val errorMessage: String? = null
+)
 
-    data class ReviewUiState(
-        val id: String,
-        val name:String,
-        val username:String,
-        val rate:Int,
-        val reviewContent:String,
-        val date:String,
-        val userImage:String
-    )
+data class ReviewUiState(
+    val id: String,
+    val name: String,
+    val username: String,
+    val rate: Int,
+    val reviewContent: String,
+    val date: String,
+    val userImage: String
+)
 
 
 

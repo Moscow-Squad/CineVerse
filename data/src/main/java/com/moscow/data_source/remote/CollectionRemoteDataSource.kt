@@ -1,10 +1,10 @@
 package com.moscow.data_source.remote
 
-import com.moscow.remote.dto.AddCollectionDto
-import com.moscow.remote.dto.AddMediaItemToCollectionRequestDto
-import com.moscow.remote.dto.CollectionDto
-import com.moscow.remote.dto.CreateCollectionDto
-import com.moscow.remote.dto.MovieDto
+import com.moscow.remote.dto.collection.response.AddCollectionDto
+import com.moscow.remote.dto.collection.request.AddMediaItemToCollectionRequestDto
+import com.moscow.remote.dto.collection.response.CollectionDto
+import com.moscow.remote.dto.collection.request.CreateCollectionRequestDto
+import com.moscow.remote.dto.media_item.movie.MovieDto
 import com.moscow.utils.ApiResponse
 
 interface CollectionRemoteDataSource {
@@ -15,7 +15,7 @@ interface CollectionRemoteDataSource {
     ): ApiResponse<CollectionDto>
 
     suspend fun addNewCollection(
-        collection: CreateCollectionDto,
+        collection: CreateCollectionRequestDto,
         sessionId: String
     ): AddCollectionDto
 
@@ -39,7 +39,6 @@ interface CollectionRemoteDataSource {
 
     suspend fun clearCollection(
         collectionId: Int,
-        sessionId: String,
-        confirm: Boolean = false,
+        sessionId: String
     ): ApiResponse<Unit>
 }

@@ -1,14 +1,13 @@
 package com.moscow.data_source.remote
 
-import com.moscow.remote.dto.details.MediaTrailersDto
-import com.moscow.remote.dto.details.SeriesCreditDto
-import com.moscow.remote.dto.rating.UserRatingResponse
-import com.moscow.remote.dto.rating.series.RatedSeriesDto
-import com.moscow.remote.dto.review.RatingRequestDto
+import com.moscow.remote.dto.media_item.common.MediaTrailersDto
+import com.moscow.remote.dto.media_item.common.CreditsDetailsDto
+import com.moscow.remote.dto.rating.response.UserRatingResponse
+import com.moscow.remote.dto.rating.response.RatedSeriesDto
+import com.moscow.remote.dto.rating.request.RatingRequestDto
 import com.moscow.remote.dto.review.ReviewDto
-import com.moscow.remote.dto.series.ListOfSeriesDto
-import com.moscow.remote.dto.series.SeriesDetailDto
-import com.moscow.remote.dto.series.SeriesDto
+import com.moscow.remote.dto.media_item.series.SeriesDetailDto
+import com.moscow.remote.dto.media_item.series.SeriesDto
 import com.moscow.utils.ApiResponse
 
 interface SeriesRemoteDataSource {
@@ -19,10 +18,11 @@ interface SeriesRemoteDataSource {
     suspend fun getRatedSeries(userId: Int, page: Int): ApiResponse<RatedSeriesDto>
     suspend fun getUserRatingForSeries(seriesId: Int) : UserRatingResponse
     suspend fun getSeriesReviews(id: Int, page: Int): ApiResponse<ReviewDto>
-    suspend fun getListOfSeries(id: Int, page: Int): ListOfSeriesDto
+    suspend fun getListOfSeries(id: Int, page: Int): ApiResponse<SeriesDto>
     suspend fun getLatestSeasons(): SeriesDetailDto
     suspend fun getSeriesRecommendations(id: Int, page: Int): ApiResponse<SeriesDto>
     suspend fun getSeriesByGenreId(genreId: Int, page: Int): ApiResponse<SeriesDto>
-    suspend fun getSeriesCredits(seriesId: Int): SeriesCreditDto
+    suspend fun getTopRatedTVSeries(page: Int): ApiResponse<SeriesDto>
+    suspend fun getSeriesCredits(seriesId: Int): CreditsDetailsDto
     suspend fun getSeriesTrailers(seriesId: Int): MediaTrailersDto
 }

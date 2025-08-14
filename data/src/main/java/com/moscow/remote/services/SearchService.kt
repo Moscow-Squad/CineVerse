@@ -1,8 +1,8 @@
 package com.moscow.remote.services
 
-import com.moscow.remote.dto.MovieDto
+import com.moscow.remote.dto.media_item.movie.MovieDto
 import com.moscow.remote.dto.actor.ActorDto
-import com.moscow.remote.dto.series.SeriesDto
+import com.moscow.remote.dto.media_item.series.SeriesDto
 import com.moscow.remote.dto.suggestion.SuggestionDto
 import com.moscow.utils.ApiResponse
 import com.moscow.utils.INCLUDE_ADULT

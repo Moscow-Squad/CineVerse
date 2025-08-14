@@ -1,7 +1,7 @@
 package com.moscow.remote.services
 
-import com.moscow.remote.dto.profile.AccountDto
-import com.moscow.remote.dto.profile.LogoutDto
+import com.moscow.remote.dto.profile.response.AccountDto
+import com.moscow.remote.dto.profile.response.LogoutResponseDto
 import com.moscow.utils.ACCOUNT
 import com.moscow.utils.AUTHENTICATION
 import com.moscow.utils.SESSION_ID
@@ -22,5 +22,5 @@ interface ProfileService {
     @DELETE("${AUTHENTICATION}session")
     suspend fun logout(
         @Query("session_id") sessionId: String
-    ): Response<LogoutDto>
+    ): Response<LogoutResponseDto>
 }

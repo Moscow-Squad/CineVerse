@@ -10,15 +10,14 @@ class RecentlyViewedLocalDataSourceImpl @Inject constructor(
     private val recentlyViewedDao: RecentlyViewedDao
 ) : RecentlyViewedLocalDataSource {
 
-    override suspend fun insertRecentlyViewedItem(item: HistoryItemEntity) {
-        recentlyViewedDao.insertRecentlyViewedItem(item)
-    }
+    override suspend fun insertRecentlyViewedItem(
+        item: HistoryItemEntity
+    ) = recentlyViewedDao.insertRecentlyViewedItem(item = item)
 
-    override fun getRecentlyViewedItems(): Flow<List<HistoryItemEntity>> {
-        return recentlyViewedDao.getRecentlyViewedItems()
-    }
+    override fun getRecentlyViewedItems(): Flow<List<HistoryItemEntity>> =
+        recentlyViewedDao.getRecentlyViewedItems()
 
-    override suspend fun deleteRecentlyViewedItemById(id: Int) {
-        return recentlyViewedDao.deleteRecentlyViewedItemById(id)
-    }
+    override suspend fun deleteRecentlyViewedItemById(
+        id: Int
+    ) = recentlyViewedDao.deleteRecentlyViewedItemById(id = id)
 }

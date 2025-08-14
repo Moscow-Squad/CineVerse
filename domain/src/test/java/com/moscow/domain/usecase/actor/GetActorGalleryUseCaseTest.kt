@@ -28,7 +28,7 @@ class GetActorGalleryUseCaseTest {
             "https://image.url/actor2.jpg",
             "https://image.url/actor3.jpg"
         )
-        coEvery { actorRepository.getActorGallery(actorId) } returns expectedGallery
+        coEvery { actorRepository.getActorGalleryUrl(actorId) } returns expectedGallery
 
         // When
         val result = useCase(actorId)

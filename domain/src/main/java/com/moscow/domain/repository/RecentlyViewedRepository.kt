@@ -7,6 +7,6 @@ import kotlinx.coroutines.flow.Flow
 interface RecentlyViewedRepository {
     suspend fun addRecentlyViewedMovie(movie: Movie)
     suspend fun addRecentlyViewedSeries(series: Series)
-    fun getRecentlyViewedMedia(): Flow<List<Any>> // Returns a mix of Movies and Series
+    suspend fun getRecentlyViewedMedia(): Flow<List<Any>>
     suspend fun deleteRecentlyViewedItemById(id: Int)
 }

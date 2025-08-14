@@ -136,7 +136,7 @@ private fun MovieDetailsMainContent(
                     MediaHeader(
                         scrollState = scrollState,
                         enableBlur = uiState.enableBlur,
-                        posterUrl = it.posterPath,
+                        posterUrl = it.posterUrl,
                         title = it.title,
                         genres = it.genres.joinToString(", "),
                         rating = it.rating.toString(),

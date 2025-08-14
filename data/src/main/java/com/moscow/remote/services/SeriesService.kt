@@ -1,14 +1,13 @@
 package com.moscow.remote.services
 
-import com.moscow.remote.dto.details.SeriesCreditDto
-import com.moscow.remote.dto.review.RatingRequestDto
+import com.moscow.remote.dto.media_item.common.CreditsDetailsDto
+import com.moscow.remote.dto.rating.request.RatingRequestDto
 import com.moscow.remote.dto.review.ReviewDto
-import com.moscow.remote.dto.series.ListOfSeriesDto
-import com.moscow.remote.dto.series.SeriesDetailDto
-import com.moscow.remote.dto.series.SeriesDto
-import com.moscow.remote.dto.details.MediaTrailersDto
-import com.moscow.remote.dto.rating.UserRatingResponse
-import com.moscow.remote.dto.rating.series.RatedSeriesDto
+import com.moscow.remote.dto.media_item.series.SeriesDetailDto
+import com.moscow.remote.dto.media_item.series.SeriesDto
+import com.moscow.remote.dto.media_item.common.MediaTrailersDto
+import com.moscow.remote.dto.rating.response.UserRatingResponse
+import com.moscow.remote.dto.rating.response.RatedSeriesDto
 import com.moscow.utils.ACCOUNT
 import com.moscow.utils.ACCOUNT_STATES
 import com.moscow.utils.ApiResponse
@@ -26,14 +25,13 @@ import com.moscow.utils.SERIES
 import com.moscow.utils.SERIES_CREDITS
 import com.moscow.utils.SESSION_ID
 import com.moscow.utils.SORTED_BY
+import com.moscow.utils.TOP_RATED
 import com.moscow.utils.TRAILERS
 import com.moscow.utils.WITH_GENRES
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
-import retrofit2.http.Header
-import retrofit2.http.Headers
 import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -84,7 +82,7 @@ interface SeriesService {
     suspend fun getListOfSeries(
         @Path("id") id: Int,
         @Query("page") page: Int
-    ): Response<ListOfSeriesDto>
+    ): Response<ApiResponse<SeriesDto>>
 
     @GET("$SERIES{id}$REVIEWS")
     suspend fun getSeriesReviews(
@@ -107,10 +105,17 @@ interface SeriesService {
     @GET("$SERIES{series_id}$SERIES_CREDITS")
     suspend fun getSeriesCredits(
         @Path("series_id") seriesId: Int
-    ): Response<SeriesCreditDto>
+    ): Response<CreditsDetailsDto>
 
     @GET("$SERIES{series_id}$TRAILERS")
     suspend fun getSeriesTrailers(
         @Path("series_id") seriesId: Int
     ): Response<MediaTrailersDto>
+
+    @GET("$SERIES$TOP_RATED")
+    suspend fun getTopRatedTVSeries(
+        @Query(PAGE) page: Int
+    ): Response<ApiResponse<SeriesDto>>
+
+
 }

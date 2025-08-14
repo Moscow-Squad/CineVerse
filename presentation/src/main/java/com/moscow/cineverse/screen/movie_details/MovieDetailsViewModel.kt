@@ -4,15 +4,12 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.cineverse.base.handleException
-import com.moscow.cineverse.mapper.toMediaItemUi
-import com.moscow.cineverse.mapper.toUi
+import com.moscow.cineverse.mapper.toMovieItemUi
 import com.moscow.cineverse.navigation.routes.MovieDetailsRoute
-import com.moscow.domain.mapper.toMovie
-import com.moscow.domain.model.CreditsDetails
+import com.moscow.domain.model.CreditsInfo
 import com.moscow.domain.model.Movie
 import com.moscow.domain.model.Review
-import com.moscow.domain.model.details.MovieDetail
-import com.moscow.domain.repository.PreferenceRepository
+import com.moscow.domain.repository.auth.UserRepository
 import com.moscow.domain.repository.blur.BlurProvider
 import com.moscow.domain.usecase.rating.DeleteRatingMovieUseCase
 import com.moscow.domain.usecase.movie.GetMovieCreditsUseCase
@@ -39,7 +36,7 @@ class MovieDetailsViewModel @Inject constructor(
     private val deleteRatingMovieUseCase: DeleteRatingMovieUseCase,
     private val getUserRatingForMovieUseCase: GetUserRatingForMovieUseCase,
     private val addRecentlyViewedMovieUseCase: AddRecentlyViewedMovieUseCase,
-    private val preferences: PreferenceRepository,
+    private val preferences: UserRepository,
     saveStateHandle: SavedStateHandle,
 ) : BaseViewModel<MovieScreenState, MovieDetailsScreenEffect>(MovieScreenState()),
     MovieDetailsInteractionListener {
@@ -108,7 +105,7 @@ class MovieDetailsViewModel @Inject constructor(
     private suspend fun getMovieDetails(movieID: Int) {
         try {
             val res = getMovieDetailsUseCase.invoke(movieID)
-            onGetMovieDetailsSuccess(res)
+//            onGetMovieDetailsSuccess(res)
         } catch (e: Exception) {
             updateState {
                 it.copy(
@@ -120,14 +117,14 @@ class MovieDetailsViewModel @Inject constructor(
         }
     }
 
-    private fun onGetMovieDetailsSuccess(movieDetails: MovieDetail) {
-        updateState { it.copy(movieDetailsUiState = movieDetails.toUi()) }
-        launchWithResult(
-            action = { addRecentlyViewedMovieUseCase(movieDetails.toMovie()) },
-            onError = {},
-            onSuccess = {}
-        )
-    }
+//    private fun onGetMovieDetailsSuccess(movieDetails: MovieDetail) {
+//        updateState { it.copy(movieDetailsUiState = movieDetails.toUi()) }
+//        launchWithResult(
+//            action = { addRecentlyViewedMovieUseCase(movieDetails.toMovie()) },
+//            onError = {},
+//            onSuccess = {}
+//        )
+//    }
 
     private suspend fun getReviews(movieID: Int) {
         try {
@@ -145,11 +142,11 @@ class MovieDetailsViewModel @Inject constructor(
     }
 
     private fun onGetReviewSuccess(reviews: List<Review>) {
-        updateState { state ->
-            state.copy(
-                reviewsFlow = reviews.take(3).map { it.toUi() }
-            )
-        }
+//        updateState { state ->
+//            state.copy(
+//                reviewsFlow = reviews.take(3).map { it.toUi() }
+//            )
+//        }
     }
 
     private suspend fun getCredits(movieID: Int) {
@@ -168,18 +165,19 @@ class MovieDetailsViewModel @Inject constructor(
     }
 
 
-    private fun onGetCreditsSuccess(creditsDetails: CreditsDetails) {
-        val crew = creditsDetails.behindTheScene.map { it.toUi() }
-        updateState { state ->
-            state.copy(
-                starCast = creditsDetails.actors.map { it.toUi() },
-                characters = crew.filter { it.job == "Characters" }.map { it.name },
-                director = crew.filter { it.job in (listOf("Director", "Screenplay", "Story")) }
-                    .map { it.name },
-                writer = crew.filter { it.job == "Producer" }.map { it.name },
-                produce = crew.filter { it.job == "Writer" }.map { it.name }
-            )
-        }
+    private fun onGetCreditsSuccess(creditsInfo: CreditsInfo) {
+//        val crew = creditsInfo.behindTheScene.map { it.toUi() }
+//        updateState { state ->
+//            state.copy(
+//                isLoading = false,
+//                starCast = creditsInfo.actors.map { it.toUi() },
+//                characters = crew.filter { it.job == "Characters" }.map { it.name },
+//                director = crew.filter { it.job in (listOf("Director", "Screenplay", "Story")) }
+//                    .map { it.name },
+//                writer = crew.filter { it.job == "Producer" }.map { it.name },
+//                produce = crew.filter { it.job == "Writer" }.map { it.name }
+//            )
+//        }
     }
 
     private suspend fun getRecommendations(movieID: Int) {
@@ -200,7 +198,7 @@ class MovieDetailsViewModel @Inject constructor(
     private fun onGetRecommendationsSuccess(recommendations: List<Movie>) {
         updateState { state ->
             state.copy(
-                recommendations = recommendations.take(6).map { it.toMediaItemUi() }
+                recommendations = recommendations.take(6).map { it.toMovieItemUi() }
             )
         }
     }
@@ -232,7 +230,7 @@ class MovieDetailsViewModel @Inject constructor(
 
     override fun onPlayButtonClicked() {
         uiState.value.movieDetailsUiState?.let {
-            sendEvent(MovieDetailsScreenEffect.OpenTrailer(it.trailerPath))
+            sendEvent(MovieDetailsScreenEffect.OpenTrailer(it.trailerUrl))
         }
     }
 

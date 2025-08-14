@@ -6,5 +6,7 @@ import javax.inject.Inject
 class DeleteRatingSeriesUseCase @Inject constructor(
     private val seriesRepository: SeriesRepository
 ) {
-    suspend operator fun invoke(id: Int) = seriesRepository.deleteRatingSeries(id)
+    suspend operator fun invoke(
+        id: Int
+    ) = seriesRepository.deleteRatingSeries(seriesId = id)
 }

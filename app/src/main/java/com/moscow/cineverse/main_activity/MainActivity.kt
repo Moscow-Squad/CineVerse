@@ -1,50 +1,33 @@
 package com.moscow.cineverse.main_activity
 
-import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.view.WindowInsets
 import android.view.WindowInsetsController
-import androidx.activity.ComponentActivity
-import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
+import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.ui.graphics.toArgb
 import androidx.core.view.WindowCompat
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.moscow.cineverse.CineVerseRoot
 import com.moscow.cineverse.designSystem.theme.CineVerseTheme
-import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.navigation.NavViewModel
-import com.moscow.domain.repository.theme.ThemeProvider
 import dagger.hilt.android.AndroidEntryPoint
-import jakarta.inject.Inject
-import java.util.Locale
 
 @AndroidEntryPoint
-class MainActivity : ComponentActivity() {
-
-    @Inject
-    lateinit var themeProvider: ThemeProvider
+class MainActivity : AppCompatActivity() {
 
     private val mainActivityViewModel: MainActivityViewModel by viewModels()
 
     private val navViewModel: NavViewModel by viewModels()
 
-    override fun attachBaseContext(newBase: Context) {
-        val updatedContext = updateLocale(newBase, getSavedLanguage(newBase))
-        super.attachBaseContext(updatedContext)
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
 
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
@@ -59,50 +42,11 @@ class MainActivity : ComponentActivity() {
         }
 
         setContent {
-            val state by mainActivityViewModel.state.collectAsState()
+            val state by mainActivityViewModel.state.collectAsStateWithLifecycle()
 
-            val previousLanguage = remember { mutableStateOf(state.language) }
-
-            CineVerseTheme(isDark = state.isDarkTheme) {
-                val surfaceColor = Theme.colors.background.screen
-                LaunchedEffect(state.language) {
-                    if (previousLanguage.value != state.language) {
-                        previousLanguage.value = state.language
-                        recreate()
-                    }
-                }
-                LaunchedEffect(state.isDarkTheme) {
-                    enableEdgeToEdge(
-                        statusBarStyle = if (!state.isDarkTheme) {
-                            SystemBarStyle.light(
-                                scrim = surfaceColor.toArgb(),
-                                darkScrim = surfaceColor.toArgb()
-                            )
-                        } else {
-                            SystemBarStyle.dark(
-                                scrim = surfaceColor.toArgb()
-                            )
-                        }
-                    )
-                }
+            CineVerseTheme(language = state.language, isDark = state.isDarkTheme) {
                 CineVerseRoot(navViewModel)
             }
         }
     }
-}
-
-fun getSavedLanguage(context: Context): String {
-    val prefs = context.getSharedPreferences("settings", Context.MODE_PRIVATE)
-    return prefs.getString("app_language", "en") ?: "en"
-}
-
-fun updateLocale(context: Context, language: String): Context {
-    val locale = Locale(language)
-    Locale.setDefault(locale)
-
-    val config = context.resources.configuration
-    config.setLocale(locale)
-    config.setLayoutDirection(locale)
-
-    return context.createConfigurationContext(config)
 }

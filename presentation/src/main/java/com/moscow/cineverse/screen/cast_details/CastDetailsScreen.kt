@@ -52,7 +52,7 @@ import com.moscow.cineverse.designSystem.component.wrapper.MovieScaffold
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.image_viewer.component.SafeImageViewer
 import com.moscow.cineverse.mapper.toFormattedBirthDate
-import com.moscow.cineverse.mapper.toMediaItemUi
+import com.moscow.cineverse.mapper.toMovieItemUi
 import com.moscow.cineverse.screen.cast_details.CastDetailsUiState.SocialMediaLinks
 import com.moscow.cineverse.screen.cast_details.composable.CastDetailsEffectHandlerWithContext
 import com.moscow.cineverse.screen.cast_details.composable.EmptyContent
@@ -120,7 +120,7 @@ private fun CastDetailsContent(
         )
 
         uiState.isContentEmpty -> EmptyContent(modifier)
-        uiState.actorDetails != null -> ActorDetailsContent(uiState, interactionListener, modifier)
+        uiState.actor != null -> ActorDetailsContent(uiState, interactionListener, modifier)
     }
 }
 
@@ -166,14 +166,14 @@ fun ActorMoviesSection(
         MovieListSection(
             title = stringResource(
                 R.string.best_of,
-                uiState.actorDetails?.name.orEmpty()
+                uiState.actor?.name.orEmpty()
             ),
             movies = uiState.movies.take(10),
             onClickShowMore = interactionListener::onShowMoreMovies,
             onClickPoster = interactionListener::onMovieClick,
             movieCardContent = { movie, cardModifier, onMovieClick ->
                 MoviePosterCard(
-                    movie = movie.toMediaItemUi(),
+                    movie = movie.toMovieItemUi(),
                     viewMode = ViewMode.GRID,
                     showRating = true,
                     enableBlur = uiState.enableBlur,
@@ -220,7 +220,7 @@ fun ActorGallerySection(
 fun ActorBiographySection(
     uiState: CastDetailsUiState, modifier: Modifier = Modifier
 ) {
-    uiState.actorDetails?.let { actorDetails ->
+    uiState.actor?.let { actorDetails ->
         if (actorDetails.biography.isNotEmpty()) {
             Box(
                 modifier = modifier
@@ -245,14 +245,14 @@ fun ActorMainDetailsSection(
     interactionListener: CastDetailsInteractionListener,
     modifier: Modifier = Modifier
 ) {
-    uiState.actorDetails?.let { actor ->
+    uiState.actor?.let { actor ->
         MainDetails(
             modifier = modifier,
             profileImage = actor.profileImg,
             name = actor.name,
             date = stringResource(
                 R.string.born_on,
-                actor.birthDate.toFormattedBirthDate()
+                actor.birthDate?.toFormattedBirthDate() ?: ""
             ),
             location = actor.placeOfBirth,
             scrollState = null,

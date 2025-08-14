@@ -45,7 +45,8 @@ fun CineVerseRoot(
                     navController.navigateToNewGraph(targetGraph)
                 })
 
-        }) { paddingValues ->
+        }
+    ) { paddingValues ->
         CineVerseNavGraph(
             modifier = Modifier
                 .padding(top = 16.dp)
@@ -54,6 +55,5 @@ fun CineVerseRoot(
             navViewModel = navViewModel,
             scaffoldPaddingValues = paddingValues
         )
-
     }
 }

@@ -9,7 +9,7 @@ class AddMediaItemToCollectionUseCase @Inject constructor(
     suspend operator fun invoke(
         mediaItemId: Int,
         collectionId: Int
-    ) = collectionsRepository.addMediaItemToCollection(
+    ) = collectionsRepository.addMovieToCollection(
             mediaItemId = mediaItemId,
             collectionId = collectionId
         )

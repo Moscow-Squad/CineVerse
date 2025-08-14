@@ -4,7 +4,6 @@ import androidx.lifecycle.viewModelScope
 import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.cineverse.utlis.StringValue
 import com.moscow.cinverse.presentation.R
-import com.moscow.domain.model.LoginData
 import com.moscow.domain.usecase.login.LoginAsGuestUseCase
 import com.moscow.domain.usecase.login.LoginWithUsernameAndPasswordUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -70,10 +69,9 @@ class LoginViewModel @Inject constructor(
             launchWithResult(
                 action = {
                     loginWithUsernameAndPasswordUseCase.invoke(
-                        loginData = LoginData(
+
                             username = uiState.value.username,
                             password = uiState.value.password,
-                        )
                     )
                 },
                 onSuccess = ::onLoginSuccess,

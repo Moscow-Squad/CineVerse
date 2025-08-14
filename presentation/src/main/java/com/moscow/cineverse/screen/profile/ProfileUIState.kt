@@ -1,6 +1,7 @@
 package com.moscow.cineverse.screen.profile
 
-import java.util.Locale
+import com.moscow.cineverse.language.AppLanguage
+
 
 data class ProfileUIState(
      val name:String? = null,
@@ -18,6 +19,6 @@ data class ProfileUIState(
      val goToWebView: Boolean = false,
      val editProfileURL :String = "",
      val isDarkTheme:Boolean = true,
-     val appLanguage:String = Locale.getDefault().language,
-     val selectedPreference: String = "high"
+     val selectedPreference: String = "high",
+     val currentLanguage: String = AppLanguage.English.code
 )

@@ -6,5 +6,6 @@ import javax.inject.Inject
 class GetUserCollectionsUseCase @Inject constructor(
     private val collectionsRepository: CollectionsRepository
 ) {
-    suspend operator fun invoke(page: Int) = collectionsRepository.getCollections(page)
+    suspend operator fun invoke(page: Int) =
+        collectionsRepository.getCollections(page)
 }

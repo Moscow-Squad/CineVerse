@@ -16,29 +16,35 @@ class SearchLocalDataSourceImpl @Inject constructor(
     override suspend fun getAllSearchHistory(): Flow<List<String>> =
         searchHistoryDao.getAllSearchHistory()
 
-    override suspend fun insertSearchHistory(searchTerm: String) {
-        searchHistoryDao.insertSearchHistory(SearchHistoryEntity(searchTerm))
-    }
+    override suspend fun insertSearchHistory(
+        searchTerm: String
+    ) = searchHistoryDao.insertSearchHistory(
+        SearchHistoryEntity(searchTerm = searchTerm)
+    )
 
-    override suspend fun deleteSearchHistory(searchTerm: String) {
-        searchHistoryDao.deleteSearchHistory(SearchHistoryEntity(searchTerm))
-    }
+    override suspend fun deleteSearchHistory(
+        searchTerm: String
+    ) = searchHistoryDao.deleteSearchHistory(
+        SearchHistoryEntity(searchTerm = searchTerm)
+    )
 
-    override suspend fun deleteAllSearchHistory() {
-        searchHistoryDao.deleteAllSearchHistory()
-    }
+    override suspend fun deleteAllSearchHistory() = searchHistoryDao.deleteAllSearchHistory()
 
-    override fun getFavouriteGenres(): Flow<List<FavouriteGenreEntity>> {
-        return favouriteGenreDao.getFavouriteGenres()
-    }
+
+    override fun getFavouriteGenres(): Flow<List<FavouriteGenreEntity>> =
+        favouriteGenreDao.getFavouriteGenres()
+
 
     override suspend fun insertFavouriteGenre(genreId: Int) {
-        val existingGenre = favouriteGenreDao.getGenreById(genreId)
+        val existingGenre = favouriteGenreDao.getGenreById(genreId = genreId)
         if (existingGenre != null) {
-            favouriteGenreDao.incrementGenreCount(genreId)
+            favouriteGenreDao.incrementGenreCount(genreId = genreId)
         } else {
             favouriteGenreDao.insertOrUpdateFavouriteGenre(
-                FavouriteGenreEntity(genreId = genreId, count = 1)
+                FavouriteGenreEntity(
+                    genreId = genreId,
+                    count = 1
+                )
             )
         }
     }

@@ -27,7 +27,7 @@ class RecentlyViewedRepositoryImpl @Inject constructor(
         recentlyViewedLocalDataSource.insertRecentlyViewedItem(entity)
     }
 
-    override fun getRecentlyViewedMedia(): Flow<List<Any>> {
+    override suspend fun getRecentlyViewedMedia(): Flow<List<Any>> {
         val entities = recentlyViewedLocalDataSource.getRecentlyViewedItems()
         return entities.map {
             it.map{entity ->
@@ -40,7 +40,7 @@ class RecentlyViewedRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun deleteRecentlyViewedItemById(id: Int) {
-        recentlyViewedLocalDataSource.deleteRecentlyViewedItemById(id)
-    }
+    override suspend fun deleteRecentlyViewedItemById(
+        id: Int
+    ) = recentlyViewedLocalDataSource.deleteRecentlyViewedItemById(id = id)
 }

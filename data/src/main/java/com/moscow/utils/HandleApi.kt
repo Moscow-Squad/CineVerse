@@ -37,7 +37,7 @@ suspend inline fun <T> handleApi(
                 else -> throw UnknownException
             }
         }
-    } catch (e: ConnectException) {
+    } catch (_: ConnectException) {
         throw NoInternetException
     } catch (e: HttpException) {
         when (e.code()) {
@@ -45,14 +45,14 @@ suspend inline fun <T> handleApi(
             404 -> throw NotFoundException
             else -> throw UnknownException
         }
-    } catch (e: SocketTimeoutException) {
+    } catch (_: SocketTimeoutException) {
         throw TooMuchTimeException
     } catch (e: UnknownHostException) {
         if (e.message?.contains("Unable to resolve host") == true)
             throw NoInternetException
         else
             throw ServerNotFoundException
-    } catch (e: Throwable) {
+    } catch (_: Throwable) {
         throw UnknownException
     }
 }

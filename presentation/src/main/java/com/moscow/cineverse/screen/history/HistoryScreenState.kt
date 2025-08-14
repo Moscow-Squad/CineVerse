@@ -1,6 +1,5 @@
 package com.moscow.cineverse.screen.history
 
-import com.moscow.cineverse.common_ui_state.MediaItemUiState
 import com.moscow.cineverse.screen.explore.ExploreScreenState.GenreUiState
 
 data class HistoryScreenState(

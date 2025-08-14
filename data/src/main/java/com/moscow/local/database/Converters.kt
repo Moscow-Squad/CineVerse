@@ -3,7 +3,7 @@ package com.moscow.local.database
 import androidx.room.TypeConverter
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.moscow.local.entity.Gender
+import com.moscow.domain.model.Actor.Gender
 import kotlinx.datetime.LocalDate
 
 class Converters {

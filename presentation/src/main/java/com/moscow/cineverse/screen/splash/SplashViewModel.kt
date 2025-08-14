@@ -2,7 +2,8 @@ package com.moscow.cineverse.screen.splash
 
 import androidx.lifecycle.viewModelScope
 import com.moscow.cineverse.base.BaseViewModel
-import com.moscow.domain.repository.PreferenceRepository
+import com.moscow.domain.repository.OnboardingRepository
+import com.moscow.domain.repository.auth.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
@@ -11,22 +12,23 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SplashViewModel @Inject constructor(
-    val preferenceRepository: PreferenceRepository
+    val onboardingRepository: OnboardingRepository,
+    val userRepository: UserRepository
 ) : BaseViewModel<Unit, SplashEvent>(Unit){
 
      fun getDestination() {
 
          viewModelScope.launch {
 
-             if (!preferenceRepository.isOnBoardingCompleted()){
+             if (!onboardingRepository.isOnBoardingCompleted()){
                 sendEvent(SplashEvent.NavigateToOnboarding)
-            }else if (preferenceRepository.isGuest()){
+            }else if (userRepository.isGuest()){
 
-                val isValid = isValidGuestSession(preferenceRepository.getSessionExpiration())
+                val isValid = isValidGuestSession(userRepository.getSessionExpiration())
                 if (isValid) sendEvent(SplashEvent.NavigateToHome) else sendEvent(SplashEvent.NavigateToLogin)
             }else{
 
-                val isLoggedIn = preferenceRepository.isLoggedIn()
+                val isLoggedIn = userRepository.isLoggedIn()
                  if (isLoggedIn)  sendEvent(SplashEvent.NavigateToHome) else sendEvent(SplashEvent.NavigateToLogin)
             }
         }

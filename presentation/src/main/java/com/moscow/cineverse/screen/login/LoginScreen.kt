@@ -51,7 +51,8 @@ fun LoginScreen(
         viewModel.uiEffect.collect { event ->
             when (event) {
                 is LoginScreenEvents.ShowError -> {
-                    Toast.makeText(context, event.message.asString(context), Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, event.message.asString(context), Toast.LENGTH_LONG)
+                        .show()
                 }
 
                 is LoginScreenEvents.NavigateTo -> {
@@ -78,7 +79,7 @@ private fun LoginScreenContent(
 ) {
     val focusManager = LocalFocusManager.current
     val isError = state.passwordError != null || state.loginError != null
-    val errorMessage = if(state.passwordError != null) state.passwordError.asString(context)
+    val errorMessage = if (state.passwordError != null) state.passwordError.asString(context)
     else state.loginError?.asString(context)
     Column(
         modifier = modifier
@@ -89,14 +90,14 @@ private fun LoginScreenContent(
         Image(
             painter = painterResource(R.drawable.cine_verse_logo),
             contentDescription = stringResource(
-                com.moscow.cinverse.presentation.R.string.cine_verse_logo
+                R.string.cine_verse_logo
             ),
             modifier = Modifier
                 .padding(top = 64.dp)
                 .align(Alignment.CenterHorizontally)
         )
         Text(
-            text = stringResource(com.moscow.cinverse.presentation.R.string.welcome_back_to_cineverse),
+            text = stringResource(R.string.welcome_back_to_cineverse),
             modifier = Modifier
                 .padding(top = 8.dp)
                 .align(Alignment.CenterHorizontally),
@@ -108,10 +109,10 @@ private fun LoginScreenContent(
             modifier = Modifier
                 .padding(top = 48.dp, start = 16.dp, end = 16.dp)
                 .align(Alignment.CenterHorizontally),
-            label = stringResource(com.moscow.cinverse.presentation.R.string.username),
+            label = stringResource(R.string.username),
             value = state.username,
             onValueChange = interactionListener::onUsernameValueChanged,
-            placeholder = stringResource(com.moscow.cinverse.presentation.R.string.enter_your_username),
+            placeholder = stringResource(R.string.enter_your_username),
             leadingIcon = R.drawable.outline_user,
             leadingIconTint = Theme.colors.shade.tertiary,
             maxLines = 1,
@@ -130,12 +131,12 @@ private fun LoginScreenContent(
             modifier = Modifier
                 .padding(top = 16.dp, start = 16.dp, end = 16.dp)
                 .align(Alignment.CenterHorizontally),
-            label = stringResource(com.moscow.cinverse.presentation.R.string.password),
+            label = stringResource(R.string.password),
             value = state.password,
             onValueChange = interactionListener::onPasswordValueChanged,
             isPassword = true,
             maxLines = 1,
-            placeholder = stringResource(com.moscow.cinverse.presentation.R.string.enter_your_password),
+            placeholder = stringResource(R.string.enter_your_password),
             leadingIcon = R.drawable.outline_lock,
             leadingIconTint = Theme.colors.shade.tertiary,
             isError = isError,
@@ -156,7 +157,7 @@ private fun LoginScreenContent(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 20.dp, start = 16.dp, end = 16.dp),
-            buttonText = stringResource(com.moscow.cinverse.presentation.R.string.login),
+            buttonText = stringResource(R.string.login),
             textColor = Theme.colors.button.onPrimary,
             textStyle = Theme.textStyle.body.medium.medium,
             onClick = interactionListener::onClickLogin,
@@ -170,7 +171,7 @@ private fun LoginScreenContent(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 20.dp, start = 16.dp, end = 16.dp),
-            buttonText = stringResource(com.moscow.cinverse.presentation.R.string.join_as_guest),
+            buttonText = stringResource(R.string.join_as_guest),
             textColor = Theme.colors.button.onSecondary,
             textStyle = Theme.textStyle.body.medium.medium,
             onClick = interactionListener::onClickJoinAsGuest,
@@ -182,7 +183,7 @@ private fun LoginScreenContent(
             modifier = Modifier
                 .padding(vertical = 24.dp)
                 .align(Alignment.CenterHorizontally),
-            buttonText = stringResource(com.moscow.cinverse.presentation.R.string.create_a_new_account),
+            buttonText = stringResource(R.string.create_a_new_account),
             textColor = Theme.colors.button.onSecondary,
             textStyle = Theme.textStyle.body.medium.medium,
             textPadding = PaddingValues(horizontal = 16.dp),
@@ -193,7 +194,7 @@ private fun LoginScreenContent(
             SignUpBottomSheet(interactionListener)
         }
     }
-    AnimatedVisibility (state.showWebView) {
+    AnimatedVisibility(state.showWebView) {
         WebViewBrowser(
             url = state.urlWebView,
             onExitWebView = {
@@ -211,13 +212,13 @@ fun SignUpBottomSheet(interactionListener: LoginInteractionListener) {
         showCancelIcon = false,
     ) {
         MessageInfoCard(
-            title = stringResource(com.moscow.cinverse.presentation.R.string.join_cineverse),
-            description = stringResource(com.moscow.cinverse.presentation.R.string.let_s_get_you_set_up_we_ll_take_you_to_the_website_to_create_your_account),
+            title = stringResource(R.string.join_cineverse),
+            description = stringResource(R.string.let_s_get_you_set_up_we_ll_take_you_to_the_website_to_create_your_account),
             icon = painterResource(R.drawable.due_tone_link_minimalistic),
             showButtonsGroup = true,
-            firstButtonText = stringResource(com.moscow.cinverse.presentation.R.string.cancel),
+            firstButtonText = stringResource(R.string.cancel),
             onClickFirstButton = interactionListener::onDismissOrCancelSignUpBottomSheet,
-            secondButtonText = stringResource(com.moscow.cinverse.presentation.R.string.go_to_website),
+            secondButtonText = stringResource(R.string.go_to_website),
             onClickSecondButton = interactionListener::onClickGoToWebsite
         )
     }

@@ -3,7 +3,6 @@ package com.moscow.cineverse.navigation
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.moscow.cineverse.navigation.routes.SplashRoute
-import com.moscow.domain.repository.PreferenceRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 
 import javax.inject.Inject

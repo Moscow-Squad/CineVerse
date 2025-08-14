@@ -9,9 +9,20 @@ class GetReviewsUseCase @Inject constructor(
     private val movieRepository: MovieRepository,
     private val seriesRepository: SeriesRepository
 ) {
-    suspend operator fun invoke(id: Int, page: Int, isMovie: Boolean): List<Review> =
-        if (isMovie)
-            movieRepository.getMovieReviews(id, page)
-        else
-            seriesRepository.getSeriesReviews(id, page)
+    suspend operator fun invoke(
+        id: Int,
+        page: Int,
+        isMovie: Boolean
+    ): List<Review> =
+        if (isMovie) {
+            movieRepository.getReviewsMovie(
+                id = id,
+                page = page
+            )
+        } else {
+            seriesRepository.getSeriesReviews(
+                id = id,
+                page = page
+            )
+        }
 }

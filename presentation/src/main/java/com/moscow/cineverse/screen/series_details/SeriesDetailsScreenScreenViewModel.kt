@@ -4,14 +4,10 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.cineverse.base.handleException
-import com.moscow.cineverse.mapper.toUi
 import com.moscow.cineverse.navigation.routes.SeriesDetailsRoute
-import com.moscow.cineverse.screen.explore.toUi
 import com.moscow.cineverse.utlis.ViewMode
-import com.moscow.domain.mapper.toSeries
-import com.moscow.domain.model.CreditsDetails
 import com.moscow.domain.model.Series
-import com.moscow.domain.repository.PreferenceRepository
+import com.moscow.domain.repository.auth.UserRepository
 import com.moscow.domain.repository.blur.BlurProvider
 import com.moscow.domain.usecase.recently_viewed.AddRecentlyViewedSeriesUseCase
 import com.moscow.domain.usecase.review.GetReviewsUseCase
@@ -38,7 +34,7 @@ class SeriesDetailsScreenScreenViewModel @Inject constructor(
     private val addRecentlyViewedSeriesUseCase: AddRecentlyViewedSeriesUseCase,
     private val deleteRatingSeriesUseCase: DeleteRatingSeriesUseCase,
     private val getUserRatingForSeriesUseCase: GetUserRatingForSeriesUseCase,
-    private val preferences: PreferenceRepository,
+    private val preferences: UserRepository,
     savedStateHandle: SavedStateHandle,
 ) : BaseViewModel<SeriesDetailsScreenState, SeriesDetailsScreenEffects>(SeriesDetailsScreenState()),
     SeriesDetailsScreenInteractionListener {
@@ -104,14 +100,14 @@ class SeriesDetailsScreenScreenViewModel @Inject constructor(
     private suspend fun loadSeriesDetails(seriesId: Int) {
         try{
             val detail = getSeriesDetailUseCase(seriesId)
-            updateState { it.copy(seriesDetail = detail.toUi()) }
-            launchWithResult(
-                action = {
-                    addRecentlyViewedSeriesUseCase(detail.toSeries())
-                },
-                onSuccess = {},
-                onError = {}
-            )
+//            updateState { it.copy(seriesDetail = detail.toUi()) }
+//            launchWithResult(
+//                action = {
+//                    addRecentlyViewedSeriesUseCase(detail.toSeries())
+//                },
+//                onSuccess = {},
+//                onError = {}
+//            )
         }catch (e: Exception) {
             updateState {
                 it.copy(
@@ -126,7 +122,7 @@ class SeriesDetailsScreenScreenViewModel @Inject constructor(
     private suspend fun loadSeriesCredits(seriesId: Int) {
         try {
             val credits = getSeriesCreditsDetailsUseCase(seriesId)
-            onSuccessLoadSeriesCredits(credits)
+//            onSuccessLoadSeriesCredits(credits)
         }catch (e: Exception) {
             updateState {
                 it.copy(
@@ -138,32 +134,32 @@ class SeriesDetailsScreenScreenViewModel @Inject constructor(
         }
     }
 
-    private fun onSuccessLoadSeriesCredits(credits : CreditsDetails){
-        val crew = credits.behindTheScene.map { it.toUi() }
-        updateState {
-            it.copy(
-                isLoading = false,
-                starCast = credits.actors.map { actor -> actor.toUi() },
-                characters = crew.filter { it.job == "Characters" }.take(3).map { it.name },
-                director = crew.filter {
-                    it.job in (listOf(
-                        "Director",
-                        "Screenplay",
-                        "Story"
-                    ))
-                }.take(3).map { it.name },
-                writer = crew.filter { it.job == "Producer" }.take(3).map { it.name },
-                produce = crew.filter { it.job == "Writer" }.take(3).map { it.name }
-            )
-        }
-    }
+//    private fun onSuccessLoadSeriesCredits(credits : CreditsDetails){
+//        val crew = credits.behindTheScene.map { it.toUi() }
+//        updateState {
+//            it.copy(
+//                isLoading = false,
+//                starCast = credits.actors.map { actor -> actor.toUi() },
+//                characters = crew.filter { it.job == "Characters" }.take(3).map { it.name },
+//                director = crew.filter {
+//                    it.job in (listOf(
+//                        "Director",
+//                        "Screenplay",
+//                        "Story"
+//                    ))
+//                }.take(3).map { it.name },
+//                writer = crew.filter { it.job == "Producer" }.take(3).map { it.name },
+//                produce = crew.filter { it.job == "Writer" }.take(3).map { it.name }
+//            )
+//        }
+//    }
 
     private fun loadReviews(seriesId: Int, page: Int) {
         updateState { it.copy(isLoading = true, errorMessage = 0, shouldShowError = false) }
         launchWithResult(
             action = { getReviewsPageUseCase(seriesId, page, isMovie = false) },
             onSuccess = { reviews ->
-                updateState { it.copy(reviews = reviews.map { it.toUi() }) }
+//                updateState { it.copy(reviews = reviews.map { it.toUi() }) }
             },
             onError = { error ->
                 updateState {
@@ -194,7 +190,7 @@ class SeriesDetailsScreenScreenViewModel @Inject constructor(
     }
 
     private fun onGetRecommendationsSuccess(recommendations: List<Series>) {
-        updateState { it.copy(recommendation = recommendations.map { it.toUi() }) }
+//        updateState { it.copy(recommendation = recommendations.map { it.toUi() }) }
     }
 
     override fun showRatingBottomSheet() {

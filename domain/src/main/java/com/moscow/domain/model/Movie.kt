@@ -4,16 +4,19 @@ import kotlinx.datetime.LocalDate
 
 data class Movie(
     val id: Int,
-    val name: String,
-    val genreIds: List<Int>,
-    val rating: Float,
-    val releaseDate: LocalDate,
-    val adult: Boolean,
-    val backdropPath: String,
-    val originalLanguage: String,
-    val originalTitle: String,
+    val title: String,
     val overview: String,
-    val posterPath: String,
-    val video: Boolean,
-    val poster: String,
-)
+    val trailerUrl: String,
+    val backdropUrl: String,
+    val posterUrl: String,
+    val releaseDate: LocalDate?,
+    val genreIds: List<Int>,
+    val genres: List<String>,
+    val duration: Duration,
+    val rating: Float
+){
+    data class Duration(
+        val hours: Int,
+        val minutes: Int
+    )
+}

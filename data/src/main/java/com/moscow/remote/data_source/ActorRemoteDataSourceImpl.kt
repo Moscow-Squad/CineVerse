@@ -4,7 +4,7 @@ import com.moscow.data_source.remote.ActorRemoteDataSource
 import com.moscow.remote.dto.actor.ActorBestOfMoviesDto
 import com.moscow.remote.dto.actor.ActorImagesDto
 import com.moscow.remote.dto.actor.ActorSocialMediaDto
-import com.moscow.remote.dto.details.ActorDetailsDto
+import com.moscow.remote.dto.actor.ActorDetailsDto
 import com.moscow.remote.services.ActorService
 import com.moscow.utils.handleApi
 import javax.inject.Inject

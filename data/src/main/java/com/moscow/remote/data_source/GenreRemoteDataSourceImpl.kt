@@ -1,7 +1,7 @@
 package com.moscow.remote.data_source
 
 import com.moscow.data_source.remote.GenreRemoteDataSource
-import com.moscow.remote.dto.GenreResponse
+import com.moscow.remote.dto.genre.GenreResponse
 import com.moscow.remote.services.GenreService
 import com.moscow.utils.handleApi
 import javax.inject.Inject
