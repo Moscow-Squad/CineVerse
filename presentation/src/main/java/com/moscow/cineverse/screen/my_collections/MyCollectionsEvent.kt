@@ -4,7 +4,7 @@ sealed interface MyCollectionsEvent {
     data object OnNavigateBack : MyCollectionsEvent
     data object OnNavigateToCreateCollection : MyCollectionsEvent
     data object OnStartCollecting : MyCollectionsEvent
-    data class OnNavigateToCollection(val collectionId: Int, val collectionName: String) :
-        MyCollectionsEvent
-
+    data class OnNavigateToCollection(
+        val collectionId: Int, val collectionName: String
+    ) : MyCollectionsEvent
 }
