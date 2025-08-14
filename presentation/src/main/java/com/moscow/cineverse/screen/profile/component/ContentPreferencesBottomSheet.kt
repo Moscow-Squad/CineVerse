@@ -15,6 +15,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
@@ -134,9 +135,8 @@ fun PreferenceOption(
         modifier = modifier
             .scale(scale)
             .fillMaxWidth()
-            .background(
-                color = backgroundColor, shape = RoundedCornerShape(Theme.radius.large)
-            )
+            .clip(shape = RoundedCornerShape(Theme.radius.large))
+            .background(color = backgroundColor)
             .border(
                 width = 1.dp, color = borderColor, shape = RoundedCornerShape(Theme.radius.large)
             )
