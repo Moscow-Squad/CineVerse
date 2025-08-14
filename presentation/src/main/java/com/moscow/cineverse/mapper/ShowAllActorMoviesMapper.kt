@@ -1,5 +1,6 @@
 package com.moscow.cineverse.mapper
 
+import com.moscow.cineverse.common_ui_state.MediaItemUiState
 import com.moscow.cineverse.screen.explore.ExploreScreenState.GenreUiState
 import com.moscow.cineverse.screen.explore.YYYY_MMM_DD
 import com.moscow.cineverse.screen.explore.formatWith

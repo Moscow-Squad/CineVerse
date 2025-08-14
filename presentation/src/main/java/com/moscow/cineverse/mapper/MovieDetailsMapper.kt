@@ -1,6 +1,5 @@
 package com.moscow.cineverse.mapper
 
-import android.R.attr.duration
 import android.content.Context
 import com.moscow.cineverse.common_ui_state.CrewUiState
 import com.moscow.cineverse.common_ui_state.ReviewUiState
@@ -125,7 +124,6 @@ fun Int.toHourMinuteFormat(context: Context): String {
             hours,
             minutes
         )
-
         hours > 0 -> context.getString(R.string.duration_hours_only, hours)
         minutes > 0 -> context.getString(R.string.duration_minutes_only, minutes)
         else -> ""
