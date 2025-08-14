@@ -7,11 +7,12 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import androidx.paging.map
 import com.moscow.cineverse.base.BaseViewModel
+import com.moscow.cineverse.common_ui_state.MediaItemUiState
+import com.moscow.cineverse.common_ui_state.MediaItemUiState.MediaType
 import com.moscow.cineverse.paging.BasePagingSource
 import com.moscow.cineverse.screen.explore.ExploreScreenState.ActorUiState
 import com.moscow.cineverse.utlis.ViewMode
 import com.moscow.domain.model.Genre
-import com.moscow.domain.model.MediaType
 import com.moscow.domain.repository.blur.BlurProvider
 import com.moscow.domain.usecase.genre.GenreUseCase
 import com.moscow.domain.usecase.movie.GetMovieByGenreIdUseCase
@@ -278,7 +279,7 @@ class ExploreViewModel @Inject constructor(
 
     private fun getSuggestions(keyword: String, page: Int = 1) {
         launchWithResult(
-            action = { suggestionUseCase.getSuggestions(keyword, page) },
+            action = { suggestionUseCase(keyword, page) },
             onSuccess = ::onSuccessLoadingSuggestions,
             onError = { updateState { it.copy(remoteSuggestions = listOf(uiState.value.searchKeyWord))} },
         )
@@ -377,7 +378,7 @@ class ExploreViewModel @Inject constructor(
             action = {
                 suggestion.isHistory.let {
                     if (!it) {
-                        cacheSearchQueryUseCase.cacheSearchQuery(suggestion.title)
+                        cacheSearchQueryUseCase(suggestion.title)
                     }
                     searchMovie()
                     searchSeries()
@@ -413,7 +414,7 @@ class ExploreViewModel @Inject constructor(
                         searchSeries()
                         searchActor()
                         if (!isQueryInHistory)
-                            cacheSearchQueryUseCase.cacheSearchQuery(uiState.value.searchKeyWord)
+                            cacheSearchQueryUseCase(uiState.value.searchKeyWord)
                     }
             },
             onSuccess = {
@@ -437,7 +438,7 @@ class ExploreViewModel @Inject constructor(
 
     override fun clearAllLocalSuggestions() {
         launchAndForget(
-            action = clearSearchHistoryUseCase::clearSearchHistory,
+            action = { clearSearchHistoryUseCase() },
             onError = ::onClearSearchHistoryError
         )
     }
@@ -524,7 +525,7 @@ class ExploreViewModel @Inject constructor(
     }
 
     override fun onMediaItemClicked(mediaItemUiState: MediaItemUiState) {
-        if (mediaItemUiState.mediaType == MediaType.Movie)
+        if (mediaItemUiState.mediaType == MediaType.MOVIE)
             sendEvent(ExploreScreenEffects.MovieClicked(mediaItemUiState.id))
         else
             sendEvent(ExploreScreenEffects.SeriesClicked(mediaItemUiState.id))

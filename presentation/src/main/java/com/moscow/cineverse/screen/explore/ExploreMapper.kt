@@ -20,7 +20,8 @@ fun Movie.toUi(genresList: List<GenreUiState> = listOf()): MediaItemUiState =
         genres = if (genresList.isEmpty()) emptyList() else
             genreIds.map { it -> genresList.first { genre -> genre.id == it }.name },
         releaseDate = releaseDate?.formatWith(YYYY_MMM_DD) ?: "",
-        backdropPath = this.backdropUrl
+        backdropPath = this.backdropUrl,
+        mediaType = MediaItemUiState.MediaType.MOVIE
     )
 
 fun Series.toUi(genresList: List<GenreUiState> = listOf()): MediaItemUiState =
@@ -32,7 +33,8 @@ fun Series.toUi(genresList: List<GenreUiState> = listOf()): MediaItemUiState =
         genres = if (genresList.isEmpty()) emptyList() else
             genreIds.map { it -> genresList.first { genre -> genre.id == it }.name },
         releaseDate = releaseDate?.formatWith(YYYY_MMM_DD) ?: "",
-        backdropPath = this.backdropPath
+        backdropPath = this.backdropPath,
+        mediaType = MediaItemUiState.MediaType.SERIES
     )
 
 fun Actor.toUi(): ActorUiState =
