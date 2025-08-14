@@ -24,6 +24,7 @@ fun Movie.toUi(): MovieScreenState.MovieDetailsUiState =
         releaseDate = releaseDate,
         description = overview,
         duration = duration
+
     )
 
 fun Review.toUi(): ReviewUiState =
