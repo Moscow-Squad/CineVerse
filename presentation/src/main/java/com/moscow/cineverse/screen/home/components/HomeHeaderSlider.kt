@@ -42,6 +42,7 @@ import androidx.compose.ui.util.lerp
 import androidx.compose.ui.zIndex
 import com.moscow.cineverse.common_ui_state.MediaItemUiState
 import com.moscow.cineverse.component.MoviePosterCard
+import com.moscow.cineverse.component.MediaPosterCard
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.utlis.doubleShadowDrop
 import kotlinx.coroutines.delay
@@ -130,8 +131,8 @@ fun HomeHeaderSlider(
                     .height(280.dp)
                     .zIndex(1f - pageOffset)
             ) {
-                MoviePosterCard(
-                    movie = items[page],
+                MediaPosterCard(
+                    mediaItem = items[page],
                     showRating = false,
                     modifier = Modifier
                         .fillMaxWidth()
@@ -139,7 +140,7 @@ fun HomeHeaderSlider(
                         .alpha(cardAlpha)
                         .size(width = animatedWidth, height = animatedHeight)
                         .clip(RoundedCornerShape(Theme.radius.extraLarge)),
-                    onMovieClick = {onSliderClick(items[page])},
+                    onMediaItemClick = { onSliderClick(items[page]) },
                     showBackdrop = true,
                     showTitle = false,
                     enableBlur = enableBlur,

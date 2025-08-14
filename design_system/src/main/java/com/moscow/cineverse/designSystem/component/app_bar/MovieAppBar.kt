@@ -39,9 +39,7 @@ fun MovieAppBar(
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .background(
-                color = Theme.colors.background.screen
-            )
+            .background(color = Theme.colors.background.screen)
     ) {
         Row(
             modifier = Modifier

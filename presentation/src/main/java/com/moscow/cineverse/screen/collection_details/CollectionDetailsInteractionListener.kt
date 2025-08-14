@@ -1,6 +1,6 @@
 package com.moscow.cineverse.screen.collection_details
 
-import com.moscow.domain.model.MediaType
+import com.moscow.cineverse.common_ui_state.MediaItemUiState.MediaType
 
 interface CollectionDetailsInteractionListener {
     fun onBackButtonClicked()

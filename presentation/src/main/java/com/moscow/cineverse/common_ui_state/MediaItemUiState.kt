@@ -6,12 +6,17 @@ data class MediaItemUiState(
     val posterPath: String,
     val rating: Float,
     val genres: List<String>,
-    val releaseDate: String,
+    val releaseDate: LocalDate?,
+    val backdropPath: String,
     val mediaType: MediaType,
-    val backdropPath: String
-
-){
+    val duration: DurationUiState
+) {
     enum class MediaType {
-        MOVIE, SERIES
+        Movie, Series;
+
+        companion object {
+            fun toMediaType(name: String) =
+                MediaType.entries.find { it.name.equals(name, ignoreCase = true) } ?: Movie
+        }
     }
 }
