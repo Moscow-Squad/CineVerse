@@ -36,9 +36,9 @@ import androidx.compose.ui.unit.dp
 import com.moscow.cineverse.common_ui_state.MediaItemUiState
 import com.moscow.cineverse.designSystem.component.blur.OnBlurContent
 import com.moscow.cineverse.designSystem.theme.Theme
-import com.moscow.cineverse.details.common.InfoSection
 import com.moscow.cineverse.image_viewer.component.SafeImageViewer
 import com.moscow.cineverse.mapper.formatDate
+import com.moscow.cineverse.screen.details.common.InfoSection
 import com.moscow.cineverse.utlis.ViewMode
 import com.moscow.cinverse.presentation.R
 

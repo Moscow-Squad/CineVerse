@@ -1,6 +1,7 @@
 package com.moscow.di
 
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
+import com.moscow.data_source.remote.AccountRemoteDataSource
 import com.moscow.data_source.remote.ActorRemoteDataSource
 import com.moscow.data_source.remote.CollectionRemoteDataSource
 import com.moscow.data_source.remote.GenreRemoteDataSource
@@ -10,6 +11,7 @@ import com.moscow.data_source.remote.SearchRemoteDataSource
 import com.moscow.data_source.remote.SeriesRemoteDataSource
 import com.moscow.domain.service.language.LanguageProvider
 import com.moscow.data_source.remote.ProfileRemoteDataSource
+import com.moscow.remote.data_source.AccountRemoteDataSourceImpl
 import com.moscow.remote.data_source.ActorRemoteDataSourceImpl
 import com.moscow.remote.data_source.CollectionRemoteDataSourceImpl
 import com.moscow.remote.data_source.GenreRemoteDataSourceImpl
@@ -48,6 +50,10 @@ abstract class RemoteDataSourceModule {
     @Binds
     @Singleton
     abstract fun bindSearchRemoteDataSource(impl: SearchRemoteDataSourceImpl): SearchRemoteDataSource
+
+    @Binds
+    @Singleton
+    abstract fun bindAccountRemoteDataSource(impl: AccountRemoteDataSourceImpl): AccountRemoteDataSource
 
     @Binds
     @Singleton

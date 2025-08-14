@@ -11,7 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.moscow.cineverse.common_ui_state.MediaItemUiState
-import com.moscow.cineverse.component.MoviePosterCard
+import com.moscow.cineverse.component.MediaPosterCard
 import com.moscow.cineverse.designSystem.component.app_bar.MovieAppBar
 import com.moscow.cineverse.designSystem.component.indicator.MovieCircularProgressBar
 import com.moscow.cineverse.designSystem.theme.Theme
@@ -76,10 +76,10 @@ fun MoviesGrid(
         modifier = modifier
     ) {
         items(movies) { movie ->
-            MoviePosterCard(
-                movie = movie,
+            MediaPosterCard(
+                mediaItem = movie,
                 viewMode = viewMode,
-                onMovieClick = onMovieClick,
+                onMediaItemClick = onMovieClick,
                 enableBlur = enableBlur
             )
         }

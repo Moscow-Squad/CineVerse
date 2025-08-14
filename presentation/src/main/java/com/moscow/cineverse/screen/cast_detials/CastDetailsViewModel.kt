@@ -3,6 +3,8 @@ package com.moscow.cineverse.screen.cast_detials
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.moscow.cineverse.base.BaseViewModel
+import com.moscow.cineverse.common_ui_state.MediaItemUiState
+import com.moscow.cineverse.mapper.toUi
 import com.moscow.cineverse.navigation.routes.CastDetailsRoute
 import com.moscow.cineverse.screen.cast_detials.CastDetailsUiState.SocialMediaLinks
 import com.moscow.cinverse.presentation.R
@@ -102,7 +104,7 @@ class CastDetailsViewModel @Inject constructor(
             onSuccess = { movies ->
                 updateState {
                     it.copy(
-                        movies = movies,
+                        movies = movies.toUi(),
                         isLoadingMovies = false
                     )
                 }
@@ -190,9 +192,10 @@ class CastDetailsViewModel @Inject constructor(
         loadActorDetails()
     }
 
-    override fun onMovieClick(movie: Movie) {
+    override fun onMovieClick(movie: MediaItemUiState) {
         sendEvent(CastDetailsEffect.NavigateToMovie(movie.id))
     }
+
 
     override fun onShowMoreMovies() {
         sendEvent(

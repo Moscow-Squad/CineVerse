@@ -18,7 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import com.moscow.cineverse.common_ui_state.MediaItemUiState
-import com.moscow.cineverse.component.MoviePosterCard
+import com.moscow.cineverse.component.MediaPosterCard
 import com.moscow.cineverse.component.NoInternetScreen
 import com.moscow.cineverse.designSystem.component.indicator.MovieCircularProgressBar
 import com.moscow.cineverse.designSystem.theme.Theme
@@ -48,10 +48,10 @@ fun <T : Any> ContentGrid(
             item?.let { safeItem ->
                 when (safeItem) {
                     is MediaItemUiState -> {
-                        MoviePosterCard(
-                            movie = safeItem,
+                        MediaPosterCard(
+                            mediaItem = safeItem,
                             viewMode = uiState.viewMode,
-                            onMovieClick = interactionListener::onMediaItemClicked,
+                            onMediaItemClick = interactionListener::onMediaItemClicked,
                             enableBlur = uiState.enableBlur
                         )
                     }

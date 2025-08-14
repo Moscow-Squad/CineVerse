@@ -6,10 +6,11 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.moscow.cineverse.base.BaseViewModel
+import com.moscow.cineverse.common_ui_state.MediaItemUiState
+import com.moscow.cineverse.common_ui_state.MediaItemUiState.MediaType
 import com.moscow.cineverse.paging.BasePagingSource
 import com.moscow.cineverse.screen.explore.ExploreTabsPages
 import com.moscow.cineverse.screen.explore.toUi
-import com.moscow.domain.model.MediaType
 import com.moscow.domain.service.blur.BlurProvider
 import com.moscow.domain.usecase.genre.GenreUseCase
 import com.moscow.domain.usecase.rating.CloseRatingTipUseCase

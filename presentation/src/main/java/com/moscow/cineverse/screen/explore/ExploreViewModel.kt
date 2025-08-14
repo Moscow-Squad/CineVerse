@@ -525,7 +525,7 @@ class ExploreViewModel @Inject constructor(
     }
 
     override fun onMediaItemClicked(mediaItemUiState: MediaItemUiState) {
-        if (mediaItemUiState.mediaType == MediaType.MOVIE)
+        if (mediaItemUiState.mediaType == MediaType.Movie)
             sendEvent(ExploreScreenEffects.MovieClicked(mediaItemUiState.id))
         else
             sendEvent(ExploreScreenEffects.SeriesClicked(mediaItemUiState.id))

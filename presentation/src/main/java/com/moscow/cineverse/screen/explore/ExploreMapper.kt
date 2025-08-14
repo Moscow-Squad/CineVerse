@@ -22,7 +22,6 @@ fun Movie.toUi(genresList: List<GenreUiState> = listOf()): MediaItemUiState =
         genres = if (genresList.isEmpty()) emptyList() else
             genreIds.map { it -> genresList.first { genre -> genre.id == it }.name },
         releaseDate = releaseDate,
-        duration = duration.toUi(),
         mediaType = MediaType.Movie,
         backdropPath = backdropUrl
     )
@@ -36,7 +35,6 @@ fun Series.toUi(genresList: List<GenreUiState> = listOf()): MediaItemUiState =
         genres = if (genresList.isEmpty()) emptyList() else
             genreIds.map { it -> genresList.first { genre -> genre.id == it }.name },
         releaseDate = releaseDate,
-        duration = DurationUiState(0, 0),
         mediaType = MediaType.Series,
         backdropPath = this.backdropPath
     )

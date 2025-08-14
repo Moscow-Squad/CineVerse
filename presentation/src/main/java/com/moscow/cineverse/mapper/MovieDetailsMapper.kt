@@ -5,7 +5,7 @@ import com.moscow.cineverse.common_ui_state.CrewUiState
 import com.moscow.cineverse.common_ui_state.DurationUiState
 import com.moscow.cineverse.common_ui_state.MediaItemUiState
 import com.moscow.cineverse.common_ui_state.ReviewUiState
-import com.moscow.cineverse.details.movie_details.MovieScreenState
+import com.moscow.cineverse.screen.details.movie_details.MovieScreenState
 import com.moscow.domain.model.CreditsInfo
 import com.moscow.domain.model.Movie
 import com.moscow.domain.model.Review
@@ -64,5 +64,4 @@ fun Movie.toMediaItemUi() =
         releaseDate = releaseDate,
         backdropPath = backdropUrl,
         mediaType = MediaItemUiState.MediaType.Movie,
-        duration = duration.toUi()
     )

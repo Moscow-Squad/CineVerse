@@ -5,8 +5,9 @@ import com.moscow.domain.model.Movie
 import com.moscow.domain.model.Series
 import com.moscow.local.entity.MediaItemEntity
 import com.moscow.mapper.toHomeItemEntity
+import javax.inject.Inject
 
-class HomeCacheHelper(
+class HomeCacheHelper @Inject constructor(
     private val homeLocalDataSource: HomeLocalDataSource
 ) {
     companion object {

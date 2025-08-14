@@ -24,7 +24,7 @@ import com.moscow.cineverse.designSystem.component.card.MessageInfoCard
 import com.moscow.cineverse.designSystem.component.indicator.MovieCircularProgressBar
 import com.moscow.cineverse.designSystem.component.wrapper.MovieText
 import com.moscow.cineverse.designSystem.theme.Theme
-import com.moscow.cineverse.details.common.CollectionItem
+import com.moscow.cineverse.screen.details.common.CollectionItem
 import com.moscow.cinverse.presentation.R
 
 

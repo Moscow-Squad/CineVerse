@@ -11,7 +11,7 @@ import com.moscow.cineverse.screen.explore.toUi
 import com.moscow.domain.model.Movie
 import com.moscow.domain.model.Series
 import com.moscow.domain.model.UserType
-import com.moscow.domain.repository.blur.BlurProvider
+import com.moscow.domain.service.blur.BlurProvider
 import com.moscow.domain.usecase.collection.GetUserCollectionsUseCase
 import com.moscow.domain.usecase.genre.GenreUseCase
 import com.moscow.domain.usecase.movie.GetMatchesYourVibesMoviesUseCase
@@ -212,7 +212,7 @@ class HomeViewModel @Inject constructor(
     }
 
     override fun onMediaItemClicked(mediaItemUiState: MediaItemUiState) {
-       if (mediaItemUiState.mediaType == MediaType.MOVIE)
+       if (mediaItemUiState.mediaType == MediaType.Movie)
             sendEvent(HomeEffect.MovieClicked(mediaItemUiState.id))
         else
             sendEvent(HomeEffect.SeriesClicked(mediaItemUiState.id))

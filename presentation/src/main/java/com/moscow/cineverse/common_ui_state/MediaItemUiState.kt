@@ -1,5 +1,7 @@
 package com.moscow.cineverse.common_ui_state
 
+import kotlinx.datetime.LocalDate
+
 data class MediaItemUiState(
     val id: Int,
     val title: String,
@@ -9,7 +11,6 @@ data class MediaItemUiState(
     val releaseDate: LocalDate?,
     val backdropPath: String,
     val mediaType: MediaType,
-    val duration: DurationUiState
 ) {
     enum class MediaType {
         Movie, Series;

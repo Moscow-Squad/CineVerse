@@ -7,7 +7,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.moscow.cineverse.screen.cast_detials.CastDetailsUiState
-import com.moscow.cineverse.screen.movie_details.InfoSection
+import com.moscow.cineverse.screen.details.common.InfoSection
 import com.moscow.cinverse.presentation.R
 
 @Composable

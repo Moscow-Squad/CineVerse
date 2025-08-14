@@ -23,7 +23,6 @@ fun NavGraphBuilder.collectionsBottomSheetRoute(
 ) {
     dialog<CollectionsBottomSheetRoute> {
         CollectionsBottomSheetScreen(
-            onAddNewCollectionClick = {},
             onCreateCollectionClicked = { navController.navigate(MyCollectionsRoute) },
             navigateBack = navController::navigateUp,
             onLogIn = { navController.navigate(LoginRoute) }

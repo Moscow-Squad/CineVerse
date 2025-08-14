@@ -1,6 +1,5 @@
 package com.moscow.cineverse.screen.home.components
 
-import android.graphics.BlurMaskFilter
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
@@ -27,21 +26,12 @@ import androidx.compose.ui.BiasAlignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.drawBehind
-import androidx.compose.ui.geometry.Size
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Paint
-import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.graphics.drawOutline
-import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.lerp
 import androidx.compose.ui.util.lerp
 import androidx.compose.ui.zIndex
 import com.moscow.cineverse.common_ui_state.MediaItemUiState
-import com.moscow.cineverse.component.MoviePosterCard
 import com.moscow.cineverse.component.MediaPosterCard
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.utlis.doubleShadowDrop

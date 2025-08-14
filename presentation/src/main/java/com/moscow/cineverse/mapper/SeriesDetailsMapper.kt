@@ -1,10 +1,10 @@
 package com.moscow.cineverse.mapper
 
 import com.moscow.cineverse.common_ui_state.CrewUiState
-import com.moscow.cineverse.common_ui_state.DurationUiState
 import com.moscow.cineverse.common_ui_state.MediaItemUiState
-import com.moscow.cineverse.details.series_details.SeasonUiState
-import com.moscow.cineverse.details.series_details.SeriesDetailsUiState
+import com.moscow.cineverse.screen.details.series_details.SeasonUiState
+import com.moscow.cineverse.screen.details.series_details.SeriesDetailsUiState
+
 import com.moscow.domain.model.Series
 import com.moscow.domain.model.Series.Creator
 import com.moscow.domain.model.Series.Season
@@ -50,5 +50,4 @@ fun Series.toMediaItemUi() =
         releaseDate = releaseDate,
         backdropPath = backdropPath,
         mediaType = MediaItemUiState.MediaType.Series,
-        duration = DurationUiState(0, 0)
     )

@@ -31,7 +31,7 @@ import com.moscow.cineverse.designSystem.component.blur.OnBlurContent
 import com.moscow.cineverse.designSystem.component.blur.RemoteImagePlaceholder
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.image_viewer.component.SafeImageViewer
-import com.moscow.cineverse.mapper.toFormattedBirthDate
+import com.moscow.cineverse.mapper.formatDate
 import com.moscow.cineverse.screen.cast_detials.CastDetailsInteractionListener
 import com.moscow.cineverse.screen.cast_detials.CastDetailsUiState
 import com.moscow.cineverse.screen.cast_detials.CastDetailsUiState.SocialMediaLinks
@@ -50,7 +50,7 @@ fun ActorMainDetailsSection(
             name = actor.name,
             date = stringResource(
                 R.string.born_on,
-                actor.birthDate?.toFormattedBirthDate() ?: ""
+                actor.birthDate?.formatDate()?:""
             ),
             location = actor.placeOfBirth,
             scrollState = null,
