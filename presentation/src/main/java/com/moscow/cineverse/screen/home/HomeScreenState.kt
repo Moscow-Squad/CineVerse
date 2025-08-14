@@ -5,7 +5,7 @@ import com.moscow.cineverse.common_ui_state.MediaItemUiState
 import com.moscow.cineverse.screen.explore.ExploreScreenState
 
 
-data class HomeUiState(
+data class HomeScreenState(
     val isLoading: Boolean = false,
     val error: Int? = null,
     val userName: String? = null,

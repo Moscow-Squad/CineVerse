@@ -7,5 +7,11 @@ data class MediaItemUiState(
     val rating: Float,
     val genres: List<String>,
     val releaseDate: String,
+    val mediaType: MediaType,
     val backdropPath: String
-)
+
+){
+    enum class MediaType {
+        MOVIE, SERIES
+    }
+}

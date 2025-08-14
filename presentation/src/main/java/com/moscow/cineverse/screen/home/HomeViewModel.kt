@@ -4,6 +4,7 @@ import androidx.lifecycle.viewModelScope
 import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.cineverse.base.handleException
 import com.moscow.cineverse.common_ui_state.MediaItemUiState
+import com.moscow.cineverse.common_ui_state.MediaItemUiState.MediaType
 import com.moscow.cineverse.mapper.toCollectionUi
 import com.moscow.cineverse.mapper.toUi
 import com.moscow.cineverse.screen.explore.toUi
@@ -38,7 +39,7 @@ class HomeViewModel @Inject constructor(
     private val getRecentlyViewedMediaUseCase: GetRecentlyViewedMediaUseCase,
     private val genreUseCase: GenreUseCase,
     private val blurProvider: BlurProvider,
-) : BaseViewModel<HomeUiState, HomeEvent>(HomeUiState()), HomeInteractionListener {
+) : BaseViewModel<HomeScreenState, HomeEffect>(HomeScreenState()), HomeInteractionListener {
 
     init {
         getGenres()
@@ -211,34 +212,30 @@ class HomeViewModel @Inject constructor(
     }
 
     override fun onMediaItemClicked(mediaItemUiState: MediaItemUiState) {
-      /*  if (mediaItemUiState.mediaType == MediaType.Movie)
-            sendEvent(HomeEvent.MovieClicked(mediaItemUiState.id))
+       if (mediaItemUiState.mediaType == MediaType.MOVIE)
+            sendEvent(HomeEffect.MovieClicked(mediaItemUiState.id))
         else
-            sendEvent(HomeEvent.SeriesClicked(mediaItemUiState.id))*/
+            sendEvent(HomeEffect.SeriesClicked(mediaItemUiState.id))
     }
 
     override fun onSeeAllClick(type: HomeFeaturedItems) {
-        sendEvent(HomeEvent.SeeAllClicked(type))
+        sendEvent(HomeEffect.SeeAllClicked(type))
     }
 
     override fun onCollectionsShowMoreClick() {
-        sendEvent(HomeEvent.SeeMoreCollections)
+        sendEvent(HomeEffect.SeeMoreCollections)
     }
 
     override fun onCollectionClick(collectionId: Int, collectionName: String) {
-        sendEvent(HomeEvent.CollectionClicked(collectionId, collectionName))
-    }
-
-    override fun onPromotionClick(promotionId: Int) {
-        sendEvent(HomeEvent.PromotionClicked(promotionId))
+        sendEvent(HomeEffect.CollectionClicked(collectionId, collectionName))
     }
 
     override fun onWatchSuggestionClick() {
-        sendEvent(HomeEvent.WatchingSuggestionClicked)
+        sendEvent(HomeEffect.WatchingSuggestionClicked)
     }
 
     override fun onBrowseSuggestionClick() {
-        sendEvent(HomeEvent.BrowseSuggestionClicked)
+        sendEvent(HomeEffect.BrowseSuggestionClicked)
     }
 
     override fun onRefresh() {
@@ -246,14 +243,14 @@ class HomeViewModel @Inject constructor(
     }
 
     override fun onSeeMoreRecentlyViewedClicked() {
-        sendEvent(HomeEvent.SeeMoreRecentlyViewed)
+        sendEvent(HomeEffect.SeeMoreRecentlyViewed)
     }
 
     override fun onFeaturedCollectionClick(genreId: Int) {
         val collection = HomeFeaturedCollections.entries.find { it.genreId == genreId }
         if (collection != null) {
             sendEvent(
-                HomeEvent.FeaturedCollectionClicked(
+                HomeEffect.FeaturedCollectionClicked(
                     collection.genreId,
                     collection.title
                 )
