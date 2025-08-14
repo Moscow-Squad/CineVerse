@@ -24,7 +24,7 @@ fun Movie.toUi(genresList: List<GenreUiState> = listOf()): MediaItemUiState =
         releaseDate = releaseDate,
         duration = duration.toUi(),
         mediaType = MediaType.Movie,
-        backdropPath = this.backdropUrl
+        backdropPath = backdropUrl
     )
 
 fun Series.toUi(genresList: List<GenreUiState> = listOf()): MediaItemUiState =

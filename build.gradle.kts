@@ -16,21 +16,18 @@ plugins {
 }
 
 val excludedPackages = listOf(
-    // Android auto-generated and framework classes
     "*.R", "*.R_*", "*.BuildConfig*", "*.Manifest*",
 
-    // DI and singleton patterns
-    "**.di.**", "*.ComposableSingletons*", "*.model.*",
+    "**.di.**", "*.ComposableSingletons*", "**.model.**",
 
-    // App entry points
     "*.MainActivity*", "*.CineVerseApp*",
 
-    // Feature-specific exclusions
     "com.moscow.cineverse.image_viewer*",
     "com.moscow.cineverse.design_system*",
+    "com.moscow.cineverse.presentation*",
 
-    // Data layer exclusions
-    "entity.**", "**.dao.**", "**.dto.**", "**.response.**",
+    "**.dao.**", "**.dto.**", "**.db.**", "**.util.**", "**.response.**",
+    "**.entity.**", "**.mapper.**", "**.api.**",
 
     "dagger.hilt.**",
     "hilt_aggregated_deps.**",
@@ -38,8 +35,7 @@ val excludedPackages = listOf(
     "**_HiltModules*",
     "Hilt_*",
 
-    // Error handling
-    "exceptions.**"
+    "exception.**"
 )
 
 allprojects {

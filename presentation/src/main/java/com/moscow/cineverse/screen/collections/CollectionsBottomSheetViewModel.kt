@@ -2,7 +2,6 @@ package com.moscow.cineverse.screen.collections
 
 import androidx.lifecycle.SavedStateHandle
 import com.moscow.cineverse.base.BaseViewModel
-import com.moscow.cineverse.common_ui_state.MediaItemUiState.MediaType
 import com.moscow.cineverse.mapper.toCollectionUi
 import com.moscow.cineverse.navigation.routes.CollectionsBottomSheetRoute
 import com.moscow.cineverse.screen.collections.CollectionsBottomSheetEffect.OnLoginClicked
@@ -24,9 +23,6 @@ class CollectionsBottomSheetViewModel @Inject constructor(
 ), CollectionsBottomSheetInteractionListener {
 
     val mediaItemId: Int = savedStateHandle.get<Int>(CollectionsBottomSheetRoute.MEDIA_ITEM_ID) ?: 0
-    val mediaItemType: MediaType = MediaType.toMediaType(
-        savedStateHandle.get<String>(CollectionsBottomSheetRoute.MEDIA_TYPE) ?: MediaType.Movie.name
-    )
 
     init {
         isUserLoggedIn()

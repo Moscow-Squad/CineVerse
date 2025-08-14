@@ -8,6 +8,5 @@ data class CollectionsBottomSheetScreenState(
     val showBottomSheet: Boolean = false,
     val collections: List<CollectionUiState> = emptyList(),
     val showProcessIndicator: Boolean = false,
-    val isLoggedIn: Boolean? = null,
-
-    )
+    val isLoggedIn: Boolean? = null
+)

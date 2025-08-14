@@ -45,9 +45,9 @@ fun ExploreScreen(
     val contentList = viewModel.contentList.collectAsLazyPagingItems()
 
     LaunchedEffect(Unit) {
-        viewModel.uiEffect.collect { event ->
-            handleEffects(
-                event,
+        viewModel.uiEffect.collect { effect ->
+            ExploreScreenEffectHandler.handleEffect (
+                effect,
                 navigateToCastDetails = navigateToCastDetails,
                 navigateToMovieDetails = navigateToMovieDetails,
                 navigateToSeriesDetails = navigateToSeriesDetails
@@ -61,32 +61,6 @@ fun ExploreScreen(
         interactionListener = viewModel,
         modifier = modifier
     )
-}
-
-private fun handleEffects(
-    event: ExploreScreenEffects,
-    navigateToCastDetails: (Int) -> Unit,
-    navigateToMovieDetails: (Int) -> Unit,
-    navigateToSeriesDetails: (Int) -> Unit,
-) {
-    when (event) {
-        is ExploreScreenEffects.ActorClicked -> {
-            navigateToCastDetails(event.actorId)
-        }
-
-        is ExploreScreenEffects.GenreSelected -> {}
-        ExploreScreenEffects.LoadData -> {}
-        is ExploreScreenEffects.MovieClicked -> {
-            navigateToMovieDetails(event.movieId)
-        }
-
-        ExploreScreenEffects.RefreshRequested -> {}
-        is ExploreScreenEffects.TabSelected -> {}
-        is ExploreScreenEffects.ViewModeChanged -> {}
-        is ExploreScreenEffects.SeriesClicked -> {
-            navigateToSeriesDetails(event.seriesId)
-        }
-    }
 }
 
 @Composable
@@ -189,7 +163,7 @@ private fun ExploreScreenContent(
             }
             SearchSuggestionsSection(uiState, interactionListener)
 
-            if (uiState.selectedTab != ExploreTabsPages.ACTORS) {
+            if (uiState.selectedTab != ExploreTabsPages.ACTORS && uiState.shouldShowError == false) {
                 ViewModeToggleButton(
                     selectedMode = uiState.viewMode,
                     onModeSelected = interactionListener::onViewModeChanged,

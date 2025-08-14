@@ -13,7 +13,7 @@ import com.moscow.cineverse.paging.BasePagingSource
 import com.moscow.cineverse.screen.explore.ExploreScreenState.ActorUiState
 import com.moscow.cineverse.utlis.ViewMode
 import com.moscow.domain.model.Genre
-import com.moscow.domain.repository.blur.BlurProvider
+import com.moscow.domain.service.blur.BlurProvider
 import com.moscow.domain.usecase.genre.GenreUseCase
 import com.moscow.domain.usecase.movie.GetMovieByGenreIdUseCase
 import com.moscow.domain.usecase.movie.GetPopularMoviesUseCase
@@ -278,11 +278,11 @@ class ExploreViewModel @Inject constructor(
     }
 
     private fun getSuggestions(keyword: String, page: Int = 1) {
-//        launchWithResult(
-//            action = { suggestionUseCase.getSuggestions(keyword, page) },
-//            onSuccess = ::onSuccessLoadingSuggestions,
-//            onError = { updateState { it.copy(remoteSuggestions = listOf(uiState.value.searchKeyWord))} },
-//        )
+        launchWithResult(
+            action = { suggestionUseCase(keyword, page) },
+            onSuccess = ::onSuccessLoadingSuggestions,
+            onError = { updateState { it.copy(remoteSuggestions = listOf(uiState.value.searchKeyWord))} },
+        )
     }
 
     private fun onSuccessLoadingSuggestions(suggestion: List<String>) {
@@ -366,33 +366,33 @@ class ExploreViewModel @Inject constructor(
     }
 
     override fun onClickSuggestion(suggestion: SuggestItemUiState) {
-//        updateState {
-//            it.copy(
-//                searchKeyWord = suggestion.title,
-//                isContentEmpty = false,
-//                isSearch = true
-//            )
-//        }
-//        resetSearchResults()
-//        launchAndForget(
-//            action = {
-//                suggestion.isHistory.let {
-//                    if (!it) {
-//                        cacheSearchQueryUseCase.cacheSearchQuery(suggestion.title)
-//                    }
-//                    searchMovie()
-//                    searchSeries()
-//                    searchActor()
-//                }
-//            },
-//            onSuccess = {
-//                updateState {
-//                    it.copy(showHistory = false, showSuggestions = false)
-//                }
-//                updateContentList()
-//            },
-//            onError = ::onSearchQueryError
-//        )
+        updateState {
+            it.copy(
+                searchKeyWord = suggestion.title,
+                isContentEmpty = false,
+                isSearch = true
+            )
+        }
+        resetSearchResults()
+        launchAndForget(
+            action = {
+                suggestion.isHistory.let {
+                    if (!it) {
+                        cacheSearchQueryUseCase(suggestion.title)
+                    }
+                    searchMovie()
+                    searchSeries()
+                    searchActor()
+                }
+            },
+            onSuccess = {
+                updateState {
+                    it.copy(showHistory = false, showSuggestions = false)
+                }
+                updateContentList()
+            },
+            onError = ::onSearchQueryError
+        )
     }
 
     override fun onSearchQuery() {
@@ -408,14 +408,14 @@ class ExploreViewModel @Inject constructor(
         resetSearchResults()
         launchAndForget(
             action = {
-//                uiState.value.localSuggestions.any { it.title == uiState.value.searchKeyWord }
-//                    .let { isQueryInHistory ->
-//                        searchMovie()
-//                        searchSeries()
-//                        searchActor()
-//                        if (!isQueryInHistory)
-//                            cacheSearchQueryUseCase.cacheSearchQuery(uiState.value.searchKeyWord)
-//                    }
+                uiState.value.localSuggestions.any { it.title == uiState.value.searchKeyWord }
+                    .let { isQueryInHistory ->
+                        searchMovie()
+                        searchSeries()
+                        searchActor()
+                        if (!isQueryInHistory)
+                            cacheSearchQueryUseCase(uiState.value.searchKeyWord)
+                    }
             },
             onSuccess = {
                 updateState { it.copy(isLoading = false, showHistory = false) }
@@ -437,10 +437,10 @@ class ExploreViewModel @Inject constructor(
     }
 
     override fun clearAllLocalSuggestions() {
-//        launchAndForget(
-//            action = clearSearchHistoryUseCase::clearSearchHistory,
-//            onError = ::onClearSearchHistoryError
-//        )
+        launchAndForget(
+            action = { clearSearchHistoryUseCase() },
+            onError = ::onClearSearchHistoryError
+        )
     }
 
     private fun onClearSearchHistoryError(e: Int) {
@@ -525,7 +525,7 @@ class ExploreViewModel @Inject constructor(
     }
 
     override fun onMediaItemClicked(mediaItemUiState: MediaItemUiState) {
-        if (mediaItemUiState.mediaType == MediaType.Movie)
+        if (mediaItemUiState.mediaType == MediaType.MOVIE)
             sendEvent(ExploreScreenEffects.MovieClicked(mediaItemUiState.id))
         else
             sendEvent(ExploreScreenEffects.SeriesClicked(mediaItemUiState.id))

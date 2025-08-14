@@ -7,11 +7,11 @@ import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
 import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.cineverse.common_ui_state.MediaItemUiState
-import com.moscow.cineverse.common_ui_state.MediaItemUiState.MediaType
 import com.moscow.cineverse.navigation.routes.CollectionDetailsRoute
 import com.moscow.cineverse.paging.BasePagingSource
 import com.moscow.cineverse.screen.explore.toUi
-import com.moscow.domain.repository.blur.BlurProvider
+import com.moscow.domain.model.MediaType
+import com.moscow.domain.service.blur.BlurProvider
 import com.moscow.domain.usecase.collection.ClearCollectionUseCase
 import com.moscow.domain.usecase.collection.CloseCollectionDetailsTipUseCase
 import com.moscow.domain.usecase.collection.DeleteMediaItemFromCollectionUseCase
@@ -147,7 +147,7 @@ class CollectionDetailsViewModel @Inject constructor(
     ) {
         if (mediaType == MediaType.Movie) {
             sendEvent(CollectionDetailsEffect.NavigateToMovieDetails(mediaId))
-        } else if (mediaType == MediaType.Series) {
+        } else if (mediaType == MediaType.Tv) {
             sendEvent(CollectionDetailsEffect.NavigateToSeriesDetails(mediaId))
         }
     }
@@ -184,6 +184,7 @@ class CollectionDetailsViewModel @Inject constructor(
             action = {
                 clearCollectionUseCase(
                     collectionId = collectionId,
+                    confirm = uiState.value.confirmClear
                 )
             },
             onSuccess = { updateState { it.copy(isLoading = false) } },

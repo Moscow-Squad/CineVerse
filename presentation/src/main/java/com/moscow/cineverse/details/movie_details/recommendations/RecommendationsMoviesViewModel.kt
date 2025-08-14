@@ -12,7 +12,7 @@ import com.moscow.cineverse.paging.BasePagingSource
 import com.moscow.cineverse.screen.explore.toUi
 import com.moscow.cineverse.utlis.ViewMode
 import com.moscow.domain.model.Movie
-import com.moscow.domain.repository.blur.BlurProvider
+import com.moscow.domain.service.blur.BlurProvider
 import com.moscow.domain.usecase.genre.GenreUseCase
 import com.moscow.domain.usecase.movie.GetMovieRecommendationsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel

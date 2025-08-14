@@ -1,8 +1,5 @@
 package com.moscow.cineverse.screen.collections
 
-import android.content.Context
-import android.util.Log
-import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -34,15 +31,25 @@ import com.moscow.cinverse.presentation.R
 @Composable
 fun CollectionsBottomSheetScreen(
     viewModel: CollectionsBottomSheetViewModel = hiltViewModel(),
-    onAddNewCollectionClick: () -> Unit,
     onCreateCollectionClicked: () -> Unit,
     navigateBack: () -> Unit,
     onLogIn: () -> Unit
 ) {
 
     val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
-
     val context = LocalContext.current
+
+    LaunchedEffect(viewModel) {
+        viewModel.uiEffect.collect { event ->
+            CollectionsBottomSheetEffectHandler.handleEffect(
+                event = event,
+                onCreateCollectionClicked = onCreateCollectionClicked,
+                navigateBack = navigateBack,
+                context = context,
+                onLogIn = onLogIn
+            )
+        }
+    }
 
     CollectionsBottomSheetContent(
         interactionListener = viewModel,
@@ -51,39 +58,6 @@ fun CollectionsBottomSheetScreen(
         onCloseBottomSheet = navigateBack,
         onNotNow = navigateBack,
     )
-
-    LaunchedEffect(Unit) {
-        viewModel.uiEffect.collect { event ->
-            handleEvents(
-                event = event,
-                onCreateCollectionClicked = onCreateCollectionClicked,// user already log in - navigate to collections screen
-                navigateBack = navigateBack,
-                context = context,
-                onLogIn = onLogIn
-            )
-        }
-    }
-
-}
-
-private fun handleEvents(
-    event: CollectionsBottomSheetEffect,
-    onCreateCollectionClicked: () -> Unit,
-    navigateBack: () -> Unit,
-    onLogIn: () -> Unit,
-    context: Context
-) {
-    when (event) {
-        CollectionsBottomSheetEffect.OnCreateCollectionClicked -> onCreateCollectionClicked()
-        CollectionsBottomSheetEffect.OnLoginClicked -> onLogIn()
-        is CollectionsBottomSheetEffect.OnItemAddedSuccessfully -> {
-            Toast.makeText(context, "item added successfully", Toast.LENGTH_SHORT).show()
-            navigateBack()
-        }
-        is CollectionsBottomSheetEffect.OnItemAddedFailed -> {
-            Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
-        }
-    }
 }
 
 @Composable
@@ -101,7 +75,6 @@ private fun CollectionsBottomSheetContent(
         showCancelIcon = uiState.collections.isEmpty() && uiState.isLoggedIn == true,
         onAddNewCollectionClick = { interactionListener.onAddNewCollectionClick() }
     ) {
-        Log.d("TAG", "isLogged: ${uiState.isLoggedIn} ")
         when {
 
             uiState.isLoggedIn == false -> {
