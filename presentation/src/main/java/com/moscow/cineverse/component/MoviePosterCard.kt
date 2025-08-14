@@ -174,8 +174,7 @@ private fun GridMovieCard(
                             .align(Alignment.TopEnd)
                             .padding(8.dp),
                         shape = CircleShape,
-                        color = Theme.colors.background.card.copy(alpha = 0.9f),
-                        shadowElevation = 2.dp
+                        color = Theme.colors.background.card
                     ) {
                         Row(
                             modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
