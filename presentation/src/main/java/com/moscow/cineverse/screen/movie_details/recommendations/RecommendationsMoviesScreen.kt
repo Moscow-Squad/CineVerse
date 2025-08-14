@@ -177,8 +177,7 @@ fun RecommendationMoviesContent(
 
                     ViewModeToggleButton(
                         selectedMode = uiState.viewMode,
-                        onModeSelected = {
-                                newMode ->
+                        onModeSelected = { newMode ->
                             val now = System.currentTimeMillis()
                             if (now - lastToggleTime > 300) { // 300ms debounce
                                 interactionListener.onViewModeChanged(newMode)

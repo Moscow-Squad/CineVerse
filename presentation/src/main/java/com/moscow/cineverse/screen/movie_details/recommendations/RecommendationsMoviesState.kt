@@ -4,7 +4,6 @@ import androidx.paging.PagingData
 import com.moscow.cineverse.common_ui_state.MediaItemUiState
 import com.moscow.cineverse.screen.explore.ExploreScreenState.GenreUiState
 import com.moscow.cineverse.utlis.ViewMode
-import com.moscow.domain.model.Movie
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 
