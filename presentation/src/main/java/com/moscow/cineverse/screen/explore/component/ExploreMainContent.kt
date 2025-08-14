@@ -29,7 +29,7 @@ import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import com.moscow.cineverse.common_ui_state.MediaItemUiState
 import com.moscow.cineverse.component.EmptyState
-import com.moscow.cineverse.component.MoviePosterCard
+import com.moscow.cineverse.component.MediaAnimatedList
 import com.moscow.cineverse.component.NoInternetScreen
 import com.moscow.cineverse.designSystem.component.indicator.MovieCircularProgressBar
 import com.moscow.cineverse.designSystem.theme.Theme
@@ -140,56 +140,60 @@ fun ExploreMainContent(
                 )
             }
         }
-
         else -> {
-            LazyVerticalGrid(
-                state = gridState,
-                columns = gridColumns,
-                contentPadding = contentPadding,
-                verticalArrangement = Arrangement.spacedBy(
-                    if (uiState.selectedTab == ExploreTabsPages.ACTORS) 16.dp else 16.dp
-                ),
-                horizontalArrangement = Arrangement.spacedBy(
-                    if (uiState.selectedTab == ExploreTabsPages.ACTORS) 16.dp else 12.dp
-                ),
-                modifier = modifier.fillMaxSize()
-            ) {
-                items(contentList.itemCount) { index ->
-                    val item = contentList[index]
-                    if (item != null) {
-                        when (item) {
-                            is MediaItemUiState -> {
-                                MoviePosterCard(
-                                    movie = item,
-                                    viewMode = uiState.viewMode,
-                                    enableBlur = uiState.enableBlur,
-                                    onMovieClick = { interactionListener.onMediaItemClicked(item) }
-                                )
-                            }
-
-                            is ExploreScreenState.ActorUiState -> {
-                                ActorPosterCard(
-                                    actor = item,
-                                    enableBlur = uiState.enableBlur,
-                                    onActorClicked = interactionListener::onActorClick,
-                                )
-                            }
-                        }
+            if (contentList.itemCount > 0){
+                when(contentList[0]){
+                    is MediaItemUiState -> {
+                        MediaAnimatedList(
+                            media = contentList as LazyPagingItems<MediaItemUiState>,
+                            onMovieClick = interactionListener::onMediaItemClicked,
+                            enableBlur = uiState.enableBlur,
+                            state = gridState,
+                            viewMode = uiState.viewMode,
+                            contentPadding = contentPadding,
+                            selectedTab = uiState.selectedTab,
+                            columns = gridColumns,
+                        )
                     }
-                }
-                if (contentList.loadState.append is LoadState.Loading) {
-                    item(span = { GridItemSpan(maxLineSpan) }) {
-                        Box(
-                            modifier = Modifier.height(214.dp),
-                            contentAlignment = Alignment.Center
+                    is ExploreScreenState.ActorUiState -> {
+                        LazyVerticalGrid(
+                            state = gridState,
+                            columns = gridColumns,
+                            contentPadding = contentPadding,
+                            verticalArrangement = Arrangement.spacedBy(
+                                if (uiState.selectedTab == ExploreTabsPages.ACTORS) 16.dp else 16.dp
+                            ),
+                            horizontalArrangement = Arrangement.spacedBy(
+                                if (uiState.selectedTab == ExploreTabsPages.ACTORS) 16.dp else 12.dp
+                            ),
+                            modifier = modifier.fillMaxSize()
                         ) {
-                            MovieCircularProgressBar()
+                            items(contentList.itemCount) { index ->
+                                val item = contentList[index]
+                                if (item != null) {
+                                    ActorPosterCard(
+                                        actor = item as ExploreScreenState.ActorUiState,
+                                        enableBlur = uiState.enableBlur,
+                                        onActorClicked = interactionListener::onActorClick,
+                                    )
+                                }
+                            }
+                            if (contentList.loadState.append is LoadState.Loading) {
+                                item(span = { GridItemSpan(maxLineSpan) }) {
+                                    Box(
+                                        modifier = Modifier.height(214.dp),
+                                        contentAlignment = Alignment.Center
+                                    ) {
+                                        MovieCircularProgressBar()
+                                    }
+                                }
+                            }
+                            if (contentList.loadState.append is LoadState.Error) {
+                                item(span = { GridItemSpan(maxLineSpan) }) {
+                                    NoInternetScreen(onRetry = { contentList.retry() })
+                                }
+                            }
                         }
-                    }
-                }
-                if (contentList.loadState.append is LoadState.Error) {
-                    item(span = { GridItemSpan(maxLineSpan) }) {
-                        NoInternetScreen(onRetry = { contentList.retry() })
                     }
                 }
             }
