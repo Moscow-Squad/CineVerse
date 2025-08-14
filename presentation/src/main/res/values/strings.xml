@@ -91,6 +91,8 @@
     <string name="youtube">YouTube</string>
     <string name="facebook">Facebook</string>
     <string name="instagram">Instagram</string>
+    <string name="twitter">Twitter</string>
+    <string name="tik_tok">Tik Tok</string>
     <string name="born_on">Born on %1$s</string>
     <string name="sensitive_content">Sensitive Content</string>
     <string name="all">All</string>
@@ -214,4 +216,6 @@
     <string name="rate_the_movie">Rate the Movie</string>
     <string name="remove_rating">Remove Rating</string>
     <string name="did_you_watch_it">Did You Watch it?</string>
+    <string name="tip_swipe_left_to_remove_movies_from_your_history">Tip: Swipe left to remove movies from your history.</string>
+    <string name="tap_a_movie_to_see_details_or_update_your_rating">Tap a movie to see details or update your rating.</string>
 </resources>

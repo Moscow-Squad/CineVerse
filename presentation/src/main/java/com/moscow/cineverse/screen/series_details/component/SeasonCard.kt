@@ -4,11 +4,14 @@ import androidx.annotation.DrawableRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -40,7 +43,7 @@ fun SeasonCard(
     airDate: String,
     posterUrl: String? = null,
     caption: String,
-    rate: String
+    rate: Float
 ) {
     Column(
         modifier = modifier
@@ -51,7 +54,9 @@ fun SeasonCard(
         verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(IntrinsicSize.Min),
             horizontalArrangement = Arrangement.spacedBy(12.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -59,7 +64,8 @@ fun SeasonCard(
                 imageUrl = posterUrl ?: "",
                 modifier = Modifier
                     .width(48.dp)
-                    .height(80.dp)
+                    .aspectRatio(48f / 87f)
+                    .heightIn(64.dp)
                     .clip(
                         RoundedCornerShape(
                             topStart = Theme.radius.size5xl,
@@ -111,12 +117,14 @@ fun SeasonCard(
             horizontalArrangement = Arrangement.spacedBy(12.dp, Alignment.CenterHorizontally),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            SeasonInfo(
-                icon = R.drawable.due_tone_star,
-                iconTint = Theme.colors.additional.primary.yellow,
-                iconDescription = stringResource(R.string.rate_icon),
-                title = rate
-            )
+            if (rate != 0f) {
+                SeasonInfo(
+                    icon = R.drawable.due_tone_star,
+                    iconTint = Theme.colors.additional.primary.yellow,
+                    iconDescription = stringResource(R.string.rate_icon),
+                    title = rate.toString()
+                )
+            }
             SeasonInfo(
                 icon = R.drawable.due_tone_video_library,
                 iconTint = Theme.colors.shade.secondary,

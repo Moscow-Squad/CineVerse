@@ -142,7 +142,7 @@ class HomeViewModel @Inject constructor(
     private fun onGetUserDetailsSuccess(user: UserType) {
         when (user) {
             is UserType.AuthenticatedUser -> {
-                updateState { it.copy(userName = user.username) }
+                updateState { it.copy(userName = if (user.name.isNotEmpty()) user.name else user.username) }
                 getUserCollection()
             }
 
@@ -154,8 +154,8 @@ class HomeViewModel @Inject constructor(
     }
 
     fun getRecentlyViewedMovies() {
-        launchWithResult(
-            action = { getRecentlyViewedMediaUseCase() },
+        launchWithFlow(
+            flowAction = { getRecentlyViewedMediaUseCase() },
             onSuccess = { result ->
                 updateState {
                     it.copy(
@@ -320,6 +320,7 @@ fun List<Any>.toMediaItemUiState(
                 mediaType = MediaType.Tv,
                 backdropPath = item.backdropPath
             )
+
             else -> null
         }
     }

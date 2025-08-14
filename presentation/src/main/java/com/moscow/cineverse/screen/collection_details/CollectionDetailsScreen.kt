@@ -19,6 +19,9 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.paging.compose.itemKey
+import com.moscow.cineverse.common_ui_state.MediaItemUiState
+import com.moscow.cineverse.component.EmptyCollection
 import com.moscow.cineverse.component.ErrorContent
 import com.moscow.cineverse.component.MoviePosterCard
 import com.moscow.cineverse.component.NoInternetScreen
@@ -28,16 +31,15 @@ import com.moscow.cineverse.designSystem.component.card.InfoCard
 import com.moscow.cineverse.designSystem.component.indicator.MovieCircularProgressBar
 import com.moscow.cineverse.designSystem.component.wrapper.MovieScaffold
 import com.moscow.cineverse.designSystem.theme.Theme
-import com.moscow.cineverse.screen.explore.toUi
 import com.moscow.cineverse.utlis.ViewMode
 import com.moscow.cinverse.presentation.R
-import com.moscow.domain.model.Movie
 
 @Composable
 fun CollectionDetailsScreen(
     navigateBack: () -> Unit,
     navigateToMovieDetails: (Int) -> Unit,
     navigateToSeriesDetails: (Int) -> Unit,
+    navigateToExplore: () -> Unit,
     viewModel: CollectionDetailsViewModel = hiltViewModel()
 ) {
 
@@ -58,6 +60,7 @@ fun CollectionDetailsScreen(
                 is CollectionDetailsEffect.NavigateToSeriesDetails -> {
                     navigateToSeriesDetails(event.seriesId)
                 }
+                is CollectionDetailsEffect.OnStartCollecting -> navigateToExplore()
             }
         }
     }
@@ -74,11 +77,11 @@ fun CollectionDetailsScreen(
 private fun CollectionDetailsScreenContent(
     title: String,
     uiState: CollectionDetailsScreenState,
-    mediaItems: LazyPagingItems<Movie>,
+    mediaItems: LazyPagingItems<MediaItemUiState>,
     interactionListener: CollectionDetailsInteractionListener,
     navigateBack: () -> Unit,
 ) {
-    if (uiState.isLoading){
+    if (uiState.isLoading && mediaItems.itemCount == 0) {
         Box(
             modifier = Modifier
                 .fillMaxSize()
@@ -87,14 +90,13 @@ private fun CollectionDetailsScreenContent(
         ) {
             MovieCircularProgressBar()
         }
-    }
-    else if(uiState.isError){
+    } else if (uiState.isError) {
         ErrorContent(
             errorMessage = uiState.errorMsg,
             onRetry = interactionListener::onRefresh,
         )
-    }else{
-        if (mediaItems.loadState.refresh is LoadState.Loading) {
+    } else {
+        if (mediaItems.loadState.refresh is LoadState.Loading && mediaItems.itemCount == 0) {
             Box(
                 modifier = Modifier
                     .fillMaxSize()
@@ -103,8 +105,7 @@ private fun CollectionDetailsScreenContent(
             ) {
                 MovieCircularProgressBar()
             }
-        }
-        else if (mediaItems.loadState.refresh is LoadState.Error) {
+        } else if (mediaItems.loadState.refresh is LoadState.Error) {
             Box(
                 modifier = Modifier
                     .fillMaxSize()
@@ -113,8 +114,7 @@ private fun CollectionDetailsScreenContent(
             ) {
                 NoInternetScreen(onRetry = { mediaItems.retry() })
             }
-        }
-        else {
+        } else {
             MovieScaffold(
                 movieAppBar = {
                     MovieAppBar(
@@ -123,21 +123,36 @@ private fun CollectionDetailsScreenContent(
                     )
                 }
             ) {
-                LazyColumn(modifier = Modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp)) {
-                    if (uiState.showTip){
-                        item {
-                            InfoCard(
-                                modifier = Modifier.padding(bottom = 24.dp),
-                                text = stringResource(R.string.tip_swipe_left_to_remove_movies_from_your_collection),
-                                onDismiss = interactionListener::onTipCancelIconClicked
-                            )
-                        }
+                if (mediaItems.itemCount == 0) {
+                    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                        EmptyCollection(onStartCollectingClick = interactionListener::onStartCollectingClick)
                     }
-                    items(mediaItems.itemCount) { index ->
-                        val media = mediaItems[index]?.toUi(uiState.moviesGenres)
-                        if (media != null) {
+                } else {
+                    LazyColumn(
+                        modifier = Modifier.padding(
+                            top = 16.dp,
+                            start = 16.dp,
+                            end = 16.dp
+                        )
+                    ) {
+                        if (uiState.showTip) {
+                            item {
+                                InfoCard(
+                                    modifier = Modifier.padding(bottom = 24.dp),
+                                    text = stringResource(R.string.tip_swipe_left_to_remove_movies_from_your_collection),
+                                    onDismiss = interactionListener::onTipCancelIconClicked
+                                )
+                            }
+                        }
+                        items(
+                            count = mediaItems.itemCount,
+                            key = mediaItems.itemKey { it.id }
+                        ) { index ->
+                            val media = mediaItems[index] ?: return@items
                             SwipeToDelete(
-                                modifier = Modifier.padding(bottom = 16.dp),
+                                modifier = Modifier
+                                    .animateItem()
+                                    .padding(bottom = 16.dp),
                                 onDelete = {
                                     interactionListener.onItemDeletedIconClicked(
                                         mediaId = media.id,
@@ -161,24 +176,24 @@ private fun CollectionDetailsScreenContent(
                                 )
                             }
                         }
-                    }
-                    if (mediaItems.loadState.append is LoadState.Loading) {
-                        item{
-                            Box(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .height(214.dp),
-                                contentAlignment = Alignment.Center
-                            ) {
-                                MovieCircularProgressBar()
+                        if (mediaItems.loadState.append is LoadState.Loading && mediaItems.itemCount > 20) {
+                            item {
+                                Box(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .height(214.dp),
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    MovieCircularProgressBar()
+                                }
                             }
                         }
-                    }
-                    if (mediaItems.loadState.append is LoadState.Error) {
-                        item{
-                            NoInternetScreen(
-                                onRetry = { mediaItems.retry() }
-                            )
+                        if (mediaItems.loadState.append is LoadState.Error) {
+                            item {
+                                NoInternetScreen(
+                                    onRetry = { mediaItems.retry() }
+                                )
+                            }
                         }
                     }
                 }

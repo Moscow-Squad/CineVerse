@@ -115,7 +115,7 @@ private fun RemoteImagePlaceholder(
         Icon(
             painter = painterResource(com.moscow.cineverse.design_system.R.drawable.due_tone_image),
             contentDescription = "Movie Poster",
-            tint = Theme.colors.shade.secondary,
+            tint = Theme.colors.brand.secondary,
             modifier = Modifier.size(iconSize)
         )
     }

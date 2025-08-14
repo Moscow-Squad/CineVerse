@@ -10,7 +10,7 @@ import com.moscow.domain.model.details.ListOfSeries
 import com.moscow.domain.model.details.Season
 import com.moscow.domain.model.details.SeriesDetail
 import com.moscow.domain.repository.SeriesRepository
-import com.moscow.domain.usecase.series.GetRatedSeriesUseCase
+import com.moscow.domain.usecase.rating.GetRatedSeriesUseCase
 import com.moscow.mapper.toDomain
 import com.moscow.mapper.toOutputResult
 import com.moscow.remote.dto.review.RatingRequestDto

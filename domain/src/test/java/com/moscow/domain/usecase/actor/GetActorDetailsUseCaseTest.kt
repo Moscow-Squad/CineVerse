@@ -33,6 +33,8 @@ class GetActorDetailsUseCaseTest {
             youtubeLink = "https://youtube.com/johndoe",
             facebookLink = "https://facebook.com/johndoe",
             instagramLink = "https://instagram.com/johndoe",
+            twitterLink = "https://twitter.com/johndoe",
+            tiktokLink = "https://tiktok.com/johndoe",
             biography = "An accomplished actor known for dynamic roles.",
             profileImg = "https://image.url/johndoe.jpg"
         )
