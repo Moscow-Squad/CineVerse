@@ -26,38 +26,37 @@ android {
     if (keystorePropertiesFile.exists()) {
         keystoreProperties.load(keystorePropertiesFile.inputStream())
     }
-//    signingConfigs {
-//        create("release") {
-//            storeFile = file(System.getProperty("storeFile") ?: "my-release-key.jks")
-//            storePassword = keystoreProperties["KEYSTORE_PASSWORD"] as? String
-//                ?: error("KEYSTORE_PASSWORD not found in keys.properties")
-//            keyAlias = keystoreProperties["KEY_ALIAS"] as? String
-//                ?: error("KEY_ALIAS not found in keys.properties")
-//            keyPassword = keystoreProperties["KEY_PASSWORD"] as? String
-//                ?: error("KEY_PASSWORD not found in keys.properties")
-//        }
-//    }
-    buildTypes {
-        release {
-//                signingConfig = signingConfigs.getByName("release")
-//                isDebuggable = false
-//                isMinifyEnabled = true
-//                isShrinkResources = true
-//                proguardFiles(
-//                    getDefaultProguardFile("proguard-android-optimize.txt"),
-//                    "proguard-rules.pro"
-//                )
-//                manifestPlaceholders["crashlytics_enabled"] = "true"
-//                manifestPlaceholders["analytics_enabled"] = "true"
-        }
-        debug {
-            isDebuggable = true
-            isMinifyEnabled = false
-            manifestPlaceholders["crashlytics_debug"] = "true"
-            manifestPlaceholders["analytics_debug"] = "true"
+    signingConfigs {
+        create("release") {
+            storeFile = file(System.getProperty("storeFile") ?: "my-release-key.jks")
+            storePassword = keystoreProperties["KEYSTORE_PASSWORD"] as? String
+                ?: error("KEYSTORE_PASSWORD not found in keys.properties")
+            keyAlias = keystoreProperties["KEY_ALIAS"] as? String
+                ?: error("KEY_ALIAS not found in keys.properties")
+            keyPassword = keystoreProperties["KEY_PASSWORD"] as? String
+                ?: error("KEY_PASSWORD not found in keys.properties")
         }
     }
-
+        buildTypes {
+            release {
+                signingConfig = signingConfigs.getByName("release")
+                isDebuggable = false
+                isMinifyEnabled = true
+                isShrinkResources = true
+                proguardFiles(
+                    getDefaultProguardFile("proguard-android-optimize.txt"),
+                    "proguard-rules.pro"
+                )
+                manifestPlaceholders["crashlytics_enabled"] = "true"
+                manifestPlaceholders["analytics_enabled"] = "true"
+            }
+            debug {
+                isDebuggable = true
+                isMinifyEnabled = false
+                manifestPlaceholders["crashlytics_debug"] = "true"
+                manifestPlaceholders["analytics_debug"] = "true"
+            }
+        }
 }
 
 firebaseAppDistribution {
