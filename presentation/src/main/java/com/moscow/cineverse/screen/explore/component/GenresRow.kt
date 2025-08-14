@@ -1,10 +1,9 @@
 package com.moscow.cineverse.screen.explore.component
 
-import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -46,42 +45,47 @@ fun GenresRow(
     modifier: Modifier = Modifier
 ) {
     if (uiState.shouldShowGenres) {
-        val alpha by animateFloatAsState(
-            targetValue = if (isVisible) 1f else 0f,
-            animationSpec = tween(300),
-            label = "genresAlpha"
+        // Animated height for collapse effect
+        val height by animateDpAsState(
+            targetValue = if (isVisible) 68.dp else 0.dp,
+            animationSpec = tween(
+                durationMillis = 300,
+                easing = FastOutSlowInEasing
+            ),
+            label = "genresRowHeight"
         )
 
-        AnimatedVisibility(
-            visible = isVisible,
-            enter = slideInVertically(
-                initialOffsetY = { -it },
-                animationSpec = tween(300)
+        // Animated alpha for smooth fade
+        val alpha by animateFloatAsState(
+            targetValue = if (isVisible) 1f else 0f,
+            animationSpec = tween(
+                durationMillis = 300,
+                easing = FastOutSlowInEasing
             ),
-            exit = slideOutVertically(
-                targetOffsetY = { -it },
-                animationSpec = tween(300)
-            ),
+            label = "genresRowAlpha"
+        )
+
+        Box(
             modifier = modifier
-        ) {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .zIndex(1f)
-                    .background(
-                        brush = Brush.verticalGradient(
-                            colors = listOf(
-                                Theme.colors.background.screen,
-                                Theme.colors.background.screen.copy(alpha = 0.95f),
-                                Theme.colors.background.screen.copy(alpha = 0.8f),
-                                Color.Transparent
-                            ),
-                            startY = 0f,
-                            endY = 80f
-                        )
+                .fillMaxWidth()
+                .height(height) // Use animated height instead of fixed height
+                .zIndex(1f)
+                .background(
+                    brush = Brush.verticalGradient(
+                        colors = listOf(
+                            Theme.colors.background.screen,
+                            Theme.colors.background.screen.copy(alpha = 0.95f),
+                            Theme.colors.background.screen.copy(alpha = 0.8f),
+                            Color.Transparent
+                        ),
+                        startY = 0f,
+                        endY = 80f
                     )
-                    .alpha(alpha)
-            ) {
+                )
+                .alpha(alpha) // Use animated alpha
+        ) {
+            // Only render content when height > 0
+            if (height > 0.dp) {
                 GenresRowContent(
                     uiState = uiState,
                     genresState = genresState,

@@ -1,100 +1,51 @@
 package com.moscow.domain.usecase.movie
 
-import com.google.common.truth.Truth.assertThat
 import com.moscow.domain.model.Movie
 import com.moscow.domain.repository.MovieRepository
 import io.mockk.coEvery
 import io.mockk.coVerify
-import io.mockk.confirmVerified
 import io.mockk.mockk
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
+import kotlinx.datetime.LocalDate
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Test
+import kotlin.test.Test
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class GetMovieDetailsUseCaseTest {
 
     private lateinit var movieRepository: MovieRepository
-    private lateinit var getMovieDetailsUseCase: GetMovieDetailsUseCase
+    private lateinit var useCase: GetMovieDetailsUseCase
 
     @BeforeEach
-    fun setUp() {
-        movieRepository = mockk(relaxed = true)
-        getMovieDetailsUseCase = GetMovieDetailsUseCase(movieRepository)
+    fun setup() {
+        movieRepository = mockk()
+        useCase = GetMovieDetailsUseCase(movieRepository)
     }
 
     @Test
-    fun `getMovieDetailsUseCase should call repository method`() = runTest {
-        // Given
-        val id = 123
+    fun `invoke should return movie details`() = runTest {
+        val movieId = 5
+        val expectedMovie = Movie(
+            id = 101,
+            title = "Top Hit",
+            overview = "A blockbuster movie loved by fans.",
+            trailerUrl = "https://image.tmdb.org/t/p/w500/top_hit.jpg",
+            backdropUrl = "/backdrop/top_hit.jpg",
+            posterUrl = "https://image.tmdb.org/t/p/w500/top_hit.jpg",
+            rating = 8.7f,
+            genreIds = listOf(1, 2),
+            releaseDate = LocalDate(2020, 5, 20),
+            genres = listOf("Action", "Adventure"),
+            duration = Movie.Duration(hours = 2, minutes = 30)
+        )
 
-        // When
-        getMovieDetailsUseCase(id)
+        coEvery { movieRepository.getDetailsMovie(movieId) } returns expectedMovie
 
-        // Then
-        coVerify(exactly = 1) { movieRepository.getDetailsMovie(id = id) }
-    }
+        val result = useCase(movieId)
 
-    @Test
-    fun `getMovieDetailsUseCase should return result from repository`() = runTest {
-        // Given
-        val id = 456
-        val expectedMovie = mockk<Movie>()
-        coEvery { movieRepository.getDetailsMovie(id = id) } returns expectedMovie
-
-        // When
-        val result = getMovieDetailsUseCase(id)
-
-        // Then
-        assertThat(result).isEqualTo(expectedMovie)
-        coVerify(exactly = 1) { movieRepository.getDetailsMovie(id = id) }
-    }
-
-    @Test
-    fun `getMovieDetailsUseCase should complete operation successfully`() = runTest {
-        // Given
-        val id = 789
-
-        // When
-        val result = getMovieDetailsUseCase(id)
-
-        // Then
-        assertThat(result).isNotNull()
-    }
-
-    @Test
-    fun `getMovieDetailsUseCase should handle multiple invocations`() = runTest {
-        // Given
-        val id = 101
-
-        // When
-        repeat(3) { getMovieDetailsUseCase(id) }
-
-        // Then
-        coVerify(exactly = 3) { movieRepository.getDetailsMovie(id = id) }
-    }
-
-    @Test
-    fun `getMovieDetailsUseCase makes exactly one repository call`() = runTest {
-        // Given
-        val id = 202
-
-        // When
-        getMovieDetailsUseCase(id)
-
-        // Then
-        coVerify(exactly = 1) { movieRepository.getDetailsMovie(id = id) }
-        confirmVerified(movieRepository)
-    }
-
-    @Test
-    fun `getMovieDetailsUseCase respects number of calls`() = runTest {
-        // Given
-        val id = 303
-
-        // When
-        repeat(2) { getMovieDetailsUseCase(id) }
-
-        // Then
-        coVerify(exactly = 2) { movieRepository.getDetailsMovie(id = id) }
+        assertEquals(expectedMovie, result)
+        coVerify { movieRepository.getDetailsMovie(movieId) }
     }
 }

@@ -1,97 +1,55 @@
 package com.moscow.domain.usecase.movie
 
-import com.google.common.truth.Truth.assertThat
 import com.moscow.domain.model.Movie
 import com.moscow.domain.repository.MovieRepository
 import io.mockk.coEvery
 import io.mockk.coVerify
-import io.mockk.confirmVerified
 import io.mockk.mockk
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
+import kotlinx.datetime.LocalDate
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Test
+import kotlin.test.Test
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class GetTrendingMoviesUseCaseTest {
 
     private lateinit var movieRepository: MovieRepository
-    private lateinit var getTrendingMoviesUseCase: GetTrendingMoviesUseCase
+    private lateinit var useCase: GetTrendingMoviesUseCase
 
     @BeforeEach
-    fun setUp() {
-        movieRepository = mockk(relaxed = true)
-        getTrendingMoviesUseCase = GetTrendingMoviesUseCase(movieRepository)
+    fun setup() {
+        movieRepository = mockk()
+        useCase = GetTrendingMoviesUseCase(movieRepository)
     }
 
     @Test
-    fun `getTrendingMoviesUseCase should call repository method`() = runTest {
-        // Given
-        val forceRefresh = false
+    fun `invoke should return trending movies`() = runTest {
+        val movie = Movie(
+            id = 101,
+            title = "Top Hit",
+            overview = "A blockbuster movie loved by fans.",
+            trailerUrl = "https://image.tmdb.org/t/p/w500/top_hit.jpg",
+            backdropUrl = "/backdrop/top_hit.jpg",
+            posterUrl = "https://image.tmdb.org/t/p/w500/top_hit.jpg",
+            rating = 8.7f,
+            genreIds = listOf(1, 2),
+            releaseDate = LocalDate(2020, 5, 20),
+            genres = listOf("Action", "Adventure"),
+            duration = Movie.Duration(hours = 2, minutes = 30)
+        )
 
-        // When
-        getTrendingMoviesUseCase(forceRefresh)
+        val expected = listOf(
+            movie,
+            movie.copy(id = 102)
+        )
 
-        // Then
-        coVerify(exactly = 1) { movieRepository.getTrendingMovies(forceRefresh) }
-    }
+        coEvery { movieRepository.getTrendingMovies(false) } returns expected
 
-    @Test
-    fun `getTrendingMoviesUseCase should return result from repository`() = runTest {
-        // Given
-        val forceRefresh = true
-        val expectedMovies = listOf<Movie>(mockk(), mockk())
-        coEvery { movieRepository.getTrendingMovies(forceRefresh) } returns expectedMovies
+        val result = useCase()
 
-        // When
-        val result = getTrendingMoviesUseCase(forceRefresh)
-
-        // Then
-        assertThat(result).isEqualTo(expectedMovies)
-        coVerify(exactly = 1) { movieRepository.getTrendingMovies(forceRefresh) }
-    }
-
-    @Test
-    fun `getTrendingMoviesUseCase should complete operation successfully`() = runTest {
-        // When
-        val result = getTrendingMoviesUseCase()
-
-        // Then
-        assertThat(result).isNotNull()
-    }
-
-    @Test
-    fun `getTrendingMoviesUseCase should handle multiple invocations`() = runTest {
-        // Given
-        val forceRefresh = false
-
-        // When
-        repeat(3) { getTrendingMoviesUseCase(forceRefresh) }
-
-        // Then
-        coVerify(exactly = 3) { movieRepository.getTrendingMovies(forceRefresh) }
-    }
-
-    @Test
-    fun `getTrendingMoviesUseCase makes exactly one repository call`() = runTest {
-        // Given
-        val forceRefresh = true
-
-        // When
-        getTrendingMoviesUseCase(forceRefresh)
-
-        // Then
-        coVerify(exactly = 1) { movieRepository.getTrendingMovies(forceRefresh) }
-        confirmVerified(movieRepository)
-    }
-
-    @Test
-    fun `getTrendingMoviesUseCase respects number of calls`() = runTest {
-        // Given
-        val forceRefresh = false
-
-        // When
-        repeat(2) { getTrendingMoviesUseCase(forceRefresh) }
-
-        // Then
-        coVerify(exactly = 2) { movieRepository.getTrendingMovies(forceRefresh) }
+        assertEquals(expected, result)
+        coVerify { movieRepository.getTrendingMovies(false) }
     }
 }

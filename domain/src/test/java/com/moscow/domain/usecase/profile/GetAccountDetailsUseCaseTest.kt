@@ -1,56 +1,43 @@
 package com.moscow.domain.usecase.profile
 
-import com.google.common.truth.Truth.assertThat
+import com.moscow.domain.model.UserInfo
 import com.moscow.domain.repository.auth.ProfileRepository
 import io.mockk.coEvery
 import io.mockk.coVerify
-import io.mockk.confirmVerified
 import io.mockk.mockk
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
+import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Test
+import kotlin.test.Test
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class GetAccountDetailsUseCaseTest {
 
     private lateinit var profileRepository: ProfileRepository
-    private lateinit var getAccountDetailsUseCase: GetAccountDetailsUseCase
+    private lateinit var useCase: GetAccountDetailsUseCase
 
     @BeforeEach
-    fun setUp() {
-        profileRepository = mockk(relaxed = true)
-        getAccountDetailsUseCase = GetAccountDetailsUseCase(profileRepository)
+    fun setup() {
+        profileRepository = mockk()
+        useCase = GetAccountDetailsUseCase(profileRepository)
     }
 
     @Test
-    fun `getAccountDetailsUseCase should call repository method`() = runTest {
-        // Given
-        val accountId = "42"
-        val sessionId = "session_1"
+    fun `invoke should return account details`() = runTest {
+        val accountId = "acc_456"
+        val sessionId = "session_123"
+        val expectedUser = UserInfo(
+            name = "Ahmed",
+            username = "ahmed@example.com",
+            image = "https://image.url/ahmed.jpg"
+        )
 
-        // When
-        getAccountDetailsUseCase(accountId, sessionId)
+        coEvery { profileRepository.getUserInfo(accountId, sessionId) } returns expectedUser
 
-        // Then
-        coVerify(exactly = 1) {
-            profileRepository.getUserInfo(
-                accountId = accountId,
-                sessionId = sessionId
-            )
-        }
-    }
+        val result = useCase(accountId, sessionId)
 
-
-    @Test
-    fun `getAccountDetailsUseCase makes exactly one repository call`() = runTest {
-        // Given
-        val accountId = "202"
-        val sessionId = "sess_202"
-
-        // When
-        getAccountDetailsUseCase(accountId, sessionId)
-
-        // Then
+        assertEquals(expectedUser, result)
         coVerify(exactly = 1) { profileRepository.getUserInfo(accountId, sessionId) }
-        confirmVerified(profileRepository)
     }
 }

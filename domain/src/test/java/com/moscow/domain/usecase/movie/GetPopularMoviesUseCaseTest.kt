@@ -1,102 +1,56 @@
 package com.moscow.domain.usecase.movie
 
-import com.google.common.truth.Truth.assertThat
 import com.moscow.domain.model.Movie
 import com.moscow.domain.repository.MovieRepository
 import io.mockk.coEvery
-import io.mockk.coVerify
-import io.mockk.confirmVerified
 import io.mockk.mockk
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
+import kotlinx.datetime.LocalDate
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Test
+import kotlin.test.Test
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class GetPopularMoviesUseCaseTest {
 
-    private lateinit var repository: MovieRepository
-    private lateinit var getPopularMoviesUseCase: GetPopularMoviesUseCase
+    private lateinit var movieRepository: MovieRepository
+    private lateinit var useCase: GetPopularMoviesUseCase
 
     @BeforeEach
-    fun setUp() {
-        repository = mockk(relaxed = true)
-        getPopularMoviesUseCase = GetPopularMoviesUseCase(repository)
+    fun setup() {
+        movieRepository = mockk()
+        useCase = GetPopularMoviesUseCase(movieRepository)
     }
 
     @Test
-    fun `getPopularMoviesUseCase should call repository method`() = runTest {
-        // Given
+    fun `invoke should return distinct popular movies`() = runTest {
         val page = 1
+        val movie = Movie(
+            id = 1,
+            title = "Top Hit",
+            overview = "A blockbuster movie loved by fans.",
+            trailerUrl = "https://image.tmdb.org/t/p/w500/top_hit.jpg",
+            backdropUrl = "/backdrop/top_hit.jpg",
+            posterUrl = "https://image.tmdb.org/t/p/w500/top_hit.jpg",
+            rating = 8.7f,
+            genreIds = listOf(1, 2),
+            releaseDate = LocalDate(2020, 5, 20),
+            genres = listOf("Action", "Adventure"),
+            duration = Movie.Duration(hours = 2, minutes = 30)
+        )
 
-        // When
-        getPopularMoviesUseCase(page)
+        val movies = listOf(
+            movie,
+            movie.copy(id = 2),
+            movie.copy(id = 1)
+        )
 
-        // Then
-        coVerify(exactly = 1) { repository.getPopularMovies(page) }
-    }
+        coEvery { movieRepository.getPopularMovies(page) } returns movies
 
-    @Test
-    fun `getPopularMoviesUseCase should return result from repository`() = runTest {
-        // Given
-        val page = 1
-        val movie1 = mockk<Movie> { coEvery { id } returns 1 }
-        val movie2 = mockk<Movie> { coEvery { id } returns 2 }
-        val repositoryMovies = listOf(movie1, movie2)
-        coEvery { repository.getPopularMovies(page) } returns repositoryMovies
+        val result = useCase(page)
 
-        // When
-        val result = getPopularMoviesUseCase(page)
-
-        // Then
-        assertThat(result).isEqualTo(repositoryMovies)
-        coVerify(exactly = 1) { repository.getPopularMovies(page) }
-    }
-
-    @Test
-    fun `getPopularMoviesUseCase should complete operation successfully`() = runTest {
-        // Given
-        val page = 2
-
-        // When
-        val result = getPopularMoviesUseCase(page)
-
-        // Then
-        assertThat(result).isNotNull()
-    }
-
-    @Test
-    fun `getPopularMoviesUseCase should handle multiple invocations`() = runTest {
-        // Given
-        val page = 1
-
-        // When
-        repeat(3) { getPopularMoviesUseCase(page) }
-
-        // Then
-        coVerify(exactly = 3) { repository.getPopularMovies(page) }
-    }
-
-    @Test
-    fun `getPopularMoviesUseCase makes exactly one repository call`() = runTest {
-        // Given
-        val page = 3
-
-        // When
-        getPopularMoviesUseCase(page)
-
-        // Then
-        coVerify(exactly = 1) { repository.getPopularMovies(page) }
-        confirmVerified(repository)
-    }
-
-    @Test
-    fun `getPopularMoviesUseCase respects number of calls`() = runTest {
-        // Given
-        val page = 2
-
-        // When
-        repeat(2) { getPopularMoviesUseCase(page) }
-
-        // Then
-        coVerify(exactly = 2) { repository.getPopularMovies(page) }
+        assertEquals(2, result.size)
+        assertEquals(setOf(1, 2), result.map { it.id }.toSet())
     }
 }

@@ -1,7 +1,5 @@
 package com.moscow.cineverse.screen.explore.component
 
-import androidx.compose.animation.core.animateDpAsState
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -87,24 +85,17 @@ fun ExploreMainContent(
         }
     }
 
-    val genresHeight = if (uiState.shouldShowGenres) 56.dp else 0.dp
-    val paddingTop by animateDpAsState(
-        targetValue = if (uiState.shouldShowGenres) genresHeight + 8.dp else 16.dp,
-        animationSpec = tween(300),
-        label = "paddingTop"
-    )
-
-    val contentPadding = remember(uiState.selectedTab, paddingTop) {
+    val contentPadding = remember(uiState.selectedTab) {
         when (uiState.selectedTab) {
             ExploreTabsPages.ACTORS -> PaddingValues(
-                top = paddingTop,
+                top = 64.dp, // Fixed top padding
                 start = 20.dp,
                 end = 20.dp,
                 bottom = 100.dp
             )
 
             ExploreTabsPages.MOVIES, ExploreTabsPages.SERIES -> PaddingValues(
-                top = paddingTop,
+                top = 64.dp, // Fixed top padding
                 start = 16.dp,
                 end = 16.dp,
                 bottom = 100.dp
@@ -133,7 +124,7 @@ fun ExploreMainContent(
         uiState.isContentEmpty -> {
             Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                 EmptyState(
-                    icon = painterResource(R.drawable.outline_search),
+                    icon = painterResource(R.drawable.ic_search),
                     title = stringResource(R.string.nothing_found),
                     description = stringResource(R.string.we_searched_the_entire_universe_but_found_nothing_matching_your_query_try_something_else)
                 )

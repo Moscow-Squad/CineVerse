@@ -21,19 +21,19 @@ class GetActorGalleryUseCaseTest {
 
     @Test
     fun `invoke should return actor gallery`() = runTest {
-        // Given
         val actorId = 101
         val expectedGallery = listOf(
             "https://image.url/actor1.jpg",
             "https://image.url/actor2.jpg",
-            "https://image.url/actor3.jpg"
+            "https://image.url/actor3.jpg",
+            "https://image.url/actor4.jpg",
+            "https://image.url/actor5.jpg"
         )
+
         coEvery { actorRepository.getActorGalleryUrl(actorId) } returns expectedGallery
 
-        // When
         val result = useCase(actorId)
 
-        // Then
         assertEquals(expectedGallery, result)
     }
 }

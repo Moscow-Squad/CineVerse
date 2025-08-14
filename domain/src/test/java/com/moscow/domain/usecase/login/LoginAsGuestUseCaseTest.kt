@@ -21,14 +21,11 @@ class LoginAsGuestUseCaseTest {
 
     @Test
     fun `invoke should return guest login result`() = runTest {
-        // Given
         val expectedResult = true
         coEvery { loginRepository.loginAsGuest() } returns expectedResult
 
-        // When
         val result = useCase()
 
-        // Then
         assertEquals(expectedResult, result)
     }
 }

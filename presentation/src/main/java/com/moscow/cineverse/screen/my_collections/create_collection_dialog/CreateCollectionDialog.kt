@@ -1,7 +1,5 @@
 package com.moscow.cineverse.screen.my_collections.create_collection_dialog
 
-import android.content.Context
-import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -31,37 +29,18 @@ fun CreateCollectionDialog(
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
     val context = LocalContext.current
-    LaunchedEffect(true) {
+
+    LaunchedEffect(viewModel) {
         viewModel.uiEffect.collect { event ->
-            handleEvents(
+            CreateCollectionDialogEffectHandler.handleEffect(
                 event,
-                viewModel::onCreateClick,
                 navigateBack = { onNavigateBack(state.collectionId, state.collectionName) },
                 context = context
             )
         }
     }
+
     CreateCollectionDialogContent(state, viewModel, modifier)
-}
-
-private fun handleEvents(
-    event: CreateCollectionDialogEvent,
-    onCreateCollectionClicked: () -> Unit,
-    navigateBack: () -> Unit,
-    context: Context,
-) {
-    when (event) {
-        CreateCollectionDialogEvent.OnCancelCollectionCreation -> navigateBack()
-        is CreateCollectionDialogEvent.OnAddCollectionFailed -> {
-            Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
-        }
-
-        is CreateCollectionDialogEvent.OnCollectionAddedSuccessfully -> {
-            Toast.makeText(context, context.getString(R.string.success), Toast.LENGTH_SHORT).show()
-            navigateBack()
-        }
-    }
-
 }
 
 @Composable
@@ -113,11 +92,7 @@ fun CreateCollectionDialogContent(
                     modifier = Modifier.weight(1f),
                     isLoading = state.isLoading
                 )
-
             }
-
         }
-
-
     }
 }

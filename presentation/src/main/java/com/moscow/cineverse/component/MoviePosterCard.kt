@@ -33,6 +33,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.moscow.cineverse.common_ui_state.MediaItemUiState
 import com.moscow.cineverse.designSystem.component.blur.OnBlurContent
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.image_viewer.component.SafeImageViewer
@@ -173,8 +174,7 @@ private fun GridMovieCard(
                             .align(Alignment.TopEnd)
                             .padding(8.dp),
                         shape = CircleShape,
-                        color = Theme.colors.background.card.copy(alpha = 0.9f),
-                        shadowElevation = 2.dp
+                        color = Theme.colors.background.card
                     ) {
                         Row(
                             modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),

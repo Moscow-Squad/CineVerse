@@ -6,7 +6,6 @@ import com.moscow.cineverse.mapper.toCollectionUi
 import com.moscow.cineverse.navigation.routes.CollectionsBottomSheetRoute
 import com.moscow.cineverse.screen.collections.CollectionsBottomSheetEffect.OnLoginClicked
 import com.moscow.domain.model.Collection
-import com.moscow.domain.model.MediaType
 import com.moscow.domain.usecase.collection.AddMediaItemToCollectionUseCase
 import com.moscow.domain.usecase.collection.GetCurrentUserUseCase
 import com.moscow.domain.usecase.collection.GetUserCollectionsUseCase
@@ -24,9 +23,6 @@ class CollectionsBottomSheetViewModel @Inject constructor(
 ), CollectionsBottomSheetInteractionListener {
 
     val mediaItemId: Int = savedStateHandle.get<Int>(CollectionsBottomSheetRoute.MEDIA_ITEM_ID) ?: 0
-    val mediaItemType: MediaType = MediaType.toMediaType(
-        savedStateHandle.get<String>(CollectionsBottomSheetRoute.MEDIA_TYPE) ?: "movie"
-    )
 
     init {
         isUserLoggedIn()

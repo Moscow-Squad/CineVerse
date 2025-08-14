@@ -8,7 +8,7 @@ import com.moscow.cineverse.navigation.routes.SeriesDetailsRoute
 import com.moscow.cineverse.utlis.ViewMode
 import com.moscow.domain.model.Series
 import com.moscow.domain.repository.auth.UserRepository
-import com.moscow.domain.repository.blur.BlurProvider
+import com.moscow.domain.service.blur.BlurProvider
 import com.moscow.domain.usecase.recently_viewed.AddRecentlyViewedSeriesUseCase
 import com.moscow.domain.usecase.review.GetReviewsUseCase
 import com.moscow.domain.usecase.rating.DeleteRatingSeriesUseCase

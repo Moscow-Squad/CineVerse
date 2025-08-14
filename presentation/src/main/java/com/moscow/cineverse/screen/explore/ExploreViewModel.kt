@@ -12,7 +12,7 @@ import com.moscow.cineverse.screen.explore.ExploreScreenState.ActorUiState
 import com.moscow.cineverse.utlis.ViewMode
 import com.moscow.domain.model.Genre
 import com.moscow.domain.model.MediaType
-import com.moscow.domain.repository.blur.BlurProvider
+import com.moscow.domain.service.blur.BlurProvider
 import com.moscow.domain.usecase.genre.GenreUseCase
 import com.moscow.domain.usecase.movie.GetMovieByGenreIdUseCase
 import com.moscow.domain.usecase.movie.GetPopularMoviesUseCase
