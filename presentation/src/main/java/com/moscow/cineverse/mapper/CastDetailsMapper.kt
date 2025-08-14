@@ -35,6 +35,7 @@ fun Movie.toMovieItemUi(): MediaItemUiState {
         rating = this.rating,
         genres = emptyList(),
         releaseDate = this.releaseDate.toString(),
+        mediaType = MediaItemUiState.MediaType.MOVIE,
         backdropPath = this.backdropUrl
     )
 }

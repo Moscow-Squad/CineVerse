@@ -2,6 +2,7 @@ package com.moscow.cineverse.screen.movie_details
 
 import com.moscow.cineverse.common_ui_state.ReviewUiState
 import com.moscow.cineverse.common_ui_state.CastUiState
+import com.moscow.cineverse.common_ui_state.MediaItemUiState
 import kotlinx.datetime.LocalDate
 
 
@@ -34,7 +35,7 @@ data class MovieScreenState(
         val rating: Double,
         val genres: List<String>,
         val releaseDate: LocalDate?,
-        val duration: Int,
+        val duration: String,
         val description: String
     )
 }

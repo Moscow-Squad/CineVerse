@@ -23,7 +23,7 @@ fun Movie.toUi(): MovieScreenState.MovieDetailsUiState =
         genres = genres,
         releaseDate = releaseDate,
         description = overview,
-        duration = duration
+        duration = "${this.duration.hours} h ${this.duration.minutes} m",
 
     )
 
@@ -112,21 +112,5 @@ fun formatReviewDate(dateString: String): String {
         date?.let { outputFormat.format(it) } ?: dateString
     } catch (_: Exception) {
         dateString
-    }
-}
-
-fun Int.toHourMinuteFormat(context: Context): String {
-    val hours = this / 60
-    val minutes = this % 60
-
-    return when {
-        hours > 0 && minutes > 0 -> context.getString(
-            R.string.duration_hours_minutes,
-            hours,
-            minutes
-        )
-        hours > 0 -> context.getString(R.string.duration_hours_only, hours)
-        minutes > 0 -> context.getString(R.string.duration_minutes_only, minutes)
-        else -> ""
     }
 }

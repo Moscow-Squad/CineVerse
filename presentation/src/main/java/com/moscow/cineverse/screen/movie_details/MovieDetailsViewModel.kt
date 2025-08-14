@@ -87,19 +87,17 @@ class MovieDetailsViewModel @Inject constructor(
         }
     }
 
-    private suspend fun getUserRating(seriesId: Int) {
-        try {
-            val res = getUserRatingForMovieUseCase.invoke(seriesId)
-            updateState { it.copy(starsRating = res) }
-        } catch (e: Exception) {
-            updateState {
-                it.copy(
-                    errorMessage = e.handleException(),
-                    shouldShowError = true,
-                    isLoading = false
-                )
+    private fun getUserRating(seriesId: Int) {
+        launchWithResult(
+            action = { getUserRatingForMovieUseCase.invoke(seriesId) },
+            onSuccess = { rate ->
+                updateState { it.copy(starsRating = rate) }
+            },
+            onError = {
+                updateState { it.copy(starsRating = 0) }
             }
-        }
+        )
+
     }
 
     private suspend fun getMovieDetails(movieID: Int) {
