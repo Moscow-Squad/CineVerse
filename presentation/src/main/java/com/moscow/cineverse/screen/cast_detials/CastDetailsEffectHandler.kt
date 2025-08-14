@@ -1,13 +1,12 @@
-package com.moscow.cineverse.screen.cast_details.composable
+package com.moscow.cineverse.screen.cast_detials
 
 import android.content.Context
 import android.content.Intent
 import androidx.core.net.toUri
-import com.moscow.cineverse.screen.cast_details.CastDetailsEffect
 
-object CastDetailsEffectHandlerWithContext {
+object CastDetailsEffectHandler {
 
-    fun handleEffectWithContext(
+    fun handleEffect(
         effect: CastDetailsEffect,
         context: Context,
         navigateBack: () -> Unit,
@@ -21,9 +20,6 @@ object CastDetailsEffectHandlerWithContext {
                 navigateBack()
             }
 
-            is CastDetailsEffect.ShowError -> {
-                // TODO: Show error (Snackbar, Toast, etc.)
-            }
 
             is CastDetailsEffect.OpenSocialMedia -> {
                 val intent = Intent(Intent.ACTION_VIEW, effect.url.toUri())

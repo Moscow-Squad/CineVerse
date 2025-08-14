@@ -1,4 +1,4 @@
-package com.moscow.cineverse.screen.cast_details.best_of_movies
+package com.moscow.cineverse.screen.actor_best_of_movies
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
@@ -18,13 +18,13 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ShowAllActorMoviesViewModel @Inject constructor(
+class ActorBestMoviesViewModel @Inject constructor(
     private val getActorBestMoviesUseCase: GetActorBestMoviesUseCase,
     private val genreUseCase: GenreUseCase,
     private val blurProvider: BlurProvider,
     savedStateHandle: SavedStateHandle
-) : BaseViewModel<ShowAllActorMoviesState, ShowAllActorMoviesEffect>(ShowAllActorMoviesState()),
-    ShowAllActorMoviesInteractionListener {
+) : BaseViewModel<ActorBestMoviesState, ActorBestMoviesEffect>(ActorBestMoviesState()),
+    ActorBestMoviesInteractionListener {
     val seriesId = savedStateHandle.get<Int>(SeriesDetailsRoute.SERIES_ID) ?: 0
 
     private val actorId = savedStateHandle.get<Int>(CastBestOfMovieRoute.CAST_ID) ?: 0
@@ -90,10 +90,10 @@ class ShowAllActorMoviesViewModel @Inject constructor(
     }
 
     override fun onMovieClick(movieId: Int) {
-        sendEvent(ShowAllActorMoviesEffect.NavigateMovieDetails(movieId))
+        sendEvent(ActorBestMoviesEffect.NavigateMovieDetails(movieId))
     }
 
     override fun backButtonClick() {
-
+        sendEvent(ActorBestMoviesEffect.NavigateBack)
     }
 }

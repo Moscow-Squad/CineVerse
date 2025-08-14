@@ -21,7 +21,9 @@ fun ActorDto.toDomain() =
         socialMediaLinks = Actor.SocialMediaLinks(
             youtube = null,
             facebook = null,
-            instagram = null
+            instagram = null,
+            tiktok = null,
+            twitter = null
         ),
         biography = ""
     )
@@ -43,6 +45,8 @@ fun ActorDetailsDto.toDomain(
             youtube = if (youtubeLink.isNotBlank()) "https://www.youtube.com/@$youtubeLink" else null,
             facebook = if (facebookLink.isNotBlank()) "https://www.facebook.com/$facebookLink" else null,
             instagram = if (instagramLink.isNotBlank()) "https://www.instagram.com/$instagramLink" else null,
+            twitter = if (twitterLink.isNotBlank()) "https://www.twitter.com/$twitterLink" else null,
+            tiktok = if (tiktokLink.isNotBlank()) "https://www.tiktok.com/@$tiktokLink" else null
         ),
         gender = if (gender == 0) Gender.MALE else Gender.FEMALE,
     )

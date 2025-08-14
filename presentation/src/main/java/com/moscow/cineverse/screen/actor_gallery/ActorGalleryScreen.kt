@@ -1,10 +1,11 @@
-package com.moscow.cineverse.screen.cast_details.gallery
+package com.moscow.cineverse.screen.actor_gallery
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -16,16 +17,24 @@ import com.moscow.cineverse.designSystem.component.app_bar.MovieAppBar
 import com.moscow.cineverse.designSystem.component.indicator.MovieCircularProgressBar
 import com.moscow.cineverse.designSystem.component.wrapper.MovieScaffold
 import com.moscow.cineverse.designSystem.theme.Theme
+import com.moscow.cineverse.screen.actor_gallery.component.ActorGallery
 
 @Composable
 fun ActorGalleryScreen(
     modifier: Modifier = Modifier,
     navigateBack: () -> Unit,
+    viewModel: ActorGalleryViewModel = hiltViewModel()
 ) {
-    val viewModel: ActorGalleryViewModel = hiltViewModel()
-
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
+    LaunchedEffect(Unit) {
+        viewModel.uiEffect.collect { effect ->
+            ActorGalleryEffectHandler.handleEffect(
+                effect,
+                navigateBack,
+            )
+        }
+    }
     ActorGalleryContent(
         modifier = modifier,
         uiState = uiState,
@@ -37,7 +46,7 @@ fun ActorGalleryScreen(
 
 @Composable
 fun ActorGalleryContent(
-    uiState: ShowAllActorMoviesState,
+    uiState: ActorGalleryState,
     interactionListener: ActorGalleryInteractionListener,
     onNavigateBack: () -> Unit,
     modifier: Modifier = Modifier,

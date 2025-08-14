@@ -1,4 +1,4 @@
-package com.moscow.cineverse.screen.cast_details.best_of_movies
+package com.moscow.cineverse.screen.actor_best_of_movies
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,30 +13,32 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.moscow.cineverse.component.ErrorContent
 import com.moscow.cineverse.designSystem.component.wrapper.MovieScaffold
-import com.moscow.cineverse.screen.cast_details.best_of_movies.component.LoadingContent
-import com.moscow.cineverse.screen.cast_details.best_of_movies.component.SuccessContent
+import com.moscow.cineverse.screen.actor_best_of_movies.component.LoadingContent
+import com.moscow.cineverse.screen.actor_best_of_movies.component.SuccessContent
 import com.moscow.cineverse.screen.explore.component.ViewModeToggleButton
 
 @Composable
-fun ShowAllActorMoviesScreen(
+fun ActorBestMoviesScreen(
     modifier: Modifier = Modifier,
     navigateMovieDetails: (Int) -> Unit,
     navigateBack: () -> Unit = {},
+    viewModel: ActorBestMoviesViewModel = hiltViewModel()
+
 ) {
-    val viewModel: ShowAllActorMoviesViewModel = hiltViewModel()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    LaunchedEffect(viewModel) {
+    LaunchedEffect(Unit) {
         viewModel.uiEffect.collect { effect ->
-            when (effect) {
-                is ShowAllActorMoviesEffect.NavigateMovieDetails -> {
-                    navigateMovieDetails(effect.movieId)
-                }
-            }
+            ActorBestMoviesEffectHandler.handleEffect(
+                effect,
+                navigateMovieDetails = navigateMovieDetails,
+                navigateBack = navigateBack
+
+            )
         }
     }
 
-    ShowAllActorMoviesContent(
+   ActorBestMoviesContent(
         uiState = uiState,
         interactionListener = viewModel,
         modifier = modifier,
@@ -45,9 +47,9 @@ fun ShowAllActorMoviesScreen(
 }
 
 @Composable
-private fun ShowAllActorMoviesContent(
-    uiState: ShowAllActorMoviesState,
-    interactionListener: ShowAllActorMoviesInteractionListener,
+private fun ActorBestMoviesContent(
+    uiState: ActorBestMoviesState,
+    interactionListener: ActorBestMoviesInteractionListener,
     onNavigateBack: () -> Unit,
     modifier: Modifier = Modifier,
 ) {

@@ -1,4 +1,4 @@
-package com.moscow.cineverse.screen.cast_details.best_of_movies.component
+package com.moscow.cineverse.screen.actor_best_of_movies.component
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -10,12 +10,13 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.moscow.cineverse.common_ui_state.MediaItemUiState
 import com.moscow.cineverse.component.MoviePosterCard
 import com.moscow.cineverse.designSystem.component.app_bar.MovieAppBar
 import com.moscow.cineverse.designSystem.component.indicator.MovieCircularProgressBar
 import com.moscow.cineverse.designSystem.theme.Theme
-import com.moscow.cineverse.screen.cast_details.best_of_movies.ShowAllActorMoviesInteractionListener
-import com.moscow.cineverse.screen.cast_details.best_of_movies.ShowAllActorMoviesState
+import com.moscow.cineverse.screen.actor_best_of_movies.ActorBestMoviesInteractionListener
+import com.moscow.cineverse.screen.actor_best_of_movies.ActorBestMoviesState
 import com.moscow.cineverse.utlis.ViewMode
 
 @Composable
@@ -33,8 +34,8 @@ fun LoadingContent(
 
 @Composable
 fun SuccessContent(
-    uiState: ShowAllActorMoviesState,
-    interactionListener: ShowAllActorMoviesInteractionListener,
+    uiState: ActorBestMoviesState,
+    interactionListener: ActorBestMoviesInteractionListener,
     title: String,
     enableBlur: String,
     onNavigateBack: () -> Unit,
@@ -58,7 +59,7 @@ fun SuccessContent(
 
 @Composable
 fun MoviesGrid(
-    movies: List<com.moscow.cineverse.common_ui_state.MediaItemUiState>,
+    movies: List<MediaItemUiState>,
     viewMode: ViewMode,
     enableBlur: String,
     onMovieClick: (Int) -> Unit,
