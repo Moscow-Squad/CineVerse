@@ -33,9 +33,9 @@ fun ProgressIndicator(
     modifier: Modifier = Modifier,
     progressColor: Color = Theme.colors.brand.primary,
     backgroundOfProgress: Color = Theme.colors.background.card,
-    gapSize: Dp = 8.dp
+    gapSize: Dp = 8.dp,
 ) {
-    var progressValue by remember(progress) { mutableFloatStateOf(0f) }
+    var progressValue by remember { mutableFloatStateOf(0f ) }
     val size by animateFloatAsState(
         targetValue = progressValue,
         animationSpec = tween(
@@ -44,6 +44,9 @@ fun ProgressIndicator(
             easing = LinearOutSlowInEasing
         )
     )
+    LaunchedEffect(progress) {
+        progressValue = progress
+    }
 
     Box(
         modifier = modifier

@@ -21,8 +21,8 @@ fun Exception.handleException() : Int{
             CineVerseException.TooManyRequestsException -> R.string.too_many_requests
             CineVerseException.TooMuchTimeException -> R.string.too_much_time
             CineVerseException.UnauthorizedRequestException -> R.string.unauthorized_request
-            CineVerseException.UnknownException -> R.string.error_accured
+            CineVerseException.UnknownException -> R.string.error_occurred
         }
-        else -> R.string.error_accured
+        else -> R.string.error_occurred
     }
 }

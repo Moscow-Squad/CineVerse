@@ -29,7 +29,6 @@ import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
-import retrofit2.http.Headers
 import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -100,4 +99,15 @@ interface MovieService {
     suspend fun getMovieTrailers(
         @Path("movie_id") seriesId: Int
     ): Response<MediaTrailersDto>
+
+    @GET(DISCOVER_MOVIE_LIST)
+    suspend fun getMatchedMovies(
+        @Query(PAGE) page: Int,
+        @Query(WITH_GENRES) withGenres: String? = null,
+        @Query("with_runtime.gte") runtimeGte: Int? = null,
+        @Query("with_runtime.lte") runtimeLte: Int? = null,
+        @Query("primary_release_date.gte") releaseDateGte: String? = null,
+        @Query("primary_release_date.lte") releaseDateLte: String? = null,
+        @Query("sort_by") sortBy: String = "popularity.desc"
+    ): Response<ApiResponse<MovieDto>>
 }

@@ -82,9 +82,9 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
-    implementation("androidx.appcompat:appcompat:1.7.0")
+    implementation(libs.androidx.appcompat)
 
-        // Compose
+    // Compose
     implementation(platform(libs.androidx.compose.bom))
     // Firebase
     implementation(libs.firebase.crashlytics)
