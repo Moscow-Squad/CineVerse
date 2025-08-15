@@ -1,5 +1,6 @@
 package com.moscow.cineverse.screen.details.series_details
 
+import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.moscow.cineverse.base.BaseViewModel
@@ -63,7 +64,7 @@ class SeriesDetailsViewModel @Inject constructor(
                     async { getUserRating(seriesId) },
                     async { loadSeriesDetails() },
                     async { loadReviews(seriesId, page = 1) },
-//                    async { loadSeriesCredits(seriesId) },
+                    async { loadSeriesCredits(seriesId) },
                     async { getSeriesRecommendations(seriesId, page = 1) },
                 )
                 jobs.awaitAll()
@@ -158,7 +159,11 @@ class SeriesDetailsViewModel @Inject constructor(
         updateState { it.copy(isLoading = true, errorMessage = 0, shouldShowError = false) }
         launchWithResult(
             action = { getReviewsPageUseCase(seriesId, page, isMovie = false) },
-            onSuccess = { reviews -> updateState { it.copy(reviews = reviews.map { it.toUi() }) } },
+            onSuccess = { reviews ->
+                Log.e("jkvjvnj", "onSuccessLoadReviews: $reviews")
+
+                updateState { it.copy(reviews = reviews.map { it.toUi() }) }
+            },
             onError = { error ->
                 updateState {
                     it.copy(

@@ -1,6 +1,9 @@
 package com.moscow.mapper
 
 
+import com.moscow.domain.model.CreditsInfo
+import com.moscow.domain.model.CreditsInfo.CastInfo
+import com.moscow.domain.model.CreditsInfo.CrewInfo
 import com.moscow.domain.model.Genre
 import com.moscow.domain.model.Series
 import com.moscow.domain.model.Series.Creator
@@ -8,6 +11,9 @@ import com.moscow.domain.model.Series.Season
 import com.moscow.local.entity.HistoryItemEntity
 import com.moscow.local.entity.MediaItemEntity
 import com.moscow.remote.dto.genre.GenreDto
+import com.moscow.remote.dto.media_item.common.SeriesCastDto
+import com.moscow.remote.dto.media_item.common.SeriesCreditDto
+import com.moscow.remote.dto.media_item.common.SeriesCrewDto
 import com.moscow.remote.dto.media_item.common.SeriesRecommendationDto
 import com.moscow.remote.dto.media_item.series.CreatedByDto
 import com.moscow.remote.dto.media_item.series.SeasonDto
@@ -161,7 +167,6 @@ internal fun SeasonDto.toDomain(): Season {
 }
 
 
-
 fun SeriesRecommendationDto.toDomain() = Series(
     id = id,
     title = name ?: "",
@@ -180,3 +185,24 @@ fun SeriesRecommendationDto.toDomain() = Series(
     seasons = emptyList(),
     type = ""
 )
+
+fun SeriesCreditDto.toDomain(): CreditsInfo =
+    CreditsInfo(
+        cast = cast?.mapNotNull { it.toDomain() } ?: emptyList(),
+        crew = crew?.mapNotNull { it.toDomain() } ?: emptyList()
+    )
+
+fun SeriesCastDto.toDomain(): CastInfo =
+    CastInfo(
+        id = id,
+        originalName = name ?: "",
+        characterName = roles[0].character ?: "",
+        profileImg = profilePath?.let { IMAGES_URL + it } ?: ""
+    )
+
+fun SeriesCrewDto.toDomain(): CrewInfo =
+    CrewInfo(
+        id = id,
+        name = originalName ?: "",
+        job = jobs[0].job ?: "",
+    )

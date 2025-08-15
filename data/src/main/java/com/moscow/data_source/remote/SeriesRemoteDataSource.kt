@@ -1,13 +1,13 @@
 package com.moscow.data_source.remote
 
 import com.moscow.remote.dto.media_item.common.MediaTrailersDto
-import com.moscow.remote.dto.media_item.common.CreditsDetailsDto
-import com.moscow.remote.dto.rating.response.UserRatingResponse
-import com.moscow.remote.dto.rating.response.RatedSeriesDto
-import com.moscow.remote.dto.rating.request.RatingRequestDto
-import com.moscow.remote.dto.review.ReviewDto
+import com.moscow.remote.dto.media_item.common.SeriesCreditDto
 import com.moscow.remote.dto.media_item.series.SeriesDetailDto
 import com.moscow.remote.dto.media_item.series.SeriesDto
+import com.moscow.remote.dto.rating.request.RatingRequestDto
+import com.moscow.remote.dto.rating.response.RatedSeriesDto
+import com.moscow.remote.dto.rating.response.UserRatingResponse
+import com.moscow.remote.dto.review.ReviewDto
 import com.moscow.utils.ApiResponse
 
 interface SeriesRemoteDataSource {
@@ -23,6 +23,6 @@ interface SeriesRemoteDataSource {
     suspend fun getSeriesRecommendations(id: Int, page: Int): ApiResponse<SeriesDto>
     suspend fun getSeriesByGenreId(genreId: Int, page: Int): ApiResponse<SeriesDto>
     suspend fun getTopRatedTVSeries(page: Int): ApiResponse<SeriesDto>
-    suspend fun getSeriesCredits(seriesId: Int): CreditsDetailsDto
+    suspend fun getSeriesCredits(seriesId: Int): SeriesCreditDto
     suspend fun getSeriesTrailers(seriesId: Int): MediaTrailersDto
 }

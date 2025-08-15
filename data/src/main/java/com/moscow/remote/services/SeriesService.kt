@@ -1,13 +1,13 @@
 package com.moscow.remote.services
 
-import com.moscow.remote.dto.media_item.common.CreditsDetailsDto
-import com.moscow.remote.dto.rating.request.RatingRequestDto
-import com.moscow.remote.dto.review.ReviewDto
+import com.moscow.remote.dto.media_item.common.MediaTrailersDto
+import com.moscow.remote.dto.media_item.common.SeriesCreditDto
 import com.moscow.remote.dto.media_item.series.SeriesDetailDto
 import com.moscow.remote.dto.media_item.series.SeriesDto
-import com.moscow.remote.dto.media_item.common.MediaTrailersDto
-import com.moscow.remote.dto.rating.response.UserRatingResponse
+import com.moscow.remote.dto.rating.request.RatingRequestDto
 import com.moscow.remote.dto.rating.response.RatedSeriesDto
+import com.moscow.remote.dto.rating.response.UserRatingResponse
+import com.moscow.remote.dto.review.ReviewDto
 import com.moscow.utils.ACCOUNT
 import com.moscow.utils.ACCOUNT_STATES
 import com.moscow.utils.ApiResponse
@@ -105,7 +105,7 @@ interface SeriesService {
     @GET("$SERIES{series_id}$SERIES_CREDITS")
     suspend fun getSeriesCredits(
         @Path("series_id") seriesId: Int
-    ): Response<CreditsDetailsDto>
+    ): Response<SeriesCreditDto>
 
     @GET("$SERIES{series_id}$TRAILERS")
     suspend fun getSeriesTrailers(
