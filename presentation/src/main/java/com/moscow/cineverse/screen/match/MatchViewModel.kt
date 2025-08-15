@@ -1,15 +1,42 @@
 package com.moscow.cineverse.screen.match
 
-import androidx.lifecycle.viewModelScope
 import com.moscow.cineverse.base.BaseViewModel
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import com.moscow.cineverse.screen.explore.toUi
+import com.moscow.domain.model.Movie
+import com.moscow.domain.usecase.genre.GenreUseCase
+import com.moscow.domain.usecase.match.GetMatchedMovies
+import com.moscow.domain.usecase.movie.GetMovieDetailsUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
+@HiltViewModel
 class MatchViewModel @Inject constructor(
-
+    private val getMatchedMovies: GetMatchedMovies,
+    private val getMovieDetailsUseCase: GetMovieDetailsUseCase,
+    private val genreUseCase: GenreUseCase,
 ) : BaseViewModel<MatchUiState, MatchEvent>(MatchUiState()),
     MatchInteractionListener {
+
+    private fun getGenres() {
+        updateState { it.copy(isLoading = true, errorMessage = null) }
+        launchWithResult(
+            action = { genreUseCase.getMoviesGenres() },
+            onSuccess = { genres ->
+                updateState {
+                    it.copy(movieGenre = genres.map { genre -> genre.toUi() })
+                }
+                loadMatchData()
+            },
+            onError = { e ->
+                updateState {
+                    it.copy(
+                        isLoading = false,
+                        errorMessage = e
+                    )
+                }
+            },
+        )
+    }
 
     override fun onClickStartMatching() {
         updateState { it.copy(currentPage = MatchPages.QuestionsPage) }
@@ -25,7 +52,7 @@ class MatchViewModel @Inject constructor(
                 val nextIndex = state.currentQuestionType.ordinal + 1
                 QuestionType.entries.getOrNull(nextIndex)
                     ?: run {
-                        loadMatchData()
+                        getGenres()
                         return@updateState state.copy(isLoadingRecommendations = true)
                     }
 
@@ -34,15 +61,46 @@ class MatchViewModel @Inject constructor(
             }
     }
 
-    private fun loadMatchData() = viewModelScope.launch {
-        delay(2000)
+    private fun loadMatchData() {
+        launchWithResult(
+            action = {
+                val params = MatchMapper.toMatchParams(uiState.value)
+                getMatchedMovies(
+                    page = 1,
+                    genres = params.genres,
+                    runtimeGte = params.runtimeGte,
+                    runtimeLte = params.runtimeLte,
+                    releaseDateGte = params.releaseDateGte,
+                    releaseDateLte = params.releaseDateLte
+                )
+            },
+            onSuccess = { onLoadMatchDataSuccess(it) },
+            onError = { onLoadMatchDataError(it) }
+        )
+    }
+
+    private fun onLoadMatchDataSuccess(movies: List<Movie>) {
         updateState {
             it.copy(
+                matchResults = movies.map { movie ->
+                    MatchMapper.toUiState(
+                        movie = movie,
+                        genres = uiState.value.movieGenre
+                    )
+                },
                 isLoadingRecommendations = false,
                 currentPage = MatchPages.ResultsPage
             )
         }
+    }
 
+    private fun onLoadMatchDataError(errorMessage: Int) {
+        updateState {
+            it.copy(
+                isLoadingRecommendations = false,
+                errorMessage = errorMessage
+            )
+        }
     }
 
     override fun onAnswerSelected(type: QuestionType, answer: QuestionUiState) {
@@ -109,8 +167,15 @@ class MatchViewModel @Inject constructor(
         sendEvent(MatchEvent.AddToCollection(id = id))
     }
 
-    override fun onPlayClick(url: String) {
-        sendEvent(MatchEvent.OpenTrailer(url = url))
+    override fun onPlayClick(id: Int, url: String) {
+        updateState { it.copy(isLoading = true) }
+        launchWithResult(
+            action = { getMovieDetailsUseCase(id) },
+            onSuccess = {
+                updateState { state -> state.copy(isLoading = false) }
+                sendEvent(MatchEvent.OpenTrailer(url = it.trailerPath))
+            },
+            onError = { updateState { it.copy(isLoading = false) } }
+        )
     }
-
 }

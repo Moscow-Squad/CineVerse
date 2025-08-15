@@ -86,4 +86,23 @@ class MovieRepositoryImpl @Inject constructor(
         return reviews.results?.mapNotNull { runCatching { it.toDomain() }.getOrNull() }
             ?: emptyList()
     }
+
+    override suspend fun getMatchedMovies(
+        page: Int,
+        genres: String?,
+        runtimeGte: Int?,
+        runtimeLte: Int?,
+        releaseDateGte: String?,
+        releaseDateLte: String?
+    ): List<Movie> {
+        val movies = movieRemoteDataSource.getMatchedMovies(
+            page,
+            genres,
+            runtimeGte,
+            runtimeLte,
+            releaseDateGte,
+            releaseDateLte
+        )
+        return movies.results?.mapNotNull { runCatching { it.toDomain() }.getOrNull() } ?: emptyList()
+    }
 }

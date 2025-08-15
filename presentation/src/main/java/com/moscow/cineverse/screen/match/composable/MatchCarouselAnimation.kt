@@ -48,7 +48,7 @@ fun MatchCarouselAnimation(
     movies: List<MovieScreenState.MovieDetailsUiState>,
     onMovieClick: (Int) -> Unit,
     onSaveClick: (Int) -> Unit,
-    onPlayClick: (String) -> Unit,
+    onPlayClick: (Int, String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     if (movies.isEmpty()) return
@@ -125,8 +125,7 @@ fun MatchCarouselAnimation(
                                     page > pagerState.currentPage -> ((-40).dp) * pageOffset
                                     else -> 0.dp
                                 }
-                            )
-                        ,
+                            ),
                         isBlurEnabled = "high",
                         placeholderContent = { RemoteImagePlaceholder() },
                         errorContent = { RemoteImagePlaceholder() },
@@ -153,12 +152,15 @@ fun MatchCarouselAnimation(
             title = movies[pagerState.currentPage].title,
             genres = movies[pagerState.currentPage].genres.joinToString(", "),
             rating = movies[pagerState.currentPage].rating.toString(),
-            duration = movies[pagerState.currentPage].duration.toHourMinuteFormat(LocalContext.current),
+            duration = if (movies[pagerState.currentPage].duration == -1)
+                "null" else movies[pagerState.currentPage].duration.toHourMinuteFormat(
+                LocalContext.current
+            ),
             releaseDate = movies[pagerState.currentPage].releaseDate?.toFormattedReleasedDate()
                 ?: "",
             type = stringResource(R.string.movie),
             onSaveClick = { onSaveClick(movies[pagerState.currentPage].id) },
-            onPlayClick = { onPlayClick(movies[pagerState.currentPage].trailerPath) },
+            onPlayClick = { onPlayClick(movies[pagerState.currentPage].id, movies[pagerState.currentPage].trailerPath) },
         )
 
         Spacer(modifier = Modifier.height(32.dp))

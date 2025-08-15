@@ -102,4 +102,24 @@ class MovieRemoteDataSourceImpl @Inject constructor(
         handleApi {
             movieService.getMovieTrailers(id)
         }
+
+    override suspend fun getMatchedMovies(
+        page: Int,
+        genres: String?,
+        runtimeGte: Int?,
+        runtimeLte: Int?,
+        releaseDateGte: String?,
+        releaseDateLte: String?
+    ): ApiResponse<MovieDto> {
+        return handleApi {
+            movieService.getMatchedMovies(
+                page,
+                genres,
+                runtimeGte,
+                runtimeLte,
+                releaseDateGte,
+                releaseDateLte
+            )
+        }
+    }
 }

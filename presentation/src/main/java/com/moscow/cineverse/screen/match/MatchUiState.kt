@@ -1,6 +1,7 @@
 package com.moscow.cineverse.screen.match
 
 import androidx.annotation.DrawableRes
+import com.moscow.cineverse.screen.explore.ExploreScreenState
 import com.moscow.cineverse.screen.movie_details.MovieScreenState
 import com.moscow.cinverse.presentation.R
 import kotlinx.datetime.LocalDate
@@ -14,8 +15,10 @@ data class MatchUiState(
     val timeQuestions: List<QuestionUiState> = getFakeTimeQuestions(),
     val movieTypeQuestions: List<QuestionUiState> = getFakeMovieTypes(),
     val currentQuestionType: QuestionType = QuestionType.MOOD,
+    val movieGenre: List<ExploreScreenState.GenreUiState> = emptyList(),
     val matchResults: List<MovieScreenState.MovieDetailsUiState> = getFakeMatchResults(),
     val isLoadingRecommendations: Boolean = false,
+    val errorMessage: Int? = null,
 ) {
     val matchProgress: Float =
         currentQuestionType.ordinal.plus(1).toFloat() / QuestionType.entries.size

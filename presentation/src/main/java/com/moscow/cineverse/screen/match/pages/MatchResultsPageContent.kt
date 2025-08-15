@@ -20,7 +20,7 @@ fun MatchResultsPageContent(
     modifier: Modifier = Modifier,
     onNavigateBack: () -> Unit,
     onSaveClick: (Int) -> Unit,
-    onPlayClick: (String) -> Unit
+    onPlayClick: (Int, String) -> Unit
 ) {
     MovieScaffold(
         modifier = modifier,
