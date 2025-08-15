@@ -159,7 +159,7 @@ fun ProfileContent(
         item {
             MovieText(
                 modifier = Modifier.fillMaxWidth(),
-                text = "Version 1.0",
+                text = stringResource(R.string.version_1_0_1),
                 color = Theme.colors.shade.tertiary,
                 style = Theme.textStyle.body.small.regular,
                 textAlign = TextAlign.Center

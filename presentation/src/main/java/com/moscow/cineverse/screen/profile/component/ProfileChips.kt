@@ -33,10 +33,7 @@ internal fun ProfileChips(
     items: List<ProfileChipItem>,
 ) {
 
-    Box(
-        modifier = modifier,
-        contentAlignment = Alignment.Center
-    ) {
+    Box(modifier = modifier) {
         LazyRow(
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             contentPadding = PaddingValues(horizontal = 16.dp)
