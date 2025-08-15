@@ -50,6 +50,11 @@ fun CollectionItem(
                     contentDescription = "collection image",
                     contentScale = ContentScale.Crop
                 )
+                Box(
+                    modifier = Modifier
+                        .matchParentSize()
+                        .background(color = Theme.colors.overlay.secondary)
+                )
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()

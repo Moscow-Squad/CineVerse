@@ -145,7 +145,6 @@ fun HomeContent(
                     .fillMaxWidth()
                     .weight(1f)
                     .verticalScroll(rememberScrollState()),
-                verticalArrangement = Arrangement.spacedBy(32.dp)
             ) {
 
                 HomeHeaderSlider(
@@ -160,12 +159,14 @@ fun HomeContent(
                     onMovieClick = listener::onMediaItemClicked,
                     onShowMoreClick = listener::onSeeAllClick,
                     type = HomeFeaturedItems.RECENTLY_RELEASED,
-                    modifier = Modifier,
+                    modifier = Modifier.padding(top = 16.dp),
                     enableBlur = uiState.enableBlur,
                 )
 
                 SuggestionWithHeader(
-                    modifier = Modifier.padding(horizontal = 16.dp),
+                    modifier = Modifier
+                        .padding(top = 32.dp)
+                        .padding(horizontal = 16.dp),
                     header = stringResource(id = R.string.what_sould_i_watch),
                     title = stringResource(id = R.string.let_us_choose_for_you),
                     message = stringResource(id = R.string.let_us_choose_message),
@@ -173,45 +174,46 @@ fun HomeContent(
                 )
 
                 FeaturedMovies(
+                    modifier = Modifier.padding(top = 32.dp),
                     displayMovies = uiState.upcomingMovies,
                     onMovieClick = listener::onMediaItemClicked,
                     onShowMoreClick = listener::onSeeAllClick,
                     type = HomeFeaturedItems.UPCOMING_MOVIES,
-                    modifier = Modifier,
                     enableBlur = uiState.enableBlur,
                 )
 
                 FeaturedMovies(
+                    modifier = Modifier.padding(top = 32.dp),
                     displayMovies = uiState.matchesYourVibe,
                     onMovieClick = listener::onMediaItemClicked,
                     onShowMoreClick = listener::onSeeAllClick,
-                    modifier = Modifier,
                     type = HomeFeaturedItems.MATCHES_YOUR_VIBE,
                     enableBlur = uiState.enableBlur,
                 )
 
                 FeaturedCollectionsSection(
+                    modifier = Modifier.padding(top = 32.dp),
                     collections = HomeFeaturedCollections.entries.toList(),
                     onCollectionClick = listener::onFeaturedCollectionClick,
                 )
 
                 FeaturedMovies(
+                    modifier = Modifier.padding(top = 32.dp),
                     displayMovies = uiState.topRatedTvShows,
                     onMovieClick = { item ->
                         listener.onMediaItemClicked(item)
                     },
                     onShowMoreClick = listener::onSeeAllClick,
-                    modifier = Modifier,
                     type = HomeFeaturedItems.TOP_RATED_TV_SHOWS,
                     enableBlur = uiState.enableBlur,
                 )
 
                 if (!uiState.youRecentlyViewed.isEmpty()) {
                     FeaturedMovies(
+                        modifier = Modifier.padding(top = 32.dp),
                         displayMovies = uiState.youRecentlyViewed,
                         onMovieClick = listener::onMediaItemClicked,
                         onSeaMoreRecentlyViewedClicked = listener::onSeeMoreRecentlyViewedClicked,
-                        modifier = Modifier,
                         type = HomeFeaturedItems.YOU_RECENTLY_VIEWED,
                         enableBlur = uiState.enableBlur
                     )
@@ -219,6 +221,7 @@ fun HomeContent(
 
                 if (uiState.userName != null) {
                     MyCollectionsLayout(
+                        modifier = Modifier.padding(top = 32.dp),
                         items = uiState.collections,
                         onCollectionClick = listener::onCollectionClick,
                         onShowMoreClick = listener::onCollectionsShowMoreClick,
@@ -228,13 +231,12 @@ fun HomeContent(
                 SuggestionWithHeader(
                     modifier = Modifier
                         .padding(horizontal = 16.dp)
-                        .padding(bottom = 16.dp),
+                        .padding(bottom = 50.dp, top = 16.dp),
                     header = stringResource(id = R.string.need_more_to_watch),
                     title = stringResource(id = R.string.browse_everything),
                     message = stringResource(id = R.string.browse_everything_message),
                     onClick = listener::onBrowseSuggestionClick,
                 )
-
             }
         }
     }
