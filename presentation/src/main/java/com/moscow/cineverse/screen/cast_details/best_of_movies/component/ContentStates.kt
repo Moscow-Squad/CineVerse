@@ -1,5 +1,6 @@
 package com.moscow.cineverse.screen.cast_details.best_of_movies.component
 
+import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -56,6 +57,7 @@ fun SuccessContent(
     }
 }
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun MoviesGrid(
     movies: List<com.moscow.cineverse.common_ui_state.MediaItemUiState>,

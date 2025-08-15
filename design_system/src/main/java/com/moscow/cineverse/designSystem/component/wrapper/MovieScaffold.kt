@@ -25,13 +25,12 @@ fun MovieScaffold(
     content: @Composable () -> Unit = {}
 ) {
     Scaffold(
-        modifier = modifier.fillMaxSize(),
+        modifier = modifier
+            .fillMaxSize()
+            .background(Theme.colors.background.screen)
+            .statusBarsPadding(),
         topBar = {
-            Box(
-                modifier = Modifier.statusBarsPadding()
-            ) {
-                movieAppBar()
-            }
+            movieAppBar()
         },
         floatingActionButton = {
             movieFloatingActionButton()

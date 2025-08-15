@@ -1,6 +1,7 @@
 package com.moscow.cineverse.screen.movie_details.component
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.padding
@@ -8,15 +9,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.moscow.cineverse.component.MoviePosterCard
 import com.moscow.cineverse.component.MovieListSection
-import com.moscow.cineverse.utlis.ViewMode
+import com.moscow.cineverse.component.MoviePosterCard
+import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.screen.movieSeriesDetails.CastCard
 import com.moscow.cineverse.screen.movieSeriesDetails.StaffInfoSection
 import com.moscow.cineverse.screen.movieSeriesDetails.StarCastSection
-import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.screen.movie_details.MovieDetailsInteractionListener
 import com.moscow.cineverse.screen.movie_details.MovieScreenState
+import com.moscow.cineverse.utlis.ViewMode
 import com.moscow.cinverse.presentation.R
 
 @Composable
@@ -65,6 +66,7 @@ fun MovieStaffInfoSection(
     )
 }
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun MovieRecommendationsSection(
     uiState: MovieScreenState,

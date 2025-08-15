@@ -1,5 +1,6 @@
 package com.moscow.cineverse.screen.myratings
 
+import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -128,6 +129,7 @@ fun MyRatingsContent(
     }
 }
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 private fun MyRatingsList(
     contentList: LazyPagingItems<RatedMediaItem>,

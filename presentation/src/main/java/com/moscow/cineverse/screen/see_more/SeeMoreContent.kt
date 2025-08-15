@@ -1,5 +1,13 @@
 package com.moscow.cineverse.screen.see_more
 
+import android.annotation.SuppressLint
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionLayout
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,7 +21,10 @@ import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -30,6 +41,8 @@ import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.screen.explore.component.ViewModeToggleButton
 import com.moscow.cineverse.utlis.ViewMode
 
+@SuppressLint("UnusedContentLambdaTargetStateParameter")
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun <T : Any> SeeMoreContent(
     uiState: SeeMoreUiState,
@@ -45,7 +58,7 @@ fun <T : Any> SeeMoreContent(
             GridCells.Fixed(1)
         }
     }
-
+    var lastToggleTime by remember { mutableLongStateOf(0L) }
 
     MovieScaffold(
         movieAppBar = {
@@ -59,7 +72,13 @@ fun <T : Any> SeeMoreContent(
         movieFloatingActionButton = {
             ViewModeToggleButton(
                 selectedMode = uiState.viewMode,
-                onModeSelected = interactionListener::onViewModeChanged,
+                onModeSelected = { newMode ->
+                    val now = System.currentTimeMillis()
+                    if (now - lastToggleTime > 500) { // 300ms debounce
+                        interactionListener.onViewModeChanged(newMode)
+                        lastToggleTime = now
+                    }
+                },
                 modifier = Modifier
             )
         }
@@ -68,7 +87,6 @@ fun <T : Any> SeeMoreContent(
             modifier = modifier,
             verticalArrangement = Arrangement.Center,
         ) {
-
             when (contentList.loadState.refresh) {
                 is LoadState.Loading -> {
                     Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
@@ -88,59 +106,71 @@ fun <T : Any> SeeMoreContent(
                 }
 
                 else -> {
-                    LazyVerticalGrid(
-                        state = gridState,
-                        columns = gridColumns,
-                        verticalArrangement = Arrangement.spacedBy(16.dp),
-                        horizontalArrangement = Arrangement.spacedBy(12.dp),
-                        modifier = modifier.fillMaxSize(),
-                        contentPadding = PaddingValues(16.dp)
-                    ) {
-                        items(contentList.itemCount) { index ->
-                            val item = contentList[index]
-                            if (item != null) {
-                                when (item) {
-                                    is MediaItemUiState -> {
-                                        MoviePosterCard(
-                                            movie = item,
-                                            viewMode = uiState.viewMode,
-                                            onMovieClick = interactionListener::onMediaItemClicked,
-                                            enableBlur = uiState.enableBlur,
-                                        )
+                    SharedTransitionLayout{
+                        AnimatedContent(
+                            targetState = uiState.viewMode,
+                            transitionSpec = {
+                                fadeIn(tween(300)) togetherWith fadeOut(tween(300))
+                            },
+                            label = "view_mode_transition"
+                        ){
+                            LazyVerticalGrid(
+                                state = gridState,
+                                columns = gridColumns,
+                                verticalArrangement = Arrangement.spacedBy(16.dp),
+                                horizontalArrangement = Arrangement.spacedBy(12.dp),
+                                modifier = modifier.fillMaxSize(),
+                                contentPadding = PaddingValues(16.dp)
+                            ) {
+                                items(contentList.itemCount) { index ->
+                                    val item = contentList[index]
+                                    if (item != null) {
+                                        when (item) {
+                                            is MediaItemUiState -> {
+                                                MoviePosterCard(
+                                                    movie = item,
+                                                    viewMode = uiState.viewMode,
+                                                    onMovieClick = interactionListener::onMediaItemClicked,
+                                                    enableBlur = uiState.enableBlur,
+                                                    sharedTransitionScope = this@SharedTransitionLayout,
+                                                    animatedVisibilityScope = this@AnimatedContent
+                                                )
+                                            }
+                                        }
                                     }
                                 }
-                            }
-                        }
 
-                        if (contentList.loadState.append is LoadState.Loading && contentList.itemCount > 20) {
-                            item {
-                                Box(
-                                    modifier = Modifier
-                                        .wrapContentSize(),
-                                    contentAlignment = Alignment.Center
-                                ) {
-                                    MovieCircularProgressBar(
-                                        gradientColors = listOf(
-                                            Theme.colors.brand.primary,
-                                            Theme.colors.brand.tertiary
-                                        )
-                                    )
+                                if (contentList.loadState.append is LoadState.Loading && contentList.itemCount > 20) {
+                                    item {
+                                        Box(
+                                            modifier = Modifier
+                                                .wrapContentSize(),
+                                            contentAlignment = Alignment.Center
+                                        ) {
+                                            MovieCircularProgressBar(
+                                                gradientColors = listOf(
+                                                    Theme.colors.brand.primary,
+                                                    Theme.colors.brand.tertiary
+                                                )
+                                            )
+                                        }
+                                    }
+                                }
+
+                                if (contentList.loadState.append is LoadState.Error) {
+                                    item(span = { GridItemSpan(maxLineSpan) }) {
+                                        Box(
+                                            modifier = Modifier
+                                                .fillMaxWidth()
+                                                .padding(bottom = 16.dp),
+                                            contentAlignment = Alignment.Center
+                                        ) {
+                                            NoInternetScreen(onRetry = contentList::retry)
+                                        }
+                                    }
+
                                 }
                             }
-                        }
-
-                        if (contentList.loadState.append is LoadState.Error) {
-                            item(span = { GridItemSpan(maxLineSpan) }) {
-                                Box(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .padding(bottom = 16.dp),
-                                    contentAlignment = Alignment.Center
-                                ) {
-                                    NoInternetScreen(onRetry = contentList::retry)
-                                }
-                            }
-
                         }
                     }
                 }
