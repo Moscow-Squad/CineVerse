@@ -89,14 +89,14 @@ fun ExploreMainContent(
     val contentPadding = remember(uiState.selectedTab) {
         when (uiState.selectedTab) {
             ExploreTabsPages.ACTORS -> PaddingValues(
-                top = 64.dp, // Fixed top padding
-                start = 20.dp,
-                end = 20.dp,
+                top = 16.dp,
+                start = 16.dp,
+                end = 16.dp,
                 bottom = 100.dp
             )
 
             ExploreTabsPages.MOVIES, ExploreTabsPages.SERIES -> PaddingValues(
-                top = 64.dp, // Fixed top padding
+                top = if(uiState.searchKeyWord.isNotBlank()) 16.dp else 64.dp,
                 start = 16.dp,
                 end = 16.dp,
                 bottom = 100.dp
