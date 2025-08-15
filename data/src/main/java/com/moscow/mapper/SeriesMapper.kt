@@ -49,7 +49,7 @@ fun MediaItemEntity.toSeries(
     overview: String = ""
 ): Series {
     return Series(
-        id = this.id,
+        id = this.itemId,
         title = this.name,
         overview = overview,
         posterPath = this.posterPath,
