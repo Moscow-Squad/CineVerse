@@ -178,8 +178,11 @@ private fun GridMovieCard(
                         color = Theme.colors.background.card
                     ) {
                         Row(
-                            modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
-                            verticalAlignment = Alignment.CenterVertically
+                            modifier = Modifier
+                                .padding(start = 8.dp, end = 6.dp)
+                                .padding(vertical = 4.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(4.dp)
                         ) {
                             Text(
                                 text = "%.1f".format(movie.rating),
@@ -190,9 +193,7 @@ private fun GridMovieCard(
                                 painter = painterResource(R.drawable.due_tone_star),
                                 contentDescription = "Rating",
                                 tint = Theme.colors.additional.primary.yellow,
-                                modifier = Modifier
-                                    .size(16.dp)
-                                    .padding(start = 2.dp)
+                                modifier = Modifier.size(16.dp)
                             )
                         }
                     }
