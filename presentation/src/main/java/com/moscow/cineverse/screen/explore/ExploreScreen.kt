@@ -179,7 +179,7 @@ private fun ExploreScreenContent(
             }
             SearchSuggestionsSection(uiState, interactionListener)
 
-            if (uiState.selectedTab != ExploreTabsPages.ACTORS) {
+            if (uiState.selectedTab != ExploreTabsPages.ACTORS && uiState.shouldShowError == false) {
                 ViewModeToggleButton(
                     selectedMode = uiState.viewMode,
                     onModeSelected = interactionListener::onViewModeChanged,

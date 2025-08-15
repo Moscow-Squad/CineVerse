@@ -63,12 +63,12 @@ fun ViewModeToggleButton(
  
                 .background(
                     color = Theme.colors.brand.tertiary,
-                    shape = RoundedCornerShape(Theme.radius.large)
+                    shape = RoundedCornerShape(Theme.radius.small)
                 )
                 .border(
                     width = 1.dp,
                     color = Theme.colors.brand.secondary,
-                    shape = RoundedCornerShape(Theme.radius.large)
+                    shape = RoundedCornerShape(Theme.radius.small)
                 )
 
         )
