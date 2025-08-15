@@ -126,4 +126,15 @@ interface MovieService {
         @Query(WITH_GENRES) genreId: Int, @Query(PAGE) page: Int
     ): Response<ApiResponse<MovieDto>>
 
+
+    @GET(DISCOVER_MOVIE_LIST)
+    suspend fun getMatchedMovies(
+        @Query(PAGE) page: Int,
+        @Query(WITH_GENRES) withGenres: String? = null,
+        @Query("with_runtime.gte") runtimeGte: Int? = null,
+        @Query("with_runtime.lte") runtimeLte: Int? = null,
+        @Query("primary_release_date.gte") releaseDateGte: String? = null,
+        @Query("primary_release_date.lte") releaseDateLte: String? = null,
+        @Query("sort_by") sortBy: String = "popularity.desc"
+    ): Response<ApiResponse<MovieDto>>
 }

@@ -1,4 +1,4 @@
-package com.moscow.cineverse.screen.details.movie_details.recommendations
+package com.moscow.cineverse.screen.movie_details.recommendations
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box

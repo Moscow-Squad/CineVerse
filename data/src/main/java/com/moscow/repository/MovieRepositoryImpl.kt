@@ -151,4 +151,23 @@ class MovieRepositoryImpl @Inject constructor(
         const val CATEGORY_UPCOMING = "UPCOMING"
         const val CATEGORY_MATCHES_VIBE = "MATCHES_VIBE"
     }
+
+    override suspend fun getMatchedMovies(
+        page: Int,
+        genres: String?,
+        runtimeGte: Int?,
+        runtimeLte: Int?,
+        releaseDateGte: String?,
+        releaseDateLte: String?
+    ): List<Movie> {
+        val movies = movieRemoteDataSource.getMatchedMovies(
+            page,
+            genres,
+            runtimeGte,
+            runtimeLte,
+            releaseDateGte,
+            releaseDateLte
+        )
+        return movies.results?.mapNotNull { runCatching { it.toDomain() }.getOrNull() } ?: emptyList()
+    }
 }

@@ -25,7 +25,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -71,7 +71,7 @@ fun MediaHeader(
         }
 
         val maxScroll = 400f
-        val maxAchievedScroll = remember { mutableStateOf(0f) }
+        val maxAchievedScroll = remember { mutableFloatStateOf(0f) }
         val screenWidth = LocalConfiguration.current.screenWidthDp.dp
 
         val absoluteScroll = remember(scrollState) {
@@ -83,8 +83,8 @@ fun MediaHeader(
         val clampedScrollValue by remember(scrollState) {
             derivedStateOf {
                 val current = absoluteScroll.value.toFloat()
-                maxAchievedScroll.value = current
-                maxAchievedScroll.value.coerceIn(0f, maxScroll)
+                maxAchievedScroll.floatValue = current
+                maxAchievedScroll.floatValue.coerceIn(0f, maxScroll)
             }
         }
         val imageStartPadding by remember {

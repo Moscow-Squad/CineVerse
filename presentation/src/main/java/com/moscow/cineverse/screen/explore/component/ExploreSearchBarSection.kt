@@ -42,7 +42,7 @@ fun ExploreSearchBarSection(
 
     // Animated height for collapse effect
     val height by animateDpAsState(
-        targetValue = if (isVisible) 72.dp else 0.dp,
+        targetValue = if (isVisible) 60.dp else 0.dp,
         animationSpec = tween(
             durationMillis = 300,
             easing = androidx.compose.animation.core.FastOutSlowInEasing

@@ -38,6 +38,7 @@ import com.moscow.cineverse.utlis.ViewMode
 import com.moscow.cinverse.presentation.R
 import kotlinx.coroutines.flow.distinctUntilChanged
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun ExploreMainContent(
     uiState: ExploreScreenState,
@@ -46,6 +47,9 @@ fun ExploreMainContent(
     interactionListener: ExploreInteractionListener,
     modifier: Modifier = Modifier,
     onGenresVisibilityChange: (Boolean) -> Unit = {},
+    // Add shared transition scope parameters
+    sharedTransitionScope: SharedTransitionScope? = null,
+    animatedVisibilityScope: AnimatedVisibilityScope? = null,
 ) {
     var lastScrollOffset by remember { mutableFloatStateOf(0f) }
     var isScrollingDown by remember { mutableStateOf(false) }
@@ -89,14 +93,14 @@ fun ExploreMainContent(
     val contentPadding = remember(uiState.selectedTab) {
         when (uiState.selectedTab) {
             ExploreTabsPages.ACTORS -> PaddingValues(
-                top = 64.dp, // Fixed top padding
+                top = if (uiState.isSearch)16.dp else 64.dp, // Fixed top padding
                 start = 20.dp,
                 end = 20.dp,
                 bottom = 100.dp
             )
 
             ExploreTabsPages.MOVIES, ExploreTabsPages.SERIES -> PaddingValues(
-                top = 64.dp, // Fixed top padding
+                top = if (uiState.isSearch)16.dp else 64.dp, // Fixed top padding
                 start = 16.dp,
                 end = 16.dp,
                 bottom = 100.dp
@@ -155,6 +159,10 @@ fun ExploreMainContent(
                                     viewMode = uiState.viewMode,
                                     enableBlur = uiState.enableBlur,
                                     onMediaItemClick = { interactionListener.onMediaItemClicked(item) }
+                                    onMovieClick = { interactionListener.onMediaItemClicked(item) },
+                                    // Pass the shared transition scopes
+                                    sharedTransitionScope = sharedTransitionScope,
+                                    animatedVisibilityScope = animatedVisibilityScope
                                 )
                             }
 

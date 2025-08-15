@@ -25,4 +25,13 @@ interface MovieRepository {
     ): List<Movie>
 
     suspend fun getReviewsMovie(id: Int, page: Int): List<Review>
+    suspend fun getMovieReviews(id: Int, page: Int): List<Review>
+    suspend fun getMatchedMovies(
+        page: Int,
+        genres: String?,
+        runtimeGte: Int?,
+        runtimeLte: Int?,
+        releaseDateGte: String?,
+        releaseDateLte: String?
+    ): List<Movie>
 }

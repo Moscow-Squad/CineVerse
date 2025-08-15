@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -29,6 +30,7 @@ fun MovieAppBar(
     modifier: Modifier = Modifier,
     backButtonClick: () -> Unit = {},
     addButtonClick: () -> Unit = {},
+    textPaddings: PaddingValues = PaddingValues(0.dp),
     title: String? = null,
     caption: String? = null,
     showBackButton: Boolean = true,
@@ -71,7 +73,7 @@ fun MovieAppBar(
             }
 
             Column(
-                modifier = Modifier.weight(weight = 1f),
+                modifier = Modifier.weight(1f).padding(textPaddings)
             ) {
                 caption?.let {
                     Text(

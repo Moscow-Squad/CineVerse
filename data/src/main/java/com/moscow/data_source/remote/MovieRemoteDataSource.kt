@@ -27,4 +27,12 @@ interface MovieRemoteDataSource {
     suspend fun getRecentlyReleasedMovies(page: Int): ApiResponse<MovieDto>
     suspend fun getMatchYourVibeMovies(genreId: Int, page: Int): ApiResponse<MovieDto>
 
+    suspend fun getMatchedMovies(
+        page: Int,
+        genres: String?,
+        runtimeGte: Int?,
+        runtimeLte: Int?,
+        releaseDateGte: String?,
+        releaseDateLte: String?
+    ): ApiResponse<MovieDto>
 }

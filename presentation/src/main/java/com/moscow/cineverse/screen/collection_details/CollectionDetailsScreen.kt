@@ -1,5 +1,6 @@
 package com.moscow.cineverse.screen.collection_details
 
+import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -73,6 +74,7 @@ fun CollectionDetailsScreen(
     )
 }
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 private fun CollectionDetailsScreenContent(
     title: String,

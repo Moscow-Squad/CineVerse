@@ -22,12 +22,14 @@ dependencies {
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.material3)
+    implementation(libs.ui.tooling)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
     /** DaggerHilt */
     implementation(libs.hilt.android)
     implementation(libs.androidx.hilt.navigation.compose)
+    debugImplementation(libs.ui.tooling)
     ksp(libs.hilt.android.compiler)
     //kotlin date
     implementation(libs.kotlinx.datetime)
