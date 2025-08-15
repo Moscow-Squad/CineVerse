@@ -19,15 +19,15 @@ import com.moscow.cineverse.component.ErrorContent
 import com.moscow.cineverse.designSystem.component.app_bar.MovieAppBar
 import com.moscow.cineverse.designSystem.component.indicator.MovieCircularProgressBar
 import com.moscow.cineverse.designSystem.component.wrapper.MovieScaffold
-import com.moscow.cineverse.screen.details.series_details.SeriesDetailsScreenInteractionListener
-import com.moscow.cineverse.screen.details.series_details.SeriesDetailsScreenScreenViewModel
+import com.moscow.cineverse.screen.details.series_details.SeriesDetailsInteractionListener
 import com.moscow.cineverse.screen.details.series_details.SeriesDetailsScreenState
+import com.moscow.cineverse.screen.details.series_details.SeriesDetailsViewModel
 import com.moscow.cinverse.presentation.R
 
 @Composable
 fun SeriesSeasonsScreen(
     modifier: Modifier = Modifier,
-    viewModel: SeriesDetailsScreenScreenViewModel = hiltViewModel(),
+    viewModel: SeriesDetailsViewModel = hiltViewModel(),
     navigateBack: () -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -43,7 +43,7 @@ fun SeriesSeasonsScreen(
 @Composable
 fun SeriesSeasonsScreenContent(
     uiState: SeriesDetailsScreenState,
-    interactionListener: SeriesDetailsScreenInteractionListener,
+    interactionListener: SeriesDetailsInteractionListener,
     onNavigateBack : () -> Unit,
     modifier: Modifier = Modifier,
 ) {

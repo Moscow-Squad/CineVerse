@@ -27,7 +27,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class SeriesDetailsScreenScreenViewModel @Inject constructor(
+class SeriesDetailsViewModel @Inject constructor(
     private val getSeriesDetailUseCase: GetSeriesDetailUseCase,
     private val getReviewsPageUseCase: GetReviewsUseCase,
     private val rateSeriesUseCase: RateSeriesUseCase,
@@ -40,7 +40,7 @@ class SeriesDetailsScreenScreenViewModel @Inject constructor(
     private val preferences: UserRepository,
     savedStateHandle: SavedStateHandle,
 ) : BaseViewModel<SeriesDetailsScreenState, SeriesDetailsScreenEffects>(SeriesDetailsScreenState()),
-    SeriesDetailsScreenInteractionListener {
+    SeriesDetailsInteractionListener {
 
     val seriesId = savedStateHandle.get<Int>(SeriesDetailsRoute.SERIES_ID) ?: 0
 
@@ -61,10 +61,10 @@ class SeriesDetailsScreenScreenViewModel @Inject constructor(
             try {
                 val jobs = listOf(
                     async { getUserRating(seriesId) },
-                    async { loadSeriesDetails(seriesId) },
-                    async { loadSeriesCredits(seriesId) },
-                    async { getSeriesRecommendations(seriesId, page = 1) },
+                    async { loadSeriesDetails() },
                     async { loadReviews(seriesId, page = 1) },
+//                    async { loadSeriesCredits(seriesId) },
+                    async { getSeriesRecommendations(seriesId, page = 1) },
                 )
                 jobs.awaitAll()
                 updateState { it.copy(isLoading = false) }
@@ -100,7 +100,7 @@ class SeriesDetailsScreenScreenViewModel @Inject constructor(
         )
     }
 
-    private suspend fun loadSeriesDetails(seriesId: Int) {
+    private suspend fun loadSeriesDetails() {
         try {
             val detail = getSeriesDetailUseCase(seriesId)
             updateState { it.copy(seriesDetail = detail.toUi()) }

@@ -2,7 +2,7 @@ package com.moscow.cineverse.screen.details.series_details
 
 import com.moscow.cineverse.utlis.ViewMode
 
-interface SeriesDetailsScreenInteractionListener {
+interface SeriesDetailsInteractionListener {
     fun addToCollection()
     fun showRatingBottomSheet()
     fun onDismissOrCancelRatingBottomSheet()

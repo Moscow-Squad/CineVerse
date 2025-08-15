@@ -1,5 +1,6 @@
 package com.moscow.cineverse.screen.home
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.cineverse.base.handleException
@@ -190,6 +191,7 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun onFetchTopRatedTVShowsSuccess(tvShows: List<Series>) {
+        Log.e("jdneen", "onFetchTopRatedTVShowsSuccess: ${tvShows[0]}")
         updateState {
             it.copy(
                 topRatedTvShows = tvShows.toUi(),
@@ -214,8 +216,10 @@ class HomeViewModel @Inject constructor(
     override fun onMediaItemClicked(mediaItemUiState: MediaItemUiState) {
        if (mediaItemUiState.mediaType == MediaType.Movie)
             sendEvent(HomeEffect.MovieClicked(mediaItemUiState.id))
-        else
-            sendEvent(HomeEffect.SeriesClicked(mediaItemUiState.id))
+       else {
+           Log.e("hdhdhhd", "onMediaItemClicked from home: ${mediaItemUiState.id}")
+           sendEvent(HomeEffect.SeriesClicked(mediaItemUiState.id))
+       }
     }
 
     override fun onSeeAllClick(type: HomeFeaturedItems) {

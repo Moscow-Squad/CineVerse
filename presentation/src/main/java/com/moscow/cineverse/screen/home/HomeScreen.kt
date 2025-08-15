@@ -84,6 +84,7 @@ fun HomeScreen(
                 is HomeEffect.SeeMoreRecentlyViewed -> {
                     navigateToHistoryScreen()
                 }
+
                 is HomeEffect.SeeMoreCollections -> {
                     navigateToMyCollections()
                 }
@@ -196,7 +197,9 @@ fun HomeContent(
 
                 FeaturedMovies(
                     displayMovies = uiState.topRatedTvShows,
-                    onMovieClick = listener::onMediaItemClicked,
+                    onMovieClick = { item ->
+                        listener.onMediaItemClicked(item)
+                    },
                     onShowMoreClick = listener::onSeeAllClick,
                     modifier = Modifier,
                     type = HomeFeaturedItems.TOP_RATED_TV_SHOWS,

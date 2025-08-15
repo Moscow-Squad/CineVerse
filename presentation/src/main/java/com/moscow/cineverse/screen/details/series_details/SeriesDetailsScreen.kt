@@ -37,7 +37,7 @@ import com.moscow.cinverse.presentation.R
 
 @Composable
 fun SeriesDetailsScreen(
-    viewModel: SeriesDetailsScreenScreenViewModel = hiltViewModel(),
+    viewModel: SeriesDetailsViewModel = hiltViewModel(),
     navigateBack: () -> Unit,
     navigateToCollectionBottomSheet: (Int) -> Unit,
     navigateToSeriesRecommendation: (Int, String) -> Unit,
@@ -76,7 +76,7 @@ fun SeriesDetailsScreen(
 @Composable
 fun SeriesDetailsContent(
     uiState: SeriesDetailsScreenState,
-    interactionListener: SeriesDetailsScreenInteractionListener,
+    interactionListener: SeriesDetailsInteractionListener,
     onNavigateBack: () -> Unit,
 ) {
     val scrollState = rememberLazyListState()
@@ -132,7 +132,7 @@ fun SeriesDetailsContent(
 @Composable
 private fun SeriesDetailsMainContent(
     scrollState: LazyListState,
-    interactionListener: SeriesDetailsScreenInteractionListener,
+    interactionListener: SeriesDetailsInteractionListener,
     uiState: SeriesDetailsScreenState,
     onNavigateBack: () -> Unit
 ) {
