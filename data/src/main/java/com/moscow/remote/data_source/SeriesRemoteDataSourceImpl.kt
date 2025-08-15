@@ -115,10 +115,8 @@ class SeriesRemoteDataSourceImpl @Inject constructor(
             seriesService.getSeriesTrailers(seriesId)
         }
 
-
     override suspend fun getTopRatedTVSeries(page: Int): ApiResponse<SeriesDto> =
         handleApi {
             seriesService.getTopRatedTVSeries(page)
-
         }
 }

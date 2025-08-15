@@ -24,13 +24,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.lerp
 import androidx.compose.ui.util.lerp
 import androidx.compose.ui.zIndex
-import com.moscow.cineverse.common_ui_state.DurationUiState
 import com.moscow.cineverse.designSystem.component.blur.OnBlurContent
 import com.moscow.cineverse.designSystem.component.blur.RemoteImagePlaceholder
 import com.moscow.cineverse.designSystem.component.button.MovieButton
@@ -150,6 +148,7 @@ fun MatchCarouselAnimation(
                     )
                 ),
             title = movies[pagerState.currentPage].title,
+            titleOverFlow = true,
             genres = movies[pagerState.currentPage].genres.joinToString(", "),
             rating = movies[pagerState.currentPage].rating.toString(),
             duration = if (movies[pagerState.currentPage].duration.hours == 0 && movies[pagerState.currentPage].duration.minutes == 0) "null" else movies[pagerState.currentPage].duration.toString(),
