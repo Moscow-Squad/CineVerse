@@ -67,6 +67,7 @@ fun ExploreScreen(
     )
 }
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 private fun ExploreScreenContent(
     uiState: ExploreScreenState,

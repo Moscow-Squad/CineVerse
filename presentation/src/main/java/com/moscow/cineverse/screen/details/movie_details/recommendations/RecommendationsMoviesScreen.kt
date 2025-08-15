@@ -1,5 +1,6 @@
 package com.moscow.cineverse.screen.movie_details.recommendations
 
+import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -22,12 +23,17 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.moscow.cineverse.common_ui_state.MediaItemUiState
 import com.moscow.cineverse.component.MediaPosterCard
 import com.moscow.cineverse.component.NoInternetScreen
 import com.moscow.cineverse.designSystem.component.app_bar.MovieAppBar
 import com.moscow.cineverse.designSystem.component.indicator.MovieCircularProgressBar
 import com.moscow.cineverse.designSystem.component.wrapper.MovieScaffold
 import com.moscow.cineverse.mapper.toMediaItemUi
+import com.moscow.cineverse.screen.details.movie_details.recommendations.RecommendationMoviesEffect
+import com.moscow.cineverse.screen.details.movie_details.recommendations.RecommendationsMoviesInteractionListener
+import com.moscow.cineverse.screen.details.movie_details.recommendations.RecommendationsMoviesState
+import com.moscow.cineverse.screen.details.movie_details.recommendations.RecommendationsMoviesViewModel
 import com.moscow.cineverse.screen.explore.component.ViewModeToggleButton
 import com.moscow.cineverse.utlis.ViewMode
 import com.moscow.cinverse.presentation.R
@@ -41,8 +47,8 @@ fun RecommendationMoviesScreen(
     navigateToMovieDetails: (Int) -> Unit,
 
     ) {
-    val recommendations = viewModel.getRecommendations().collectAsLazyPagingItems()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val recommendations = uiState.recommendation.collectAsLazyPagingItems()
 
     LaunchedEffect(viewModel) {
         viewModel.uiEffect.collect { event ->
@@ -69,10 +75,11 @@ fun RecommendationMoviesScreen(
 }
 
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun RecommendationMoviesContent(
     uiState: RecommendationsMoviesState,
-    recommendations: LazyPagingItems<Movie>,
+    recommendations: LazyPagingItems<MediaItemUiState>,
     interactionListener: RecommendationsMoviesInteractionListener,
     modifier: Modifier = Modifier,
     title: String
@@ -116,7 +123,7 @@ fun RecommendationMoviesContent(
                     ) {
                         items(recommendations.itemCount)
                         { index ->
-                            val recommendation = recommendations[index]?.toMediaItemUi()
+                            val recommendation = recommendations[index]
                             if (recommendation != null) {
                                 MediaPosterCard(
                                     mediaItem = recommendation,

@@ -25,7 +25,6 @@ interface MovieRepository {
     ): List<Movie>
 
     suspend fun getReviewsMovie(id: Int, page: Int): List<Review>
-    suspend fun getMovieReviews(id: Int, page: Int): List<Review>
     suspend fun getMatchedMovies(
         page: Int,
         genres: String?,

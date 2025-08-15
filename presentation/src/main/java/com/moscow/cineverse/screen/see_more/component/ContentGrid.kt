@@ -1,5 +1,6 @@
 package com.moscow.cineverse.screen.see_more.component
 
+import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -25,6 +26,7 @@ import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.screen.see_more.SeeMoreInteractionListener
 import com.moscow.cineverse.screen.see_more.SeeMoreUiState
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun <T : Any> ContentGrid(
     uiState: SeeMoreUiState,

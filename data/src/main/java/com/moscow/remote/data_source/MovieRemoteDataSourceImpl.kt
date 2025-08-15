@@ -55,7 +55,7 @@ class MovieRemoteDataSourceImpl @Inject constructor(
         userId: Int,
         page: Int
     ): ApiResponse<RatedMovieDto> {
-        val sessionId = preferenceRepository.getSessionId()
+        val sessionId = userRepository.getSessionId()
         return handleApi {
             movieService.getRatedMovies(
                 userId,
@@ -66,7 +66,7 @@ class MovieRemoteDataSourceImpl @Inject constructor(
     }
 
     override suspend fun getUserRatingForMovie(movieId: Int): UserRatingResponse {
-        val sessionId = preferenceRepository.getSessionId()
+        val sessionId = userRepository.getSessionId()
         return handleApi {
             movieService.getUserRatingForMovie(
                 movieId,
@@ -121,4 +121,23 @@ class MovieRemoteDataSourceImpl @Inject constructor(
     ): ApiResponse<MovieDto> = handleApi {
         movieService.getMatchYourVibeMovies(genreId, page)
     }
+
+    override suspend fun getMatchedMovies(
+        page: Int,
+        genres: String?,
+        runtimeGte: Int?,
+        runtimeLte: Int?,
+        releaseDateGte: String?,
+        releaseDateLte: String?
+    ): ApiResponse<MovieDto> =
+        handleApi {
+            movieService.getMatchedMovies(
+                page,
+                genres,
+                runtimeGte,
+                runtimeLte,
+                releaseDateGte,
+                releaseDateLte
+            )
+        }
 }

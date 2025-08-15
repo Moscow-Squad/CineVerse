@@ -7,6 +7,7 @@ import com.moscow.cineverse.base.handleException
 import com.moscow.cineverse.common_ui_state.MediaItemUiState
 import com.moscow.cineverse.common_ui_state.MediaItemUiState.MediaType
 import com.moscow.cineverse.mapper.toCollectionUi
+import com.moscow.cineverse.mapper.toMediaItemUi
 import com.moscow.cineverse.mapper.toUi
 import com.moscow.cineverse.screen.explore.toUi
 import com.moscow.domain.model.Movie
@@ -138,7 +139,15 @@ class HomeViewModel @Inject constructor(
             onSuccess = { result ->
                 updateState {
                     it.copy(
-//                        youRecentlyViewed = result as List<MediaItemUiState>
+                       youRecentlyViewed = result.map { mediaItem ->
+                           when(mediaItem){
+                               is Movie -> mediaItem.toUi(uiState.value.movieGenre)
+                               is Series -> mediaItem.toMediaItemUi()
+                               else -> MediaItemUiState()
+                           }
+                        },
+                        isLoading = false,
+                        error = null
                     )
                 }
             },

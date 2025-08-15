@@ -1,5 +1,8 @@
 package com.moscow.cineverse.screen.explore.component
 
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -158,8 +161,7 @@ fun ExploreMainContent(
                                     mediaItem = item,
                                     viewMode = uiState.viewMode,
                                     enableBlur = uiState.enableBlur,
-                                    onMediaItemClick = { interactionListener.onMediaItemClicked(item) }
-                                    onMovieClick = { interactionListener.onMediaItemClicked(item) },
+                                    onMediaItemClick = { interactionListener.onMediaItemClicked(item) },
                                     // Pass the shared transition scopes
                                     sharedTransitionScope = sharedTransitionScope,
                                     animatedVisibilityScope = animatedVisibilityScope

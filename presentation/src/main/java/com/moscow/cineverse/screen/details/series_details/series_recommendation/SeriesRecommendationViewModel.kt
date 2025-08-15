@@ -1,9 +1,10 @@
-package com.moscow.cineverse.screen.series_details.series_recommendation
+package com.moscow.cineverse.screen.details.series_details.series_recommendation
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
+import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.cineverse.navigation.routes.SeriesRecommendationRoute
@@ -12,11 +13,10 @@ import com.moscow.cineverse.screen.explore.toUi
 import com.moscow.cineverse.utlis.ViewMode
 import com.moscow.domain.model.Series
 import com.moscow.domain.service.blur.BlurProvider
-import com.moscow.cineverse.utlis.ViewMode
-import com.moscow.domain.repository.blur.BlurProvider
 import com.moscow.domain.usecase.genre.GenreUseCase
 import com.moscow.domain.usecase.series.GetSeriesRecommendationsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -56,6 +56,7 @@ class SeriesRecommendationViewModel @Inject constructor(
                         isLoading = false
                     )
                 }
+                getRecommendations(seriesId)
             },
             onError = { e ->
                 updateState {
@@ -69,15 +70,22 @@ class SeriesRecommendationViewModel @Inject constructor(
         )
     }
 
-    fun getRecommendations(id: Int): Flow<PagingData<Series>> {
-        return Pager(
-            config = PagingConfig(pageSize = 20),
-            pagingSourceFactory = {
-                BasePagingSource { page ->
-                    getSeriesRecommendationsUseCase(id, page)
-                }
-            }
-        ).flow.cachedIn(viewModelScope)
+    private fun getRecommendations(id: Int) {
+        updateState {
+            it.copy(
+                recommendation = Pager(
+                    config = PagingConfig(pageSize = 20),
+                    pagingSourceFactory = {
+                        BasePagingSource { page ->
+                            getSeriesRecommendationsUseCase(
+                                id,
+                                page
+                            ).map { it.toUi(uiState.value.seriesGenre) }
+                        }
+                    }
+                ).flow.cachedIn(viewModelScope)
+            )
+        }
     }
 
     override fun onSeriesClicked(seriesId: Int) {
@@ -88,3 +96,14 @@ class SeriesRecommendationViewModel @Inject constructor(
         updateState { it.copy(viewMode = viewMode) }
     }
 }
+
+
+
+
+
+
+
+
+
+
+

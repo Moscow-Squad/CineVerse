@@ -30,15 +30,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.lerp
 import androidx.compose.ui.util.lerp
 import androidx.compose.ui.zIndex
+import com.moscow.cineverse.common_ui_state.DurationUiState
 import com.moscow.cineverse.designSystem.component.blur.OnBlurContent
 import com.moscow.cineverse.designSystem.component.blur.RemoteImagePlaceholder
 import com.moscow.cineverse.designSystem.component.button.MovieButton
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.image_viewer.component.SafeImageViewer
-import com.moscow.cineverse.mapper.toFormattedReleasedDate
-import com.moscow.cineverse.mapper.toHourMinuteFormat
-import com.moscow.cineverse.screen.movieSeriesDetails.DetailCard
-import com.moscow.cineverse.screen.movie_details.MovieScreenState
+import com.moscow.cineverse.mapper.formatDate
+import com.moscow.cineverse.screen.details.common.DetailCard
+import com.moscow.cineverse.screen.details.movie_details.MovieScreenState
 import com.moscow.cinverse.presentation.R
 import kotlinx.coroutines.delay
 import kotlin.math.absoluteValue
@@ -114,7 +114,7 @@ fun MatchCarouselAnimation(
                     contentAlignment = Alignment.Center
                 ) {
                     SafeImageViewer(
-                        imageUrl = movies[page].posterPath,
+                        imageUrl = movies[page].posterUrl,
                         modifier = Modifier
                             .alpha(cardAlpha)
                             .size(width = animatedWidth, height = animatedHeight)
@@ -152,15 +152,12 @@ fun MatchCarouselAnimation(
             title = movies[pagerState.currentPage].title,
             genres = movies[pagerState.currentPage].genres.joinToString(", "),
             rating = movies[pagerState.currentPage].rating.toString(),
-            duration = if (movies[pagerState.currentPage].duration == -1)
-                "null" else movies[pagerState.currentPage].duration.toHourMinuteFormat(
-                LocalContext.current
-            ),
-            releaseDate = movies[pagerState.currentPage].releaseDate?.toFormattedReleasedDate()
+            duration = if (movies[pagerState.currentPage].duration.hours == 0 && movies[pagerState.currentPage].duration.minutes == 0) "null" else movies[pagerState.currentPage].duration.toString(),
+            releaseDate = movies[pagerState.currentPage].releaseDate?.formatDate()
                 ?: "",
             type = stringResource(R.string.movie),
             onSaveClick = { onSaveClick(movies[pagerState.currentPage].id) },
-            onPlayClick = { onPlayClick(movies[pagerState.currentPage].id, movies[pagerState.currentPage].trailerPath) },
+            onPlayClick = { onPlayClick(movies[pagerState.currentPage].id, movies[pagerState.currentPage].trailerUrl) },
         )
 
         Spacer(modifier = Modifier.height(32.dp))

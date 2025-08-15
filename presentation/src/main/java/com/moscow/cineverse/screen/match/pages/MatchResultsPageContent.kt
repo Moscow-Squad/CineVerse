@@ -9,8 +9,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.moscow.cineverse.designSystem.component.app_bar.MovieAppBar
 import com.moscow.cineverse.designSystem.component.wrapper.MovieScaffold
+import com.moscow.cineverse.screen.details.movie_details.MovieScreenState
 import com.moscow.cineverse.screen.match.composable.MatchCarouselAnimation
-import com.moscow.cineverse.screen.movie_details.MovieScreenState
 import com.moscow.cinverse.presentation.R
 
 @Composable

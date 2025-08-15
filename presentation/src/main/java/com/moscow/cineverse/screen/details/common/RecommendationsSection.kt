@@ -1,6 +1,7 @@
 package com.moscow.cineverse.screen.details.common
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -13,6 +14,7 @@ import com.moscow.cineverse.utlis.ViewMode
 import com.moscow.cinverse.presentation.R
 
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun RecommendationsSection(
     mediaItems: List<MediaItemUiState>,

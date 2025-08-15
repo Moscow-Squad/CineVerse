@@ -1,5 +1,6 @@
 package com.moscow.cineverse.screen.cast_detials.components
 
+import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -10,6 +11,7 @@ import com.moscow.cineverse.screen.cast_detials.CastDetailsUiState
 import com.moscow.cineverse.utlis.ViewMode
 import com.moscow.cinverse.presentation.R
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun ActorMoviesSection(
     uiState: CastDetailsUiState,
@@ -34,7 +36,6 @@ fun ActorMoviesSection(
                     onMediaItemClick = { onMovieClick(movie) },
                     showTitle = true,
                     modifier = cardModifier,
-
                 )
             },
             modifier = modifier

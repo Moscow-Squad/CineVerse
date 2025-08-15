@@ -173,7 +173,7 @@ class MatchViewModel @Inject constructor(
             action = { getMovieDetailsUseCase(id) },
             onSuccess = {
                 updateState { state -> state.copy(isLoading = false) }
-                sendEvent(MatchEvent.OpenTrailer(url = it.trailerPath))
+                sendEvent(MatchEvent.OpenTrailer(url = it.trailerUrl))
             },
             onError = { updateState { it.copy(isLoading = false) } }
         )

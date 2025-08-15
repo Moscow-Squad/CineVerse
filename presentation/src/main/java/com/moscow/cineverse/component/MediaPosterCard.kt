@@ -1,5 +1,8 @@
 package com.moscow.cineverse.component
 
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -42,10 +45,13 @@ import com.moscow.cineverse.screen.details.common.InfoSection
 import com.moscow.cineverse.utlis.ViewMode
 import com.moscow.cinverse.presentation.R
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun MediaPosterCard(
     modifier: Modifier = Modifier,
     mediaItem: MediaItemUiState,
+    sharedTransitionScope: SharedTransitionScope? = null,
+    animatedVisibilityScope: AnimatedVisibilityScope? = null,
     viewMode: ViewMode = ViewMode.GRID,
     showRating: Boolean = true,
     showBackdrop: Boolean = false,

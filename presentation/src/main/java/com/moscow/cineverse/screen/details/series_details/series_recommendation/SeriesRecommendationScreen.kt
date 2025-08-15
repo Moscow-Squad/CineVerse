@@ -35,7 +35,6 @@ import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.moscow.cineverse.common_ui_state.MediaItemUiState
-import com.moscow.cineverse.component.MoviePosterCard
 import com.moscow.cineverse.component.MediaPosterCard
 import com.moscow.cineverse.component.NoInternetScreen
 import com.moscow.cineverse.designSystem.component.app_bar.MovieAppBar
@@ -139,10 +138,10 @@ fun SeriesRecommendationScreenContent(
                                 items(recommendations.itemCount) { index ->
                                     val recommendation = recommendations[index]
                                     if (recommendation != null) {
-                                        MoviePosterCard(
-                                            movie = recommendation,
+                                        MediaPosterCard(
+                                            mediaItem = recommendation,
                                             viewMode = uiState.viewMode,
-                                            onMovieClick = {
+                                            onMediaItemClick = {
                                                 interactionListener.onSeriesClicked(
                                                     recommendation.id
                                                 )
