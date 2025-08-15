@@ -16,11 +16,11 @@ import com.moscow.domain.usecase.collection.GetUserCollectionsUseCase
 import com.moscow.domain.usecase.genre.GenreUseCase
 import com.moscow.domain.usecase.movie.GetMatchesYourVibesMoviesUseCase
 import com.moscow.domain.usecase.movie.GetRecentlyReleasedMoviesUseCase
-import com.moscow.domain.usecase.series.GetTopRatedTVShowsUseCase
 import com.moscow.domain.usecase.movie.GetTrendingMoviesUseCase
 import com.moscow.domain.usecase.movie.GetUpcomingMoviesUseCase
 import com.moscow.domain.usecase.preference.GetUserDetailsUseCase
 import com.moscow.domain.usecase.recently_viewed.GetRecentlyViewedMediaUseCase
+import com.moscow.domain.usecase.series.GetTopRatedTVShowsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -137,7 +137,7 @@ class HomeViewModel @Inject constructor(
             onSuccess = { result ->
                 updateState {
                     it.copy(
-                        youRecentlyViewed = result as List<MediaItemUiState>
+//                        youRecentlyViewed = result as List<MediaItemUiState>
                     )
                 }
             },
