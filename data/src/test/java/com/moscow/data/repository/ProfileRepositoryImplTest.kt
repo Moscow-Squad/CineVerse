@@ -1,4 +1,4 @@
-package com.moscow.repository
+package com.moscow.data.repository
 
 import com.moscow.data_source.remote.ProfileRemoteDataSource
 import com.moscow.domain.model.UserInfo
@@ -7,6 +7,7 @@ import com.moscow.remote.dto.profile.response.Avatar
 import com.moscow.remote.dto.profile.response.Gravatar
 import com.moscow.remote.dto.profile.response.LogoutResponseDto
 import com.moscow.remote.dto.profile.response.Tmdb
+import com.moscow.repository.ProfileRepositoryImpl
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk

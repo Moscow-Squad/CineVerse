@@ -1,4 +1,4 @@
-package com.moscow.repository
+package com.moscow.data.repository
 
 import com.moscow.data_source.local.RecentlyViewedLocalDataSource
 import com.moscow.domain.model.Movie
@@ -7,6 +7,7 @@ import com.moscow.domain.model.Genre
 import com.moscow.local.entity.HistoryItemEntity
 import com.moscow.mapper.ITEM_MOVIE
 import com.moscow.mapper.ITEM_SERIES
+import com.moscow.repository.RecentlyViewedRepositoryImpl
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every

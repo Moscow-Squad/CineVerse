@@ -1,4 +1,4 @@
-package com.moscow.repository
+package com.moscow.data.repository
 
 import com.moscow.data_source.remote.CollectionRemoteDataSource
 import com.moscow.domain.model.UserType
@@ -8,6 +8,7 @@ import com.moscow.remote.dto.collection.request.CreateCollectionRequestDto
 import com.moscow.remote.dto.collection.response.AddCollectionDto
 import com.moscow.remote.dto.collection.response.CollectionDto
 import com.moscow.remote.dto.media_item.movie.MovieDto
+import com.moscow.repository.CollectionsRepositoryImpl
 import com.moscow.utils.ApiResponse
 import io.mockk.coEvery
 import io.mockk.coVerify

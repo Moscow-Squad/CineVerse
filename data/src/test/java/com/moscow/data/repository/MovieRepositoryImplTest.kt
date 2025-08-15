@@ -1,4 +1,4 @@
-package com.moscow.repository
+package com.moscow.data.repository
 
 import com.moscow.data_source.local.DetailsLocalDataSource
 import com.moscow.data_source.remote.MovieRemoteDataSource
@@ -17,6 +17,7 @@ import com.moscow.remote.dto.rating.request.RatingRequestDto
 import com.moscow.remote.dto.rating.response.RatedMovieDto
 import com.moscow.remote.dto.rating.response.UserRatingResponse
 import com.moscow.remote.dto.review.ReviewDto
+import com.moscow.repository.MovieRepositoryImpl
 import com.moscow.utils.ApiResponse
 import com.moscow.utils.HomeCacheHelper
 import io.mockk.coEvery

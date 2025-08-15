@@ -1,7 +1,8 @@
-package com.moscow.repository
+package com.moscow.data.repository
 
 import com.moscow.data_source.remote.ActorRemoteDataSource
 import com.moscow.remote.dto.actor.*
+import com.moscow.repository.ActorRepositoryImpl
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
