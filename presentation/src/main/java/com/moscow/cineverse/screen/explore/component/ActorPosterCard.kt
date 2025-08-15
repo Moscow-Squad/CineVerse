@@ -81,7 +81,7 @@ fun ActorPosterCard(
             Text(
                 text = title,
                 color = Theme.colors.shade.secondary,
-                style = Theme.textStyle.body.medium.medium,
+                style = Theme.textStyle.body.small.medium,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
                 textAlign = titleTextAlign,
