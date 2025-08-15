@@ -1,7 +1,8 @@
-package com.moscow.local.data_source
+package com.moscow.data.local.data_source
 
 import com.google.common.truth.Truth.assertThat
 import com.moscow.local.dao.search.FavouriteGenreDao
+import com.moscow.local.data_source.DetailsLocalDataSourceImpl
 import com.moscow.local.entity.FavouriteGenreEntity
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf

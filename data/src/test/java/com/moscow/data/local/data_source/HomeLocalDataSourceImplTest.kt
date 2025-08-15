@@ -1,7 +1,8 @@
-package com.moscow.local.data_source
+package com.moscow.data.local.data_source
 
 import com.google.common.truth.Truth.assertThat
 import com.moscow.local.dao.home.HomeCacheDao
+import com.moscow.local.data_source.HomeLocalDataSourceImpl
 import com.moscow.local.entity.HomeCategoryTimestampEntity
 import com.moscow.local.entity.MediaItemEntity
 import kotlinx.coroutines.test.runTest

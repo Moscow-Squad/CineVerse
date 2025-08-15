@@ -1,9 +1,10 @@
-package com.moscow.repository
+package com.moscow.data.repository
 
 import com.moscow.data_source.remote.GenreRemoteDataSource
 import com.moscow.domain.model.Genre
 import com.moscow.remote.dto.genre.GenreDto
 import com.moscow.remote.dto.genre.GenreResponse
+import com.moscow.repository.GenreRepositoryImpl
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk

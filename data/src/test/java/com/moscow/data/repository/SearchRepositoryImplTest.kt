@@ -1,4 +1,4 @@
-package com.moscow.repository
+package com.moscow.data.repository
 
 import com.moscow.data_source.local.SearchLocalDataSource
 import com.moscow.data_source.remote.SearchRemoteDataSource
@@ -11,6 +11,7 @@ import com.moscow.remote.dto.actor.ActorDto
 import com.moscow.remote.dto.media_item.movie.MovieDto
 import com.moscow.remote.dto.media_item.series.SeriesDto
 import com.moscow.remote.dto.suggestion.SuggestionDto
+import com.moscow.repository.SearchRepositoryImpl
 import com.moscow.utils.ApiResponse
 import io.mockk.*
 import kotlinx.coroutines.flow.first

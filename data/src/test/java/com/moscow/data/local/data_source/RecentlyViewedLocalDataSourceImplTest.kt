@@ -1,7 +1,8 @@
-package com.moscow.local.data_source
+package com.moscow.data.local.data_source
 
 import com.google.common.truth.Truth.assertThat
 import com.moscow.local.dao.history.RecentlyViewedDao
+import com.moscow.local.data_source.RecentlyViewedLocalDataSourceImpl
 import com.moscow.local.entity.HistoryItemEntity
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf

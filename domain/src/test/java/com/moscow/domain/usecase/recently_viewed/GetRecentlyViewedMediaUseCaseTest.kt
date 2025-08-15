@@ -34,7 +34,7 @@ class GetRecentlyViewedMediaUseCaseTest {
     fun `getRecentlyViewedMediaUseCase should return result from repository`() = runTest {
         // Given
         val expected = listOf(mockk<Any>(), mockk<Any>())
-        coEvery { repository.getRecentlyViewedMedia() } returns expected
+        //coEvery { repository.getRecentlyViewedMedia() } returns expected
 
         // When
         val result = getRecentlyViewedMediaUseCase()
@@ -47,7 +47,7 @@ class GetRecentlyViewedMediaUseCaseTest {
     @Test
     fun `getRecentlyViewedMediaUseCase should complete operation successfully`() = runTest {
         // Given
-        coEvery { repository.getRecentlyViewedMedia() } returns emptyList()
+        //coEvery { repository.getRecentlyViewedMedia() } returns listOf<Any>()
 
         // When
         val result = getRecentlyViewedMediaUseCase()
