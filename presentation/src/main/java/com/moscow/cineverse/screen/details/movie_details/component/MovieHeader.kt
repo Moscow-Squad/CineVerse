@@ -33,7 +33,7 @@ fun MovieHeader(
                 posterUrl = it.posterUrl,
                 title = it.title,
                 genres = it.genres.joinToString(", "),
-                rating = it.rating.toString(),
+                rating = it.rating,
                 duration = it.duration,
                 releaseDate = it.releaseDate,
                 type = stringResource(R.string.movie),

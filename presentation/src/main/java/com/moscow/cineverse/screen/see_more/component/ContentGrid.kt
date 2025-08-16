@@ -6,8 +6,8 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyGridState
@@ -22,7 +22,6 @@ import com.moscow.cineverse.common_ui_state.MediaItemUiState
 import com.moscow.cineverse.component.MediaPosterCard
 import com.moscow.cineverse.component.NoInternetScreen
 import com.moscow.cineverse.designSystem.component.indicator.MovieCircularProgressBar
-import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.screen.see_more.SeeMoreInteractionListener
 import com.moscow.cineverse.screen.see_more.SeeMoreUiState
 
@@ -62,23 +61,18 @@ fun <T : Any> ContentGrid(
         }
 
         if (contentList.loadState.append is LoadState.Loading && contentList.itemCount > 20) {
-            item {
+            item (span = {GridItemSpan(maxLineSpan)}) {
                 Box(
-                    modifier = Modifier.wrapContentSize(),
+                    modifier = Modifier.height(214.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    MovieCircularProgressBar(
-                        gradientColors = listOf(
-                            Theme.colors.brand.primary,
-                            Theme.colors.brand.tertiary
-                        )
-                    )
+                    MovieCircularProgressBar(Modifier.align(Alignment.Center))
                 }
             }
         }
 
         if (contentList.loadState.append is LoadState.Error) {
-            item(span = { GridItemSpan(maxLineSpan) }) {
+            item (span = { GridItemSpan(maxLineSpan) }) {
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()

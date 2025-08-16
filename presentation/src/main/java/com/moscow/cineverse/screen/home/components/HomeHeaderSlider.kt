@@ -36,6 +36,7 @@ import com.moscow.cineverse.common_ui_state.MediaItemUiState
 import com.moscow.cineverse.component.MediaPosterCard
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.utlis.doubleShadowDrop
+import com.moscow.cineverse.utlis.noRibbleClick
 import kotlinx.coroutines.delay
 import kotlin.math.absoluteValue
 
@@ -154,6 +155,7 @@ fun HomeHeaderSlider(
                             color = Theme.colors.shade.primary,
                             style = Theme.textStyle.body.medium.medium,
                             textAlign = TextAlign.Center,
+                            modifier = Modifier.noRibbleClick{ onSliderClick(items[page]) }
                         )
                         Text(
                             text = items[page].genres.joinToString(),

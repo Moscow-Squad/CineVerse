@@ -32,7 +32,6 @@ import com.moscow.cineverse.designSystem.component.blur.RemoteImagePlaceholder
 import com.moscow.cineverse.designSystem.component.wrapper.MovieText
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.image_viewer.component.SafeImageViewer
-import com.moscow.cineverse.mapper.formatDate
 import com.moscow.cinverse.presentation.R
 import kotlinx.datetime.LocalDate
 
@@ -138,7 +137,7 @@ fun SeasonCard(
                     icon = R.drawable.due_tone_calendar,
                     iconTint = Theme.colors.shade.secondary,
                     iconDescription = stringResource(R.string.air_date_icon),
-                    title = airDate.formatDate()
+                    title = airDate.year.toString()
                 )
             }
         }

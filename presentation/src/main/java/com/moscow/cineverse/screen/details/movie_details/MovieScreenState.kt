@@ -33,7 +33,7 @@ data class MovieScreenState(
         val title: String,
         val trailerUrl: String,
         val posterUrl: String,
-        val rating: Double,
+        val rating: String,
         val genres: List<String>,
         val releaseDate: LocalDate?,
         val duration: DurationUiState,
