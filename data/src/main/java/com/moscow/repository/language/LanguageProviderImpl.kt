@@ -29,7 +29,7 @@ class LanguageManagerImpl @Inject constructor(
         _currentLanguage.value = languageCode
     }
 
-    private fun getCurrentLanguage(): String = run {
+    override fun getCurrentLanguage(): String = run {
         val systemLanguage = LocaleManagerCompat.getSystemLocales(context)[0]
         val appLanguage = AppCompatDelegate.getApplicationLocales()[0] ?: systemLanguage
         appLanguage?.language ?: "en"
