@@ -13,9 +13,10 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import javax.inject.Named
 
 class ThemeProviderImpl @Inject constructor(
-    private val dataStore: DataStore<Preferences>
+    @Named("user_settings") private val dataStore: DataStore<Preferences>
 ) : ThemeProvider {
 
     private val _themeState = MutableStateFlow(DEFAULT_IS_DARK)

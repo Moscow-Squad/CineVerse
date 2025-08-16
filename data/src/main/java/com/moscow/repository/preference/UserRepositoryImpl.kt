@@ -12,9 +12,10 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
+import javax.inject.Named
 
 class UserRepositoryImpl @Inject constructor(
-    private val dataStore: DataStore<Preferences>
+    @Named("user_settings") private val dataStore: DataStore<Preferences>
 ) : UserRepository {
 
     override suspend fun saveUser(userType: UserType) {
