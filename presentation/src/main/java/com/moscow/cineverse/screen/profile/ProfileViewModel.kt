@@ -35,7 +35,7 @@ class ProfileViewModel @Inject constructor(
     }
 
     private fun getCurrentLanguage() {
-        updateState { it.copy(currentLanguage = languageProvider.getCurrentLanguage()) }
+        updateState { it.copy(currentLanguage = languageProvider.currentLanguage.value) }
     }
 
     private fun observeTheme() {
