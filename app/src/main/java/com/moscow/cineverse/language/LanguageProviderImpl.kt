@@ -6,11 +6,16 @@ import androidx.core.app.LocaleManagerCompat
 import androidx.core.os.LocaleListCompat
 import com.moscow.domain.service.language.LanguageProvider
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
 class LanguageManagerImpl @Inject constructor(
     @ApplicationContext private val context: Context
 ) : LanguageProvider {
+    private val _currentLanguage = MutableStateFlow(getCurrentLanguage())
+    override val currentLanguage: StateFlow<String> = _currentLanguage.asStateFlow()
 
     override suspend fun setLanguage(language: String) {
         val languageCode = when (language) {
@@ -20,6 +25,7 @@ class LanguageManagerImpl @Inject constructor(
         }
         val appLocale = LocaleListCompat.forLanguageTags(languageCode)
         AppCompatDelegate.setApplicationLocales(appLocale)
+        _currentLanguage.value = languageCode
     }
 
     override fun getCurrentLanguage(): String = run {

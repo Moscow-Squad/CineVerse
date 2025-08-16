@@ -12,6 +12,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -26,8 +28,9 @@ fun SocialMediaPill(
     iconRes: Int,
     url: String?,
     onClick: (String) -> Unit,
-    modifier: Modifier = Modifier
-) {
+    modifier: Modifier = Modifier,
+    iconColor:Color = Color.Unspecified,
+    ) {
     val (backgroundColor, textColor) = when (name.lowercase()) {
         "youtube" -> Theme.colors.shade.quinary to Theme.colors.shade.primary
         "facebook" -> Theme.colors.shade.quinary to Theme.colors.shade.primary
@@ -49,7 +52,12 @@ fun SocialMediaPill(
         Image(
             painter = painterResource(id = iconRes),
             modifier = Modifier.size(16.dp),
-            contentDescription = "$name icon"
+            contentDescription = "$name icon",
+            colorFilter = if (iconColor != Color.Unspecified) {
+                ColorFilter.tint(iconColor)
+            } else {
+                null
+            }
         )
 
         Text(

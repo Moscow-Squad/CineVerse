@@ -6,6 +6,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import com.moscow.cineverse.designSystem.component.bottomsheet.CineVerseBottomSheet
 import com.moscow.cineverse.designSystem.component.card.MessageInfoCard
+import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cinverse.presentation.R
 
 @Composable
@@ -40,6 +41,7 @@ fun EditProfileBottomSheet(
                 secondButtonText = if (isGuest) stringResource(R.string.login) else stringResource(
                     R.string.go_to_website
                 ),
+                descriptionTextStyle = Theme.textStyle.body.small.medium,
                 onClickSecondButton = if (isGuest) onLoginClick else onEditProfile,
             )
         }

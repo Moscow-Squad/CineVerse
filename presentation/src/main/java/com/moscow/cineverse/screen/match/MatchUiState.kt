@@ -4,8 +4,6 @@ import androidx.annotation.DrawableRes
 import com.moscow.cineverse.screen.details.movie_details.MovieScreenState
 import com.moscow.cineverse.screen.explore.ExploreScreenState
 import com.moscow.cinverse.presentation.R
-import kotlinx.datetime.LocalDate
-import kotlin.collections.filter
 
 data class MatchUiState(
     val isLoading: Boolean = false,
@@ -77,17 +75,14 @@ private fun getFakeMovieTypes() = listOf(
     QuestionUiState(
         id = 1,
         name = "Recent",
-        iconResource = R.drawable.cine_verse_logo_splash
     ),
     QuestionUiState(
         id = 2,
         name = "Classic",
-        iconResource = com.moscow.cineverse.design_system.R.drawable.colored_cineverse_logo
     ),
     QuestionUiState(
         id = 3,
         name = "Both",
-        iconResource = R.drawable.folder_icon
     )
 )
 

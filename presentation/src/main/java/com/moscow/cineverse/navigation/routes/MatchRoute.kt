@@ -11,7 +11,7 @@ import kotlinx.serialization.Serializable
 object MatchRoute : AppDestination
 
 fun NavGraphBuilder.matchRoute(navController: NavHostController, onBottomNavVisibilityChange: (Boolean) -> Unit) {
-    composable<MatchRoute> {
+    composable<MatchRoute> { entry ->
         MatchScreen(
             navigateToMovieDetails = { movieId -> navController.navigate(MovieDetailsRoute(movieId)) },
             navigateToCollectionsBottomSheet = { id ->
@@ -21,7 +21,7 @@ fun NavGraphBuilder.matchRoute(navController: NavHostController, onBottomNavVisi
                     )
                 )
             },
-            onBottomNavVisibilityChange = onBottomNavVisibilityChange
+            onBottomNavVisibilityChange = onBottomNavVisibilityChange,
         )
     }
 }
