@@ -1,6 +1,6 @@
 package com.moscow.cineverse.screen.profile
 
-import com.moscow.cineverse.language.AppLanguage
+import com.moscow.domain.model.language.AppLanguage
 
 
 data class ProfileUIState(

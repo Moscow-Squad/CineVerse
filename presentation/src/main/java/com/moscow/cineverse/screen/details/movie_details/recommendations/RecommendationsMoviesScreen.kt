@@ -1,6 +1,13 @@
-package com.moscow.cineverse.screen.movie_details.recommendations
+package com.moscow.cineverse.screen.details.movie_details.recommendations
 
+import android.annotation.SuppressLint
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionLayout
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -29,15 +36,9 @@ import com.moscow.cineverse.component.NoInternetScreen
 import com.moscow.cineverse.designSystem.component.app_bar.MovieAppBar
 import com.moscow.cineverse.designSystem.component.indicator.MovieCircularProgressBar
 import com.moscow.cineverse.designSystem.component.wrapper.MovieScaffold
-import com.moscow.cineverse.mapper.toMediaItemUi
-import com.moscow.cineverse.screen.details.movie_details.recommendations.RecommendationMoviesEffect
-import com.moscow.cineverse.screen.details.movie_details.recommendations.RecommendationsMoviesInteractionListener
-import com.moscow.cineverse.screen.details.movie_details.recommendations.RecommendationsMoviesState
-import com.moscow.cineverse.screen.details.movie_details.recommendations.RecommendationsMoviesViewModel
 import com.moscow.cineverse.screen.explore.component.ViewModeToggleButton
 import com.moscow.cineverse.utlis.ViewMode
 import com.moscow.cinverse.presentation.R
-import com.moscow.domain.model.Movie
 
 @Composable
 fun RecommendationMoviesScreen(
@@ -75,6 +76,7 @@ fun RecommendationMoviesScreen(
 }
 
 
+@SuppressLint("UnusedContentLambdaTargetStateParameter")
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun RecommendationMoviesContent(
@@ -84,82 +86,97 @@ fun RecommendationMoviesContent(
     modifier: Modifier = Modifier,
     title: String
 ) {
-    MovieScaffold {
-        Box(modifier = modifier.fillMaxSize()) {
-            if (recommendations.loadState.refresh is LoadState.Loading){
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    MovieCircularProgressBar()
-                }
-            }
-            else if(recommendations.loadState.refresh is LoadState.Error){
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    NoInternetScreen(onRetry = { recommendations.retry() })
-                }
-            }else{
-                Column(modifier = Modifier.fillMaxSize()) {
-                    MovieAppBar(
-                        caption = stringResource(R.string.because_you_watched),
-                        title = title,
-                        backButtonClick = interactionListener::backButtonClick,
-                    )
-                    LazyVerticalGrid(
-                        columns = if (uiState.viewMode == ViewMode.GRID)
-                            GridCells.Fixed(2)
-                        else
-                            GridCells.Fixed(1),
-                        contentPadding = PaddingValues(
-                            vertical = 16.dp,
-                            horizontal = 16.dp
-                        ),
-                        verticalArrangement = Arrangement.spacedBy(16.dp),
-                        horizontalArrangement = Arrangement.spacedBy(12.dp),
-                        modifier = Modifier.fillMaxSize()
-                    ) {
-                        items(recommendations.itemCount)
-                        { index ->
-                            val recommendation = recommendations[index]
-                            if (recommendation != null) {
-                                MediaPosterCard(
-                                    mediaItem = recommendation,
-                                    viewMode = uiState.viewMode,
-                                    onMediaItemClick = interactionListener::onMovieClick,
-                                    enableBlur = uiState.enableBlur,
-                                )
-                            }
+    MovieScaffold(
+        movieAppBar = {
+            MovieAppBar(
+                caption = stringResource(R.string.because_you_watched),
+                title = title,
+                backButtonClick = interactionListener::backButtonClick,
+            )
+        }
+    ) {
+        SharedTransitionLayout {
+            AnimatedContent(
+                targetState = uiState.viewMode,
+                transitionSpec = {
+                    fadeIn(tween(300)) togetherWith fadeOut(tween(300))
+                },
+                label = "view_mode_transition"
+            ) {
+                Box(modifier = modifier.fillMaxSize()) {
+                    if (recommendations.loadState.refresh is LoadState.Loading){
+                        Box(
+                            modifier = Modifier.fillMaxSize(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            MovieCircularProgressBar()
                         }
-                        if (recommendations.loadState.append is LoadState.Loading) {
-                            item(span = {GridItemSpan(maxLineSpan)}){
-                                Box(
-                                    modifier = Modifier.height(214.dp),
-                                    contentAlignment = Alignment.Center
-                                ) {
-                                    MovieCircularProgressBar(Modifier)
+                    }
+                    else if(recommendations.loadState.refresh is LoadState.Error){
+                        Box(
+                            modifier = Modifier.fillMaxSize(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            NoInternetScreen(onRetry = { recommendations.retry() })
+                        }
+                    }else{
+                        Column(modifier = Modifier.fillMaxSize()) {
+                            LazyVerticalGrid(
+                                columns = if (uiState.viewMode == ViewMode.GRID)
+                                    GridCells.Fixed(2)
+                                else
+                                    GridCells.Fixed(1),
+                                contentPadding = PaddingValues(
+                                    vertical = 16.dp,
+                                    horizontal = 16.dp
+                                ),
+                                verticalArrangement = Arrangement.spacedBy(16.dp),
+                                horizontalArrangement = Arrangement.spacedBy(12.dp),
+                                modifier = Modifier.fillMaxSize()
+                            ) {
+                                items(recommendations.itemCount)
+                                { index ->
+                                    val recommendation = recommendations[index]
+                                    if (recommendation != null) {
+                                        MediaPosterCard(
+                                            mediaItem = recommendation,
+                                            viewMode = uiState.viewMode,
+                                            onMediaItemClick = interactionListener::onMovieClick,
+                                            enableBlur = uiState.enableBlur,
+                                            sharedTransitionScope = this@SharedTransitionLayout,
+                                            animatedVisibilityScope = this@AnimatedContent
+                                        )
+                                    }
+                                }
+                                if (recommendations.loadState.append is LoadState.Loading) {
+                                    item(span = {GridItemSpan(maxLineSpan)}){
+                                        Box(
+                                            modifier = Modifier.height(214.dp),
+                                            contentAlignment = Alignment.Center
+                                        ) {
+                                            MovieCircularProgressBar(Modifier)
+                                        }
+                                    }
+                                }
+                                if (recommendations.loadState.append is LoadState.Error) {
+                                    item(span = { GridItemSpan(maxLineSpan) }) {
+                                        NoInternetScreen(
+                                            modifier = Modifier.align(Alignment.CenterHorizontally),
+                                            onRetry = { recommendations.retry() }
+                                        )
+                                    }
                                 }
                             }
                         }
-                        if (recommendations.loadState.append is LoadState.Error) {
-                            item(span = { GridItemSpan(maxLineSpan) }) {
-                                NoInternetScreen(
-                                    modifier = Modifier.align(Alignment.CenterHorizontally),
-                                    onRetry = { recommendations.retry() }
-                                )
-                            }
-                        }
+                        ViewModeToggleButton(
+                            selectedMode = uiState.viewMode,
+                            onModeSelected = interactionListener::onViewModeChanged,
+                            modifier = Modifier
+                                .align(Alignment.BottomEnd)
+                                .padding(16.dp)
+                        )
                     }
                 }
-                ViewModeToggleButton(
-                    selectedMode = uiState.viewMode,
-                    onModeSelected = interactionListener::onViewModeChanged,
-                    modifier = Modifier
-                        .align(Alignment.BottomEnd)
-                        .padding(16.dp)
-                )
             }
         }
     }

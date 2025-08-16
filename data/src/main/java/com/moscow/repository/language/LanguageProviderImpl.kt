@@ -1,9 +1,10 @@
-package com.moscow.cineverse.language
+package com.moscow.repository.language
 
 import android.content.Context
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.app.LocaleManagerCompat
 import androidx.core.os.LocaleListCompat
+import com.moscow.domain.model.language.AppLanguage
 import com.moscow.domain.service.language.LanguageProvider
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow

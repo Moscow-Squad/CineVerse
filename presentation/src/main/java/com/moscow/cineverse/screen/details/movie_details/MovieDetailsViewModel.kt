@@ -1,6 +1,5 @@
 package com.moscow.cineverse.screen.details.movie_details
 
-import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.moscow.cineverse.base.BaseViewModel
@@ -142,8 +141,6 @@ class MovieDetailsViewModel @Inject constructor(
     }
 
     private fun onGetReviewSuccess(reviews: List<Review>) {
-        Log.e("djkdjjd", "onGetReviewSuccess: $reviews")
-        Log.e("djkdjjd", "onGetReviewSuccess: ${reviews.map { it.toUi() }}")
         updateState { state ->
             state.copy(
                 reviewsFlow = reviews.take(3).map { it.toUi() }
@@ -170,7 +167,6 @@ class MovieDetailsViewModel @Inject constructor(
     private fun onGetCreditsSuccess(creditsInfo: CreditsInfo) {
         updateState { state ->
             state.copy(
-                isLoading = false,
                 starCast = creditsInfo.cast.map { it.toUi() },
                 characters = creditsInfo.crew.filter { it.job == "Characters" }.map { it.name },
                 director = creditsInfo.crew.filter {

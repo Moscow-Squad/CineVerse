@@ -2,15 +2,16 @@ package com.moscow.repository.preference
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.booleanPreferencesKey
+import androidx.datastore.preferences.core.edit
 import com.moscow.domain.repository.OnboardingRepository
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
+import javax.inject.Named
 
 class OnboardingRepositoryImpl @Inject constructor(
-    private val dataStore: DataStore<Preferences>
+    @Named("onboarding") private val dataStore: DataStore<Preferences>
 ) : OnboardingRepository {
 
     override suspend fun isOnBoardingCompleted(): Boolean {

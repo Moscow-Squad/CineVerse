@@ -22,7 +22,7 @@ fun DurationUiState.formatDuration(): String {
 
 fun LocalDate.formatDate(): String {
     return try {
-        val formatter = DateTimeFormatter.ofPattern("MMM dd, yyyy", Locale.getDefault())
+        val formatter = DateTimeFormatter.ofPattern("yyyy, MMM dd", Locale.getDefault())
         val dateString = this.toJavaLocalDate().format(formatter)
         dateString
     } catch (_: Exception) {

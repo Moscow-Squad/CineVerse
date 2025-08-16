@@ -1,6 +1,5 @@
 package com.moscow.cineverse.screen.details.series_details
 
-import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.moscow.cineverse.base.BaseViewModel
@@ -139,7 +138,6 @@ class SeriesDetailsViewModel @Inject constructor(
     private fun onSuccessLoadSeriesCredits(credits: CreditsInfo) {
         updateState {
             it.copy(
-                isLoading = false,
                 starCast = credits.cast.map { actor -> actor.toUi() },
                 characters = credits.crew.filter { it.job == "Characters" }.take(3).map { it.name },
                 director = credits.crew.filter {
@@ -160,8 +158,6 @@ class SeriesDetailsViewModel @Inject constructor(
         launchWithResult(
             action = { getReviewsPageUseCase(seriesId, page, isMovie = false) },
             onSuccess = { reviews ->
-                Log.e("jkvjvnj", "onSuccessLoadReviews: $reviews")
-
                 updateState { it.copy(reviews = reviews.map { it.toUi() }) }
             },
             onError = { error ->

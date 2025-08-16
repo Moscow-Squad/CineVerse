@@ -146,13 +146,20 @@ fun MainDetails(
                 }
             }
         }
+        if (
+            !socialMediaLinks.youtube.isNullOrBlank()   ||
+            !socialMediaLinks.facebook.isNullOrBlank()  ||
+            !socialMediaLinks.instagram.isNullOrBlank() ||
+            !socialMediaLinks.twitter.isNullOrBlank()   ||
+            !socialMediaLinks.tiktok.isNullOrBlank()
+        )
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 16.dp)
                 .horizontalScroll(rememberScrollState()),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
+            horizontalArrangement = Arrangement.spacedBy(8.dp,Alignment.CenterHorizontally)
         ) {
             Spacer(modifier.width(8.dp))
 
@@ -188,6 +195,7 @@ fun MainDetails(
                     name = stringResource(R.string.twitter),
                     iconRes = R.drawable.colored_x,
                     url = socialMediaLinks.twitter,
+                    iconColor = Theme.colors.shade.primary,
                     onClick = { onSocialMediaClick("twitter", it) },
                 )
             }

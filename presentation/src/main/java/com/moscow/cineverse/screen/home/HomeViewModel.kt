@@ -1,6 +1,5 @@
 package com.moscow.cineverse.screen.home
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.cineverse.base.handleException
@@ -14,6 +13,7 @@ import com.moscow.domain.model.Movie
 import com.moscow.domain.model.Series
 import com.moscow.domain.model.UserType
 import com.moscow.domain.service.blur.BlurProvider
+import com.moscow.domain.service.language.LanguageProvider
 import com.moscow.domain.usecase.collection.GetUserCollectionsUseCase
 import com.moscow.domain.usecase.genre.GenreUseCase
 import com.moscow.domain.usecase.movie.GetMatchesYourVibesMoviesUseCase
@@ -26,6 +26,7 @@ import com.moscow.domain.usecase.series.GetTopRatedTVShowsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -41,9 +42,15 @@ class HomeViewModel @Inject constructor(
     private val getRecentlyViewedMediaUseCase: GetRecentlyViewedMediaUseCase,
     private val genreUseCase: GenreUseCase,
     private val blurProvider: BlurProvider,
+    private val languageProvider: LanguageProvider,
 ) : BaseViewModel<HomeScreenState, HomeEffect>(HomeScreenState()), HomeInteractionListener {
 
     init {
+        viewModelScope.launch {
+            val lang = languageProvider.currentLanguage.first()
+            updateState { it.copy(cashLanguage = lang) }
+        }
+        observeLanguage()
         getGenres()
         observeBlur()
     }
@@ -69,6 +76,17 @@ class HomeViewModel @Inject constructor(
         )
     }
 
+    private fun observeLanguage() {
+        viewModelScope.launch {
+            languageProvider.currentLanguage.collect { currentLanguage ->
+                if (uiState.value.cashLanguage != currentLanguage) {
+                    updateState { it.copy(cashLanguage = currentLanguage) }
+                    loadHomeData(refresh = true)
+                }
+            }
+        }
+    }
+
     private fun observeBlur() {
         viewModelScope.launch {
             blurProvider.blurFlow.collect { enableBlur ->
@@ -77,17 +95,17 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private fun loadHomeData() {
+    private fun loadHomeData(refresh: Boolean = false) {
         updateState { it.copy(isLoading = true, error = null) }
         viewModelScope.launch {
             try {
                 val jobs = listOf(
                     async { getUserDetails() },
-                    async { fetchTrendingMovies() },
-                    async { fetchRecentlyReleasedMovies() },
-                    async { fetchUpcomingMovies() },
-                    async { fetchTopRatedTVShows() },
-                    async { fetchMatchesYourVibesMovies() }
+                    async { fetchTrendingMovies(refresh) },
+                    async { fetchRecentlyReleasedMovies(refresh) },
+                    async { fetchUpcomingMovies(refresh) },
+                    async { fetchTopRatedTVShows(refresh) },
+                    async { fetchMatchesYourVibesMovies(refresh) }
                 )
                 jobs.awaitAll()
                 updateState { it.copy(isLoading = false) }
@@ -146,8 +164,6 @@ class HomeViewModel @Inject constructor(
                                else -> MediaItemUiState()
                            }
                         },
-                        isLoading = false,
-                        error = null
                     )
                 }
             },
@@ -155,8 +171,8 @@ class HomeViewModel @Inject constructor(
         )
     }
 
-    private suspend fun fetchTrendingMovies() {
-        val res = getTrendingMoviesUseCase()
+    private suspend fun fetchTrendingMovies(refresh: Boolean = false) {
+        val res = getTrendingMoviesUseCase(forceRefresh = refresh)
         onFetchTrendingMoviesSuccess(res)
     }
 
@@ -168,8 +184,8 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private suspend fun fetchRecentlyReleasedMovies() {
-        val res = getRecentlyReleasedMoviesUseCase(page = 1)
+    private suspend fun fetchRecentlyReleasedMovies(refresh: Boolean = false) {
+        val res = getRecentlyReleasedMoviesUseCase(forceRefresh = refresh, page = 1)
         onFetchRecentlyReleasedMoviesSuccess(res)
     }
 
@@ -181,8 +197,8 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private suspend fun fetchUpcomingMovies() {
-        val res = getUpcomingMoviesUseCase(page = 1)
+    private suspend fun fetchUpcomingMovies(refresh: Boolean = false) {
+        val res = getUpcomingMoviesUseCase(forceRefresh = refresh, page = 1)
         onFetchUpcomingMoviesSuccess(res)
     }
 
@@ -194,13 +210,12 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private suspend fun fetchTopRatedTVShows() {
-        val res = getTopRatedTVShowsUseCase(page = 1)
+    private suspend fun fetchTopRatedTVShows(refresh: Boolean = false) {
+        val res = getTopRatedTVShowsUseCase(forceRefresh = refresh, page = 1)
         onFetchTopRatedTVShowsSuccess(res)
     }
 
     private fun onFetchTopRatedTVShowsSuccess(tvShows: List<Series>) {
-        Log.e("jdneen", "onFetchTopRatedTVShowsSuccess: ${tvShows[0]}")
         updateState {
             it.copy(
                 topRatedTvShows = tvShows.toUi(),
@@ -208,8 +223,12 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private suspend fun fetchMatchesYourVibesMovies() {
-        val res = getMatchesYourVibesMoviesUseCase(genreId = 28, page = 1)
+    private suspend fun fetchMatchesYourVibesMovies(refresh: Boolean = false) {
+        val res = getMatchesYourVibesMoviesUseCase(
+            forceRefresh = refresh,
+            genreId = 28,
+            page = 1
+        )
         onFetchMatchesYourVibesMoviesSuccess(res)
     }
 
@@ -226,7 +245,6 @@ class HomeViewModel @Inject constructor(
        if (mediaItemUiState.mediaType == MediaType.Movie)
             sendEvent(HomeEffect.MovieClicked(mediaItemUiState.id))
        else {
-           Log.e("hdhdhhd", "onMediaItemClicked from home: ${mediaItemUiState.id}")
            sendEvent(HomeEffect.SeriesClicked(mediaItemUiState.id))
        }
     }

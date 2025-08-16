@@ -30,6 +30,7 @@ fun LogoutBottomSheet(
                 onClickFirstButton = onDismiss,
                 secondButtonText = stringResource(R.string.logout),
                 onClickSecondButton = onLogoutClick,
+                descriptionTextStyle = Theme.textStyle.body.small.medium,
                 iconColor = Theme.colors.additional.primary.red,
                 secondButtonBackground = Theme.colors.additional.primary.red,
                 iconCircleBackgroundColor = Theme.colors.additional.secondary.red

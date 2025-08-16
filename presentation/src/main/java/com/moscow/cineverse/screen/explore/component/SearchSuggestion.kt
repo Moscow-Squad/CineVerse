@@ -38,7 +38,6 @@ fun SearchSuggestion(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .padding(top = 56.dp)
             .background(color = Theme.colors.background.screen)
             .padding(horizontal = 16.dp)
             .verticalScroll(rememberScrollState())

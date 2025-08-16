@@ -11,12 +11,11 @@ import com.moscow.cineverse.designSystem.radius.CineVerseRadius
 import com.moscow.cineverse.designSystem.radius.LocalCineVerseRadius
 import com.moscow.cineverse.designSystem.typography.DefaultTextStyle
 import com.moscow.cineverse.designSystem.typography.LocalCineVerseTextStyle
-import com.moscow.cineverse.language.AppLanguage
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CineVerseTheme(
-    language: String = AppLanguage.English.name,
+    language: String = "en",
     isDark: Boolean = false,
     content: @Composable () -> Unit
 ) {
