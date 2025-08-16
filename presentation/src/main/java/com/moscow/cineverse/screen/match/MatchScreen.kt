@@ -3,6 +3,7 @@ package com.moscow.cineverse.screen.match
 import android.content.Intent
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -30,7 +31,11 @@ fun MatchScreen(
         val showBottomNav = state.currentPage == MatchPages.StartPage
         onBottomNavVisibilityChange(showBottomNav)
     }
-
+    DisposableEffect(Unit) {
+        onDispose {
+            onBottomNavVisibilityChange(true)
+        }
+    }
     LaunchedEffect(Unit) {
         viewModel.uiEffect.collect { effect ->
             when (effect) {

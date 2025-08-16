@@ -57,7 +57,8 @@ fun MatchQuestionsPageContent(
         Column(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
-                .padding(horizontal = 16.dp),
+                .padding(horizontal = 16.dp)
+                .padding(bottom = 16.dp),
             verticalArrangement = Arrangement.spacedBy(32.dp)
         ) {
             AnimatedContent(

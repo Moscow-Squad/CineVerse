@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
@@ -24,9 +23,10 @@ import com.moscow.cineverse.designSystem.component.app_bar.MovieAppBar
 import com.moscow.cineverse.designSystem.component.indicator.MovieCircularProgressBar
 import com.moscow.cineverse.designSystem.component.wrapper.MovieScaffold
 import com.moscow.cineverse.designSystem.theme.Theme
-import com.moscow.cineverse.mapper.formatReviewDate
+import com.moscow.cineverse.mapper.formatDate
+
 import com.moscow.cineverse.mapper.toUi
-import com.moscow.cineverse.screen.movieSeriesDetails.MovieReviewCard
+import com.moscow.cineverse.screen.details.common.MovieReviewCard
 import com.moscow.cinverse.presentation.R
 import com.moscow.domain.model.Review
 
@@ -81,7 +81,7 @@ fun ReviewsContent(
                             username = review.username,
                             reviewText = review.reviewContent,
                             rating = review.rate,
-                            date = if (review.date != null) formatReviewDate(review.date.toString()) else "",
+                            date = if (review.date != null) review.date.formatDate() else "",
                             avatar = if (review.userImageUrl.isEmpty()) null else rememberAsyncImagePainter(
                                 model = review.userImageUrl
                             ),

@@ -219,4 +219,6 @@
     <string name="content_preferences">تفضيلات المحتوى</string>
     <string name="tip_swipe_left_to_remove_movies_from_your_history">معلومة: اسحب إلى اليسار لمسح الفيلم من سجل.</string>
     <string name="tap_a_movie_to_see_details_or_update_your_rating">اضغط على فيلم لرؤية التفاصيل أو تحديث تقييمك.</string>
+    <string name="link_not_available">اللينك غير متوفر</string>
+
 </resources>

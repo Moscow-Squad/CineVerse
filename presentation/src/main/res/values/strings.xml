@@ -94,7 +94,6 @@
     <string name="twitter">Twitter</string>
     <string name="tik_tok">Tik Tok</string>
     <string name="born_on">Born on %1$s</string>
-    <string name="sensitive_content">Sensitive Content</string>
     <string name="all">All</string>
     <string name="search">Search…</string>
     <string name="search_can_t_be_empty_1">Search can\'t be empty!</string>
@@ -218,4 +217,6 @@
     <string name="did_you_watch_it">Did You Watch it?</string>
     <string name="tip_swipe_left_to_remove_movies_from_your_history">Tip: Swipe left to remove movies from your history.</string>
     <string name="tap_a_movie_to_see_details_or_update_your_rating">Tap a movie to see details or update your rating.</string>
+    <string name="link_not_available">Link not available</string>
+
 </resources>

@@ -2,6 +2,7 @@ package com.moscow.domain.usecase.login
 
 import com.moscow.domain.repository.auth.LoginRepository
 import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.BeforeEach
@@ -20,17 +21,20 @@ class LoginWithUsernameAndPasswordUseCaseTest {
     }
 
     @Test
-    fun `invoke should return login result`() = runTest {
-        // Given
-//        val loginData = LoginData(username = "ahmed", password = "securePass123")
-//        val expectedResult = true
-//
-//        coEvery { loginRepository.loginWithUsernameAndPassword(loginData) } returns expectedResult
-//
-//        // When
-//        val result = useCase(loginData)
+    fun `invoke should return true when login is successful`() = runTest {
+        val username = "ahmed"
+        val password = "securePass123"
+        val expectedResult = true
 
-        // Then
-//        assertEquals(expectedResult, result)
+        coEvery {
+            loginRepository.loginWithUsernameAndPassword(
+                username, password
+            )
+        } returns expectedResult
+
+        val result = useCase(username, password)
+
+        assertEquals(expectedResult, result)
+        coVerify(exactly = 1) { loginRepository.loginWithUsernameAndPassword(username, password) }
     }
 }

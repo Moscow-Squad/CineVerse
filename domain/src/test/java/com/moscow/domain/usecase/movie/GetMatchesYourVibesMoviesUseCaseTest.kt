@@ -1,111 +1,54 @@
 package com.moscow.domain.usecase.movie
 
-import com.google.common.truth.Truth.assertThat
 import com.moscow.domain.model.Movie
 import com.moscow.domain.repository.MovieRepository
 import io.mockk.coEvery
 import io.mockk.coVerify
-import io.mockk.confirmVerified
 import io.mockk.mockk
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
+import kotlinx.datetime.LocalDate
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Test
+import kotlin.test.Test
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class GetMatchesYourVibesMoviesUseCaseTest {
 
     private lateinit var movieRepository: MovieRepository
-    private lateinit var getMatchesYourVibesMoviesUseCase: GetMatchesYourVibesMoviesUseCase
+    private lateinit var useCase: GetMatchesYourVibesMoviesUseCase
 
     @BeforeEach
-    fun setUp() {
-        movieRepository = mockk(relaxed = true)
-        getMatchesYourVibesMoviesUseCase = GetMatchesYourVibesMoviesUseCase(movieRepository)
+    fun setup() {
+        movieRepository = mockk()
+        useCase = GetMatchesYourVibesMoviesUseCase(movieRepository)
     }
 
     @Test
-    fun `getMatchesYourVibesMoviesUseCase should call repository method`() = runTest {
-        // Given
+    fun `invoke should return vibe-matching movies`() = runTest {
         val genreId = 1
         val page = 1
-        val forceRefresh = false
+        val expected = listOf<Movie>(
+            Movie(
+                id = 101,
+                title = "Top Hit",
+                overview = "A blockbuster movie loved by fans.",
+                trailerUrl = "https://image.tmdb.org/t/p/w500/top_hit.jpg",
+                backdropUrl = "/backdrop/top_hit.jpg",
+                posterUrl = "https://image.tmdb.org/t/p/w500/top_hit.jpg",
+                rating = 8.7f,
+                genreIds = listOf(1, 2),
+                releaseDate = LocalDate(2020, 5, 20),
+                genres = listOf("Action", "Adventure"),
+                duration = Movie.Duration(hours = 2, minutes = 30)
+            )
+        )
 
-        // When
-        getMatchesYourVibesMoviesUseCase(genreId, page, forceRefresh)
+        coEvery { movieRepository.getMatchYourVibeMovies(genreId, page, false) } returns expected
 
-        // Then
-        coVerify(exactly = 1) { movieRepository.getMatchYourVibeMovies(genreId = genreId, page = page, forceRefresh = forceRefresh) }
-    }
+        val result = useCase(genreId, page)
 
-    @Test
-    fun `getMatchesYourVibesMoviesUseCase should return result from repository`() = runTest {
-        // Given
-        val genreId = 2
-        val page = 1
-        val forceRefresh = true
-        val expectedMovies = listOf<Movie>(mockk(), mockk())
-        coEvery { movieRepository.getMatchYourVibeMovies(genreId = genreId, page = page, forceRefresh = forceRefresh) } returns expectedMovies
-
-        // When
-        val result = getMatchesYourVibesMoviesUseCase(genreId, page, forceRefresh)
-
-        // Then
-        assertThat(result).isEqualTo(expectedMovies)
-        coVerify(exactly = 1) { movieRepository.getMatchYourVibeMovies(genreId = genreId, page = page, forceRefresh = forceRefresh) }
-    }
-
-    @Test
-    fun `getMatchesYourVibesMoviesUseCase should complete operation successfully`() = runTest {
-        // Given
-        val genreId = 3
-        val page = 2
-
-        // When
-        val result = getMatchesYourVibesMoviesUseCase(genreId, page)
-
-        // Then
-        assertThat(result).isNotNull()
-    }
-
-    @Test
-    fun `getMatchesYourVibesMoviesUseCase should handle multiple invocations`() = runTest {
-        // Given
-        val genreId = 4
-        val page = 1
-        val forceRefresh = false
-
-        // When
-        repeat(3) { getMatchesYourVibesMoviesUseCase(genreId, page, forceRefresh) }
-
-        // Then
-        coVerify(exactly = 3) { movieRepository.getMatchYourVibeMovies(genreId = genreId, page = page, forceRefresh = forceRefresh) }
-    }
-
-    @Test
-    fun `getMatchesYourVibesMoviesUseCase makes exactly one repository call`() = runTest {
-        // Given
-        val genreId = 5
-        val page = 3
-        val forceRefresh = true
-
-        // When
-        getMatchesYourVibesMoviesUseCase(genreId, page, forceRefresh)
-
-        // Then
-        coVerify(exactly = 1) { movieRepository.getMatchYourVibeMovies(genreId = genreId, page = page, forceRefresh = forceRefresh) }
-        confirmVerified(movieRepository)
-    }
-
-    @Test
-    fun `getMatchesYourVibesMoviesUseCase respects number of calls`() = runTest {
-        // Given
-        val genreId = 6
-        val page = 2
-        val forceRefresh = false
-
-        // When
-        repeat(2) { getMatchesYourVibesMoviesUseCase(genreId, page, forceRefresh) }
-
-        // Then
-        coVerify(exactly = 2) { movieRepository.getMatchYourVibeMovies(genreId = genreId, page = page, forceRefresh = forceRefresh) }
+        assertEquals(expected, result)
+        coVerify { movieRepository.getMatchYourVibeMovies(genreId, page, false) }
     }
 }

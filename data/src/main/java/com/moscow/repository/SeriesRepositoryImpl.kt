@@ -95,7 +95,7 @@ class SeriesRepositoryImpl @Inject constructor(
         seriesRemoteDataSource.getSeriesReviews(
             id,
             page
-        ).results?.mapNotNull { runCatching { it.toDomain() }.getOrNull() }
+        ).results?.mapNotNull { it.toDomain() }
             ?: emptyList()
 
     override suspend fun getSeriesCreditsDetails(id: Int): CreditsInfo =

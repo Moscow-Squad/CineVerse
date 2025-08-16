@@ -1,12 +1,12 @@
 package com.moscow.data_source.remote
 
-import com.moscow.remote.dto.CreditsDetailsDto
-import com.moscow.remote.dto.MovieDto
-import com.moscow.remote.dto.details.MediaTrailersDto
-import com.moscow.remote.dto.details.MovieDetailDto
-import com.moscow.remote.dto.rating.UserRatingResponse
-import com.moscow.remote.dto.rating.movie.RatedMovieDto
-import com.moscow.remote.dto.review.RatingRequestDto
+import com.moscow.remote.dto.media_item.common.CreditsDetailsDto
+import com.moscow.remote.dto.media_item.movie.MovieDto
+import com.moscow.remote.dto.media_item.common.MediaTrailersDto
+import com.moscow.remote.dto.media_item.movie.MovieDetailDto
+import com.moscow.remote.dto.rating.response.UserRatingResponse
+import com.moscow.remote.dto.rating.response.RatedMovieDto
+import com.moscow.remote.dto.rating.request.RatingRequestDto
 import com.moscow.remote.dto.review.ReviewDto
 import com.moscow.utils.ApiResponse
 
@@ -22,6 +22,11 @@ interface MovieRemoteDataSource {
     suspend fun getMoviesRecommendations(id: Int, page: Int): ApiResponse<MovieDto>
     suspend fun getMoviesByGenreId(genreId: Int, page: Int): ApiResponse<MovieDto>
     suspend fun getMovieTrailer(id: Int): MediaTrailersDto
+    suspend fun getTrendingMovies(): ApiResponse<MovieDto>
+    suspend fun getUpComingMovies(page: Int): ApiResponse<MovieDto>
+    suspend fun getRecentlyReleasedMovies(page: Int): ApiResponse<MovieDto>
+    suspend fun getMatchYourVibeMovies(genreId: Int, page: Int): ApiResponse<MovieDto>
+
     suspend fun getMatchedMovies(
         page: Int,
         genres: String?,

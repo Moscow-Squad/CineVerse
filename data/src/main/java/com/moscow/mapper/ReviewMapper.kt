@@ -10,9 +10,9 @@ fun ReviewDto.toDomain(): Review {
         id = this.id ?: "",
         author = this.author ?: "",
         username = this.authorDetailsDto?.username ?: "",
-        avatarPath = if(this.authorDetailsDto?.avatarPath.isNullOrEmpty()) "" else IMAGES_URL + this.authorDetailsDto.avatarPath ,
+        avatarPath = if(this.authorDetailsDto?.avatarPath.isNullOrBlank()) "" else "$IMAGES_URL${authorDetailsDto.avatarPath}" ,
         rating = this.authorDetailsDto?.rating?.toFloat()?:0.0f,
         content = this.content ?: "",
-        createdAt = if (!createdAt.isNullOrBlank()) LocalDate.parse(createdAt) else null,
+        createdAt = if (!createdAt.isNullOrBlank()) LocalDate.parse(createdAt.split('T')[0]) else null,
     )
 }

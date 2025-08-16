@@ -24,7 +24,7 @@ import androidx.paging.compose.itemKey
 import com.moscow.cineverse.common_ui_state.MediaItemUiState
 import com.moscow.cineverse.component.EmptyCollection
 import com.moscow.cineverse.component.ErrorContent
-import com.moscow.cineverse.component.MoviePosterCard
+import com.moscow.cineverse.component.MediaPosterCard
 import com.moscow.cineverse.component.NoInternetScreen
 import com.moscow.cineverse.component.SwipeToDelete
 import com.moscow.cineverse.designSystem.component.app_bar.MovieAppBar
@@ -119,10 +119,7 @@ private fun CollectionDetailsScreenContent(
         } else {
             MovieScaffold(
                 movieAppBar = {
-                    MovieAppBar(
-                        backButtonClick = navigateBack,
-                        title = title,
-                    )
+                    MovieAppBar(backButtonClick = navigateBack, title = title)
                 }
             ) {
                 if (mediaItems.itemCount == 0) {
@@ -162,11 +159,11 @@ private fun CollectionDetailsScreenContent(
                                     )
                                 }
                             ) {
-                                MoviePosterCard(
-                                    movie = media,
+                                MediaPosterCard(
+                                    mediaItem = media,
                                     viewMode = ViewMode.LIST,
                                     showRating = true,
-                                    onMovieClick = {
+                                    onMediaItemClick = {
                                         interactionListener.onMediaItemClicked(
                                             mediaId = media.id,
                                             mediaType = media.mediaType

@@ -28,8 +28,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
+import com.moscow.cineverse.common_ui_state.MediaItemUiState
 import com.moscow.cineverse.component.EmptyState
-import com.moscow.cineverse.component.MoviePosterCard
+import com.moscow.cineverse.component.MediaPosterCard
 import com.moscow.cineverse.component.NoInternetScreen
 import com.moscow.cineverse.designSystem.component.indicator.MovieCircularProgressBar
 import com.moscow.cineverse.designSystem.theme.Theme
@@ -156,11 +157,11 @@ fun ExploreMainContent(
                     if (item != null) {
                         when (item) {
                             is MediaItemUiState -> {
-                                MoviePosterCard(
-                                    movie = item,
+                                MediaPosterCard(
+                                    mediaItem = item,
                                     viewMode = uiState.viewMode,
                                     enableBlur = uiState.enableBlur,
-                                    onMovieClick = { interactionListener.onMediaItemClicked(item) },
+                                    onMediaItemClick = { interactionListener.onMediaItemClicked(item) },
                                     // Pass the shared transition scopes
                                     sharedTransitionScope = sharedTransitionScope,
                                     animatedVisibilityScope = animatedVisibilityScope

@@ -1,7 +1,7 @@
 package com.moscow.remote.interceptors
 
 import com.moscow.data.BuildConfig
-import com.moscow.domain.repository.language.LanguageProvider
+import com.moscow.domain.service.language.LanguageProvider
 import okhttp3.Interceptor
 import okhttp3.Response
 

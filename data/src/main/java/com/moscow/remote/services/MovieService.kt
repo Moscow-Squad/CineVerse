@@ -1,20 +1,22 @@
 package com.moscow.remote.services
 
-import com.moscow.remote.dto.CreditsDetailsDto
-import com.moscow.remote.dto.MovieDto
-import com.moscow.remote.dto.details.MediaTrailersDto
-import com.moscow.remote.dto.details.MovieDetailDto
-import com.moscow.remote.dto.rating.UserRatingResponse
-import com.moscow.remote.dto.rating.movie.RatedMovieDto
-import com.moscow.remote.dto.review.RatingRequestDto
+import com.moscow.remote.dto.media_item.common.CreditsDetailsDto
+import com.moscow.remote.dto.media_item.movie.MovieDto
+import com.moscow.remote.dto.media_item.common.MediaTrailersDto
+import com.moscow.remote.dto.media_item.movie.MovieDetailDto
+import com.moscow.remote.dto.rating.response.UserRatingResponse
+import com.moscow.remote.dto.rating.response.RatedMovieDto
+import com.moscow.remote.dto.rating.request.RatingRequestDto
 import com.moscow.remote.dto.review.ReviewDto
 import com.moscow.utils.ACCOUNT
 import com.moscow.utils.ACCOUNT_STATES
 import com.moscow.utils.ApiResponse
 import com.moscow.utils.CREDITS
+import com.moscow.utils.DAY
 import com.moscow.utils.DESCENDING
 import com.moscow.utils.DISCOVER_MOVIE_LIST
 import com.moscow.utils.MOVIE
+import com.moscow.utils.NOW_PLAYING
 import com.moscow.utils.PAGE
 import com.moscow.utils.POPULAR
 import com.moscow.utils.RATED_MOVIES
@@ -24,6 +26,8 @@ import com.moscow.utils.REVIEWS
 import com.moscow.utils.SESSION_ID
 import com.moscow.utils.SORTED_BY
 import com.moscow.utils.TRAILERS
+import com.moscow.utils.TRENDING
+import com.moscow.utils.UPCOMING
 import com.moscow.utils.WITH_GENRES
 import retrofit2.Response
 import retrofit2.http.Body
@@ -99,6 +103,29 @@ interface MovieService {
     suspend fun getMovieTrailers(
         @Path("movie_id") seriesId: Int
     ): Response<MediaTrailersDto>
+
+    @GET("$TRENDING$MOVIE{time_window}")
+    suspend fun getTrendingMovies(
+        @Path("time_window") time: String = DAY,
+        @Query(PAGE) page: Int = 1
+    ): Response<ApiResponse<MovieDto>>
+
+    @GET("$MOVIE$UPCOMING")
+    suspend fun getUpComingMovies(
+        @Query(PAGE) page: Int
+    ): Response<ApiResponse<MovieDto>>
+
+    @GET("$MOVIE$NOW_PLAYING")
+    suspend fun getRecentlyReleasedMovies(
+        @Query(PAGE) page: Int
+    ): Response<ApiResponse<MovieDto>>
+
+
+    @GET(DISCOVER_MOVIE_LIST)
+    suspend fun getMatchYourVibeMovies(
+        @Query(WITH_GENRES) genreId: Int, @Query(PAGE) page: Int
+    ): Response<ApiResponse<MovieDto>>
+
 
     @GET(DISCOVER_MOVIE_LIST)
     suspend fun getMatchedMovies(

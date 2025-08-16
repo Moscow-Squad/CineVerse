@@ -17,12 +17,13 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.moscow.cineverse.common_ui_state.CollectionUiState
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cinverse.presentation.R
 
 @Composable
 fun MyCollectionCard(
-    state: MyCollectionUiState,
+    state: CollectionUiState,
     onClick: (collectionId: Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -52,7 +53,7 @@ fun MyCollectionCard(
                 color = Theme.colors.shade.primary
             )
             Text(
-                text = state.itemCount.toString() + " " + if (state.itemCount > 1)
+                text = state.numberOfItems.toString() + " " + if (state.numberOfItems > 1)
                     stringResource(R.string.movies) else stringResource(R.string.movie_list_type),
                 style = Theme.textStyle.body.small.medium,
                 color = Theme.colors.shade.secondary

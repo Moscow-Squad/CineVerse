@@ -12,6 +12,7 @@ class CreateCollectionDialogViewModel @Inject constructor(
     BaseViewModel<CreateCollectionDialogUiState, CreateCollectionDialogEvent>(
         CreateCollectionDialogUiState()
     ), CreateCollectionDialogInteractionListener {
+
     override fun onCancelClick() {
         sendEvent(CreateCollectionDialogEvent.OnCancelCollectionCreation)
     }
@@ -29,7 +30,6 @@ class CreateCollectionDialogViewModel @Inject constructor(
             onStart = { updateState { it.copy(isLoading = true) } },
             onFinally = {}
         )
-
     }
 
     private fun onCollectionSAddedSuccessfully(collectionId: Int) {

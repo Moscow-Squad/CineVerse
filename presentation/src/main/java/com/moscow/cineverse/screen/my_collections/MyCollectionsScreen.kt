@@ -39,21 +39,21 @@ fun MyCollectionsScreen(
     currentBackStackEntry: NavBackStackEntry?,
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    LaunchedEffect(true) {
-        viewModel.uiEffect.collect {
-            when (it) {
-                MyCollectionsEvent.OnNavigateBack -> onNavigateBack.invoke()
-                is MyCollectionsEvent.OnNavigateToCollection -> navigateToCollectionDetails(
-                    it.collectionId,
-                    it.collectionName
-                )
 
-                MyCollectionsEvent.OnNavigateToCreateCollection -> navigateToCreateCollectionDialog()
-                MyCollectionsEvent.OnStartCollecting -> navigateToExplore()
-            }
+    LaunchedEffect(viewModel) {
+        viewModel.uiEffect.collect { effect ->
+            MyCollectionsEffectHandler.handleEffect(
+                effect,
+                onNavigateBack,
+                navigateToCreateCollectionDialog,
+                navigateToExplore,
+                navigateToCollectionDetails
+            )
         }
     }
+
     MyCollectionsContent(uiState, modifier, viewModel)
+
     ListenOnNewCollection(
         currentBackStackEntry = currentBackStackEntry,
         insertNewCollection = viewModel::insertNewCollection
@@ -148,9 +148,10 @@ fun MyCollectionsContent(
                                     collection.title
                                 )
                             },
-                            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 16.dp),
                         )
-
                     }
                 }
             }

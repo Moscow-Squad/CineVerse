@@ -50,50 +50,42 @@ fun HomeScreen(
     LaunchedEffect(Unit) {
         viewmodel.uiEffect.collect { effect ->
             when (effect) {
-                is HomeEvent.CollectionClicked -> {
+                is HomeEffect.CollectionClicked -> {
                     navigateToCollectionDetails(
                         effect.collectionId,
                         effect.collectionName
                     )
                 }
 
-                is HomeEvent.MovieClicked -> {
-                    navigateToMovieDetails(
-                        effect.movieId
-                    )
-
+                is HomeEffect.MovieClicked -> {
+                    navigateToMovieDetails(effect.movieId)
                 }
 
-                is HomeEvent.PromotionClicked -> {}
-                is HomeEvent.SeeAllClicked -> {
-                    navigateToSeeMoreHome(
-                        effect.category.name
-                    )
-                    // Navigate to SeeMoreHomeScreen with the category
+                is HomeEffect.SeeAllClicked -> {
+                    navigateToSeeMoreHome(effect.category.name)
                 }
 
-                is HomeEvent.FeaturedCollectionClicked -> {
+                is HomeEffect.FeaturedCollectionClicked -> {
                     navigateToSeeMoreHome("FEATURED_COLLECTION_${effect.genreId}")
                 }
 
-                is HomeEvent.SeriesClicked -> {
-                    navigateToSeriesDetails(
-                        effect.seriesId
-                    )
-
+                is HomeEffect.SeriesClicked -> {
+                    navigateToSeriesDetails(effect.seriesId)
                 }
 
-                is HomeEvent.BrowseSuggestionClicked -> {
-                    // Use the same navigation method as bottom navigation
+                is HomeEffect.BrowseSuggestionClicked -> {
                     navigateToBrowseSuggestion()
                 }
 
-                HomeEvent.WatchingSuggestionClicked -> {
+                is HomeEffect.WatchingSuggestionClicked -> {
                     navigateToWatchingSuggestion()
                 }
 
-                HomeEvent.SeeMoreRecentlyViewed -> navigateToHistoryScreen()
-                HomeEvent.SeeMoreCollections -> {
+                is HomeEffect.SeeMoreRecentlyViewed -> {
+                    navigateToHistoryScreen()
+                }
+
+                is HomeEffect.SeeMoreCollections -> {
                     navigateToMyCollections()
                 }
             }
@@ -121,7 +113,7 @@ fun HomeScreen(
 @Composable
 fun HomeContent(
     modifier: Modifier = Modifier,
-    uiState: HomeUiState,
+    uiState: HomeScreenState,
     listener: HomeInteractionListener
 ) {
 
@@ -205,7 +197,9 @@ fun HomeContent(
 
                 FeaturedMovies(
                     displayMovies = uiState.topRatedTvShows,
-                    onMovieClick = listener::onMediaItemClicked,
+                    onMovieClick = { item ->
+                        listener.onMediaItemClicked(item)
+                    },
                     onShowMoreClick = listener::onSeeAllClick,
                     modifier = Modifier,
                     type = HomeFeaturedItems.TOP_RATED_TV_SHOWS,

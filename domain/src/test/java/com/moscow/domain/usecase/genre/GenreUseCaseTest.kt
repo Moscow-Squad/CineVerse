@@ -22,7 +22,6 @@ class GenreUseCaseTest {
 
     @Test
     fun `getMoviesGenres should return movie genres`() = runTest {
-        // Given
         val expectedGenres = listOf(
             Genre(
                 id = 1,
@@ -35,16 +34,13 @@ class GenreUseCaseTest {
         )
         coEvery { genreRepository.getMoviesGenres() } returns expectedGenres
 
-        // When
         val result = useCase.getMoviesGenres()
 
-        // Then
         assertEquals(expectedGenres, result)
     }
 
     @Test
     fun `getSeriesGenres should return series genres`() = runTest {
-        // Given
         val expectedGenres = listOf(
             Genre(
                 id = 1,
@@ -57,10 +53,8 @@ class GenreUseCaseTest {
         )
         coEvery { genreRepository.getSeriesGenres() } returns expectedGenres
 
-        // When
         val result = useCase.getSeriesGenres()
 
-        // Then
         assertEquals(expectedGenres, result)
     }
 }
