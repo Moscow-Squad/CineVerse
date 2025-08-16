@@ -96,31 +96,31 @@ fun SeriesRecommendationScreenContent(
             )
         }
     ) {
-        Column(modifier = modifier.fillMaxSize()) {
-            if (recommendations.loadState.refresh is LoadState.Loading) {
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    MovieCircularProgressBar()
-                }
-            } else if (recommendations.loadState.refresh is LoadState.Error) {
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    NoInternetScreen(onRetry = { recommendations.retry() })
-                }
-            } else {
-                Box(modifier = Modifier.fillMaxSize()) {
-                    SharedTransitionLayout{
-                        AnimatedContent(
-                            targetState = uiState.viewMode,
-                            transitionSpec = {
-                                fadeIn(tween(300)) togetherWith fadeOut(tween(300))
-                            },
-                            label = "view_mode_transition"
-                        ){
+        SharedTransitionLayout {
+            AnimatedContent(
+                targetState = uiState.viewMode,
+                transitionSpec = {
+                    fadeIn(tween(300)) togetherWith fadeOut(tween(300))
+                },
+                label = "view_mode_transition"
+            ) {
+                Box(modifier = modifier.fillMaxSize()) {
+                    if (recommendations.loadState.refresh is LoadState.Loading) {
+                        Box(
+                            modifier = Modifier.fillMaxSize(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            MovieCircularProgressBar()
+                        }
+                    } else if (recommendations.loadState.refresh is LoadState.Error) {
+                        Box(
+                            modifier = Modifier.fillMaxSize(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            NoInternetScreen(onRetry = { recommendations.retry() })
+                        }
+                    } else {
+                        Column(modifier = Modifier.fillMaxSize()) {
                             LazyVerticalGrid(
                                 state = gridState,
                                 columns = if (uiState.viewMode == ViewMode.GRID)
@@ -185,7 +185,6 @@ fun SeriesRecommendationScreenContent(
                                 .padding(16.dp)
                         )
                     }
-
                 }
             }
         }

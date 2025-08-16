@@ -1,5 +1,13 @@
 package com.moscow.cineverse.screen.see_more
 
+import android.annotation.SuppressLint
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionLayout
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -65,6 +73,8 @@ fun SeeMoreHomeScreen(
     )
 }
 
+@OptIn(ExperimentalSharedTransitionApi::class)
+@SuppressLint("UnusedContentLambdaTargetStateParameter")
 @Composable
 private fun <T : Any> SeeMoreContent(
     uiState: SeeMoreUiState,
@@ -96,43 +106,55 @@ private fun <T : Any> SeeMoreContent(
             )
         }
     ) {
-        Column(
-            modifier = modifier,
-            verticalArrangement = Arrangement.Center
-        ) {
-            when (contentList.loadState.refresh) {
-                is LoadState.Loading -> {
-                    Box(
-                        modifier = Modifier.fillMaxSize(),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        MovieCircularProgressBar(
-                            gradientColors = listOf(
-                                Theme.colors.brand.primary,
-                                Theme.colors.brand.tertiary
+        SharedTransitionLayout {
+            AnimatedContent(
+                targetState = uiState.viewMode,
+                transitionSpec = {
+                    fadeIn(tween(300)) togetherWith fadeOut(tween(300))
+                },
+                label = "view_mode_transition"
+            ) {
+                Column(
+                    modifier = modifier,
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    when (contentList.loadState.refresh) {
+                        is LoadState.Loading -> {
+                            Box(
+                                modifier = Modifier.fillMaxSize(),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                MovieCircularProgressBar(
+                                    gradientColors = listOf(
+                                        Theme.colors.brand.primary,
+                                        Theme.colors.brand.tertiary
+                                    )
+                                )
+                            }
+                        }
+
+                        is LoadState.Error -> {
+                            Box(
+                                modifier = Modifier.fillMaxSize(),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                NoInternetScreen(onRetry = interactionListener::onRefresh)
+                            }
+                        }
+
+                        else -> {
+                            ContentGrid(
+                                uiState = uiState,
+                                gridState = gridState,
+                                gridColumns = gridColumns,
+                                contentList = contentList,
+                                interactionListener = interactionListener,
+                                modifier = modifier,
+                                sharedTransitionScope = this@SharedTransitionLayout,
+                                animatedVisibilityScope = this@AnimatedContent
                             )
-                        )
+                        }
                     }
-                }
-
-                is LoadState.Error -> {
-                    Box(
-                        modifier = Modifier.fillMaxSize(),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        NoInternetScreen(onRetry = interactionListener::onRefresh)
-                    }
-                }
-
-                else -> {
-                    ContentGrid(
-                        uiState = uiState,
-                        gridState = gridState,
-                        gridColumns = gridColumns,
-                        contentList = contentList,
-                        interactionListener = interactionListener,
-                        modifier = modifier
-                    )
                 }
             }
         }
