@@ -3,6 +3,9 @@ package com.moscow.cineverse.screen.history
 import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.cineverse.common_ui_state.MediaItemUiState
 import com.moscow.cineverse.common_ui_state.MediaItemUiState.MediaType
+import com.moscow.cineverse.mapper.toMediaItemUi
+import com.moscow.domain.model.Movie
+import com.moscow.domain.model.Series
 import com.moscow.domain.usecase.recently_viewed.CloseHistoryTipUseCase
 import com.moscow.domain.usecase.recently_viewed.DeleteRecentlyViewedItemByIdUseCase
 import com.moscow.domain.usecase.recently_viewed.GetRecentlyViewedMediaUseCase
@@ -28,12 +31,18 @@ class HistoryViewModel @Inject constructor(
         launchWithFlow(
             flowAction = { getRecentlyViewedMediaUseCase() },
             onSuccess = { result ->
-//                updateState {
-//                    it.copy(
-//                        youRecentlyViewed = result,
-//                        isContentEmpty = result.isEmpty()
-//                    )
-//                }
+                updateState {
+                    it.copy(
+                        youRecentlyViewed = result.map{ item ->
+                            when(item){
+                                is Movie -> item.toMediaItemUi()
+                                is Series -> item.toMediaItemUi()
+                                else -> MediaItemUiState()
+                            }
+                        },
+                        isContentEmpty = result.isEmpty()
+                    )
+                }
             },
             onStart = {
                 updateState {

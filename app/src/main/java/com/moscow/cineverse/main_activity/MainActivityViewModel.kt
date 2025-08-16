@@ -38,7 +38,7 @@ class MainActivityViewModel @Inject constructor(
     }
 
     private fun observeLanguage() {
-        _state.update { it.copy(language = languageProvider.getCurrentLanguage()) }
+        _state.update { it.copy(language = languageProvider.currentLanguage.value) }
     }
 
 }
