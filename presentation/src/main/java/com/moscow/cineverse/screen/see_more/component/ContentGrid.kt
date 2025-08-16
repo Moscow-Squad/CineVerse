@@ -1,6 +1,15 @@
 package com.moscow.cineverse.screen.see_more.component
 
+import android.annotation.SuppressLint
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionLayout
+import androidx.compose.animation.SharedTransitionScope
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -25,6 +34,7 @@ import com.moscow.cineverse.designSystem.component.indicator.MovieCircularProgre
 import com.moscow.cineverse.screen.see_more.SeeMoreInteractionListener
 import com.moscow.cineverse.screen.see_more.SeeMoreUiState
 
+@SuppressLint("UnusedContentLambdaTargetStateParameter")
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun <T : Any> ContentGrid(
@@ -33,7 +43,9 @@ fun <T : Any> ContentGrid(
     gridColumns: GridCells,
     contentList: LazyPagingItems<T>,
     interactionListener: SeeMoreInteractionListener,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    sharedTransitionScope: SharedTransitionScope? = null,
+    animatedVisibilityScope: AnimatedVisibilityScope? = null,
 ) {
     LazyVerticalGrid(
         state = gridState,
@@ -43,7 +55,6 @@ fun <T : Any> ContentGrid(
         modifier = modifier.fillMaxSize(),
         contentPadding = PaddingValues(16.dp)
     ) {
-
         items(contentList.itemCount) { index ->
             val item = contentList[index]
             item?.let { safeItem ->
@@ -52,14 +63,16 @@ fun <T : Any> ContentGrid(
                         MediaPosterCard(
                             mediaItem = safeItem,
                             viewMode = uiState.viewMode,
-                            onMediaItemClick = interactionListener::onMediaItemClicked,
-                            enableBlur = uiState.enableBlur
+                            enableBlur = uiState.enableBlur,
+                            onMediaItemClick = { interactionListener.onMediaItemClicked(safeItem.id) },
+                            // Pass the shared transition scopes
+                            sharedTransitionScope = sharedTransitionScope,
+                            animatedVisibilityScope = animatedVisibilityScope
                         )
                     }
                 }
             }
         }
-
         if (contentList.loadState.append is LoadState.Loading && contentList.itemCount > 20) {
             item (span = {GridItemSpan(maxLineSpan)}) {
                 Box(
