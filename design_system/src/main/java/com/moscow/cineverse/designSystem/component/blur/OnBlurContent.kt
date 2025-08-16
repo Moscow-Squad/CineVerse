@@ -48,6 +48,7 @@ fun OnBlurContent(
         )
         if (isAddedText) Text(
             text = stringResource(id = R.string.sensitive_content),
+
             style = Theme.textStyle.body.small.medium.copy(
                 color = Color(0xFFE1E1E3)
             ),

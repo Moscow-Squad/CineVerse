@@ -19,6 +19,7 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.moscow.cineverse.designSystem.component.button.MovieButton
@@ -37,6 +38,7 @@ fun MessageInfoCard(
     onClickFirstButton: () -> Unit,
     modifier: Modifier = Modifier,
     secondButtonText: String = "",
+    descriptionTextStyle: TextStyle = Theme.textStyle.body.medium.medium,
     iconColor: Color = Theme.colors.brand.primary,
     secondButtonBackground: Color = Theme.colors.button.primary,
     onClickSecondButton: () -> Unit = {},
@@ -74,7 +76,7 @@ fun MessageInfoCard(
         )
         Text(
             text = description,
-            style = Theme.textStyle.body.medium.medium,
+            style = descriptionTextStyle,
             color = Theme.colors.shade.secondary,
             modifier = Modifier.padding(bottom = 24.dp),
             textAlign = TextAlign.Center

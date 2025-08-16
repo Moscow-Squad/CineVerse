@@ -175,7 +175,7 @@ fun PreferenceOption(
             Text(
                 text = description,
                 color = Theme.colors.shade.secondary,
-                style = Theme.textStyle.body.medium.medium
+                style = Theme.textStyle.body.small.regular
             )
         }
     }
