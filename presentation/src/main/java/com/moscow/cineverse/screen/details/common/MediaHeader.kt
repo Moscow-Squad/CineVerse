@@ -63,12 +63,6 @@ fun MediaHeader(
     Box(
         modifier = Modifier,
     ) {
-        val formattedRating = try {
-            val ratingValue = rating.toDouble()
-            String.format("%.1f", ratingValue)
-        } catch (_: NumberFormatException) {
-            "0.0"
-        }
 
         val maxScroll = 400f
         val maxAchievedScroll = remember { mutableFloatStateOf(0f) }
@@ -249,17 +243,18 @@ fun MediaHeader(
                                 horizontalArrangement = Arrangement.spacedBy(12.dp),
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                if (formattedRating != "0.0")
+                                if (rating != "0.0")
                                     InfoTextWithIcon(
                                         R.drawable.due_tone_star,
-                                        formattedRating,
+                                        rating,
                                         Theme.colors.additional.primary.yellow
                                     )
-                                InfoTextWithIcon(
-                                    R.drawable.due_tone_clock,
-                                    duration.formatDuration(),
-                                    Theme.colors.shade.secondary
-                                )
+                                if (duration != DurationUiState(0,0))
+                                    InfoTextWithIcon(
+                                        R.drawable.due_tone_clock,
+                                        duration.formatDuration(),
+                                        Theme.colors.shade.secondary
+                                    )
 
                                 releaseDate?.let { date ->
                                     InfoTextWithIcon(

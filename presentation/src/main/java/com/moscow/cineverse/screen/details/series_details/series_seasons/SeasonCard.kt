@@ -138,7 +138,7 @@ fun SeasonCard(
                     icon = R.drawable.due_tone_calendar,
                     iconTint = Theme.colors.shade.secondary,
                     iconDescription = stringResource(R.string.air_date_icon),
-                    title = airDate.formatDate()
+                    title = airDate.year.toString()
                 )
             }
         }

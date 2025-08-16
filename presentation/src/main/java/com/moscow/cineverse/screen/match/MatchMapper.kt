@@ -72,7 +72,7 @@ object MatchMapper {
             title = movie.title,
             trailerUrl = "",
             posterUrl = movie.posterUrl,
-            rating = movie.rating.toDouble(),
+            rating = String.format("%.1f", movie.rating.toDouble()),
             genres = if (genres.isEmpty()) emptyList() else
                 movie.genreIds.map { it -> genres.first { genre -> genre.id == it }.name },
             releaseDate = movie.releaseDate,
