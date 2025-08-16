@@ -72,7 +72,7 @@ fun ActorGalleryItem(
 
         2 -> {
             Row(
-                modifier = containerModifier,
+                modifier = Modifier,
                 horizontalArrangement = Arrangement.spacedBy(12.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -80,7 +80,7 @@ fun ActorGalleryItem(
                     CastGalleryItemImage(
                         imageUrl = image,
                         enableBlur = enableBlur,
-                        modifier = Modifier
+                        modifier = containerModifier
                             .weight(1f)
                             .height(280.dp)
                             .clip(RoundedCornerShape(Theme.radius.large))
@@ -91,14 +91,14 @@ fun ActorGalleryItem(
 
         3 -> {
             Row(
-                modifier = containerModifier,
+                modifier = Modifier,
                 horizontalArrangement = Arrangement.spacedBy(12.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 CastGalleryItemImage(
                     imageUrl = images[0],
                     enableBlur = enableBlur,
-                    modifier = Modifier
+                    modifier = containerModifier
                         .weight(2f)
                         .height(280.dp)
                         .clip(RoundedCornerShape(Theme.radius.large))
@@ -114,7 +114,7 @@ fun ActorGalleryItem(
                         CastGalleryItemImage(
                             imageUrl = image,
                             enableBlur = enableBlur,
-                            modifier = Modifier
+                            modifier = containerModifier
                                 .fillMaxWidth()
                                 .height(134.dp)
                                 .clip(RoundedCornerShape(Theme.radius.large))
@@ -143,7 +143,7 @@ fun CastGalleryItemImage(
             RemoteImagePlaceholder()
         },
         onBlurContent = {
-            OnBlurContent()
+            OnBlurContent(isAddedText = false)
         }
     )
 }

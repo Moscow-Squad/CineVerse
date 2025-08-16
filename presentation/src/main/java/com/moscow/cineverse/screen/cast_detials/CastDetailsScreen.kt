@@ -62,7 +62,7 @@ fun CastDetailsScreen(
                 showBackButton = true,
                 showAddButton = false,
                 showLogo = false,
-                showDivider = true
+                showDivider = false
             )
             CastDetailsContent(
                 modifier = Modifier.weight(1f), uiState = uiState, interactionListener = viewModel
