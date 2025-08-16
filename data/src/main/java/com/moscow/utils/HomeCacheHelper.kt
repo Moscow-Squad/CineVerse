@@ -38,10 +38,6 @@ class HomeCacheHelper @Inject constructor(
                 }
             }
 
-            if (forceRefresh) {
-                return entities.map { mapFromEntity(it) }
-            }
-
             homeLocalDataSource.refreshHomeCategory(categoryType, entities)
             return remoteData
         }
