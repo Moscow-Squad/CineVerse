@@ -1,4 +1,3 @@
-import org.gradle.kotlin.dsl.implementation
 import java.io.FileInputStream
 import java.util.Properties
 
@@ -55,4 +54,5 @@ dependencies {
     implementation(libs.kotlinx.datetime)
     // Background
     implementation(libs.androidx.work.runtime.ktx)
+    implementation(libs.androidx.appcompat)
 }

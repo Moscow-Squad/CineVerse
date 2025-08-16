@@ -27,8 +27,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.moscow.cineverse.designSystem.component.bottomsheet.CineVerseBottomSheet
 import com.moscow.cineverse.designSystem.theme.Theme
-import com.moscow.cineverse.language.AppLanguage
 import com.moscow.cinverse.presentation.R
+import com.moscow.domain.model.language.AppLanguage
 
 @Composable
 fun LanguageBottomSheet(

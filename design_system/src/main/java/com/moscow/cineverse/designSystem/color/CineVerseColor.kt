@@ -4,7 +4,6 @@ import androidx.compose.runtime.ProvidableCompositionLocal
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import com.moscow.cineverse.language.AppLanguage
 
 data class CineVerseColor(
     val background: Background,
@@ -79,4 +78,4 @@ internal val LocalCineVerseColors = staticCompositionLocalOf { darkThemeColor }
 
 
 val LocalLanguage: ProvidableCompositionLocal<String> =
-    staticCompositionLocalOf { AppLanguage.English.name }
+    staticCompositionLocalOf { "en" }
