@@ -4,25 +4,25 @@ import androidx.lifecycle.viewModelScope
 import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.cineverse.base.handleException
 import com.moscow.cineverse.common_ui_state.MediaItemUiState
-import com.moscow.cineverse.mapper.toMyCollectionUi
+import com.moscow.cineverse.common_ui_state.MediaItemUiState.MediaType
+import com.moscow.cineverse.mapper.toCollectionUi
+import com.moscow.cineverse.mapper.toMediaItemUi
 import com.moscow.cineverse.mapper.toUi
 import com.moscow.cineverse.screen.explore.toUi
-import com.moscow.domain.model.MediaType
 import com.moscow.domain.model.Movie
 import com.moscow.domain.model.Series
 import com.moscow.domain.model.UserType
-import com.moscow.domain.repository.blur.BlurProvider
-import com.moscow.domain.repository.language.LanguageProvider
+import com.moscow.domain.service.blur.BlurProvider
+import com.moscow.domain.service.language.LanguageProvider
 import com.moscow.domain.usecase.collection.GetUserCollectionsUseCase
 import com.moscow.domain.usecase.genre.GenreUseCase
-import com.moscow.domain.usecase.home.ClearHomeCash
-import com.moscow.domain.usecase.home.GetMatchesYourVibesMoviesUseCase
-import com.moscow.domain.usecase.home.GetRecentlyReleasedMoviesUseCase
-import com.moscow.domain.usecase.home.GetTopRatedTVShowsUseCase
-import com.moscow.domain.usecase.home.GetTrendingMoviesUseCase
-import com.moscow.domain.usecase.home.GetUpcomingMoviesUseCase
-import com.moscow.domain.usecase.local.GetUserDetailsUseCase
+import com.moscow.domain.usecase.movie.GetMatchesYourVibesMoviesUseCase
+import com.moscow.domain.usecase.movie.GetRecentlyReleasedMoviesUseCase
+import com.moscow.domain.usecase.movie.GetTrendingMoviesUseCase
+import com.moscow.domain.usecase.movie.GetUpcomingMoviesUseCase
+import com.moscow.domain.usecase.preference.GetUserDetailsUseCase
 import com.moscow.domain.usecase.recently_viewed.GetRecentlyViewedMediaUseCase
+import com.moscow.domain.usecase.series.GetTopRatedTVShowsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -41,14 +41,13 @@ class HomeViewModel @Inject constructor(
     private val getUserCollectionsUseCase: GetUserCollectionsUseCase,
     private val getRecentlyViewedMediaUseCase: GetRecentlyViewedMediaUseCase,
     private val genreUseCase: GenreUseCase,
-    private val clearHomeCash: ClearHomeCash,
     private val blurProvider: BlurProvider,
-    private val languageProvider: LanguageProvider
-) : BaseViewModel<HomeUiState, HomeEvent>(HomeUiState()), HomeInteractionListener {
+    private val languageProvider: LanguageProvider,
+) : BaseViewModel<HomeScreenState, HomeEffect>(HomeScreenState()), HomeInteractionListener {
 
     init {
         viewModelScope.launch {
-            val lang = languageProvider.languageFlow.first()
+            val lang = languageProvider.currentLanguage.first()
             updateState { it.copy(cashLanguage = lang) }
         }
         observeLanguage()
@@ -79,11 +78,10 @@ class HomeViewModel @Inject constructor(
 
     private fun observeLanguage() {
         viewModelScope.launch {
-            languageProvider.languageFlow.collect { currentLanguage ->
+            languageProvider.currentLanguage.collect { currentLanguage ->
                 if (uiState.value.cashLanguage != currentLanguage) {
                     updateState { it.copy(cashLanguage = currentLanguage) }
-                    clearHomeCash()
-                    loadHomeData()
+                    loadHomeData(refresh = true)
                 }
             }
         }
@@ -97,17 +95,17 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private fun loadHomeData() {
+    private fun loadHomeData(refresh: Boolean = false) {
         updateState { it.copy(isLoading = true, error = null) }
         viewModelScope.launch {
             try {
                 val jobs = listOf(
                     async { getUserDetails() },
-                    async { fetchTrendingMovies() },
-                    async { fetchRecentlyReleasedMovies() },
-                    async { fetchUpcomingMovies() },
-                    async { fetchTopRatedTVShows() },
-                    async { fetchMatchesYourVibesMovies() }
+                    async { fetchTrendingMovies(refresh) },
+                    async { fetchRecentlyReleasedMovies(refresh) },
+                    async { fetchUpcomingMovies(refresh) },
+                    async { fetchTopRatedTVShows(refresh) },
+                    async { fetchMatchesYourVibesMovies(refresh) }
                 )
                 jobs.awaitAll()
                 updateState { it.copy(isLoading = false) }
@@ -126,7 +124,7 @@ class HomeViewModel @Inject constructor(
         launchWithResult(
             action = { getUserCollectionsUseCase(1) },
             onSuccess = { collections ->
-                updateState { it.copy(collections = collections.map { collection -> collection.toMyCollectionUi() }) }
+                updateState { it.copy(collections = collections.map { collection -> collection.toCollectionUi() }) }
             },
             onError = { e ->
                 updateState { it.copy(isLoading = false, error = e) }
@@ -159,7 +157,13 @@ class HomeViewModel @Inject constructor(
             onSuccess = { result ->
                 updateState {
                     it.copy(
-                        youRecentlyViewed = result.toMediaItemUiState()
+                       youRecentlyViewed = result.map { mediaItem ->
+                           when(mediaItem){
+                               is Movie -> mediaItem.toUi(uiState.value.movieGenre)
+                               is Series -> mediaItem.toMediaItemUi()
+                               else -> MediaItemUiState()
+                           }
+                        },
                     )
                 }
             },
@@ -167,8 +171,8 @@ class HomeViewModel @Inject constructor(
         )
     }
 
-    private suspend fun fetchTrendingMovies() {
-        val res = getTrendingMoviesUseCase()
+    private suspend fun fetchTrendingMovies(refresh: Boolean = false) {
+        val res = getTrendingMoviesUseCase(forceRefresh = refresh)
         onFetchTrendingMoviesSuccess(res)
     }
 
@@ -180,8 +184,8 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private suspend fun fetchRecentlyReleasedMovies() {
-        val res = getRecentlyReleasedMoviesUseCase(page = 1)
+    private suspend fun fetchRecentlyReleasedMovies(refresh: Boolean = false) {
+        val res = getRecentlyReleasedMoviesUseCase(forceRefresh = refresh, page = 1)
         onFetchRecentlyReleasedMoviesSuccess(res)
     }
 
@@ -193,8 +197,8 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private suspend fun fetchUpcomingMovies() {
-        val res = getUpcomingMoviesUseCase(page = 1)
+    private suspend fun fetchUpcomingMovies(refresh: Boolean = false) {
+        val res = getUpcomingMoviesUseCase(forceRefresh = refresh, page = 1)
         onFetchUpcomingMoviesSuccess(res)
     }
 
@@ -206,8 +210,8 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private suspend fun fetchTopRatedTVShows() {
-        val res = getTopRatedTVShowsUseCase(page = 1)
+    private suspend fun fetchTopRatedTVShows(refresh: Boolean = false) {
+        val res = getTopRatedTVShowsUseCase(forceRefresh = refresh, page = 1)
         onFetchTopRatedTVShowsSuccess(res)
     }
 
@@ -219,8 +223,12 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private suspend fun fetchMatchesYourVibesMovies() {
-        val res = getMatchesYourVibesMoviesUseCase(genreId = 28, page = 1)
+    private suspend fun fetchMatchesYourVibesMovies(refresh: Boolean = false) {
+        val res = getMatchesYourVibesMoviesUseCase(
+            forceRefresh = refresh,
+            genreId = 28,
+            page = 1
+        )
         onFetchMatchesYourVibesMoviesSuccess(res)
     }
 
@@ -234,34 +242,31 @@ class HomeViewModel @Inject constructor(
     }
 
     override fun onMediaItemClicked(mediaItemUiState: MediaItemUiState) {
-        if (mediaItemUiState.mediaType == MediaType.Movie)
-            sendEvent(HomeEvent.MovieClicked(mediaItemUiState.id))
-        else
-            sendEvent(HomeEvent.SeriesClicked(mediaItemUiState.id))
+       if (mediaItemUiState.mediaType == MediaType.Movie)
+            sendEvent(HomeEffect.MovieClicked(mediaItemUiState.id))
+       else {
+           sendEvent(HomeEffect.SeriesClicked(mediaItemUiState.id))
+       }
     }
 
     override fun onSeeAllClick(type: HomeFeaturedItems) {
-        sendEvent(HomeEvent.SeeAllClicked(type))
+        sendEvent(HomeEffect.SeeAllClicked(type))
     }
 
     override fun onCollectionsShowMoreClick() {
-        sendEvent(HomeEvent.SeeMoreCollections)
+        sendEvent(HomeEffect.SeeMoreCollections)
     }
 
     override fun onCollectionClick(collectionId: Int, collectionName: String) {
-        sendEvent(HomeEvent.CollectionClicked(collectionId, collectionName))
-    }
-
-    override fun onPromotionClick(promotionId: Int) {
-        sendEvent(HomeEvent.PromotionClicked(promotionId))
+        sendEvent(HomeEffect.CollectionClicked(collectionId, collectionName))
     }
 
     override fun onWatchSuggestionClick() {
-        sendEvent(HomeEvent.WatchingSuggestionClicked)
+        sendEvent(HomeEffect.WatchingSuggestionClicked)
     }
 
     override fun onBrowseSuggestionClick() {
-        sendEvent(HomeEvent.BrowseSuggestionClicked)
+        sendEvent(HomeEffect.BrowseSuggestionClicked)
     }
 
     override fun onRefresh() {
@@ -269,14 +274,14 @@ class HomeViewModel @Inject constructor(
     }
 
     override fun onSeeMoreRecentlyViewedClicked() {
-        sendEvent(HomeEvent.SeeMoreRecentlyViewed)
+        sendEvent(HomeEffect.SeeMoreRecentlyViewed)
     }
 
     override fun onFeaturedCollectionClick(genreId: Int) {
         val collection = HomeFeaturedCollections.entries.find { it.genreId == genreId }
         if (collection != null) {
             sendEvent(
-                HomeEvent.FeaturedCollectionClicked(
+                HomeEffect.FeaturedCollectionClicked(
                     collection.genreId,
                     collection.title
                 )
@@ -285,43 +290,3 @@ class HomeViewModel @Inject constructor(
     }
 }
 
-fun Movie.toMediaItemUiState(
-    genreMap: Map<Int, String> = emptyMap(),
-    formatDuration: (Movie) -> String = { "" }
-): MediaItemUiState {
-    return MediaItemUiState(
-        id = id,
-        title = name,
-        posterPath = posterPath,
-        rating = rating,
-        genres = genreIds.mapNotNull { genreId -> genreMap[genreId] },
-        releaseDate = releaseDate.toString(), // Convert LocalDate to String
-        duration = formatDuration(this),
-        mediaType = MediaType.Movie, // Explicitly set to Movie type
-        backdropPath = backdropPath
-    )
-}
-
-fun List<Any>.toMediaItemUiState(
-    genreMap: Map<Int, String> = emptyMap(),
-    formatDuration: (Movie) -> String = { "" }
-): List<MediaItemUiState> {
-    return mapNotNull { item ->
-        when (item) {
-            is Movie -> item.toMediaItemUiState(genreMap, formatDuration)
-            is Series -> MediaItemUiState(
-                id = item.id,
-                title = item.name,
-                posterPath = item.posterPath,
-                rating = item.rating,
-                genres = item.genreIds.mapNotNull { genreId -> genreMap[genreId] },
-                releaseDate = item.firstAirDate.toString(),
-                duration = "",
-                mediaType = MediaType.Tv,
-                backdropPath = item.backdropPath
-            )
-
-            else -> null
-        }
-    }
-}

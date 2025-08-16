@@ -1,8 +1,8 @@
 package com.moscow.cineverse.screen.my_collections
 
 import com.moscow.cineverse.base.BaseViewModel
-import com.moscow.cineverse.common_ui_state.MyCollectionUiState
-import com.moscow.cineverse.mapper.toMyCollectionUi
+import com.moscow.cineverse.common_ui_state.CollectionUiState
+import com.moscow.cineverse.mapper.toCollectionUi
 import com.moscow.domain.model.Collection
 import com.moscow.domain.usecase.collection.GetUserCollectionsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -51,10 +51,11 @@ class MyCollectionsViewModel @Inject constructor(
         updateState {
             it.copy(
                 collections = listOf(
-                    MyCollectionUiState(
+                    CollectionUiState(
                         id = collectionId,
                         title = collectionName,
-                        itemCount = 0
+                        numberOfItems = 0,
+                        isLoading = false
                     )
                 ) + it.collections
             )
@@ -70,7 +71,7 @@ class MyCollectionsViewModel @Inject constructor(
     private fun onLoadUserCollectionsSuccess(collections: List<Collection>) {
         updateState {
             it.copy(
-                collections = collections.map { collection -> collection.toMyCollectionUi() })
+                collections = collections.map { collection -> collection.toCollectionUi() })
         }
     }
 

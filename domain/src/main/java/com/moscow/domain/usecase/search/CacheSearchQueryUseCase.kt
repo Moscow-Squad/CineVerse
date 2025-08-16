@@ -6,8 +6,7 @@ import javax.inject.Inject
 class CacheSearchQueryUseCase @Inject constructor(
     private val searchRepository: SearchRepository
 ) {
-    suspend fun cacheSearchQuery(
+    suspend operator fun invoke(
         query: String
-    ) = searchRepository.cacheSearchQuery(query)
-
+    ) = searchRepository.cacheSearchQuery(query = query)
 }

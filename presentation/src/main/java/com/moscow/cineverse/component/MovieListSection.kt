@@ -16,7 +16,7 @@ import androidx.compose.ui.unit.dp
 fun <T> MovieListSection(
     modifier: Modifier = Modifier,
     title: String,
-    movies: List<T>,
+    mediaItems: List<T>,
     paddingHorizontal: Int = 16,
     onClickShowMore: () -> Unit = {},
     onClickPoster: (T) -> Unit = {},
@@ -38,7 +38,7 @@ fun <T> MovieListSection(
             horizontalArrangement = Arrangement.spacedBy(12.dp),
             contentPadding = PaddingValues(horizontal = paddingHorizontal.dp)
         ) {
-            itemsIndexed(movies) { _, movie ->
+            itemsIndexed(mediaItems) { _, movie ->
                 movieCardContent(
                     movie,
                     Modifier.width(136.dp),

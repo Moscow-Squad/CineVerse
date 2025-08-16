@@ -54,26 +54,14 @@ abstract class LocalSourceModule {
                 context,
                 CineVerseDataBase::class.java,
                 CINE_VERSE_DATABASE
-            )
-                .fallbackToDestructiveMigration(true)
-                .build()
+            ).fallbackToDestructiveMigration(true).build()
         }
 
-        @Provides
-        @Singleton
-        fun provideMovieDao(database: CineVerseDataBase) = database.movieDao()
 
         @Provides
         @Singleton
         fun provideSearchHistoryDao(database: CineVerseDataBase) = database.searchHistoryDao()
 
-        @Provides
-        @Singleton
-        fun provideActorDao(database: CineVerseDataBase) = database.actorDao()
-
-        @Provides
-        @Singleton
-        fun provideSeriesDao(database: CineVerseDataBase) = database.seriesDao()
 
         @Provides
         @Singleton

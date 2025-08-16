@@ -16,22 +16,28 @@ plugins {
 }
 
 val excludedPackages = listOf(
-    "*.R",
-    "*.R_*",
-    "**.di.**",
-    "*.BuildConfig*",
-    "*.Manifest*",
-    "*.ComposableSingletons*",
-    "*.MainActivity*",
-    "*.CineVerseApp*",
+    "*.R", "*.R_*", "*.BuildConfig*", "*.Manifest*",
+
+    "**.di.**", "*.ComposableSingletons*", "**.model.**",
+
+    "*.MainActivity*", "*.CineVerseApp*",
+
     "com.moscow.cineverse.image_viewer*",
     "com.moscow.cineverse.design_system*",
-    "entity.**",
-    "**.dao.**",
-    "**.dto.**",
-    "**.response.**",
-    "exceptions.**",
+    "com.moscow.cineverse.presentation*",
+
+    "**.dao.**", "**.dto.**", "**.db.**", "**.util.**", "**.response.**",
+    "**.entity.**", "**.mapper.**", "**.api.**",
+
+    "dagger.hilt.**",
+    "hilt_aggregated_deps.**",
+    "**_Factory",
+    "**_HiltModules*",
+    "Hilt_*",
+
+    "exception.**"
 )
+
 allprojects {
     apply(plugin = "org.jetbrains.kotlinx.kover")
     kover {

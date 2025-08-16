@@ -4,8 +4,8 @@ import com.google.common.truth.Truth.assertThat
 import com.moscow.data_source.remote.GenreRemoteDataSource
 import com.moscow.domain.exception.CineVerseException
 import com.moscow.remote.data_source.GenreRemoteDataSourceImpl
-import com.moscow.remote.dto.GenreDto
-import com.moscow.remote.dto.GenreResponse
+import com.moscow.remote.dto.genre.GenreDto
+import com.moscow.remote.dto.genre.GenreResponse
 import com.moscow.remote.services.GenreService
 import io.mockk.coEvery
 import io.mockk.mockk

@@ -12,4 +12,7 @@ dependencies {
 
     implementation(libs.material3)
     implementation(libs.readmore.material3)
+
+    implementation(libs.androidx.appcompat)
+
 }

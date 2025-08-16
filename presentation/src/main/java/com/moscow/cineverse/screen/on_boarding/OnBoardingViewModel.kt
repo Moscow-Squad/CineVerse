@@ -4,14 +4,16 @@ import androidx.lifecycle.viewModelScope
 import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.cineverse.utlis.StringValue
 import com.moscow.cinverse.presentation.R
-import com.moscow.domain.repository.PreferenceRepository
+import com.moscow.domain.repository.OnboardingRepository
+import com.moscow.domain.repository.auth.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class OnBoardingViewModel @Inject constructor(
-    private val preferenceRepository: PreferenceRepository
+    private val userRepository: UserRepository,
+    private val onboardingRepository: OnboardingRepository
 ) :
     BaseViewModel<OnBoardingState, OnBoardingScreenEvents>(OnBoardingState()),
     OnBoardingInteractionListener {
@@ -65,7 +67,7 @@ class OnBoardingViewModel @Inject constructor(
 
     override fun onClickGetStartedButton() {
         viewModelScope.launch {
-            preferenceRepository.setOnBoardingCompleted()
+            onboardingRepository.setOnBoardingCompleted()
             sendEvent(OnBoardingScreenEvents.NavigateToLoginScreen)
         }
     }

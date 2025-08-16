@@ -6,7 +6,7 @@ import com.moscow.remote.data_source.ActorRemoteDataSourceImpl
 import com.moscow.remote.dto.actor.ActorBestOfMoviesDto
 import com.moscow.remote.dto.actor.ActorImagesDto
 import com.moscow.remote.dto.actor.ActorSocialMediaDto
-import com.moscow.remote.dto.details.ActorDetailsDto
+import com.moscow.remote.dto.actor.ActorDetailsDto
 import com.moscow.remote.services.ActorService
 import io.mockk.coEvery
 import io.mockk.coVerify

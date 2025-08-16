@@ -1,16 +1,24 @@
 package com.moscow.domain.model
 
+import kotlinx.datetime.LocalDate
+
 data class MediaItem(
-    val adult: Boolean,
-    val backdropPath: String,
-    val firstAirDate: String,
-    val genreIds: List<Int>,
     val id: Int,
-    val mediaType: MediaType,
-    val name: String,
-    val originalName: String,
-    val overview: String,
-    val popularity: Double,
+    val title: String,
     val posterPath: String,
-    val rate: Float,
-)
+    val rating: Float,
+    val genres: List<String>,
+    val releaseDate: LocalDate?,
+    val backdropPath: String,
+    val mediaType: MediaType,
+) {
+    enum class MediaType {
+        Movie, Series;
+
+        companion object {
+            fun toMediaType(name: String) =
+                MediaType.entries.find { it.name.equals(name, ignoreCase = true) } ?: Movie
+        }
+    }
+
+}

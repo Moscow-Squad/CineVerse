@@ -19,10 +19,10 @@ import javax.inject.Inject
 class ReviewsViewModel @Inject constructor(
     private val getReviewsUseCase: GetReviewsUseCase,
     savedStateHandle: SavedStateHandle
-    ) : BaseViewModel<ReviewsScreenState, ReviewsEffect>(ReviewsScreenState()),
+) : BaseViewModel<ReviewsScreenState, ReviewsEffect>(ReviewsScreenState()),
     ReviewsInteractionListener {
     private val id: Int = savedStateHandle.get<Int>(ReviewsRoute.ID) ?: 0
-    private val isMovie: Boolean = savedStateHandle.get<Boolean>(ReviewsRoute.IS_MOVIE) ?: false
+    private val isMovie: Boolean = savedStateHandle.get<Boolean>(ReviewsRoute.IS_MOVIE) == true
 
     fun getPagedReviews(): Flow<PagingData<Review>> {
         return Pager(
@@ -36,6 +36,11 @@ class ReviewsViewModel @Inject constructor(
     }
 
     override fun onBackPressed() {
-            sendEvent(ReviewsEffect.NavigateBack)
+        sendEvent(ReviewsEffect.NavigateBack)
+    }
+
+    override fun onRetry() {
+        updateState { it.copy(errorMessage = null) }
+        getPagedReviews()
     }
 }

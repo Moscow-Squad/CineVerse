@@ -2,8 +2,8 @@ package com.moscow.cineverse.main_activity
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.moscow.domain.repository.language.LanguageProvider
-import com.moscow.domain.repository.theme.ThemeProvider
+import com.moscow.domain.service.language.LanguageProvider
+import com.moscow.domain.service.theme.ThemeProvider
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -16,6 +16,7 @@ import javax.inject.Inject
 class MainActivityViewModel @Inject constructor(
     private val themeProvider: ThemeProvider,
     private val languageProvider: LanguageProvider
+
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(MainActivityUiState())
@@ -26,25 +27,18 @@ class MainActivityViewModel @Inject constructor(
         observeLanguage()
     }
 
-    private fun observeLanguage() {
-        _state.update { it.copy(isLoading = true) }
-
-        viewModelScope.launch {
-            languageProvider.languageFlow.collect { lang ->
-                _state.update {
-                    it.copy(language = lang, isLoading = false)
-                }
-            }
-        }
-    }
 
     private fun observeTheme() {
         _state.update { it.copy(isLoading = true) }
-
         viewModelScope.launch(Dispatchers.IO) {
             themeProvider.themeFlow.collect { isDarkTheme ->
                 _state.update { it.copy(isDarkTheme = isDarkTheme) }
             }
         }
     }
+
+    private fun observeLanguage() {
+        _state.update { it.copy(language = languageProvider.currentLanguage.value) }
+    }
+
 }

@@ -6,6 +6,11 @@ import javax.inject.Inject
 class GetMovieRecommendationsUseCase @Inject constructor(
     private val movieRepository: MovieRepository
 ) {
-    suspend operator fun invoke(id:Int,page:Int) =
-        movieRepository.getMovieRecommendations(id,page)
+    suspend operator fun invoke(
+        id: Int,
+        page: Int
+    ) = movieRepository.getRecommendationsMovie(
+            id = id,
+            page = page
+        )
 }

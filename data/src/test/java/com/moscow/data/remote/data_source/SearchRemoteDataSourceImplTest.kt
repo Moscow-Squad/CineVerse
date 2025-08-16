@@ -5,9 +5,9 @@ import com.moscow.data_source.remote.SearchRemoteDataSource
 import com.moscow.domain.exception.CineVerseException
 import com.moscow.domain.exception.CineVerseException.BadRequestException
 import com.moscow.remote.data_source.SearchRemoteDataSourceImpl
-import com.moscow.remote.dto.MovieDto
+import com.moscow.remote.dto.media_item.movie.MovieDto
 import com.moscow.remote.dto.actor.ActorDto
-import com.moscow.remote.dto.series.SeriesDto
+import com.moscow.remote.dto.media_item.series.SeriesDto
 import com.moscow.remote.dto.suggestion.SuggestionDto
 import com.moscow.remote.services.SearchService
 import com.moscow.utils.ApiResponse

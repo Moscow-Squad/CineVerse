@@ -9,15 +9,24 @@ class SearchUseCase @Inject constructor(
     suspend fun searchMovie(
         query: String,
         page: Int
-    ) = searchRepository.searchMovie(query, page)
+    ) = searchRepository.searchMovie(
+        query = query,
+        page = page
+    )
 
     suspend fun searchSeries(
         query: String,
         page: Int
-    ) = searchRepository.searchSeries(query, page)
+    ) = searchRepository.searchSeries(
+        query = query,
+        page = page
+    )
 
     suspend fun searchActor(
         query: String,
         page: Int
-    ) = searchRepository.searchActor(query, page)
+    ) = searchRepository.searchActor(
+        query = query,
+        page = page
+    )
 }

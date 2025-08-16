@@ -1,15 +1,14 @@
 package com.moscow.cineverse.screen.profile
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.domain.model.UserType
-import com.moscow.domain.model.profile.AccountDetails
-import com.moscow.domain.repository.blur.BlurProvider
-import com.moscow.domain.repository.language.LanguageProvider
-import com.moscow.domain.repository.theme.ThemeProvider
-import com.moscow.domain.usecase.local.GetUserDetailsUseCase
-import com.moscow.domain.usecase.local.RemoveUserDetailsUseCase
+import com.moscow.domain.model.UserInfo
+import com.moscow.domain.service.blur.BlurProvider
+import com.moscow.domain.service.language.LanguageProvider
+import com.moscow.domain.service.theme.ThemeProvider
+import com.moscow.domain.usecase.preference.GetUserDetailsUseCase
+import com.moscow.domain.usecase.preference.RemoveUserDetailsUseCase
 import com.moscow.domain.usecase.profile.GetAccountDetailsUseCase
 import com.moscow.domain.usecase.profile.LogoutUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -29,10 +28,14 @@ class ProfileViewModel @Inject constructor(
     ProfileInteractionListener {
 
     init {
+        getCurrentLanguage()
         observeTheme()
-        observeLanguage()
         observeBlur()
         getUserDetails()
+    }
+
+    private fun getCurrentLanguage() {
+        updateState { it.copy(currentLanguage = languageProvider.currentLanguage.value) }
     }
 
     private fun observeTheme() {
@@ -47,37 +50,28 @@ class ProfileViewModel @Inject constructor(
         viewModelScope.launch {
             blurProvider.blurFlow.collect { enableBlur ->
                 updateState { it.copy(selectedPreference = enableBlur) }
-                Log.d("blurview", "$enableBlur")
-            }
-        }
-    }
-
-    private fun observeLanguage() {
-        viewModelScope.launch {
-            languageProvider.languageFlow.collect { language ->
-                updateState { it.copy(appLanguage = language) }
             }
         }
     }
 
     private fun getAccountDetails() {
         launchWithResult(
-            action = { getAccountDetailsUseCase( uiState.value.accountId,uiState.value.sessionId) },
+            action = { getAccountDetailsUseCase(uiState.value.accountId, uiState.value.sessionId) },
             onStart = ::onLoading,
             onSuccess = ::onGetAccountDetailsSuccess,
-            onError = {e->
+            onError = { e ->
 
             }
         )
     }
 
-    private fun onGetAccountDetailsSuccess(accountDetails: AccountDetails) {
+    private fun onGetAccountDetailsSuccess(userInfo: UserInfo) {
 
         updateState {
             it.copy(
-                name = accountDetails.name,
-                username = accountDetails.username,
-                image = accountDetails.image,
+                name = userInfo.name,
+                username = userInfo.username,
+                image = userInfo.image,
             )
 
         }
@@ -85,8 +79,6 @@ class ProfileViewModel @Inject constructor(
     }
 
     private fun logout() {
-        Log.d("ProfileViewModel", "Session ID: ${uiState.value.sessionId}")
-
         launchWithResult(
             action = { logoutUseCase(sessionId = uiState.value.sessionId) },
             onSuccess = ::onGetLogoutSuccess,
@@ -186,7 +178,7 @@ class ProfileViewModel @Inject constructor(
 
     override fun onClickEditProfile() {
         val username = uiState.value.username.orEmpty()
-        sendEvent(ProfileScreenEffects.GoToWebView( EDIT_PROFILE_URL + username))
+        sendEvent(ProfileScreenEffects.GoToWebView(EDIT_PROFILE_URL + username))
         onCancelEditProfileBottomSheet()
     }
 
@@ -209,8 +201,8 @@ class ProfileViewModel @Inject constructor(
     }
 
     override fun onSelectedLanguage(language: String) {
+        updateState { it.copy(currentLanguage = language) }
         updateAppLanguage(language)
-        onCancelLanguageBottomSheet()
     }
 
     override fun onCancelLanguageBottomSheet() {

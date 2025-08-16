@@ -51,7 +51,6 @@ fun CineVerseNavGraph(
         NavHost(
             modifier = modifier,
             navController = navController,
-
             startDestination = startDestination
         ) {
 

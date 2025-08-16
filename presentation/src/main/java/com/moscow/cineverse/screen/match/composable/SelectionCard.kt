@@ -70,7 +70,9 @@ fun SelectionCard(
             .padding(itemsPaddingValues)
             .clickable { onClick() },
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
+        horizontalArrangement = if (questionUiState.iconResource == null) Arrangement.Center else Arrangement.spacedBy(
+            8.dp
+        )
     ) {
         questionUiState.iconResource?.let {
             Box(

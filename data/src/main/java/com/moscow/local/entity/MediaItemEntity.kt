@@ -16,7 +16,7 @@ data class MediaItemEntity(
     val itemType: String,
     val rating: Float,
     val genreIds: List<Int>,
-    val releaseDate: LocalDate,
+    val releaseDate: LocalDate?,
     val cacheTimestamp: Long = System.currentTimeMillis()
 )
 

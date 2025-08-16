@@ -9,5 +9,8 @@ class RateSeriesUseCase @Inject constructor(
     suspend fun rateSeriesUse(
         rating: Float,
         seriesId: Int
-    ) = seriesRepository.rateSeries(id = seriesId, rating = rating)
+    ) = seriesRepository.rateSeries(
+        id = seriesId,
+        rating = rating
+    )
 }

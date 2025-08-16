@@ -3,15 +3,15 @@ package com.moscow.domain.usecase.rating
 import com.moscow.domain.model.Movie
 import com.moscow.domain.model.UserType
 import com.moscow.domain.repository.MovieRepository
-import com.moscow.domain.repository.PreferenceRepository
+import com.moscow.domain.repository.auth.UserRepository
 import javax.inject.Inject
 
 class GetRatedMoviesUseCase @Inject constructor(
     private val movieRepository: MovieRepository,
-    private val preferenceRepository: PreferenceRepository
+    private val userRepository: UserRepository
 ) {
     suspend operator fun invoke(page: Int): List<RatedMovieResult> {
-        val user = preferenceRepository.getUser()
+        val user = userRepository.getUser()
         val userid = if (user is UserType.AuthenticatedUser) user.id else "0"
 
         val parseUserid = try {
@@ -27,7 +27,7 @@ class GetRatedMoviesUseCase @Inject constructor(
                     userid.substring(equalIndex + 1, commaIndex).toIntOrNull() ?: 0
                 }
             }
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             0
         }
 

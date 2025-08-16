@@ -1,10 +1,10 @@
 package com.moscow.domain.usecase.rating
 
-import com.moscow.domain.repository.PreferenceRepository
+import com.moscow.domain.repository.RatingTipsRepository
 import javax.inject.Inject
 
 class GetShowRatingTipUseCase @Inject constructor(
-    private val preferenceRepository: PreferenceRepository
+    private val ratingTipsRepository: RatingTipsRepository
 ) {
-    suspend operator fun invoke() = preferenceRepository.showRatingTip()
+    suspend operator fun invoke() = ratingTipsRepository.showRatingTip()
 }

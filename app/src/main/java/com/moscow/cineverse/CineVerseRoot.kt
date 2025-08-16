@@ -64,5 +64,6 @@ fun CineVerseRoot(
                 matchBottomNavVisible = isVisible
             }
         )
+
     }
 }

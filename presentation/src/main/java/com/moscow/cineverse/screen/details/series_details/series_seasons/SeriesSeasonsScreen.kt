@@ -1,0 +1,91 @@
+package com.moscow.cineverse.screen.details.series_details.series_seasons
+
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.moscow.cineverse.component.ErrorContent
+import com.moscow.cineverse.designSystem.component.app_bar.MovieAppBar
+import com.moscow.cineverse.designSystem.component.indicator.MovieCircularProgressBar
+import com.moscow.cineverse.designSystem.component.wrapper.MovieScaffold
+import com.moscow.cineverse.screen.details.series_details.SeriesDetailsInteractionListener
+import com.moscow.cineverse.screen.details.series_details.SeriesDetailsScreenState
+import com.moscow.cineverse.screen.details.series_details.SeriesDetailsViewModel
+import com.moscow.cinverse.presentation.R
+
+@Composable
+fun SeriesSeasonsScreen(
+    modifier: Modifier = Modifier,
+    viewModel: SeriesDetailsViewModel = hiltViewModel(),
+    navigateBack: () -> Unit,
+) {
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    SeriesSeasonsScreenContent(
+        uiState = uiState,
+        interactionListener = viewModel,
+        modifier = modifier,
+        onNavigateBack = navigateBack,
+    )
+}
+
+@Composable
+fun SeriesSeasonsScreenContent(
+    uiState: SeriesDetailsScreenState,
+    interactionListener: SeriesDetailsInteractionListener,
+    onNavigateBack : () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    MovieScaffold {
+        Box(modifier = modifier.fillMaxSize()) {
+            when {
+                uiState.isLoading -> {
+                    MovieCircularProgressBar(modifier = Modifier.align(Alignment.Center))
+                }
+                uiState.shouldShowError -> {
+                    ErrorContent(
+                        errorMessage = uiState.errorMessage,
+                        onRetry = interactionListener::onRetry,
+                    )
+                }
+                else -> {
+                    Column(modifier = Modifier.fillMaxSize()) {
+                        MovieAppBar(
+                            title = stringResource(R.string.seasons),
+                            backButtonClick = onNavigateBack,
+                        )
+                        LazyColumn (
+                            verticalArrangement = Arrangement.spacedBy(12.dp),
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(16.dp)
+                        ) {
+                            items(uiState.seriesDetail.seasons) { season ->
+                                SeasonCard(
+                                    seasonNumber = season.title,
+                                    episodeCount = season.episodeCount,
+                                    airDate = season.airDate,
+                                    posterUrl = season.posterPath,
+                                    caption = season.overview,
+                                    rate = season.rate,
+                                    enableBlur = uiState.enableBlur,
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

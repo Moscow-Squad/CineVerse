@@ -7,7 +7,8 @@ import javax.inject.Inject
 class AddRecentlyViewedMovieUseCase @Inject constructor(
     private val repository: RecentlyViewedRepository
 ) {
-    suspend operator fun invoke(movie: Movie) {
-        repository.addRecentlyViewedMovie(movie)
-    }
+    suspend operator fun invoke(
+        movie: Movie
+    ) = repository.addRecentlyViewedMovie(movie = movie)
+
 }

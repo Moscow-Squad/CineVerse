@@ -3,14 +3,16 @@ package com.moscow.cineverse.screen.match.pages
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import com.moscow.cineverse.designSystem.component.app_bar.MovieAppBar
 import com.moscow.cineverse.designSystem.component.wrapper.MovieScaffold
+import com.moscow.cineverse.screen.details.movie_details.MovieScreenState
 import com.moscow.cineverse.screen.match.composable.MatchCarouselAnimation
-import com.moscow.cineverse.screen.movie_details.MovieScreenState
 import com.moscow.cinverse.presentation.R
 
 @Composable
@@ -34,7 +36,8 @@ fun MatchResultsPageContent(
     ) {
         Column(
             modifier = Modifier
-                .fillMaxSize(),
+                .fillMaxSize()
+                .padding(bottom = 16.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {

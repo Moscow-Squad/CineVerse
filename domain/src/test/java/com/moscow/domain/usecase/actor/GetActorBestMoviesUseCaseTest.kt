@@ -3,15 +3,16 @@ package com.moscow.domain.usecase.actor
 import com.moscow.domain.model.Movie
 import com.moscow.domain.repository.ActorRepository
 import io.mockk.coEvery
-import org.junit.jupiter.api.Test
 import io.mockk.coVerify
 import io.mockk.mockk
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import kotlinx.datetime.LocalDate
-import org.junit.Assert.assertEquals
-import org.junit.Before
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
+import kotlin.test.assertEquals
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class GetActorBestMoviesUseCaseTest {
 
     private lateinit var actorRepository: ActorRepository
@@ -24,49 +25,38 @@ class GetActorBestMoviesUseCaseTest {
     }
 
     @Test
-    fun `invoke should return best movies for actor`() = runTest {
-        // Given
+    fun `invoke should return sorted and distinct best movies for actor`() = runTest {
         val actorId = 1
-        val expectedMovies = listOf(
-            Movie(
-                id = 101,
-                name = "Top Hit",
-                genreIds = listOf(1, 2),
-                rating = 8.7f,
-                releaseDate = LocalDate(2020, 5, 20),
-                adult = false,
-                backdropPath = "/backdrop/top_hit.jpg",
-                originalLanguage = "en",
-                originalTitle = "Top Hit Original",
-                overview = "A blockbuster movie loved by fans.",
-                posterPath = "/poster/top_hit.jpg",
-                video = false,
-                poster = "https://image.tmdb.org/t/p/w500/top_hit.jpg"
-            ),
-            Movie(
-                id = 102,
-                name = "Box Office Legend",
-                genreIds = listOf(4, 7),
-                rating = 9.1f,
-                releaseDate = LocalDate(2019, 11, 10),
-                adult = false,
-                backdropPath = "/backdrop/legend.jpg",
-                originalLanguage = "en",
-                originalTitle = "Legend of Cinema",
-                overview = "Critically acclaimed with global success.",
-                posterPath = "/poster/legend.jpg",
-                video = true,
-                poster = "https://image.tmdb.org/t/p/w500/legend.jpg"
-            )
+        val duplicateMovie = Movie(
+            id = 101,
+            title = "Top Hit",
+            overview = "A blockbuster movie loved by fans.",
+            trailerUrl = "https://image.tmdb.org/t/p/w500/top_hit.jpg",
+            backdropUrl = "/backdrop/top_hit.jpg",
+            posterUrl = "https://image.tmdb.org/t/p/w500/top_hit.jpg",
+            rating = 8.7f,
+            genreIds = listOf(1, 2),
+            releaseDate = LocalDate(2020, 5, 20),
+            genres = listOf("Action", "Adventure"),
+            duration = Movie.Duration(hours = 2, minutes = 30)
         )
-        coEvery { actorRepository.getBestOfMovies(actorId) } returns expectedMovies
 
-        // When
-        val result = actorRepository.getBestOfMovies(actorId)
+        val expectedMovies = listOf(
+            duplicateMovie,
+            duplicateMovie.copy(id = 102, title = "Box Office Legend")
+        )
 
-        // Then
+        val inputMovies = listOf(
+            duplicateMovie,
+            duplicateMovie.copy(id = 102, title = "Box Office Legend"),
+            duplicateMovie
+        )
+
+        coEvery { actorRepository.getBestOfMovies(actorId) } returns inputMovies
+
+        val result = useCase(actorId)
+
         assertEquals(expectedMovies, result)
         coVerify(exactly = 1) { actorRepository.getBestOfMovies(actorId) }
     }
-
 }

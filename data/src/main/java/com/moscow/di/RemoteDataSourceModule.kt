@@ -1,20 +1,21 @@
 package com.moscow.di
 
-import com.moscow.data_source.remote.HomeRemoteDataSource
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
+import com.moscow.data_source.remote.AccountRemoteDataSource
 import com.moscow.data_source.remote.ActorRemoteDataSource
 import com.moscow.data_source.remote.CollectionRemoteDataSource
 import com.moscow.data_source.remote.GenreRemoteDataSource
-import com.moscow.data_source.remote.LoginRemoteDataSource
+import com.moscow.data_source.remote.AuthenticationRemoteDataSource
 import com.moscow.data_source.remote.MovieRemoteDataSource
 import com.moscow.data_source.remote.SearchRemoteDataSource
 import com.moscow.data_source.remote.SeriesRemoteDataSource
-import com.moscow.domain.repository.language.LanguageProvider
+import com.moscow.domain.service.language.LanguageProvider
 import com.moscow.data_source.remote.ProfileRemoteDataSource
+import com.moscow.remote.data_source.AccountRemoteDataSourceImpl
 import com.moscow.remote.data_source.ActorRemoteDataSourceImpl
 import com.moscow.remote.data_source.CollectionRemoteDataSourceImpl
 import com.moscow.remote.data_source.GenreRemoteDataSourceImpl
-import com.moscow.remote.data_source.LoginRemoteDataSourceImpl
+import com.moscow.remote.data_source.AuthenticationRemoteDataSourceImpl
 import com.moscow.remote.data_source.MovieRemoteDataSourceImpl
 import com.moscow.remote.data_source.ProfileRemoteDataSourceImpl
 import com.moscow.remote.data_source.SearchRemoteDataSourceImpl
@@ -23,14 +24,12 @@ import com.moscow.remote.interceptors.CineVerseInterceptor
 import com.moscow.remote.services.ActorService
 import com.moscow.remote.services.CollectionsService
 import com.moscow.remote.services.GenreService
-import com.moscow.remote.services.LoginService
+import com.moscow.remote.services.AuthenticationService
 import com.moscow.remote.services.MovieService
 import com.moscow.remote.services.ProfileService
 import com.moscow.remote.services.SearchService
 import com.moscow.remote.services.SeriesService
 import com.moscow.utils.BASE_URL
-import com.moscow.remote.data_source.HomeRemoteDataSourceImpl
-import com.remote.services.HomeService
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -44,9 +43,6 @@ import retrofit2.Retrofit
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
-private const val TIMEOUT = 20L
-private val contentType = "application/json".toMediaType()
-
 @Module
 @InstallIn(SingletonComponent::class)
 abstract class RemoteDataSourceModule {
@@ -54,6 +50,10 @@ abstract class RemoteDataSourceModule {
     @Binds
     @Singleton
     abstract fun bindSearchRemoteDataSource(impl: SearchRemoteDataSourceImpl): SearchRemoteDataSource
+
+    @Binds
+    @Singleton
+    abstract fun bindAccountRemoteDataSource(impl: AccountRemoteDataSourceImpl): AccountRemoteDataSource
 
     @Binds
     @Singleton
@@ -77,19 +77,18 @@ abstract class RemoteDataSourceModule {
 
     @Binds
     @Singleton
-    abstract fun bindLoginRemoteDataSource(impl: LoginRemoteDataSourceImpl): LoginRemoteDataSource
+    abstract fun bindLoginRemoteDataSource(impl: AuthenticationRemoteDataSourceImpl): AuthenticationRemoteDataSource
 
-    @Binds
-    @Singleton
-    abstract fun bindHomeRemoteDataSource(impl: HomeRemoteDataSourceImpl): HomeRemoteDataSource
 
     @Binds
     @Singleton
     abstract fun bindProfileRemoteDataSource(impl: ProfileRemoteDataSourceImpl): ProfileRemoteDataSource
 
-
-
     companion object {
+
+        private const val TIMEOUT = 20L
+        private val contentType = "application/json".toMediaType()
+
         @Provides
         @Singleton
         fun provideHttpLoggingInterceptor(): HttpLoggingInterceptor {
@@ -171,15 +170,10 @@ abstract class RemoteDataSourceModule {
 
         @Provides
         @Singleton
-        fun provideLoginService(retrofit: Retrofit): LoginService {
-            return retrofit.create(LoginService::class.java)
+        fun provideLoginService(retrofit: Retrofit): AuthenticationService {
+            return retrofit.create(AuthenticationService::class.java)
         }
 
-        @Provides
-        @Singleton
-        fun provideHomeService(retrofit: Retrofit): HomeService {
-            return retrofit.create(HomeService::class.java)
-        }
         @Provides
         @Singleton
         fun provideProfileService(retrofit: Retrofit): ProfileService {

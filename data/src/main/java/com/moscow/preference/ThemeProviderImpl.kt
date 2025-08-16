@@ -4,7 +4,7 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
-import com.moscow.domain.repository.theme.ThemeProvider
+import com.moscow.domain.service.theme.ThemeProvider
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -13,9 +13,10 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import javax.inject.Named
 
 class ThemeProviderImpl @Inject constructor(
-    private val dataStore: DataStore<Preferences>
+    @Named("user_settings") private val dataStore: DataStore<Preferences>
 ) : ThemeProvider {
 
     private val _themeState = MutableStateFlow(DEFAULT_IS_DARK)

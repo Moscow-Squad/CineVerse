@@ -50,50 +50,42 @@ fun HomeScreen(
     LaunchedEffect(Unit) {
         viewmodel.uiEffect.collect { effect ->
             when (effect) {
-                is HomeEvent.CollectionClicked -> {
+                is HomeEffect.CollectionClicked -> {
                     navigateToCollectionDetails(
                         effect.collectionId,
                         effect.collectionName
                     )
                 }
 
-                is HomeEvent.MovieClicked -> {
-                    navigateToMovieDetails(
-                        effect.movieId
-                    )
-
+                is HomeEffect.MovieClicked -> {
+                    navigateToMovieDetails(effect.movieId)
                 }
 
-                is HomeEvent.PromotionClicked -> {}
-                is HomeEvent.SeeAllClicked -> {
-                    navigateToSeeMoreHome(
-                        effect.category.name
-                    )
-                    // Navigate to SeeMoreHomeScreen with the category
+                is HomeEffect.SeeAllClicked -> {
+                    navigateToSeeMoreHome(effect.category.name)
                 }
 
-                is HomeEvent.FeaturedCollectionClicked -> {
+                is HomeEffect.FeaturedCollectionClicked -> {
                     navigateToSeeMoreHome("FEATURED_COLLECTION_${effect.genreId}")
                 }
 
-                is HomeEvent.SeriesClicked -> {
-                    navigateToSeriesDetails(
-                        effect.seriesId
-                    )
-
+                is HomeEffect.SeriesClicked -> {
+                    navigateToSeriesDetails(effect.seriesId)
                 }
 
-                is HomeEvent.BrowseSuggestionClicked -> {
-                    // Use the same navigation method as bottom navigation
+                is HomeEffect.BrowseSuggestionClicked -> {
                     navigateToBrowseSuggestion()
                 }
 
-                HomeEvent.WatchingSuggestionClicked -> {
+                is HomeEffect.WatchingSuggestionClicked -> {
                     navigateToWatchingSuggestion()
                 }
 
-                HomeEvent.SeeMoreRecentlyViewed -> navigateToHistoryScreen()
-                HomeEvent.SeeMoreCollections -> {
+                is HomeEffect.SeeMoreRecentlyViewed -> {
+                    navigateToHistoryScreen()
+                }
+
+                is HomeEffect.SeeMoreCollections -> {
                     navigateToMyCollections()
                 }
             }
@@ -121,7 +113,7 @@ fun HomeScreen(
 @Composable
 fun HomeContent(
     modifier: Modifier = Modifier,
-    uiState: HomeUiState,
+    uiState: HomeScreenState,
     listener: HomeInteractionListener
 ) {
 
@@ -153,7 +145,6 @@ fun HomeContent(
                     .fillMaxWidth()
                     .weight(1f)
                     .verticalScroll(rememberScrollState()),
-                verticalArrangement = Arrangement.spacedBy(32.dp)
             ) {
 
                 HomeHeaderSlider(
@@ -168,12 +159,14 @@ fun HomeContent(
                     onMovieClick = listener::onMediaItemClicked,
                     onShowMoreClick = listener::onSeeAllClick,
                     type = HomeFeaturedItems.RECENTLY_RELEASED,
-                    modifier = Modifier,
+                    modifier = Modifier.padding(top = 16.dp),
                     enableBlur = uiState.enableBlur,
                 )
 
                 SuggestionWithHeader(
-                    modifier = Modifier.padding(horizontal = 16.dp),
+                    modifier = Modifier
+                        .padding(top = 32.dp)
+                        .padding(horizontal = 16.dp),
                     header = stringResource(id = R.string.what_sould_i_watch),
                     title = stringResource(id = R.string.let_us_choose_for_you),
                     message = stringResource(id = R.string.let_us_choose_message),
@@ -181,43 +174,46 @@ fun HomeContent(
                 )
 
                 FeaturedMovies(
+                    modifier = Modifier.padding(top = 32.dp),
                     displayMovies = uiState.upcomingMovies,
                     onMovieClick = listener::onMediaItemClicked,
                     onShowMoreClick = listener::onSeeAllClick,
                     type = HomeFeaturedItems.UPCOMING_MOVIES,
-                    modifier = Modifier,
                     enableBlur = uiState.enableBlur,
                 )
 
                 FeaturedMovies(
+                    modifier = Modifier.padding(top = 32.dp),
                     displayMovies = uiState.matchesYourVibe,
                     onMovieClick = listener::onMediaItemClicked,
                     onShowMoreClick = listener::onSeeAllClick,
-                    modifier = Modifier,
                     type = HomeFeaturedItems.MATCHES_YOUR_VIBE,
                     enableBlur = uiState.enableBlur,
                 )
 
                 FeaturedCollectionsSection(
+                    modifier = Modifier.padding(top = 32.dp),
                     collections = HomeFeaturedCollections.entries.toList(),
                     onCollectionClick = listener::onFeaturedCollectionClick,
                 )
 
                 FeaturedMovies(
+                    modifier = Modifier.padding(top = 32.dp),
                     displayMovies = uiState.topRatedTvShows,
-                    onMovieClick = listener::onMediaItemClicked,
+                    onMovieClick = { item ->
+                        listener.onMediaItemClicked(item)
+                    },
                     onShowMoreClick = listener::onSeeAllClick,
-                    modifier = Modifier,
                     type = HomeFeaturedItems.TOP_RATED_TV_SHOWS,
                     enableBlur = uiState.enableBlur,
                 )
 
                 if (!uiState.youRecentlyViewed.isEmpty()) {
                     FeaturedMovies(
+                        modifier = Modifier.padding(top = 32.dp),
                         displayMovies = uiState.youRecentlyViewed,
                         onMovieClick = listener::onMediaItemClicked,
                         onSeaMoreRecentlyViewedClicked = listener::onSeeMoreRecentlyViewedClicked,
-                        modifier = Modifier,
                         type = HomeFeaturedItems.YOU_RECENTLY_VIEWED,
                         enableBlur = uiState.enableBlur
                     )
@@ -225,6 +221,7 @@ fun HomeContent(
 
                 if (uiState.userName != null) {
                     MyCollectionsLayout(
+                        modifier = Modifier.padding(top = 32.dp),
                         items = uiState.collections,
                         onCollectionClick = listener::onCollectionClick,
                         onShowMoreClick = listener::onCollectionsShowMoreClick,
@@ -234,13 +231,12 @@ fun HomeContent(
                 SuggestionWithHeader(
                     modifier = Modifier
                         .padding(horizontal = 16.dp)
-                        .padding(bottom = 16.dp),
+                        .padding(bottom = 50.dp, top = 16.dp),
                     header = stringResource(id = R.string.need_more_to_watch),
                     title = stringResource(id = R.string.browse_everything),
                     message = stringResource(id = R.string.browse_everything_message),
                     onClick = listener::onBrowseSuggestionClick,
                 )
-
             }
         }
     }

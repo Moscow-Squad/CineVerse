@@ -2,10 +2,9 @@ package com.moscow.preference
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
-import com.moscow.domain.repository.blur.BlurProvider
+import com.moscow.domain.service.blur.BlurProvider
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,9 +13,10 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import javax.inject.Named
 
 class BlurProviderImpl @Inject constructor(
-    private val dataStore: DataStore<Preferences>
+    @Named("user_settings") private val dataStore: DataStore<Preferences>
 ) : BlurProvider {
 
     private val _blurState = MutableStateFlow(DEFAULT_BLUR_ENABLED)

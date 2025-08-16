@@ -2,17 +2,19 @@ package com.moscow.domain.usecase.rating
 
 import com.moscow.domain.model.Series
 import com.moscow.domain.model.UserType
-import com.moscow.domain.repository.PreferenceRepository
+import com.moscow.domain.repository.auth.UserRepository
 import com.moscow.domain.repository.SeriesRepository
 import jakarta.inject.Inject
 
 class GetRatedSeriesUseCase @Inject constructor(
     private val seriesRepository: SeriesRepository,
-    private val preferenceRepository: PreferenceRepository
+    private val userRepository: UserRepository
 ) {
 
-    suspend operator fun invoke(page: Int): List<RatedSeriesResult> {
-        val user = preferenceRepository.getUser()
+    suspend operator fun invoke(
+        page: Int
+    ): List<RatedSeriesResult> {
+        val user = userRepository.getUser()
         val userid = if (user is UserType.AuthenticatedUser) user.id else "0"
 
         val parseUserid = try {
@@ -28,7 +30,7 @@ class GetRatedSeriesUseCase @Inject constructor(
                     userid.substring(equalIndex + 1, commaIndex).toIntOrNull() ?: 0
                 }
             }
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             0
         }
 

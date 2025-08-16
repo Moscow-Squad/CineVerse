@@ -6,5 +6,5 @@ import javax.inject.Inject
 class ClearSearchHistoryUseCase @Inject constructor(
     private val searchRepository: SearchRepository
 ) {
-    suspend fun clearSearchHistory() = searchRepository.clearSearchHistory()
+    suspend operator fun invoke() = searchRepository.clearSearchHistory()
 }

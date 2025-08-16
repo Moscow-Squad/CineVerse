@@ -1,6 +1,6 @@
 package com.moscow.domain.usecase.login
 
-import com.moscow.domain.repository.LoginRepository
+import com.moscow.domain.repository.auth.LoginRepository
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
@@ -21,14 +21,11 @@ class LoginAsGuestUseCaseTest {
 
     @Test
     fun `invoke should return guest login result`() = runTest {
-        // Given
         val expectedResult = true
         coEvery { loginRepository.loginAsGuest() } returns expectedResult
 
-        // When
         val result = useCase()
 
-        // Then
         assertEquals(expectedResult, result)
     }
 }

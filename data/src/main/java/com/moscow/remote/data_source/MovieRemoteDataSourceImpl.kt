@@ -1,14 +1,14 @@
 package com.moscow.remote.data_source
 
 import com.moscow.data_source.remote.MovieRemoteDataSource
-import com.moscow.domain.repository.PreferenceRepository
-import com.moscow.remote.dto.CreditsDetailsDto
-import com.moscow.remote.dto.MovieDto
-import com.moscow.remote.dto.details.MediaTrailersDto
-import com.moscow.remote.dto.details.MovieDetailDto
-import com.moscow.remote.dto.rating.UserRatingResponse
-import com.moscow.remote.dto.rating.movie.RatedMovieDto
-import com.moscow.remote.dto.review.RatingRequestDto
+import com.moscow.domain.repository.auth.UserRepository
+import com.moscow.remote.dto.media_item.common.CreditsDetailsDto
+import com.moscow.remote.dto.media_item.movie.MovieDto
+import com.moscow.remote.dto.media_item.common.MediaTrailersDto
+import com.moscow.remote.dto.media_item.movie.MovieDetailDto
+import com.moscow.remote.dto.rating.response.UserRatingResponse
+import com.moscow.remote.dto.rating.response.RatedMovieDto
+import com.moscow.remote.dto.rating.request.RatingRequestDto
 import com.moscow.remote.dto.review.ReviewDto
 import com.moscow.remote.services.MovieService
 import com.moscow.utils.ApiResponse
@@ -17,7 +17,7 @@ import javax.inject.Inject
 
 class MovieRemoteDataSourceImpl @Inject constructor(
     private val movieService: MovieService,
-    private val preferenceRepository: PreferenceRepository
+    private val userRepository: UserRepository
 ) : MovieRemoteDataSource {
 
     override suspend fun getPopularMovies(page: Int): ApiResponse<MovieDto> =
@@ -31,7 +31,7 @@ class MovieRemoteDataSourceImpl @Inject constructor(
         }
 
     override suspend fun rateMovie(rating: RatingRequestDto, id: Int) {
-        val sessionId = preferenceRepository.getSessionId()
+        val sessionId = userRepository.getSessionId()
         handleApi {
             movieService.rateMovie(
                 id,
@@ -41,8 +41,8 @@ class MovieRemoteDataSourceImpl @Inject constructor(
         }
     }
 
-    override suspend fun deleteRatingMovie(movieId: Int){
-        val sessionId = preferenceRepository.getSessionId()
+    override suspend fun deleteRatingMovie(movieId: Int) {
+        val sessionId = userRepository.getSessionId()
         handleApi {
             movieService.deleteRatingMovie(
                 movieId,
@@ -55,7 +55,7 @@ class MovieRemoteDataSourceImpl @Inject constructor(
         userId: Int,
         page: Int
     ): ApiResponse<RatedMovieDto> {
-        val sessionId = preferenceRepository.getSessionId()
+        val sessionId = userRepository.getSessionId()
         return handleApi {
             movieService.getRatedMovies(
                 userId,
@@ -66,7 +66,7 @@ class MovieRemoteDataSourceImpl @Inject constructor(
     }
 
     override suspend fun getUserRatingForMovie(movieId: Int): UserRatingResponse {
-        val sessionId = preferenceRepository.getSessionId()
+        val sessionId = userRepository.getSessionId()
         return handleApi {
             movieService.getUserRatingForMovie(
                 movieId,
@@ -103,6 +103,25 @@ class MovieRemoteDataSourceImpl @Inject constructor(
             movieService.getMovieTrailers(id)
         }
 
+    override suspend fun getTrendingMovies(): ApiResponse<MovieDto> = handleApi {
+        movieService.getTrendingMovies()
+    }
+
+    override suspend fun getUpComingMovies(page: Int): ApiResponse<MovieDto> = handleApi {
+        movieService.getUpComingMovies(page)
+    }
+
+    override suspend fun getRecentlyReleasedMovies(page: Int): ApiResponse<MovieDto> = handleApi {
+        movieService.getRecentlyReleasedMovies(page)
+    }
+
+    override suspend fun getMatchYourVibeMovies(
+        genreId: Int,
+        page: Int
+    ): ApiResponse<MovieDto> = handleApi {
+        movieService.getMatchYourVibeMovies(genreId, page)
+    }
+
     override suspend fun getMatchedMovies(
         page: Int,
         genres: String?,
@@ -110,8 +129,8 @@ class MovieRemoteDataSourceImpl @Inject constructor(
         runtimeLte: Int?,
         releaseDateGte: String?,
         releaseDateLte: String?
-    ): ApiResponse<MovieDto> {
-        return handleApi {
+    ): ApiResponse<MovieDto> =
+        handleApi {
             movieService.getMatchedMovies(
                 page,
                 genres,
@@ -121,5 +140,4 @@ class MovieRemoteDataSourceImpl @Inject constructor(
                 releaseDateLte
             )
         }
-    }
 }

@@ -18,14 +18,14 @@ import com.moscow.cineverse.utlis.ViewMode
 import com.moscow.domain.model.Movie
 import com.moscow.domain.model.Series
 import com.moscow.domain.model.UserType
-import com.moscow.domain.repository.blur.BlurProvider
+import com.moscow.domain.service.blur.BlurProvider
 import com.moscow.domain.usecase.collection.GetCollectionDetailsUseCase
 import com.moscow.domain.usecase.genre.GenreUseCase
-import com.moscow.domain.usecase.home.GetMatchesYourVibesMoviesUseCase
-import com.moscow.domain.usecase.home.GetRecentlyReleasedMoviesUseCase
-import com.moscow.domain.usecase.home.GetTopRatedTVShowsUseCase
-import com.moscow.domain.usecase.home.GetUpcomingMoviesUseCase
-import com.moscow.domain.usecase.local.GetUserDetailsUseCase
+import com.moscow.domain.usecase.movie.GetMatchesYourVibesMoviesUseCase
+import com.moscow.domain.usecase.movie.GetRecentlyReleasedMoviesUseCase
+import com.moscow.domain.usecase.movie.GetUpcomingMoviesUseCase
+import com.moscow.domain.usecase.preference.GetUserDetailsUseCase
+import com.moscow.domain.usecase.series.GetTopRatedTVShowsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -78,7 +78,8 @@ class SeeMoreViewModel @Inject constructor(
                         val genreId = category.removePrefix("FEATURED_COLLECTION_").toInt()
                         updateState { state ->
                             state.copy(
-                                title = HomeFeaturedCollections.entries.find { it.genreId == genreId }?.title ?: 0
+                                title = HomeFeaturedCollections.entries.find { it.genreId == genreId }?.title
+                                    ?: 0
                             )
                         }
                         createPagingFlow(
@@ -133,7 +134,12 @@ class SeeMoreViewModel @Inject constructor(
                         updateState { it.copy(title = HomeFeaturedItems.TOP_RATED_TV_SHOWS.titleResource) }
                         createPagingFlow(
                             pageSize = pageSize,
-                            fetchData = { page -> getTopRatedTVShowsUseCase(page, forceRefresh = true) },
+                            fetchData = { page ->
+                                getTopRatedTVShowsUseCase(
+                                    page,
+                                    forceRefresh = true
+                                )
+                            },
                         )
                     }
 

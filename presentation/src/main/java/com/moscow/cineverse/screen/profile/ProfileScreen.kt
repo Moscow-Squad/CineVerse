@@ -71,6 +71,7 @@ fun ProfileContent(
     listener: ProfileInteractionListener,
     onThemeChange: (Boolean) -> Unit,
 ) {
+
     LazyColumn(
         modifier = modifier
             .fillMaxSize()
@@ -106,7 +107,8 @@ fun ProfileContent(
                     .padding(top = 12.dp, bottom = 24.dp),
                 items = listOf(
                     ProfileChipItem(
-                        R.string.history, R.drawable.due_tone_history){
+                        R.string.history, R.drawable.due_tone_history
+                    ) {
                         if (uiState.isGuest)
                             listener.onShowEditProfileBottomSheet()
                         else
@@ -119,9 +121,10 @@ fun ProfileContent(
                             listener.onShowEditProfileBottomSheet()
                         else
                             listener.onClickMyCollections()
-                      },
+                    },
                     ProfileChipItem(
-                        R.string.my_ratings, R.drawable.due_tone_star){
+                        R.string.my_ratings, R.drawable.due_tone_star
+                    ) {
                         if (uiState.isGuest)
                             listener.onShowEditProfileBottomSheet()
                         else
@@ -159,7 +162,7 @@ fun ProfileContent(
         item {
             MovieText(
                 modifier = Modifier.fillMaxWidth(),
-                text = "Version 1.0",
+                text = "Version 1.0.1",
                 color = Theme.colors.shade.tertiary,
                 style = Theme.textStyle.body.small.regular,
                 textAlign = TextAlign.Center
@@ -176,9 +179,12 @@ fun ProfileContent(
         item {
             LanguageBottomSheet(
                 visible = uiState.showLanguageBottomSheet,
-                selectedLanguage = uiState.appLanguage,
+                selectedLanguage = uiState.currentLanguage,
                 onDismiss = { listener.onCancelLanguageBottomSheet() },
-                onSelectedLanguage = { listener.onSelectedLanguage(it) })
+                switchLanguage = { language ->
+                    listener.onSelectedLanguage(language)
+                }
+            )
         }
 
         item {

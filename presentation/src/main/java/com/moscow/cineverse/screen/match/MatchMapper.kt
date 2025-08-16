@@ -1,8 +1,9 @@
 package com.moscow.cineverse.screen.match
 
 import android.util.Log
+import com.moscow.cineverse.common_ui_state.DurationUiState
+import com.moscow.cineverse.screen.details.movie_details.MovieScreenState
 import com.moscow.cineverse.screen.explore.ExploreScreenState
-import com.moscow.cineverse.screen.movie_details.MovieScreenState
 import com.moscow.domain.model.Movie
 
 object MatchMapper {
@@ -68,16 +69,17 @@ object MatchMapper {
     fun toUiState(movie: Movie, genres: List<ExploreScreenState.GenreUiState>): MovieScreenState.MovieDetailsUiState {
         return MovieScreenState.MovieDetailsUiState(
             id = movie.id,
-            title = movie.name,
-            trailerPath = "",
-            posterPath = movie.posterPath,
-            rating = movie.rating.toDouble(),
+            title = movie.title,
+            trailerUrl = "",
+            posterUrl = movie.posterUrl,
+            rating = String.format("%.1f", movie.rating.toDouble()),
             genres = if (genres.isEmpty()) emptyList() else
                 movie.genreIds.map { it -> genres.first { genre -> genre.id == it }.name },
             releaseDate = movie.releaseDate,
-            duration = -1,
+            duration = DurationUiState(0,0),
             description = movie.overview
-        ).also {         Log.d("Movies", it.toString())
+        ).also {
+            Log.d("Movies", it.toString())
         }
     }
 

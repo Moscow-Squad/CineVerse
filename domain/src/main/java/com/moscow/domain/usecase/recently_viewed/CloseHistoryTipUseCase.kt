@@ -1,10 +1,10 @@
 package com.moscow.domain.usecase.recently_viewed
 
-import com.moscow.domain.repository.PreferenceRepository
+import com.moscow.domain.repository.HistoryTipsRepository
 import javax.inject.Inject
 
 class CloseHistoryTipUseCase @Inject constructor(
-    private val preferenceRepository: PreferenceRepository
+    private val historyTipsRepository: HistoryTipsRepository
 ) {
-    suspend operator fun invoke() = preferenceRepository.closeHistoryTip()
+    suspend operator fun invoke() = historyTipsRepository.closeHistoryTip()
 }

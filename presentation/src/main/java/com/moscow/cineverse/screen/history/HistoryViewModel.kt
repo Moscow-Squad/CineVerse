@@ -2,10 +2,12 @@ package com.moscow.cineverse.screen.history
 
 import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.cineverse.common_ui_state.MediaItemUiState
-import com.moscow.cineverse.screen.home.toMediaItemUiState
-import com.moscow.domain.model.MediaType
-import com.moscow.domain.usecase.DeleteRecentlyViewedItemByIdUseCase
+import com.moscow.cineverse.common_ui_state.MediaItemUiState.MediaType
+import com.moscow.cineverse.mapper.toMediaItemUi
+import com.moscow.domain.model.Movie
+import com.moscow.domain.model.Series
 import com.moscow.domain.usecase.recently_viewed.CloseHistoryTipUseCase
+import com.moscow.domain.usecase.recently_viewed.DeleteRecentlyViewedItemByIdUseCase
 import com.moscow.domain.usecase.recently_viewed.GetRecentlyViewedMediaUseCase
 import com.moscow.domain.usecase.recently_viewed.GetShowHistoryTipUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -31,7 +33,13 @@ class HistoryViewModel @Inject constructor(
             onSuccess = { result ->
                 updateState {
                     it.copy(
-                        youRecentlyViewed = result.toMediaItemUiState(),
+                        youRecentlyViewed = result.map{ item ->
+                            when(item){
+                                is Movie -> item.toMediaItemUi()
+                                is Series -> item.toMediaItemUi()
+                                else -> MediaItemUiState()
+                            }
+                        },
                         isContentEmpty = result.isEmpty()
                     )
                 }

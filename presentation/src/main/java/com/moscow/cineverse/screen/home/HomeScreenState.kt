@@ -1,0 +1,28 @@
+package com.moscow.cineverse.screen.home
+
+import com.moscow.cineverse.common_ui_state.CollectionUiState
+import com.moscow.cineverse.common_ui_state.MediaItemUiState
+import com.moscow.cineverse.screen.explore.ExploreScreenState
+import com.moscow.cineverse.screen.my_collections.MyCollectionsUiState
+
+
+data class HomeScreenState(
+    val isLoading: Boolean = false,
+    val error: Int? = null,
+    val userName: String? = null,
+    val sliderItems: List<MediaItemUiState> = emptyList(),
+    val recentlyReleasedMovies: List<MediaItemUiState> = emptyList(),
+    val upcomingMovies: List<MediaItemUiState> = emptyList(),
+    val matchesYourVibe: List<MediaItemUiState> = emptyList(),
+    val topRatedTvShows: List<MediaItemUiState> = emptyList(),
+    val youRecentlyViewed: List<MediaItemUiState> = emptyList(),
+    val movieGenre: List<ExploreScreenState.GenreUiState> = emptyList(),
+    val collections: List<CollectionUiState> = emptyList(),
+    val enableBlur: String = "high",
+    val cashLanguage: String = "en",
+){
+    data class GenreUi(
+        val id: Int,
+        val name: String
+    )
+}
