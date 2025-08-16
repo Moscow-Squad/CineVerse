@@ -1,11 +1,14 @@
 package com.moscow.cineverse.screen.explore
 
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -101,6 +104,7 @@ private fun ExploreScreenContent(
         }
     }
     MovieScaffold(
+        modifier = modifier,
         movieAppBar = {
             Column {
                 ExploreSearchBarSection(
@@ -108,46 +112,52 @@ private fun ExploreScreenContent(
                     interactionListener,
                     isVisible = searchBarVisible
                 )
-                ExploreTabsSection(
-                    selectedTab = uiState.selectedTab,
-                    onTabSelected = interactionListener::onTabSelected,
-                    showAllTabs = uiState.isSearch
-                )
+                AnimatedVisibility(
+                    visible = !uiState.showSuggestions,
+                    enter = slideInVertically(initialOffsetY = { -it }) + fadeIn(),
+                    exit = slideOutVertically(targetOffsetY = { -it }) + fadeOut()
+                ){
+                    ExploreTabsSection(
+                        selectedTab = uiState.selectedTab,
+                        onTabSelected = interactionListener::onTabSelected,
+                        showAllTabs = uiState.isSearch
+                    )
+                }
             }
         }
     )
     {
         Box(modifier = Modifier.fillMaxSize()) {
             Column(modifier = Modifier.fillMaxSize()) {
-                Box(modifier = Modifier.weight(1f)) {
-                    when (contentList.loadState.refresh) {
-                        is LoadState.Loading -> {
-                            Box(
-                                modifier = Modifier.fillMaxSize(),
-                                contentAlignment = Alignment.Center
-                            ) {
-                                MovieCircularProgressBar()
-                            }
-                        }
+                SharedTransitionLayout {
+                    AnimatedContent(
+                        targetState = uiState.viewMode,
+                        transitionSpec = {
+                            fadeIn(tween(300)) togetherWith fadeOut(tween(300))
+                        },
+                        label = "view_mode_transition"
+                    ) { currentViewMode ->
+                        Box(modifier = Modifier.weight(1f)) {
+                            when (contentList.loadState.refresh) {
+                                is LoadState.Loading -> {
+                                    Box(
+                                        modifier = Modifier.fillMaxSize(),
+                                        contentAlignment = Alignment.Center
+                                    ) {
+                                        MovieCircularProgressBar()
+                                    }
+                                }
 
-                        is LoadState.Error -> {
-                            Box(
-                                modifier = Modifier.fillMaxSize(),
-                                contentAlignment = Alignment.Center
-                            ) {
-                                NoInternetScreen(onRetry = interactionListener::onRefresh)
-                            }
-                        }
+                                is LoadState.Error -> {
+                                    Box(
+                                        modifier = Modifier.fillMaxSize(),
+                                        contentAlignment = Alignment.Center
+                                    ) {
+                                        NoInternetScreen(onRetry = interactionListener::onRefresh)
+                                    }
+                                }
 
-                        else -> {
-                            SharedTransitionLayout {
-                                AnimatedContent(
-                                    targetState = uiState.viewMode,
-                                    transitionSpec = {
-                                        fadeIn(tween(300)) togetherWith fadeOut(tween(300))
-                                    },
-                                    label = "view_mode_transition"
-                                ) { currentViewMode ->
+                                else -> {
                                     ExploreMainContent(
                                         uiState = uiState.copy(viewMode = currentViewMode),
                                         gridState = gridState,
@@ -158,7 +168,6 @@ private fun ExploreScreenContent(
                                             searchBarVisible =
                                                 if (uiState.searchKeyWord.isNotEmpty()) true else shouldShow
                                         },
-                                        // Pass the shared transition scopes
                                         sharedTransitionScope = this@SharedTransitionLayout,
                                         animatedVisibilityScope = this@AnimatedContent
                                     )
@@ -166,19 +175,17 @@ private fun ExploreScreenContent(
                             }
                         }
                     }
-                    if (uiState.genres.isNotEmpty()) {
-                        GenresRow(
-                            uiState = uiState,
-                            genresState = genresState,
-                            interactionListener = interactionListener,
-                            isVisible = genresVisible,
-                            modifier = Modifier.align(Alignment.TopCenter)
-                        )
-                    }
                 }
             }
-            SearchSuggestionsSection(uiState, interactionListener)
-
+            if (uiState.genres.isNotEmpty()) {
+                GenresRow(
+                    uiState = uiState,
+                    genresState = genresState,
+                    interactionListener = interactionListener,
+                    isVisible = genresVisible,
+                    modifier = Modifier.align(Alignment.TopCenter)
+                )
+            }
             if (uiState.selectedTab != ExploreTabsPages.ACTORS && uiState.shouldShowError == false) {
                 ViewModeToggleButton(
                     selectedMode = uiState.viewMode,
@@ -188,6 +195,7 @@ private fun ExploreScreenContent(
                         .padding(end = 16.dp, bottom = 96.dp)
                 )
             }
+            SearchSuggestionsSection(uiState, interactionListener)
         }
     }
 }
