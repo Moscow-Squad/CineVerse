@@ -9,6 +9,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -18,6 +19,7 @@ import com.moscow.cineverse.designSystem.component.indicator.MovieCircularProgre
 import com.moscow.cineverse.designSystem.component.wrapper.MovieScaffold
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.screen.actor_gallery.component.ActorGallery
+import com.moscow.cinverse.presentation.R
 
 @Composable
 fun ActorGalleryScreen(
@@ -40,7 +42,7 @@ fun ActorGalleryScreen(
         uiState = uiState,
         interactionListener = viewModel,
         onNavigateBack = navigateBack,
-        title = uiState.actorName
+        title = uiState.actorName+ " " + stringResource(id = R.string.gallery)
     )
 }
 
