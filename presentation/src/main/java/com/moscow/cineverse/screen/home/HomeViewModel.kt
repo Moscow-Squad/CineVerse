@@ -13,6 +13,7 @@ import com.moscow.domain.model.Movie
 import com.moscow.domain.model.Series
 import com.moscow.domain.model.UserType
 import com.moscow.domain.service.blur.BlurProvider
+import com.moscow.domain.service.language.LanguageProvider
 import com.moscow.domain.usecase.collection.GetUserCollectionsUseCase
 import com.moscow.domain.usecase.genre.GenreUseCase
 import com.moscow.domain.usecase.movie.GetMatchesYourVibesMoviesUseCase
@@ -25,6 +26,7 @@ import com.moscow.domain.usecase.series.GetTopRatedTVShowsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -40,9 +42,15 @@ class HomeViewModel @Inject constructor(
     private val getRecentlyViewedMediaUseCase: GetRecentlyViewedMediaUseCase,
     private val genreUseCase: GenreUseCase,
     private val blurProvider: BlurProvider,
+    private val languageProvider: LanguageProvider,
 ) : BaseViewModel<HomeScreenState, HomeEffect>(HomeScreenState()), HomeInteractionListener {
 
     init {
+        viewModelScope.launch {
+            val lang = languageProvider.currentLanguage.first()
+            updateState { it.copy(cashLanguage = lang) }
+        }
+        observeLanguage()
         getGenres()
         observeBlur()
     }
@@ -66,6 +74,17 @@ class HomeViewModel @Inject constructor(
                 }
             },
         )
+    }
+
+    private fun observeLanguage() {
+        viewModelScope.launch {
+            languageProvider.currentLanguage.collect { currentLanguage ->
+                if (uiState.value.cashLanguage != currentLanguage) {
+                    updateState { it.copy(cashLanguage = currentLanguage) }
+                    loadHomeData(refresh = true)
+                }
+            }
+        }
     }
 
     private fun observeBlur() {
