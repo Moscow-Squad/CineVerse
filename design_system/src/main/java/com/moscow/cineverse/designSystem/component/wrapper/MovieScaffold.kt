@@ -2,6 +2,7 @@ package com.moscow.cineverse.designSystem.component.wrapper
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -22,16 +23,15 @@ fun MovieScaffold(
     modifier: Modifier = Modifier,
     movieFloatingActionButton: @Composable () -> Unit = {},
     movieAppBar: @Composable () -> Unit = {},
-    content: @Composable () -> Unit = {}
+    content: @Composable BoxScope.() -> Unit = {}
 ) {
     Scaffold(
-        modifier = modifier.fillMaxSize(),
+        modifier = modifier
+            .fillMaxSize()
+            .background(Theme.colors.background.screen)
+            .statusBarsPadding(),
         topBar = {
-            Box(
-                modifier = Modifier.statusBarsPadding()
-            ) {
-                movieAppBar()
-            }
+            movieAppBar()
         },
         floatingActionButton = {
             movieFloatingActionButton()

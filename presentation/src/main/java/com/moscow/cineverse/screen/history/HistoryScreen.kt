@@ -1,5 +1,6 @@
 package com.moscow.cineverse.screen.history
 
+import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -132,6 +133,7 @@ fun HistoryContent(
     }
 }
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun HistoryMediaItemCard(
     modifier: Modifier = Modifier,

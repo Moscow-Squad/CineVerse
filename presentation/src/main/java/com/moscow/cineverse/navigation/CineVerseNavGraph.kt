@@ -41,6 +41,7 @@ fun CineVerseNavGraph(
     navViewModel: NavViewModel,
     navController: NavHostController,
     scaffoldPaddingValues: PaddingValues,
+    onBottomNavVisibilityChange: (Boolean) -> Unit = {}
 ) {
     val startDestination = navViewModel.startDestination.value ?: return
 
@@ -69,7 +70,7 @@ fun CineVerseNavGraph(
             collectionsBottomSheetRoute(navController)
             homeRoute(navController)
             seeMoreRoute(navController)
-            matchRoute(navController)
+            matchRoute(navController, onBottomNavVisibilityChange)
             profileRoute(navController)
             collectionDetailsRoute(navController)
             myCollections(navController)

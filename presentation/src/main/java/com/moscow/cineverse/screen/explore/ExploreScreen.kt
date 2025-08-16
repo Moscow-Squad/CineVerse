@@ -1,14 +1,18 @@
 package com.moscow.cineverse.screen.explore
 
-import androidx.compose.foundation.background
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionLayout
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -25,7 +29,7 @@ import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.moscow.cineverse.component.NoInternetScreen
 import com.moscow.cineverse.designSystem.component.indicator.MovieCircularProgressBar
-import com.moscow.cineverse.designSystem.theme.Theme
+import com.moscow.cineverse.designSystem.component.wrapper.MovieScaffold
 import com.moscow.cineverse.screen.explore.component.ExploreMainContent
 import com.moscow.cineverse.screen.explore.component.ExploreSearchBarSection
 import com.moscow.cineverse.screen.explore.component.ExploreTabsSection
@@ -89,6 +93,7 @@ private fun handleEffects(
     }
 }
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 private fun ExploreScreenContent(
     uiState: ExploreScreenState,
@@ -121,16 +126,9 @@ private fun ExploreScreenContent(
             searchBarVisible = true
         }
     }
-
-    Surface(
-        modifier = modifier
-            .background(Theme.colors.background.screen)
-            .systemBarsPadding()
-            .fillMaxSize(),
-        color = Theme.colors.background.screen
-    ) {
-        Box(modifier = Modifier.fillMaxSize()) {
-            Column(modifier = Modifier.fillMaxSize()) {
+    MovieScaffold(
+        movieAppBar = {
+            Column {
                 ExploreSearchBarSection(
                     uiState,
                     interactionListener,
@@ -141,8 +139,13 @@ private fun ExploreScreenContent(
                     onTabSelected = interactionListener::onTabSelected,
                     showAllTabs = uiState.isSearch
                 )
-
-                Box(modifier = Modifier.fillMaxSize()) {
+            }
+        }
+    )
+    {
+        Box(modifier = Modifier.fillMaxSize()) {
+            Column(modifier = Modifier.fillMaxSize()) {
+                Box(modifier = Modifier.weight(1f)) {
                     when (contentList.loadState.refresh) {
                         is LoadState.Loading -> {
                             Box(
@@ -163,17 +166,30 @@ private fun ExploreScreenContent(
                         }
 
                         else -> {
-                            ExploreMainContent(
-                                uiState = uiState,
-                                gridState = gridState,
-                                contentList = contentList,
-                                interactionListener = interactionListener,
-                                onGenresVisibilityChange = { shouldShow ->
-                                    genresVisible = shouldShow
-                                    searchBarVisible =
-                                        if(uiState.searchKeyWord.isNotEmpty()) true else shouldShow
+                            SharedTransitionLayout {
+                                AnimatedContent(
+                                    targetState = uiState.viewMode,
+                                    transitionSpec = {
+                                        fadeIn(tween(300)) togetherWith fadeOut(tween(300))
+                                    },
+                                    label = "view_mode_transition"
+                                ) { currentViewMode ->
+                                    ExploreMainContent(
+                                        uiState = uiState.copy(viewMode = currentViewMode),
+                                        gridState = gridState,
+                                        contentList = contentList,
+                                        interactionListener = interactionListener,
+                                        onGenresVisibilityChange = { shouldShow ->
+                                            genresVisible = shouldShow
+                                            searchBarVisible =
+                                                if (uiState.searchKeyWord.isNotEmpty()) true else shouldShow
+                                        },
+                                        // Pass the shared transition scopes
+                                        sharedTransitionScope = this@SharedTransitionLayout,
+                                        animatedVisibilityScope = this@AnimatedContent
+                                    )
                                 }
-                            )
+                            }
                         }
                     }
                     if (uiState.genres.isNotEmpty()) {

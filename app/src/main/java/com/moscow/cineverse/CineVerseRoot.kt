@@ -7,6 +7,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -33,18 +36,21 @@ fun CineVerseRoot(
 
     val isNavBarVisible by rememberIsInGraph(currentNavBackStackEntry, destinations.keys)
 
+    var matchBottomNavVisible by rememberSaveable { mutableStateOf(true) }
+
+    val showBottomNav = isNavBarVisible && matchBottomNavVisible
+
     Scaffold(
         modifier = Modifier
-            .fillMaxSize(),
+            .fillMaxSize()
+            .navigationBarsPadding(),
         bottomBar = {
-
-            if (isNavBarVisible) NavBar(
+            if (showBottomNav) NavBar(
                 selectedItem = destinations.values.elementAt(navGraphIndex),
                 onItemClick = { index, _ ->
                     val targetGraph = destinations.keys.elementAt(index)
                     navController.navigateToNewGraph(targetGraph)
                 })
-
         }
     ) { paddingValues ->
         CineVerseNavGraph(
@@ -53,7 +59,10 @@ fun CineVerseRoot(
                 .navigationBarsPadding(),
             navController = navController,
             navViewModel = navViewModel,
-            scaffoldPaddingValues = paddingValues
+            scaffoldPaddingValues = paddingValues,
+            onBottomNavVisibilityChange = { isVisible ->
+                matchBottomNavVisible = isVisible
+            }
         )
     }
 }

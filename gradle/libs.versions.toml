@@ -66,6 +66,7 @@ datastore = "1.1.7"
 readMoreVersion = "1.6.3"
 coreSplashscreen = "1.0.1"
 serializationKotlin = "2.0.0"
+uiTooling = "1.8.3"
 
 [libraries]
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
@@ -151,6 +152,7 @@ androidx-datastore-core = { group = "androidx.datastore", name = "datastore-core
 # Gradle Plugins
 kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 android-gradle-plugin = { module = "com.android.tools.build:gradle", version.ref = "agp" }
+ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling", version.ref = "uiTooling" }
 
 [plugins]
 kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }

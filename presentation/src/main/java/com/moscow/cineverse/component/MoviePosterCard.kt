@@ -1,5 +1,13 @@
 package com.moscow.cineverse.component
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -7,6 +15,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -33,6 +42,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.moscow.cineverse.common_ui_state.MediaItemUiState
 import com.moscow.cineverse.designSystem.component.blur.OnBlurContent
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.image_viewer.component.SafeImageViewer
@@ -40,6 +50,7 @@ import com.moscow.cineverse.screen.movie_details.InfoSection
 import com.moscow.cineverse.utlis.ViewMode
 import com.moscow.cinverse.presentation.R
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun MoviePosterCard(
     modifier: Modifier = Modifier,
@@ -53,7 +64,14 @@ fun MoviePosterCard(
     showTitle: Boolean = true,
     getTitleOverride: ((MediaItemUiState) -> String)? = null,
     useFixedHeight: Boolean = false,
+    sharedTransitionScope: SharedTransitionScope? = null,
+    animatedVisibilityScope: androidx.compose.animation.AnimatedVisibilityScope? = null,
 ) {
+    val posterKey = "movie_poster_${movie.id}"
+    val titleKey = "movie_title_${movie.id}"
+    val ratingKey = "movie_rating_${movie.id}"
+    val detailsKey = "movie_details_${movie.id}"
+
     when (viewMode) {
         ViewMode.GRID -> GridMovieCard(
             modifier = modifier,
@@ -65,7 +83,13 @@ fun MoviePosterCard(
             showTitle = showTitle,
             showBackdrop = showBackdrop,
             useFixedHeight = useFixedHeight,
-            getTitleOverride = getTitleOverride
+            getTitleOverride = getTitleOverride,
+            posterKey = posterKey,
+            titleKey = titleKey,
+            ratingKey = ratingKey,
+            detailsKey = detailsKey,
+            sharedTransitionScope = sharedTransitionScope,
+            animatedVisibilityScope = animatedVisibilityScope
         )
 
         ViewMode.LIST -> ListMovieCard(
@@ -73,7 +97,13 @@ fun MoviePosterCard(
             movie = movie,
             onMovieClick = onMovieClick,
             enableBlur = enableBlur,
-            getTitleOverride = getTitleOverride
+            getTitleOverride = getTitleOverride,
+            posterKey = posterKey,
+            titleKey = titleKey,
+            ratingKey = ratingKey,
+            detailsKey = detailsKey,
+            sharedTransitionScope = sharedTransitionScope,
+            animatedVisibilityScope = animatedVisibilityScope
         )
     }
 }
@@ -99,12 +129,13 @@ private fun RemoteImagePlaceholder(
         Icon(
             painter = painterResource(R.drawable.due_tone_image),
             contentDescription = "Movie Poster",
-            tint = Theme.colors.brand.secondary,
+            tint = Theme.colors.shade.secondary,
             modifier = Modifier.size(iconSize)
         )
     }
 }
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 private fun GridMovieCard(
     modifier: Modifier = Modifier,
@@ -116,7 +147,13 @@ private fun GridMovieCard(
     enableBlur: String,
     titleTextAlign: TextAlign,
     useFixedHeight: Boolean = false,
-    getTitleOverride: ((MediaItemUiState) -> String)? = null
+    getTitleOverride: ((MediaItemUiState) -> String)? = null,
+    posterKey: String,
+    titleKey: String,
+    ratingKey: String,
+    detailsKey: String,
+    sharedTransitionScope: SharedTransitionScope?,
+    animatedVisibilityScope: androidx.compose.animation.AnimatedVisibilityScope?
 ) {
     Column(
         modifier = modifier
@@ -130,6 +167,19 @@ private fun GridMovieCard(
                     } else {
                         Modifier.aspectRatio(0.75f)
                     }
+                )
+                .then(
+                    if (sharedTransitionScope != null && animatedVisibilityScope != null) {
+                        with(sharedTransitionScope) {
+                            Modifier.sharedElement(
+                                sharedContentState = rememberSharedContentState(key = posterKey),
+                                animatedVisibilityScope = animatedVisibilityScope,
+                                boundsTransform = { _, _ ->
+                                    tween(durationMillis = 600)
+                                }
+                            )
+                        }
+                    } else Modifier
                 )
                 .clip(RoundedCornerShape(Theme.radius.large)),
             shape = RoundedCornerShape(Theme.radius.large),
@@ -167,7 +217,44 @@ private fun GridMovieCard(
                     OnBlurContent()
                 }
 
-                if (showRating && movie.rating >= 0) {
+                if (showRating && movie.rating >= 0 && sharedTransitionScope != null && animatedVisibilityScope != null) {
+                    with(sharedTransitionScope) {
+                        Surface(
+                            modifier = Modifier
+                                .align(Alignment.TopEnd)
+                                .padding(8.dp)
+                                .sharedElement(
+                                    sharedContentState = rememberSharedContentState(key = ratingKey),
+                                    animatedVisibilityScope = animatedVisibilityScope,
+                                    boundsTransform = { _, _ ->
+                                        tween(durationMillis = 600)
+                                    }
+                                ),
+                            shape = CircleShape,
+                            color = Theme.colors.background.card.copy(alpha = 0.9f),
+                            shadowElevation = 2.dp
+                        ) {
+                            Row(
+                                modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Text(
+                                    text = "%.1f".format(movie.rating),
+                                    color = Theme.colors.shade.primary,
+                                    style = Theme.textStyle.label.medium.medium
+                                )
+                                Icon(
+                                    painter = painterResource(R.drawable.due_tone_star),
+                                    contentDescription = "Rating",
+                                    tint = Theme.colors.additional.primary.yellow,
+                                    modifier = Modifier
+                                        .size(16.dp)
+                                        .padding(start = 2.dp)
+                                )
+                            }
+                        }
+                    }
+                } else if (showRating && movie.rating >= 0) {
                     Surface(
                         modifier = Modifier
                             .align(Alignment.TopEnd)
@@ -212,6 +299,19 @@ private fun GridMovieCard(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(top = 8.dp)
+                        .then(
+                            if (sharedTransitionScope != null && animatedVisibilityScope != null) {
+                                with(sharedTransitionScope) {
+                                    Modifier.sharedElement(
+                                        sharedContentState = rememberSharedContentState(key = titleKey),
+                                        animatedVisibilityScope = animatedVisibilityScope,
+                                        boundsTransform = { _, _ ->
+                                            tween(durationMillis = 600)
+                                        }
+                                    )
+                                }
+                            } else Modifier
+                        )
                         .clickable(
                             indication = null,
                             interactionSource = remember { MutableInteractionSource() },
@@ -220,16 +320,45 @@ private fun GridMovieCard(
                 )
             }
         }
+
+        if (sharedTransitionScope != null && animatedVisibilityScope != null) {
+            AnimatedVisibility(
+                visible = false,
+                enter = fadeIn(tween(300)) + slideInVertically(tween(300)),
+                exit = fadeOut(tween(300)) + slideOutVertically(tween(300))
+            ) {
+                with(sharedTransitionScope) {
+                    DurationAndDateSection(
+                        duration = movie.duration,
+                        releaseDate = movie.releaseDate,
+                        modifier = Modifier.sharedElement(
+                            sharedContentState = rememberSharedContentState(key = detailsKey),
+                            animatedVisibilityScope = this@AnimatedVisibility,
+                            boundsTransform = { _, _ ->
+                                tween(durationMillis = 600)
+                            }
+                        )
+                    )
+                }
+            }
+        }
     }
 }
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 private fun ListMovieCard(
     modifier: Modifier = Modifier,
     movie: MediaItemUiState,
     onMovieClick: (Int) -> Unit,
     enableBlur: String,
-    getTitleOverride: ((MediaItemUiState) -> String)? = null
+    getTitleOverride: ((MediaItemUiState) -> String)? = null,
+    posterKey: String,
+    titleKey: String,
+    ratingKey: String,
+    detailsKey: String,
+    sharedTransitionScope: SharedTransitionScope?,
+    animatedVisibilityScope: androidx.compose.animation.AnimatedVisibilityScope?
 ) {
     Card(
         modifier = modifier
@@ -248,7 +377,19 @@ private fun ListMovieCard(
                     modifier = Modifier
                         .width(64.dp)
                         .fillMaxHeight()
-                        .clip(
+                        .then(
+                            if (sharedTransitionScope != null && animatedVisibilityScope != null) {
+                                with(sharedTransitionScope) {
+                                    Modifier.sharedElement(
+                                        sharedContentState = rememberSharedContentState(key = posterKey),
+                                        animatedVisibilityScope = animatedVisibilityScope,
+                                        boundsTransform = { _, _ ->
+                                            tween(durationMillis = 600)
+                                        }
+                                    )
+                                }
+                            } else Modifier
+                        ).clip(
                             RoundedCornerShape(
                                 topStart = Theme.radius.large,
                                 topEnd = Theme.radius.large,
@@ -284,16 +425,120 @@ private fun ListMovieCard(
                         .padding(vertical = 12.5.dp, horizontal = 12.dp),
                     verticalArrangement = Arrangement.Center
                 ) {
-                    InfoSection(
-                        title = getTitleOverride?.invoke(movie) ?: movie.title,
-                        genres = movie.genres,
-                        paddingTop = 4.dp,
-                        rating = movie.rating
-                    )
+                    if (sharedTransitionScope != null && animatedVisibilityScope != null) {
+                        with(sharedTransitionScope) {
+                            InfoSection(
+                                title = getTitleOverride?.invoke(movie) ?: movie.title,
+                                genres = movie.genres,
+                                paddingTop = 4.dp,
+                                rating = movie.rating,
+                                showRating = false,
+                                modifier = Modifier.sharedElement(
+                                    sharedContentState = rememberSharedContentState(key = titleKey),
+                                    animatedVisibilityScope = animatedVisibilityScope,
+                                    boundsTransform = { _, _ ->
+                                        tween(durationMillis = 600)
+                                    }
+                                )
+                            )
+                        }
+                    } else {
+                        InfoSection(
+                            title = getTitleOverride?.invoke(movie) ?: movie.title,
+                            genres = movie.genres,
+                            paddingTop = 4.dp,
+                            rating = movie.rating,
+                            showRating = false
+                        )
+                    }
 
-                    DurationAndDateSection(
-                        releaseDate = movie.releaseDate
-                    )
+                    if (sharedTransitionScope != null && animatedVisibilityScope != null) {
+                        with(sharedTransitionScope) {
+                            DurationAndDateSection(
+                                duration = movie.duration,
+                                releaseDate = movie.releaseDate,
+                                modifier = Modifier.sharedElement(
+                                    sharedContentState = rememberSharedContentState(key = detailsKey),
+                                    animatedVisibilityScope = animatedVisibilityScope,
+                                    boundsTransform = { _, _ ->
+                                        tween(durationMillis = 600)
+                                    }
+                                )
+                            )
+                        }
+                    } else {
+                        DurationAndDateSection(
+                            duration = movie.duration,
+                            releaseDate = movie.releaseDate
+                        )
+                    }
+                }
+            }
+
+            if (movie.rating >= 0 && sharedTransitionScope != null && animatedVisibilityScope != null) {
+                with(sharedTransitionScope) {
+                    Surface(
+                        modifier = Modifier
+                            .align(Alignment.TopEnd)
+                            .padding(8.dp)
+                            .sharedElement(
+                                sharedContentState = rememberSharedContentState(key = ratingKey),
+                                animatedVisibilityScope = animatedVisibilityScope,
+                                boundsTransform = { _, _ ->
+                                    tween(durationMillis = 600)
+                                }
+                            ),
+                        shape = CircleShape,
+                        color = Theme.colors.background.card.copy(alpha = 0.9f),
+                        shadowElevation = 2.dp
+                    ) {
+                        Row(
+                            modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                text = "%.1f".format(movie.rating),
+                                color = Theme.colors.shade.primary,
+                                style = Theme.textStyle.label.small.medium
+                            )
+                            Icon(
+                                painter = painterResource(R.drawable.due_tone_star),
+                                contentDescription = "Rating",
+                                tint = Theme.colors.additional.primary.yellow,
+                                modifier = Modifier
+                                    .size(12.dp)
+                                    .padding(start = 1.dp)
+                            )
+                        }
+                    }
+                }
+            } else if (movie.rating >= 0) {
+                Surface(
+                    modifier = Modifier
+                        .align(Alignment.TopEnd)
+                        .padding(8.dp),
+                    shape = CircleShape,
+                    color = Theme.colors.background.card.copy(alpha = 0.9f),
+                    shadowElevation = 2.dp
+                ) {
+                    Row(
+                        modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = "%.1f".format(movie.rating),
+                            color = Theme.colors.shade.primary,
+                            style = Theme.textStyle.label.small.medium
+                        )
+                        Icon(
+                            painter = painterResource(R.drawable.due_tone_star),
+                            contentDescription = "Rating",
+                            tint = Theme.colors.additional.primary.yellow,
+                            modifier = Modifier
+                                .size(12.dp)
+                                .padding(start = 1.dp)
+                        )
+                    }
                 }
             }
         }
@@ -303,12 +548,32 @@ private fun ListMovieCard(
 @Composable
 private fun DurationAndDateSection(
     modifier: Modifier = Modifier,
+    duration: String,
     releaseDate: String
 ) {
     Row(
         modifier = modifier.padding(top = 8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
+        if (duration.isNotEmpty()) {
+            Icon(
+                painter = painterResource(R.drawable.due_tone_clock),
+                contentDescription = "Duration",
+                tint = Theme.colors.shade.secondary,
+                modifier = Modifier.size(16.dp)
+            )
+            Text(
+                text = duration,
+                style = Theme.textStyle.label.medium.medium,
+                color = Theme.colors.shade.secondary,
+                modifier = Modifier.padding(start = 4.dp)
+            )
+        }
+
+        if (duration.isNotEmpty() && releaseDate.isNotEmpty()) {
+            Spacer(modifier = Modifier.width(8.dp))
+        }
+
         if (releaseDate.isNotEmpty()) {
             Icon(
                 painter = painterResource(R.drawable.due_tone_calendar),

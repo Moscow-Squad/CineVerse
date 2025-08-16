@@ -1,6 +1,7 @@
 package com.moscow.cineverse.screen.home.components
 
 import android.graphics.BlurMaskFilter
+import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
@@ -45,6 +46,7 @@ import com.moscow.cineverse.designSystem.theme.Theme
 import kotlinx.coroutines.delay
 import kotlin.math.absoluteValue
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun HomeHeaderSlider(
     items: List<MediaItemUiState>,

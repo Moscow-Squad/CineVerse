@@ -42,19 +42,17 @@ internal fun UserInfo(
     Row(
         modifier
             .fillMaxWidth()
-            .background(
-                color = Theme.colors.background.card,
-                shape = RoundedCornerShape(Theme.radius.large)
-            )
-            .padding(12.dp)
-            .clickable { onClick() },
+            .clip(shape = RoundedCornerShape(Theme.radius.large))
+            .background(color = Theme.colors.background.card)
+            .clickable { onClick() }
+            .padding(12.dp),
         horizontalArrangement = Arrangement.spacedBy(16.dp),
         verticalAlignment = Alignment.CenterVertically
 
     ) {
 
         Box(
-            modifier = modifier
+            modifier = Modifier
                 .size(56.dp)
                 .clip(CircleShape)
                 .background(Theme.colors.shade.quinary),

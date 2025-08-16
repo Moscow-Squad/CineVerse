@@ -7,15 +7,15 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.moscow.domain.model.UserType
-import com.moscow.domain.repository.auth.UserRepository
+import com.moscow.domain.repository.PreferenceRepository
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
-class UserRepositoryImpl @Inject constructor(
+class PreferenceRepositoryImpl @Inject constructor(
     private val dataStore: DataStore<Preferences>
-) : UserRepository {
+) : PreferenceRepository {
 
     override suspend fun saveUser(userType: UserType) {
         dataStore.edit { preferences ->
@@ -30,6 +30,8 @@ class UserRepositoryImpl @Inject constructor(
                     preferences[RECENTLY_VIEWED_COLLECTION_ID] = userType.recentlyCollectionId
                     preferences[Is_LOGGED_IN_KEY] = true
                     preferences[SHOW_COLLECTION_DETAILS_TIP] = true
+                    preferences[SHOW_HISTORY_TIP] = true
+                    preferences[SHOW_RATING_TIP] = true
                     preferences.remove(EXPIRED_AT_KEY)
                 }
 
@@ -39,6 +41,8 @@ class UserRepositoryImpl @Inject constructor(
                     preferences[EXPIRED_AT_KEY] = userType.expiredAt.toString()
                     preferences[Is_LOGGED_IN_KEY] = false
                     preferences[SHOW_COLLECTION_DETAILS_TIP] = true
+                    preferences[SHOW_HISTORY_TIP] = true
+                    preferences[SHOW_RATING_TIP] = true
                     preferences.remove(USER_ID_KEY)
                     preferences.remove(USERNAME_KEY)
                 }
@@ -76,12 +80,12 @@ class UserRepositoryImpl @Inject constructor(
                             expiredAt = expiredAt
                         )
                     }
-
                     else -> throw IllegalStateException("Invalid user type")
                 }
             }
             .first()
     }
+
 
     override suspend fun getSessionId(): String {
         return dataStore.data.map { it[SESSION_ID_KEY] }.firstOrNull() ?: ""
@@ -92,7 +96,11 @@ class UserRepositoryImpl @Inject constructor(
     }
 
     override suspend fun clearUser() {
-        dataStore.edit { it.clear() }
+        dataStore.edit { prefs ->
+            prefs.clear()
+            prefs[USER_TYPE_KEY] = GUEST_USER
+            prefs[IS_ON_BOARDING_SEEN_KEY] = true
+        }
     }
 
     override suspend fun isGuest(): Boolean {
@@ -101,6 +109,44 @@ class UserRepositoryImpl @Inject constructor(
 
     override suspend fun isLoggedIn(): Boolean {
         return dataStore.data.map { it[Is_LOGGED_IN_KEY] }.first() == true
+    }
+
+    override suspend fun showCategoryDetailsTip(): Boolean {
+        return dataStore.data.map { it[SHOW_COLLECTION_DETAILS_TIP] }.first() ?: true
+    }
+
+    override suspend fun closeCategoryDetailsTip() {
+        dataStore.edit { preferences ->
+            preferences[SHOW_COLLECTION_DETAILS_TIP] = false
+        }
+    }
+
+    override suspend fun isOnBoardingCompleted(): Boolean {
+        return dataStore.data.map { it[IS_ON_BOARDING_SEEN_KEY] }.first() == true
+    }
+
+    override suspend fun setOnBoardingCompleted() {
+        dataStore.edit { it[IS_ON_BOARDING_SEEN_KEY] = true }
+    }
+
+    override suspend fun showHistoryTip(): Boolean {
+        return dataStore.data.map { it[SHOW_HISTORY_TIP] }.first() ?: true
+    }
+
+    override suspend fun closeHistoryTip() {
+        dataStore.edit { preferences ->
+            preferences[SHOW_HISTORY_TIP] = false
+        }
+    }
+
+    override suspend fun showRatingTip(): Boolean {
+        return dataStore.data.map { it[SHOW_RATING_TIP] }.first() ?: true
+    }
+
+    override suspend fun closeRatingTip() {
+        dataStore.edit { preferences ->
+            preferences[SHOW_RATING_TIP] = false
+        }
     }
 
     companion object {
@@ -116,5 +162,8 @@ class UserRepositoryImpl @Inject constructor(
         private val EXPIRED_AT_KEY = stringPreferencesKey("expired_at")
         private val Is_LOGGED_IN_KEY = booleanPreferencesKey("is_logged_in")
         private val SHOW_COLLECTION_DETAILS_TIP = booleanPreferencesKey("is_tip_collection_details")
+        private val SHOW_HISTORY_TIP = booleanPreferencesKey("is_tip_history")
+        private val SHOW_RATING_TIP = booleanPreferencesKey("is_rating_history")
+        private val IS_ON_BOARDING_SEEN_KEY = booleanPreferencesKey("is_on_boarding_seen")
     }
 }

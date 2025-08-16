@@ -4,19 +4,17 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
-import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.moscow.cineverse.base.BaseViewModel
+import com.moscow.cineverse.mapper.toUi
+import com.moscow.cineverse.screen.explore.toUi
 import com.moscow.cineverse.utlis.ViewMode
 import com.moscow.cineverse.navigation.routes.RecommendationsRoute
 import com.moscow.cineverse.paging.BasePagingSource
-import com.moscow.cineverse.screen.explore.toUi
-import com.moscow.domain.model.Movie
 import com.moscow.domain.repository.blur.BlurProvider
 import com.moscow.domain.usecase.genre.GenreUseCase
 import com.moscow.domain.usecase.movie.GetMovieRecommendationsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -58,6 +56,7 @@ class RecommendationsMoviesViewModel @Inject constructor(
                         isLoading = false
                     )
                 }
+                getRecommendations()
             },
             onError = { e ->
                 updateState {
@@ -71,15 +70,17 @@ class RecommendationsMoviesViewModel @Inject constructor(
         )
     }
 
-    fun getRecommendations(): Flow<PagingData<Movie>> {
-        return Pager(
-            config = PagingConfig(pageSize = 20),
-            pagingSourceFactory = {
-                BasePagingSource { page ->
-                    getMovieRecommendationsUseCase(movieId, page)
+    private fun getRecommendations(){
+        updateState { it.copy(
+            recommendation = Pager(
+                config = PagingConfig(pageSize = 20),
+                pagingSourceFactory = {
+                    BasePagingSource { page ->
+                        getMovieRecommendationsUseCase(movieId, page).toUi(uiState.value.moviesGenres)
+                    }
                 }
-            }
-        ).flow.cachedIn(viewModelScope)
+            ).flow.cachedIn(viewModelScope)
+        ) }
     }
 
     override fun onViewModeChanged(viewMode: ViewMode) {

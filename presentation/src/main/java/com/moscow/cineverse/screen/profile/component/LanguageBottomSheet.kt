@@ -27,7 +27,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.moscow.cineverse.designSystem.component.bottomsheet.CineVerseBottomSheet
 import com.moscow.cineverse.designSystem.theme.Theme
-import com.moscow.cineverse.language.AppLanguage
 import com.moscow.cinverse.presentation.R
 
 @Composable
@@ -35,7 +34,7 @@ fun LanguageBottomSheet(
     visible: Boolean,
     selectedLanguage: String,
     onDismiss: () -> Unit,
-    switchLanguage: (String) -> Unit
+    onSelectedLanguage: (String) -> Unit
 ) {
     AnimatedVisibility(visible) {
         CineVerseBottomSheet(
@@ -45,9 +44,10 @@ fun LanguageBottomSheet(
             showCancelIcon = true,
         ) {
             LanguageBottomSheetContent(
-                selectedLanguage = selectedLanguage,
-                switchLanguage = switchLanguage
-            )
+                selectedLanguage
+            ) { newLanguage ->
+                onSelectedLanguage(newLanguage)
+            }
         }
     }
 }
@@ -55,7 +55,7 @@ fun LanguageBottomSheet(
 @Composable
 private fun LanguageBottomSheetContent(
     selectedLanguage: String,
-    switchLanguage: (String) -> Unit,
+    onSelectLanguage: (String) -> Unit,
 ){
     Row(
         modifier = Modifier
@@ -66,16 +66,16 @@ private fun LanguageBottomSheetContent(
         LanguageOption(
             modifier = Modifier.weight(1f),
             name = stringResource(R.string.english),
-            imageRes = R.drawable.colored_uk_flag,
-            isSelected = selectedLanguage == AppLanguage.English.code,
-            onClick = { switchLanguage(AppLanguage.English.code) }
+            imageRes = R.drawable.uk_flag,
+            isSelected = selectedLanguage == "en",
+            onClick = { onSelectLanguage("en") }
         )
         LanguageOption(
             modifier = Modifier.weight(1f),
             name = stringResource(R.string.arabic),
             imageRes = R.drawable.colored_iraq_flag,
-            isSelected = selectedLanguage == AppLanguage.Arabic.code,
-            onClick = { switchLanguage(AppLanguage.Arabic.code) }
+            isSelected = selectedLanguage == "ar",
+            onClick = { onSelectLanguage("ar") }
         )
     }
 }
@@ -100,7 +100,7 @@ fun LanguageOption(
 
     Column(
         modifier = modifier
-            .clip(RoundedCornerShape(Theme.radius.large))
+            .clip(shape = RoundedCornerShape(Theme.radius.large))
             .background(color = backgroundColor)
             .border(
                 width = 1.dp,
