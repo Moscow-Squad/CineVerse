@@ -9,20 +9,19 @@ import org.junit.jupiter.api.BeforeEach
 import kotlin.test.Test
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class CacheSearchQueryUseCaseTest {
+class ClearSearchHistoryUseCaseTest {
 
     private val searchRepository: SearchRepository = mockk(relaxed = true)
-    private lateinit var useCase: CacheSearchQueryUseCase
+    private lateinit var useCase: ClearSearchHistoryUseCase
 
     @BeforeEach
     fun setup() {
-        useCase = CacheSearchQueryUseCase(searchRepository)
+        useCase = ClearSearchHistoryUseCase(searchRepository)
     }
 
     @Test
-    fun `should cache search query`() = runTest {
-        val query = "Inception"
-        useCase(query)
-        coVerify { searchRepository.cacheSearchQuery(query) }
+    fun `should clear search history`() = runTest {
+        useCase()
+        coVerify { searchRepository.clearSearchHistory() }
     }
 }
