@@ -1,9 +1,7 @@
 package com.moscow.cineverse.screen.explore
 
-import com.moscow.cineverse.common_ui_state.DurationUiState
 import com.moscow.cineverse.common_ui_state.MediaItemUiState
 import com.moscow.cineverse.common_ui_state.MediaItemUiState.MediaType
-import com.moscow.cineverse.mapper.toUi
 import com.moscow.cineverse.screen.explore.ExploreScreenState.ActorUiState
 import com.moscow.cineverse.screen.explore.ExploreScreenState.GenreUiState
 import com.moscow.domain.model.Actor
@@ -20,7 +18,9 @@ fun Movie.toUi(genresList: List<GenreUiState> = listOf()): MediaItemUiState =
         posterPath = posterUrl,
         rating = rating,
         genres = if (genresList.isEmpty()) emptyList() else
-            genreIds.map { it -> genresList.first { genre -> genre.id == it }.name },
+            genreIds.mapNotNull { id ->
+            genresList.firstOrNull { genre -> genre.id == id }?.name
+        },
         releaseDate = releaseDate,
         mediaType = MediaType.Movie,
         backdropPath = backdropUrl
@@ -33,7 +33,9 @@ fun Series.toUi(genresList: List<GenreUiState> = listOf()): MediaItemUiState =
         posterPath = posterPath,
         rating = rating,
         genres = if (genresList.isEmpty()) emptyList() else
-            genreIds.map { it -> genresList.first { genre -> genre.id == it }.name },
+            genreIds.mapNotNull { id ->
+                genresList.firstOrNull { genre -> genre.id == id }?.name
+            },
         releaseDate = releaseDate,
         mediaType = MediaType.Series,
         backdropPath = this.backdropPath
