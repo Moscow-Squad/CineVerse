@@ -3,7 +3,6 @@ package com.moscow.cineverse.component
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionScope
-import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
@@ -155,7 +154,6 @@ private fun GridMovieCard(
     sharedTransitionScope: SharedTransitionScope?,
     animatedVisibilityScope: androidx.compose.animation.AnimatedVisibilityScope?
 ) {
-    val animationTime = 200
     if (sharedTransitionScope != null && animatedVisibilityScope != null) {
         with(sharedTransitionScope) {
             Column(
@@ -174,9 +172,6 @@ private fun GridMovieCard(
                         .sharedElement(
                         sharedContentState = rememberSharedContentState(key = posterKey),
                         animatedVisibilityScope = animatedVisibilityScope,
-//                        boundsTransform = { _, _ ->
-//                            tween(durationMillis = animationTime)
-//                        }
                     )
                         .clip(RoundedCornerShape(Theme.radius.large)),
                     shape = RoundedCornerShape(Theme.radius.large),
@@ -184,7 +179,6 @@ private fun GridMovieCard(
                     colors = CardDefaults.cardColors(containerColor = Theme.colors.background.card)
                 ) {
                     Box {
-                        val imageUrl = if (showBackdrop) movie.backdropPath else movie.posterPath
 
                         SafeImageViewer(
                             imageUrl = movie.posterPath,
@@ -224,9 +218,6 @@ private fun GridMovieCard(
                                         .sharedElement(
                                             sharedContentState = rememberSharedContentState(key = ratingKey),
                                             animatedVisibilityScope = animatedVisibilityScope,
-//                                            boundsTransform = { _, _ ->
-//                                                tween(durationMillis = animationTime)
-//                                            }
                                         ),
                                     shape = CircleShape,
                                     color = Theme.colors.background.card.copy(alpha = 0.9f),
@@ -272,9 +263,6 @@ private fun GridMovieCard(
                                 .sharedElement(
                                     sharedContentState = rememberSharedContentState(key = titleKey),
                                     animatedVisibilityScope = animatedVisibilityScope,
-//                                    boundsTransform = { _, _ ->
-//                                        tween(durationMillis = animationTime)
-//                                    }
                                 )
                                 .clickable(
                                     indication = null,
@@ -296,9 +284,6 @@ private fun GridMovieCard(
                             modifier = Modifier.sharedElement(
                                 sharedContentState = rememberSharedContentState(key = detailsKey),
                                 animatedVisibilityScope = this@AnimatedVisibility,
-//                                boundsTransform = { _, _ ->
-//                                    tween(durationMillis = animationTime)
-//                                }
                             )
                         )
                     }
@@ -326,7 +311,6 @@ private fun GridMovieCard(
                 colors = CardDefaults.cardColors(containerColor = Theme.colors.background.card)
             ) {
                 Box {
-                    val imageUrl = if (showBackdrop) movie.backdropPath else movie.posterPath
 
                     SafeImageViewer(
                         imageUrl = movie.posterPath,
@@ -428,7 +412,6 @@ private fun ListMovieCard(
     sharedTransitionScope: SharedTransitionScope?,
     animatedVisibilityScope: androidx.compose.animation.AnimatedVisibilityScope?
 ) {
-    val animationTime = 200
     if (sharedTransitionScope != null && animatedVisibilityScope != null){
         with(sharedTransitionScope) {
             Card(
@@ -450,9 +433,6 @@ private fun ListMovieCard(
                                 .sharedElement(
                                     sharedContentState = rememberSharedContentState(key = posterKey),
                                     animatedVisibilityScope = animatedVisibilityScope,
-//                                boundsTransform = { _, _ ->
-//                                    tween(durationMillis = animationTime)
-//                                }
                                 ).clip(
                                     RoundedCornerShape(
                                         topStart = Theme.radius.large,
@@ -505,9 +485,6 @@ private fun ListMovieCard(
                                 modifier = Modifier.sharedElement(
                                     sharedContentState = rememberSharedContentState(key = titleKey),
                                     animatedVisibilityScope = animatedVisibilityScope,
-//                                    boundsTransform = { _, _ ->
-//                                        tween(durationMillis = animationTime)
-//                                    }
                                 )
                             )
 
@@ -516,9 +493,6 @@ private fun ListMovieCard(
                                 modifier = Modifier.sharedElement(
                                     sharedContentState = rememberSharedContentState(key = detailsKey),
                                     animatedVisibilityScope = animatedVisibilityScope,
-//                                    boundsTransform = { _, _ ->
-//                                        tween(durationMillis = animationTime)
-//                                    }
                                 )
                             )
                         }
