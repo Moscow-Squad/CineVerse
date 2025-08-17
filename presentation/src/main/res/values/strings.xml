@@ -218,5 +218,7 @@
     <string name="tip_swipe_left_to_remove_movies_from_your_history">Tip: Swipe left to remove movies from your history.</string>
     <string name="tap_a_movie_to_see_details_or_update_your_rating">Tap a movie to see details or update your rating.</string>
     <string name="link_not_available">Link not available</string>
+    <string name="reset_your_password">Reset Your Password</string>
+    <string name="forget_password_description">We’ll take you to the website so you can securely update your password.</string>
 
 </resources>

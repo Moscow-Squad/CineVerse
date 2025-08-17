@@ -190,8 +190,11 @@ private fun LoginScreenContent(
             onClick = interactionListener::onClickCreateNewAccount,
             buttonColor = Theme.colors.button.secondary,
         )
-        AnimatedVisibility(state.showSignUpBottomSheet) {
-            SignUpBottomSheet(interactionListener)
+        AnimatedVisibility(state.showBrowserBottomSheet) {
+            BrowserBottomSheet(
+                interactionListener = interactionListener,
+                isForgotPassword = state.isForgotPassword
+            )
         }
     }
     AnimatedVisibility(state.showWebView) {
@@ -205,19 +208,31 @@ private fun LoginScreenContent(
 }
 
 @Composable
-fun SignUpBottomSheet(interactionListener: LoginInteractionListener) {
+fun BrowserBottomSheet(
+    interactionListener: LoginInteractionListener,
+    isForgotPassword: Boolean = false
+) {
+    val messageBoxTile =
+        if (isForgotPassword) stringResource(R.string.reset_your_password) else stringResource(
+            R.string.join_cineverse
+        )
+    val messageBoxDescription =
+        if (isForgotPassword) stringResource(R.string.forget_password_description) else stringResource(
+            R.string.let_s_get_you_set_up_we_ll_take_you_to_the_website_to_create_your_account
+        )
+
     CineVerseBottomSheet(
-        onClose = interactionListener::onDismissOrCancelSignUpBottomSheet,
-        onDismissRequest = interactionListener::onDismissOrCancelSignUpBottomSheet,
+        onClose = interactionListener::onDismissOrCancelBrowserBottomSheet,
+        onDismissRequest = interactionListener::onDismissOrCancelBrowserBottomSheet,
         showCancelIcon = false,
     ) {
         MessageInfoCard(
-            title = stringResource(R.string.join_cineverse),
-            description = stringResource(R.string.let_s_get_you_set_up_we_ll_take_you_to_the_website_to_create_your_account),
+            title = messageBoxTile,
+            description = messageBoxDescription,
             icon = painterResource(R.drawable.due_tone_link_minimalistic),
             showButtonsGroup = true,
             firstButtonText = stringResource(R.string.cancel),
-            onClickFirstButton = interactionListener::onDismissOrCancelSignUpBottomSheet,
+            onClickFirstButton = interactionListener::onDismissOrCancelBrowserBottomSheet,
             secondButtonText = stringResource(R.string.go_to_website),
             onClickSecondButton = interactionListener::onClickGoToWebsite
         )
