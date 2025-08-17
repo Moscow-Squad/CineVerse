@@ -37,16 +37,10 @@ fun LoadingContent(
 fun SuccessContent(
     uiState: ActorBestMoviesState,
     interactionListener: ActorBestMoviesInteractionListener,
-    title: String,
     enableBlur: String,
-    onNavigateBack: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier.fillMaxSize()) {
-        MovieAppBar(
-            title = title,
-            backButtonClick = onNavigateBack,
-        )
 
         MoviesGrid(
             movies = uiState.movies,

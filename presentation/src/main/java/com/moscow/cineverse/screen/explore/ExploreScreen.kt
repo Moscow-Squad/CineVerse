@@ -178,13 +178,19 @@ private fun ExploreScreenContent(
                 }
             }
             if (uiState.genres.isNotEmpty()) {
-                GenresRow(
-                    uiState = uiState,
-                    genresState = genresState,
-                    interactionListener = interactionListener,
-                    isVisible = genresVisible,
-                    modifier = Modifier.align(Alignment.TopCenter)
-                )
+                AnimatedVisibility(
+                    visible = !uiState.showSuggestions,
+                    enter = slideInVertically(initialOffsetY = { -it }) + fadeIn(),
+                    exit = slideOutVertically(targetOffsetY = { -it }) + fadeOut()
+                ){
+                    GenresRow(
+                        uiState = uiState,
+                        genresState = genresState,
+                        interactionListener = interactionListener,
+                        isVisible = genresVisible,
+                        modifier = Modifier.align(Alignment.TopCenter)
+                    )
+                }
             }
             if (uiState.selectedTab != ExploreTabsPages.ACTORS && uiState.shouldShowError == false) {
                 ViewModeToggleButton(

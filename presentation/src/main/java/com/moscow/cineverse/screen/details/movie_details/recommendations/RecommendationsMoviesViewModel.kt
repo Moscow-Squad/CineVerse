@@ -47,6 +47,7 @@ class RecommendationsMoviesViewModel @Inject constructor(
     }
 
     private fun getMovieGenre() {
+        updateState { it.copy(isLoading = true) }
         launchWithResult(
             action = { genreUseCase.getMoviesGenres() },
             onSuccess = { genres ->
@@ -95,5 +96,10 @@ class RecommendationsMoviesViewModel @Inject constructor(
 
     override fun backButtonClick() {
         sendEvent(RecommendationMoviesEffect.NavigateBack)
+    }
+
+    override fun onRetry() {
+        updateState { it.copy(error = null) }
+        getMovieGenre()
     }
 }

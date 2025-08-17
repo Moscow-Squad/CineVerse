@@ -100,10 +100,12 @@ private fun <T : Any> SeeMoreContent(
             )
         },
         movieFloatingActionButton = {
-            ViewModeToggleButton(
-                selectedMode = uiState.viewMode,
-                onModeSelected = interactionListener::onViewModeChanged
-            )
+            if (uiState.shouldShowError == false){
+                ViewModeToggleButton(
+                    selectedMode = uiState.viewMode,
+                    onModeSelected = interactionListener::onViewModeChanged
+                )
+            }
         }
     ) {
         SharedTransitionLayout {

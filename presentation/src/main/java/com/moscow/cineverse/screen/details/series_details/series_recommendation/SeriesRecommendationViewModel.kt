@@ -95,6 +95,11 @@ class SeriesRecommendationViewModel @Inject constructor(
     override fun onViewModeChanged(viewMode: ViewMode) {
         updateState { it.copy(viewMode = viewMode) }
     }
+
+    override fun onRetry() {
+        updateState { it.copy(error = null) }
+        getMovieGenre()
+    }
 }
 
 

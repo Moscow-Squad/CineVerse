@@ -32,7 +32,6 @@ class ActorBestMoviesViewModel @Inject constructor(
 
     init {
         updateState { it.copy(actorId = actorId, actorName = actorName) }
-        updateState { it.copy(actorId = actorId) }
         getActorMovies()
         observeBlur()
     }
@@ -80,6 +79,7 @@ class ActorBestMoviesViewModel @Inject constructor(
     }
 
     override fun onRefresh() {
+        updateState { it.copy(error = null) }
         getActorMovies()
     }
 
