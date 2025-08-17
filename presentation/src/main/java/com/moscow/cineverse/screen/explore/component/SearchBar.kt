@@ -140,7 +140,7 @@ fun SearchBar(
                     modifier = Modifier.size(20.dp)
                 )
 
-                Spacer(modifier = Modifier.size(8.dp)) // ✅ exactly 8.dp spacing
+                Spacer(modifier = Modifier.size(8.dp))
 
                 // Text field
                 BasicTextField(
