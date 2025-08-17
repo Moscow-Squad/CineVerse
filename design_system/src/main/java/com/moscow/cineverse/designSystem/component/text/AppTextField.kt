@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicText
@@ -121,10 +122,11 @@ fun AppTextField(
                             contentDescription = null,
                             colorFilter = androidx.compose.ui.graphics.ColorFilter.tint(
                                 leadingIconTint
-                            )
+                            ),
+                            modifier = Modifier.size(20.dp)
                         )
 
-                        Spacer(modifier = Modifier.width(8.dp))
+                        Spacer(modifier = Modifier.width(12.dp))
 
                         Box(modifier = Modifier.weight(1f)) {
                             if (value.isEmpty() && !placeholder.isNullOrEmpty()) {
@@ -149,6 +151,7 @@ fun AppTextField(
                                     painter = image,
                                     contentDescription = null,
                                     modifier = Modifier
+                                        .size(20.dp)
                                         .clickable(
                                             interactionSource = remember { MutableInteractionSource() },
                                             indication = null
@@ -165,7 +168,8 @@ fun AppTextField(
                                     contentDescription = null,
                                     colorFilter = androidx.compose.ui.graphics.ColorFilter.tint(
                                         Theme.colors.additional.primary.red
-                                    )
+                                    ),
+                                    modifier = Modifier.size(20.dp)
                                 )
                             }
 
