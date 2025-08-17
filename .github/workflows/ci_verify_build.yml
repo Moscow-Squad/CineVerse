@@ -45,6 +45,9 @@ jobs:
           echo "BEARER_TOKEN=${{ secrets.BEARER_TOKEN }}" > keys.properties
       - name: Create keys.properties
         run: |
+          echo "KEYSTORE_PASSWORD=${{ secrets.KEYSTORE_PASSWORD }}" > keys.properties
+      - name: Create keys.properties
+        run: |
           echo "TMDB_API_KEY=\"${{ secrets.TMDB_API_KEY }}\"" > data/keys.properties
       - name: Create google-services.json
         run: |
