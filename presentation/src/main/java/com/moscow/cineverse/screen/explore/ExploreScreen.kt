@@ -132,7 +132,7 @@ private fun ExploreScreenContent(
                 AnimatedContent(
                     targetState = uiState.viewMode,
                     transitionSpec = {
-                        fadeIn(tween(600)) togetherWith fadeOut(tween(600))
+                        fadeIn() togetherWith fadeOut()
                     },
                     label = "view_mode_transition"
                 ) { currentViewMode ->

@@ -100,7 +100,7 @@ fun RecommendationMoviesContent(
             AnimatedContent(
                 targetState = uiState.viewMode,
                 transitionSpec = {
-                    fadeIn(tween(300)) togetherWith fadeOut(tween(300))
+                    fadeIn() togetherWith fadeOut()
                 },
                 label = "view_mode_transition"
             ) {

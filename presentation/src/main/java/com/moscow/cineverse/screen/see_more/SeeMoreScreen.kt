@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionLayout
-import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.togetherWith
@@ -112,7 +111,7 @@ private fun <T : Any> SeeMoreContent(
             AnimatedContent(
                 targetState = uiState.viewMode,
                 transitionSpec = {
-                    fadeIn(tween(300)) togetherWith fadeOut(tween(300))
+                    fadeIn() togetherWith fadeOut()
                 },
                 label = "view_mode_transition"
             ) {

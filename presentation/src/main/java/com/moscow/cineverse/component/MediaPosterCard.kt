@@ -155,81 +155,212 @@ private fun GridMovieCard(
     sharedTransitionScope: SharedTransitionScope?,
     animatedVisibilityScope: androidx.compose.animation.AnimatedVisibilityScope?
 ) {
-    Column(
-        modifier = modifier
-    ) {
-        Card(
-            modifier = Modifier
-                .fillMaxWidth()
-                .then(
-                    if (useFixedHeight) {
-                        Modifier.height(180.dp)
-                    } else {
-                        Modifier.aspectRatio(0.75f)
-                    }
-                )
-                .then(
-                    if (sharedTransitionScope != null && animatedVisibilityScope != null) {
-                        with(sharedTransitionScope) {
-                            Modifier.sharedElement(
-                                sharedContentState = rememberSharedContentState(key = posterKey),
-                                animatedVisibilityScope = animatedVisibilityScope,
-                                boundsTransform = { _, _ ->
-                                    tween(durationMillis = 600)
-                                }
-                            )
-                        }
-                    } else Modifier
-                )
-                .clip(RoundedCornerShape(Theme.radius.large)),
-            shape = RoundedCornerShape(Theme.radius.large),
-            elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
-            colors = CardDefaults.cardColors(containerColor = Theme.colors.background.card)
-        ) {
-            Box {
-                val imageUrl = if (showBackdrop) movie.backdropPath else movie.posterPath
-
-                SafeImageViewer(
-                    imageUrl = movie.posterPath,
+    val animationTime = 200
+    if (sharedTransitionScope != null && animatedVisibilityScope != null) {
+        with(sharedTransitionScope) {
+            Column(
+                modifier = modifier
+            ) {
+                Card(
                     modifier = Modifier
-                        .fillMaxSize()
-                        .clip(RoundedCornerShape(Theme.radius.large))
-                        .clickable(
-                            indication = null,
-                            interactionSource = remember { MutableInteractionSource() }
-                        ) { onMovieClick(movie.id) },
-                    isBlurEnabled = enableBlur,
-                    placeholderContent = {
-                        RemoteImagePlaceholder(
-                            modifier = Modifier.fillMaxSize(),
-                            cardColor = Theme.colors.background.card,
-                            iconSize = 32.dp
+                        .fillMaxWidth()
+                        .then(
+                            if (useFixedHeight) {
+                                Modifier.height(180.dp)
+                            } else {
+                                Modifier.aspectRatio(0.75f)
+                            }
                         )
-                    },
-                    errorContent = {
-                        RemoteImagePlaceholder(
-                            modifier = Modifier.fillMaxSize(),
-                            cardColor = Theme.colors.background.card,
-                            iconSize = 32.dp
-                        )
-                    }
+                        .sharedElement(
+                        sharedContentState = rememberSharedContentState(key = posterKey),
+                        animatedVisibilityScope = animatedVisibilityScope,
+//                        boundsTransform = { _, _ ->
+//                            tween(durationMillis = animationTime)
+//                        }
+                    )
+                        .clip(RoundedCornerShape(Theme.radius.large)),
+                    shape = RoundedCornerShape(Theme.radius.large),
+                    elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+                    colors = CardDefaults.cardColors(containerColor = Theme.colors.background.card)
                 ) {
-                    OnBlurContent()
+                    Box {
+                        val imageUrl = if (showBackdrop) movie.backdropPath else movie.posterPath
+
+                        SafeImageViewer(
+                            imageUrl = movie.posterPath,
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .clip(RoundedCornerShape(Theme.radius.large))
+                                .clickable(
+                                    indication = null,
+                                    interactionSource = remember { MutableInteractionSource() }
+                                ) { onMovieClick(movie.id) },
+                            isBlurEnabled = enableBlur,
+                            placeholderContent = {
+                                RemoteImagePlaceholder(
+                                    modifier = Modifier.fillMaxSize(),
+                                    cardColor = Theme.colors.background.card,
+                                    iconSize = 32.dp
+                                )
+                            },
+                            errorContent = {
+                                RemoteImagePlaceholder(
+                                    modifier = Modifier.fillMaxSize(),
+                                    cardColor = Theme.colors.background.card,
+                                    iconSize = 32.dp
+                                )
+                            }
+                        ) {
+                            OnBlurContent()
+                        }
+
+                        if ( showRating && movie.rating >= 0 )
+                        {
+                            with(sharedTransitionScope) {
+                                Surface(
+                                    modifier = Modifier
+                                        .align(Alignment.TopEnd)
+                                        .padding(8.dp)
+                                        .sharedElement(
+                                            sharedContentState = rememberSharedContentState(key = ratingKey),
+                                            animatedVisibilityScope = animatedVisibilityScope,
+//                                            boundsTransform = { _, _ ->
+//                                                tween(durationMillis = animationTime)
+//                                            }
+                                        ),
+                                    shape = CircleShape,
+                                    color = Theme.colors.background.card.copy(alpha = 0.9f),
+                                    shadowElevation = 2.dp
+                                ) {
+                                    Row(
+                                        modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
+                                        verticalAlignment = Alignment.CenterVertically
+                                    ) {
+                                        Text(
+                                            text = "%.1f".format(movie.rating),
+                                            color = Theme.colors.shade.primary,
+                                            style = Theme.textStyle.label.medium.medium
+                                        )
+                                        Icon(
+                                            painter = painterResource(R.drawable.due_tone_star),
+                                            contentDescription = "Rating",
+                                            tint = Theme.colors.additional.primary.yellow,
+                                            modifier = Modifier
+                                                .size(16.dp)
+                                                .padding(start = 2.dp)
+                                        )
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
 
-                if (showRating && movie.rating >= 0 && sharedTransitionScope != null && animatedVisibilityScope != null) {
+                if (showTitle) {
+                    val displayTitle = getTitleOverride?.invoke(movie) ?: movie.title
+                    if (displayTitle.isNotEmpty()) {
+                        Text(
+                            text = displayTitle,
+                            color = Theme.colors.shade.secondary,
+                            style = Theme.textStyle.body.medium.medium,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                            textAlign = titleTextAlign,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(top = 8.dp)
+                                .sharedElement(
+                                    sharedContentState = rememberSharedContentState(key = titleKey),
+                                    animatedVisibilityScope = animatedVisibilityScope,
+//                                    boundsTransform = { _, _ ->
+//                                        tween(durationMillis = animationTime)
+//                                    }
+                                )
+                                .clickable(
+                                    indication = null,
+                                    interactionSource = remember { MutableInteractionSource() },
+                                    onClick = { onMovieClick(movie.id) }
+                                )
+                        )
+                    }
+                }
+
+                AnimatedVisibility(
+                    visible = false,
+                    enter = fadeIn() + slideInVertically(),
+                    exit = fadeOut() + slideOutVertically()
+                ) {
                     with(sharedTransitionScope) {
+                        DurationAndDateSection(
+                            releaseDate = movie.releaseDate?.formatDate() ?: "",
+                            modifier = Modifier.sharedElement(
+                                sharedContentState = rememberSharedContentState(key = detailsKey),
+                                animatedVisibilityScope = this@AnimatedVisibility,
+//                                boundsTransform = { _, _ ->
+//                                    tween(durationMillis = animationTime)
+//                                }
+                            )
+                        )
+                    }
+                }
+            }
+        }
+    }
+    else{
+        Column(
+            modifier = modifier
+        ) {
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .then(
+                        if (useFixedHeight) {
+                            Modifier.height(180.dp)
+                        } else {
+                            Modifier.aspectRatio(0.75f)
+                        }
+                    )
+                    .clip(RoundedCornerShape(Theme.radius.large)),
+                shape = RoundedCornerShape(Theme.radius.large),
+                elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+                colors = CardDefaults.cardColors(containerColor = Theme.colors.background.card)
+            ) {
+                Box {
+                    val imageUrl = if (showBackdrop) movie.backdropPath else movie.posterPath
+
+                    SafeImageViewer(
+                        imageUrl = movie.posterPath,
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .clip(RoundedCornerShape(Theme.radius.large))
+                            .clickable(
+                                indication = null,
+                                interactionSource = remember { MutableInteractionSource() }
+                            ) { onMovieClick(movie.id) },
+                        isBlurEnabled = enableBlur,
+                        placeholderContent = {
+                            RemoteImagePlaceholder(
+                                modifier = Modifier.fillMaxSize(),
+                                cardColor = Theme.colors.background.card,
+                                iconSize = 32.dp
+                            )
+                        },
+                        errorContent = {
+                            RemoteImagePlaceholder(
+                                modifier = Modifier.fillMaxSize(),
+                                cardColor = Theme.colors.background.card,
+                                iconSize = 32.dp
+                            )
+                        }
+                    ) {
+                        OnBlurContent()
+                    }
+
+                    if (showRating && movie.rating >= 0) {
                         Surface(
                             modifier = Modifier
                                 .align(Alignment.TopEnd)
-                                .padding(8.dp)
-                                .sharedElement(
-                                    sharedContentState = rememberSharedContentState(key = ratingKey),
-                                    animatedVisibilityScope = animatedVisibilityScope,
-                                    boundsTransform = { _, _ ->
-                                        tween(durationMillis = 600)
-                                    }
-                                ),
+                                .padding(8.dp),
                             shape = CircleShape,
                             color = Theme.colors.background.card.copy(alpha = 0.9f),
                             shadowElevation = 2.dp
@@ -254,89 +385,27 @@ private fun GridMovieCard(
                             }
                         }
                     }
-                } else if (showRating && movie.rating >= 0) {
-                    Surface(
-                        modifier = Modifier
-                            .align(Alignment.TopEnd)
-                            .padding(8.dp),
-                        shape = CircleShape,
-                        color = Theme.colors.background.card.copy(alpha = 0.9f),
-                        shadowElevation = 2.dp
-                    ) {
-                        Row(
-                            modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Text(
-                                text = "%.1f".format(movie.rating),
-                                color = Theme.colors.shade.primary,
-                                style = Theme.textStyle.label.medium.medium
-                            )
-                            Icon(
-                                painter = painterResource(R.drawable.due_tone_star),
-                                contentDescription = "Rating",
-                                tint = Theme.colors.additional.primary.yellow,
-                                modifier = Modifier
-                                    .size(16.dp)
-                                    .padding(start = 2.dp)
-                            )
-                        }
-                    }
                 }
             }
-        }
 
-        if (showTitle) {
-            val displayTitle = getTitleOverride?.invoke(movie) ?: movie.title
-            if (displayTitle.isNotEmpty()) {
-                Text(
-                    text = displayTitle,
-                    color = Theme.colors.shade.secondary,
-                    style = Theme.textStyle.body.medium.medium,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                    textAlign = titleTextAlign,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 8.dp)
-                        .then(
-                            if (sharedTransitionScope != null && animatedVisibilityScope != null) {
-                                with(sharedTransitionScope) {
-                                    Modifier.sharedElement(
-                                        sharedContentState = rememberSharedContentState(key = titleKey),
-                                        animatedVisibilityScope = animatedVisibilityScope,
-                                        boundsTransform = { _, _ ->
-                                            tween(durationMillis = 600)
-                                        }
-                                    )
-                                }
-                            } else Modifier
-                        )
-                        .clickable(
-                            indication = null,
-                            interactionSource = remember { MutableInteractionSource() },
-                            onClick = { onMovieClick(movie.id) }
-                        )
-                )
-            }
-        }
-
-        if (sharedTransitionScope != null && animatedVisibilityScope != null) {
-            AnimatedVisibility(
-                visible = false,
-                enter = fadeIn(tween(300)) + slideInVertically(tween(300)),
-                exit = fadeOut(tween(300)) + slideOutVertically(tween(300))
-            ) {
-                with(sharedTransitionScope) {
-                    DurationAndDateSection(
-                        releaseDate = movie.releaseDate?.formatDate() ?: "",
-                        modifier = Modifier.sharedElement(
-                            sharedContentState = rememberSharedContentState(key = detailsKey),
-                            animatedVisibilityScope = this@AnimatedVisibility,
-                            boundsTransform = { _, _ ->
-                                tween(durationMillis = 600)
-                            }
-                        )
+            if (showTitle) {
+                val displayTitle = getTitleOverride?.invoke(movie) ?: movie.title
+                if (displayTitle.isNotEmpty()) {
+                    Text(
+                        text = displayTitle,
+                        color = Theme.colors.shade.secondary,
+                        style = Theme.textStyle.body.medium.medium,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        textAlign = titleTextAlign,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 8.dp)
+                            .clickable(
+                                indication = null,
+                                interactionSource = remember { MutableInteractionSource() },
+                                onClick = { onMovieClick(movie.id) }
+                            )
                     )
                 }
             }
@@ -359,73 +428,74 @@ private fun ListMovieCard(
     sharedTransitionScope: SharedTransitionScope?,
     animatedVisibilityScope: androidx.compose.animation.AnimatedVisibilityScope?
 ) {
-    Card(
-        modifier = modifier
-            .fillMaxWidth()
-            .height(95.dp)
-            .clip(RoundedCornerShape(Theme.radius.large))
-            .clickable { onMovieClick(movie.id) },
-        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
-        shape = RoundedCornerShape(Theme.radius.large),
-        colors = CardDefaults.cardColors(containerColor = Theme.colors.background.card)
-    ) {
-        Box(modifier = Modifier.fillMaxSize()) {
-            Row(modifier = Modifier.fillMaxSize()) {
-                SafeImageViewer(
-                    imageUrl = movie.posterPath,
-                    modifier = Modifier
-                        .width(64.dp)
-                        .fillMaxHeight()
-                        .then(
-                            if (sharedTransitionScope != null && animatedVisibilityScope != null) {
-                                with(sharedTransitionScope) {
-                                    Modifier.sharedElement(
-                                        sharedContentState = rememberSharedContentState(key = posterKey),
-                                        animatedVisibilityScope = animatedVisibilityScope,
-                                        boundsTransform = { _, _ ->
-                                            tween(durationMillis = 600)
-                                        }
+    val animationTime = 200
+    if (sharedTransitionScope != null && animatedVisibilityScope != null){
+        with(sharedTransitionScope) {
+            Card(
+                modifier = modifier
+                    .fillMaxWidth()
+                    .height(95.dp)
+                    .clip(RoundedCornerShape(Theme.radius.large))
+                    .clickable { onMovieClick(movie.id) },
+                elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
+                shape = RoundedCornerShape(Theme.radius.large),
+                colors = CardDefaults.cardColors(containerColor = Theme.colors.background.card)
+            ) {
+                Box(modifier = Modifier.fillMaxSize()) {
+                    Row(modifier = Modifier.fillMaxSize()) {
+                        Box(
+                            modifier = Modifier
+                                .width(64.dp)
+                                .fillMaxHeight()
+                                .sharedElement(
+                                    sharedContentState = rememberSharedContentState(key = posterKey),
+                                    animatedVisibilityScope = animatedVisibilityScope,
+//                                boundsTransform = { _, _ ->
+//                                    tween(durationMillis = animationTime)
+//                                }
+                                ).clip(
+                                    RoundedCornerShape(
+                                        topStart = Theme.radius.large,
+                                        topEnd = Theme.radius.large,
+                                        bottomStart = Theme.radius.large
+                                    )
+                                ),
+                            contentAlignment = Alignment.Center
+                        ){
+                            SafeImageViewer(
+                                imageUrl = movie.posterPath,
+                                modifier = Modifier
+                                    .fillMaxSize(),
+                                isBlurEnabled = enableBlur,
+                                placeholderContent = {
+                                    RemoteImagePlaceholder(
+                                        modifier = Modifier
+                                            .width(64.dp)
+                                            .fillMaxHeight(),
+                                        cardColor = Theme.colors.brand.tertiary,
+                                        iconSize = 24.dp
+                                    )
+                                },
+                                errorContent = {
+                                    RemoteImagePlaceholder(
+                                        modifier = Modifier
+                                            .width(64.dp)
+                                            .fillMaxHeight(),
+                                        cardColor = Theme.colors.brand.tertiary,
+                                        iconSize = 24.dp
                                     )
                                 }
-                            } else Modifier
-                        ).clip(
-                            RoundedCornerShape(
-                                topStart = Theme.radius.large,
-                                topEnd = Theme.radius.large,
-                                bottomStart = Theme.radius.large
-                            )
-                        ),
-                    isBlurEnabled = enableBlur,
-                    placeholderContent = {
-                        RemoteImagePlaceholder(
-                            modifier = Modifier
-                                .width(64.dp)
-                                .fillMaxHeight(),
-                            cardColor = Theme.colors.brand.tertiary,
-                            iconSize = 24.dp
-                        )
-                    },
-                    errorContent = {
-                        RemoteImagePlaceholder(
-                            modifier = Modifier
-                                .width(64.dp)
-                                .fillMaxHeight(),
-                            cardColor = Theme.colors.brand.tertiary,
-                            iconSize = 24.dp
-                        )
-                    }
-                ) {
-                    OnBlurContent(isAddedText = false)
-                }
+                            ) {
+                                OnBlurContent(isAddedText = false)
+                            }
+                        }
 
-                Column(
-                    modifier = Modifier
-                        .weight(1f)
-                        .padding(vertical = 12.5.dp, horizontal = 12.dp),
-                    verticalArrangement = Arrangement.Center
-                ) {
-                    if (sharedTransitionScope != null && animatedVisibilityScope != null) {
-                        with(sharedTransitionScope) {
+                        Column(
+                            modifier = Modifier
+                                .weight(1f)
+                                .padding(vertical = 12.5.dp, horizontal = 12.dp),
+                            verticalArrangement = Arrangement.Center
+                        ) {
                             InfoSection(
                                 title = getTitleOverride?.invoke(movie) ?: movie.title,
                                 genres = movie.genres,
@@ -435,13 +505,119 @@ private fun ListMovieCard(
                                 modifier = Modifier.sharedElement(
                                     sharedContentState = rememberSharedContentState(key = titleKey),
                                     animatedVisibilityScope = animatedVisibilityScope,
-                                    boundsTransform = { _, _ ->
-                                        tween(durationMillis = 600)
-                                    }
+//                                    boundsTransform = { _, _ ->
+//                                        tween(durationMillis = animationTime)
+//                                    }
+                                )
+                            )
+
+                            DurationAndDateSection(
+                                releaseDate = movie.releaseDate?.formatDate() ?: "",
+                                modifier = Modifier.sharedElement(
+                                    sharedContentState = rememberSharedContentState(key = detailsKey),
+                                    animatedVisibilityScope = animatedVisibilityScope,
+//                                    boundsTransform = { _, _ ->
+//                                        tween(durationMillis = animationTime)
+//                                    }
                                 )
                             )
                         }
-                    } else {
+                    }
+
+                    if (movie.rating >= 0) {
+                        Surface(
+                            modifier = Modifier
+                                .align(Alignment.TopEnd)
+                                .padding(8.dp)
+                                .sharedElement(
+                                    sharedContentState = rememberSharedContentState(key = ratingKey),
+                                    animatedVisibilityScope = animatedVisibilityScope,
+//                                    boundsTransform = { _, _ ->
+//                                        tween(durationMillis = animationTime)
+//                                    }
+                                ),
+                            shape = CircleShape,
+                            color = Theme.colors.background.card.copy(alpha = 0.9f),
+                            shadowElevation = 2.dp
+                        ) {
+                            Row(
+                                modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Text(
+                                    text = "%.1f".format(movie.rating),
+                                    color = Theme.colors.shade.primary,
+                                    style = Theme.textStyle.label.small.medium
+                                )
+                                Icon(
+                                    painter = painterResource(R.drawable.due_tone_star),
+                                    contentDescription = "Rating",
+                                    tint = Theme.colors.additional.primary.yellow,
+                                    modifier = Modifier
+                                        .size(12.dp)
+                                        .padding(start = 1.dp)
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    else{
+        Card(
+            modifier = modifier
+                .fillMaxWidth()
+                .height(95.dp)
+                .clip(RoundedCornerShape(Theme.radius.large))
+                .clickable { onMovieClick(movie.id) },
+            elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
+            shape = RoundedCornerShape(Theme.radius.large),
+            colors = CardDefaults.cardColors(containerColor = Theme.colors.background.card)
+        ) {
+            Box(modifier = Modifier.fillMaxSize()) {
+                Row(modifier = Modifier.fillMaxSize()) {
+                    SafeImageViewer(
+                        imageUrl = movie.posterPath,
+                        modifier = Modifier
+                            .width(64.dp)
+                            .fillMaxHeight()
+                            .clip(
+                                RoundedCornerShape(
+                                    topStart = Theme.radius.large,
+                                    topEnd = Theme.radius.large,
+                                    bottomStart = Theme.radius.large
+                                )
+                            ),
+                        isBlurEnabled = enableBlur,
+                        placeholderContent = {
+                            RemoteImagePlaceholder(
+                                modifier = Modifier
+                                    .width(64.dp)
+                                    .fillMaxHeight(),
+                                cardColor = Theme.colors.brand.tertiary,
+                                iconSize = 24.dp
+                            )
+                        },
+                        errorContent = {
+                            RemoteImagePlaceholder(
+                                modifier = Modifier
+                                    .width(64.dp)
+                                    .fillMaxHeight(),
+                                cardColor = Theme.colors.brand.tertiary,
+                                iconSize = 24.dp
+                            )
+                        }
+                    ) {
+                        OnBlurContent(isAddedText = false)
+                    }
+
+                    Column(
+                        modifier = Modifier
+                            .weight(1f)
+                            .padding(vertical = 12.5.dp, horizontal = 12.dp),
+                        verticalArrangement = Arrangement.Center
+                    ) {
                         InfoSection(
                             title = getTitleOverride?.invoke(movie) ?: movie.title,
                             genres = movie.genres,
@@ -449,42 +625,17 @@ private fun ListMovieCard(
                             rating = movie.rating,
                             showRating = false
                         )
-                    }
 
-                    if (sharedTransitionScope != null && animatedVisibilityScope != null) {
-                        with(sharedTransitionScope) {
-                            DurationAndDateSection(
-                                releaseDate = movie.releaseDate?.formatDate() ?: "",
-                                modifier = Modifier.sharedElement(
-                                    sharedContentState = rememberSharedContentState(key = detailsKey),
-                                    animatedVisibilityScope = animatedVisibilityScope,
-                                    boundsTransform = { _, _ ->
-                                        tween(durationMillis = 600)
-                                    }
-                                )
-                            )
-                        }
-                    } else {
                         DurationAndDateSection(
                             releaseDate = movie.releaseDate?.formatDate() ?: ""
                         )
                     }
                 }
-            }
-
-            if (movie.rating >= 0 && sharedTransitionScope != null && animatedVisibilityScope != null) {
-                with(sharedTransitionScope) {
+                if (movie.rating >= 0) {
                     Surface(
                         modifier = Modifier
                             .align(Alignment.TopEnd)
-                            .padding(8.dp)
-                            .sharedElement(
-                                sharedContentState = rememberSharedContentState(key = ratingKey),
-                                animatedVisibilityScope = animatedVisibilityScope,
-                                boundsTransform = { _, _ ->
-                                    tween(durationMillis = 600)
-                                }
-                            ),
+                            .padding(8.dp),
                         shape = CircleShape,
                         color = Theme.colors.background.card.copy(alpha = 0.9f),
                         shadowElevation = 2.dp
@@ -507,34 +658,6 @@ private fun ListMovieCard(
                                     .padding(start = 1.dp)
                             )
                         }
-                    }
-                }
-            } else if (movie.rating >= 0) {
-                Surface(
-                    modifier = Modifier
-                        .align(Alignment.TopEnd)
-                        .padding(8.dp),
-                    shape = CircleShape,
-                    color = Theme.colors.background.card.copy(alpha = 0.9f),
-                    shadowElevation = 2.dp
-                ) {
-                    Row(
-                        modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Text(
-                            text = "%.1f".format(movie.rating),
-                            color = Theme.colors.shade.primary,
-                            style = Theme.textStyle.label.small.medium
-                        )
-                        Icon(
-                            painter = painterResource(R.drawable.due_tone_star),
-                            contentDescription = "Rating",
-                            tint = Theme.colors.additional.primary.yellow,
-                            modifier = Modifier
-                                .size(12.dp)
-                                .padding(start = 1.dp)
-                        )
                     }
                 }
             }
