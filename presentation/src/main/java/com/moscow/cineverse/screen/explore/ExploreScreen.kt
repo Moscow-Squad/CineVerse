@@ -128,15 +128,15 @@ private fun ExploreScreenContent(
     )
     {
         Box(modifier = Modifier.fillMaxSize()) {
-            Column(modifier = Modifier.fillMaxSize()) {
-                SharedTransitionLayout {
-                    AnimatedContent(
-                        targetState = uiState.viewMode,
-                        transitionSpec = {
-                            fadeIn(tween(300)) togetherWith fadeOut(tween(300))
-                        },
-                        label = "view_mode_transition"
-                    ) { currentViewMode ->
+            SharedTransitionLayout {
+                AnimatedContent(
+                    targetState = uiState.viewMode,
+                    transitionSpec = {
+                        fadeIn(tween(600)) togetherWith fadeOut(tween(600))
+                    },
+                    label = "view_mode_transition"
+                ) { currentViewMode ->
+                    Column(modifier = Modifier.fillMaxSize()) {
                         Box(modifier = Modifier.weight(1f)) {
                             when (contentList.loadState.refresh) {
                                 is LoadState.Loading -> {

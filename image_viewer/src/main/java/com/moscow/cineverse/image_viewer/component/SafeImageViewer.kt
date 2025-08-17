@@ -44,14 +44,18 @@ fun SafeImageViewer(
     onBlurContent: @Composable () -> Unit = {},
 ) {
     val context = LocalContext.current
-    val blur = when(isBlurEnabled){
-        "high", "medium" -> true
-        else -> false
+    val blur = rememberSaveable {
+        when (isBlurEnabled) {
+            "high", "medium" -> true
+            else -> false
+        }
     }
-    val threshold = when(isBlurEnabled){
-        "high" -> 0.5f
-        "medium" -> 0.2f
-        else -> 0.2f
+    val threshold = rememberSaveable {
+        when (isBlurEnabled) {
+            "high" -> 0.5f
+            "medium" -> 0.2f
+            else -> 0.2f
+        }
     }
 
     val imageLoader = remember {
@@ -70,13 +74,20 @@ fun SafeImageViewer(
             .build()
     }
 
-    val classifier =  remember(blur) {
+    val classifier = remember(blur) {
         if (blur) HybridImageClassifier(context, threshold) else null
     }
 
-    var bitmapToDisplay by remember { mutableStateOf<Bitmap?>(null) }
+    var bitmapToDisplay by rememberSaveable { mutableStateOf<Bitmap?>(null) }
     var isNsfw by rememberSaveable(imageUrl) { mutableStateOf(false) }
     var requestState by rememberSaveable(imageUrl) { mutableStateOf(RequestState.LOADING) }
+
+    imageCache[imageUrl]?.let { cached ->
+        bitmapToDisplay = cached.bitmap
+        isNsfw = cached.isNsfw
+        requestState = RequestState.SUCCESS
+        onSuccess?.invoke()
+    }
 
     LaunchedEffect(imageUrl) {
         if (imageUrl.isEmpty()) {
@@ -85,13 +96,7 @@ fun SafeImageViewer(
             return@LaunchedEffect
         }
 
-        imageCache[imageUrl]?.let { cached ->
-            bitmapToDisplay = cached.bitmap
-            isNsfw = cached.isNsfw
-            requestState = RequestState.SUCCESS
-            onSuccess?.invoke()
-            return@LaunchedEffect
-        }
+        if (imageCache.containsKey(imageUrl)) return@LaunchedEffect
 
         requestState = RequestState.LOADING
 
@@ -108,7 +113,6 @@ fun SafeImageViewer(
             }
 
             if (bitmap != null) {
-                imageCache[imageUrl] = CachedImage(bitmap, false)
                 val shouldBlur = if (blur && classifier != null) {
                     withContext(Dispatchers.Default) {
                         classifier.classifyImage(bitmap)
@@ -116,7 +120,6 @@ fun SafeImageViewer(
                 } else false
 
                 imageCache[imageUrl] = CachedImage(bitmap, shouldBlur)
-
                 bitmapToDisplay = bitmap
                 isNsfw = shouldBlur
                 requestState = RequestState.SUCCESS

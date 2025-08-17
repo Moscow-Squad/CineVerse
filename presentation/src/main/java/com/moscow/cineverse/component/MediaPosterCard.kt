@@ -190,7 +190,7 @@ private fun GridMovieCard(
                 val imageUrl = if (showBackdrop) movie.backdropPath else movie.posterPath
 
                 SafeImageViewer(
-                    imageUrl = imageUrl,
+                    imageUrl = movie.posterPath,
                     modifier = Modifier
                         .fillMaxSize()
                         .clip(RoundedCornerShape(Theme.radius.large))
