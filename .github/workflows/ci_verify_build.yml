@@ -52,9 +52,6 @@ jobs:
       - name: Create keys.properties
         run: |
           echo "KEY_PASSWORD=${{ secrets.KEY_PASSWORD }}" > keys.properties
-      - name: Create keys.properties
-        run: |
-          echo "TMDB_API_KEY=\"${{ secrets.TMDB_API_KEY }}\"" > data/keys.properties
       - name: Create google-services.json
         run: |
           echo "${{ secrets.GOOGLE_SERVICES_JSON }}" | base64 -d > app/google-services.json
