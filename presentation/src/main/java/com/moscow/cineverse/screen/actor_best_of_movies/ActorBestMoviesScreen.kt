@@ -12,6 +12,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.moscow.cineverse.component.ErrorContent
+import com.moscow.cineverse.designSystem.component.app_bar.MovieAppBar
 import com.moscow.cineverse.designSystem.component.wrapper.MovieScaffold
 import com.moscow.cineverse.screen.actor_best_of_movies.component.LoadingContent
 import com.moscow.cineverse.screen.actor_best_of_movies.component.SuccessContent
@@ -53,7 +54,14 @@ private fun ActorBestMoviesContent(
     onNavigateBack: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    MovieScaffold {
+    MovieScaffold (
+        movieAppBar = {
+            MovieAppBar(
+                title = uiState.actorName,
+                backButtonClick = onNavigateBack,
+            )
+        }
+    ) {
         Box(modifier = modifier.fillMaxSize()) {
             when {
                 uiState.isLoading -> {
@@ -72,9 +80,7 @@ private fun ActorBestMoviesContent(
                     SuccessContent(
                         uiState = uiState,
                         interactionListener = interactionListener,
-                        title = uiState.actorName,
                         enableBlur = uiState.enableBlur,
-                        onNavigateBack = onNavigateBack
                     )
 
                     ViewModeToggleButton(

@@ -4,7 +4,6 @@ import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionLayout
-import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
@@ -128,15 +127,15 @@ private fun ExploreScreenContent(
     )
     {
         Box(modifier = Modifier.fillMaxSize()) {
-            Column(modifier = Modifier.fillMaxSize()) {
-                SharedTransitionLayout {
-                    AnimatedContent(
-                        targetState = uiState.viewMode,
-                        transitionSpec = {
-                            fadeIn(tween(300)) togetherWith fadeOut(tween(300))
-                        },
-                        label = "view_mode_transition"
-                    ) { currentViewMode ->
+            SharedTransitionLayout {
+                AnimatedContent(
+                    targetState = uiState.viewMode,
+                    transitionSpec = {
+                        fadeIn() togetherWith fadeOut()
+                    },
+                    label = "view_mode_transition"
+                ) { currentViewMode ->
+                    Column(modifier = Modifier.fillMaxSize()) {
                         Box(modifier = Modifier.weight(1f)) {
                             when (contentList.loadState.refresh) {
                                 is LoadState.Loading -> {
@@ -178,13 +177,19 @@ private fun ExploreScreenContent(
                 }
             }
             if (uiState.genres.isNotEmpty()) {
-                GenresRow(
-                    uiState = uiState,
-                    genresState = genresState,
-                    interactionListener = interactionListener,
-                    isVisible = genresVisible,
-                    modifier = Modifier.align(Alignment.TopCenter)
-                )
+                AnimatedVisibility(
+                    visible = !uiState.showSuggestions,
+                    enter = slideInVertically(initialOffsetY = { -it }) + fadeIn(),
+                    exit = slideOutVertically(targetOffsetY = { -it }) + fadeOut()
+                ){
+                    GenresRow(
+                        uiState = uiState,
+                        genresState = genresState,
+                        interactionListener = interactionListener,
+                        isVisible = genresVisible,
+                        modifier = Modifier.align(Alignment.TopCenter)
+                    )
+                }
             }
             if (uiState.selectedTab != ExploreTabsPages.ACTORS && uiState.shouldShowError == false) {
                 ViewModeToggleButton(

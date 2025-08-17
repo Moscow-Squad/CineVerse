@@ -6,4 +6,5 @@ interface RecommendationsMoviesInteractionListener {
     fun onViewModeChanged(viewMode: ViewMode)
     fun onMovieClick(movieId: Int)
     fun backButtonClick()
+    fun onRetry()
 }

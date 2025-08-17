@@ -4,19 +4,16 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
-import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.cineverse.navigation.routes.SeriesRecommendationRoute
 import com.moscow.cineverse.paging.BasePagingSource
 import com.moscow.cineverse.screen.explore.toUi
 import com.moscow.cineverse.utlis.ViewMode
-import com.moscow.domain.model.Series
 import com.moscow.domain.service.blur.BlurProvider
 import com.moscow.domain.usecase.genre.GenreUseCase
 import com.moscow.domain.usecase.series.GetSeriesRecommendationsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -94,6 +91,11 @@ class SeriesRecommendationViewModel @Inject constructor(
 
     override fun onViewModeChanged(viewMode: ViewMode) {
         updateState { it.copy(viewMode = viewMode) }
+    }
+
+    override fun onRetry() {
+        updateState { it.copy(error = null, isLoading = true) }
+        getMovieGenre()
     }
 }
 

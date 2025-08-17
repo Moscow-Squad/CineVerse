@@ -173,12 +173,14 @@ private fun SeriesDetailsMainContent(
                 enableBlur = uiState.enableBlur
             )
         }
-        item {
-            MovieCastSection(
-                castMembers = uiState.cast,
-                enableBlur = uiState.enableBlur,
-                onActorClicked = interactionListener::onActorClicked
-            )
+        if (uiState.starCast != null && uiState.starCast.isNotEmpty()){
+            item {
+                MovieCastSection(
+                    castMembers = uiState.starCast,
+                    enableBlur = uiState.enableBlur,
+                    onActorClicked = interactionListener::onActorClicked
+                )
+            }
         }
 
         if (uiState.crew.isNotEmpty() || uiState.seriesDetail.creators.isNotEmpty()) {
