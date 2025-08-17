@@ -142,7 +142,6 @@ private fun SeriesDetailsMainContent(
             .fillMaxSize()
             .background(Theme.colors.background.screen)
     ) {
-        // Make the header section sticky
         stickyHeader {
             SeriesHeader(
                 seriesDetails = uiState.seriesDetail,

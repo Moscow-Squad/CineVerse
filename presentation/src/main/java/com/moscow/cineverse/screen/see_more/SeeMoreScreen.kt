@@ -21,6 +21,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.LoadState
@@ -84,7 +85,7 @@ private fun <T : Any> SeeMoreContent(
 ) {
     val gridColumns = remember(uiState.viewMode) {
         when (uiState.viewMode) {
-            ViewMode.GRID -> GridCells.Fixed(2)
+            ViewMode.GRID -> GridCells.Adaptive(minSize = 150.dp)
             else -> GridCells.Fixed(1)
         }
     }
