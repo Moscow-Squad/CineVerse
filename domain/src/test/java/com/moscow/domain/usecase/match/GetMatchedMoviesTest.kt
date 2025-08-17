@@ -27,7 +27,7 @@ class GetMatchedMoviesTest {
     @Test
     fun `invoke should return matched movies based on filters`() = runTest {
         val page = 1
-        val genres = "28,12" // Action, Adventure
+        val genres = "28,12"
         val runtimeGte = 90
         val runtimeLte = 150
         val releaseDateGte = "2020-01-01"
