@@ -17,7 +17,6 @@ data class SeriesDetailsScreenState(
     val director: List<String> = emptyList(),
     val produce: List<String> = emptyList(),
     val writer: List<String> = emptyList(),
-    val cast: List<CastUiState> = emptyList(),
     val crew: List<CrewUiState> = emptyList(),
     val recommendation: List<MediaItemUiState> = emptyList(),
     val shouldShowError: Boolean = false,
