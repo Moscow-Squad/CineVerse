@@ -1,10 +1,7 @@
 package com.moscow.domain.usecase.rating
 
 import com.moscow.domain.repository.MovieRepository
-import io.mockk.Runs
-import io.mockk.coEvery
 import io.mockk.coVerify
-import io.mockk.just
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
@@ -14,11 +11,12 @@ import kotlin.test.Test
 @OptIn(ExperimentalCoroutinesApi::class)
 class RateMovieUseCaseTest {
 
-    private val movieRepository: MovieRepository = mockk()
+    private lateinit var movieRepository: MovieRepository
     private lateinit var useCase: RateMovieUseCase
 
     @BeforeEach
     fun setup() {
+        movieRepository = mockk(relaxed = true)
         useCase = RateMovieUseCase(movieRepository)
     }
 
@@ -26,7 +24,6 @@ class RateMovieUseCaseTest {
     fun `invoke should call addRatingMovie with correct rating and movieId`() = runTest {
         val rating = 3.0f
         val movieId = 456
-        coEvery { movieRepository.addRatingMovie(id = movieId, rating = rating) } just Runs
 
         useCase(rating, movieId)
 
