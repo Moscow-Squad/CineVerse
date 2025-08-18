@@ -164,13 +164,33 @@ fun SafeImageViewer(
                     )
 
                     if (showBlur) {
-                        Box(
-                            modifier = Modifier
-                                .matchParentSize()
-                                .background(
-                                    color = Color(1212123).copy(alpha = 0.24f)
-                                )
-                        )
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                            // Modern devices: Light overlay since native blur is strong
+                            Box(
+                                modifier = Modifier
+                                    .matchParentSize()
+                                    .background(
+                                        color = Color(1212123).copy(alpha = 0.24f)
+                                    )
+                            )
+                        } else {
+                            // Older devices: Multiple strong overlays for maximum coverage
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .background(color = Color.Black.copy(alpha = 0.9f))
+                            )
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .background(color = Color.Gray.copy(alpha = 0.5f))
+                            )
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .background(color = Color.Black.copy(alpha = 0.3f))
+                            )
+                        }
                         onBlurContent()
                     }
                 }
