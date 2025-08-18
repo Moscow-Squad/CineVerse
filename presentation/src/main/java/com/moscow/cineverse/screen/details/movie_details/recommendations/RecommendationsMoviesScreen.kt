@@ -142,7 +142,7 @@ fun RecommendationMoviesContent(
                             Column(modifier = Modifier.fillMaxSize()) {
                                 LazyVerticalGrid(
                                     columns = if (uiState.viewMode == ViewMode.GRID)
-                                        GridCells.Fixed(2)
+                                        GridCells.Adaptive(minSize = 150.dp)
                                     else
                                         GridCells.Fixed(1),
                                     contentPadding = PaddingValues(
