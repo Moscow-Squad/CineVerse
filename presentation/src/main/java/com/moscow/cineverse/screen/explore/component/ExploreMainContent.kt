@@ -50,7 +50,6 @@ fun ExploreMainContent(
     interactionListener: ExploreInteractionListener,
     modifier: Modifier = Modifier,
     onGenresVisibilityChange: (Boolean) -> Unit = {},
-    // Add shared transition scope parameters
     sharedTransitionScope: SharedTransitionScope? = null,
     animatedVisibilityScope: AnimatedVisibilityScope? = null,
 ) {
@@ -87,7 +86,7 @@ fun ExploreMainContent(
             ExploreTabsPages.ACTORS -> GridCells.Fixed(3)
             ExploreTabsPages.MOVIES, ExploreTabsPages.SERIES ->
                 if (uiState.viewMode == ViewMode.GRID)
-                    GridCells.Fixed(2)
+                    GridCells.Adaptive(minSize = 150.dp)
                 else
                     GridCells.Fixed(1)
         }
@@ -96,14 +95,14 @@ fun ExploreMainContent(
     val contentPadding = remember(uiState.selectedTab) {
         when (uiState.selectedTab) {
             ExploreTabsPages.ACTORS -> PaddingValues(
-                top = if (uiState.isSearch)16.dp else 64.dp, // Fixed top padding
+                top = if (uiState.isSearch) 16.dp else 64.dp,
                 start = 20.dp,
                 end = 20.dp,
                 bottom = 100.dp
             )
 
             ExploreTabsPages.MOVIES, ExploreTabsPages.SERIES -> PaddingValues(
-                top = if (uiState.isSearch)16.dp else 64.dp, // Fixed top padding
+                top = if (uiState.isSearch) 16.dp else 64.dp,
                 start = 16.dp,
                 end = 16.dp,
                 bottom = 100.dp
@@ -162,7 +161,6 @@ fun ExploreMainContent(
                                     viewMode = uiState.viewMode,
                                     enableBlur = uiState.enableBlur,
                                     onMediaItemClick = { interactionListener.onMediaItemClicked(item) },
-                                    // Pass the shared transition scopes
                                     sharedTransitionScope = sharedTransitionScope,
                                     animatedVisibilityScope = animatedVisibilityScope
                                 )

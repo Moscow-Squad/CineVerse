@@ -56,7 +56,7 @@ fun MediaHeader(
     posterUrl: String,
     type: String,
     enableBlur: String,
-    onSaveClick: () -> Unit = {},
+    onSaveClick: (() -> Unit)? = null,
     onPlayClick: () -> Unit = {},
     isSaveEnabled: Boolean = true
 ) {
@@ -280,10 +280,12 @@ fun MediaHeader(
                         .padding(top = collectionTopPadding)
                         .padding(end = collectionEndPadding),
                     buttonIcon = R.drawable.due_tone_add,
-                    onClick = { onSaveClick() },
+                    onClick = {
+                        onSaveClick?.invoke()
+                    },
                     backgroundColor = Theme.colors.button.secondary,
                     iconColor = Theme.colors.shade.primary,
-                    enabled = isSaveEnabled
+                    enabled = onSaveClick != null && isSaveEnabled
                 )
             }
             Box(

@@ -140,7 +140,7 @@ class HomeViewModel @Inject constructor(
     private fun onGetUserDetailsSuccess(user: UserType) {
         when (user) {
             is UserType.AuthenticatedUser -> {
-                updateState { it.copy(userName = user.name.ifEmpty { user.username }) }
+                updateState { it.copy(userName = user.username) }
                 getUserCollection()
             }
 
