@@ -49,7 +49,7 @@ fun NoInternetScreen(
                 contentDescription = "no internet connection",
                 tint = Theme.colors.additional.primary.red,
                 modifier = Modifier
-                    .size(20.dp)
+                    .size(28.dp)
                     .align(Alignment.Center)
             )
         }
