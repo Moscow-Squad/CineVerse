@@ -6,7 +6,7 @@ interface LoginInteractionListener {
     fun onClickLogin()
     fun onClickJoinAsGuest()
     fun onClickCreateNewAccount()
-    fun onDismissOrCancelSignUpBottomSheet()
+    fun onDismissOrCancelBrowserBottomSheet()
     fun onClickGoToWebsite()
     fun onClickForgetPassword()
     fun onExitWebViewBrowser()
