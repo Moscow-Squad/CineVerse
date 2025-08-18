@@ -115,26 +115,26 @@ fun SafeImageViewer(
         requestState = RequestState.LOADING
 
         try {
-            val bitmap = withContext(Dispatchers.IO) {
-                imageLoader.execute(imageRequest).image?.toBitmap()
+            withContext(Dispatchers.IO) {
+                val bitmap = imageLoader.execute(imageRequest).image?.toBitmap()
+                if (bitmap != null) {
+                    val shouldBlur = if (blur && classifier != null) {
+                        withContext(Dispatchers.Default) {
+                            classifier.classifyImage(bitmap)
+                        }
+                    } else false
+
+                    imageCache[imageUrl] = CachedImage(bitmap, shouldBlur)
+                    bitmapToDisplay = bitmap
+                    isNsfw = shouldBlur
+                    requestState = RequestState.SUCCESS
+                    onSuccess?.invoke()
+                } else {
+                    requestState = RequestState.ERROR
+                    onError?.invoke()
+                }
             }
 
-            if (bitmap != null) {
-                val shouldBlur = if (blur && classifier != null) {
-                    withContext(Dispatchers.Default) {
-                        classifier.classifyImage(bitmap)
-                    }
-                } else false
-
-                imageCache[imageUrl] = CachedImage(bitmap, shouldBlur)
-                bitmapToDisplay = bitmap
-                isNsfw = shouldBlur
-                requestState = RequestState.SUCCESS
-                onSuccess?.invoke()
-            } else {
-                requestState = RequestState.ERROR
-                onError?.invoke()
-            }
         } catch (_: Exception) {
             requestState = RequestState.ERROR
             onError?.invoke()
