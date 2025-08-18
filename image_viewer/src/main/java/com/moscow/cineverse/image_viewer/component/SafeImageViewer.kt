@@ -2,7 +2,6 @@ package com.moscow.cineverse.image_viewer.component
 
 import android.os.Build
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
@@ -14,12 +13,11 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import coil3.Bitmap
+import android.graphics.Bitmap
 import coil3.ImageLoader
 import coil3.disk.DiskCache
 import coil3.disk.directory
@@ -29,18 +27,18 @@ import coil3.request.ImageRequest
 import coil3.request.allowHardware
 import coil3.toBitmap
 import com.moscow.cineverse.image_viewer.classfier.HybridImageClassifier
+import com.skydoves.cloudy.cloudy
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 private data class CachedImage(val bitmap: Bitmap, val isNsfw: Boolean)
-
 private val imageCache = mutableMapOf<String, CachedImage>()
 
 @Composable
 fun SafeImageViewer(
     imageUrl: String,
     modifier: Modifier = Modifier,
-    blurRadius: Int = 20,
+    blurRadius: Int = 100,
     isBlurEnabled: String,
     placeholderContent: @Composable () -> Unit = {},
     errorContent: @Composable () -> Unit = {},
@@ -124,7 +122,7 @@ fun SafeImageViewer(
                 val bitmap = imageLoader.execute(imageRequest).image?.toBitmap()
                 if (bitmap != null) {
                     val shouldBlur = if (blur && classifier != null) {
-                        withContext(Dispatchers.Default) {
+                        withContext(Dispatchers.IO) {
                             classifier.classifyImage(bitmap)
                         }
                     } else false
@@ -155,55 +153,31 @@ fun SafeImageViewer(
             RequestState.LOADING -> placeholderContent()
             RequestState.SUCCESS -> {
                 bitmapToDisplay?.let { bitmap ->
+                    val cloudyModifier = if (showBlur) {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S){
+                            Modifier.blur(radius = blurRadius.dp)
+                        }else{
+                            Modifier.cloudy(radius = blurRadius, enabled = true)
+                        }
+                    } else {
+                        Modifier
+                    }
+
                     Image(
                         bitmap = bitmap.asImageBitmap(),
                         contentDescription = null,
                         modifier = Modifier
                             .fillMaxSize()
-                            .then(
-                                if (showBlur && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                                    Modifier.blur(blurRadius.dp)
-                                } else {
-                                    Modifier
-                                }
-                            ),
+                            .then(cloudyModifier),
                         contentScale = ContentScale.Crop,
                     )
-
-                    if (showBlur) {
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                            // Modern devices: Light overlay since native blur is strong
-                            Box(
-                                modifier = Modifier
-                                    .matchParentSize()
-                                    .background(
-                                        color = Color(1212123).copy(alpha = 0.24f)
-                                    )
-                            )
-                        } else {
-                            // Older devices: Multiple strong overlays for maximum coverage
-                            Box(
-                                modifier = Modifier
-                                    .fillMaxSize()
-                                    .background(color = Color.Black.copy(alpha = 0.9f))
-                            )
-                            Box(
-                                modifier = Modifier
-                                    .fillMaxSize()
-                                    .background(color = Color.Gray.copy(alpha = 0.5f))
-                            )
-                            Box(
-                                modifier = Modifier
-                                    .fillMaxSize()
-                                    .background(color = Color.Black.copy(alpha = 0.3f))
-                            )
-                        }
-                        onBlurContent()
-                    }
                 }
             }
-
             RequestState.ERROR -> errorContent()
+        }
+
+        if (showBlur) {
+            onBlurContent()
         }
     }
 }
