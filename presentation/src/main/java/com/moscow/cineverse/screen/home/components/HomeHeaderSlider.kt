@@ -35,7 +35,6 @@ import androidx.compose.ui.zIndex
 import com.moscow.cineverse.common_ui_state.MediaItemUiState
 import com.moscow.cineverse.component.MediaPosterCard
 import com.moscow.cineverse.designSystem.theme.Theme
-import com.moscow.cineverse.utlis.doubleShadowDrop
 import com.moscow.cineverse.utlis.noRibbleClick
 import kotlinx.coroutines.delay
 import kotlin.math.absoluteValue
@@ -71,10 +70,6 @@ fun HomeHeaderSlider(
     val normalizedOffset = pageOffset * 2f
     val factor = (1f - normalizedOffset).coerceIn(0f, 1f)
 
-    val shadowBlur = lerp(40.dp, 80.dp, factor)
-    val shadowAlpha = lerp(0f, 0.09f, factor)
-    val shadowOffset = lerp(20.dp, 25.dp, factor)
-
 
 
     LaunchedEffect(pagerState) {
@@ -98,12 +93,7 @@ fun HomeHeaderSlider(
             state = pagerState,
             modifier = Modifier
                 .fillMaxWidth()
-                .doubleShadowDrop(
-                    shape = RoundedCornerShape(Theme.radius.extraLarge),
-                    blur = shadowBlur,
-                    alpha = shadowAlpha,
-                    offset = shadowOffset
-                ),
+               ,
             contentPadding = PaddingValues(horizontal = 32.dp),
             pageSpacing = (-40).dp,
             verticalAlignment = Alignment.CenterVertically,

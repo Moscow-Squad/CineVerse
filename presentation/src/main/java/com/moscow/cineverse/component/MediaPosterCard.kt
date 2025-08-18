@@ -101,6 +101,7 @@ fun MediaPosterCard(
             titleKey = titleKey,
             ratingKey = ratingKey,
             detailsKey = detailsKey,
+            showBackdrop = showBackdrop,
             sharedTransitionScope = sharedTransitionScope,
             animatedVisibilityScope = animatedVisibilityScope
         )
@@ -181,7 +182,7 @@ private fun GridMovieCard(
                     Box {
 
                         SafeImageViewer(
-                            imageUrl = movie.posterPath,
+                            imageUrl = if(showBackdrop) movie.backdropPath else movie.posterPath,
                             modifier = Modifier
                                 .fillMaxSize()
                                 .clip(RoundedCornerShape(Theme.radius.large))
@@ -313,7 +314,7 @@ private fun GridMovieCard(
                 Box {
 
                     SafeImageViewer(
-                        imageUrl = movie.posterPath,
+                        imageUrl = if(showBackdrop) movie.backdropPath else movie.posterPath,
                         modifier = Modifier
                             .fillMaxSize()
                             .clip(RoundedCornerShape(Theme.radius.large))
@@ -409,6 +410,7 @@ private fun ListMovieCard(
     titleKey: String,
     ratingKey: String,
     detailsKey: String,
+    showBackdrop:Boolean = false,
     sharedTransitionScope: SharedTransitionScope?,
     animatedVisibilityScope: androidx.compose.animation.AnimatedVisibilityScope?
 ) {
@@ -443,7 +445,7 @@ private fun ListMovieCard(
                             contentAlignment = Alignment.Center
                         ){
                             SafeImageViewer(
-                                imageUrl = movie.posterPath,
+                                imageUrl = if(showBackdrop) movie.backdropPath else movie.posterPath,
                                 modifier = Modifier
                                     .fillMaxSize(),
                                 isBlurEnabled = enableBlur,
@@ -552,7 +554,7 @@ private fun ListMovieCard(
             Box(modifier = Modifier.fillMaxSize()) {
                 Row(modifier = Modifier.fillMaxSize()) {
                     SafeImageViewer(
-                        imageUrl = movie.posterPath,
+                        imageUrl = if(showBackdrop) movie.backdropPath else movie.posterPath,
                         modifier = Modifier
                             .width(64.dp)
                             .fillMaxHeight()

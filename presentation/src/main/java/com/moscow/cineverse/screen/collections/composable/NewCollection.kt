@@ -11,6 +11,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.moscow.cineverse.designSystem.component.text.AppTextField
@@ -43,7 +44,7 @@ fun NewCollection(
             horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             MovieButton(
-                buttonText = "Cancel",
+                buttonText = stringResource(R.string.cancel),
                 textColor = Theme.colors.button.onSecondary,
                 textStyle = Theme.textStyle.body.medium.medium,
                 onClick = onCancelClick,
@@ -53,7 +54,7 @@ fun NewCollection(
                     .padding(vertical = 14.dp)
             )
             MovieButton(
-                buttonText = "Create",
+                buttonText = stringResource(R.string.create),
                 textColor = Theme.colors.button.onPrimary,
                 textStyle = Theme.textStyle.body.medium.medium,
                 onClick = onCreateClick,

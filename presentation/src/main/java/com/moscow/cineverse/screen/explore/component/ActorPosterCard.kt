@@ -17,12 +17,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import coil3.size.Scale
 import com.moscow.cineverse.designSystem.component.blur.OnBlurContent
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.image_viewer.component.SafeImageViewer
@@ -81,7 +83,7 @@ fun ActorPosterCard(
             Text(
                 text = title,
                 color = Theme.colors.shade.secondary,
-                style = Theme.textStyle.body.medium.medium,
+                style = Theme.textStyle.body.small.medium,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
                 textAlign = titleTextAlign,

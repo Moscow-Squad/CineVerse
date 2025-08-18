@@ -176,7 +176,7 @@ fun SearchBar(
                 focusedBorderColor = Theme.colors.stroke.primary,
                 unfocusedBorderColor = Theme.colors.stroke.primary,
                 cursorColor = Theme.colors.brand.primary,
-            )
+            ),
         )
     }
 }
