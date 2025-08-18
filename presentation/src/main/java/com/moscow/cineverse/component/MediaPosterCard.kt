@@ -70,17 +70,17 @@ fun MediaPosterCard(
     val titleKey = "movie_title_${mediaItem.id}"
     val ratingKey = "movie_rating_${mediaItem.id}"
     val detailsKey = "movie_details_${mediaItem.id}"
-
+    val imageUrl = if(showBackdrop) mediaItem.backdropPath else mediaItem.posterPath
     when (viewMode) {
         ViewMode.GRID -> GridMovieCard(
             modifier = modifier,
+            imageUrl = imageUrl,
             movie = mediaItem,
             showRating = showRating,
             onMovieClick = onMediaItemClick,
             enableBlur = enableBlur,
             titleTextAlign = titleTextAlign,
             showTitle = showTitle,
-            showBackdrop = showBackdrop,
             useFixedHeight = useFixedHeight,
             getTitleOverride = getTitleOverride,
             posterKey = posterKey,
@@ -93,6 +93,7 @@ fun MediaPosterCard(
 
         ViewMode.LIST -> ListMovieCard(
             modifier = modifier,
+            imageUrl = imageUrl,
             movie = mediaItem,
             onMovieClick = onMediaItemClick,
             enableBlur = enableBlur,
@@ -101,7 +102,6 @@ fun MediaPosterCard(
             titleKey = titleKey,
             ratingKey = ratingKey,
             detailsKey = detailsKey,
-            showBackdrop = showBackdrop,
             sharedTransitionScope = sharedTransitionScope,
             animatedVisibilityScope = animatedVisibilityScope
         )
@@ -139,10 +139,10 @@ private fun RemoteImagePlaceholder(
 @Composable
 private fun GridMovieCard(
     modifier: Modifier = Modifier,
+    imageUrl: String,
     movie: MediaItemUiState,
     showTitle: Boolean = true,
     showRating: Boolean = true,
-    showBackdrop: Boolean = false,
     onMovieClick: (Int) -> Unit,
     enableBlur: String,
     titleTextAlign: TextAlign,
@@ -182,7 +182,7 @@ private fun GridMovieCard(
                     Box {
 
                         SafeImageViewer(
-                            imageUrl = if(showBackdrop) movie.backdropPath else movie.posterPath,
+                            imageUrl = imageUrl,
                             modifier = Modifier
                                 .fillMaxSize()
                                 .clip(RoundedCornerShape(Theme.radius.large))
@@ -314,7 +314,7 @@ private fun GridMovieCard(
                 Box {
 
                     SafeImageViewer(
-                        imageUrl = if(showBackdrop) movie.backdropPath else movie.posterPath,
+                        imageUrl = imageUrl,
                         modifier = Modifier
                             .fillMaxSize()
                             .clip(RoundedCornerShape(Theme.radius.large))
@@ -402,6 +402,7 @@ private fun GridMovieCard(
 @Composable
 private fun ListMovieCard(
     modifier: Modifier = Modifier,
+    imageUrl: String,
     movie: MediaItemUiState,
     onMovieClick: (Int) -> Unit,
     enableBlur: String,
@@ -410,7 +411,6 @@ private fun ListMovieCard(
     titleKey: String,
     ratingKey: String,
     detailsKey: String,
-    showBackdrop:Boolean = false,
     sharedTransitionScope: SharedTransitionScope?,
     animatedVisibilityScope: androidx.compose.animation.AnimatedVisibilityScope?
 ) {
@@ -445,7 +445,7 @@ private fun ListMovieCard(
                             contentAlignment = Alignment.Center
                         ){
                             SafeImageViewer(
-                                imageUrl = if(showBackdrop) movie.backdropPath else movie.posterPath,
+                                imageUrl = imageUrl,
                                 modifier = Modifier
                                     .fillMaxSize(),
                                 isBlurEnabled = enableBlur,
@@ -554,7 +554,7 @@ private fun ListMovieCard(
             Box(modifier = Modifier.fillMaxSize()) {
                 Row(modifier = Modifier.fillMaxSize()) {
                     SafeImageViewer(
-                        imageUrl = if(showBackdrop) movie.backdropPath else movie.posterPath,
+                        imageUrl = imageUrl,
                         modifier = Modifier
                             .width(64.dp)
                             .fillMaxHeight()
