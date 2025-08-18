@@ -1,6 +1,8 @@
 package com.moscow.cineverse.image_viewer.component
 
+import android.os.Build
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
@@ -11,9 +13,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.blur
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
 import coil3.Bitmap
 import coil3.ImageLoader
 import coil3.disk.DiskCache
@@ -24,18 +29,18 @@ import coil3.request.ImageRequest
 import coil3.request.allowHardware
 import coil3.toBitmap
 import com.moscow.cineverse.image_viewer.classfier.HybridImageClassifier
-import com.skydoves.cloudy.cloudy
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 private data class CachedImage(val bitmap: Bitmap, val isNsfw: Boolean)
+
 private val imageCache = mutableMapOf<String, CachedImage>()
 
 @Composable
 fun SafeImageViewer(
     imageUrl: String,
     modifier: Modifier = Modifier,
-    blurRadius: Int = 300,
+    blurRadius: Int = 20,
     isBlurEnabled: String,
     placeholderContent: @Composable () -> Unit = {},
     errorContent: @Composable () -> Unit = {},
@@ -143,27 +148,35 @@ fun SafeImageViewer(
             RequestState.LOADING -> placeholderContent()
             RequestState.SUCCESS -> {
                 bitmapToDisplay?.let { bitmap ->
-                    val cloudyModifier = if (showBlur) {
-                        Modifier.cloudy(radius = blurRadius, enabled = true)
-                    } else {
-                        Modifier
-                    }
-
                     Image(
                         bitmap = bitmap.asImageBitmap(),
                         contentDescription = null,
                         modifier = Modifier
                             .fillMaxSize()
-                            .then(cloudyModifier),
+                            .then(
+                                if (showBlur && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                                    Modifier.blur(blurRadius.dp)
+                                } else {
+                                    Modifier
+                                }
+                            ),
                         contentScale = ContentScale.Crop,
                     )
+
+                    if (showBlur) {
+                        Box(
+                            modifier = Modifier
+                                .matchParentSize()
+                                .background(
+                                    color = Color(1212123).copy(alpha = 0.24f)
+                                )
+                        )
+                        onBlurContent()
+                    }
                 }
             }
-            RequestState.ERROR -> errorContent()
-        }
 
-        if (showBlur) {
-            onBlurContent()
+            RequestState.ERROR -> errorContent()
         }
     }
 }
