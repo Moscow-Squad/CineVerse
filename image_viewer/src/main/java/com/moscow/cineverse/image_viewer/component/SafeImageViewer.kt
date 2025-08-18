@@ -35,7 +35,7 @@ private val imageCache = mutableMapOf<String, CachedImage>()
 fun SafeImageViewer(
     imageUrl: String,
     modifier: Modifier = Modifier,
-    blurRadius: Int = 300,
+    blurRadius: Int = 100,
     isBlurEnabled: String,
     placeholderContent: @Composable () -> Unit = {},
     errorContent: @Composable () -> Unit = {},
@@ -89,6 +89,14 @@ fun SafeImageViewer(
         onSuccess?.invoke()
     }
 
+    val imageRequest = ImageRequest.Builder(context)
+        .allowHardware(false)
+        .data(imageUrl)
+        .allowHardware(false)
+        .memoryCachePolicy(CachePolicy.ENABLED)
+        .diskCachePolicy(CachePolicy.ENABLED)
+        .build()
+
     LaunchedEffect(imageUrl) {
         if (imageUrl.isEmpty()) {
             requestState = RequestState.ERROR
@@ -96,20 +104,19 @@ fun SafeImageViewer(
             return@LaunchedEffect
         }
 
-        if (imageCache.containsKey(imageUrl)) return@LaunchedEffect
+        imageCache[imageUrl]?.let { cached ->
+            bitmapToDisplay = cached.bitmap
+            isNsfw = cached.isNsfw
+            requestState = RequestState.SUCCESS
+            onSuccess?.invoke()
+            return@LaunchedEffect
+        }
 
         requestState = RequestState.LOADING
 
-        val request = ImageRequest.Builder(context)
-            .data(imageUrl)
-            .allowHardware(false)
-            .memoryCachePolicy(CachePolicy.ENABLED)
-            .diskCachePolicy(CachePolicy.ENABLED)
-            .build()
-
         try {
             val bitmap = withContext(Dispatchers.IO) {
-                imageLoader.execute(request).image?.toBitmap()
+                imageLoader.execute(imageRequest).image?.toBitmap()
             }
 
             if (bitmap != null) {
