@@ -37,7 +37,7 @@ fun SeriesHeader(
                 duration = it.duration,
                 releaseDate = it.releaseDate,
                 type = stringResource(R.string.series_type),
-                onSaveClick = interactionListener::addToCollection,
+                onSaveClick = null,
                 isSaveEnabled = false,
                 onPlayClick = interactionListener::onPlayButtonClicked,
             )
