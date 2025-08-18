@@ -1,6 +1,7 @@
 package com.moscow.cineverse.screen.explore.component
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -65,6 +66,11 @@ fun SearchBar(
     val focusRequester = remember { FocusRequester() }
     val focusManager = LocalFocusManager.current
 
+    val paddingStart by animateDpAsState(
+        targetValue = if (isFocused || value.isNotEmpty()) 10.dp else 0.dp,
+        animationSpec = tween(300)
+    )
+
     LaunchedEffect(blockRefocus) {
         if (blockRefocus) {
             delay(500)
@@ -109,6 +115,7 @@ fun SearchBar(
 
         Box(
             modifier = Modifier
+                .padding(start = paddingStart)
                 .weight(1f)
                 .height(48.dp)
                 .focusRequester(focusRequester)
