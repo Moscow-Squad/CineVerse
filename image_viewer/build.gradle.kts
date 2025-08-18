@@ -11,7 +11,6 @@ dependencies {
     implementation(libs.androidx.core.ktx)
 
     api(libs.coil3.compose)
-    implementation(libs.cloudy)
 
     implementation(libs.tensorflow.lite)
 }
