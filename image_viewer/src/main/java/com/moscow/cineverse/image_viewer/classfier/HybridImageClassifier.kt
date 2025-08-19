@@ -29,18 +29,27 @@ internal class HybridImageClassifier(context: Context, nsfwThreshold: Float = 0.
     }
 
     fun classifyImage(bitmap: Bitmap): Boolean {
-        val input = preprocess(bitmap)
-        val output = Array(1) { FloatArray(OUTPUT_CLASSES) }
-        interpreter?.run(input, output)
-        return isNSFW(output[0])
+        return try {
+            val input = preprocess(bitmap)
+            val output = Array(1) { FloatArray(OUTPUT_CLASSES) }
+            interpreter?.run(input, output)
+            isNSFW(output[0])
+        } catch (e: Exception) {
+            false
+        }
     }
 
     private fun preprocess(originalBitmap: Bitmap): ByteBuffer {
         val byteBuffer = ByteBuffer.allocateDirect(4 * INPUT_SIZE * INPUT_SIZE * PIXEL_SIZE)
         byteBuffer.order(ByteOrder.nativeOrder())
 
-        val scaledBitmap = originalBitmap.scale(INPUT_SIZE, INPUT_SIZE)
-
+        //val scaledBitmap = originalBitmap.scale(INPUT_SIZE, INPUT_SIZE)
+        val scaledBitmap = Bitmap.createScaledBitmap(
+            originalBitmap,
+            INPUT_SIZE,
+            INPUT_SIZE,
+            true
+        )
         val bitmap = if (scaledBitmap.config != Bitmap.Config.ARGB_8888) {
             scaledBitmap.copy(Bitmap.Config.ARGB_8888, false)
         } else {

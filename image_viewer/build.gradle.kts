@@ -12,6 +12,5 @@ dependencies {
 
     api(libs.coil3.compose)
     implementation(libs.cloudy)
-
     implementation(libs.tensorflow.lite)
 }
