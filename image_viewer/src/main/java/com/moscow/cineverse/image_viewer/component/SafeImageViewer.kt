@@ -52,13 +52,6 @@ fun SafeImageViewer(
             else -> false
         }
     }
-    val threshold = rememberSaveable {
-        when (isBlurEnabled) {
-            "high" -> 0.5f
-            "medium" -> 0.2f
-            else -> 0.2f
-        }
-    }
 
     val imageLoader = remember {
         ImageLoader.Builder(context)
@@ -77,10 +70,10 @@ fun SafeImageViewer(
     }
 
     val classifier = remember(blur) {
-        if (blur) HybridImageClassifier(context, threshold) else null
+        if (blur) HybridImageClassifier(context) else null
     }
 
-    var bitmapToDisplay by rememberSaveable { mutableStateOf<Bitmap?>(null) }
+    var bitmapToDisplay by remember { mutableStateOf<Bitmap?>(null) }
     var isNsfw by rememberSaveable(imageUrl) { mutableStateOf(false) }
     var requestState by rememberSaveable(imageUrl) { mutableStateOf(RequestState.LOADING) }
 

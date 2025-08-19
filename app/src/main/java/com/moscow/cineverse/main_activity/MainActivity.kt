@@ -1,6 +1,7 @@
 package com.moscow.cineverse.main_activity
 
 import android.os.Bundle
+import android.view.MotionEvent
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -59,5 +60,9 @@ class MainActivity : AppCompatActivity() {
                 CineVerseRoot(navViewModel)
             }
         }
+    }
+
+    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
+        return ev?.pointerCount == 1 && super.dispatchTouchEvent(ev)
     }
 }
