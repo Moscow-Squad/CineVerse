@@ -1,29 +1,30 @@
 package com.moscow.cineverse.screen.match
 
-import android.util.Log
 import com.moscow.cineverse.common_ui_state.DurationUiState
 import com.moscow.cineverse.screen.details.movie_details.MovieScreenState
 import com.moscow.cineverse.screen.explore.ExploreScreenState
+import com.moscow.cinverse.presentation.R
 import com.moscow.domain.model.Movie
+import java.util.Locale
 
 object MatchMapper {
 
     private val moodToMovieGenres = mapOf(
-        "Chill" to listOf(35, 16, 10751),           // Comedy, Animation, Family
-        "Excited" to listOf(28, 12, 878),           // Action, Adventure, Sci-Fi
-        "Emotional" to listOf(18, 10749),           // Drama, Romance
-        "Curious" to listOf(99, 9648)               // Documentary, Mystery
+        R.string.mood_chill to listOf(35, 16, 10751),           // Comedy, Animation, Family
+        R.string.mood_excited to listOf(28, 12, 878),           // Action, Adventure, Sci-Fi
+        R.string.mood_emotional to listOf(18, 10749),           // Drama, Romance
+        R.string.mood_curious to listOf(99, 9648)               // Documentary, Mystery
     )
 
     private val genreToMovieGenres = mapOf(
-        "Action" to 28,
-        "Comedy" to 35,
-        "Drama" to 18,
-        "Romance" to 10749,
-        "Sci-Fi" to 878,
-        "Thriller" to 53,
-        "Animation" to 16,
-        "Mystery" to 9648
+        R.string.genre_action to 28,
+        R.string.genre_comedy to 35,
+        R.string.genre_drama to 18,
+        R.string.genre_romance to 10749,
+        R.string.genre_scifi to 878,
+        R.string.genre_thriller to 53,
+        R.string.genre_animation to 16,
+        R.string.genre_mystery to 9648
     )
 
     fun toMatchParams(uiState: MatchUiState): MatchParams {
@@ -41,9 +42,12 @@ object MatchMapper {
         var runtimeLte: Int? = null
         uiState.selectedTimeQuestion.firstOrNull()?.name?.let { time ->
             when (time) {
-                "Short" -> runtimeLte = 90
-                "Medium" -> { runtimeGte = 90; runtimeLte = 120 }
-                "Long" -> runtimeGte = 120
+                R.string.time_short_label -> runtimeLte = 90
+                R.string.time_medium_label -> {
+                    runtimeGte = 90; runtimeLte = 120
+                }
+
+                R.string.time_long_label -> runtimeGte = 120
             }
         }
 
@@ -51,9 +55,9 @@ object MatchMapper {
         var releaseDateLte: String? = null
         uiState.selectedMovieTypeQuestion.firstOrNull()?.name?.let { type ->
             when (type) {
-                "Recent" -> releaseDateGte = "2023-01-01"
-                "Classic" -> releaseDateLte = "2000-01-01"
-                "Both" -> {}
+                R.string.recent -> releaseDateGte = "2023-01-01"
+                R.string.classic -> releaseDateLte = "2000-01-01"
+                R.string.both -> {}
             }
         }
 
@@ -66,21 +70,22 @@ object MatchMapper {
         )
     }
 
-    fun toUiState(movie: Movie, genres: List<ExploreScreenState.GenreUiState>): MovieScreenState.MovieDetailsUiState {
+    fun toUiState(
+        movie: Movie,
+        genres: List<ExploreScreenState.GenreUiState>
+    ): MovieScreenState.MovieDetailsUiState {
         return MovieScreenState.MovieDetailsUiState(
             id = movie.id,
             title = movie.title,
-            trailerUrl = "",
+            trailerUrl = movie.trailerUrl,
             posterUrl = movie.posterUrl,
-            rating = String.format("%.1f", movie.rating.toDouble()),
+            rating = String.format(Locale.getDefault(),"%.1f", movie.rating.toDouble()),
             genres = if (genres.isEmpty()) emptyList() else
                 movie.genreIds.map { it -> genres.first { genre -> genre.id == it }.name },
             releaseDate = movie.releaseDate,
-            duration = DurationUiState(0,0),
+            duration = DurationUiState(0, 0),
             description = movie.overview
-        ).also {
-            Log.d("Movies", it.toString())
-        }
+        )
     }
 
 }
