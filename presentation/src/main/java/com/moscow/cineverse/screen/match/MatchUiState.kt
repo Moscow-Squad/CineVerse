@@ -91,8 +91,8 @@ private fun getMovieTypeQuestionAnswers() = listOf(
 private fun getTimeQuestionAnswers() = listOf(
     QuestionUiState(
         id = 1,
-        name = R.string.time_long_label,
-        description = R.string.time_long_desc,
+        name = R.string.time_short_label,
+        description = R.string.time_short_desc,
         iconResource = R.drawable.time_short_icon
     ),
     QuestionUiState(
