@@ -1,6 +1,7 @@
 package com.moscow.cineverse
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
@@ -16,6 +17,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.moscow.cineverse.component.bottomNavigationBar.BottomNavItem.Companion.destinations
 import com.moscow.cineverse.component.bottomNavigationBar.NavBar
+import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.navigation.CineVerseNavGraph
 import com.moscow.cineverse.navigation.NavViewModel
 import com.moscow.cineverse.navigation.navigateToNewGraph
@@ -42,8 +44,7 @@ fun CineVerseRoot(
 
     Scaffold(
         modifier = Modifier
-            .fillMaxSize()
-            .navigationBarsPadding(),
+            .fillMaxSize(),
         bottomBar = {
             if (showBottomNav) NavBar(
                 selectedItem = destinations.values.elementAt(navGraphIndex),
@@ -55,6 +56,8 @@ fun CineVerseRoot(
     ) { paddingValues ->
         CineVerseNavGraph(
             modifier = Modifier
+                .fillMaxSize()
+                .background(Theme.colors.background.screen)
                 .padding(top = 16.dp)
                 .navigationBarsPadding(),
             navController = navController,
