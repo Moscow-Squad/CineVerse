@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import com.moscow.cineverse.designSystem.component.button.MovieFloatingButton
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cinverse.presentation.R
+import java.util.Locale
 
 @Composable
 fun DetailCard(
@@ -33,7 +34,7 @@ fun DetailCard(
 ) {
     val formattedRating = try {
         val ratingValue = rating.toDouble()
-        String.format("%.1f", ratingValue)
+        String.format(Locale.getDefault(), "%.1f", ratingValue)
     } catch (_: NumberFormatException) {
         "0.0"
     }
@@ -109,12 +110,14 @@ fun DetailCard(
                 onClick = { onPlayClick() },
                 backgroundColor = Theme.colors.button.primary,
                 iconColor = Theme.colors.brand.tertiary,
+                disableQuickClicks = true
             )
             MovieFloatingButton(
                 buttonIcon = R.drawable.due_tone_add,
                 onClick = { onSaveClick() },
                 backgroundColor = Theme.colors.button.secondary,
                 iconColor = Theme.colors.shade.primary,
+                disableQuickClicks = true
             )
         }
     }

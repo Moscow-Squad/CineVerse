@@ -7,6 +7,10 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableLongStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -29,7 +33,8 @@ fun MovieFloatingButton(
     modifier: Modifier = Modifier,
     buttonSize: Dp = 40.dp,
     iconSize: Dp = 20.dp,
-    enabled: Boolean = true
+    enabled: Boolean = true,
+    disableQuickClicks: Boolean = false
 ) {
     Box(
         modifier = modifier
@@ -40,7 +45,10 @@ fun MovieFloatingButton(
                 shape = RoundedCornerShape(Theme.radius.large)
             )
             .clip(RoundedCornerShape(Theme.radius.large))
-            .clickable(enabled) { onClick() },
+            .then(
+                if(disableQuickClicks) Modifier.debounceClickable(onClick = onClick)
+                else Modifier.clickable(enabled) { onClick() }
+            ),
         contentAlignment = Alignment.Center
     ) {
         Icon(
@@ -51,6 +59,22 @@ fun MovieFloatingButton(
             tint = iconColor,
             contentDescription = stringResource(R.string.floating_button_icon)
         )
+    }
+}
+
+@Composable
+fun Modifier.debounceClickable(
+    debounceTime: Long = 600L,
+    onClick: () -> Unit
+): Modifier {
+    var lastClickTime by remember { mutableLongStateOf(0L) }
+
+    return this.clickable {
+        val currentTime = System.currentTimeMillis()
+        if (currentTime - lastClickTime > debounceTime) {
+            lastClickTime = currentTime
+            onClick()
+        }
     }
 }
 
