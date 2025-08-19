@@ -45,7 +45,9 @@ fun InfoSection(
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                     textAlign = titleTextAlign,
-                    modifier = Modifier.weight(1f)
+                    modifier = Modifier
+                        .padding(end = 42.dp)
+                        .weight(1f)
                 )
             }
             if (rating != null && rating > 0 && showRating) {

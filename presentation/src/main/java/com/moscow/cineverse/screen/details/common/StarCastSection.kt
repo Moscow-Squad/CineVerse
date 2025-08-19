@@ -2,7 +2,9 @@ package com.moscow.cineverse.screen.details.common
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Text
@@ -11,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.moscow.cineverse.common_ui_state.CastUiState
 import com.moscow.cineverse.designSystem.theme.Theme
+import java.nio.file.WatchEvent
 
 @Composable
 fun StarCastSection(
@@ -27,11 +30,13 @@ fun StarCastSection(
             text = title,
             style = Theme.textStyle.title.small,
             color = Theme.colors.shade.primary,
+            modifier = Modifier.padding(start = 16.dp)
         )
 
         LazyRow(
             horizontalArrangement = Arrangement.spacedBy(12.dp),
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+            contentPadding = PaddingValues(horizontal = 16.dp)
         ) {
             items(cast.chunked(2)) { rowItems ->
                 Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
