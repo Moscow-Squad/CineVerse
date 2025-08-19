@@ -171,9 +171,9 @@ private fun GridMovieCard(
                             }
                         )
                         .sharedElement(
-                        sharedContentState = rememberSharedContentState(key = posterKey),
-                        animatedVisibilityScope = animatedVisibilityScope,
-                    )
+                            sharedContentState = rememberSharedContentState(key = posterKey),
+                            animatedVisibilityScope = animatedVisibilityScope,
+                        )
                         .clip(RoundedCornerShape(Theme.radius.large)),
                     shape = RoundedCornerShape(Theme.radius.large),
                     elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
@@ -435,7 +435,8 @@ private fun ListMovieCard(
                                 .sharedElement(
                                     sharedContentState = rememberSharedContentState(key = posterKey),
                                     animatedVisibilityScope = animatedVisibilityScope,
-                                ).clip(
+                                )
+                                .clip(
                                     RoundedCornerShape(
                                         topStart = Theme.radius.large,
                                         topEnd = Theme.radius.large,
@@ -507,14 +508,10 @@ private fun ListMovieCard(
                                 .padding(8.dp)
                                 .sharedElement(
                                     sharedContentState = rememberSharedContentState(key = ratingKey),
-                                    animatedVisibilityScope = animatedVisibilityScope,
-//                                    boundsTransform = { _, _ ->
-//                                        tween(durationMillis = animationTime)
-//                                    }
+                                    animatedVisibilityScope = animatedVisibilityScope
                                 ),
                             shape = CircleShape,
                             color = Theme.colors.background.card.copy(alpha = 0.9f),
-                            shadowElevation = 2.dp
                         ) {
                             Row(
                                 modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
@@ -613,8 +610,7 @@ private fun ListMovieCard(
                             .align(Alignment.TopEnd)
                             .padding(8.dp),
                         shape = CircleShape,
-                        color = Theme.colors.background.card.copy(alpha = 0.9f),
-                        shadowElevation = 2.dp
+                        color = Theme.colors.background.card.copy(alpha = 0.9f)
                     ) {
                         Row(
                             modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
