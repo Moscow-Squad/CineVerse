@@ -10,7 +10,7 @@
   />
 </p>
 
-## 🎬 Welcome to the Civerse Movies & Series ! 🍿✨
+## 🎬 Welcome to the Cinverse Movies & Series ! 🍿✨
 Dive into a world of endless entertainment, where you can explore movies and TV shows from every category  action, drama, comedy, romance, sci-fi, and more! 🎭 From discovering your favorite actors 🎥 to exploring their full filmography 📚, we’ve got you covered. Build your own collections, follow categories you love ❤️, and enjoy a personalized cinematic journey like never before! 🌟
 
 **Key Features:**
@@ -278,7 +278,7 @@ CineVerse is built with a modern tools, libraries, robust, and scalable tech sta
 | **Jetpack Suite** | Paging 3, WorkManager, DataStore, Navigation Component |
 | **Dependency Injection**| Hilt |
 | **Networking** | Retrofit, OkHttp, Kotlinx.Serialization |
-| **Local Storage** | Room (for database caching)و DataStore (for key-value preferences) |
+| **Local Storage** | Room (for database caching), DataStore (for key-value preferences) |
 | **Machine Learning** | TensorFlow Lite (for on-device content classification) |
 | **Firebase Suite** | Crashlytics, Performance Monitoring, Analytics |
 | **Testing** | JUnit5, Mockk, Truth|
