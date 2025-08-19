@@ -66,7 +66,7 @@ private fun LanguageBottomSheetContent(
         LanguageOption(
             modifier = Modifier.weight(1f),
             name = stringResource(R.string.english),
-            imageRes = R.drawable.colored_uk_flag,
+            imageRes = R.drawable.uk_flag,
             isSelected = selectedLanguage == AppLanguage.English.code,
             onClick = { switchLanguage(AppLanguage.English.code) }
         )

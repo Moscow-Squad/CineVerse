@@ -15,7 +15,7 @@
     <string name="movie">فيلم</string>
     <string name="star_cast">طاقم التمثيل</string>
     <string name="you_might_also_like">قد يعجبك أيضاً</string>
-    <string name="because_you_watched">بما أنك شاهدت</string>
+    <string name="because_you_watched">لأنك شاهدته</string>
     <string name="nothing_found">لم يتم العثور على شيء</string>
     <string name="we_searched_the_entire_universe_but_found_nothing_matching_your_query_try_something_else">بحثنا كثيراً ولم نجد ما يطابق بحثك. جرّب البحث بكلمة أخرى.</string>
     <string name="add_to_collection">أضف إلى المجموعة</string>
@@ -192,8 +192,8 @@
     <string name="recent">حديث</string>
     <string name="classic">كلاسيكي</string>
     <string name="both">كلاهما</string>
-    <string name="loading_recommendations">جارٍ تحميل التوصيات التي ستعجبك…</string>
-    <string name="match_list">إليك قائمة التطابقات الخاصة بك</string>
+    <string name="loading_recommendations">جارٍ تحميل التوصيات</string>
+    <string name="match_list">قائمة التطابقات</string>
     <string name="until_dawn">حتى الفجر</string>
     <string name="view_details">عرض التفاصيل</string>
     <string name="unsuitable_image">صورة غير مناسبة</string>
@@ -223,6 +223,6 @@
     <string name="tap_a_movie_to_see_details_or_update_your_rating">اضغط على فيلم لرؤية التفاصيل أو تحديث تقييمك.</string>
     <string name="link_not_available">اللينك غير متوفر</string>
     <string name="reset_your_password">إعادة تعيين كلمة المرور</string>
-    <string name="forget_password_description">سننقلك إلى الموقع الإلكتروني لتحديث كلمة مرورك بأمان.</string>
+    <string name="forget_password_description">نسيت كلمة المرور</string>
 
 </resources>
