@@ -1,10 +1,6 @@
 package com.moscow.cineverse.main_activity
 
-import android.os.Build
 import android.os.Bundle
-import android.view.View
-import android.view.WindowInsets
-import android.view.WindowInsetsController
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -31,37 +27,32 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
 
         WindowCompat.setDecorFitsSystemWindows(window, false)
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            window.insetsController?.apply {
-                hide(WindowInsets.Type.navigationBars())
-                systemBarsBehavior = WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
-            }
-        } else {
-            @Suppress("DEPRECATION")
-            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-        }
 
         setContent {
             val state by mainActivityViewModel.state.collectAsStateWithLifecycle()
 
             CineVerseTheme(language = state.language, isDark = state.isDarkTheme) {
-                val surfaceColor = Theme.colors.background.screen
+                val surfaceColor = Theme.colors.background.screen.toArgb()
 
                 LaunchedEffect(state.isDarkTheme) {
                     enableEdgeToEdge(
                         statusBarStyle = if (!state.isDarkTheme) {
                             SystemBarStyle.light(
-                                scrim = surfaceColor.toArgb(),
-                                darkScrim = surfaceColor.toArgb()
+                                scrim = surfaceColor,
+                                darkScrim = surfaceColor
                             )
                         } else {
-                            SystemBarStyle.dark(
-                                scrim = surfaceColor.toArgb()
+                            SystemBarStyle.dark(scrim = surfaceColor)
+                        },
+                        navigationBarStyle = if (!state.isDarkTheme) {
+                            SystemBarStyle.light(
+                                scrim = surfaceColor,
+                                darkScrim = surfaceColor
                             )
+                        } else {
+                            SystemBarStyle.dark(scrim = surfaceColor)
                         }
                     )
                 }

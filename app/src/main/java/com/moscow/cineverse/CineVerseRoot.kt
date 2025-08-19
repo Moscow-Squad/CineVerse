@@ -45,8 +45,7 @@ fun CineVerseRoot(
 
     Scaffold(
         modifier = Modifier
-            .fillMaxSize()
-            .navigationBarsPadding(),
+            .fillMaxSize(),
         bottomBar = {
             if (showBottomNav) NavBar(
                 selectedItem = destinations.values.elementAt(navGraphIndex),
@@ -58,6 +57,7 @@ fun CineVerseRoot(
     ) { paddingValues ->
         CineVerseNavGraph(
             modifier = Modifier
+                .fillMaxSize()
                 .background(Theme.colors.background.screen)
                 .windowInsetsPadding(WindowInsets.statusBars)
                 .navigationBarsPadding(),
