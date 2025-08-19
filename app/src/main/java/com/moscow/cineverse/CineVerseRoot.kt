@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.Scaffold
@@ -59,8 +58,7 @@ fun CineVerseRoot(
             modifier = Modifier
                 .fillMaxSize()
                 .background(Theme.colors.background.screen)
-                .windowInsetsPadding(WindowInsets.statusBars)
-                .navigationBarsPadding(),
+                .windowInsetsPadding(WindowInsets.statusBars),
             navController = navController,
             navViewModel = navViewModel,
             scaffoldPaddingValues = paddingValues,

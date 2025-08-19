@@ -7,8 +7,9 @@ import com.moscow.cineverse.navigation.routes.HomeRoute
 fun NavController.navigateToNewGraph(newGraph: AppDestination) {
     val currentDestination = currentBackStackEntry?.destination?.route
 
-    val isOnBottomNavDestination = BottomNavItem.destinations.keys.any {
-        it::class.qualifiedName == currentDestination
+    val isOnBottomNavDestination = BottomNavItem.destinations.keys.any { destination ->
+        destination.toString() == currentDestination ||
+                destination::class.simpleName == currentDestination
     }
 
     if (isOnBottomNavDestination) {
