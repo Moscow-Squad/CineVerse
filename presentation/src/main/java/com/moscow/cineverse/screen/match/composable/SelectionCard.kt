@@ -22,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
@@ -99,11 +100,11 @@ fun SelectionCard(
         MovieText(
             text = buildAnnotatedString {
                 withStyle(style = SpanStyle(color = textColor)) {
-                    append(questionUiState.name)
+                    append(stringResource(questionUiState.name) )
                 }
                 questionUiState.description?.let {
                     withStyle(style = SpanStyle(color = Theme.colors.shade.primary)) {
-                        append(" (${questionUiState.description})")
+                        append(" (${stringResource(questionUiState.description)})")
                     }
                 }
             }.toString(),
@@ -128,7 +129,7 @@ private fun SelectionCardPreview() {
         SelectionCard(
             questionUiState = QuestionUiState(
                 id = 1,
-                name = "Option 1",
+                name = R.string.classic,
                 iconResource = R.drawable.folder_icon
             ),
             onClick = { isSelected = !isSelected }

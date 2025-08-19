@@ -24,11 +24,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.lerp
 import androidx.compose.ui.util.lerp
 import androidx.compose.ui.zIndex
+import com.moscow.cineverse.component.EmptyState
 import com.moscow.cineverse.designSystem.component.blur.OnBlurContent
 import com.moscow.cineverse.designSystem.component.blur.RemoteImagePlaceholder
 import com.moscow.cineverse.designSystem.component.button.MovieButton
@@ -49,7 +51,6 @@ fun MatchCarouselAnimation(
     onPlayClick: (Int, String) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    if (movies.isEmpty()) return
 
     val pagerState = rememberPagerState(
         initialPage = 0,
@@ -72,109 +73,124 @@ fun MatchCarouselAnimation(
         }
     }
 
-    Column(
-        modifier = modifier.fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
-        Box(
-            modifier = modifier
-                .fillMaxWidth()
-                .height(350.dp),
-            contentAlignment = Alignment.Center
+    if (movies.isEmpty()) {
+        Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            EmptyState(
+                icon = painterResource(R.drawable.ic_search),
+                title = stringResource(R.string.nothing_found),
+                description = stringResource(R.string.we_searched_the_entire_universe_but_found_nothing_matching_your_query_try_something_else)
+            )
+        }
+    } else {
+        Column(
+            modifier = modifier.fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
         ) {
-            HorizontalPager(
-                state = pagerState,
-                modifier = Modifier.fillMaxSize(),
-                contentPadding = PaddingValues(horizontal = 60.dp),
-                pageSpacing = (-80).dp,
-                verticalAlignment = Alignment.CenterVertically,
-                beyondViewportPageCount = 2
-            ) { page ->
-                val pageOffset =
-                    ((pagerState.currentPage - page) + pagerState.currentPageOffsetFraction)
-                        .absoluteValue.coerceIn(0f, 1f)
+            Box(
+                modifier = modifier
+                    .fillMaxWidth()
+                    .height(350.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                HorizontalPager(
+                    state = pagerState,
+                    modifier = Modifier.fillMaxSize(),
+                    contentPadding = PaddingValues(horizontal = 60.dp),
+                    pageSpacing = (-80).dp,
+                    verticalAlignment = Alignment.CenterVertically,
+                    beyondViewportPageCount = 2
+                ) { page ->
+                    val pageOffset =
+                        ((pagerState.currentPage - page) + pagerState.currentPageOffsetFraction)
+                            .absoluteValue.coerceIn(0f, 1f)
 
-                val animatedHeight = lerp(320.dp, 267.dp, pageOffset)
-                val animatedWidth = lerp(240.dp, 200.dp, pageOffset)
+                    val animatedHeight = lerp(320.dp, 267.dp, pageOffset)
+                    val animatedWidth = lerp(240.dp, 200.dp, pageOffset)
 
-                val cardAlpha = lerp(1f, 0.6f, pageOffset)
-                val scale = lerp(1f, 0.85f, pageOffset)
+                    val cardAlpha = lerp(1f, 0.6f, pageOffset)
+                    val scale = lerp(1f, 0.85f, pageOffset)
 
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .zIndex(1f - pageOffset)
-                        .graphicsLayer {
-                            scaleX = scale
-                            scaleY = scale
-                        },
-                    contentAlignment = Alignment.Center
-                ) {
-                    SafeImageViewer(
-                        imageUrl = movies[page].posterUrl,
+                    Box(
                         modifier = Modifier
-                            .alpha(cardAlpha)
-                            .size(width = animatedWidth, height = animatedHeight)
-                            .clip(RoundedCornerShape(Theme.radius.extraLarge))
-                            .offset(
-                                x = when {
-                                    page < pagerState.currentPage -> 40.dp * pageOffset
-                                    page > pagerState.currentPage -> ((-40).dp) * pageOffset
-                                    else -> 0.dp
-                                }
-                            ),
-                        isBlurEnabled = "high",
-                        placeholderContent = { RemoteImagePlaceholder() },
-                        errorContent = { RemoteImagePlaceholder() },
-                        onBlurContent = {
-                            OnBlurContent()
-                        }
-                    )
+                            .fillMaxSize()
+                            .zIndex(1f - pageOffset)
+                            .graphicsLayer {
+                                scaleX = scale
+                                scaleY = scale
+                            },
+                        contentAlignment = Alignment.Center
+                    ) {
+                        SafeImageViewer(
+                            imageUrl = movies[page].posterUrl,
+                            modifier = Modifier
+                                .alpha(cardAlpha)
+                                .size(width = animatedWidth, height = animatedHeight)
+                                .clip(RoundedCornerShape(Theme.radius.extraLarge))
+                                .offset(
+                                    x = when {
+                                        page < pagerState.currentPage -> 40.dp * pageOffset
+                                        page > pagerState.currentPage -> ((-40).dp) * pageOffset
+                                        else -> 0.dp
+                                    }
+                                ),
+                            isBlurEnabled = "high",
+                            placeholderContent = { RemoteImagePlaceholder() },
+                            errorContent = { RemoteImagePlaceholder() },
+                            onBlurContent = {
+                                OnBlurContent()
+                            }
+                        )
+                    }
                 }
             }
-        }
 
-        Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
-        DetailCard(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp)
-                .animateContentSize(
-                    animationSpec = spring(
-                        stiffness = Spring.StiffnessMediumLow,
-                        dampingRatio = Spring.DampingRatioLowBouncy
+            DetailCard(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp)
+                    .animateContentSize(
+                        animationSpec = spring(
+                            stiffness = Spring.StiffnessMediumLow,
+                            dampingRatio = Spring.DampingRatioLowBouncy
+                        )
+                    ),
+                title = movies[pagerState.currentPage].title,
+                titleOverFlow = true,
+                genres = movies[pagerState.currentPage].genres.joinToString(", "),
+                rating = movies[pagerState.currentPage].rating.toString(),
+                duration = if (movies[pagerState.currentPage].duration.hours == 0 && movies[pagerState.currentPage].duration.minutes == 0) "null" else movies[pagerState.currentPage].duration.toString(),
+                releaseDate = movies[pagerState.currentPage].releaseDate?.formatDate()
+                    ?: "",
+                type = stringResource(R.string.movie),
+                onSaveClick = { onSaveClick(movies[pagerState.currentPage].id) },
+                onPlayClick = {
+                    onPlayClick(
+                        movies[pagerState.currentPage].id,
+                        movies[pagerState.currentPage].trailerUrl
                     )
-                ),
-            title = movies[pagerState.currentPage].title,
-            titleOverFlow = true,
-            genres = movies[pagerState.currentPage].genres.joinToString(", "),
-            rating = movies[pagerState.currentPage].rating.toString(),
-            duration = if (movies[pagerState.currentPage].duration.hours == 0 && movies[pagerState.currentPage].duration.minutes == 0) "null" else movies[pagerState.currentPage].duration.toString(),
-            releaseDate = movies[pagerState.currentPage].releaseDate?.formatDate()
-                ?: "",
-            type = stringResource(R.string.movie),
-            onSaveClick = { onSaveClick(movies[pagerState.currentPage].id) },
-            onPlayClick = { onPlayClick(movies[pagerState.currentPage].id, movies[pagerState.currentPage].trailerUrl) },
-        )
+                },
+            )
 
-        Spacer(modifier = Modifier.height(32.dp))
+            Spacer(modifier = Modifier.height(32.dp))
 
-        MovieButton(
-            buttonText = stringResource(R.string.view_details),
-            textColor = Theme.colors.button.onPrimary,
-            textStyle = Theme.textStyle.body.medium.medium,
-            onClick = {
-                onMovieClick(
-                    movies[pagerState.currentPage].id
-                )
-            },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp),
-            buttonColor = Theme.colors.button.primary,
-            cornerRadius = Theme.radius.large
-        )
+            MovieButton(
+                buttonText = stringResource(R.string.view_details),
+                textColor = Theme.colors.button.onPrimary,
+                textStyle = Theme.textStyle.body.medium.medium,
+                onClick = {
+                    onMovieClick(
+                        movies[pagerState.currentPage].id
+                    )
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp),
+                buttonColor = Theme.colors.button.primary,
+                cornerRadius = Theme.radius.large
+            )
+        }
     }
 }
