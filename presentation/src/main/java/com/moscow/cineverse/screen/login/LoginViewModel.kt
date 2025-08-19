@@ -43,7 +43,7 @@ class LoginViewModel @Inject constructor(
     }
 
     override fun onPasswordValueChanged(password: String) {
-        if(password.length <= 100){
+        if (password.length <= 100) {
             updateState {
                 it.copy(
                     password = password,
@@ -70,8 +70,8 @@ class LoginViewModel @Inject constructor(
                 action = {
                     loginWithUsernameAndPasswordUseCase.invoke(
 
-                            username = uiState.value.username,
-                            password = uiState.value.password,
+                        username = uiState.value.username,
+                        password = uiState.value.password,
                     )
                 },
                 onSuccess = ::onLoginSuccess,
@@ -95,7 +95,8 @@ class LoginViewModel @Inject constructor(
             it.copy(
                 isLoading = false,
                 loginError = StringValue.StringResource(resId = R.string.incorrect_username_or_password_please_try_again)
-            ) }
+            )
+        }
     }
 
     private fun onStartLogin() {
@@ -127,21 +128,27 @@ class LoginViewModel @Inject constructor(
     }
 
     override fun onClickCreateNewAccount() {
-        updateState { it.copy(
-            showSignUpBottomSheet = true,
-            urlWebView = SIGN_UP_URL
-        )
+        updateState {
+            it.copy(
+                showBrowserBottomSheet = true,
+                urlWebView = SIGN_UP_URL
+            )
         }
     }
 
-    override fun onDismissOrCancelSignUpBottomSheet() {
-        updateState { it.copy(showSignUpBottomSheet = false) }
+    override fun onDismissOrCancelBrowserBottomSheet() {
+        updateState {
+            it.copy(
+                showBrowserBottomSheet = false,
+                isForgotPassword = false
+            )
+        }
     }
 
     override fun onClickGoToWebsite() {
         updateState {
             it.copy(
-                showSignUpBottomSheet = false,
+                showBrowserBottomSheet = false,
                 urlWebView = uiState.value.urlWebView,
                 showWebView = true
             )
@@ -152,7 +159,8 @@ class LoginViewModel @Inject constructor(
         updateState {
             it.copy(
                 urlWebView = FORGET_PASSWORD_URL,
-                showSignUpBottomSheet = true
+                showBrowserBottomSheet = true,
+                isForgotPassword = true
             )
         }
     }
@@ -175,7 +183,7 @@ class LoginViewModel @Inject constructor(
             val error = when {
                 input.isEmpty() -> null
 
-                !isPassword && !trimmed.all { it.isLetterOrDigit() || it == '_'} -> {
+                !isPassword && !trimmed.all { it.isLetterOrDigit() || it == '_' } -> {
                     StringValue.StringResource(R.string.username_invalid_chars)
                 }
 

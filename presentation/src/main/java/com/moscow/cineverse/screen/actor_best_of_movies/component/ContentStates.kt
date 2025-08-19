@@ -75,7 +75,9 @@ fun MoviesGrid(
             label = "view_mode_transition"
         ) {
             LazyVerticalGrid(
-                columns = if (viewMode == ViewMode.GRID) GridCells.Fixed(2) else GridCells.Fixed(1),
+                columns = if (viewMode == ViewMode.GRID) GridCells.Adaptive(minSize = 150.dp) else GridCells.Fixed(
+                    1
+                ),
                 contentPadding = PaddingValues(
                     vertical = 16.dp,
                     horizontal = 16.dp
