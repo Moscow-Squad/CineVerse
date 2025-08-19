@@ -65,9 +65,7 @@ fun MatchQuestionsPageContent(
                 targetState = state.currentQuestionType,
                 transitionSpec = {
                     (fadeIn(animationSpec = tween(200, delayMillis = 90)) +
-                            slideIn(tween(400)) { size -> IntOffset(0, -10) }
-
-                    )
+                            slideIn(tween(400)) { size -> IntOffset(0, -10) })
                         .togetherWith(
                             fadeOut(animationSpec = tween(400))
                                     + slideOut(

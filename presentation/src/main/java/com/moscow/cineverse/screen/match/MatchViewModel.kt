@@ -152,7 +152,7 @@ class MatchViewModel @Inject constructor(
             }
 
             MatchPages.ResultsPage -> updateState {
-                it.copy(currentPage = MatchPages.QuestionsPage)
+                it.copy(currentPage = MatchPages.StartPage)
             }
 
             else -> {}
