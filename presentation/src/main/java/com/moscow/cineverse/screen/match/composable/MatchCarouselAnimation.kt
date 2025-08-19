@@ -60,7 +60,7 @@ fun MatchCarouselAnimation(
     LaunchedEffect(pagerState) {
         while (true) {
             delay(3000)
-            if (!pagerState.isScrollInProgress) {
+            if (!pagerState.isScrollInProgress && movies.isNotEmpty()) {
                 val nextPage = (pagerState.currentPage + 1) % movies.size
                 pagerState.animateScrollToPage(
                     nextPage,
