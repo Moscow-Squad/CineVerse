@@ -1,4 +1,4 @@
-package com.moscow.data.remote.data_source
+package com.moscow.remote.data_source
 
 import com.google.common.truth.Truth.assertThat
 import com.moscow.data_source.remote.ActorRemoteDataSource

@@ -1,143 +1,119 @@
 package com.moscow.repository.preference
 
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.core.booleanPreferencesKey
-import androidx.datastore.preferences.core.stringPreferencesKey
-import com.moscow.domain.repository.auth.UserRepository
-import io.mockk.coEvery
-import io.mockk.coVerify
-import io.mockk.every
-import io.mockk.mockk
-import kotlinx.coroutines.flow.flowOf
+import com.moscow.domain.model.UserType
+import com.moscow.helper.FakeDataStore
 import kotlinx.coroutines.test.runTest
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.Assertions.assertEquals
 
 class UserRepositoryImplTest {
 
-    private val dataStore = mockk<DataStore<Preferences>>()
-    private lateinit var userRepositoryImpl: UserRepository
+    private lateinit var dataStore: FakeDataStore
+    private lateinit var repository: UserRepositoryImpl
 
     @BeforeEach
     fun setup() {
-        userRepositoryImpl = UserRepositoryImpl(dataStore)
-    }
-
-
-    @Test
-    fun `getSessionId should return session id when preference exists`() = runTest {
-        val mockPreferences = mockk<Preferences>()
-        val key = stringPreferencesKey("session_id")
-        val expectedSessionId = "test_session_123"
-
-        every { mockPreferences[key] } returns expectedSessionId
-        coEvery { dataStore.data } returns flowOf(mockPreferences)
-
-        val result = userRepositoryImpl.getSessionId()
-
-        assertEquals(expectedSessionId, result)
-        coVerify(exactly = 1) { dataStore.data }
+        dataStore = FakeDataStore()
+        repository = UserRepositoryImpl(dataStore)
     }
 
     @Test
-    fun `getSessionId should return empty string when preference is null`() = runTest {
-        val mockPreferences = mockk<Preferences>()
-        val key = stringPreferencesKey("session_id")
+    fun `saveUser stores authenticated user correctly`() = runTest {
+        val user = UserType.AuthenticatedUser(
+            id = "123",
+            username = "ahmed",
+            name = "Ahmed",
+            sessionId = "sid_abc",
+            image = "image.jpg",
+            recentlyCollectionId = 42
+        )
 
-        every { mockPreferences[key] } returns null
-        coEvery { dataStore.data } returns flowOf(mockPreferences)
+        repository.saveUser(user)
 
-        val result = userRepositoryImpl.getSessionId()
-
-        assertEquals("", result)
-        coVerify(exactly = 1) { dataStore.data }
+        val result = repository.getUser()
+        assertTrue(result is UserType.AuthenticatedUser)
+        with(result as UserType.AuthenticatedUser) {
+            assertEquals("123", id)
+            assertEquals("ahmed", username)
+            assertEquals("Ahmed", name)
+            assertEquals("sid_abc", sessionId)
+            assertEquals("image.jpg", image)
+            assertEquals(42, recentlyCollectionId)
+        }
     }
 
     @Test
-    fun `getSessionExpiration should return expiration date when preference exists`() = runTest {
-        val mockPreferences = mockk<Preferences>()
-        val key = stringPreferencesKey("expired_at")
-        val expectedExpiration = "2024-12-31T23:59:59Z"
+    fun `saveUser stores guest user correctly`() = runTest {
+        val user = UserType.GuestUser(
+            sessionId = "sid_guest",
+            expiredAt = "2025-12-31T23:59:59Z"
+        )
 
-        every { mockPreferences[key] } returns expectedExpiration
-        coEvery { dataStore.data } returns flowOf(mockPreferences)
+        repository.saveUser(user)
 
-        val result = userRepositoryImpl.getSessionExpiration()
-
-        assertEquals(expectedExpiration, result)
-        coVerify(exactly = 1) { dataStore.data }
+        val result = repository.getUser()
+        assertTrue(result is UserType.GuestUser)
+        with(result as UserType.GuestUser) {
+            assertEquals("sid_guest", sessionId)
+            assertEquals("2025-12-31T23:59:59Z", expiredAt)
+        }
     }
 
     @Test
-    fun `getSessionExpiration should return empty string when preference is null`() = runTest {
-        val mockPreferences = mockk<Preferences>()
-        val key = stringPreferencesKey("expired_at")
+    fun `getSessionId returns stored session id`() = runTest {
+        val user = UserType.AuthenticatedUser(
+            id = "123", username = "ahmed", name = "Ahmed",
+            sessionId = "sid_abc", image = "", recentlyCollectionId = 0
+        )
+        repository.saveUser(user)
 
-        every { mockPreferences[key] } returns null
-        coEvery { dataStore.data } returns flowOf(mockPreferences)
-
-        val result = userRepositoryImpl.getSessionExpiration()
-
-        assertEquals("", result)
-        coVerify(exactly = 1) { dataStore.data }
-    }
-
-
-    @Test
-    fun `isGuest should return true when user type is guest`() = runTest {
-        val mockPreferences = mockk<Preferences>()
-        val key = stringPreferencesKey("user_type")
-
-        every { mockPreferences[key] } returns "guest"
-        coEvery { dataStore.data } returns flowOf(mockPreferences)
-
-        val result = userRepositoryImpl.isGuest()
-
-        assertEquals(true, result)
-        coVerify(exactly = 1) { dataStore.data }
+        val sessionId = repository.getSessionId()
+        assertEquals("sid_abc", sessionId)
     }
 
     @Test
-    fun `isGuest should return false when user type is not guest`() = runTest {
-        val mockPreferences = mockk<Preferences>()
-        val key = stringPreferencesKey("user_type")
+    fun `getSessionExpiration returns stored expiration`() = runTest {
+        val user = UserType.GuestUser("sid_guest", "2025-12-31T23:59:59Z")
+        repository.saveUser(user)
 
-        every { mockPreferences[key] } returns "authenticated"
-        coEvery { dataStore.data } returns flowOf(mockPreferences)
-
-        val result = userRepositoryImpl.isGuest()
-
-        assertEquals(false, result)
-        coVerify(exactly = 1) { dataStore.data }
+        val expiration = repository.getSessionExpiration()
+        assertEquals("2025-12-31T23:59:59Z", expiration)
     }
 
     @Test
-    fun `isLoggedIn should return true when preference is true`() = runTest {
-        val mockPreferences = mockk<Preferences>()
-        val key = booleanPreferencesKey("is_logged_in")
+    fun `clearUser removes all preferences`() = runTest {
+        val user = UserType.AuthenticatedUser(
+            id = "123", username = "ahmed", name = "Ahmed",
+            sessionId = "sid_abc", image = "", recentlyCollectionId = 0
+        )
+        repository.saveUser(user)
 
-        every { mockPreferences[key] } returns true
-        coEvery { dataStore.data } returns flowOf(mockPreferences)
+        repository.clearUser()
 
-        val result = userRepositoryImpl.isLoggedIn()
-
-        assertEquals(true, result)
-        coVerify(exactly = 1) { dataStore.data }
+        val sessionId = repository.getSessionId()
+        assertEquals("", sessionId)
     }
 
     @Test
-    fun `isLoggedIn should return false when preference is false`() = runTest {
-        val mockPreferences = mockk<Preferences>()
-        val key = booleanPreferencesKey("is_logged_in")
+    fun `isGuest returns true for guest user`() = runTest {
+        val user = UserType.GuestUser("sid_guest", "2025-12-31T23:59:59Z")
+        repository.saveUser(user)
 
-        every { mockPreferences[key] } returns false
-        coEvery { dataStore.data } returns flowOf(mockPreferences)
+        val result = repository.isGuest()
+        assertTrue(result)
+    }
 
-        val result = userRepositoryImpl.isLoggedIn()
+    @Test
+    fun `isLoggedIn returns true for authenticated user`() = runTest {
+        val user = UserType.AuthenticatedUser(
+            id = "123", username = "ahmed", name = "Ahmed",
+            sessionId = "sid_abc", image = "", recentlyCollectionId = 0
+        )
+        repository.saveUser(user)
 
-        assertEquals(false, result)
-        coVerify(exactly = 1) { dataStore.data }
+        val result = repository.isLoggedIn()
+        assertTrue(result)
     }
 }

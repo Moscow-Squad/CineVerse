@@ -4,7 +4,6 @@ import com.google.common.truth.Truth.assertThat
 import com.moscow.data_source.local.DetailsLocalDataSource
 import com.moscow.data_source.remote.SeriesRemoteDataSource
 import com.moscow.domain.repository.SeriesRepository
-import com.moscow.domain.usecase.rating.GetRatedSeriesUseCase
 import com.moscow.remote.dto.media_item.series.SeriesDto
 import com.moscow.remote.dto.rating.request.RatingRequestDto
 import com.moscow.remote.dto.rating.response.RatedSeriesDto
@@ -37,7 +36,7 @@ class SeriesRepositoryImplTest {
     @Test
     fun `getPopularSeries returns empty list when remote results are null`() = runTest {
         val page = 1
-        coEvery { remote.getPopularSeries(page) } returns ApiResponse(results = null)
+        coEvery { remote.getPopularSeries(page) } returns ApiResponse<SeriesDto>(results = null)
 
         val result = repository.getPopularSeries(page)
 
@@ -48,14 +47,13 @@ class SeriesRepositoryImplTest {
     @Test
     fun `rateSeries calls remote with correct id and rating`() = runTest {
         val id = 55
-        val rating = 8.5f
+        val rating = RatingRequestDto(8.5f)
 
-        coEvery { remote.rateSeries(RatingRequestDto(value = rating), id) } returns Unit
+        coEvery { remote.rateSeries(id = id, rating = rating) } returns Unit
 
-        val res = repository.rateSeries(id, rating)
+        repository.rateSeries(id = id, rating = 8.5f)
 
-        assertThat(res).isEqualTo(Unit)
-        coVerify(exactly = 1) { remote.rateSeries(RatingRequestDto(value = rating), id) }
+        coVerify(exactly = 1) { remote.rateSeries(id = id, rating = rating) }
     }
 
     @Test
@@ -63,9 +61,8 @@ class SeriesRepositoryImplTest {
         val seriesId = 99
         coEvery { remote.deleteRatingSeries(seriesId) } returns Unit
 
-        val res = repository.deleteRatingSeries(seriesId)
+        repository.deleteRatingSeries(seriesId)
 
-        assertThat(res).isEqualTo(Unit)
         coVerify(exactly = 1) { remote.deleteRatingSeries(seriesId) }
     }
 
@@ -73,10 +70,14 @@ class SeriesRepositoryImplTest {
     fun `getRatedSeries returns empty when remote results are null`() = runTest {
         val userId = 7
         val page = 2
-        coEvery { remote.getRatedSeries(userId, page) } returns ApiResponse<RatedSeriesDto>(results = null)
+        coEvery {
+            remote.getRatedSeries(
+                userId,
+                page
+            )
+        } returns ApiResponse<RatedSeriesDto>(results = null)
 
-        val result: List<GetRatedSeriesUseCase.RatedSeriesResult> =
-            repository.getRatedSeries(userId, page)
+        val result = repository.getRatedSeries(userId, page)
 
         assertThat(result).isEmpty()
         coVerify(exactly = 1) { remote.getRatedSeries(userId, page) }
@@ -86,13 +87,14 @@ class SeriesRepositoryImplTest {
     fun `getUserRatingForSeries returns 0 when user rating is null`() = runTest {
         val seriesId = 12
         coEvery { remote.getUserRatingForSeries(seriesId) } returns
-                UserRatingResponse(favorite = null, id = null, userRating = null, watchlist = null)
+                UserRatingResponse(userRating = null, favorite = null, id = null, watchlist = null)
 
         val result = repository.getUserRatingForSeries(seriesId)
 
         assertThat(result).isEqualTo(0)
         coVerify(exactly = 1) { remote.getUserRatingForSeries(seriesId) }
     }
+
     @Test
     fun `getListOfSeries returns empty when remote results are null`() = runTest {
         val id = 1
@@ -109,7 +111,12 @@ class SeriesRepositoryImplTest {
     fun `getSeriesRecommendations returns empty when remote results are null`() = runTest {
         val id = 4
         val page = 1
-        coEvery { remote.getSeriesRecommendations(id, page) } returns ApiResponse<SeriesDto>(results = null)
+        coEvery {
+            remote.getSeriesRecommendations(
+                id,
+                page
+            )
+        } returns ApiResponse<SeriesDto>(results = null)
 
         val result = repository.getSeriesRecommendations(id, page)
 
@@ -121,7 +128,12 @@ class SeriesRepositoryImplTest {
     fun `getSeriesByGenreId returns empty when remote results are null`() = runTest {
         val genre = 28
         val page = 2
-        coEvery { remote.getSeriesByGenreId(genre, page) } returns ApiResponse<SeriesDto>(results = null)
+        coEvery {
+            remote.getSeriesByGenreId(
+                genre,
+                page
+            )
+        } returns ApiResponse<SeriesDto>(results = null)
 
         val result = repository.getSeriesByGenreId(genre, page)
 
@@ -140,6 +152,4 @@ class SeriesRepositoryImplTest {
         assertThat(result).isEmpty()
         coVerify(exactly = 1) { remote.getSeriesReviews(id, page) }
     }
-
-
 }

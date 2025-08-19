@@ -1,4 +1,4 @@
-package com.moscow.data.repository
+package com.moscow.repository
 
 import com.moscow.data_source.local.RecentlyViewedLocalDataSource
 import com.moscow.domain.model.Movie

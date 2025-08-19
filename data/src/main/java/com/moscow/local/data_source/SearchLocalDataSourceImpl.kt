@@ -4,7 +4,6 @@ import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.workDataOf
 import com.moscow.data_source.local.SearchLocalDataSource
-import com.moscow.local.DeleteHistoryQueryWorker
 import com.moscow.local.dao.search.FavouriteGenreDao
 import com.moscow.local.dao.search.SearchHistoryDao
 import com.moscow.local.entity.FavouriteGenreEntity
