@@ -26,7 +26,7 @@ fun MovieCastSection(
             title = stringResource(R.string.star_cast),
             modifier = modifier
                 .background(Theme.colors.background.screen)
-                .padding(top = 24.dp, start = 16.dp, end = 16.dp),
+                .padding(top = 24.dp),
             cast = castMembers.take(10),
             castContent = { actor ->
                 CastCard(
