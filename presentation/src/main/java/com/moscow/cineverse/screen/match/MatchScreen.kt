@@ -108,5 +108,4 @@ fun MatchContent(
             onPlayClick = listener::onPlayClick
         )
     }
-
 }

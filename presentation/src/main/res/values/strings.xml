@@ -182,9 +182,12 @@
     <string name="genre_animation">Animation</string>
     <string name="genre_mystery">Mystery</string>
     <string name="how_much_time">How much time do you have?</string>
-    <string name="time_short">Short (under 60 min)</string>
-    <string name="time_medium">Medium (between 60 to 120 min)</string>
-    <string name="time_long">Long (more than 120 min)</string>
+    <string name="time_short_label">Short</string>
+    <string name="time_short_desc">under 60 min</string>
+    <string name="time_medium_label">Medium</string>
+    <string name="time_medium_desc">between 60 to 120 min</string>
+    <string name="time_long_label">Long</string>
+    <string name="time_long_desc">more than 120 min</string>
     <string name="recent_or_classic">Do you want something recent or classic?</string>
     <string name="recent">Recent</string>
     <string name="classic">Classic</string>

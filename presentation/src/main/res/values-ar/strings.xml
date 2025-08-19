@@ -128,7 +128,7 @@
     <string name="preferences">تفضيلات المحتوى</string>
     <string name="tip_swipe_left_to_remove_movies_from_your_collection">.معلومة: اسحب إلى اليسار لإزالة الفيلم من مجموعتك</string>
     <string name="no_history_yet">لا يوجد سجل بعد</string>
-    <string name="history_empty_message">يبدو أن المكان فارغ... ابدأ بالمشاهدة وسنحتفظ بسجلك</string>
+    <string name="history_empty_message">يبدو أن المكان فارغ… ابدأ بالمشاهدة وسنحتفظ بسجلك</string>
     <string name="find_something_to_watch">ابحث عن شيء لمشاهدته</string>
     <string name="history_tip_message">معلومة: اسحب إلى اليسار لإزالة الأفلام من السجل</string>
     <string name="movie_swiped_tip_message">معلومة: اسحب إلى اليسار لحذف الأفلام من مجموعتك</string>
@@ -182,9 +182,12 @@
     <string name="genre_animation">رسوم متحركة</string>
     <string name="genre_mystery">غموض</string>
     <string name="how_much_time">كم لديك من الوقت؟</string>
-    <string name="time_short">قصير (أقل من 60 دقيقة)</string>
-    <string name="time_medium">متوسط (بين 60 و120 دقيقة)</string>
-    <string name="time_long">طويل (أكثر من 120 دقيقة)</string>
+    <string name="time_short_label">قصير</string>
+    <string name="time_short_desc">أقل من 60 دقيقة</string>
+    <string name="time_medium_label">متوسط</string>
+    <string name="time_medium_desc">بين 60 إلى 120 دقيقة</string>
+    <string name="time_long_label">طويل</string>
+    <string name="time_long_desc">أكثر من 120 دقيقة</string>
     <string name="recent_or_classic">هل تريد شيئًا حديثًا أم كلاسيكيًا؟</string>
     <string name="recent">حديث</string>
     <string name="classic">كلاسيكي</string>
@@ -193,7 +196,6 @@
     <string name="match_list">إليك قائمة التطابقات الخاصة بك</string>
     <string name="until_dawn">حتى الفجر</string>
     <string name="view_details">عرض التفاصيل</string>
-    <string name="error_accured">يوجد مشكلة, حاول مرة اخرى.</string>
     <string name="unsuitable_image">صورة غير مناسبة</string>
     <string name="collection_item_icon">أيقونة عنصر المجموعة</string>
     <string name="alt_arrow_right_icon">أيقونة السهم لليمين (بديلة)</string>
