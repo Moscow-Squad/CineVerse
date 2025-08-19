@@ -31,11 +31,13 @@ fun MatchScreen(
         val showBottomNav = state.currentPage == MatchPages.StartPage
         onBottomNavVisibilityChange(showBottomNav)
     }
+
     DisposableEffect(Unit) {
         onDispose {
             onBottomNavVisibilityChange(true)
         }
     }
+
     LaunchedEffect(Unit) {
         viewModel.uiEffect.collect { effect ->
             when (effect) {

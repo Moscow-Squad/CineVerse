@@ -50,7 +50,7 @@ data class QuestionUiState(
     @DrawableRes val iconResource: Int? = null,
 )
 
-private fun getMoodQuestionAnswers() = listOf(
+fun getMoodQuestionAnswers() = listOf(
     QuestionUiState(
         id = 1,
         name = R.string.mood_chill,
@@ -73,7 +73,7 @@ private fun getMoodQuestionAnswers() = listOf(
     )
 )
 
-private fun getMovieTypeQuestionAnswers() = listOf(
+fun getMovieTypeQuestionAnswers() = listOf(
     QuestionUiState(
         id = 1,
         name = R.string.recent,
@@ -88,7 +88,7 @@ private fun getMovieTypeQuestionAnswers() = listOf(
     )
 )
 
-private fun getTimeQuestionAnswers() = listOf(
+fun getTimeQuestionAnswers() = listOf(
     QuestionUiState(
         id = 1,
         name = R.string.time_short_label,
@@ -109,7 +109,7 @@ private fun getTimeQuestionAnswers() = listOf(
     )
 )
 
-private fun getGenreQuestionAnswers() = listOf(
+fun getGenreQuestionAnswers() = listOf(
     QuestionUiState(id = 1, name = R.string.genre_action),
     QuestionUiState(id = 2, name = R.string.genre_comedy),
     QuestionUiState(id = 3, name = R.string.genre_drama),
