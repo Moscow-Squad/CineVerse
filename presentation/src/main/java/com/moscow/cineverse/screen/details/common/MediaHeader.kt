@@ -2,6 +2,7 @@ package com.moscow.cineverse.screen.details.common
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.animateIntAsState
 import androidx.compose.animation.core.tween
@@ -208,16 +209,18 @@ fun MediaHeader(
                     .padding(bottom = contentPaddingBottom.value.dp),
             ) {
                 Column(
-                    modifier = Modifier.padding(end = textPaddingEnd.value.dp),
+                    modifier = Modifier
+                        .padding(end = textPaddingEnd.value.dp)
+                        .animateContentSize(),
                     verticalArrangement = Arrangement.spacedBy(4.dp),
                 ) {
                     AnimatedVisibility(
                         visible = isAllDetailsvisible.value > 0.1f,
-                        enter = slideInVertically(animationSpec = tween(1000))
-                                + fadeIn(animationSpec = tween(1000)),
+                        enter = slideInVertically(animationSpec = tween(100))
+                                + fadeIn(animationSpec = tween(100)),
 
-                        exit = slideOutVertically(animationSpec = tween(1000))
-                                + fadeOut(animationSpec = tween(1000)),
+                        exit = slideOutVertically(animationSpec = tween(100))
+                                + fadeOut(animationSpec = tween(100)),
                     ) {
                         Text(
                             text = type,
@@ -234,11 +237,11 @@ fun MediaHeader(
                     )
                     AnimatedVisibility(
                         visible = isAllDetailsvisible.value > 0.1f,
-                        enter = slideInVertically(animationSpec = tween(1000))
-                                + fadeIn(animationSpec = tween(1000)),
+                        enter = slideInVertically(animationSpec = tween(100))
+                                + fadeIn(animationSpec = tween(100)),
 
-                        exit = slideOutVertically(animationSpec = tween(1000))
-                                + fadeOut(animationSpec = tween(1000)),
+                        exit = slideOutVertically(animationSpec = tween(100))
+                                + fadeOut(animationSpec = tween(100)),
                     ) {
                         Column(
                             verticalArrangement = Arrangement.spacedBy(4.dp),
