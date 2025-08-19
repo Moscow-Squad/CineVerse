@@ -23,7 +23,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
@@ -99,16 +98,20 @@ fun SelectionCard(
 
         MovieText(
             text = buildAnnotatedString {
-                withStyle(style = SpanStyle(color = textColor)) {
-                    append(stringResource(questionUiState.name) )
+                withStyle(
+                    style = Theme.textStyle.body.medium.medium.copy(color = textColor).toSpanStyle()
+                ) {
+                    append(stringResource(questionUiState.name))
                 }
                 questionUiState.description?.let {
-                    withStyle(style = SpanStyle(color = Theme.colors.shade.primary)) {
+                    withStyle(
+                        style = Theme.textStyle.body.medium.medium.copy(color = Theme.colors.shade.primary)
+                            .toSpanStyle()
+                    ) {
                         append(" (${stringResource(questionUiState.description)})")
                     }
                 }
             }.toString(),
-            style = Theme.textStyle.body.medium.medium,
         )
     }
 }
