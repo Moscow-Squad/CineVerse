@@ -10,10 +10,9 @@ import java.nio.ByteOrder
 import java.nio.MappedByteBuffer
 import java.nio.channels.FileChannel
 
-internal class HybridImageClassifier(context: Context, nsfwThreshold: Float = 0.2f) {
+internal class HybridImageClassifier(context: Context) {
 
     private var interpreter: Interpreter? = null
-    private var nfsw : Float = nsfwThreshold
 
     init {
         interpreter = Interpreter(loadModelFile(context))
@@ -34,7 +33,7 @@ internal class HybridImageClassifier(context: Context, nsfwThreshold: Float = 0.
             val output = Array(1) { FloatArray(OUTPUT_CLASSES) }
             interpreter?.run(input, output)
             isNSFW(output[0])
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             false
         }
     }
@@ -43,13 +42,7 @@ internal class HybridImageClassifier(context: Context, nsfwThreshold: Float = 0.
         val byteBuffer = ByteBuffer.allocateDirect(4 * INPUT_SIZE * INPUT_SIZE * PIXEL_SIZE)
         byteBuffer.order(ByteOrder.nativeOrder())
 
-        //val scaledBitmap = originalBitmap.scale(INPUT_SIZE, INPUT_SIZE)
-        val scaledBitmap = Bitmap.createScaledBitmap(
-            originalBitmap,
-            INPUT_SIZE,
-            INPUT_SIZE,
-            true
-        )
+        val scaledBitmap = originalBitmap.scale(INPUT_SIZE, INPUT_SIZE)
         val bitmap = if (scaledBitmap.config != Bitmap.Config.ARGB_8888) {
             scaledBitmap.copy(Bitmap.Config.ARGB_8888, false)
         } else {
