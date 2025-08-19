@@ -191,7 +191,7 @@ private fun ExploreScreenContent(
                     )
                 }
             }
-            if (uiState.selectedTab != ExploreTabsPages.ACTORS && uiState.shouldShowError == false) {
+            if (contentList.itemCount > 0 && uiState.selectedTab != ExploreTabsPages.ACTORS && uiState.shouldShowError == false) {
                 ViewModeToggleButton(
                     selectedMode = uiState.viewMode,
                     onModeSelected = interactionListener::onViewModeChanged,
