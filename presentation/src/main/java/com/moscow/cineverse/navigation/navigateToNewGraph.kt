@@ -1,14 +1,29 @@
 package com.moscow.cineverse.navigation
 
 import androidx.navigation.NavController
-import androidx.navigation.NavGraph.Companion.findStartDestination
+import com.moscow.cineverse.component.bottomNavigationBar.BottomNavItem
+import com.moscow.cineverse.navigation.routes.HomeRoute
 
 fun NavController.navigateToNewGraph(newGraph: AppDestination) {
-    navigate(newGraph) {
-        popUpTo(graph.findStartDestination().id) {
-            saveState = true
+    val currentDestination = currentBackStackEntry?.destination?.route
+
+    val isOnBottomNavDestination = BottomNavItem.destinations.keys.any {
+        it::class.qualifiedName == currentDestination
+    }
+
+    if (isOnBottomNavDestination) {
+        navigate(newGraph) {
+            popUpTo(HomeRoute) {
+                inclusive = newGraph == HomeRoute
+                saveState = true
+            }
+            launchSingleTop = true
+            restoreState = true
         }
-        launchSingleTop = true
-        restoreState = true
+    } else {
+        navigate(newGraph) {
+            launchSingleTop = true
+            restoreState = true
+        }
     }
 }
