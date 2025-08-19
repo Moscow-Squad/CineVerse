@@ -93,7 +93,11 @@ class UserRepositoryImpl @Inject constructor(
     }
 
     override suspend fun clearUser() {
-        dataStore.edit { it.clear() }
+        dataStore.edit {
+            it.clear()
+            it[USER_TYPE_KEY] = GUEST_USER
+            it[Is_LOGGED_IN_KEY] = false
+        }
     }
 
     override suspend fun isGuest(): Boolean {
