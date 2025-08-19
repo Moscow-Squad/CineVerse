@@ -15,7 +15,7 @@
         android:localeConfig="@xml/local_config"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.CineVerse"
+        android:theme="@style/Theme.App.Starting"
         tools:targetApi="33">
         <activity
             android:name=".main_activity.MainActivity"

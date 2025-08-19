@@ -2,9 +2,8 @@ package com.moscow.cineverse.navigation
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import com.moscow.cineverse.navigation.routes.SplashRoute
+import com.moscow.cineverse.navigation.routes.HomeRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
-
 import javax.inject.Inject
 
 @HiltViewModel
@@ -18,7 +17,7 @@ class NavViewModel @Inject constructor(): ViewModel() {
     }
 
     private fun getStartDestination() {
-        _startDestination.value = SplashRoute
+        _startDestination.value = HomeRoute
     }
 
 }
