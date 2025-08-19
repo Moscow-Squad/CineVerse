@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
@@ -49,6 +50,7 @@ fun RatingSection(
         )
         Row(
             modifier = Modifier
+                .width(290.dp)
                 .clip(RoundedCornerShape(Theme.radius.large))
                 .background(Theme.colors.background.card)
                 .clickable { onClick() },
@@ -87,7 +89,8 @@ fun RatingSection(
                     if(ratingStars != 0){
                         MovieRatingBar(
                             rating = ratingStars.toFloat(),
-                            onRatingChanged =  {_ ->}
+                            onRatingChanged =  {_ ->},
+                            modifier = Modifier.weight(1f, fill = false)
                         )
                     }
                 }

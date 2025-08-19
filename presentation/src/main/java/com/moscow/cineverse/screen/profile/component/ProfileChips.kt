@@ -35,7 +35,6 @@ internal fun ProfileChips(
 
     Box(
         modifier = modifier,
-        contentAlignment = Alignment.Center
     ) {
         LazyRow(
             horizontalArrangement = Arrangement.spacedBy(8.dp),
