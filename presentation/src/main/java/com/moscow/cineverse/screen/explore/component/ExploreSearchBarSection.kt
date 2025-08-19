@@ -62,6 +62,7 @@ fun ExploreSearchBarSection(
 
     Box(
         modifier = modifier
+            .padding(top = 16.dp)
             .fillMaxWidth()
             .height(height)
             .alpha(alpha)
