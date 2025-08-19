@@ -1,6 +1,7 @@
 package com.moscow.cineverse.screen.explore.component
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -8,12 +9,11 @@ import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -28,6 +28,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -45,6 +46,7 @@ import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.utlis.noRibbleClick
 import com.moscow.cinverse.presentation.R
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @Composable
 fun SearchBar(
@@ -64,6 +66,12 @@ fun SearchBar(
     var blockRefocus by remember { mutableStateOf(false) }
     val focusRequester = remember { FocusRequester() }
     val focusManager = LocalFocusManager.current
+    val coroutineScope = rememberCoroutineScope()
+
+    val paddingStart by animateDpAsState(
+        targetValue = if (isFocused || value.isNotEmpty()) 46.dp else 0.dp,
+        animationSpec = tween(300)
+    )
 
     LaunchedEffect(blockRefocus) {
         if (blockRefocus) {
@@ -79,21 +87,23 @@ fun SearchBar(
         }
     }
 
-    Row(
-        horizontalArrangement = Arrangement.spacedBy(6.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = modifier.fillMaxWidth()
+    Box(
+        modifier = modifier.fillMaxWidth(),
     ) {
         AnimatedVisibility(
             visible = isFocused || value.isNotEmpty(),
             enter = slideInHorizontally(initialOffsetX = { -it }) + fadeIn(animationSpec = tween(300)),
-            exit = slideOutHorizontally(targetOffsetX = { -it }) + fadeOut(animationSpec = tween(300))
+            exit = slideOutHorizontally(targetOffsetX = { -it }) + fadeOut(animationSpec = tween(300)),
+            modifier = Modifier
+                .align(Alignment.CenterStart)
+                .padding(start = 10.dp)
         ) {
             Icon(
                 painter = painterResource(R.drawable.outline_arrow_left),
                 contentDescription = stringResource(R.string.search_icon),
                 tint = Theme.colors.shade.primary,
                 modifier = Modifier
+                    .align(Alignment.CenterStart)
                     .size(20.dp)
                     .noRibbleClick(
                         onClick = {
@@ -101,21 +111,28 @@ fun SearchBar(
                             focusRequester.freeFocus()
                             isFocused = false
                             blockRefocus = true
-                            onCancelButtonClicked()
-                        },
+                            coroutineScope.launch {
+                                delay(300)
+                                onCancelButtonClicked()
+                            }
+                         },
                     )
             )
         }
 
         Box(
             modifier = Modifier
-                .weight(1f)
-                .height(48.dp)
+                .align(Alignment.CenterStart)
+                .padding(start = paddingStart)
+                .fillMaxWidth()
+                .heightIn(min = 48.dp)
                 .focusRequester(focusRequester)
-                .onFocusChanged { fs ->
+                .onFocusChanged { focusState ->
                     if (!blockRefocus) {
-                        if (fs.isFocused) onFirstFocus()
-                        isFocused = fs.isFocused
+                        if (focusState.isFocused) {
+                            onFirstFocus()
+                        }
+                        isFocused = focusState.isFocused
                     }
                 }
                 .background(Theme.colors.background.card, RoundedCornerShape(Theme.radius.large))
@@ -128,11 +145,8 @@ fun SearchBar(
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 15.dp)
+                modifier = Modifier.fillMaxWidth().padding(start = 16.dp, end = 14.dp)
             ) {
-                // Leading search icon
                 Icon(
                     painter = painterResource(R.drawable.outline_search),
                     contentDescription = stringResource(R.string.search_icon),
@@ -168,7 +182,6 @@ fun SearchBar(
                     innerTextField()
                 }
 
-                // Trailing icon
                 if (isFocused && value.isNotEmpty()) {
                     Icon(
                         painter = painterResource(R.drawable.outline_x),
@@ -176,7 +189,9 @@ fun SearchBar(
                         tint = Theme.colors.shade.tertiary,
                         modifier = Modifier
                             .size(20.dp)
-                            .noRibbleClick { onValueChange("") }
+                            .noRibbleClick {
+                                onValueChange("")
+                            }
                     )
                 } else {
                     trailingIcon()

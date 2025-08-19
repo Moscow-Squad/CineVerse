@@ -1,5 +1,6 @@
 package com.moscow.cineverse.image_viewer.component
 
+import android.os.Build
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -11,10 +12,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.blur
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import coil3.Bitmap
+import androidx.compose.ui.unit.dp
+import android.graphics.Bitmap
 import coil3.ImageLoader
 import coil3.disk.DiskCache
 import coil3.disk.directory
@@ -35,7 +38,7 @@ private val imageCache = mutableMapOf<String, CachedImage>()
 fun SafeImageViewer(
     imageUrl: String,
     modifier: Modifier = Modifier,
-    blurRadius: Int = 300,
+    blurRadius: Int = 100,
     isBlurEnabled: String,
     placeholderContent: @Composable () -> Unit = {},
     errorContent: @Composable () -> Unit = {},
@@ -89,6 +92,14 @@ fun SafeImageViewer(
         onSuccess?.invoke()
     }
 
+    val imageRequest = ImageRequest.Builder(context)
+        .allowHardware(false)
+        .data(imageUrl)
+        .allowHardware(false)
+        .memoryCachePolicy(CachePolicy.ENABLED)
+        .diskCachePolicy(CachePolicy.ENABLED)
+        .build()
+
     LaunchedEffect(imageUrl) {
         if (imageUrl.isEmpty()) {
             requestState = RequestState.ERROR
@@ -96,38 +107,37 @@ fun SafeImageViewer(
             return@LaunchedEffect
         }
 
-        if (imageCache.containsKey(imageUrl)) return@LaunchedEffect
+        imageCache[imageUrl]?.let { cached ->
+            bitmapToDisplay = cached.bitmap
+            isNsfw = cached.isNsfw
+            requestState = RequestState.SUCCESS
+            onSuccess?.invoke()
+            return@LaunchedEffect
+        }
 
         requestState = RequestState.LOADING
 
-        val request = ImageRequest.Builder(context)
-            .data(imageUrl)
-            .allowHardware(false)
-            .memoryCachePolicy(CachePolicy.ENABLED)
-            .diskCachePolicy(CachePolicy.ENABLED)
-            .build()
-
         try {
-            val bitmap = withContext(Dispatchers.IO) {
-                imageLoader.execute(request).image?.toBitmap()
+            withContext(Dispatchers.IO) {
+                val bitmap = imageLoader.execute(imageRequest).image?.toBitmap()
+                if (bitmap != null) {
+                    val shouldBlur = if (blur && classifier != null) {
+                        withContext(Dispatchers.IO) {
+                            classifier.classifyImage(bitmap)
+                        }
+                    } else false
+
+                    imageCache[imageUrl] = CachedImage(bitmap, shouldBlur)
+                    bitmapToDisplay = bitmap
+                    isNsfw = shouldBlur
+                    requestState = RequestState.SUCCESS
+                    onSuccess?.invoke()
+                } else {
+                    requestState = RequestState.ERROR
+                    onError?.invoke()
+                }
             }
 
-            if (bitmap != null) {
-                val shouldBlur = if (blur && classifier != null) {
-                    withContext(Dispatchers.Default) {
-                        classifier.classifyImage(bitmap)
-                    }
-                } else false
-
-                imageCache[imageUrl] = CachedImage(bitmap, shouldBlur)
-                bitmapToDisplay = bitmap
-                isNsfw = shouldBlur
-                requestState = RequestState.SUCCESS
-                onSuccess?.invoke()
-            } else {
-                requestState = RequestState.ERROR
-                onError?.invoke()
-            }
         } catch (_: Exception) {
             requestState = RequestState.ERROR
             onError?.invoke()
@@ -144,7 +154,11 @@ fun SafeImageViewer(
             RequestState.SUCCESS -> {
                 bitmapToDisplay?.let { bitmap ->
                     val cloudyModifier = if (showBlur) {
-                        Modifier.cloudy(radius = blurRadius, enabled = true)
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S){
+                            Modifier.blur(radius = blurRadius.dp)
+                        }else{
+                            Modifier.cloudy(radius = blurRadius, enabled = true)
+                        }
                     } else {
                         Modifier
                     }
