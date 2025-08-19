@@ -155,6 +155,10 @@ class MatchViewModel @Inject constructor(
                 it.copy(
                     currentPage = MatchPages.StartPage,
                     currentQuestionType = QuestionType.MOOD,
+                    moodQuestions = getMoodQuestionAnswers(),
+                    genreQuestions = getGenreQuestionAnswers(),
+                    timeQuestions = getTimeQuestionAnswers(),
+                    movieTypeQuestions = getMovieTypeQuestionAnswers()
                 )
             }
 
