@@ -2,9 +2,11 @@ package com.moscow.cineverse
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBarsPadding
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -12,7 +14,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.moscow.cineverse.component.bottomNavigationBar.BottomNavItem.Companion.destinations
@@ -58,7 +59,7 @@ fun CineVerseRoot(
             modifier = Modifier
                 .fillMaxSize()
                 .background(Theme.colors.background.screen)
-                .padding(top = 16.dp)
+                .windowInsetsPadding(WindowInsets.statusBars)
                 .navigationBarsPadding(),
             navController = navController,
             navViewModel = navViewModel,

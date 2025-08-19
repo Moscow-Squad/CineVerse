@@ -1,5 +1,6 @@
 package com.moscow.cineverse.image_viewer.component
 
+import android.graphics.Bitmap
 import android.os.Build
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
@@ -17,14 +18,12 @@ import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import android.graphics.Bitmap
 import coil3.ImageLoader
 import coil3.disk.DiskCache
 import coil3.disk.directory
 import coil3.memory.MemoryCache
 import coil3.request.CachePolicy
 import coil3.request.ImageRequest
-import coil3.request.allowHardware
 import coil3.toBitmap
 import com.moscow.cineverse.image_viewer.classfier.HybridImageClassifier
 import com.skydoves.cloudy.cloudy
@@ -93,9 +92,7 @@ fun SafeImageViewer(
     }
 
     val imageRequest = ImageRequest.Builder(context)
-        .allowHardware(false)
         .data(imageUrl)
-        .allowHardware(false)
         .memoryCachePolicy(CachePolicy.ENABLED)
         .diskCachePolicy(CachePolicy.ENABLED)
         .build()
@@ -122,7 +119,7 @@ fun SafeImageViewer(
                 val bitmap = imageLoader.execute(imageRequest).image?.toBitmap()
                 if (bitmap != null) {
                     val shouldBlur = if (blur && classifier != null) {
-                        withContext(Dispatchers.IO) {
+                        withContext(Dispatchers.Default) {
                             classifier.classifyImage(bitmap)
                         }
                     } else false
@@ -155,7 +152,7 @@ fun SafeImageViewer(
                 bitmapToDisplay?.let { bitmap ->
                     val cloudyModifier = if (showBlur) {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S){
-                            Modifier.blur(radius = blurRadius.dp)
+                            Modifier.blur(radius = 20.dp)
                         }else{
                             Modifier.cloudy(radius = blurRadius, enabled = true)
                         }
