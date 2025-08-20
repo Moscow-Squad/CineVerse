@@ -55,7 +55,7 @@ class HomeViewModel @Inject constructor(
         observeBlur()
     }
 
-    private fun getGenres() {
+    private fun getGenres(refresh: Boolean = false) {
         updateState { it.copy(isLoading = true, error = null) }
         launchWithResult(
             action = { genreUseCase.getMoviesGenres() },
@@ -63,7 +63,7 @@ class HomeViewModel @Inject constructor(
                 updateState {
                     it.copy(movieGenre = genres.map { genre -> genre.toUi() })
                 }
-                loadHomeData()
+                loadHomeData(refresh)
             },
             onError = { e ->
                 updateState {
@@ -81,7 +81,7 @@ class HomeViewModel @Inject constructor(
             languageProvider.currentLanguage.collect { currentLanguage ->
                 if (uiState.value.cashLanguage != currentLanguage) {
                     updateState { it.copy(cashLanguage = currentLanguage) }
-                    loadHomeData(refresh = true)
+                    getGenres(refresh = true)
                 }
             }
         }
@@ -140,7 +140,7 @@ class HomeViewModel @Inject constructor(
     private fun onGetUserDetailsSuccess(user: UserType) {
         when (user) {
             is UserType.AuthenticatedUser -> {
-                updateState { it.copy(userName = user.username) }
+                updateState { it.copy(userName = user.name.ifEmpty { user.username }) }
                 getUserCollection()
             }
 

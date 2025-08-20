@@ -12,5 +12,6 @@ data class HistoryScreenState(
     val isError: Boolean = false,
     val isContentEmpty: Boolean = false,
     val shouldShowError: Boolean = false,
+    val enableBlur: String = "high",
     val youRecentlyViewed: List<MediaItemUiState> = emptyList(),
 )

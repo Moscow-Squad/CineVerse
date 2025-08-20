@@ -58,7 +58,7 @@ fun CineVerseRoot(
             modifier = Modifier
                 .fillMaxSize()
                 .background(Theme.colors.background.screen)
-                .windowInsetsPadding(WindowInsets.statusBars),
+                /*.windowInsetsPadding(WindowInsets.statusBars)*/,
             navController = navController,
             navViewModel = navViewModel,
             scaffoldPaddingValues = paddingValues,

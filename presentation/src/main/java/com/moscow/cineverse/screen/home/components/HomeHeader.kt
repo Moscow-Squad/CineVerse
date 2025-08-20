@@ -6,8 +6,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -18,14 +20,17 @@ import com.moscow.cineverse.design_system.R
 @Composable
 fun HomeHeader(userName: String?, modifier: Modifier = Modifier) {
     Row(
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth()
+            .padding(start = 16.dp, end = 12.dp, top = 20.dp)
+        ,
+        verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(8.dp),
     ) {
 
         Image(
             painter = painterResource(R.drawable.colored_cineverse_logo),
             contentDescription = null,
-            modifier = Modifier.padding(start = 16.dp)
+            modifier = Modifier.size(32.dp)
         )
 
         Column(

@@ -121,6 +121,7 @@ fun HistoryContent(
                             ) {
                                 HistoryMediaItemCard(
                                     movie = item,
+                                    enableBlur = state.enableBlur,
                                     onMediaItemClick = { interactionListener.onMediaItemClicked(item) }
                                 )
                             }
@@ -137,6 +138,7 @@ fun HistoryContent(
 fun HistoryMediaItemCard(
     modifier: Modifier = Modifier,
     movie: MediaItemUiState,
+    enableBlur: String,
     onMediaItemClick: (Int) -> Unit = {},
     getTitleOverride: ((MediaItemUiState) -> String)? = null,
 ) {
@@ -146,6 +148,6 @@ fun HistoryMediaItemCard(
         onMediaItemClick = onMediaItemClick,
         getTitleOverride = getTitleOverride,
         viewMode = ViewMode.LIST,
-        enableBlur = "high"
+        enableBlur = enableBlur
     )
 }

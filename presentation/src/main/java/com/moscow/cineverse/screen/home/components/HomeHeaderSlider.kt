@@ -1,5 +1,6 @@
 package com.moscow.cineverse.screen.home.components
 
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateFloatAsState
@@ -13,6 +14,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -22,12 +25,16 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.BiasAlignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.lerp
 import androidx.compose.ui.util.lerp
@@ -49,6 +56,7 @@ fun HomeHeaderSlider(
 ) {
     if (items.isEmpty()) return
 
+
     val pagerState = rememberPagerState(
         initialPage = 0,
         pageCount = { items.size }
@@ -69,8 +77,12 @@ fun HomeHeaderSlider(
     }
     val normalizedOffset = pageOffset * 2f
     val factor = (1f - normalizedOffset).coerceIn(0f, 1f)
+    val density = LocalDensity.current
+    val configuration = LocalConfiguration.current
+    val scope = rememberCoroutineScope()
 
-
+    val screenWidth = with(density) { configuration.screenWidthDp.dp }
+    val width = screenWidth - 48.dp
 
     LaunchedEffect(pagerState) {
         while (true) {
@@ -92,8 +104,7 @@ fun HomeHeaderSlider(
         HorizontalPager(
             state = pagerState,
             modifier = Modifier
-                .fillMaxWidth()
-               ,
+                .fillMaxWidth(),
             contentPadding = PaddingValues(horizontal = 32.dp),
             pageSpacing = (-40).dp,
             verticalAlignment = Alignment.CenterVertically,
@@ -111,7 +122,7 @@ fun HomeHeaderSlider(
 
             Box(
                 modifier = Modifier
-                    .height(280.dp)
+                    .height(270.dp)
                     .zIndex(1f - pageOffset)
             ) {
                 MediaPosterCard(
@@ -129,41 +140,46 @@ fun HomeHeaderSlider(
                     enableBlur = enableBlur,
                     useFixedHeight = true
                 )
-
                 if (textAlpha > 0) {
-                    Column(
+                    AnimatedRatingDisplaySection(
+                        rating = animatedRating,
+                        alpha = 1f,
                         modifier = Modifier
-                            .align(Alignment.BottomCenter)
-                            .padding(bottom = 32.dp)
-                            .fillMaxWidth(0.8f)
-                            .alpha(textAlpha),
-                        verticalArrangement = Arrangement.spacedBy(4.dp),
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        Text(
-                            text = items[page].title,
-                            color = Theme.colors.shade.primary,
-                            style = Theme.textStyle.body.medium.medium,
-                            textAlign = TextAlign.Center,
-                            modifier = Modifier.noRibbleClick{ onSliderClick(items[page]) }
-                        )
-                        Text(
-                            text = items[page].genres.joinToString(),
-                            color = Theme.colors.shade.secondary,
-                            style = Theme.textStyle.body.small.regular,
-                            textAlign = TextAlign.Center
-                        )
-                    }
+                            .align(Alignment.TopEnd)
+
+                    )
                 }
             }
         }
-
-        AnimatedRatingDisplaySection(
-            rating = animatedRating,
-            alpha = 1f,
+        Column(
             modifier = Modifier
-                .align(Alignment.TopEnd)
-                .padding(top = 4.dp, end = 32.dp)
-        )
+                .align(Alignment.BottomCenter)
+                .padding(horizontal = 32.dp)
+                .padding(bottom = 32.dp, top = 8.dp)
+                .fillMaxWidth(0.7f)
+                ,
+            verticalArrangement = Arrangement.spacedBy(4.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = currentItem.title,
+                color = Theme.colors.shade.primary,
+                style = Theme.textStyle.body.medium.medium,
+                textAlign = TextAlign.Center,
+                overflow = TextOverflow.Ellipsis,
+
+                maxLines = 1,
+                modifier = Modifier.noRibbleClick{ onSliderClick(currentItem) }
+            )
+            Text(
+                text = currentItem.genres.joinToString(),
+                color = Theme.colors.shade.secondary,
+                style = Theme.textStyle.body.small.regular,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                textAlign = TextAlign.Center
+            )
+        }
+
     }
 }
