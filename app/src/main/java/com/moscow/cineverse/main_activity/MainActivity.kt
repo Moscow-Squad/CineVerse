@@ -16,15 +16,12 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.moscow.cineverse.CineVerseRoot
 import com.moscow.cineverse.designSystem.theme.CineVerseTheme
 import com.moscow.cineverse.designSystem.theme.Theme
-import com.moscow.cineverse.navigation.NavViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private val mainActivityViewModel: MainActivityViewModel by viewModels()
-
-    private val navViewModel: NavViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -33,9 +30,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         WindowCompat.setDecorFitsSystemWindows(window, false)
-        splashScreen.setKeepOnScreenCondition {
-            navViewModel.startDestination.value == null
-        }
+        splashScreen.setKeepOnScreenCondition { false }
 
         setContent {
             val state by mainActivityViewModel.state.collectAsStateWithLifecycle()
@@ -63,7 +58,7 @@ class MainActivity : AppCompatActivity() {
                         }
                     )
                 }
-                CineVerseRoot(navViewModel)
+                CineVerseRoot(mainActivityViewModel)
             }
         }
     }
