@@ -103,6 +103,7 @@ fun MatchContent(
 
         MatchPages.ResultsPage -> MatchResultsPageContent(
             modifier = modifier,
+            isBlurEnabled = state.enableBlur,
             movies = state.matchResults,
             onMovieClick = listener::onMovieClick,
             onNavigateBack = listener::onNavigateBack,

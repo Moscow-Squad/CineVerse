@@ -46,6 +46,7 @@ import kotlin.math.absoluteValue
 @Composable
 fun MatchCarouselAnimation(
     movies: List<MovieScreenState.MovieDetailsUiState>,
+    isBlurEnabled: String,
     onMovieClick: (Int) -> Unit,
     onSaveClick: (Int) -> Unit,
     onPlayClick: (Int, String) -> Unit,
@@ -134,7 +135,7 @@ fun MatchCarouselAnimation(
                                         else -> 0.dp
                                     }
                                 ),
-                            isBlurEnabled = "high",
+                            isBlurEnabled = isBlurEnabled,
                             placeholderContent = { RemoteImagePlaceholder() },
                             errorContent = { RemoteImagePlaceholder() },
                             onBlurContent = {
