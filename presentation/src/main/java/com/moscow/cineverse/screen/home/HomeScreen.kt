@@ -126,7 +126,7 @@ fun HomeContent(
             modifier = modifier
                 .fillMaxSize()
                 .background(Theme.colors.background.screen)
-                .padding(bottom = LocalScaffoldPaddingValues.current.calculateBottomPadding())
+                .padding(LocalScaffoldPaddingValues.current)
         ) {
             Column(
                 verticalArrangement = Arrangement.spacedBy(8.dp)

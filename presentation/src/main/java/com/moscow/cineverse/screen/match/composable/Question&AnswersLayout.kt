@@ -68,6 +68,7 @@ fun QuestionAndAnswersLayout(
                                 onAnswerSelected(questionType, question)
                             },
                             questionUiState = question,
+                            height = 44,
                             itemsPaddingValues = PaddingValues(vertical = 12.dp, horizontal = 20.dp)
                         )
                     }
