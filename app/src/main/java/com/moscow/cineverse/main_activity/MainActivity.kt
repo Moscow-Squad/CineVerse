@@ -32,7 +32,7 @@ class MainActivity : AppCompatActivity() {
 
         val splashScreen = installSplashScreen()
         splashScreen.setKeepOnScreenCondition {
-            !viewModel.state.value.isLoading
+            viewModel.state.value.isLoading
         }
 
         WindowCompat.setDecorFitsSystemWindows(window, false)
