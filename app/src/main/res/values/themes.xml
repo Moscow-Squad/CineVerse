@@ -2,9 +2,8 @@
 <resources>
 
     <style name="Theme.CineVerse.Starting" parent="Theme.SplashScreen">
-        <item name="windowSplashScreenBackground">@color/white</item>
+        <item name="windowSplashScreenBackground">@color/splash_screen_background_light</item>
         <item name="windowSplashScreenAnimatedIcon">@drawable/cine_verse_logo_splash</item>
-        <item name="windowSplashScreenIconBackgroundColor">@color/purple_200</item>
         <item name="postSplashScreenTheme">@style/Theme.CineVerse</item>
     </style>
 

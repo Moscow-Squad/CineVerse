@@ -33,7 +33,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         WindowCompat.setDecorFitsSystemWindows(window, false)
-        splashScreen.setKeepOnScreenCondition { true }
+        splashScreen.setKeepOnScreenCondition {
+            navViewModel.startDestination.value == null
+        }
 
         setContent {
             val state by mainActivityViewModel.state.collectAsStateWithLifecycle()
