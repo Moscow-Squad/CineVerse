@@ -2,10 +2,7 @@ package com.moscow.cineverse
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.statusBars
-import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -57,8 +54,7 @@ fun CineVerseRoot(
         CineVerseNavGraph(
             modifier = Modifier
                 .fillMaxSize()
-                .background(Theme.colors.background.screen)
-                /*.windowInsetsPadding(WindowInsets.statusBars)*/,
+                .background(Theme.colors.background.screen),
             navController = navController,
             navViewModel = navViewModel,
             scaffoldPaddingValues = paddingValues,
