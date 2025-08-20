@@ -332,7 +332,7 @@ fun MediaHeader(
                 modifier = Modifier
                     .fillMaxWidth()
                     .align(Alignment.BottomCenter),
-                thickness = 2.dp,
+                thickness = 1.dp,
                 color = Theme.colors.brand.tertiary
             )
         }
