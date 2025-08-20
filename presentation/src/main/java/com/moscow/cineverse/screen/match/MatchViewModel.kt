@@ -1,5 +1,6 @@
 package com.moscow.cineverse.screen.match
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.cineverse.screen.explore.toUi
@@ -44,9 +45,11 @@ class MatchViewModel @Inject constructor(
                 loadMatchData()
             },
             onError = { e ->
+                Log.d("MatchViewModel", "Error fetching genres: $e")
                 updateState {
                     it.copy(
                         isLoading = false,
+                        shouldShowError = true,
                         errorMessage = e
                     )
                 }
@@ -98,7 +101,7 @@ class MatchViewModel @Inject constructor(
     private fun onLoadMatchDataSuccess(movies: List<Movie>) {
         updateState {
             it.copy(
-                matchResults = movies.map { movie ->
+                matchResults = movies.take(5).map { movie ->
                     MatchMapper.toUiState(
                         movie = movie,
                         genres = uiState.value.movieGenre
@@ -111,10 +114,12 @@ class MatchViewModel @Inject constructor(
     }
 
     private fun onLoadMatchDataError(errorMessage: Int) {
+        Log.d("MatchViewModel", "Error fetching genres: $errorMessage")
         updateState {
             it.copy(
                 isLoadingRecommendations = false,
-                errorMessage = errorMessage
+                errorMessage = errorMessage,
+                shouldShowError = true
             )
         }
     }
@@ -202,5 +207,9 @@ class MatchViewModel @Inject constructor(
             },
             onError = { updateState { it.copy(isLoading = false) } }
         )
+    }
+
+    override fun onRetry() {
+        getGenres()
     }
 }

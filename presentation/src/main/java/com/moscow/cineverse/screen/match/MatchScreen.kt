@@ -1,16 +1,22 @@
 package com.moscow.cineverse.screen.match
 
 import android.content.Intent
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.animateColorAsState
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.moscow.cineverse.component.ErrorContent
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.screen.match.pages.MatchQuestionsPageContent
 import com.moscow.cineverse.screen.match.pages.MatchResultsPageContent
@@ -24,6 +30,9 @@ fun MatchScreen(
     navigateToCollectionsBottomSheet: (movieId: Int) -> Unit,
     onBottomNavVisibilityChange: (Boolean) -> Unit = {}
 ) {
+    BackHandler {
+        viewModel.onNavigateBack()
+    }
     val state by viewModel.uiState.collectAsStateWithLifecycle()
     val context = LocalContext.current
 
@@ -65,11 +74,26 @@ fun MatchScreen(
         }
     }
 
-    MatchContent(
-        state = state,
-        listener = viewModel,
-        modifier = modifier
-    )
+    when {
+
+        state.shouldShowError -> {
+            ErrorContent(
+                errorMessage = state.errorMessage ?: 0,
+                onRetry = viewModel::onRetry,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Theme.colors.background.screen)
+            )
+        }
+
+        else -> {
+            MatchContent(
+                state = state,
+                listener = viewModel,
+                modifier = modifier
+            )
+        }
+    }
 }
 
 @Composable
@@ -87,7 +111,7 @@ fun MatchContent(
 
     when (state.currentPage) {
         MatchPages.StartPage -> MatchStartPageContent(
-            modifier = modifier,
+            modifier = modifier.padding(top = 4.dp),
             onClickStartMatching = listener::onClickStartMatching
         )
 

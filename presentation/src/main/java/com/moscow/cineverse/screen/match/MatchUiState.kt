@@ -19,7 +19,8 @@ data class MatchUiState(
     val isLoadingRecommendations: Boolean = false,
     val errorMessage: Int? = null,
     val enableBlur: String = "high",
-    ) {
+    val shouldShowError: Boolean = false
+) {
     val matchProgress: Float =
         currentQuestionType.ordinal.plus(1).toFloat() / QuestionType.entries.size
     val isNextButtonActivated: Boolean = when (currentQuestionType) {
