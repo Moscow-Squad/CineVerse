@@ -1,15 +1,12 @@
 package com.moscow.cineverse.screen.match
 
-import androidx.lifecycle.viewModelScope
 import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.cineverse.screen.explore.toUi
 import com.moscow.domain.model.Movie
-import com.moscow.domain.service.blur.BlurProvider
 import com.moscow.domain.usecase.genre.GenreUseCase
 import com.moscow.domain.usecase.match.GetMatchedMovies
 import com.moscow.domain.usecase.movie.GetMovieDetailsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -17,21 +14,8 @@ class MatchViewModel @Inject constructor(
     private val getMatchedMovies: GetMatchedMovies,
     private val getMovieDetailsUseCase: GetMovieDetailsUseCase,
     private val genreUseCase: GenreUseCase,
-    private val blurProvider: BlurProvider
 ) : BaseViewModel<MatchUiState, MatchEvent>(MatchUiState()),
     MatchInteractionListener {
-
-    init {
-        observeBlur()
-    }
-
-    private fun observeBlur() {
-        viewModelScope.launch {
-            blurProvider.blurFlow.collect { enableBlur ->
-                updateState { it.copy(enableBlur = enableBlur) }
-            }
-        }
-    }
 
     private fun getGenres() {
         updateState { it.copy(isLoading = true, errorMessage = null) }
@@ -152,15 +136,33 @@ class MatchViewModel @Inject constructor(
     }
 
     override fun onNavigateBack() {
-        updateState {
-            it.copy(
-                currentPage = MatchPages.StartPage,
-                currentQuestionType = QuestionType.MOOD,
-                moodQuestions = getMoodQuestionAnswers(),
-                genreQuestions = getGenreQuestionAnswers(),
-                timeQuestions = getTimeQuestionAnswers(),
-                movieTypeQuestions = getMovieTypeQuestionAnswers()
-            )
+        when (uiState.value.currentPage) {
+            MatchPages.QuestionsPage -> {
+                updateState { state ->
+                    state.copy(
+                        currentPage = if (state.currentQuestionType == QuestionType.MOOD)
+                            MatchPages.StartPage
+                        else
+                            MatchPages.QuestionsPage,
+                        currentQuestionType = QuestionType.entries[state.currentQuestionType.ordinal.minus(
+                            1
+                        ).coerceAtLeast(0)]
+                    )
+                }
+            }
+
+            MatchPages.ResultsPage -> updateState {
+                it.copy(
+                    currentPage = MatchPages.StartPage,
+                    currentQuestionType = QuestionType.MOOD,
+                    moodQuestions = getMoodQuestionAnswers(),
+                    genreQuestions = getGenreQuestionAnswers(),
+                    timeQuestions = getTimeQuestionAnswers(),
+                    movieTypeQuestions = getMovieTypeQuestionAnswers()
+                )
+            }
+
+            else -> {}
         }
     }
 
