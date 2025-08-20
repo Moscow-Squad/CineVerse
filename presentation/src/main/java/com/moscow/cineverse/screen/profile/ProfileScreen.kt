@@ -81,7 +81,7 @@ fun ProfileContent(
         item {
             MovieAppBar(
                 showBackButton = false,
-                modifier = Modifier.padding(vertical = 17.dp, horizontal = 16.dp),
+                modifier = Modifier.padding(horizontal = 16.dp),
                 title = stringResource(R.string.my_profile)
             )
         }
