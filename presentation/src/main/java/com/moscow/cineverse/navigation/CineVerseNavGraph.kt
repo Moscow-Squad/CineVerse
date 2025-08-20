@@ -29,7 +29,6 @@ import com.moscow.cineverse.navigation.routes.seeMoreRoute
 import com.moscow.cineverse.navigation.routes.seriesDetailsRoute
 import com.moscow.cineverse.navigation.routes.seriesRecommendationRoute
 import com.moscow.cineverse.navigation.routes.seriesSeasonsRoute
-import com.moscow.cineverse.navigation.routes.splashRoute
 import com.moscow.cineverse.navigation.routes.webViewRoute
 
 val LocalScaffoldPaddingValues =
@@ -38,12 +37,12 @@ val LocalScaffoldPaddingValues =
 @Composable
 fun CineVerseNavGraph(
     modifier: Modifier,
-    navViewModel: NavViewModel,
     navController: NavHostController,
+    startDestination: Any?,
     scaffoldPaddingValues: PaddingValues,
     onBottomNavVisibilityChange: (Boolean) -> Unit = {}
 ) {
-    val startDestination = navViewModel.startDestination.value ?: return
+    val startDestination =startDestination ?: return
 
     CompositionLocalProvider(
         LocalScaffoldPaddingValues provides scaffoldPaddingValues
@@ -54,7 +53,7 @@ fun CineVerseNavGraph(
             startDestination = startDestination
         ) {
 
-            splashRoute(navController)
+
             exploreRoute(navController)
             loginRoute(navController)
             onBoardingRoute(navController)

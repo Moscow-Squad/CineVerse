@@ -98,6 +98,8 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
     // splash api
     implementation (libs.androidx.core.splashscreen)
+    //kotlin date
+    implementation(libs.kotlinx.datetime)
 
 
 }
