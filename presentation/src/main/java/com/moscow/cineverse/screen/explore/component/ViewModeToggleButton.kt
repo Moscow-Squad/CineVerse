@@ -18,7 +18,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -47,20 +46,26 @@ fun ViewModeToggleButton(
         modifier = modifier
             .width(80.dp)
             .height(40.dp)
-            .clip(RoundedCornerShape(Theme.radius.small))
-            .background(Theme.colors.background.card)
-            .border(
-                width = 1.dp,
-                color = Theme.colors.stroke.primary,
-                shape = RoundedCornerShape(Theme.radius.small)
-            )
     ) {
         Box(
             modifier = Modifier
-                .offset(x = indicatorOffsetX + 1.dp, y = 1.dp)
-                .width(38.dp)
-                .height(38.dp)
- 
+                .fillMaxSize()
+                .background(
+                    color = Theme.colors.background.card,
+                    shape = RoundedCornerShape(Theme.radius.small)
+                )
+                .border(
+                    width = 1.dp,
+                    color = Theme.colors.stroke.primary,
+                    shape = RoundedCornerShape(Theme.radius.small)
+                )
+        )
+
+        Box(
+            modifier = Modifier
+                .offset(x = indicatorOffsetX)
+                .width(40.dp)
+                .height(40.dp)
                 .background(
                     color = Theme.colors.brand.tertiary,
                     shape = RoundedCornerShape(Theme.radius.small)
@@ -70,7 +75,6 @@ fun ViewModeToggleButton(
                     color = Theme.colors.brand.secondary,
                     shape = RoundedCornerShape(Theme.radius.small)
                 )
-
         )
         Row(
             modifier = Modifier.fillMaxSize(),

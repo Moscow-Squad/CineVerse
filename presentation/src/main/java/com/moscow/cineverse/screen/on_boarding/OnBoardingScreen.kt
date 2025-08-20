@@ -30,6 +30,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.moscow.cineverse.designSystem.component.wrapper.MovieScaffold
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.screen.on_boarding.components.BottomOnBoardingCard
 import com.moscow.cineverse.screen.on_boarding.components.OnBoardingPage
@@ -70,68 +71,70 @@ fun OnBoardingScreenContent(
     state: OnBoardingState,
     interactionListener: OnBoardingInteractionListener
 ) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(color = Theme.colors.background.screen)
-            .padding(bottom = 16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Bottom
-    ) {
-        HorizontalPager(
-            state = pagerState,
-            userScrollEnabled = false,
+    MovieScaffold{
+        Column(
             modifier = Modifier
-                .fillMaxWidth()
-                .background(color = Theme.colors.background.screen),
-            pageSpacing = (-20).dp,
-            beyondViewportPageCount = 1,
-        ) { pageIndex ->
-            val layoutDirection = LocalLayoutDirection.current
-            val isRtl = layoutDirection == LayoutDirection.Rtl
-
-            val offset = (pageIndex - pagerState.currentPage) + pagerState.currentPageOffsetFraction
-
-            val rotationDegrees by remember(offset, isRtl) {
-                derivedStateOf {
-                    val base = if (offset != 0f) offset * 18f else 0f
-                    if (isRtl) -base else base
-                }
-            }
-
-            val targetRadius = if (rotationDegrees != 0f) 24.dp else 0.dp
-
-            val animatedCornerRadius by animateDpAsState(
-                targetValue = targetRadius,
-                animationSpec = tween(
-                    durationMillis = 500,
-                    easing = LinearOutSlowInEasing
-                ),
-                label = "cornerRadius"
-            )
-
-            Box(
+                .fillMaxSize()
+                .background(color = Theme.colors.background.screen)
+                .padding(bottom = 16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Bottom
+        ) {
+            HorizontalPager(
+                state = pagerState,
+                userScrollEnabled = false,
                 modifier = Modifier
-                    .fillMaxWidth(),
-                contentAlignment = Alignment.Center
-            ) {
+                    .fillMaxWidth()
+                    .background(color = Theme.colors.background.screen),
+                pageSpacing = (-20).dp,
+                beyondViewportPageCount = 1,
+            ) { pageIndex ->
+                val layoutDirection = LocalLayoutDirection.current
+                val isRtl = layoutDirection == LayoutDirection.Rtl
+
+                val offset = (pageIndex - pagerState.currentPage) + pagerState.currentPageOffsetFraction
+
+                val rotationDegrees by remember(offset, isRtl) {
+                    derivedStateOf {
+                        val base = if (offset != 0f) offset * 18f else 0f
+                        if (isRtl) -base else base
+                    }
+                }
+
+                val targetRadius = if (rotationDegrees != 0f) 24.dp else 0.dp
+
+                val animatedCornerRadius by animateDpAsState(
+                    targetValue = targetRadius,
+                    animationSpec = tween(
+                        durationMillis = 500,
+                        easing = LinearOutSlowInEasing
+                    ),
+                    label = "cornerRadius"
+                )
+
                 Box(
                     modifier = Modifier
-                        .rotate(rotationDegrees)
-                        .clip(RoundedCornerShape(animatedCornerRadius))
+                        .fillMaxWidth(),
+                    contentAlignment = Alignment.Center
                 ) {
-                    OnBoardingPage(
-                        pageUiState = state.pages[pageIndex]
-                    )
+                    Box(
+                        modifier = Modifier
+                            .rotate(rotationDegrees)
+                            .clip(RoundedCornerShape(animatedCornerRadius))
+                    ) {
+                        OnBoardingPage(
+                            pageUiState = state.pages[pageIndex]
+                        )
+                    }
                 }
             }
+            BottomOnBoardingCard(
+                state = state,
+                onClickNextButton = interactionListener::onClickNextButton,
+                onClickPreviousButton = interactionListener::onClickPreviousButton,
+                onClickGetStartedButton = interactionListener::onClickGetStartedButton
+            )
         }
-        BottomOnBoardingCard(
-            state = state,
-            onClickNextButton = interactionListener::onClickNextButton,
-            onClickPreviousButton = interactionListener::onClickPreviousButton,
-            onClickGetStartedButton = interactionListener::onClickGetStartedButton
-        )
     }
 }
 

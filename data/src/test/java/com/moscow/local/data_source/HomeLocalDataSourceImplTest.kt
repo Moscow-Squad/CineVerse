@@ -1,15 +1,16 @@
-package com.moscow.data.local.data_source
+package com.moscow.local.data_source
 
 import com.google.common.truth.Truth.assertThat
 import com.moscow.local.dao.home.HomeCacheDao
-import com.moscow.local.data_source.HomeLocalDataSourceImpl
 import com.moscow.local.entity.HomeCategoryTimestampEntity
 import com.moscow.local.entity.MediaItemEntity
+import io.mockk.coEvery
+import io.mockk.coVerify
+import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import kotlinx.datetime.LocalDate
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import io.mockk.*
 
 class HomeLocalDataSourceImplTest {
 

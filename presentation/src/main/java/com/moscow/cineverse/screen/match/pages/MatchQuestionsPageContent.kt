@@ -65,9 +65,7 @@ fun MatchQuestionsPageContent(
                 targetState = state.currentQuestionType,
                 transitionSpec = {
                     (fadeIn(animationSpec = tween(200, delayMillis = 90)) +
-                            slideIn(tween(400)) { size -> IntOffset(0, -10) }
-
-                    )
+                            slideIn(tween(400)) { size -> IntOffset(0, -10) })
                         .togetherWith(
                             fadeOut(animationSpec = tween(400))
                                     + slideOut(
@@ -98,7 +96,10 @@ fun MatchQuestionsPageContent(
                     QuestionAndAnswersLayout(
                         questionType = QuestionType.MOOD,
                         questions = moodQuestions,
-                        onAnswerSelected = onAnswerSelected,
+                        onAnswerSelected =
+                            if (currentQuestionType.ordinal == QuestionType.MOOD.ordinal)
+                                onAnswerSelected
+                            else { _, _ -> },
                         modifier = Modifier.alpha(.3f.takeIf { currentQuestionType != QuestionType.MOOD }
                             ?: 1f)
                     )
@@ -106,7 +107,9 @@ fun MatchQuestionsPageContent(
                         QuestionAndAnswersLayout(
                             questionType = QuestionType.GENRE,
                             questions = genreQuestions,
-                            onAnswerSelected = onAnswerSelected,
+                            onAnswerSelected = if (currentQuestionType.ordinal == QuestionType.GENRE.ordinal)
+                                onAnswerSelected
+                            else { _, _ -> },
                             modifier = Modifier.alpha(.3f.takeIf { currentQuestionType != QuestionType.GENRE }
                                 ?: 1f)
                         )
@@ -114,7 +117,9 @@ fun MatchQuestionsPageContent(
                         QuestionAndAnswersLayout(
                             questionType = QuestionType.TIME,
                             questions = timeQuestion,
-                            onAnswerSelected = onAnswerSelected,
+                            onAnswerSelected = if (currentQuestionType.ordinal == QuestionType.TIME.ordinal)
+                                onAnswerSelected
+                            else { _, _ -> },
                             modifier = Modifier.alpha(.3f.takeIf { currentQuestionType != QuestionType.TIME }
                                 ?: 1f)
                         )
@@ -122,7 +127,9 @@ fun MatchQuestionsPageContent(
                         QuestionAndAnswersLayout(
                             questionType = QuestionType.TYPE,
                             questions = movieTypeQuestions,
-                            onAnswerSelected = onAnswerSelected,
+                            onAnswerSelected = if (currentQuestionType.ordinal == QuestionType.TYPE.ordinal)
+                                onAnswerSelected
+                            else { _, _ -> },
                             modifier = Modifier.alpha(.3f.takeIf { currentQuestionType != QuestionType.TYPE || state.isLoadingRecommendations }
                                 ?: 1f)
                         )

@@ -3,8 +3,8 @@ package com.moscow.remote.data_source
 import com.google.common.truth.Truth.assertThat
 import com.moscow.data_source.remote.SeriesRemoteDataSource
 import com.moscow.domain.repository.auth.UserRepository
-import com.moscow.remote.dto.media_item.common.CreditsDetailsDto
 import com.moscow.remote.dto.media_item.common.MediaTrailersDto
+import com.moscow.remote.dto.media_item.common.SeriesCreditDto
 import com.moscow.remote.dto.media_item.series.SeriesDetailDto
 import com.moscow.remote.dto.media_item.series.SeriesDto
 import com.moscow.remote.dto.rating.request.RatingRequestDto
@@ -78,7 +78,9 @@ class SeriesRemoteDataSourceImplTest {
         val seriesId = 77
         val sessionId = "sid_del_series"
         coEvery { userRepository.getSessionId() } returns sessionId
-        coEvery { seriesService.deleteRatingSeries(seriesId, sessionId) } returns Response.success(Unit)
+        coEvery { seriesService.deleteRatingSeries(seriesId, sessionId) } returns Response.success(
+            Unit
+        )
 
         val result = dataSource.deleteRatingSeries(seriesId)
 
@@ -94,7 +96,9 @@ class SeriesRemoteDataSourceImplTest {
         val sessionId = "sid_rated_series"
         val expected = ApiResponse(results = listOf(mockk<RatedSeriesDto>()))
         coEvery { userRepository.getSessionId() } returns sessionId
-        coEvery { seriesService.getRatedSeries(userId, sessionId, page) } returns Response.success(expected)
+        coEvery { seriesService.getRatedSeries(userId, sessionId, page) } returns Response.success(
+            expected
+        )
 
         val result = dataSource.getRatedSeries(userId, page)
 
@@ -109,7 +113,12 @@ class SeriesRemoteDataSourceImplTest {
         val sessionId = "sid_user_rating_series"
         val expected = mockk<UserRatingResponse>()
         coEvery { userRepository.getSessionId() } returns sessionId
-        coEvery { seriesService.getUserRatingForSeries(seriesId, sessionId) } returns Response.success(expected)
+        coEvery {
+            seriesService.getUserRatingForSeries(
+                seriesId,
+                sessionId
+            )
+        } returns Response.success(expected)
 
         val result = dataSource.getUserRatingForSeries(seriesId)
 
@@ -160,7 +169,9 @@ class SeriesRemoteDataSourceImplTest {
         val id = 1
         val page = 1
         val expected = ApiResponse(results = listOf(SeriesDto(id = 7)))
-        coEvery { seriesService.getSeriesRecommendations(id, page) } returns Response.success(expected)
+        coEvery { seriesService.getSeriesRecommendations(id, page) } returns Response.success(
+            expected
+        )
 
         val result = dataSource.getSeriesRecommendations(id, page)
 
@@ -173,7 +184,9 @@ class SeriesRemoteDataSourceImplTest {
         val genreId = 28
         val page = 1
         val expected = ApiResponse(results = listOf(SeriesDto(id = 5)))
-        coEvery { seriesService.getSeriesByGenreId(genreId, page) } returns Response.success(expected)
+        coEvery { seriesService.getSeriesByGenreId(genreId, page) } returns Response.success(
+            expected
+        )
 
         val result = dataSource.getSeriesByGenreId(genreId, page)
 
@@ -184,7 +197,7 @@ class SeriesRemoteDataSourceImplTest {
     @Test
     fun `getSeriesCredits returns body on success`() = runTest {
         val seriesId = 3
-        val expected = mockk<CreditsDetailsDto>()
+        val expected = mockk<SeriesCreditDto>()
         coEvery { seriesService.getSeriesCredits(seriesId) } returns Response.success(expected)
 
         val result = dataSource.getSeriesCredits(seriesId)

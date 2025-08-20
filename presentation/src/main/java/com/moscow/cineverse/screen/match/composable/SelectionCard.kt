@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -39,6 +40,7 @@ fun SelectionCard(
     onClick: () -> Unit,
     questionUiState: QuestionUiState,
     modifier: Modifier = Modifier,
+    height: Int = 56,
     itemsPaddingValues: PaddingValues = PaddingValues(12.dp),
     cardBackgroundColor: Color = Theme.colors.background.card,
     cardSelectionBackgroundColor: Color = Theme.colors.brand.tertiary,
@@ -60,6 +62,7 @@ fun SelectionCard(
     )
     Row(
         modifier = modifier
+            .height(height.dp)
             .clip(RoundedCornerShape(Theme.radius.large))
             .background(backgroundColor)
             .border(

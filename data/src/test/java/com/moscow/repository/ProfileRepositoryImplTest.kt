@@ -1,20 +1,18 @@
-package com.moscow.data.repository
+package com.moscow.repository
 
 import com.moscow.data_source.remote.ProfileRemoteDataSource
-import com.moscow.domain.model.UserInfo
 import com.moscow.remote.dto.profile.response.AccountDto
 import com.moscow.remote.dto.profile.response.Avatar
 import com.moscow.remote.dto.profile.response.Gravatar
 import com.moscow.remote.dto.profile.response.LogoutResponseDto
 import com.moscow.remote.dto.profile.response.Tmdb
-import com.moscow.repository.ProfileRepositoryImpl
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.Assertions.assertEquals
 
 class ProfileRepositoryImplTest {
 

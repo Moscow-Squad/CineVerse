@@ -1,16 +1,18 @@
-package com.moscow.data.local.data_source
+package com.moscow.local.data_source
 
 import com.google.common.truth.Truth.assertThat
 import com.moscow.local.dao.history.RecentlyViewedDao
-import com.moscow.local.data_source.RecentlyViewedLocalDataSourceImpl
 import com.moscow.local.entity.HistoryItemEntity
+import io.mockk.coVerify
+import io.mockk.every
+import io.mockk.mockk
+import io.mockk.verify
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import kotlinx.datetime.LocalDate
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import io.mockk.*
 
 class RecentlyViewedLocalDataSourceImplTest {
 
@@ -25,7 +27,6 @@ class RecentlyViewedLocalDataSourceImplTest {
 
     @Test
     fun `insertRecentlyViewedItem should delegate to dao insertRecentlyViewedItem`() = runTest {
-        // Given
         val historyItem = HistoryItemEntity(
             id = 1,
             name = "Test Movie",
@@ -36,16 +37,13 @@ class RecentlyViewedLocalDataSourceImplTest {
             cacheTimestamp = System.currentTimeMillis()
         )
 
-        // When
         recentlyViewedLocalDataSource.insertRecentlyViewedItem(historyItem)
 
-        // Then
         coVerify(exactly = 1) { recentlyViewedDao.insertRecentlyViewedItem(historyItem) }
     }
 
     @Test
     fun `getRecentlyViewedItems should return exact result as dao`() = runTest {
-        // Given
         val expectedList = listOf(
             HistoryItemEntity(
                 id = 1,
@@ -68,43 +66,35 @@ class RecentlyViewedLocalDataSourceImplTest {
         )
         every { recentlyViewedDao.getRecentlyViewedItems() } returns flowOf(expectedList)
 
-        // When
         val result = recentlyViewedLocalDataSource.getRecentlyViewedItems().first()
 
-        // Then
         assertThat(result).isEqualTo(expectedList)
         verify(exactly = 1) { recentlyViewedDao.getRecentlyViewedItems() }
     }
 
     @Test
     fun `getRecentlyViewedItems should return empty list when dao returns empty`() = runTest {
-        // Given
         val emptyList = emptyList<HistoryItemEntity>()
         every { recentlyViewedDao.getRecentlyViewedItems() } returns flowOf(emptyList)
 
-        // When
         val result = recentlyViewedLocalDataSource.getRecentlyViewedItems().first()
 
-        // Then
         assertThat(result).isEmpty()
         verify(exactly = 1) { recentlyViewedDao.getRecentlyViewedItems() }
     }
 
     @Test
-    fun `deleteRecentlyViewedItemById should delegate to dao deleteRecentlyViewedItemById`() = runTest {
-        // Given
-        val itemId = 5
+    fun `deleteRecentlyViewedItemById should delegate to dao deleteRecentlyViewedItemById`() =
+        runTest {
+            val itemId = 5
 
-        // When
-        recentlyViewedLocalDataSource.deleteRecentlyViewedItemById(itemId)
+            recentlyViewedLocalDataSource.deleteRecentlyViewedItemById(itemId)
 
-        // Then
-        coVerify(exactly = 1) { recentlyViewedDao.deleteRecentlyViewedItemById(itemId) }
-    }
+            coVerify(exactly = 1) { recentlyViewedDao.deleteRecentlyViewedItemById(itemId) }
+        }
 
     @Test
     fun `insertRecentlyViewedItem should handle item with null releaseDate`() = runTest {
-        // Given
         val historyItemWithNullDate = HistoryItemEntity(
             id = 3,
             name = "Unknown Date Movie",
@@ -115,16 +105,13 @@ class RecentlyViewedLocalDataSourceImplTest {
             cacheTimestamp = System.currentTimeMillis()
         )
 
-        // When
         recentlyViewedLocalDataSource.insertRecentlyViewedItem(historyItemWithNullDate)
 
-        // Then
         coVerify(exactly = 1) { recentlyViewedDao.insertRecentlyViewedItem(historyItemWithNullDate) }
     }
 
     @Test
     fun `deleteRecentlyViewedItemById should handle different id types`() = runTest {
-
         val largeId = 999999
 
         recentlyViewedLocalDataSource.deleteRecentlyViewedItemById(largeId)

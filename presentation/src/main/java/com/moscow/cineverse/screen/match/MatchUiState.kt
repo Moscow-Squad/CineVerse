@@ -18,7 +18,8 @@ data class MatchUiState(
     val matchResults: List<MovieScreenState.MovieDetailsUiState> = emptyList(),
     val isLoadingRecommendations: Boolean = false,
     val errorMessage: Int? = null,
-) {
+    val enableBlur: String = "high",
+    ) {
     val matchProgress: Float =
         currentQuestionType.ordinal.plus(1).toFloat() / QuestionType.entries.size
     val isNextButtonActivated: Boolean = when (currentQuestionType) {
@@ -50,7 +51,7 @@ data class QuestionUiState(
     @DrawableRes val iconResource: Int? = null,
 )
 
-private fun getMoodQuestionAnswers() = listOf(
+fun getMoodQuestionAnswers() = listOf(
     QuestionUiState(
         id = 1,
         name = R.string.mood_chill,
@@ -73,7 +74,7 @@ private fun getMoodQuestionAnswers() = listOf(
     )
 )
 
-private fun getMovieTypeQuestionAnswers() = listOf(
+fun getMovieTypeQuestionAnswers() = listOf(
     QuestionUiState(
         id = 1,
         name = R.string.recent,
@@ -88,11 +89,11 @@ private fun getMovieTypeQuestionAnswers() = listOf(
     )
 )
 
-private fun getTimeQuestionAnswers() = listOf(
+fun getTimeQuestionAnswers() = listOf(
     QuestionUiState(
         id = 1,
-        name = R.string.time_long_label,
-        description = R.string.time_long_desc,
+        name = R.string.time_short_label,
+        description = R.string.time_short_desc,
         iconResource = R.drawable.time_short_icon
     ),
     QuestionUiState(
@@ -109,7 +110,7 @@ private fun getTimeQuestionAnswers() = listOf(
     )
 )
 
-private fun getGenreQuestionAnswers() = listOf(
+fun getGenreQuestionAnswers() = listOf(
     QuestionUiState(id = 1, name = R.string.genre_action),
     QuestionUiState(id = 2, name = R.string.genre_comedy),
     QuestionUiState(id = 3, name = R.string.genre_drama),

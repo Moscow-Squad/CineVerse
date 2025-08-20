@@ -1,9 +1,8 @@
-package com.moscow.data.remote.data_source
+package com.moscow.remote.data_source
 
 import com.google.common.truth.Truth.assertThat
 import com.moscow.data_source.remote.MovieRemoteDataSource
 import com.moscow.domain.repository.auth.UserRepository
-import com.moscow.remote.data_source.MovieRemoteDataSourceImpl
 import com.moscow.remote.dto.media_item.common.CreditsDetailsDto
 import com.moscow.remote.dto.media_item.common.MediaTrailersDto
 import com.moscow.remote.dto.media_item.movie.MovieDetailDto
@@ -79,7 +78,12 @@ class MovieRemoteDataSourceImplTest {
         val movieId = 77
         val sessionId = "sid_del"
         coEvery { userRepository.getSessionId() } returns sessionId
-        coEvery { movieService.deleteRatingMovie(movieId, sessionId) } returns Response.success(Unit)
+        coEvery {
+            movieService.deleteRatingMovie(
+                movieId,
+                sessionId
+            )
+        } returns Response.success(Unit)
 
         val result = dataSource.deleteRatingMovie(movieId)
 
@@ -95,7 +99,9 @@ class MovieRemoteDataSourceImplTest {
         val sessionId = "sid_rated"
         val expected = ApiResponse(results = listOf(mockk<RatedMovieDto>()))
         coEvery { userRepository.getSessionId() } returns sessionId
-        coEvery { movieService.getRatedMovies(userId, sessionId, page) } returns Response.success(expected)
+        coEvery { movieService.getRatedMovies(userId, sessionId, page) } returns Response.success(
+            expected
+        )
 
         val result = dataSource.getRatedMovies(userId, page)
 
@@ -110,7 +116,9 @@ class MovieRemoteDataSourceImplTest {
         val sessionId = "sid_user_rating"
         val expected = mockk<UserRatingResponse>()
         coEvery { userRepository.getSessionId() } returns sessionId
-        coEvery { movieService.getUserRatingForMovie(movieId, sessionId) } returns Response.success(expected)
+        coEvery { movieService.getUserRatingForMovie(movieId, sessionId) } returns Response.success(
+            expected
+        )
 
         val result = dataSource.getUserRatingForMovie(movieId)
 
@@ -149,7 +157,9 @@ class MovieRemoteDataSourceImplTest {
         val id = 1
         val page = 1
         val expected = ApiResponse(results = listOf(MovieDto(id = 2)))
-        coEvery { movieService.getMoviesRecommendations(id, page) } returns Response.success(expected)
+        coEvery { movieService.getMoviesRecommendations(id, page) } returns Response.success(
+            expected
+        )
 
         val result = dataSource.getMoviesRecommendations(id, page)
 
@@ -162,7 +172,12 @@ class MovieRemoteDataSourceImplTest {
         val genreId = 28
         val page = 1
         val expected = ApiResponse(results = listOf(MovieDto(id = 7)))
-        coEvery { movieService.getMoviesByGenreId(genreId, page) } returns Response.success(expected)
+        coEvery {
+            movieService.getMoviesByGenreId(
+                genreId,
+                page
+            )
+        } returns Response.success(expected)
 
         val result = dataSource.getMoviesByGenreId(genreId, page)
 
@@ -222,11 +237,57 @@ class MovieRemoteDataSourceImplTest {
         val genreId = 35
         val page = 2
         val expected = ApiResponse(results = listOf(MovieDto(id = 9)))
-        coEvery { movieService.getMatchYourVibeMovies(genreId, page) } returns Response.success(expected)
+        coEvery { movieService.getMatchYourVibeMovies(genreId, page) } returns Response.success(
+            expected
+        )
 
         val result = dataSource.getMatchYourVibeMovies(genreId, page)
 
         assertThat(result).isEqualTo(expected)
         coVerify(exactly = 1) { movieService.getMatchYourVibeMovies(genreId, page) }
+    }
+
+    @Test
+    fun `getMatchedMovies returns success response`() = runTest {
+        val page = 1
+        val genres = "action"
+        val runtimeGte = 90
+        val runtimeLte = 120
+        val releaseDateGte = "2020-01-01"
+        val releaseDateLte = "2023-12-31"
+
+        val expected = ApiResponse(results = listOf(MovieDto(id = 5)))
+        coEvery {
+            movieService.getMatchedMovies(
+                page,
+                genres,
+                runtimeGte,
+                runtimeLte,
+                releaseDateGte,
+                releaseDateLte
+            )
+        } returns Response.success(expected)
+
+        val result = dataSource.getMatchedMovies(
+            page,
+            genres,
+            runtimeGte,
+            runtimeLte,
+            releaseDateGte,
+            releaseDateLte
+        )
+
+        assertThat(result).isEqualTo(expected)
+
+        coVerify(exactly = 1) {
+            movieService.getMatchedMovies(
+                page,
+                genres,
+                runtimeGte,
+                runtimeLte,
+                releaseDateGte,
+                releaseDateLte
+            )
+        }
     }
 }

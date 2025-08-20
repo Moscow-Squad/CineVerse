@@ -31,11 +31,13 @@ fun MatchScreen(
         val showBottomNav = state.currentPage == MatchPages.StartPage
         onBottomNavVisibilityChange(showBottomNav)
     }
+
     DisposableEffect(Unit) {
         onDispose {
             onBottomNavVisibilityChange(true)
         }
     }
+
     LaunchedEffect(Unit) {
         viewModel.uiEffect.collect { effect ->
             when (effect) {
@@ -101,6 +103,7 @@ fun MatchContent(
 
         MatchPages.ResultsPage -> MatchResultsPageContent(
             modifier = modifier,
+            isBlurEnabled = state.enableBlur,
             movies = state.matchResults,
             onMovieClick = listener::onMovieClick,
             onNavigateBack = listener::onNavigateBack,
