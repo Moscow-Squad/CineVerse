@@ -122,31 +122,33 @@ class MatchViewModel @Inject constructor(
     override fun onAnswerSelected(type: QuestionType, answer: QuestionUiState) {
         updateState { state ->
             when (type) {
-                QuestionType.MOOD -> state.copy(
-                    moodQuestions = state.moodQuestions.map {
-                        if (it.id == answer.id) it.copy(isSelected = !it.isSelected) else it
-                    }
-                )
+                QuestionType.MOOD -> if (state.currentQuestionType == QuestionType.MOOD) {
+                    state.copy(
+                        moodQuestions = state.moodQuestions.map {
+                            if (it.id == answer.id) it.copy(isSelected = !it.isSelected) else it
+                        }
+                    )
+                } else state
 
-                QuestionType.GENRE -> state.copy(
+                QuestionType.GENRE -> if (state.currentQuestionType == QuestionType.GENRE) state.copy(
                     genreQuestions = state.genreQuestions.map {
                         if (it.id == answer.id) it.copy(isSelected = !it.isSelected) else it
                     }
-                )
+                ) else state
 
-                QuestionType.TIME -> state.copy(
+                QuestionType.TIME -> if (state.currentQuestionType == QuestionType.TIME) state.copy(
                     timeQuestions = state.timeQuestions.map {
                         if (it.id == answer.id) it.copy(isSelected = !it.isSelected) else
                             it.copy(isSelected = false)
                     }
-                )
+                ) else state
 
-                QuestionType.TYPE -> state.copy(
+                QuestionType.TYPE -> if (state.currentQuestionType == QuestionType.TYPE) state.copy(
                     movieTypeQuestions = state.movieTypeQuestions.map {
                         if (it.id == answer.id) it.copy(isSelected = !it.isSelected) else
                             it.copy(isSelected = false)
                     }
-                )
+                ) else state
             }
         }
     }
