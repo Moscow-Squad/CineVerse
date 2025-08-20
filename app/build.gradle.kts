@@ -74,6 +74,7 @@ dependencies {
     implementation(projects.domain)
     // DI & platform
     implementation(libs.hilt.android)
+    implementation(libs.androidx.lifecycle.process)
     ksp(libs.hilt.android.compiler)
     implementation(libs.androidx.hilt.work)
     ksp(libs.androidx.hilt.compiler)

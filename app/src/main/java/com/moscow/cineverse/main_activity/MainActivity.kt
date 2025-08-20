@@ -34,6 +34,9 @@ class MainActivity : AppCompatActivity() {
         splashScreen.setKeepOnScreenCondition {
             viewModel.state.value.isLoading
         }
+        splashScreen.setOnExitAnimationListener { splashScreenView ->
+            splashScreenView.remove()
+        }
 
         WindowCompat.setDecorFitsSystemWindows(window, false)
         super.onCreate(savedInstanceState)
