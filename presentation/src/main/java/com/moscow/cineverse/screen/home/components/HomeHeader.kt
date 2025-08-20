@@ -30,7 +30,7 @@ fun HomeHeader(userName: String?, modifier: Modifier = Modifier) {
             painter = painterResource(R.drawable.colored_cineverse_logo),
             contentDescription = null,
             modifier = Modifier
-                //.padding(vertical = 9.dp)
+
         )
 
         Column(
