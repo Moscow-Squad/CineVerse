@@ -208,5 +208,6 @@ class MatchViewModel @Inject constructor(
 
     override fun onRetry() {
         getGenres()
+        updateState { it.copy(shouldShowError = false, errorMessage = null)}
     }
 }
