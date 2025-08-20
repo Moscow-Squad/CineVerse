@@ -1,4 +1,4 @@
-package com.moscow.local
+package com.moscow.local.data_source
 
 import android.content.Context
 import androidx.hilt.work.HiltWorker
@@ -14,7 +14,6 @@ class DeleteHistoryQueryWorker @AssistedInject constructor(
     @Assisted workerParams: WorkerParameters,
     private val searchRepository: SearchRepository
 ) : CoroutineWorker(appContext, workerParams) {
-
     override suspend fun doWork(): Result {
         val query = inputData.getString("query") ?: return Result.failure()
         searchRepository.deleteSearchHistory(query)

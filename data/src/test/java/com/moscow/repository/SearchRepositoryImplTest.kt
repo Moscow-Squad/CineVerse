@@ -1,19 +1,15 @@
-package com.moscow.data.repository
+package com.moscow.repository
 
 import com.moscow.data_source.local.SearchLocalDataSource
 import com.moscow.data_source.remote.SearchRemoteDataSource
-import com.moscow.domain.model.Actor
-import com.moscow.domain.model.Movie
-import com.moscow.local.entity.FavouriteGenreEntity
-import com.moscow.mapper.toDomain
 import com.moscow.mapper.toModel
-import com.moscow.remote.dto.actor.ActorDto
 import com.moscow.remote.dto.media_item.movie.MovieDto
-import com.moscow.remote.dto.media_item.series.SeriesDto
 import com.moscow.remote.dto.suggestion.SuggestionDto
-import com.moscow.repository.SearchRepositoryImpl
 import com.moscow.utils.ApiResponse
-import io.mockk.*
+import io.mockk.coEvery
+import io.mockk.coVerify
+import io.mockk.every
+import io.mockk.mockk
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
@@ -90,7 +86,8 @@ class SearchRepositoryImplTest {
         every { s1.toModel() } returns "batman"
         every { s2.toModel() } returns "batwoman"
 
-        val api = ApiResponse(results = listOf(s1, s2), page = page, totalPages = 1, totalResults = 2)
+        val api =
+            ApiResponse(results = listOf(s1, s2), page = page, totalPages = 1, totalResults = 2)
         coEvery { searchRemoteDataSource.searchByKeyword(keyword, page, false) } returns api
 
         val result = repository.getRemoteSuggestions(keyword, page)
@@ -103,7 +100,8 @@ class SearchRepositoryImplTest {
     fun `searchMovie should return empty list when remote results are null`() = runTest {
         val query = "nothing"
         val page = 1
-        val api = ApiResponse<MovieDto>(results = null, page = page, totalPages = 1, totalResults = 0)
+        val api =
+            ApiResponse<MovieDto>(results = null, page = page, totalPages = 1, totalResults = 0)
         coEvery { searchRemoteDataSource.searchMovie(query, page, false) } returns api
         coEvery { searchLocalDataSource.getFavouriteGenres() } returns flowOf(emptyList())
 
@@ -111,19 +109,4 @@ class SearchRepositoryImplTest {
 
         assertEquals(0, result.size)
     }
-
-
-    private fun createMovie(id: Int, title: String) = Movie(
-        id = id,
-        title = title,
-        overview = "overview",
-        trailerUrl = "trailer",
-        backdropUrl = "back",
-        posterUrl = "poster",
-        releaseDate = null,
-        genreIds = emptyList(),
-        genres = emptyList(),
-        duration = Movie.Duration(hours = 0, minutes = 0),
-        rating = 8.5f
-    )
 }

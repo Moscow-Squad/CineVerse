@@ -36,7 +36,7 @@ object MatchMapper {
 
         val allGenres = (moodGenres + selectedGenres)
             .distinct()
-            .joinToString(",")
+            .joinToString("|")
 
         var runtimeGte: Int? = null
         var runtimeLte: Int? = null

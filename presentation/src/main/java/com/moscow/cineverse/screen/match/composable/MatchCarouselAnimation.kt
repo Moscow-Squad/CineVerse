@@ -60,7 +60,7 @@ fun MatchCarouselAnimation(
     LaunchedEffect(pagerState) {
         while (true) {
             delay(3000)
-            if (!pagerState.isScrollInProgress) {
+            if (!pagerState.isScrollInProgress && movies.isNotEmpty()) {
                 val nextPage = (pagerState.currentPage + 1) % movies.size
                 pagerState.animateScrollToPage(
                     nextPage,
@@ -160,7 +160,7 @@ fun MatchCarouselAnimation(
                 title = movies[pagerState.currentPage].title,
                 titleOverFlow = true,
                 genres = movies[pagerState.currentPage].genres.joinToString(", "),
-                rating = movies[pagerState.currentPage].rating.toString(),
+                rating = movies[pagerState.currentPage].rating,
                 duration = if (movies[pagerState.currentPage].duration.hours == 0 && movies[pagerState.currentPage].duration.minutes == 0) "null" else movies[pagerState.currentPage].duration.toString(),
                 releaseDate = movies[pagerState.currentPage].releaseDate?.formatDate()
                     ?: "",
@@ -179,7 +179,7 @@ fun MatchCarouselAnimation(
             MovieButton(
                 buttonText = stringResource(R.string.view_details),
                 textColor = Theme.colors.button.onPrimary,
-                textStyle = Theme.textStyle.body.medium.medium,
+                textStyle = Theme.textStyle.body.medium.regular,
                 onClick = {
                     onMovieClick(
                         movies[pagerState.currentPage].id

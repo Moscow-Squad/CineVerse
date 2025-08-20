@@ -152,7 +152,14 @@ class MatchViewModel @Inject constructor(
             }
 
             MatchPages.ResultsPage -> updateState {
-                it.copy(currentPage = MatchPages.QuestionsPage)
+                it.copy(
+                    currentPage = MatchPages.StartPage,
+                    currentQuestionType = QuestionType.MOOD,
+                    moodQuestions = getMoodQuestionAnswers(),
+                    genreQuestions = getGenreQuestionAnswers(),
+                    timeQuestions = getTimeQuestionAnswers(),
+                    movieTypeQuestions = getMovieTypeQuestionAnswers()
+                )
             }
 
             else -> {}
