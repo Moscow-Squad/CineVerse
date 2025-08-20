@@ -41,12 +41,24 @@ class MainActivityViewModel @Inject constructor(
         viewModelScope.launch(IO) {
             if (!onboardingRepository.isOnBoardingCompleted()) {
                 _state.update { it.copy(startDestination = OnBoardingRoute, isLoading = false) }
-            } else if (userRepository.isGuest() && userRepository.isLoggedIn()) {
+            } else if (userRepository.isGuest()) {
                 val isValid = isValidGuestSession(userRepository.getSessionExpiration())
-                _state.update { it.copy(startDestination = if (isValid) HomeRoute else LoginRoute, isLoading = false) }
+                _state.update {
+                    it.copy(
+                        startDestination = if (isValid) HomeRoute else LoginRoute,
+                        isLoading = false
+                    )
+                }
+            } else if (userRepository.isLoggedIn()) {
+                _state.update { it.copy(startDestination = HomeRoute, isLoading = false) }
             } else {
                 val isLoggedIn = userRepository.isLoggedIn()
-                _state.update { it.copy(startDestination = if (isLoggedIn) HomeRoute else LoginRoute, isLoading = false) }
+                _state.update {
+                    it.copy(
+                        startDestination = if (isLoggedIn) HomeRoute else LoginRoute,
+                        isLoading = false
+                    )
+                }
             }
         }
     }
@@ -57,7 +69,7 @@ class MainActivityViewModel @Inject constructor(
             val expiresAtInstant = Instant.parse(iso)
             val expiresAtMillis = expiresAtInstant.toEpochMilliseconds()
             val now = Clock.System.now().toEpochMilliseconds()
-            return now < expiresAtMillis
+            return (now < expiresAtMillis)
         }
         return false
     }

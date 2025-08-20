@@ -37,7 +37,7 @@ class UserRepositoryImpl @Inject constructor(
                 is UserType.GuestUser -> {
                     preferences[USER_TYPE_KEY] = GUEST_USER
                     preferences[SESSION_ID_KEY] = userType.sessionId
-                    preferences[EXPIRED_AT_KEY] = userType.expiredAt.toString()
+                    preferences[EXPIRED_AT_KEY] = userType.expiredAt
                     preferences[Is_LOGGED_IN_KEY] = false
                     preferences[SHOW_COLLECTION_DETAILS_TIP] = true
                     preferences.remove(USER_ID_KEY)
