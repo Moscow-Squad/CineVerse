@@ -11,6 +11,7 @@ import com.moscow.domain.service.language.LanguageProvider
 import com.moscow.domain.service.theme.ThemeProvider
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -31,60 +32,57 @@ class MainActivityViewModel @Inject constructor(
     val state = _state.asStateFlow()
 
     init {
-        getStartDestination()
-        observeTheme()
-        observeLanguage()
-    }
+        loadCriticalNavigationData()
 
-
-    private fun getStartDestination() {
         viewModelScope.launch(IO) {
-            if (!onboardingRepository.isOnBoardingCompleted()) {
-                _state.update { it.copy(startDestination = OnBoardingRoute, isLoading = false) }
-            } else if (userRepository.isGuest()) {
-                val isValid = isValidGuestSession(userRepository.getSessionExpiration())
-                _state.update {
-                    it.copy(
-                        startDestination = if (isValid) HomeRoute else LoginRoute,
-                        isLoading = false
-                    )
+            loadUiPreferences()
+        }
+    }
+
+    private fun loadCriticalNavigationData() {
+        viewModelScope.launch(IO) {
+            val isOnboardingCompletedDeferred = async { onboardingRepository.isOnBoardingCompleted() }
+            val isGuestDeferred = async { userRepository.isGuest() }
+            val isLoggedInDeferred = async { userRepository.isLoggedIn() }
+
+            val isOnboardingCompleted = isOnboardingCompletedDeferred.await()
+            val isGuest = isGuestDeferred.await()
+            val isLoggedIn = isLoggedInDeferred.await()
+
+            val startDestination = when {
+                !isOnboardingCompleted -> OnBoardingRoute
+                isGuest -> {
+                    val sessionExpiration = userRepository.getSessionExpiration()
+                    if (isValidGuestSession(sessionExpiration)) HomeRoute else LoginRoute
                 }
-            } else if (userRepository.isLoggedIn()) {
-                _state.update { it.copy(startDestination = HomeRoute, isLoading = false) }
-            } else {
-                val isLoggedIn = userRepository.isLoggedIn()
-                _state.update {
-                    it.copy(
-                        startDestination = if (isLoggedIn) HomeRoute else LoginRoute,
-                        isLoading = false
-                    )
-                }
+                isLoggedIn -> HomeRoute
+                else -> LoginRoute
             }
+
+            _state.update { it.copy(startDestination = startDestination, isLoading = false) }
         }
     }
 
-    private fun isValidGuestSession(expirationDateTime: String): Boolean {
-        if (expirationDateTime.isNotEmpty()) {
-            val iso = expirationDateTime.replace(" UTC", "").replace(' ', 'T') + "Z"
-            val expiresAtInstant = Instant.parse(iso)
-            val expiresAtMillis = expiresAtInstant.toEpochMilliseconds()
-            val now = Clock.System.now().toEpochMilliseconds()
-            return (now < expiresAtMillis)
-        }
-        return false
-    }
-
-
-    private fun observeTheme() {
+    private fun loadUiPreferences() {
         viewModelScope.launch(IO) {
             themeProvider.themeFlow.collect { isDarkTheme ->
                 _state.update { it.copy(isDarkTheme = isDarkTheme) }
             }
         }
+
+        val currentLanguage = languageProvider.currentLanguage.value
+        _state.update { it.copy(language = currentLanguage) }
     }
 
-    private fun observeLanguage() {
-        _state.update { it.copy(language = languageProvider.currentLanguage.value) }
-    }
+    private fun isValidGuestSession(expirationDateTime: String): Boolean {
+        if (expirationDateTime.isEmpty()) return false
 
+        val iso = expirationDateTime.replace(" UTC", "").replace(' ', 'T') + "Z"
+        return runCatching {
+            val expiresAtInstant = Instant.parse(iso)
+            val expiresAtMillis = expiresAtInstant.toEpochMilliseconds()
+            val now = Clock.System.now().toEpochMilliseconds()
+            now < expiresAtMillis
+        }.getOrDefault(false)
+    }
 }
