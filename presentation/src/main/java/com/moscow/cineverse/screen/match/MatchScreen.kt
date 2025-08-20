@@ -21,6 +21,7 @@ import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.screen.match.pages.MatchQuestionsPageContent
 import com.moscow.cineverse.screen.match.pages.MatchResultsPageContent
 import com.moscow.cineverse.screen.match.pages.MatchStartPageContent
+import com.moscow.cinverse.presentation.R
 
 @Composable
 fun MatchScreen(
@@ -78,7 +79,7 @@ fun MatchScreen(
 
         state.shouldShowError -> {
             ErrorContent(
-                errorMessage = state.errorMessage ?: 0,
+                errorMessage = R.string.no_internet_connection,
                 onRetry = viewModel::onRetry,
                 modifier = Modifier
                     .fillMaxSize()
