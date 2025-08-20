@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <style name="Theme.CineVerse.Starting" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/white</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/cine_verse_logo_splash</item>
+        <item name="windowSplashScreenIconBackgroundColor">@color/purple_200</item>
+        <item name="postSplashScreenTheme">@style/Theme.CineVerse</item>
+    </style>
+
     <style name="Theme.CineVerse" parent="Theme.AppCompat.DayNight.NoActionBar">
         <item name="android:windowDisablePreview">true</item>
         <item name="android:windowIsTranslucent">true</item>
