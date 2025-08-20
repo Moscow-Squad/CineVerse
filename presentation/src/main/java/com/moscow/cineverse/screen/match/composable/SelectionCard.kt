@@ -70,8 +70,8 @@ fun SelectionCard(
                 color = borderColor,
                 shape = RoundedCornerShape(Theme.radius.large)
             )
-            .padding(itemsPaddingValues)
-            .clickable { onClick() },
+            .clickable { onClick() }
+            .padding(itemsPaddingValues),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = if (questionUiState.iconResource == null) Arrangement.Center else Arrangement.spacedBy(
             8.dp
