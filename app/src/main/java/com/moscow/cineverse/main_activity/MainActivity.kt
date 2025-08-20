@@ -2,15 +2,14 @@ package com.moscow.cineverse.main_activity
 
 import android.os.Bundle
 import android.view.MotionEvent
+import android.view.WindowManager
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.toArgb
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
@@ -23,18 +22,24 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
-    private val mainActivityViewModel: MainActivityViewModel by viewModels()
-
     override fun onCreate(savedInstanceState: Bundle?) {
-        val splashScreen = installSplashScreen()
-        splashScreen.setKeepOnScreenCondition { mainActivityViewModel.state.value.isLoading }
-        WindowCompat.setDecorFitsSystemWindows(window, false)
+        window.setFlags(
+            WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED,
+            WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED,
+        )
 
+        val viewModel: MainActivityViewModel by viewModels()
+
+        val splashScreen = installSplashScreen()
+        splashScreen.setKeepOnScreenCondition {
+            !viewModel.state.value.isLoading
+        }
+
+        WindowCompat.setDecorFitsSystemWindows(window, false)
         super.onCreate(savedInstanceState)
 
         setContent {
-            val state by mainActivityViewModel.state.collectAsStateWithLifecycle()
-            val isReady = remember { derivedStateOf { !state.isLoading } }
+            val state by viewModel.state.collectAsStateWithLifecycle()
 
             CineVerseTheme(language = state.language, isDark = state.isDarkTheme) {
                 val surfaceColor = Theme.colors.background.screen.toArgb()
@@ -60,7 +65,7 @@ class MainActivity : AppCompatActivity() {
                     )
                 }
 
-                if (isReady.value) {
+                if (!state.isLoading) {
                     CineVerseRoot(state.startDestination)
                 }
             }
