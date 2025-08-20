@@ -8,7 +8,9 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.toArgb
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
@@ -24,16 +26,15 @@ class MainActivity : AppCompatActivity() {
     private val mainActivityViewModel: MainActivityViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
         val splashScreen = installSplashScreen()
+        splashScreen.setKeepOnScreenCondition { mainActivityViewModel.state.value.isLoading }
+        WindowCompat.setDecorFitsSystemWindows(window, false)
 
         super.onCreate(savedInstanceState)
 
-        WindowCompat.setDecorFitsSystemWindows(window, false)
-        splashScreen.setKeepOnScreenCondition { false }
-
         setContent {
             val state by mainActivityViewModel.state.collectAsStateWithLifecycle()
+            val isReady = remember { derivedStateOf { !state.isLoading } }
 
             CineVerseTheme(language = state.language, isDark = state.isDarkTheme) {
                 val surfaceColor = Theme.colors.background.screen.toArgb()
@@ -58,7 +59,10 @@ class MainActivity : AppCompatActivity() {
                         }
                     )
                 }
-                CineVerseRoot(mainActivityViewModel)
+
+                if (isReady.value) {
+                    CineVerseRoot(state.startDestination)
+                }
             }
         }
     }

@@ -1,6 +1,5 @@
 package com.moscow.cineverse.main_activity
 
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.moscow.cineverse.navigation.routes.HomeRoute
@@ -11,14 +10,14 @@ import com.moscow.domain.repository.auth.UserRepository
 import com.moscow.domain.service.language.LanguageProvider
 import com.moscow.domain.service.theme.ThemeProvider
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
+import javax.inject.Inject
 
 @HiltViewModel
 class MainActivityViewModel @Inject constructor(
@@ -26,34 +25,28 @@ class MainActivityViewModel @Inject constructor(
     private val languageProvider: LanguageProvider,
     private val onboardingRepository: OnboardingRepository,
     private val userRepository: UserRepository
-
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(MainActivityUiState())
     val state = _state.asStateFlow()
 
-
-    private val _startDestination = mutableStateOf<Any?>(null)
-    val startDestination = _startDestination
-
     init {
+        getStartDestination()
         observeTheme()
         observeLanguage()
-        getStartDestination()
-
     }
 
 
     private fun getStartDestination() {
-        viewModelScope.launch {
+        viewModelScope.launch(IO) {
             if (!onboardingRepository.isOnBoardingCompleted()) {
-                _startDestination.value = OnBoardingRoute
+                _state.update { it.copy(startDestination = OnBoardingRoute, isLoading = false) }
             } else if (userRepository.isGuest() && userRepository.isLoggedIn()) {
                 val isValid = isValidGuestSession(userRepository.getSessionExpiration())
-                _startDestination.value = if (isValid) HomeRoute else LoginRoute
+                _state.update { it.copy(startDestination = if (isValid) HomeRoute else LoginRoute, isLoading = false) }
             } else {
                 val isLoggedIn = userRepository.isLoggedIn()
-                _startDestination.value = if (isLoggedIn) HomeRoute else LoginRoute
+                _state.update { it.copy(startDestination = if (isLoggedIn) HomeRoute else LoginRoute, isLoading = false) }
             }
         }
     }
@@ -71,8 +64,7 @@ class MainActivityViewModel @Inject constructor(
 
 
     private fun observeTheme() {
-        _state.update { it.copy(isLoading = true) }
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(IO) {
             themeProvider.themeFlow.collect { isDarkTheme ->
                 _state.update { it.copy(isDarkTheme = isDarkTheme) }
             }

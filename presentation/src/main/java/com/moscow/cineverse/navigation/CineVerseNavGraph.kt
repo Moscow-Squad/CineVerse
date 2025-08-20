@@ -38,11 +38,10 @@ val LocalScaffoldPaddingValues =
 fun CineVerseNavGraph(
     modifier: Modifier,
     navController: NavHostController,
-    startDestination: Any?,
+    startDestination: AppDestination,
     scaffoldPaddingValues: PaddingValues,
     onBottomNavVisibilityChange: (Boolean) -> Unit = {}
 ) {
-    val startDestination =startDestination ?: return
 
     CompositionLocalProvider(
         LocalScaffoldPaddingValues provides scaffoldPaddingValues

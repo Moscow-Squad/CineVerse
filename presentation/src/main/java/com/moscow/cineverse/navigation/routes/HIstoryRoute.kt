@@ -8,7 +8,7 @@ import com.moscow.cineverse.screen.history.HistoryScreen
 import kotlinx.serialization.Serializable
 
 @Serializable
-object HistoryRoute
+object HistoryRoute : AppDestination
 
 fun NavGraphBuilder.historyRoute(navController: NavHostController) {
     composable<HistoryRoute> {

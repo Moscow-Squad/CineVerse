@@ -15,7 +15,7 @@ import androidx.navigation.compose.rememberNavController
 import com.moscow.cineverse.component.bottomNavigationBar.BottomNavItem.Companion.destinations
 import com.moscow.cineverse.component.bottomNavigationBar.NavBar
 import com.moscow.cineverse.designSystem.theme.Theme
-import com.moscow.cineverse.main_activity.MainActivityViewModel
+import com.moscow.cineverse.navigation.AppDestination
 import com.moscow.cineverse.navigation.CineVerseNavGraph
 import com.moscow.cineverse.navigation.navigateToNewGraph
 import com.moscow.cineverse.navigation.rememberIsInGraph
@@ -24,7 +24,7 @@ import com.moscow.cineverse.navigation.rememberNavGraphIndex
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun CineVerseRoot(
-    mainActivityViewModel: MainActivityViewModel
+    startDestination: AppDestination
 ) {
 
     val navController = rememberNavController()
@@ -56,7 +56,7 @@ fun CineVerseRoot(
                 .fillMaxSize()
                 .background(Theme.colors.background.screen),
             navController = navController,
-            startDestination = mainActivityViewModel.startDestination.value,
+            startDestination = startDestination,
             scaffoldPaddingValues = paddingValues,
             onBottomNavVisibilityChange = { isVisible ->
                 matchBottomNavVisible = isVisible

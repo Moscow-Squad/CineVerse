@@ -3,11 +3,12 @@ package com.moscow.cineverse.navigation.routes
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
+import com.moscow.cineverse.navigation.AppDestination
 import com.moscow.cineverse.screen.actor_gallery.ActorGalleryScreen
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class CastGalleryRoute(val castId: Int, val castName: String){
+data class CastGalleryRoute(val castId: Int, val castName: String) : AppDestination{
     companion object {
         const val CAST_ID = "castId"
         const val CAST_NAME = "castName"

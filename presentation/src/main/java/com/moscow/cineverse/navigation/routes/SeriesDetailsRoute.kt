@@ -3,18 +3,19 @@ package com.moscow.cineverse.navigation.routes
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
+import com.moscow.cineverse.navigation.AppDestination
 import com.moscow.cineverse.screen.details.series_details.SeriesDetailsScreen
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class SeriesDetailsRoute(val seriesId: Int) {
+data class SeriesDetailsRoute(val seriesId: Int) : AppDestination {
     companion object {
         const val SERIES_ID = "seriesId"
     }
 }
 
 fun NavGraphBuilder.seriesDetailsRoute(navController: NavHostController) {
-    composable<SeriesDetailsRoute>{
+    composable<SeriesDetailsRoute> {
         SeriesDetailsScreen(
             navigateBack = {
                 navController.navigateUp()

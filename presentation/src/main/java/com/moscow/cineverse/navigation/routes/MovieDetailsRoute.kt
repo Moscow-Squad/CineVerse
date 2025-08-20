@@ -3,11 +3,12 @@ package com.moscow.cineverse.navigation.routes
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
+import com.moscow.cineverse.navigation.AppDestination
 import com.moscow.cineverse.screen.details.movie_details.MovieDetailsScreen
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class MovieDetailsRoute(val movieId: Int) {
+data class MovieDetailsRoute(val movieId: Int) : AppDestination {
     companion object {
         const val MOVIE_ID = "movieId"
     }
