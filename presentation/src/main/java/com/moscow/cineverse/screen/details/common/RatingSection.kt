@@ -50,7 +50,6 @@ fun RatingSection(
         )
         Row(
             modifier = Modifier
-                .width(290.dp)
                 .clip(RoundedCornerShape(Theme.radius.large))
                 .background(Theme.colors.background.card)
                 .clickable { onClick() },
@@ -74,8 +73,9 @@ fun RatingSection(
             }
 
             Column(
-                modifier = Modifier.weight(1f),
-                verticalArrangement = Arrangement.spacedBy(4.dp)
+                modifier = Modifier,
+                verticalArrangement = Arrangement.spacedBy(4.dp),
+                horizontalAlignment = Alignment.Start
             ) {
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -90,7 +90,6 @@ fun RatingSection(
                         MovieRatingBar(
                             rating = ratingStars.toFloat(),
                             onRatingChanged =  {_ ->},
-                            modifier = Modifier.weight(1f, fill = false)
                         )
                     }
                 }

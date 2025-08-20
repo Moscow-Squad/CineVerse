@@ -2,6 +2,7 @@ package com.moscow.cineverse.screen.profile
 
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -19,6 +20,7 @@ import coil3.compose.rememberAsyncImagePainter
 import com.moscow.cineverse.designSystem.component.app_bar.MovieAppBar
 import com.moscow.cineverse.designSystem.component.wrapper.MovieText
 import com.moscow.cineverse.designSystem.theme.Theme
+import com.moscow.cineverse.navigation.LocalScaffoldPaddingValues
 import com.moscow.cineverse.screen.profile.component.ContentPreferencesBottomSheet
 import com.moscow.cineverse.screen.profile.component.EditProfileBottomSheet
 import com.moscow.cineverse.screen.profile.component.LanguageBottomSheet
@@ -76,13 +78,18 @@ fun ProfileContent(
         modifier = modifier
             .fillMaxSize()
             .background(Theme.colors.background.screen)
+            .padding(LocalScaffoldPaddingValues.current)
     ) {
 
         item {
             MovieAppBar(
+                modifier = Modifier.fillMaxWidth(),
+                textPaddings = PaddingValues(horizontal = 8.dp),
+                title = stringResource(R.string.my_profile),
                 showBackButton = false,
-                modifier = Modifier.padding(vertical = 17.dp, horizontal = 16.dp),
-                title = stringResource(R.string.my_profile)
+                showAddButton = false,
+                showLogo = false,
+                showDivider = false
             )
         }
 
@@ -95,7 +102,7 @@ fun ProfileContent(
                 ),
                 isGuest = uiState.isGuest,
                 onClick = { listener.onShowEditProfileBottomSheet() },
-                modifier = Modifier.padding(horizontal = 16.dp)
+                modifier = Modifier.padding(start = 16.dp, end = 16.dp , top = 16.dp , bottom = 12.dp)
 
             )
         }

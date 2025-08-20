@@ -103,7 +103,7 @@ private fun ExploreScreenContent(
         }
     }
     MovieScaffold(
-        modifier = modifier,
+        modifier = modifier.padding(top = 16.dp),
         movieAppBar = {
             Column {
                 ExploreSearchBarSection(
