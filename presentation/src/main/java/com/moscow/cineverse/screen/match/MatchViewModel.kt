@@ -152,15 +152,33 @@ class MatchViewModel @Inject constructor(
     }
 
     override fun onNavigateBack() {
-        updateState {
-            it.copy(
-                currentPage = MatchPages.StartPage,
-                currentQuestionType = QuestionType.MOOD,
-                moodQuestions = getMoodQuestionAnswers(),
-                genreQuestions = getGenreQuestionAnswers(),
-                timeQuestions = getTimeQuestionAnswers(),
-                movieTypeQuestions = getMovieTypeQuestionAnswers()
-            )
+        when (uiState.value.currentPage) {
+            MatchPages.QuestionsPage -> {
+                updateState { state ->
+                    state.copy(
+                        currentPage = if (state.currentQuestionType == QuestionType.MOOD)
+                            MatchPages.StartPage
+                        else
+                            MatchPages.QuestionsPage,
+                        currentQuestionType = QuestionType.entries[state.currentQuestionType.ordinal.minus(
+                            1
+                        ).coerceAtLeast(0)]
+                    )
+                }
+            }
+
+            MatchPages.ResultsPage -> updateState {
+                it.copy(
+                    currentPage = MatchPages.StartPage,
+                    currentQuestionType = QuestionType.MOOD,
+                    moodQuestions = getMoodQuestionAnswers(),
+                    genreQuestions = getGenreQuestionAnswers(),
+                    timeQuestions = getTimeQuestionAnswers(),
+                    movieTypeQuestions = getMovieTypeQuestionAnswers()
+                )
+            }
+
+            else -> {}
         }
     }
 
