@@ -20,15 +20,17 @@ import com.moscow.cineverse.design_system.R
 @Composable
 fun HomeHeader(userName: String?, modifier: Modifier = Modifier) {
     Row(
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth()
+            .padding(start = 16.dp, end = 12.dp, top = 20.dp)
+        ,
+        verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(8.dp),
-        verticalAlignment = Alignment.CenterVertically
     ) {
 
         Image(
             painter = painterResource(R.drawable.colored_cineverse_logo),
             contentDescription = null,
-            modifier = Modifier.padding(start = 16.dp).size(32.dp)
+            modifier = Modifier.size(32.dp)
         )
 
         Column(

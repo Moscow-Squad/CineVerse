@@ -30,7 +30,10 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -153,8 +156,9 @@ private fun GridMovieCard(
     ratingKey: String,
     detailsKey: String,
     sharedTransitionScope: SharedTransitionScope?,
-    animatedVisibilityScope: androidx.compose.animation.AnimatedVisibilityScope?
-) {
+    animatedVisibilityScope: androidx.compose.animation.AnimatedVisibilityScope?,
+    ) {
+
     if (sharedTransitionScope != null && animatedVisibilityScope != null) {
         with(sharedTransitionScope) {
             Column(
@@ -189,7 +193,11 @@ private fun GridMovieCard(
                                 .clickable(
                                     indication = null,
                                     interactionSource = remember { MutableInteractionSource() }
-                                ) { onMovieClick(movie.id) },
+                                ) {
+
+                                        onMovieClick(movie.id)
+
+                                  },
                             isBlurEnabled = enableBlur,
                             placeholderContent = {
                                 RemoteImagePlaceholder(
@@ -221,8 +229,7 @@ private fun GridMovieCard(
                                             animatedVisibilityScope = animatedVisibilityScope,
                                         ),
                                     shape = CircleShape,
-                                    color = Theme.colors.background.card.copy(alpha = 0.9f),
-                                    shadowElevation = 2.dp
+                                    color = Theme.colors.background.card,
                                 ) {
                                     Row(
                                         modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
@@ -268,7 +275,9 @@ private fun GridMovieCard(
                                 .clickable(
                                     indication = null,
                                     interactionSource = remember { MutableInteractionSource() },
-                                    onClick = { onMovieClick(movie.id) }
+                                    onClick = {
+                                            onMovieClick(movie.id)
+                                    }
                                 )
                         )
                     }
@@ -321,7 +330,9 @@ private fun GridMovieCard(
                             .clickable(
                                 indication = null,
                                 interactionSource = remember { MutableInteractionSource() }
-                            ) { onMovieClick(movie.id) },
+                            ) {
+                                    onMovieClick(movie.id)
+                              },
                         isBlurEnabled = enableBlur,
                         placeholderContent = {
                             RemoteImagePlaceholder(
@@ -347,8 +358,7 @@ private fun GridMovieCard(
                                 .align(Alignment.TopEnd)
                                 .padding(8.dp),
                             shape = CircleShape,
-                            color = Theme.colors.background.card.copy(alpha = 0.9f),
-                            shadowElevation = 2.dp
+                            color = Theme.colors.background.card,
                         ) {
                             Row(
                                 modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
@@ -389,7 +399,9 @@ private fun GridMovieCard(
                             .clickable(
                                 indication = null,
                                 interactionSource = remember { MutableInteractionSource() },
-                                onClick = { onMovieClick(movie.id) }
+                                onClick = {
+                                        onMovieClick(movie.id)
+                                }
                             )
                     )
                 }
@@ -511,7 +523,7 @@ private fun ListMovieCard(
                                     animatedVisibilityScope = animatedVisibilityScope
                                 ),
                             shape = CircleShape,
-                            color = Theme.colors.background.card.copy(alpha = 0.9f),
+                            color = Theme.colors.background.card,
                         ) {
                             Row(
                                 modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
