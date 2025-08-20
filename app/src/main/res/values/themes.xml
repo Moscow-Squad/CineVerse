@@ -3,6 +3,7 @@
 
     <style name="Theme.CineVerse" parent="Theme.AppCompat.DayNight.NoActionBar">
         <item name="android:windowDisablePreview">true</item>
+        <item name="android:windowIsTranslucent">true</item>
     </style>
 
 </resources>
