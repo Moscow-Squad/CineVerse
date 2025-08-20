@@ -18,6 +18,7 @@ import com.moscow.cinverse.presentation.R
 @Composable
 fun MatchResultsPageContent(
     movies: List<MovieScreenState.MovieDetailsUiState>,
+    isBlurEnabled: String,
     onMovieClick: (Int) -> Unit,
     modifier: Modifier = Modifier,
     onNavigateBack: () -> Unit,
@@ -43,6 +44,7 @@ fun MatchResultsPageContent(
         ) {
             MatchCarouselAnimation(
                 movies = movies,
+                isBlurEnabled = isBlurEnabled,
                 onMovieClick = onMovieClick,
                 onSaveClick = onSaveClick,
                 onPlayClick = onPlayClick,

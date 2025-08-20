@@ -1,16 +1,19 @@
 package com.moscow.cineverse.screen.history
 
+import androidx.lifecycle.viewModelScope
 import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.cineverse.common_ui_state.MediaItemUiState
 import com.moscow.cineverse.common_ui_state.MediaItemUiState.MediaType
 import com.moscow.cineverse.mapper.toMediaItemUi
 import com.moscow.domain.model.Movie
 import com.moscow.domain.model.Series
+import com.moscow.domain.service.blur.BlurProvider
 import com.moscow.domain.usecase.recently_viewed.CloseHistoryTipUseCase
 import com.moscow.domain.usecase.recently_viewed.DeleteRecentlyViewedItemByIdUseCase
 import com.moscow.domain.usecase.recently_viewed.GetRecentlyViewedMediaUseCase
 import com.moscow.domain.usecase.recently_viewed.GetShowHistoryTipUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -18,13 +21,23 @@ class HistoryViewModel @Inject constructor(
     private val getRecentlyViewedMediaUseCase: GetRecentlyViewedMediaUseCase,
     private val closeHistoryTipUseCase: CloseHistoryTipUseCase,
     private val getShowHistoryTipUseCase: GetShowHistoryTipUseCase,
-    private val deleteRecentlyViewedItemByIdUseCase: DeleteRecentlyViewedItemByIdUseCase
+    private val deleteRecentlyViewedItemByIdUseCase: DeleteRecentlyViewedItemByIdUseCase,
+    private val blurProvider: BlurProvider
 ) : BaseViewModel<HistoryScreenState, HistoryEffect>(HistoryScreenState()),
     HistoryInteractionListener {
 
     init {
         getShowTip()
         getRecentlyViewedMovies()
+        observeBlur()
+    }
+
+    private fun observeBlur() {
+        viewModelScope.launch {
+            blurProvider.blurFlow.collect { enableBlur ->
+                updateState { it.copy(enableBlur = enableBlur) }
+            }
+        }
     }
 
     private fun getRecentlyViewedMovies() {

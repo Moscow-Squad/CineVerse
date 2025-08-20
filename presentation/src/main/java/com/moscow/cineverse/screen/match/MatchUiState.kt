@@ -18,7 +18,8 @@ data class MatchUiState(
     val matchResults: List<MovieScreenState.MovieDetailsUiState> = emptyList(),
     val isLoadingRecommendations: Boolean = false,
     val errorMessage: Int? = null,
-) {
+    val enableBlur: String = "high",
+    ) {
     val matchProgress: Float =
         currentQuestionType.ordinal.plus(1).toFloat() / QuestionType.entries.size
     val isNextButtonActivated: Boolean = when (currentQuestionType) {
