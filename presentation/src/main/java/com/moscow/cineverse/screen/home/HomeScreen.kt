@@ -24,6 +24,7 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.moscow.cineverse.component.ScreenStateHandler
 import com.moscow.cineverse.designSystem.theme.Theme
+import com.moscow.cineverse.navigation.LocalScaffoldPaddingValues
 import com.moscow.cineverse.screen.home.components.FeaturedCollectionsSection
 import com.moscow.cineverse.screen.home.components.FeaturedMovies
 import com.moscow.cineverse.screen.home.components.HomeHeader
@@ -125,6 +126,7 @@ fun HomeContent(
             modifier = modifier
                 .fillMaxSize()
                 .background(Theme.colors.background.screen)
+                .padding(bottom = LocalScaffoldPaddingValues.current.calculateBottomPadding())
         ) {
             Column(
                 verticalArrangement = Arrangement.spacedBy(8.dp)
