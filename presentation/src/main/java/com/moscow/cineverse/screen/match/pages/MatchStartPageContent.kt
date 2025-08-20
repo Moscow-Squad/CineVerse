@@ -44,7 +44,6 @@ fun MatchStartPageContent(
         modifier = modifier
             .fillMaxSize()
             .background(Theme.colors.background.screen)
-            .padding(LocalScaffoldPaddingValues.current)
     ) {
         MovieAppBar(
             modifier = Modifier.fillMaxWidth(),
