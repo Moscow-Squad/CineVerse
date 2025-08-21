@@ -1,38 +1,33 @@
 package com.moscow.cineverse.screen.match.composable
 
-import androidx.compose.animation.ExperimentalSharedTransitionApi
+import android.util.Log
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.Spring
-import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
-import androidx.compose.animation.core.tween
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.BiasAlignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -40,19 +35,18 @@ import androidx.compose.ui.unit.lerp
 import androidx.compose.ui.util.lerp
 import androidx.compose.ui.zIndex
 import com.moscow.cineverse.component.EmptyState
-import com.moscow.cineverse.component.MediaPosterCard
+import com.moscow.cineverse.designSystem.component.blur.OnBlurContent
+import com.moscow.cineverse.designSystem.component.blur.RemoteImagePlaceholder
 import com.moscow.cineverse.designSystem.component.button.MovieButton
 import com.moscow.cineverse.designSystem.theme.Theme
+import com.moscow.cineverse.image_viewer.component.SafeImageViewer
 import com.moscow.cineverse.mapper.formatDate
 import com.moscow.cineverse.screen.details.common.DetailCard
 import com.moscow.cineverse.screen.details.movie_details.MovieScreenState
-import com.moscow.cineverse.screen.details.movie_details.toMediaItem
-import com.moscow.cineverse.screen.home.components.AnimatedRatingDisplaySection
 import com.moscow.cinverse.presentation.R
 import kotlinx.coroutines.delay
 import kotlin.math.absoluteValue
 
-@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun MatchCarouselAnimation(
     movies: List<MovieScreenState.MovieDetailsUiState>,
@@ -67,28 +61,8 @@ fun MatchCarouselAnimation(
         initialPage = 0,
         pageCount = { movies.size }
     )
-
-    val currentItem by remember {
-        derivedStateOf { movies[pagerState.currentPage] }
-    }
-
-    val animatedRating by animateFloatAsState(
-        targetValue = currentItem.rating.toFloat(),
-        animationSpec = tween(durationMillis = 500),
-        label = "ratingAnimation"
-    )
-
-    val pageOffset by remember {
-        derivedStateOf { pagerState.currentPageOffsetFraction.absoluteValue.coerceIn(0f, 0.5f) }
-    }
-    val normalizedOffset = pageOffset * 2f
-    val factor = (1f - normalizedOffset).coerceIn(0f, 1f)
-    val density = LocalDensity.current
-    val configuration = LocalConfiguration.current
-    val scope = rememberCoroutineScope()
-
-    val screenWidth = with(density) { configuration.screenWidthDp.dp }
-    val width = screenWidth - 48.dp
+    val screenWidth = LocalConfiguration.current.screenWidthDp
+    val paddingHorizontal = (screenWidth - screenWidth * .70f) / 2
     LaunchedEffect(pagerState) {
         while (true) {
             delay(3000)
@@ -106,7 +80,12 @@ fun MatchCarouselAnimation(
     }
 
     if (movies.isEmpty()) {
-        Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+        Log.e("hdhdhd", "MatchCarouselAnimation: mmmmmmm")
+        Box(
+            modifier = modifier
+                .fillMaxSize()
+                .background(Theme.colors.background.screen), contentAlignment = Alignment.Center
+        ) {
             EmptyState(
                 icon = painterResource(R.drawable.ic_search),
                 title = stringResource(R.string.nothing_found),
@@ -122,57 +101,58 @@ fun MatchCarouselAnimation(
             Box(
                 modifier = modifier
                     .fillMaxWidth()
-                    .height(350.dp),
+                    .fillMaxHeight(.45f),
                 contentAlignment = Alignment.Center
             ) {
                 HorizontalPager(
                     state = pagerState,
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    contentPadding = PaddingValues(horizontal = 32.dp),
-                    pageSpacing = (-20).dp,
+                    modifier = Modifier.fillMaxWidth(),
+                    contentPadding = PaddingValues(horizontal = paddingHorizontal.dp),
+                    pageSpacing = (-80).dp,
                     verticalAlignment = Alignment.CenterVertically,
-                    beyondViewportPageCount = 1
+                    beyondViewportPageCount = 2
                 ) { page ->
                     val pageOffset =
                         ((pagerState.currentPage - page) + pagerState.currentPageOffsetFraction)
                             .absoluteValue.coerceIn(0f, 1f)
 
-                    val animatedHeight = lerp(230.dp, 200.dp, 1f - pageOffset)
-                    val animatedWidth = lerp(360.dp, 312.dp, 1f - pageOffset)
+                    val animatedHeight = lerp(320.dp, 267.dp, pageOffset)
+                    val animatedWidth = lerp(240.dp, 200.dp, pageOffset)
 
-                    val cardAlpha = lerp(0.6f, 1f, 1f - pageOffset)
-                    val textAlpha = 1f - pageOffset * 3f
+                    val cardAlpha = lerp(1f, 0.6f, pageOffset)
+                    val scale = lerp(1f, 0.85f, pageOffset)
 
                     Box(
                         modifier = Modifier
-                            .height(270.dp)
+                            .fillMaxSize()
                             .zIndex(1f - pageOffset)
+                            .graphicsLayer {
+                                scaleX = scale
+                                scaleY = scale
+                            },
+                        contentAlignment = Alignment.Center
                     ) {
-                        MediaPosterCard(
-                            mediaItem = movies[page].toMediaItem(),
-                            showRating = false,
+                        SafeImageViewer(
+                            imageUrl = movies[page].posterUrl,
                             modifier = Modifier
-                                .fillMaxWidth()
-                                .align(BiasAlignment(0f, pageOffset - 1f))
                                 .alpha(cardAlpha)
-                                .size(width = animatedWidth, height = animatedHeight)
-                                .clip(RoundedCornerShape(Theme.radius.extraLarge)),
-                            onMediaItemClick = { },
-                            showBackdrop = true,
-                            showTitle = false,
-                            enableBlur = isBlurEnabled,
-                            useFixedHeight = true
+                                .fillMaxWidth()
+                                .fillMaxHeight()
+                                .clip(RoundedCornerShape(Theme.radius.extraLarge))
+                                .offset(
+                                    x = when {
+                                        page < pagerState.currentPage -> 40.dp * pageOffset
+                                        page > pagerState.currentPage -> ((-40).dp) * pageOffset
+                                        else -> 0.dp
+                                    }
+                                ),
+                            isBlurEnabled = isBlurEnabled,
+                            placeholderContent = { RemoteImagePlaceholder() },
+                            errorContent = { RemoteImagePlaceholder() },
+                            onBlurContent = {
+                                OnBlurContent()
+                            }
                         )
-                        if (textAlpha > 0) {
-                            AnimatedRatingDisplaySection(
-                                rating = animatedRating,
-                                alpha = 1f,
-                                modifier = Modifier
-                                    .align(Alignment.TopEnd)
-
-                            )
-                        }
                     }
                 }
             }
@@ -194,7 +174,7 @@ fun MatchCarouselAnimation(
                 genres = movies[pagerState.currentPage].genres.joinToString(", "),
                 rating = movies[pagerState.currentPage].rating,
                 duration = if (movies[pagerState.currentPage].duration.hours == 0 && movies[pagerState.currentPage].duration.minutes == 0) "null" else movies[pagerState.currentPage].duration.toString(),
-                releaseDate = movies[pagerState.currentPage].releaseDate?.formatDate(context = LocalContext.current)
+                releaseDate = movies[pagerState.currentPage].releaseDate?.formatDate(LocalContext.current)
                     ?: "",
                 type = stringResource(R.string.movie),
                 onSaveClick = { onSaveClick(movies[pagerState.currentPage].id) },
