@@ -99,16 +99,17 @@ class HomeViewModel @Inject constructor(
         updateState { it.copy(isLoading = true, error = null) }
         viewModelScope.launch {
             try {
-                val jobs = listOf(
+                fetchTrendingMovies(refresh)
+                fetchRecentlyReleasedMovies(refresh)
+                updateState { it.copy(isLoading = false) }
+
+                val secondaryJobs = listOf(
                     async { getUserDetails() },
-                    async { fetchTrendingMovies(refresh) },
-                    async { fetchRecentlyReleasedMovies(refresh) },
                     async { fetchUpcomingMovies(refresh) },
                     async { fetchTopRatedTVShows(refresh) },
                     async { fetchMatchesYourVibesMovies(refresh) }
                 )
-                jobs.awaitAll()
-                updateState { it.copy(isLoading = false) }
+                secondaryJobs.awaitAll()
             } catch (e: Exception) {
                 updateState {
                     it.copy(
