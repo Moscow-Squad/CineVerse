@@ -6,9 +6,12 @@ import androidx.compose.ui.res.stringResource
 import com.moscow.cineverse.common_ui_state.DurationUiState
 import com.moscow.cineverse.design_system.R
 import kotlinx.datetime.LocalDate
+import java.text.NumberFormat
+import java.text.DecimalFormat
+import java.text.DecimalFormatSymbols
+import java.util.Locale
 import java.time.format.DateTimeFormatter
 import java.time.format.DecimalStyle
-import java.util.Locale
 
 
 @Composable
@@ -18,6 +21,66 @@ fun DurationUiState.formatDuration(): String {
         hours > 0 -> stringResource(R.string.duration_hours_only, hours)
         minutes > 0 -> stringResource(R.string.duration_minutes_only, minutes)
         else -> ""
+    }
+}
+
+fun Float.formatRating(context: Context, decimalPlaces: Int = 1): String {
+    return try {
+        val appLocale = context.resources.configuration.locales[0]
+        val isArabicApp = appLocale.language == "ar"
+
+        val formatter = if (isArabicApp) {
+            val arabicLocale = Locale.Builder()
+                .setLanguage("ar")
+                .setRegion("SA")
+                .build()
+            val arabicDecimalStyle = DecimalStyle.of(arabicLocale)
+            (NumberFormat.getNumberInstance(arabicLocale) as DecimalFormat).apply {
+                minimumFractionDigits = decimalPlaces
+                maximumFractionDigits = decimalPlaces
+                decimalFormatSymbols = DecimalFormatSymbols(arabicLocale).apply {
+                    decimalSeparator = arabicDecimalStyle.decimalSeparator
+                    zeroDigit = arabicDecimalStyle.zeroDigit
+                }
+            }
+        } else {
+            NumberFormat.getNumberInstance(appLocale).apply {
+                minimumFractionDigits = decimalPlaces
+                maximumFractionDigits = decimalPlaces
+            }
+        }
+        formatter.format(this)
+    } catch (e: Exception) {
+        this.toString()
+    }
+}
+
+fun Int.formatInt(context: Context): String {
+    return try {
+        val appLocale = context.resources.configuration.locales[0]
+        val isArabicApp = appLocale.language == "ar"
+
+        val formatter = if (isArabicApp) {
+            val arabicLocale = Locale.Builder()
+                .setLanguage("ar")
+                .setRegion("SA")
+                .build()
+            (NumberFormat.getNumberInstance(arabicLocale) as DecimalFormat).apply {
+                minimumFractionDigits = 0
+                maximumFractionDigits = 0
+                decimalFormatSymbols = DecimalFormatSymbols(arabicLocale).apply {
+                    zeroDigit = DecimalStyle.of(arabicLocale).zeroDigit
+                }
+            }
+        } else {
+            NumberFormat.getNumberInstance(appLocale).apply {
+                minimumFractionDigits = 0
+                maximumFractionDigits = 0
+            }
+        }
+        formatter.format(this)
+    } catch (e: Exception) {
+        this.toString()
     }
 }
 

@@ -46,6 +46,7 @@ import com.moscow.cineverse.designSystem.component.blur.OnBlurContent
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.image_viewer.component.SafeImageViewer
 import com.moscow.cineverse.mapper.formatDate
+import com.moscow.cineverse.mapper.formatRating
 import com.moscow.cineverse.screen.details.common.InfoSection
 import com.moscow.cineverse.utlis.ViewMode
 import com.moscow.cinverse.presentation.R
@@ -234,7 +235,7 @@ private fun GridMovieCard(
                                         verticalAlignment = Alignment.CenterVertically
                                     ) {
                                         Text(
-                                            text = "%.1f".format(movie.rating),
+                                            text = movie.rating.formatRating(LocalContext.current),
                                             color = Theme.colors.shade.primary,
                                             style = Theme.textStyle.label.medium.medium
                                         )
@@ -364,7 +365,7 @@ private fun GridMovieCard(
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
                                 Text(
-                                    text = "%.1f".format(movie.rating),
+                                    text = movie.rating.formatRating(LocalContext.current),
                                     color = Theme.colors.shade.primary,
                                     style = Theme.textStyle.label.medium.medium
                                 )
@@ -530,7 +531,7 @@ private fun ListMovieCard(
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
                                 Text(
-                                    text = "%.1f".format(movie.rating),
+                                    text = movie.rating.formatRating(LocalContext.current),
                                     color = Theme.colors.shade.primary,
                                     style = Theme.textStyle.label.small.medium
                                 )
@@ -630,7 +631,7 @@ private fun ListMovieCard(
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Text(
-                                text = "%.1f".format(movie.rating),
+                                text = movie.rating.formatRating(LocalContext.current),
                                 color = Theme.colors.shade.primary,
                                 style = Theme.textStyle.label.small.medium
                             )
