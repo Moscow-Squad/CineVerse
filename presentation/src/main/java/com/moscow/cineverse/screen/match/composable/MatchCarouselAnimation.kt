@@ -24,6 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -52,7 +53,8 @@ fun MatchCarouselAnimation(
     onPlayClick: (Int, String) -> Unit,
     modifier: Modifier = Modifier
 ) {
-
+    val screenWidth = LocalConfiguration.current.screenWidthDp
+    val paddingHorizontal = (screenWidth - 240) / 2
     val pagerState = rememberPagerState(
         initialPage = 0,
         pageCount = { movies.size }
@@ -97,7 +99,7 @@ fun MatchCarouselAnimation(
                 HorizontalPager(
                     state = pagerState,
                     modifier = Modifier.fillMaxSize(),
-                    contentPadding = PaddingValues(horizontal = 60.dp),
+                    contentPadding = PaddingValues(horizontal = paddingHorizontal.dp),
                     pageSpacing = (-80).dp,
                     verticalAlignment = Alignment.CenterVertically,
                     beyondViewportPageCount = 2
