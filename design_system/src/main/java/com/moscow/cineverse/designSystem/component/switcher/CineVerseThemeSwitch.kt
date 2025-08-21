@@ -1,5 +1,6 @@
 package com.moscow.cineverse.designSystem.component.switcher
 
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.size
@@ -35,6 +36,9 @@ fun CineVerseSwitch(
     Switch(
         checked = isChecked,
         onCheckedChange = { checked ->
+            AppCompatDelegate.setDefaultNightMode(
+                if (checked) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO
+            )
             isChecked = checked
             onThemeChange(checked)
         },
