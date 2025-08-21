@@ -100,15 +100,14 @@ fun MyCollectionsContent(
             )
         },
         movieFloatingActionButton = {
-            if (state.collections.isNotEmpty())
-                MovieFloatingButton(
-                    buttonIcon = com.moscow.cineverse.design_system.R.drawable.outline_plus,
-                    iconSize = 24.dp,
-                    buttonSize = 56.dp,
-                    onClick = interactionListener::onCreateCollectionClick,
-                    backgroundColor = Theme.colors.brand.primary,
-                    iconColor = Theme.colors.button.onPrimary,
-                )
+            MovieFloatingButton(
+                buttonIcon = com.moscow.cineverse.design_system.R.drawable.outline_plus,
+                iconSize = 24.dp,
+                buttonSize = 56.dp,
+                onClick = interactionListener::onCreateCollectionClick,
+                backgroundColor = Theme.colors.brand.primary,
+                iconColor = Theme.colors.button.onPrimary,
+            )
         }
     ) {
         Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
