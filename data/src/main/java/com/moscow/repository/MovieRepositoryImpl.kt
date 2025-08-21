@@ -87,7 +87,7 @@ class MovieRepositoryImpl @Inject constructor(
 
     override suspend fun getReviewsMovie(id: Int, page: Int): List<Review> {
         val reviews = movieRemoteDataSource.getMovieReviews(id, page)
-        return reviews.results?.mapNotNull { it.toDomain() } ?: emptyList()
+        return reviews.results?.map { it.toDomain() } ?: emptyList()
     }
 
     override suspend fun getTrendingMovies(forceRefresh: Boolean): List<Movie> {
