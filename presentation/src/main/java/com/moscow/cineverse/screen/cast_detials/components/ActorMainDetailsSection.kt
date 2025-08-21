@@ -25,6 +25,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.moscow.cineverse.designSystem.component.blur.OnBlurContent
@@ -50,7 +51,7 @@ fun ActorMainDetailsSection(
             name = actor.name,
             date = stringResource(
                 R.string.born_on,
-                actor.birthDate?.formatDate()?:""
+                actor.birthDate?.formatDate(context = LocalContext.current) ?: ""
             ),
             location = actor.placeOfBirth,
             scrollState = null,

@@ -30,14 +30,12 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -195,9 +193,9 @@ private fun GridMovieCard(
                                     interactionSource = remember { MutableInteractionSource() }
                                 ) {
 
-                                        onMovieClick(movie.id)
+                                    onMovieClick(movie.id)
 
-                                  },
+                                },
                             isBlurEnabled = enableBlur,
                             placeholderContent = {
                                 RemoteImagePlaceholder(
@@ -276,7 +274,7 @@ private fun GridMovieCard(
                                     indication = null,
                                     interactionSource = remember { MutableInteractionSource() },
                                     onClick = {
-                                            onMovieClick(movie.id)
+                                        onMovieClick(movie.id)
                                     }
                                 )
                         )
@@ -290,7 +288,8 @@ private fun GridMovieCard(
                 ) {
                     with(sharedTransitionScope) {
                         DurationAndDateSection(
-                            releaseDate = movie.releaseDate?.formatDate() ?: "",
+                            releaseDate = movie.releaseDate?.formatDate(context = LocalContext.current)
+                                ?: "",
                             modifier = Modifier.sharedElement(
                                 sharedContentState = rememberSharedContentState(key = detailsKey),
                                 animatedVisibilityScope = this@AnimatedVisibility,
@@ -331,8 +330,8 @@ private fun GridMovieCard(
                                 indication = null,
                                 interactionSource = remember { MutableInteractionSource() }
                             ) {
-                                    onMovieClick(movie.id)
-                              },
+                                onMovieClick(movie.id)
+                            },
                         isBlurEnabled = enableBlur,
                         placeholderContent = {
                             RemoteImagePlaceholder(
@@ -400,7 +399,7 @@ private fun GridMovieCard(
                                 indication = null,
                                 interactionSource = remember { MutableInteractionSource() },
                                 onClick = {
-                                        onMovieClick(movie.id)
+                                    onMovieClick(movie.id)
                                 }
                             )
                     )
@@ -504,7 +503,8 @@ private fun ListMovieCard(
                             )
 
                             DurationAndDateSection(
-                                releaseDate = movie.releaseDate?.formatDate() ?: "",
+                                releaseDate = movie.releaseDate?.formatDate(context = LocalContext.current)
+                                    ?: "",
                                 modifier = Modifier.sharedElement(
                                     sharedContentState = rememberSharedContentState(key = detailsKey),
                                     animatedVisibilityScope = animatedVisibilityScope,
@@ -612,7 +612,8 @@ private fun ListMovieCard(
                         )
 
                         DurationAndDateSection(
-                            releaseDate = movie.releaseDate?.formatDate() ?: ""
+                            releaseDate = movie.releaseDate?.formatDate(context = LocalContext.current)
+                                ?: ""
                         )
                     }
                 }

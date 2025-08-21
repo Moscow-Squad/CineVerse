@@ -1,12 +1,13 @@
 package com.moscow.cineverse.mapper
 
+import android.content.Context
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import com.moscow.cineverse.common_ui_state.DurationUiState
 import com.moscow.cineverse.design_system.R
 import kotlinx.datetime.LocalDate
-import kotlinx.datetime.toJavaLocalDate
 import java.time.format.DateTimeFormatter
+import java.time.format.DecimalStyle
 import java.util.Locale
 
 
@@ -20,11 +21,24 @@ fun DurationUiState.formatDuration(): String {
     }
 }
 
-fun LocalDate.formatDate(): String {
+fun LocalDate.formatDate(context: Context): String {
     return try {
-        val formatter = DateTimeFormatter.ofPattern("yyyy, MMM dd", Locale.getDefault())
-        val dateString = this.toJavaLocalDate().format(formatter)
-        dateString
+        val appLocale = context.resources.configuration.locales[0]
+        val javaLocalDate = java.time.LocalDate.of(this.year, this.monthNumber, this.dayOfMonth)
+        val isArabicApp = appLocale.language == "ar"
+
+        val formatter = if (isArabicApp) {
+            val arabicLocale = Locale.Builder()
+                .setLanguage("ar")
+                .setRegion("SA")
+                .build()
+            val arabicDecimalStyle = DecimalStyle.of(arabicLocale)
+            DateTimeFormatter.ofPattern("yyyy, MMM dd", appLocale)
+                .withDecimalStyle(arabicDecimalStyle)
+        } else {
+            DateTimeFormatter.ofPattern("yyyy, MMM dd", appLocale)
+        }
+        javaLocalDate.format(formatter)
     } catch (_: Exception) {
         ""
     }
