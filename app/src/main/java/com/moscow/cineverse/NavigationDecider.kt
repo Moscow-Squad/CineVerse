@@ -21,20 +21,20 @@ class NavigationDecider @Inject constructor(
     suspend fun determineDestination(): AppDestination = coroutineScope {
         // Parallel operations for speed
         val onboardingDeferred = async { onboardingRepository.isOnBoardingCompleted() }
-        val loggedInDeferred = async { userRepository.isLoggedIn() }
         val guestDeferred = async { userRepository.isGuest() }
+        val loggedInDeferred = async { userRepository.isLoggedIn() }
 
         val isOnboardingCompleted = onboardingDeferred.await()
         if (!isOnboardingCompleted) return@coroutineScope OnBoardingRoute
-
-        val isLoggedIn = loggedInDeferred.await()
-        if (!isLoggedIn) return@coroutineScope LoginRoute
 
         val isGuest = guestDeferred.await()
         if (isGuest) {
             val sessionExpiration = userRepository.getSessionExpiration()
             return@coroutineScope if (isValidGuestSession(sessionExpiration)) HomeRoute else LoginRoute
         }
+
+        val isLoggedIn = loggedInDeferred.await()
+        if (!isLoggedIn) return@coroutineScope LoginRoute
 
         return@coroutineScope HomeRoute
     }
