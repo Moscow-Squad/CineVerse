@@ -45,7 +45,7 @@ class SeriesRecommendationViewModel @Inject constructor(
 
     private fun getMovieGenre() {
         launchWithResult(
-            action = { genreUseCase.getSeriesGenres() },
+            action = { genreUseCase.getSeriesGenres(false) },
             onSuccess = { genres ->
                 updateState {
                     it.copy(

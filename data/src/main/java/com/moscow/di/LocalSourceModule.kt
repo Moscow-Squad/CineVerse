@@ -7,10 +7,12 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStoreFile
 import androidx.room.Room
 import com.moscow.data_source.local.DetailsLocalDataSource
+import com.moscow.data_source.local.GenreLocalDataSource
 import com.moscow.data_source.local.HomeLocalDataSource
 import com.moscow.data_source.local.RecentlyViewedLocalDataSource
 import com.moscow.data_source.local.SearchLocalDataSource
 import com.moscow.local.data_source.DetailsLocalDataSourceImpl
+import com.moscow.local.data_source.GenreLocalDataSourceImpl
 import com.moscow.local.data_source.HomeLocalDataSourceImpl
 import com.moscow.local.data_source.RecentlyViewedLocalDataSourceImpl
 import com.moscow.local.data_source.SearchLocalDataSourceImpl
@@ -46,6 +48,10 @@ abstract class LocalSourceModule {
     @Singleton
     abstract fun bindRecentlyViewedLocalDataSource(impl: RecentlyViewedLocalDataSourceImpl): RecentlyViewedLocalDataSource
 
+    @Binds
+    @Singleton
+    abstract fun bindGenreLocalDataSource(impl: GenreLocalDataSourceImpl): GenreLocalDataSource
+
     companion object {
         @Provides
         @Singleton
@@ -74,6 +80,10 @@ abstract class LocalSourceModule {
         @Provides
         @Singleton
         fun provideRecentlyViewedDao(database: CineVerseDataBase) = database.recentlyViewedDao()
+
+        @Provides
+        @Singleton
+        fun provideGenreDao(database: CineVerseDataBase) = database.genreDao()
 
         @Provides
         @Singleton

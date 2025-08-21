@@ -232,7 +232,7 @@ class MyRatingsViewModel @Inject constructor(
 
     private fun getSeriesGenres() {
         launchWithResult(
-            action = { genreUseCase.getSeriesGenres() },
+            action = { genreUseCase.getSeriesGenres(false) },
             onSuccess = { genres ->
                 updateState {
                     it.copy(

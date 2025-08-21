@@ -476,7 +476,7 @@ class ExploreViewModel @Inject constructor(
 
     override fun getSeriesGenres() {
         launchWithResult(
-            action = { genreUseCase.getSeriesGenres() },
+            action = { genreUseCase.getSeriesGenres(false) },
             onSuccess = ::onSeriesGenresSuccess,
             onError = ::onSeriesGenresFailed,
             onStart = ::onLoading,
