@@ -8,6 +8,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.toArgb
@@ -31,9 +32,7 @@ class MainActivity : AppCompatActivity() {
         val viewModel: MainActivityViewModel by viewModels()
 
         val splashScreen = installSplashScreen()
-        splashScreen.setKeepOnScreenCondition {
-            viewModel.state.value.isLoading
-        }
+
         splashScreen.setOnExitAnimationListener { splashScreenView ->
             splashScreenView.remove()
         }
@@ -44,6 +43,9 @@ class MainActivity : AppCompatActivity() {
         setContent {
             val state by viewModel.state.collectAsStateWithLifecycle()
 
+            AppCompatDelegate.setDefaultNightMode(
+                if (state.isDarkTheme) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO
+            )
             CineVerseTheme(language = state.language, isDark = state.isDarkTheme) {
                 val surfaceColor = Theme.colors.background.screen.toArgb()
 
