@@ -1,5 +1,6 @@
 package com.moscow.cineverse.screen.history
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.moscow.cineverse.base.BaseViewModel
 import com.moscow.cineverse.common_ui_state.MediaItemUiState
@@ -53,7 +54,8 @@ class HistoryViewModel @Inject constructor(
                                 else -> MediaItemUiState()
                             }
                         },
-                        isContentEmpty = result.isEmpty()
+                        isContentEmpty = result.isEmpty(),
+                        isLoading = false
                     )
                 }
             },
