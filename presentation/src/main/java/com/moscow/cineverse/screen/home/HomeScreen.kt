@@ -8,7 +8,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
@@ -117,7 +118,7 @@ fun HomeContent(
 ) {
 
     ScreenStateHandler(
-        isLoading = uiState.isLoading,
+        isLoading = false,
         errorMessage = uiState.error,
         onRefresh = listener::onRefresh,
     ) {
@@ -139,121 +140,103 @@ fun HomeContent(
                 )
             }
 
-            LazyColumn(
+            Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .weight(1f),
+                    .weight(1f)
+                    .verticalScroll(rememberScrollState()),
             ) {
-                item {
-                    HomeHeaderSlider(
-                        items = uiState.sliderItems,
-                        enableBlur = uiState.enableBlur,
-                        onSliderClick = listener::onMediaItemClicked,
-                        modifier = Modifier.padding(top = 16.dp)
-                    )
-                }
 
-                item {
+                HomeHeaderSlider(
+                    items = uiState.sliderItems,
+                    enableBlur = uiState.enableBlur,
+                    onSliderClick = listener::onMediaItemClicked,
+                    modifier = Modifier.padding(top = 16.dp)
+                )
+
+                FeaturedMovies(
+                    displayMovies = uiState.recentlyReleasedMovies,
+                    onMovieClick = listener::onMediaItemClicked,
+                    onShowMoreClick = listener::onSeeAllClick,
+                    type = HomeFeaturedItems.RECENTLY_RELEASED,
+                    modifier = Modifier.padding(top = 16.dp),
+                    enableBlur = uiState.enableBlur,
+                )
+
+                SuggestionWithHeader(
+                    modifier = Modifier
+                        .padding(top = 32.dp)
+                        .padding(horizontal = 16.dp),
+                    header = stringResource(id = R.string.what_sould_i_watch),
+                    title = stringResource(id = R.string.let_us_choose_for_you),
+                    message = stringResource(id = R.string.let_us_choose_message),
+                    onClick = listener::onWatchSuggestionClick,
+                )
+
+                FeaturedMovies(
+                    modifier = Modifier.padding(top = 32.dp),
+                    displayMovies = uiState.upcomingMovies,
+                    onMovieClick = listener::onMediaItemClicked,
+                    onShowMoreClick = listener::onSeeAllClick,
+                    type = HomeFeaturedItems.UPCOMING_MOVIES,
+                    enableBlur = uiState.enableBlur,
+                )
+
+                FeaturedMovies(
+                    modifier = Modifier.padding(top = 32.dp),
+                    displayMovies = uiState.matchesYourVibe,
+                    onMovieClick = listener::onMediaItemClicked,
+                    onShowMoreClick = listener::onSeeAllClick,
+                    type = HomeFeaturedItems.MATCHES_YOUR_VIBE,
+                    enableBlur = uiState.enableBlur,
+                )
+
+                FeaturedCollectionsSection(
+                    modifier = Modifier.padding(top = 32.dp),
+                    collections = HomeFeaturedCollections.entries.toList(),
+                    onCollectionClick = listener::onFeaturedCollectionClick,
+                )
+
+                FeaturedMovies(
+                    modifier = Modifier.padding(top = 32.dp),
+                    displayMovies = uiState.topRatedTvShows,
+                    onMovieClick = { item ->
+                        listener.onMediaItemClicked(item)
+                    },
+                    onShowMoreClick = listener::onSeeAllClick,
+                    type = HomeFeaturedItems.TOP_RATED_TV_SHOWS,
+                    enableBlur = uiState.enableBlur,
+                )
+
+                if (!uiState.youRecentlyViewed.isEmpty()) {
                     FeaturedMovies(
-                        displayMovies = uiState.recentlyReleasedMovies,
+                        modifier = Modifier.padding(top = 32.dp),
+                        displayMovies = uiState.youRecentlyViewed,
                         onMovieClick = listener::onMediaItemClicked,
-                        onShowMoreClick = listener::onSeeAllClick,
-                        type = HomeFeaturedItems.RECENTLY_RELEASED,
-                        modifier = Modifier.padding(top = 16.dp),
-                        enableBlur = uiState.enableBlur,
+                        onSeaMoreRecentlyViewedClicked = listener::onSeeMoreRecentlyViewedClicked,
+                        type = HomeFeaturedItems.YOU_RECENTLY_VIEWED,
+                        enableBlur = uiState.enableBlur
                     )
                 }
 
-                item {
-                    SuggestionWithHeader(
-                        modifier = Modifier
-                            .padding(top = 32.dp)
-                            .padding(horizontal = 16.dp),
-                        header = stringResource(id = R.string.what_sould_i_watch),
-                        title = stringResource(id = R.string.let_us_choose_for_you),
-                        message = stringResource(id = R.string.let_us_choose_message),
-                        onClick = listener::onWatchSuggestionClick,
-                    )
-                }
-
-                item {
-                    FeaturedMovies(
+                if (uiState.userName != null) {
+                    MyCollectionsLayout(
                         modifier = Modifier.padding(top = 32.dp),
-                        displayMovies = uiState.upcomingMovies,
-                        onMovieClick = listener::onMediaItemClicked,
-                        onShowMoreClick = listener::onSeeAllClick,
-                        type = HomeFeaturedItems.UPCOMING_MOVIES,
-                        enableBlur = uiState.enableBlur,
+                        items = uiState.collections,
+                        onCollectionClick = listener::onCollectionClick,
+                        onShowMoreClick = listener::onCollectionsShowMoreClick,
                     )
                 }
 
-                item {
-                    FeaturedMovies(
-                        modifier = Modifier.padding(top = 32.dp),
-                        displayMovies = uiState.matchesYourVibe,
-                        onMovieClick = listener::onMediaItemClicked,
-                        onShowMoreClick = listener::onSeeAllClick,
-                        type = HomeFeaturedItems.MATCHES_YOUR_VIBE,
-                        enableBlur = uiState.enableBlur,
-                    )
-                }
-
-                item {
-                    FeaturedCollectionsSection(
-                        modifier = Modifier.padding(top = 32.dp),
-                        collections = HomeFeaturedCollections.entries.toList(),
-                        onCollectionClick = listener::onFeaturedCollectionClick,
-                    )
-                }
-
-                item {
-                    FeaturedMovies(
-                        modifier = Modifier.padding(top = 32.dp),
-                        displayMovies = uiState.topRatedTvShows,
-                        onMovieClick = { item ->
-                            listener.onMediaItemClicked(item)
-                        },
-                        onShowMoreClick = listener::onSeeAllClick,
-                        type = HomeFeaturedItems.TOP_RATED_TV_SHOWS,
-                        enableBlur = uiState.enableBlur,
-                    )
-                }
-
-                item {
-                    if (!uiState.youRecentlyViewed.isEmpty()) {
-                        FeaturedMovies(
-                            modifier = Modifier.padding(top = 32.dp),
-                            displayMovies = uiState.youRecentlyViewed,
-                            onMovieClick = listener::onMediaItemClicked,
-                            onSeaMoreRecentlyViewedClicked = listener::onSeeMoreRecentlyViewedClicked,
-                            type = HomeFeaturedItems.YOU_RECENTLY_VIEWED,
-                            enableBlur = uiState.enableBlur
-                        )
-                    }
-                }
-
-                item {
-                    if (uiState.userName != null) {
-                        MyCollectionsLayout(
-                            modifier = Modifier.padding(top = 32.dp),
-                            items = uiState.collections,
-                            onCollectionClick = listener::onCollectionClick,
-                            onShowMoreClick = listener::onCollectionsShowMoreClick,
-                        )
-                    }
-                }
-
-                item {
-                    SuggestionWithHeader(
-                        modifier = Modifier
-                            .padding(horizontal = 16.dp)
-                            .padding(bottom = 50.dp, top = 16.dp),
-                        header = stringResource(id = R.string.need_more_to_watch),
-                        title = stringResource(id = R.string.browse_everything),
-                        message = stringResource(id = R.string.browse_everything_message),
-                        onClick = listener::onBrowseSuggestionClick,
-                    )
-                }
+                SuggestionWithHeader(
+                    modifier = Modifier
+                        .padding(horizontal = 16.dp)
+                        .padding(bottom = 50.dp, top = 16.dp),
+                    header = stringResource(id = R.string.need_more_to_watch),
+                    title = stringResource(id = R.string.browse_everything),
+                    message = stringResource(id = R.string.browse_everything_message),
+                    onClick = listener::onBrowseSuggestionClick,
+                )
             }
         }
     }
