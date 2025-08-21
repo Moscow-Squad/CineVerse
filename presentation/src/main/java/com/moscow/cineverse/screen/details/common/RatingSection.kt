@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -101,7 +102,7 @@ fun RatingSection(
                     color = Theme.colors.shade.secondary
                 )
             }
-
+            Spacer(modifier = Modifier.weight(1f))
             IconButton(onClick = onClick) {
                 Icon(
                     painter = painterResource(R.drawable.outline_alt_arrow_right),
