@@ -199,7 +199,7 @@ class SeeMoreViewModel @Inject constructor(
 
     private fun getSeriesGenre() {
         launchWithResult(
-            action = { genreUseCase.getSeriesGenres() },
+            action = { genreUseCase.getSeriesGenres(false) },
             onSuccess = { genres ->
                 updateState {
                     it.copy(

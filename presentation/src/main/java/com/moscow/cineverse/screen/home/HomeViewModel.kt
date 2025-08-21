@@ -58,7 +58,7 @@ class HomeViewModel @Inject constructor(
     private fun getGenres(refresh: Boolean = false) {
         updateState { it.copy(isLoading = true, error = null) }
         launchWithResult(
-            action = { genreUseCase.getMoviesGenres() },
+            action = { genreUseCase.getMoviesGenres(refresh) },
             onSuccess = { genres ->
                 updateState {
                     it.copy(movieGenre = genres.map { genre -> genre.toUi() })

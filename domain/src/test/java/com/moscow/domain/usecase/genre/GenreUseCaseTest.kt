@@ -53,7 +53,7 @@ class GenreUseCaseTest {
         )
         coEvery { genreRepository.getSeriesGenres() } returns expectedGenres
 
-        val result = useCase.getSeriesGenres()
+        val result = useCase.getSeriesGenres(false)
 
         assertEquals(expectedGenres, result)
     }
