@@ -35,6 +35,7 @@ import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.image_viewer.component.SafeImageViewer
 import com.moscow.cineverse.mapper.formatInt
 import com.moscow.cineverse.mapper.formatRating
+import com.moscow.cineverse.mapper.formatSeasonNumber
 import com.moscow.cinverse.presentation.R
 import kotlinx.datetime.LocalDate
 
@@ -96,7 +97,7 @@ fun SeasonCard(
                 verticalArrangement = Arrangement.spacedBy(4.dp)
             ) {
                 MovieText(
-                    text = seasonNumber,
+                    text = seasonNumber.formatSeasonNumber(LocalContext.current),
                     style = Theme.textStyle.body.medium.medium,
                     color = Theme.colors.shade.primary
                 )
@@ -122,7 +123,6 @@ fun SeasonCard(
             verticalAlignment = Alignment.CenterVertically
         ) {
             if (rate != 0f) {
-                val movie = null
                 SeasonInfo(
                     icon = R.drawable.due_tone_star,
                     iconTint = Theme.colors.additional.primary.yellow,

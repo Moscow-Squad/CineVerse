@@ -68,6 +68,7 @@ fun Int.formatInt(context: Context): String {
             (NumberFormat.getNumberInstance(arabicLocale) as DecimalFormat).apply {
                 minimumFractionDigits = 0
                 maximumFractionDigits = 0
+                isGroupingUsed = false
                 decimalFormatSymbols = DecimalFormatSymbols(arabicLocale).apply {
                     zeroDigit = DecimalStyle.of(arabicLocale).zeroDigit
                 }
@@ -76,11 +77,28 @@ fun Int.formatInt(context: Context): String {
             NumberFormat.getNumberInstance(appLocale).apply {
                 minimumFractionDigits = 0
                 maximumFractionDigits = 0
+                isGroupingUsed = false
             }
         }
         formatter.format(this)
     } catch (e: Exception) {
         this.toString()
+    }
+}
+
+fun String.formatSeasonNumber(context: Context): String {
+    return try {
+        val regex = """\d+""".toRegex()
+        val match = regex.find(this)
+        if (match != null) {
+            val number = match.value.toInt()
+            val formattedNumber = number.formatInt(context)
+            this.replace(match.value, formattedNumber)
+        } else {
+            this
+        }
+    } catch (e: Exception) {
+        this
     }
 }
 
