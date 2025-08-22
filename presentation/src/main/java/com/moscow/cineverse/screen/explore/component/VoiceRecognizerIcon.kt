@@ -10,12 +10,15 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.moscow.cineverse.designSystem.theme.CineVerseTheme
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cinverse.presentation.R
+import org.intellij.lang.annotations.Language
+import androidx.compose.ui.platform.LocalConfiguration
 
 @Composable
 fun VoiceRecognitionIcon(
@@ -24,8 +27,9 @@ fun VoiceRecognitionIcon(
     modifier: Modifier = Modifier,
     @StringRes prompt: Int = R.string.speak_to_search,
     maxResults: Int = 5,
-    enabled: Boolean = true
+    enabled: Boolean = true,
 ) {
+    val currentLocale = LocalConfiguration.current.locales[0]
     val launcher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartActivityForResult()
     ) { activityResult ->
@@ -46,6 +50,10 @@ fun VoiceRecognitionIcon(
                 putExtra(
                     RecognizerIntent.EXTRA_LANGUAGE_MODEL,
                     RecognizerIntent.LANGUAGE_MODEL_FREE_FORM
+                )
+                putExtra(
+                    RecognizerIntent.EXTRA_LANGUAGE,
+                    currentLocale.toLanguageTag()
                 )
                 putExtra(RecognizerIntent.EXTRA_PROMPT, prompt)
                 putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, maxResults)
