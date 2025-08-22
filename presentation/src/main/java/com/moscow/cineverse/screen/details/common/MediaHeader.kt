@@ -36,6 +36,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.moscow.cineverse.common_ui_state.DurationUiState
@@ -273,7 +274,7 @@ fun MediaHeader(
                                 releaseDate?.let { date ->
                                     InfoTextWithIcon(
                                         R.drawable.due_tone_calendar,
-                                        date.formatDate(),
+                                        date.formatDate(context = LocalContext.current),
                                         Theme.colors.shade.secondary
                                     )
                                 }

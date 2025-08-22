@@ -30,6 +30,7 @@ fun InfoCard(
 ) {
     Box(
         modifier = modifier
+            .padding(horizontal = 16.dp)
             .fillMaxWidth()
             .background(
                 color = Theme.colors.background.card,

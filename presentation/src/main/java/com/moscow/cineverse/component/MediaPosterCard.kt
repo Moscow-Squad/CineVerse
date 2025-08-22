@@ -30,14 +30,12 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -48,6 +46,7 @@ import com.moscow.cineverse.designSystem.component.blur.OnBlurContent
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.image_viewer.component.SafeImageViewer
 import com.moscow.cineverse.mapper.formatDate
+import com.moscow.cineverse.mapper.formatRating
 import com.moscow.cineverse.screen.details.common.InfoSection
 import com.moscow.cineverse.utlis.ViewMode
 import com.moscow.cinverse.presentation.R
@@ -195,9 +194,9 @@ private fun GridMovieCard(
                                     interactionSource = remember { MutableInteractionSource() }
                                 ) {
 
-                                        onMovieClick(movie.id)
+                                    onMovieClick(movie.id)
 
-                                  },
+                                },
                             isBlurEnabled = enableBlur,
                             placeholderContent = {
                                 RemoteImagePlaceholder(
@@ -236,7 +235,7 @@ private fun GridMovieCard(
                                         verticalAlignment = Alignment.CenterVertically
                                     ) {
                                         Text(
-                                            text = "%.1f".format(movie.rating),
+                                            text = movie.rating.formatRating(LocalContext.current),
                                             color = Theme.colors.shade.primary,
                                             style = Theme.textStyle.label.medium.medium
                                         )
@@ -276,7 +275,7 @@ private fun GridMovieCard(
                                     indication = null,
                                     interactionSource = remember { MutableInteractionSource() },
                                     onClick = {
-                                            onMovieClick(movie.id)
+                                        onMovieClick(movie.id)
                                     }
                                 )
                         )
@@ -290,7 +289,8 @@ private fun GridMovieCard(
                 ) {
                     with(sharedTransitionScope) {
                         DurationAndDateSection(
-                            releaseDate = movie.releaseDate?.formatDate() ?: "",
+                            releaseDate = movie.releaseDate?.formatDate(context = LocalContext.current)
+                                ?: "",
                             modifier = Modifier.sharedElement(
                                 sharedContentState = rememberSharedContentState(key = detailsKey),
                                 animatedVisibilityScope = this@AnimatedVisibility,
@@ -331,8 +331,8 @@ private fun GridMovieCard(
                                 indication = null,
                                 interactionSource = remember { MutableInteractionSource() }
                             ) {
-                                    onMovieClick(movie.id)
-                              },
+                                onMovieClick(movie.id)
+                            },
                         isBlurEnabled = enableBlur,
                         placeholderContent = {
                             RemoteImagePlaceholder(
@@ -365,7 +365,7 @@ private fun GridMovieCard(
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
                                 Text(
-                                    text = "%.1f".format(movie.rating),
+                                    text = movie.rating.formatRating(LocalContext.current),
                                     color = Theme.colors.shade.primary,
                                     style = Theme.textStyle.label.medium.medium
                                 )
@@ -400,7 +400,7 @@ private fun GridMovieCard(
                                 indication = null,
                                 interactionSource = remember { MutableInteractionSource() },
                                 onClick = {
-                                        onMovieClick(movie.id)
+                                    onMovieClick(movie.id)
                                 }
                             )
                     )
@@ -504,7 +504,8 @@ private fun ListMovieCard(
                             )
 
                             DurationAndDateSection(
-                                releaseDate = movie.releaseDate?.formatDate() ?: "",
+                                releaseDate = movie.releaseDate?.formatDate(context = LocalContext.current)
+                                    ?: "",
                                 modifier = Modifier.sharedElement(
                                     sharedContentState = rememberSharedContentState(key = detailsKey),
                                     animatedVisibilityScope = animatedVisibilityScope,
@@ -530,7 +531,7 @@ private fun ListMovieCard(
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
                                 Text(
-                                    text = "%.1f".format(movie.rating),
+                                    text = movie.rating.formatRating(LocalContext.current),
                                     color = Theme.colors.shade.primary,
                                     style = Theme.textStyle.label.small.medium
                                 )
@@ -612,7 +613,8 @@ private fun ListMovieCard(
                         )
 
                         DurationAndDateSection(
-                            releaseDate = movie.releaseDate?.formatDate() ?: ""
+                            releaseDate = movie.releaseDate?.formatDate(context = LocalContext.current)
+                                ?: ""
                         )
                     }
                 }
@@ -629,7 +631,7 @@ private fun ListMovieCard(
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Text(
-                                text = "%.1f".format(movie.rating),
+                                text = movie.rating.formatRating(LocalContext.current),
                                 color = Theme.colors.shade.primary,
                                 style = Theme.textStyle.label.small.medium
                             )

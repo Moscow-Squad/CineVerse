@@ -130,8 +130,6 @@ private fun CollectionDetailsScreenContent(
                     LazyColumn(
                         modifier = Modifier.padding(
                             top = 16.dp,
-                            start = 16.dp,
-                            end = 16.dp
                         )
                     ) {
                         if (uiState.showTip) {
@@ -171,7 +169,9 @@ private fun CollectionDetailsScreenContent(
                                     },
                                     showTitle = true,
                                     showBackdrop = true,
-                                    enableBlur = uiState.enableBlur
+                                    enableBlur = uiState.enableBlur,
+                                    modifier = Modifier.padding(horizontal = 16.dp)
+
                                 )
                             }
                         }

@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import coil3.compose.rememberAsyncImagePainter
 import com.moscow.cineverse.common_ui_state.ReviewUiState
@@ -37,7 +38,7 @@ fun MovieReviewsSection(
                 review.username,
                 review.reviewContent,
                 review.rate,
-                review.date?.formatDate() ?: "",
+                review.date?.formatDate(context = LocalContext.current) ?: "",
                 if (review.userImageUrl.isEmpty()) null else rememberAsyncImagePainter(model = review.userImageUrl),
                 modifier = Modifier.padding(
                     start = 16.dp,

@@ -23,6 +23,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
@@ -32,6 +33,8 @@ import com.moscow.cineverse.designSystem.component.blur.RemoteImagePlaceholder
 import com.moscow.cineverse.designSystem.component.wrapper.MovieText
 import com.moscow.cineverse.designSystem.theme.Theme
 import com.moscow.cineverse.image_viewer.component.SafeImageViewer
+import com.moscow.cineverse.mapper.formatInt
+import com.moscow.cineverse.mapper.formatRating
 import com.moscow.cinverse.presentation.R
 import kotlinx.datetime.LocalDate
 
@@ -119,25 +122,26 @@ fun SeasonCard(
             verticalAlignment = Alignment.CenterVertically
         ) {
             if (rate != 0f) {
+                val movie = null
                 SeasonInfo(
                     icon = R.drawable.due_tone_star,
                     iconTint = Theme.colors.additional.primary.yellow,
                     iconDescription = stringResource(R.string.rate_icon),
-                    title = rate.toString()
+                    title = rate.formatRating(LocalContext.current)
                 )
             }
             SeasonInfo(
                 icon = R.drawable.due_tone_video_library,
                 iconTint = Theme.colors.shade.secondary,
                 iconDescription = stringResource(R.string.episodes_icon),
-                title = episodeCount.toString() + " " + stringResource(R.string.episodes)
+                title = episodeCount.formatInt(LocalContext.current) + " " + stringResource(R.string.episodes)
             )
             airDate?.let {
                 SeasonInfo(
                     icon = R.drawable.due_tone_calendar,
                     iconTint = Theme.colors.shade.secondary,
                     iconDescription = stringResource(R.string.air_date_icon),
-                    title = airDate.year.toString()
+                    title = airDate.year.formatInt(LocalContext.current)
                 )
             }
         }

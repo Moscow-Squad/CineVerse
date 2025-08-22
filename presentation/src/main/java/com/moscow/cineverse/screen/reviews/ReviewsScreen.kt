@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -81,7 +82,7 @@ fun ReviewsContent(
                             username = review.username,
                             reviewText = review.reviewContent,
                             rating = review.rate,
-                            date = if (review.date != null) review.date.formatDate() else "",
+                            date = if (review.date != null) review.date.formatDate(context = LocalContext.current) else "",
                             avatar = if (review.userImageUrl.isEmpty()) null else rememberAsyncImagePainter(
                                 model = review.userImageUrl
                             ),

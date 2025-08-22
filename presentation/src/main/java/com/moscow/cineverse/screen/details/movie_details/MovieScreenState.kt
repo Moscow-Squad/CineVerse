@@ -4,6 +4,7 @@ import com.moscow.cineverse.common_ui_state.CastUiState
 import com.moscow.cineverse.common_ui_state.DurationUiState
 import com.moscow.cineverse.common_ui_state.MediaItemUiState
 import com.moscow.cineverse.common_ui_state.ReviewUiState
+import com.moscow.cineverse.screen.details.movie_details.MovieScreenState.MovieDetailsUiState
 import kotlinx.datetime.LocalDate
 
 
@@ -40,3 +41,16 @@ data class MovieScreenState(
         val description: String
     )
 }
+
+
+fun MovieDetailsUiState.toMediaItem() =
+    MediaItemUiState(
+        id = this.id,
+        title = this.title,
+        posterPath = this.posterUrl,
+        rating = this.rating.toFloatOrNull() ?: 0.0f, // Convert string rating to float
+        genres = this.genres,
+        releaseDate = this.releaseDate,
+        backdropPath = this.posterUrl, // Using posterUrl as backdrop (you may want to add a separate backdropUrl field)
+        mediaType = MediaItemUiState.MediaType.Movie
+    )

@@ -1,19 +1,21 @@
 package com.moscow.cineverse.screen.match.composable
 
+import android.util.Log
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -24,6 +26,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -57,7 +61,8 @@ fun MatchCarouselAnimation(
         initialPage = 0,
         pageCount = { movies.size }
     )
-
+    val screenWidth = LocalConfiguration.current.screenWidthDp
+    val paddingHorizontal = (screenWidth - screenWidth * .70f) / 2
     LaunchedEffect(pagerState) {
         while (true) {
             delay(3000)
@@ -75,7 +80,12 @@ fun MatchCarouselAnimation(
     }
 
     if (movies.isEmpty()) {
-        Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+        Log.e("hdhdhd", "MatchCarouselAnimation: mmmmmmm")
+        Box(
+            modifier = modifier
+                .fillMaxSize()
+                .background(Theme.colors.background.screen), contentAlignment = Alignment.Center
+        ) {
             EmptyState(
                 icon = painterResource(R.drawable.ic_search),
                 title = stringResource(R.string.nothing_found),
@@ -91,13 +101,13 @@ fun MatchCarouselAnimation(
             Box(
                 modifier = modifier
                     .fillMaxWidth()
-                    .height(350.dp),
+                    .fillMaxHeight(.45f),
                 contentAlignment = Alignment.Center
             ) {
                 HorizontalPager(
                     state = pagerState,
-                    modifier = Modifier.fillMaxSize(),
-                    contentPadding = PaddingValues(horizontal = 60.dp),
+                    modifier = Modifier.fillMaxWidth(),
+                    contentPadding = PaddingValues(horizontal = paddingHorizontal.dp),
                     pageSpacing = (-80).dp,
                     verticalAlignment = Alignment.CenterVertically,
                     beyondViewportPageCount = 2
@@ -126,7 +136,8 @@ fun MatchCarouselAnimation(
                             imageUrl = movies[page].posterUrl,
                             modifier = Modifier
                                 .alpha(cardAlpha)
-                                .size(width = animatedWidth, height = animatedHeight)
+                                .fillMaxWidth()
+                                .fillMaxHeight()
                                 .clip(RoundedCornerShape(Theme.radius.extraLarge))
                                 .offset(
                                     x = when {
@@ -163,7 +174,7 @@ fun MatchCarouselAnimation(
                 genres = movies[pagerState.currentPage].genres.joinToString(", "),
                 rating = movies[pagerState.currentPage].rating,
                 duration = if (movies[pagerState.currentPage].duration.hours == 0 && movies[pagerState.currentPage].duration.minutes == 0) "null" else movies[pagerState.currentPage].duration.toString(),
-                releaseDate = movies[pagerState.currentPage].releaseDate?.formatDate()
+                releaseDate = movies[pagerState.currentPage].releaseDate?.formatDate(LocalContext.current)
                     ?: "",
                 type = stringResource(R.string.movie),
                 onSaveClick = { onSaveClick(movies[pagerState.currentPage].id) },
